@@ -1,0 +1,16 @@
+version: decision_recipe_v1
+recipe_id: decision_wave01_barrier_abstain_risk_v0
+status: skeleton_open_no_runtime_claim
+created_at_utc: '2026-06-21T21:30:10Z'
+decision_family: event_barrier_abstain_risk_holding_surface
+unit_semantics_required:
+- point
+- digits
+- tick_size
+- price_distance
+- lot_step
+- rounding_policy
+forbidden_defaults:
+- naive_momentum_ret_1_score_replay_as_candidate
+- ATR_or_barrier_distance_without_conversion_rule
+claim_boundary: recipe_skeleton_only_no_runtime_or_economics_claim

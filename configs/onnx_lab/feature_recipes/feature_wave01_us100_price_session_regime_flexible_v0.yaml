@@ -1,0 +1,15 @@
+version: feature_recipe_v1
+recipe_id: feature_wave01_us100_price_session_regime_flexible_v0
+status: skeleton_open_no_feature_set_claim
+created_at_utc: '2026-06-21T21:30:10Z'
+feature_count_policy: variable_declared_per_run_no_fixed_count
+forbidden_defaults:
+- fixed_feature_count
+- inherited_feature_list
+- auxiliary_symbol_without_live_chart_evidence
+allowed_families:
+- price_return_range_volatility_context
+- session_state_context
+- causal_regime_context
+boundary: causal_history_only
+claim_boundary: recipe_skeleton_only_not_feature_set_not_candidate

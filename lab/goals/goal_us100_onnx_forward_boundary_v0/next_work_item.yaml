@@ -1,358 +1,54 @@
 version: onnx_lab_work_item_v1
-work_item_id: work_wave0_first_batch_l4_follow_through_v0
+work_item_id: work_wave01_event_barrier_first_batch_spec_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-created_at_utc: '2026-06-21T17:10:54Z'
-status: decision_replay_judgment_completed_no_l5_candidates
-user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
-  valid first proof-window proxy/model-bearing run while preserving Codex long-running
-  operating stability.
-operating_goal_context:
-  primary_objective: durable_codex_operation
-  proof_window: Wave01_closeout
-  proof_window_role: first_bounded_proof_window_not_final_purpose
-  internal_active_wave_id: wave_us100_closedbar_surface_cartography_v0
-  internal_existing_wave_label: wave0
-  wave_label_policy: user_facing_Wave01_maps_to_existing_active_first_wave_without_midstream_rename
-  recurring_failure_policy:
-    decision_basis:
-    - recurrence_risk
-    - impact
-    - operating_importance
-    preferred_guard: smallest_sufficient_durable_guard
-    stronger_guard_allowed_when: structurally_important_issue
+created_at_utc: '2026-06-21T21:30:10Z'
+status: planned_not_started
+user_request: Materialize the first broad batch specs for the event/barrier decision
+  campaign while preserving Wave01 Codex operating stability.
 current_truth:
-  goal_objective_revision: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
-  axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
-  policy_clarification: lab/goals/goal_us100_onnx_forward_boundary_v0/user_clarification_proxy_l4_policy_v0.yaml
-  source_run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
-  proxy_run_count: 12
-  required_runtime_level: L4_split_runtime_probe
-  l5_rule: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
-  candidate_count: 0
-  wave_campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
-  materialization_preflight: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.yaml
-  materialization_preflight_status: completed_direct_l4_ready_0_materialization_required
-  materialization_preflight_summary:
-    valid_proxy_runs_requiring_l4: 12
-    direct_l4_ready_runs: 0
-    runs_requiring_retrain: 12
-    runs_requiring_onnx_export: 12
-    runs_requiring_strategy_tester_adapter: 12
-    diagnostic_surfaces_requiring_runtime_observation_mode: 5
-    model_family_counts:
-      linear_or_ridge_rank_scout: 5
-      logistic_classification_scout: 5
-      onnx_realistic_tree_or_boosted_scout: 2
-    export_adapter_status_counts:
-      requires_export_adapter_probe: 2
-      skl2onnx_converter_likely_available: 10
-    result_judgment_counts:
-      inconclusive: 8
-      preserved_clue: 4
-    blocker_counts:
-      requires_declared_runtime_observation_mode_for_diagnostic_surface: 5
-      requires_export_adapter_probe: 2
-      requires_onnx_export_after_retrain: 12
-      requires_retrain_for_materialization: 12
-      requires_strategy_tester_ea_or_runtime_adapter: 12
-  onnx_materialization_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml
-  onnx_materialization_status: completed_exportable_bundles_l4_still_pending
-  onnx_materialization_counts:
-    valid_proxy_runs_requiring_l4: 12
-    exportable_bundle_count: 12
-    blocked_export_adapter_count: 0
-    failed_materialization_count: 0
-    status_counts:
-      onnx_exported_python_onnxruntime_parity_passed: 12
-    parity_status_counts:
-      passed: 12
-    model_family_counts:
-      linear_or_ridge_rank_scout: 5
-      logistic_classification_scout: 5
-      onnx_realistic_tree_or_boosted_scout: 2
-  l4_attempt_preparation_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
-  l4_attempt_preparation_status: prepared_attempts_pending_terminal_execution
-  l4_attempt_preparation_counts:
-    exported_bundle_count: 12
-    required_period_role_count: 2
-    prepared_attempt_count: 24
-    period_role_counts:
-      research_oos: 12
-      validation: 12
-    common_copy_status_counts:
-      copied_to_mt5_common_files: 24
-  l4_runtime_execution_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
-  l4_runtime_execution_counts:
-    prepared_attempt_count: 24
-    selected_attempt_count: 24
-    indexed_execution_count: 24
-    executed_attempt_count: 24
-    completed_manifest_count: 24
-    telemetry_observed_count: 24
-    telemetry_missing_count: 0
-    tester_report_observed_count: 0
-    tester_report_missing_count: 24
-    period_role_counts:
-      research_oos: 12
-      validation: 12
-    status_counts:
-      completed_l4_score_telemetry_observed: 24
-    result_judgment_counts:
-      runtime_probe: 24
-  l4_pair_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  l4_pair_judgment_status: l4_pair_judgment_completed_no_l5_candidates
-  l4_pair_judgment_counts:
-    cell_pair_count: 12
-    both_period_roles_observed_count: 12
-    tester_report_pair_observed_count: 0
-    standard_l4_incomplete_count: 12
-    l5_status_counts:
-      no_l5_diagnostic_score_probe_only: 5
-      no_l5_yet_requires_trading_or_sparse_decision_tester_adapter: 7
-    comparison_class_counts:
-      proxy_inconclusive_runtime_score_observed: 8
-      proxy_preserved_clue_runtime_score_observed: 4
-  l4_ingredient_materialization_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/l4_ingredient_materialization_summary.yaml
-  l4_ingredient_materialization_status: l4_preserved_clue_ingredients_materialized
-  l4_ingredient_materialization_counts:
-    ingredient_card_count: 4
-    status_counts:
-      ingredient_ready_diagnostic_runtime_score_control: 1
-      ingredient_ready_requires_decision_execution_adapter: 3
-    source_clue_counts:
-      clue_wave0_path_quality_h12_side_signal_v0: 1
-      clue_wave0_tradeability_mid_horizon_v0: 3
-  l4_decision_replay_adapter_preparation_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
-  l4_decision_replay_adapter_preparation_status: decision_replay_adapter_attempts_prepared
-  l4_decision_replay_adapter_preparation_counts:
-    source_ingredient_count: 3
-    prepared_attempt_count: 6
-    direction_policy_counts:
-      momentum_ret_1: 6
-    period_role_counts:
-      validation: 3
-      research_oos: 3
-    decision_family_counts:
-      abstain_capable_direction_agnostic_tradeability: 6
-  l4_decision_replay_runtime_execution_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
-  l4_decision_replay_runtime_execution_status: decision_replay_terminal_execution_attempted_for_all_prepared_attempts
-  l4_decision_replay_runtime_execution_counts:
-    prepared_attempt_count: 6
-    selected_attempt_count: 0
-    indexed_execution_count: 6
-    executed_attempt_count: 6
-    completed_manifest_count: 6
-    source_score_telemetry_observed_count: 6
-    execution_telemetry_observed_count: 6
-    execution_telemetry_missing_count: 0
-    tester_report_observed_count: 0
-    tester_report_missing_count: 6
-    tester_log_observed_count: 6
-    open_action_count: 39598
-    close_action_count: 11727
-    open_failed_count: 0
-    period_role_counts:
-      research_oos: 3
-      validation: 3
-    direction_policy_counts:
-      momentum_ret_1: 6
-    status_counts:
-      completed_decision_replay_execution_telemetry_observed: 6
-    result_judgment_counts:
-      runtime_probe: 6
-  l4_decision_replay_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
-  l4_decision_replay_judgment_status: decision_replay_judgment_completed_no_l5_candidates
-  l4_decision_replay_judgment_counts:
-    cell_pair_count: 3
-    negative_count: 3
-    candidate_count: 0
-    l5_candidate_count: 0
-    tester_log_pair_observed_count: 3
-    tester_report_pair_observed_count: 0
-    loss_in_both_periods_count: 3
-    open_action_count: 39598
-    close_action_count: 11727
-    result_judgment_counts:
-      negative: 3
-    l5_routing_status_counts:
-      no_l5_decision_replay_loss_observed: 3
-    final_balance_pair_class_counts:
-      loss_in_validation_and_research_oos: 3
-  l4_decision_replay_negative_memory: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  campaign_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_event_barrier_decision_surface_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  negative_memory_boundary: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
 work_classification:
-  primary_family: runtime_probe
+  primary_family: experiment_design
   detected_families:
-  - onnx_export_parity
-  - bundle_materialization
-  - runtime_probe
+  - experiment_design
+  - data_feature_build
   - model_training
-  mutation_intent: materialize_runtime_follow_through_for_existing_proxy_runs
-  execution_intent: all_valid_proxy_runs_to_L4_then_L5_if_promising_with_operating_stability_repairs_at_right_weight
+  - runtime_probe
+  mutation_intent: materialize_first_batch_run_specs_not_execute_yet
+  execution_intent: design_to_L4_follow_through_path_for_valid_proxy_model_runs
 skill_routing:
-  primary_family: runtime_probe
-  primary_skill: spacesonar-runtime-parity
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
   support_skills:
-  - spacesonar-artifact-lineage
-  - spacesonar-environment-reproducibility
-  - spacesonar-run-evidence-system
+  - spacesonar-exploration-mandate
+  - spacesonar-data-integrity
   - spacesonar-model-validation
-  - spacesonar-claim-discipline
-  skills_selected:
   - spacesonar-runtime-parity
-  - spacesonar-artifact-lineage
-  - spacesonar-environment-reproducibility
-  - spacesonar-run-evidence-system
-  - spacesonar-model-validation
   - spacesonar-claim-discipline
-  skills_not_used: []
-  critical_skills_not_selected: []
-  not_selected_claim_effect: none
   required_gates:
-  - onnx_export_or_runtime_materialization_plan
-  - bundle_integrity_hash
-  - python_onnx_parity_where_model_exported
-  - mt5_runtime_probe_contract_audit
-  - proxy_runtime_parity_record
-  - L4_split_runtime_probe_for_all_valid_proxy_runs
-  - result_judgment
+  - design_contract_check
+  - exploration_coverage_check
+  - feature_label_boundary_check
+  - campaign_proxy_runtime_parity_policy
   - final_claim_guard
 acceptance_criteria:
-- 'Preserve the active goal meaning: long-running Codex operating stability is primary;
-  Wave01 closeout is the proof window.'
-- For each of the 12 Wave0 first-batch proxy runs, either produce L4 MT5 split-runtime
-  evidence or record a repair/invalid reason before it can count as proxy evidence.
-- For each L4 follow-through attempt, record proxy_runtime_parity with shared contract,
-  known differences, interpretation drift risks, comparison class, divergence judgment,
-  and follow-up action.
-- Make at least one explicit reconciliation attempt for any proxy-vs-MT5 mismatch;
-  then record whether the result was repaired, accepted as an expected difference,
-  or preserved as a surprise clue.
-- Record unit semantics when relevant, including point, pip, tick size, digits, price
-  distance, ATR stop conversion, lot step, and rounding policy.
-- Use runtime_period_set_id split_base_anchor_v0_research_l4 with validation and research_oos
-  roles.
-- Keep OOS-B locked unless a later frozen candidate explicitly unlocks it.
-- Do not stop at proxy-only closeout for any valid proxy/model-bearing run.
-- If an L4 result remains promising, write the next work item toward L5_candidate_runtime_evidence.
-- Do not claim runtime authority, economics pass, selected baseline, live readiness,
-  or Goal Achieve.
-- If recurring operational/system failure appears, classify it as operational or system,
-  weigh recurrence risk, impact, and operating importance, then add an appropriately
-  weighted guard without unnecessary bureaucracy.
+- Create a first broad batch matrix for the event/barrier decision surface.
+- Do not fix feature count, model head, direction mapping, or holding duration as
+  defaults.
+- Every valid proxy/model-bearing spec must include an L4 follow-through path or a
+  failure-disposition requirement.
+- Do not use locked final OOS-B.
+- Do not claim candidate, baseline, runtime authority, economics pass, or Goal Achieve.
 runtime_learning_probe_decision:
   required: true
-  decision: run_required
-  reason: 'User clarification: every valid proxy/model-bearing run must reach L4_split_runtime_probe.'
-  lowered_claim_if_not_run: invalid_proxy_only_closeout_no_l4_runtime_evidence
-proxy_runtime_parity:
-  required_for_all_campaign_proxy_runs: true
-  shared_contract_required: true
-  known_differences_required: true
-  interpretation_drift_risks_required: true
-  minimum_reconciliation_attempt_required: true
-  forced_equality_required: false
-  unit_semantics_required_when_applicable: true
-  comparison_classes:
-  - proxy_good_runtime_good
-  - proxy_good_runtime_bad
-  - proxy_bad_runtime_bad
-  - proxy_bad_runtime_good
-  - invalid_or_unmaterializable
-  divergence_judgment_required: true
-  prevention_memory_required: true
-  example_unit_drift: atr_SL_TP_point_vs_MT5_point_tick_digits_price_distance
-  proxy_bad_runtime_good_effect: preserve_as_clue_or_open_new_hypothesis_surface
-  proxy_good_runtime_bad_effect: treat_as_interpretation_or_execution_drift_until_explained
-  proxy_bad_runtime_bad_effect: record_negative_evidence_with_boundary
-  claim_boundary: campaign_parity_tracking_only_no_runtime_authority
-runtime_period_profile: period_profile_split_set_v0
-runtime_period_set_id: split_base_anchor_v0_research_l4
-tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
-bounded_execution_budget:
-  proxy_runs_requiring_l4: 12
-  runtime_attempts: one_or_more_attempts_per_valid_proxy_run_until_L4_or_repair_record
-  locked_final_oos_use: forbidden
-stop_conditions:
-- proxy_run_cannot_be_materialized_to_ONNX_EA_MT5_without_repair
-- MT5_terminal_or_tester_environment_blocked_after_repair_attempts
-- feature_order_or_decision_surface_mismatch
-- runtime_period_profile_missing
-claim_boundary: l4_follow_through_required_no_runtime_authority_no_candidate
-branch_worktree:
-  current_branch: codex/l4-pair-judgment-closeout
-  requested_branch: codex/l4-pair-judgment-closeout
-  branch_worktree_fit: fit
-  branch_action: keep_current_branch
-  policy_reference: docs/policies/branch_policy.md
-  mismatch_claim_effect: no_branch_mismatch_detected_for_decision_replay_judgment
-agent_allocation:
-  phase: wave0_l4_decision_replay_judgment
-  selected_agents: []
-  role_modes: []
-  selection_reason: Deterministic evidence judgment over executed MT5 decision replay
-    attempts; no protected promotion or policy change required.
-  why_not_smaller: Codex alone is the smallest allocation for evidence aggregation
-    and registry sync.
-  why_not_larger: No runtime authority, economics pass, reviewed/pass, promotion,
-    or cross-system handoff claim is being made.
-  max_threads_is_capacity_only: true
-  claim_effect: no_new_advisory_claim
-execution_provenance:
-  git_sha: a692d242fa5f674fe6919b6cc8a2193ea767be73
-  branch: codex/l4-pair-judgment-closeout
-  dirty_flag: true
-  changed_files:
-  - M docs/registers/artifact_registry.csv
-  - ' M docs/registers/negative_memory_registry.csv'
-  - ?? foundation/pipelines/judge_wave0_l4_decision_replay_results.py
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_index.csv
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
-  - ?? lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
-  - ?? tests/test_wave0_l4_decision_replay_judgment.py
-  command_argv:
-  - python
-  - foundation/pipelines/judge_wave0_l4_decision_replay_results.py
-  - --write-control-records
-  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
-  python_version: 3.13.9
-  key_package_versions:
-    python: 3.13.9
-    yaml: 6.0.3
-  started_at_utc: '2026-06-21T21:17:09Z'
-  ended_at_utc: '2026-06-21T21:17:09Z'
-  input_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_index.csv
-    sha256: b274586f4c6b7483a1f018ccde7b86fafcfaa0db9a1321337b2f052b8b720441
-    size_bytes: 6992
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
-    sha256: 1555e00b07345d9ffce49c8671e9261aea0bf8dda62405f0eca4912d5f237ccd
-    size_bytes: 10234
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
-    sha256: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
-    size_bytes: 9149
-    availability: present_hash_recorded
-  output_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
-    sha256: 0017becbc2337a6f4ab612b9f614a8950c36392f513729c3224f831903a9f71c
-    size_bytes: 4836
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_index.csv
-    sha256: 3127cefa32570e3856787e9a92927d6ac61860a3d8100939d59bca66753ecd4f
-    size_bytes: 7644
-    availability: present_hash_recorded
-  - path: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
-    sha256: 57dc1473a063b76cd8a23ef2b1593dd1a30aab38b2f59a9b034a551d2ecc9dc1
-    size_bytes: 1704
-    availability: present_hash_recorded
-  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
-    sha256: 323ec0b15c4cf2c91ff588b89caff76d2842ba2e3cd7681f9433620b4d9d37a9
-    size_bytes: 1977
-    availability: present_hash_recorded
-  unknown_git_claim_effect: not_applicable_git_state_recorded_claim_still_lowered_no_runtime_authority
+  decision: L4_required_after_valid_proxy_model_execution
+  reason: Project policy forbids proxy-only closeout for valid proxy/model-bearing
+    runs.
+claim_boundary: planned_first_batch_spec_only_no_run_no_candidate_no_runtime_authority
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -362,11 +58,5 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
-missing_material_if_relevant:
-- tester_reports_missing_for_all_decision_replay_pairs
-- equity_curve_missing
-- pf_dd_trade_list_metrics_missing
-- locked_final_oos_b_not_used
-next_action: Record negative memory, keep candidate count at zero, and rotate to a
-  new multi-axis surface or a genuinely new decision-policy question. Do not continue
-  momentum_ret_1 score replay to L5.
+next_action: write first batch specs and anti-selection ledger for event/barrier decision
+  campaign

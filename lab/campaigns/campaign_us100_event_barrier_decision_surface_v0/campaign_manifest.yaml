@@ -1,0 +1,253 @@
+version: campaign_manifest_v1
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+campaign_type: standard_experiment
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: opened_planned_not_executed
+created_at_utc: '2026-06-21T21:30:10Z'
+updated_at_utc: '2026-06-21T21:30:10Z'
+target_branch: codex/l4-pair-judgment-closeout
+wave_ids:
+- wave_us100_closedbar_surface_cartography_v0
+idea_ids:
+- idea_us100_m5_event_barrier_decision_surface_v0
+hypothesis_ids:
+- hyp_us100_event_barrier_decision_surface_v0
+objective: Open a new US100 M5 event/barrier decision surface that treats label, input,
+  model, decision, risk, holding, and runtime feasibility as interacting axes.
+axis_tags:
+- event_barrier_surface
+- target_or_label_surface
+- feature_or_input_surface
+- model_or_training_surface
+- decision_surface
+- risk_or_sizing_surface
+- horizon_or_holding_policy
+- evaluation_or_runtime_surface
+- us100_m5_closed_bar_only
+surface_policy: broad_first_extreme_edges_before_micro_search
+exploration_coverage:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  primary_unknown_axis: event_barrier_decision_risk_holding_surface
+  required_research_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  companion_axes:
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  forbidden_research_shapes:
+  - feature_only_wave_or_campaign
+  - label_only_wave_or_campaign
+  - model_only_wave_or_campaign
+  - threshold_only_wave_or_campaign
+  - repair_only_wave_or_campaign
+  single_axis_exception_policy: not_applicable_research_campaign
+  novelty_claim: new event/barrier and path-quality decision surface after the first
+    campaign closed naive momentum_ret_1 score replay as negative memory
+prior_material_boundary:
+  uses_prior_material_as: prevention_boundary_only
+  source_negative_memory_ids:
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  forbidden_carryover:
+  - do_not_relabel_momentum_ret_1_score_replay_as_new_candidate
+  - do_not_use_preserved_score_clue_as_tradeability_without_new_decision_policy_evidence
+  new_surface_requirement: new runs must change the event/barrier, risk, holding,
+    or decision policy surface; not just repair the prior score replay candidate
+bounded_synthesis:
+  enabled: false
+  source_scope: not_applicable_standard_experiment
+  next_wave_influence: not_applicable
+  claim_boundary: not_bounded_synthesis_no_previous_material_mixing_claim
+candidate_repair_policy:
+  allowed_scope: bounded_run_or_sweep_only
+  max_repeated_candidate_repairs_without_new_surface_clue: 1
+  repeated_repair_action: close_or_open_new_surface_or_divergence_campaign
+  forbidden_use: long_candidate_extension_inside_wave_or_campaign
+  carryover_policy: forbidden_to_relabel_repair_as_new_hypothesis_without_recorded_new_surface_or_divergence
+  neighborhood_perturbation_scope: meaningful_adjacent_variables_only
+  neighborhood_stop_condition: stop_when_micro_tuning_candidate_laundering_or_no_new_prevention_memory
+failure_disposition_policy:
+  cannot_unsupported_unavailable_are_diagnosis_only: true
+  explanation_only_closeout_forbidden: true
+  required_before_blocked_deferred_invalid_or_discarded:
+  - failure_reproduction
+  - exact_failing_layer
+  - bounded_repair_or_fallback_attempt
+  - evidence_path
+  - remaining_blocker
+  - reopen_condition
+  repo_controlled_support_gap_action: build_or_patch_smallest_adapter_or_fallback
+  no_adapter_exists_claim_effect: repair_trigger_not_blocker
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+  wave_campaign_refs:
+  - lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+  registry_rows:
+  - docs/registers/campaign_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+  wave_link_policy: central_campaign_folder_referenced_by_wave_allocation
+git_integration:
+  policy_reference: docs/policies/branch_policy.md
+  open_event: campaign_open
+  close_event: campaign_close
+  main_push_policy: boundary_only_after_coherent_commit
+  per_run_main_push_default: false
+  status: branch_open_pending_main_boundary
+skill_routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills:
+  - spacesonar-exploration-mandate
+  - spacesonar-data-integrity
+  - spacesonar-model-validation
+  - spacesonar-run-evidence-system
+  - spacesonar-claim-discipline
+required_gates:
+- design_contract_check
+- exploration_coverage_check
+- campaign_proxy_runtime_parity_policy
+- first_batch_spec_before_execution
+- final_claim_guard
+claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+experiment_design:
+  idea_id: idea_us100_m5_event_barrier_decision_surface_v0
+  hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
+  surface_id: surface_us100_event_barrier_decision_surface_v0
+  sweep_id: sweep_us100_event_barrier_broad_v0
+  hypothesis: Event/barrier labels paired with explicit path-quality and risk/holding
+    decisions may separate tradeable US100 M5 states better than replaying prior score
+    clues through a naive momentum direction policy.
+  decision_use: abstain_capable_event_barrier_entry_exit_risk_surface
+  comparison_baseline:
+  - no_trade_baseline
+  - same_direction_disabled_baseline
+  - permuted_label_or_time_shift_check_when_executable
+  - naive_momentum_ret_1_is_negative_memory_only_not_candidate_baseline
+  control_variables:
+  - FPMarkets_US100_M5_closed_bar_base_frame
+  - us100_bar_close_time_row_key
+  - split_set_v0_research_catalog
+  - locked_final_oos_b_forbidden
+  - no_auxiliary_symbols
+  - 0.02_lot_tester_default_when_strategy_tester_runs_are_needed
+  changed_variables:
+  - barrier_definition
+  - path_quality_label
+  - timeout_or_holding_policy
+  - abstain_or_no_trade_zone
+  - risk_distance_unit_semantics
+  - simple_onnx_feasible_model_family
+  sample_scope: clean_universe_split_set_v0_validation_and_research_oos_before_locked_final
+  success_criteria:
+  - repeated_surface_clue_across_barrier_or_holding_neighbors
+  - trade_density_visible_without_threshold_knife_edge
+  - unit_semantics_are_declared_before_MT5_L4
+  - candidate_not_claimed_without_L4
+  failure_criteria:
+  - loss_or_no_trade_under_both_validation_and_research_oos_L4
+  - signal_depends_on_one_short_regime
+  - risk_distance_or_barrier_units_do_not_translate_after_repair_attempt
+  - threshold_knife_edge
+  invalid_conditions:
+  - feature_or_label_leakage
+  - locked_final_oos_b_used
+  - auxiliary_symbol_input_used_without_live_chart_evidence
+  - missing_MT5_executable_path_after_try_first_repair_attempt
+  stop_conditions:
+  - first_batch_spec_ready
+  - all_valid_proxy_model_runs_reach_L4_or_record_failure_disposition
+  - no_repeated_surface_clue_after_broad_batch_close_as_negative_or_inconclusive
+  evidence_plan:
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+  - lab/surfaces/surface_us100_event_barrier_decision_surface_v0/surface_manifest.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  - configs/onnx_lab/feature_recipes/feature_wave01_us100_price_session_regime_flexible_v0.yaml
+  - configs/onnx_lab/label_recipes/label_wave01_event_barrier_path_v0.yaml
+  - configs/onnx_lab/model_recipes/model_wave01_onnx_feasible_scout_v0.yaml
+  - configs/onnx_lab/decision_recipes/decision_wave01_barrier_abstain_risk_v0.yaml
+  - configs/onnx_lab/eval_recipes/eval_wave01_event_barrier_runtime_v0.yaml
+  - configs/onnx_lab/surface_contracts/surface_us100_event_barrier_decision_surface_v0.yaml
+recipe_refs:
+  feature_recipe_id: feature_wave01_us100_price_session_regime_flexible_v0
+  label_recipe_id: label_wave01_event_barrier_path_v0
+  model_recipe_id: model_wave01_onnx_feasible_scout_v0
+  decision_recipe_id: decision_wave01_barrier_abstain_risk_v0
+  eval_recipe_id: eval_wave01_event_barrier_runtime_v0
+  surface_contract_id: surface_us100_event_barrier_decision_surface_v0
+dataset_identity:
+  reuse_allowed_as: same_base_US100_M5_closed_bar_dataset_identity
+  dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  claim_boundary: base_dataset_identity_only_no_feature_or_label_default
+runtime_learning_probe_decision_default:
+  required_for_valid_proxy_model_bearing_runs: true
+  target_level: L4_split_runtime_probe
+  decision: required_after_first_batch_proxy_model_bearing_specs_execute
+  reason: Project policy requires L4 for every valid proxy/model-bearing run.
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+proxy_runtime_parity:
+  required_for_proxy_model_bearing_runs: true
+  status: planned_before_first_batch
+  shared_contract:
+  - FPMarkets_US100_M5_closed_bar_base_frame
+  - us100_bar_close_time_row_key
+  - split_set_v0_research_catalog
+  - declared_event_barrier_label_per_run
+  - declared_feature_order_per_run
+  - declared_decision_and_holding_policy_per_run
+  - tester_execution_profile_us100_m5_fpmarkets_tester_execution_v0
+  known_differences:
+  - proxy_event_barrier_simulation_may_not_equal_MT5_fill_and_stop_execution
+  - tester_report_and_equity_parser_required_before_economics_claim
+  - risk_distance_units_must_be_converted_through_point_digits_tick_size_before_MT5
+  interpretation_drift_risks:
+  - bar_close_timing
+  - barrier_touch_order_inside_bar
+  - spread_and_fill_timing
+  - price_distance_unit_conversion
+  - lot_step_rounding
+  - timeout_close_timing
+  - no_trade_or_abstain_semantics
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending_first_proxy_runtime_difference
+    forced_equality_required: false
+    note: Repair or explain at least one proxy-vs-MT5 semantic difference before closure.
+  unit_semantics:
+    point: must_record_before_MT5_L4_if_distance_used
+    pip: not_assumed
+    tick_size: must_record_before_MT5_L4_if_distance_used
+    digits: must_record_before_MT5_L4_if_distance_used
+    price_distance: explicit_conversion_required
+    atr_multiplier: allowed_only_with_conversion_rule
+    lot_step: tester_profile_default_until_run_specific
+    rounding_policy: explicit_per_run_before_MT5_L4
+  comparison_classes:
+  - proxy_good_runtime_good
+  - proxy_good_runtime_bad
+  - proxy_bad_runtime_bad
+  - proxy_bad_runtime_good
+  - invalid_or_unmaterializable
+  divergence_judgment: pending_first_L4
+  prevention_memory:
+  - do_not_reuse_momentum_ret_1_score_replay_negative_memory_as_candidate
+  - record_price_distance_unit_conversion_before_reusing_barrier_or_ATR_stop_logic
+  follow_up_action: work_wave01_event_barrier_first_batch_spec_v0
+  claim_boundary: campaign_parity_tracking_only_no_runtime_authority
+next_action: work_wave01_event_barrier_first_batch_spec_v0
+notes: Campaign opened as a new multi-axis surface, not bounded synthesis and not
+  a repair continuation. No runs, models, candidates, economics, runtime authority,
+  or Goal Achieve claim.

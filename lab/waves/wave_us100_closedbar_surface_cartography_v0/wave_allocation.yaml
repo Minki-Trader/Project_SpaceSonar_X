@@ -2,11 +2,11 @@ version: wave_allocation_v1
 wave_id: wave_us100_closedbar_surface_cartography_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 role: initial_blank_slate_surface_cartography
-status: first_batch_axis_review_closed_l4_follow_through_required_next
+status: campaign_001_closed_campaign_002_opened
 created_at_utc: '2026-06-21T15:18:51Z'
-claim_boundary: planning_scaffold_scout_surface_only_not_candidate_not_baseline
-allocation_goal: Map US100 M5 closed-bar task, label, input, decision, and holding surfaces before feature-count,
-  model-family, threshold, ONNX, or runtime optimization.
+claim_boundary: wave01_campaign_002_open_no_candidate_no_baseline_no_runtime_authority
+allocation_goal: Map US100 M5 closed-bar task, label, input, decision, and holding
+  surfaces before feature-count, model-family, threshold, ONNX, or runtime optimization.
 exploration_coverage_policy:
   mode: unexplored_surface_discovery_not_single_axis_progression
   forbidden_wave_shapes:
@@ -47,9 +47,9 @@ budget:
   repair_budget_policy: bounded_surface_or_parity_repair_only_not_single_candidate_extension
   repair_carryover_policy: forbidden_without_prior_new_surface_or_divergence_record
   neighborhood_perturbation_policy: meaningful_adjacent_variables_only
-  formal_mt5_strategy_tester_runs: 0
-  runtime_probe_budget: 0 until executable ONNX/EA surface exists; at most 2 narrow probes for actionable
-    runtime/plumbing questions
+  formal_mt5_strategy_tester_runs: 30
+  runtime_probe_budget: L4 mandatory for all valid proxy/model-bearing runs; L5 only
+    when L4 remains promising
 fixed_controls:
   base_symbol: US100
   timeframe: M5
@@ -83,18 +83,35 @@ sampling_plan:
   - linear_logistic_ridge_scout
   - onnx_realistic_tree_or_boosted_scout
   - small_mlp_secondary_only
-  notes: Scouts preserve surface clues and negative memory; no selected baseline or candidate claim.
+  notes: Scouts preserve surface clues and negative memory; no selected baseline or
+    candidate claim.
 campaign_allocations:
 - campaign_id: campaign_us100_task_surface_scout_v0
   allocation_role: primary_initial_surface_scout
   max_runs: 48
   initial_batch_size: 12
-  status: first_batch_axis_review_closed_l4_follow_through_required_next
+  status: decision_replay_judgment_closed_no_candidate
   executable_spec: lab/campaigns/campaign_us100_task_surface_scout_v0/wave0_executable_scout_spec.yaml
   first_batch_matrix: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
   row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
   first_batch_run_specs_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
   anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
+  claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
+  decision_replay_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  negative_memory_ids:
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  next_action: work_wave01_event_barrier_first_batch_spec_v0
+- campaign_id: campaign_us100_event_barrier_decision_surface_v0
+  allocation_role: second_unexplored_event_barrier_decision_surface
+  max_runs: 24
+  initial_batch_size: 10
+  status: opened_planned_not_executed
+  campaign_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_event_barrier_decision_surface_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
+  next_action: work_wave01_event_barrier_first_batch_spec_v0
 rotation_conditions:
 - keep_at_least_3_distinct_target_families_alive_through_wave_closeout
 - rotate_axis_if_two_consecutive_steps_are_micro_tuning_without_repeated_clue
@@ -111,9 +128,9 @@ stop_conditions:
 - wfo_rank_instability_blocks_candidate_claim
 - locked_final_oos_requested_for_adaptive_repair_stop
 - neighborhood_perturbation_becomes_generic_micro_tuning_or_candidate_laundering
-next_action: work_wave0_first_batch_l4_follow_through_v0
-notes: Opened by active goal bootstrap after mandatory Task Force consultation. Row membership and first
-  12 planned run specs are ready; no execution result yet.
+next_action: work_wave01_event_barrier_first_batch_spec_v0
+notes: Campaign 001 closed with negative decision replay judgment and no candidate.
+  Campaign 002 opened as a new event/barrier decision surface, not a repair continuation.
 first_batch_result:
   status: executed_proxy_scout
   run_count: 12
@@ -143,3 +160,4 @@ proxy_to_runtime_policy:
   every_valid_proxy_run_requires_l4: true
   proxy_only_closeout_allowed: false
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+updated_at_utc: '2026-06-21T21:30:10Z'

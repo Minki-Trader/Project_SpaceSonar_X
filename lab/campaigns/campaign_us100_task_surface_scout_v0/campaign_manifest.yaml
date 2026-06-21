@@ -1,9 +1,9 @@
 version: campaign_manifest_v1
 campaign_id: campaign_us100_task_surface_scout_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: first_batch_axis_review_closed_l4_follow_through_required_next
+status: decision_replay_judgment_closed_no_candidate
 created_at_utc: '2026-06-21T15:18:51Z'
-target_branch: codex/active-goal-program-bootstrap
+target_branch: codex/l4-pair-judgment-closeout
 wave_ids:
 - wave_us100_closedbar_surface_cartography_v0
 idea_ids:
@@ -63,7 +63,7 @@ git_integration:
   close_event: campaign_close
   main_push_policy: boundary_only_after_coherent_commit
   per_run_main_push_default: false
-  status: open_not_main_integrated_in_current_dirty_worktree
+  status: campaign_close_branch_committed_pending_main_boundary
 skill_routing:
   primary_family: experiment_design
   primary_skill: spacesonar-experiment-design
@@ -81,7 +81,7 @@ required_gates:
 - anti_selection_ledger_plan
 - negative_memory_plan
 - final_claim_guard
-claim_boundary: planning_scaffold_scout_surface_only_not_candidate_not_baseline
+claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -186,7 +186,7 @@ runtime_learning_probe_decision_default:
 default_runtime_level_target: none_until_executable_onnx_ea_surface_exists
 proxy_runtime_parity:
   required_for_proxy_model_bearing_runs: true
-  status: pending_l4_follow_through
+  status: decision_replay_L4_judged_negative_no_L5_candidate
   shared_contract:
   - US100_M5_closed_bar_base_frame
   - us100_bar_close_time_row_key
@@ -225,13 +225,13 @@ proxy_runtime_parity:
   - proxy_bad_runtime_bad
   - proxy_bad_runtime_good
   - invalid_or_unmaterializable
-  divergence_judgment: pending_L4
+  divergence_judgment: proxy_preserved_clue_runtime_negative_under_naive_decision_adapter
   prevention_memory:
   - record_unit_conversion_rule_before_reusing_ATR_or_stop_distance_logic
   - record_MT5_interpretation_drift_before_reusing_proxy_decision_surface
-  follow_up_action: work_wave0_first_batch_l4_follow_through_v0
+  follow_up_action: work_wave01_event_barrier_first_batch_spec_v0
   claim_boundary: campaign_parity_tracking_only_no_runtime_authority
-next_action: work_wave0_first_batch_l4_follow_through_v0
+next_action: work_wave01_event_barrier_first_batch_spec_v0
 notes: 'Task Force consensus: start with target/decision/holding surface discovery.
   Row membership and planned first-batch run specs are ready; no model/runtime/candidate
   claim.'
@@ -264,3 +264,16 @@ proxy_to_runtime_policy:
   every_valid_proxy_run_requires_l4: true
   proxy_only_closeout_allowed: false
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+updated_at_utc: '2026-06-21T21:30:10Z'
+decision_replay_closeout:
+  status: decision_replay_judgment_closed_no_candidate
+  result_judgment: negative
+  candidate_count: 0
+  l5_candidate_count: 0
+  evidence_paths:
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  - lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  negative_memory_ids:
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  next_action: work_wave01_event_barrier_first_batch_spec_v0
+  claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate

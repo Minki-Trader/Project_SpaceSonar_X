@@ -1,0 +1,71 @@
+version: sweep_manifest_v1
+sweep_id: sweep_us100_event_barrier_broad_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+surface_id: surface_us100_event_barrier_decision_surface_v0
+status: planned_not_executed
+created_at_utc: '2026-06-21T21:30:10Z'
+sweep_type: broad_event_barrier_surface_scout
+axes:
+- event_barrier_label
+- path_quality_or_mfe_mae
+- feature_input_family
+- onnx_feasible_model_family
+- decision_abstain_risk_holding_policy
+- runtime_parity_unit_semantics
+fixed_controls:
+- US100_M5_closed_bar
+- split_set_v0
+- locked_final_oos_b_forbidden
+- no_auxiliary_symbols
+- 0.02_lot_default_when_MT5_strategy_tester_runs_execute
+parameter_space:
+  label_surface:
+  - up_down_barrier_touch_or_timeout
+  - mfe_mae_path_quality
+  - time_to_event_or_no_touch
+  feature_surface:
+  - price_return_range_volatility_context
+  - session_state_context
+  - causal_regime_context
+  model_surface:
+  - logistic_or_linear_rank_scout
+  - tree_or_boosted_onnx_feasible_scout
+  - small_mlp_secondary_only_if_first_batch_needs_it
+  decision_surface:
+  - abstain_band
+  - barrier_exit
+  - timeout_exit
+  - risk_distance_conversion_required
+run_ref_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
+  registry_rows:
+  - docs/registers/sweep_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_learning_probe_decision:
+  required: true
+  decision: L4_required_for_each_valid_proxy_model_bearing_run
+  reason: Proxy-only closure is forbidden for valid proxy/model-bearing runs.
+failure_disposition:
+  required_before_blocked_deferred_invalid_or_discarded: true
+  status: not_applicable_at_campaign_open
+  failure_reproduction: null
+  exact_failing_layer: null
+  root_cause_hypothesis: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: lower_to_investigation_in_progress_until_recorded
+evidence_boundary: planned_sweep_only_no_run_evidence
+required_gates:
+- first_batch_spec_created_before_execution
+- proxy_runtime_parity_policy_declared
+- final_claim_guard
+stop_conditions:
+- first_batch_spec_ready
+- valid_proxy_model_run_without_L4_is_invalid_closeout
+- candidate_claim_attempted_without_L4_or_L5_evidence
+notes: The sweep is open with zero executed runs; run_refs.csv is an empty index until
+  specs are materialized.

@@ -1,0 +1,12 @@
+version: label_recipe_v1
+recipe_id: label_wave01_event_barrier_path_v0
+status: skeleton_open_no_target_claim
+created_at_utc: '2026-06-21T21:30:10Z'
+label_family: event_barrier_path_quality_timeout
+tail_drop_policy: required_per_horizon_or_barrier_timeout
+purge_embargo_policy: evaluate_before_model_selection
+forbidden_defaults:
+- fixed_holding_period
+- inherited_direction_mapping
+- locked_final_oos_selection
+claim_boundary: recipe_skeleton_only_no_default_target_no_direction_mapping

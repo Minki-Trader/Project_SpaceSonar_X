@@ -1,0 +1,12 @@
+version: surface_contract_v1
+surface_contract_id: surface_us100_event_barrier_decision_surface_v0
+status: skeleton_open_no_runtime_contract_claim
+created_at_utc: '2026-06-21T21:30:10Z'
+row_key: us100_bar_close_time
+dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+feature_order_policy: declared_per_run_and_hashed_before_ONNX_export
+task_surface_policy: declared_per_run_no_default_output_head
+runtime_follow_through:
+  valid_proxy_model_bearing_run_requires_l4: true
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+claim_boundary: surface_contract_skeleton_only_not_runtime_authority

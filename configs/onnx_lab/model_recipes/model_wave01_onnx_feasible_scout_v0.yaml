@@ -1,0 +1,14 @@
+version: model_recipe_v1
+recipe_id: model_wave01_onnx_feasible_scout_v0
+status: skeleton_open_no_model_superiority_claim
+created_at_utc: '2026-06-21T21:30:10Z'
+model_family_policy: onnx_feasible_scout_models_only_until_repeated_surface_clue
+allowed_families:
+- logistic_or_linear_rank_scout
+- tree_or_boosted_onnx_feasible_scout
+- small_mlp_secondary_only
+forbidden_actions:
+- hyperparameter_micro_search_before_broad_clue
+- candidate_claim_without_L4
+- locked_final_oos_selection
+claim_boundary: recipe_skeleton_only_no_model_candidate

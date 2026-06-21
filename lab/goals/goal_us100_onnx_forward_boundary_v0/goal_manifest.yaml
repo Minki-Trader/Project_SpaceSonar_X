@@ -2,8 +2,8 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-21T21:17:09Z'
-claim_boundary: planning_scaffold_active_goal_control_plane
+updated_at_utc: '2026-06-21T21:30:10Z'
+claim_boundary: active_goal_control_plane_campaign_open_not_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -23,12 +23,11 @@ objective_revision:
   bureaucracy_guard: durable_structure_only_when_it_prevents_likely_recurrence_or_protects_evidence_drift_MT5_follow_through_or_long_session_reliability
 branch_worktree:
   policy_reference: docs/policies/branch_policy.md
-  branch_worktree_fit: main_integrated
+  branch_worktree_fit: fit
   branch_action: keep_current_branch
-  current_branch: main
+  current_branch: codex/l4-pair-judgment-closeout
   bootstrap_base_commit: e6053875b8106a665cff347dac01918f1f3a28c6
-  mismatch_claim_effect: Goal bootstrap is a planning/control-plane change only; no
-    reproducible run, bundle, runtime, pass, readiness, or Goal Achieve claim.
+  mismatch_claim_effect: no_branch_mismatch_detected_for_campaign_open
 routing:
   primary_family: policy_skill_governance
   primary_skill: spacesonar-work-item-router
@@ -59,18 +58,17 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_operating_proof_window_decision_replay_judgment_completed
+active_phase: wave01_campaign_002_event_barrier_opened
 active_ids:
-  idea_id: idea_us100_m5_blank_slate_surface_map_v0
-  hypothesis_id: hyp_surface_diversity_before_model_search_v0
+  idea_id: idea_us100_m5_event_barrier_decision_surface_v0
+  hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
   wave_id: wave_us100_closedbar_surface_cartography_v0
-  campaign_id: campaign_us100_task_surface_scout_v0
-  surface_id: surface_us100_task_input_decision_rotation_v0
-  sweep_id: sweep_wave0_broad_surface_scout_v0
+  campaign_id: campaign_us100_event_barrier_decision_surface_v0
+  surface_id: surface_us100_event_barrier_decision_surface_v0
+  sweep_id: sweep_us100_event_barrier_broad_v0
 blank_slate_contract:
   inherited_feature_set_allowed: false
   inherited_feature_count_allowed: false
-  inherited_historical_58_feature_surface_allowed: false
   inherited_label_allowed: false
   inherited_prediction_target_allowed: false
   inherited_direction_mapping_allowed: false
@@ -80,6 +78,8 @@ blank_slate_contract:
   inherited_threshold_or_calibration_allowed: false
   inherited_risk_logic_allowed: false
   inherited_winner_or_promotion_allowed: false
+  inherited_feature_list_allowed: false
+  inherited_fixed_feature_count_allowed: false
 base_data_contract:
   primary_broker: FPMarkets
   primary_symbol: US100
@@ -174,7 +174,7 @@ program_budgets:
     row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
     first_batch_run_specs_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
     anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
-    status: l4_follow_through_required_next
+    status: campaign_001_closed_campaign_002_opened
     result_counts:
       inconclusive: 8
       preserved_clue: 4
@@ -334,6 +334,9 @@ program_budgets:
         loss_in_validation_and_research_oos: 3
     negative_memory_ids:
     - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+    next_campaign_id: campaign_us100_event_barrier_decision_surface_v0
+    next_campaign_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+    next_work_item: work_wave01_event_barrier_first_batch_spec_v0
 goal_achieve_state:
   complete_state: codex_operating_system_stable_through_Wave01_closeout
   requires:
@@ -379,6 +382,6 @@ forbidden_claims:
 - business_or_project_goal_achieve
 next_work_item:
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  work_item_id: work_wave0_first_batch_l4_follow_through_v0
-  summary: Drive every valid Wave0 first-batch proxy/model-bearing run to L4 MT5 split-runtime
-    evidence.
+  work_item_id: work_wave01_event_barrier_first_batch_spec_v0
+  summary: Materialize first broad batch specs for the Wave01 event/barrier decision
+    campaign.

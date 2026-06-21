@@ -1,0 +1,69 @@
+version: work_closeout_v1
+work_item_id: work_wave01_open_event_barrier_decision_campaign_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: '2026-06-21T21:30:10Z'
+result_judgment: planning_scaffold
+claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
+evidence_paths:
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+- lab/surfaces/surface_us100_event_barrier_decision_surface_v0/surface_manifest.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
+- lab/hypotheses/idea_us100_m5_event_barrier_decision_surface_v0.yaml
+- lab/hypotheses/hyp_us100_event_barrier_decision_surface_v0.yaml
+- lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+completed_actions:
+- synced_first_campaign_closeout_status
+- opened_second_event_barrier_decision_campaign
+- created_recipe_skeletons_without_fixed_feature_count
+- updated_wave_campaign_refs_and_goal_cursor
+claim_limits:
+- no_model_run
+- no_proxy_result
+- no_MT5_L4_for_new_campaign_yet
+- no_candidate
+- no_runtime_authority
+- no_economics_pass
+- no_goal_achieve
+next_action: work_wave01_event_barrier_first_batch_spec_v0
+execution_provenance:
+  git_sha: b92f0076dec9dd6db2762c94c37f893748c4c6b1
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/registers/campaign_registry.csv'
+  - ' M docs/registers/experiment_surface_registry.csv'
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/registers/hypothesis_registry.csv'
+  - ' M docs/registers/idea_registry.csv'
+  - ' M docs/registers/recipe_index.csv'
+  - ' M docs/registers/sweep_registry.csv'
+  - ' M docs/registers/wave_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M lab/campaigns/campaign_us100_task_surface_scout_v0/campaign_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ' M lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv'
+  - ' M lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml'
+  - ?? configs/onnx_lab/decision_recipes/decision_wave01_barrier_abstain_risk_v0.yaml
+  - ?? configs/onnx_lab/eval_recipes/eval_wave01_event_barrier_runtime_v0.yaml
+  - ?? configs/onnx_lab/feature_recipes/feature_wave01_us100_price_session_regime_flexible_v0.yaml
+  - ?? configs/onnx_lab/label_recipes/label_wave01_event_barrier_path_v0.yaml
+  - ?? configs/onnx_lab/model_recipes/model_wave01_onnx_feasible_scout_v0.yaml
+  - ?? configs/onnx_lab/surface_contracts/surface_us100_event_barrier_decision_surface_v0.yaml
+  - ?? foundation/pipelines/open_wave01_event_barrier_decision_campaign.py
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_open_event_barrier_decision_campaign_v0_closeout.yaml
+  - ?? lab/hypotheses/hyp_us100_event_barrier_decision_surface_v0.yaml
+  - ?? lab/hypotheses/idea_us100_m5_event_barrier_decision_surface_v0.yaml
+  - ?? lab/surfaces/surface_us100_event_barrier_decision_surface_v0/
+  - ?? tests/test_open_wave01_event_barrier_campaign.py
+  command_argv:
+  - python
+  - foundation/pipelines/open_wave01_event_barrier_decision_campaign.py
+  - --write-control-records
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  started_at_utc: '2026-06-21T21:30:10Z'
+  ended_at_utc: '2026-06-21T21:30:10Z'
