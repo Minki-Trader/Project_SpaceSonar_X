@@ -52,6 +52,10 @@ Read only touched policy/skill/control files plus:
 - Use repo-relative paths plus hash, run id, bundle id, or registry id.
 - Prefer manifests and hashes over committing heavy generated artifacts.
 - Keep registry rows as indexes; source-of-truth manifests live in the run, bundle, candidate, campaign, or MT5 attempt folder.
+- Missing repo-controlled support is a repair trigger, not a final architecture blocker.
+- Before blocked, deferred, invalid, or discarded architecture disposition, reproduce the failing layer, try the smallest repo-controlled implementation, adapter, fixture, parser, or fallback, and record evidence plus reopen condition.
+- If a converter, conversion adapter, export adapter, EA adapter, parser, runner, or runtime glue does not exist, create the smallest explicit translation layer needed to test the hypothesis unless a narrow exception applies.
+- Narrow exceptions are user secrets, unavailable external state, destructive or unsafe action, or project-policy violation; record the exception as the attempt blocker.
 
 ## Validator
 

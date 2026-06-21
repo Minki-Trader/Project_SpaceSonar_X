@@ -236,3 +236,27 @@ def test_active_validator_rejects_goal_objective_hash_mismatch(tmp_path: Path) -
     errors = validate(repo)
 
     assert any("objective revision sha256 mismatch" in error for error in errors)
+
+
+def test_active_validator_rejects_discarded_without_try_first_record(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    run_id, _bundle_id, _attempt_id = active_ids(repo)
+    receipt_path = repo / "lab" / "runs" / run_id / "experiment_receipt.yaml"
+    receipt = load_yaml(receipt_path)
+    receipt["result_judgment"] = "discarded"
+    receipt["failure_disposition"] = {
+        "status": "missing_adapter",
+        "failure_reproduction": None,
+        "exact_failing_layer": None,
+        "repair_or_fallback_attempts": [],
+        "attempt_blocker_if_no_repair": None,
+        "evidence_paths": [],
+        "remaining_blocker": None,
+        "reopen_condition": None,
+    }
+    write_yaml(receipt_path, receipt)
+
+    errors = validate(repo)
+
+    assert any("discarded requires failure reproduction" in error for error in errors)
+    assert any("discarded requires bounded repair/fallback attempt" in error for error in errors)

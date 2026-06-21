@@ -46,3 +46,18 @@ Capture when applicable:
 - treat proxy/diagnostic samples as runtime or economics proof
 - let a registry row replace run-local, bundle-local, candidate-local, or attempt-local evidence
 - fill missing evidence with deleted legacy material
+- close a failed, unsupported, missing-adapter, or non-working path as blocked, deferred, invalid, or discarded without a `failure_disposition` record
+- treat "adapter/glue does not exist" as evidence that a surface is impossible when the adapter/glue is repo-controlled
+
+## Try-First Evidence
+
+For blocked, deferred, invalid, or discarded outcomes caused by a tool, adapter, converter, parser, runtime, data path, or EA/ONNX support gap, record:
+
+- failure reproduction or reproduction blocker
+- exact failing layer
+- smallest repo-controlled repair, adapter, translation layer, fixture, parser, runner, or fallback attempted
+- evidence path for the attempt
+- remaining blocker
+- reopen condition
+
+If no repair attempt is allowed, the blocker must be narrow: user secrets, unavailable external state, destructive or unsafe action, or project-policy violation.

@@ -43,6 +43,7 @@ FORBIDDEN_SINGLE_AXIS_RESEARCH_SHAPES = {
 HASH_REQUIRED_AVAILABILITY = {"committed_manifest", "present_hash_recorded"}
 FIXTURE_BOUNDARY = "fixed_fixture_parity_learning_only_no_runtime_authority"
 FIXTURE_GATE = "mt5_native_onnx_fixed_fixture_probe"
+TRY_FIRST_JUDGMENTS = {"blocked", "deferred", "invalid", "discarded"}
 
 
 def read_text(path: Path) -> str:
@@ -195,6 +196,47 @@ def validate_claim_boundary(repo_root: Path, path: Path, data: dict[str, Any]) -
     for word in CLAIM_BLOCKING_WORDS:
         if word in boundary_text and word not in forbidden and "no_" not in boundary_text:
             errors.append(f"{label}: claim boundary mentions protected word {word!r} without forbidden_claims guard")
+    return errors
+
+
+def validate_try_first_disposition(repo_root: Path, path: Path, data: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    judgment = str(data.get("result_judgment") or "").lower()
+    status = str(data.get("status") or "").lower()
+    if judgment not in TRY_FIRST_JUDGMENTS and status not in TRY_FIRST_JUDGMENTS:
+        return errors
+
+    label = rel(path, repo_root)
+    disposition = data.get("failure_disposition")
+    if not isinstance(disposition, dict):
+        return [f"{label}: {judgment or status} requires failure_disposition record"]
+
+    required_fields = [
+        "exact_failing_layer",
+        "remaining_blocker",
+        "reopen_condition",
+    ]
+    for field in required_fields:
+        if not disposition.get(field):
+            errors.append(f"{label}: {judgment or status} missing failure_disposition.{field}")
+
+    reproduction = disposition.get("failure_reproduction")
+    attempt_blocker = disposition.get("attempt_blocker_if_no_repair")
+    if not reproduction and not attempt_blocker:
+        errors.append(
+            f"{label}: {judgment or status} requires failure reproduction or narrow repair-attempt blocker"
+        )
+
+    attempts = disposition.get("repair_or_fallback_attempts") or []
+    if not attempts and not attempt_blocker:
+        errors.append(
+            f"{label}: {judgment or status} requires bounded repair/fallback attempt or narrow attempt blocker"
+        )
+
+    evidence_paths = disposition.get("evidence_paths") or []
+    if not evidence_paths:
+        errors.append(f"{label}: {judgment or status} requires failure_disposition.evidence_paths")
+
     return errors
 
 
@@ -554,6 +596,7 @@ def validate_active_manifests(repo_root: Path) -> list[str]:
             errors.extend(validate_gate_coverage(repo_root, path, data))
             errors.extend(validate_skill_selection(repo_root, path, data))
             errors.extend(validate_claim_boundary(repo_root, path, data))
+            errors.extend(validate_try_first_disposition(repo_root, path, data))
     return errors
 
 

@@ -22,3 +22,6 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 - Do not use adjacent guessing when artifact names vary.
 - Do not revive legacy routing/review meanings from deleted archive paths.
 - If a legacy file is absent, treat that evidence as unavailable unless the user explicitly restores it from backup.
+- Do not turn "not found", "unsupported", or "missing adapter/glue" into a final disposition from memory alone.
+- If the missing path, parser, adapter, runner, or runtime glue is repo-controlled, first locate or create the smallest repair/fallback needed to test the hypothesis.
+- Only record blocked, deferred, invalid, or discarded after the failing layer, repair/fallback attempt or narrow blocker, evidence path, remaining blocker, and reopen condition are captured.
