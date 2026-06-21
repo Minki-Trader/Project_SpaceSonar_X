@@ -344,7 +344,7 @@ def build_tester_log_summary(repo_root: Path, root: Path, tester_config: Path, a
 def failure_disposition(
     *,
     reproduction: str,
-    failing_layer: str,
+    exact_failing_layer: str,
     attempt: str,
     evidence_path: str,
     remaining_blocker: str,
@@ -354,7 +354,7 @@ def failure_disposition(
         "required_before_judgments": ["blocked", "deferred", "invalid", "discarded"],
         "status": "recorded",
         "failure_reproduction": reproduction,
-        "failing_layer": failing_layer,
+        "exact_failing_layer": exact_failing_layer,
         "root_cause_hypothesis": remaining_blocker,
         "repo_controlled_support_gap": True,
         "repair_or_fallback_attempts": [attempt],
@@ -472,7 +472,7 @@ def run_one_attempt(
                 if source_observed
                 else "source score telemetry common file was checked before terminal launch"
             ),
-            failing_layer=(
+            exact_failing_layer=(
                 "mt5_strategy_tester_common_file_execution_telemetry"
                 if source_observed
                 else "source_score_telemetry_common_file"

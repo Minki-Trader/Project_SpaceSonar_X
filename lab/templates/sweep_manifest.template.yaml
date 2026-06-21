@@ -17,6 +17,18 @@ runtime_learning_probe_decision:
   required: false
   decision: not_applicable_no_runtime_question
   reason: ""
+failure_disposition:
+  required_before_blocked_deferred_invalid_or_discarded: true
+  status: not_applicable
+  failure_reproduction: null
+  exact_failing_layer: null
+  root_cause_hypothesis: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: lower_to_investigation_in_progress_until_recorded
 evidence_boundary: learning_observation
 required_gates: []
 stop_conditions: []

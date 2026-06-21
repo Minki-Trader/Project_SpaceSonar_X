@@ -20,6 +20,7 @@ required_top_level:
   - evidence_contract
   - gates
   - runtime_learning_probe_decision
+  - failure_disposition
   - final_claim_policy
 
 scope_units_allowed:
@@ -218,6 +219,25 @@ fields:
       - reason
       - forbidden_skip_reasons_checked
       - lowered_claim_if_not_run
+
+  failure_disposition:
+    required_when:
+      - result_judgment_is_blocked
+      - result_judgment_is_deferred
+      - result_judgment_is_invalid
+      - result_judgment_is_discarded
+      - tool_or_adapter_or_runtime_support_gap_blocks_progress
+    required_fields:
+      - status
+      - failure_reproduction
+      - exact_failing_layer
+      - root_cause_hypothesis
+      - bounded_repair_or_fallback_attempt_or_attempt_blocker
+      - evidence_path
+      - remaining_blocker
+      - reopen_condition
+      - claim_effect
+    rule: "Do not use blocked, deferred, invalid, or discarded as a final disposition until the failing layer has been reproduced and the smallest credible repo-controlled repair, adapter, or fallback has been attempted or narrowly blocked. Missing adapter/glue under repo control is an implementation task first, not a final blocker."
 
 runtime_required_evidence_terms:
   - dataset_id

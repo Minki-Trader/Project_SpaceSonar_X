@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T21:04:47Z'
+updated_utc: '2026-06-21T21:11:09Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -93,6 +93,18 @@ current_claims:
   bureaucracy_guard: add_durable_structure_only_for_likely_recurrence_evidence_quality_drift_MT5_follow_through_or_long_session_reliability
   try_first_disposition_policy: diagnose_reproduce_attempt_smallest_repo_controlled_fix_before_blocked_deferred_invalid_or_discarded
   adapter_gap_policy: missing_repo_controlled_adapter_or_glue_is_repair_trigger_not_blocker
+  failure_handling_order:
+  - diagnose
+  - reproduce_failing_layer
+  - attempt_smallest_repo_controlled_repair_adapter_or_fallback
+  - record_evidence_and_reopen_condition
+  - only_then_block_defer_invalidate_or_discard
+  failure_disposition_required_before:
+  - blocked
+  - deferred
+  - invalid
+  - discarded
+  no_adapter_exists_claim_effect: implementation_task_before_disposition
   first_vertical_slice_entry: campaign_minimal_onnx_mt5_vertical_slice_v0
   concept_start_state: blank_slate
   campaign_exploration_policy: unexplored_multi_axis_discovery_not_single_axis_progression

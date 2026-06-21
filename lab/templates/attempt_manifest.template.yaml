@@ -32,6 +32,25 @@ runtime_learning_probe_decision:
     - trade_count_is_low
     - candidate_is_ambiguous
     - setup_might_fail
+failure_disposition:
+  required_before_blocked_deferred_invalid_or_discarded: true
+  status: not_applicable
+  diagnosis_state_only_tokens:
+    - cannot
+    - unsupported
+    - not_available
+    - missing_adapter
+    - missing_glue
+  failure_reproduction: null
+  exact_failing_layer: null
+  root_cause_hypothesis: null
+  repo_controlled_support_gap: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: runtime_investigation_in_progress_until_recorded
 provenance:
   git_sha: unknown
   branch: unknown

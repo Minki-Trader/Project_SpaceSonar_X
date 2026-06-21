@@ -62,7 +62,7 @@ failure_disposition_policy:
   cannot_unsupported_unavailable_are_diagnosis_only: true
   required_before_blocked_deferred_invalid_or_discarded:
     - failure_reproduction
-    - failing_layer
+    - exact_failing_layer
     - bounded_repair_or_fallback_attempt
     - evidence_path
     - remaining_blocker

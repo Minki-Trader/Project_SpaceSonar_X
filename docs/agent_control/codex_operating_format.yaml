@@ -64,6 +64,7 @@ lifecycle:
   - phase: closeout
     required_outputs:
       - result_judgment
+      - failure_disposition_or_not_applicable
       - required_gate_coverage
       - final_claim_guard
       - next_action
@@ -114,3 +115,10 @@ completion_rule:
     - evidence_path
     - remaining_blocker
     - reopen_condition
+  repo_controlled_support_gap_rule: "Missing converter, conversion adapter, export adapter, EA adapter, parser, runner, report parser, or runtime glue requires the smallest explicit repo-controlled adapter/fallback build-and-test attempt before blocked, deferred, invalid, or discarded."
+  diagnosis_only_tokens:
+    - cannot
+    - unsupported
+    - not_available
+    - missing_adapter
+    - missing_glue

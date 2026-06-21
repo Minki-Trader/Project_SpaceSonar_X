@@ -70,5 +70,18 @@ required_gate_coverage:
 runtime_debt_state: accepted_learning_debt
 repair_required: false
 repair_surface: null
+failure_disposition:
+  required_before_blocked_deferred_invalid_or_discarded: true
+  status: not_applicable
+  failure_reproduction: null
+  exact_failing_layer: null
+  root_cause_hypothesis: null
+  repo_controlled_support_gap: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: runtime_investigation_in_progress_until_recorded
 runtime_claim_boundary: planning_scaffold
 missing_evidence: []
