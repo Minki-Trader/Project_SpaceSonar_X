@@ -64,12 +64,13 @@ vertical_slice_entry_contract:
     row_time_key: us100_bar_close_time
     row_membership_rule: Split, feature, label, ONNX fixture, and MT5 fixture must
       refer to the same closed-bar row membership key.
-    status: to_materialize_in_target_branch
+    status: materialized_with_hash_recorded
+    materialized_run_id: onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing
   feature_recipe:
     recipe_id: feature_fixture_minimal_v0
     feature_count_policy: tiny provisional 3-5 feature plumbing surface; not a good-feature
       or fixed-feature-set claim
-    status: to_define_in_target_branch
+    status: defined_for_fixture_plumbing_only
   label_recipe:
     recipe_id: label_fixture_minimal_v0
     required_fields:
@@ -77,12 +78,12 @@ vertical_slice_entry_contract:
     - tail_drop
     - purge_or_embargo_decision
     - split_impact
-    status: to_define_in_target_branch
+    status: defined_for_fixture_plumbing_only
   model_recipe:
     recipe_id: model_fixture_simple_v0
     allowed_shape: simple_exportable_model
     optimization_policy: no_hyperparameter_tuning_no_threshold_search
-    status: to_define_in_target_branch
+    status: defined_for_fixture_plumbing_only
   onnx_parity:
     required_before_mt5_probe:
     - onnx_export
@@ -122,10 +123,10 @@ runtime_learning_probe_decision_default:
   - trade_count_is_low
   - candidate_is_ambiguous
   - setup_might_fail
-notes: Clean superseding fixed-fixture ONNX-MT5 micro-probe recorded. Portable
-  contract attempt produced no telemetry on this local terminal path, then main-mode
-  config fallback produced matched fixed-fixture telemetry. No performance, candidate,
-  baseline, economics, live, handoff, reviewed, pass, or runtime-authority claim.
+notes: Clean superseding fixed-fixture ONNX-MT5 micro-probe recorded. Portable contract
+  attempt produced no telemetry on this local terminal path, then main-mode config
+  fallback produced matched fixed-fixture telemetry. No performance, candidate, baseline,
+  economics, live, handoff, reviewed, pass, or runtime-authority claim.
 completed_run_id: onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing
 completed_bundle_id: bundle_20260621T131542Z_fixture_plumbing_v0
 completed_attempt_id: attempt_20260621T131542Z_mt5_onnx_fixture_v0
@@ -145,3 +146,4 @@ terminal_mode_evidence:
   main_mode_fallback_used: true
   fallback_reason: portable_attempt_did_not_produce_mt5_probe_telemetry
   claim_effect: fixed_fixture_micro_probe_only_no_runtime_authority
+result_judgment: preserved_clue

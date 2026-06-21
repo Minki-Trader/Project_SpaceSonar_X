@@ -7,6 +7,7 @@ import pytest
 
 from foundation.labels.fixture_labels import HORIZON_BARS
 from foundation.pipelines.minimal_onnx_mt5_plumbing_slice import (
+    branch_worktree_or_raise,
     build_fixture_split,
     durable_command_argv,
     export_mt5_bars,
@@ -51,3 +52,8 @@ def test_durable_command_argv_uses_repo_relative_paths() -> None:
         "--requested-branch",
         "codex/test",
     ]
+
+
+def test_branch_mismatch_blocks_before_artifact_mutation() -> None:
+    with pytest.raises(RuntimeError, match="branch mismatch before artifact mutation"):
+        branch_worktree_or_raise({"branch": "codex/current"}, "codex/expected")

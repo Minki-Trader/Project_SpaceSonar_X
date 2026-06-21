@@ -90,7 +90,7 @@ execution_identity:
 artifact_identity:
   ea_entrypoint:
     path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5
-    sha256: null
+    sha256: 10e406ca80b5304b441d7549523671beda87c911c857d3138af840ffc772133d
   include_modules: []
   set_file:
     path: runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/tester_config.ini
@@ -121,6 +121,10 @@ artifact_identity:
       size_bytes: 14
       durable_identity: common_relative_path_plus_sha256
       path_boundary: redacted_local_context_only
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.ex5
+    sha256: b1ff5ca1ddf172174fb9ebcde346fb9045740bea60e93486555e71cb58a6ecc3
+    size_bytes: 15170
 required_gate_coverage:
   passed:
   - branch_worktree_fit
@@ -248,6 +252,8 @@ terminal_run_provenance:
     no_process_exit_codes:
     - 128
     claim_boundary: terminal_preflight_evidence_only
+    safety_boundary: historical_default_behavior_recorded_do_not_reuse_for_formal_runtime_authority
+    future_policy: script_default_no_global_taskkill
   - action: terminate_existing_terminal_processes
     method: taskkill_by_image_name
     image_name: terminal64.exe
@@ -263,6 +269,8 @@ terminal_run_provenance:
     no_process_exit_codes:
     - 128
     claim_boundary: terminal_preflight_evidence_only
+    safety_boundary: historical_default_behavior_recorded_do_not_reuse_for_formal_runtime_authority
+    future_policy: script_default_no_global_taskkill
   terminal_mode_policy:
     standard_contract_terminal_mode: portable_required
     portable_attempted: true
@@ -278,6 +286,12 @@ terminal_run_provenance:
     sha256: d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0
     size_bytes: 1083
   claim_boundary: terminal_execution_evidence_only_not_runtime_authority
+  terminal_cleanup_policy:
+    default_terminate_existing: false
+    explicit_termination_requested: false
+    historical_cleanup_actions_recorded: true
+    allowed_scope: explicit_user_requested_only_for_future_runs
+    formal_runtime_claim_effect: historical_global_cleanup_lowers_any_formal_runtime_claim
 terminal_mode_evidence:
   standard_contract_terminal_mode: portable_required
   portable_attempted: true
@@ -307,3 +321,15 @@ mt5_probe_summary:
       release_last_error: 0
       release_stage: matched
   claim_boundary: fixed_fixture_parity_learning_only_no_runtime_authority
+runtime_probe_routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-parity
+  support_skills:
+  - spacesonar-run-evidence-system
+  - spacesonar-result-judgment
+  - spacesonar-claim-discipline
+  routing_scope: mt5_fixed_fixture_micro_probe_closeout
+  claim_boundary: fixed_fixture_parity_learning_only_no_runtime_authority
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: specific_fixture_micro_probe_no_period_completion
+result_judgment: preserved_clue

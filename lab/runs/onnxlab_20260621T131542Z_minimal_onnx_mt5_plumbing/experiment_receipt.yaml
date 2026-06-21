@@ -179,10 +179,11 @@ required_gate_coverage:
   - bundle_integrity_hash
   - runtime_learning_probe_decision
   - final_claim_guard
+  - mt5_native_onnx_fixed_fixture_probe
+  - handle_release_log
   not_applicable:
   - strategy_tester_economics
-  missing:
-  - mt5_native_onnx_fixed_fixture_probe
+  missing: []
 runtime_learning_probe_decision:
   required: true
   decision: run_required
@@ -195,10 +196,9 @@ runtime_learning_probe_decision:
   - candidate_is_ambiguous
   - setup_might_fail
   lowered_claim_if_not_run: bundle_preflight_only
-result_judgment: inconclusive
-missing_evidence:
-- MT5 native ONNX fixed-fixture output not observed yet
-claim_boundary: bundle_preflight
+result_judgment: preserved_clue
+missing_evidence: []
+claim_boundary: fixed_fixture_parity_learning_only_no_runtime_authority
 forbidden_claims:
 - reviewed_verified_pass
 - selected_baseline
@@ -208,4 +208,28 @@ forbidden_claims:
 - handoff_complete
 - live_readiness
 - goal_achieve
-next_action: Compile SpaceSonar_ONNX_FixtureProbe.mq5 and run tester config runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/tester_config.ini
+next_action: none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics
+  or runtime authority
+result_qualifier: fixed_fixture_parity_learning_only
+result_disposition: preserved_clue
+mt5_fixed_fixture_probe:
+  status: matched
+  input_count: 1
+  output_count: 1
+  expected_probability: 0.5178662539
+  mt5_probability: 0.5178662539
+  abs_error: 0.0
+  tolerance: 1.0e-05
+  last_error: 0
+  handle_release_log:
+    release_attempted: true
+    release_return: true
+    release_last_error: 0
+    release_stage: matched
+terminal_mode_evidence:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  main_mode_fallback_allowed: true
+  main_mode_fallback_used: true
+  fallback_reason: portable_attempt_did_not_produce_mt5_probe_telemetry
+  claim_effect: fixed_fixture_micro_probe_only_no_runtime_authority

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from foundation.pipelines.run_mt5_fixed_fixture_probe import parse_probe_csv, redact_path, terminal_argvs
+from foundation.pipelines.run_mt5_fixed_fixture_probe import parse_args, parse_probe_csv, redact_path, terminal_argvs
 
 
 def test_redact_path_masks_user_profile() -> None:
@@ -29,6 +29,18 @@ def test_terminal_argvs_include_portable_then_main_mode_fallback(tmp_path: Path)
     assert "/portable" in attempts[0]["argv"]
     assert attempts[1]["mode"] == "main_mode_config_fallback"
     assert "/portable" not in attempts[1]["argv"]
+
+
+def test_terminal_kill_is_not_default_behavior() -> None:
+    args = parse_args([])
+
+    assert args.terminate_existing_terminal is False
+
+
+def test_terminal_kill_requires_explicit_flag() -> None:
+    args = parse_args(["--terminate-existing-terminal"])
+
+    assert args.terminate_existing_terminal is True
 
 
 def test_parse_probe_csv_reads_release_log(tmp_path: Path) -> None:

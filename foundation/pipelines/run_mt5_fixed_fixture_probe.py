@@ -133,13 +133,35 @@ def run_process(argv: list[str], *, cwd: Path, timeout_seconds: int | None = Non
     }
 
 
+def current_git_branch() -> str:
+    result = subprocess.run(
+        ["git", "branch", "--show-current"],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return "unknown"
+    return result.stdout.strip() or "unknown"
+
+
+def require_branch_fit(requested_branch: str) -> None:
+    current_branch = current_git_branch()
+    if current_branch != requested_branch:
+        raise RuntimeError(
+            "branch mismatch before MT5 artifact mutation: "
+            f"current={current_branch!r} requested={requested_branch!r}"
+        )
+
+
 def terminate_terminal_processes(terminal: Path) -> dict[str, Any]:
     started_at = utc_now()
     image_name = terminal.name
     if platform.system().lower() != "windows":
         ended_at = utc_now()
         return {
-            "action": "terminate_existing_terminal_processes",
+            "action": "terminate_existing_terminal_processes_explicit",
             "method": "not_supported_non_windows",
             "image_name": image_name,
             "started_at_utc": started_at,
@@ -156,9 +178,10 @@ def terminate_terminal_processes(terminal: Path) -> dict[str, Any]:
     )
     ended_at = utc_now()
     return {
-        "action": "terminate_existing_terminal_processes",
-        "method": "taskkill_by_image_name",
+        "action": "terminate_existing_terminal_processes_explicit",
+        "method": "taskkill_by_image_name_explicit_request",
         "image_name": image_name,
+        "scope": "explicit_user_requested_image_name_cleanup",
         "started_at_utc": started_at,
         "ended_at_utc": ended_at,
         "exit_code": result.returncode,
@@ -168,6 +191,7 @@ def terminate_terminal_processes(terminal: Path) -> dict[str, Any]:
         "stderr_tail": result.stderr[-1000:],
         "no_process_exit_codes": [128],
         "claim_boundary": "terminal_preflight_evidence_only",
+        "safety_boundary": "not_default_behavior_do_not_use_for_formal_runtime_authority",
     }
 
 
@@ -235,6 +259,14 @@ def run_terminal_sequence(
         **selected,
         "terminal_attempts": attempts,
         "terminal_cleanup_actions": cleanup_actions,
+        "terminal_cleanup_policy": {
+            "default_terminate_existing": False,
+            "explicit_termination_requested": terminate_existing,
+            "allowed_scope": "explicit_user_requested_only",
+            "formal_runtime_claim_effect": (
+                "lowered_claim_if_explicit_global_cleanup_used" if terminate_existing else "no_global_cleanup_used"
+            ),
+        },
         "terminal_mode_policy": {
             "standard_contract_terminal_mode": "portable_required",
             "portable_attempted": True,
@@ -340,23 +372,45 @@ def update_closeout_records(
     probe_summary: dict[str, Any],
 ) -> None:
     run_path = REPO_ROOT / "lab" / "runs" / run_id / "run_manifest.json"
+    receipt_path = REPO_ROOT / "lab" / "runs" / run_id / "experiment_receipt.yaml"
+    lineage_path = REPO_ROOT / "lab" / "runs" / run_id / "artifact_lineage.json"
     runtime_path = REPO_ROOT / "lab" / "runs" / run_id / "runtime_evidence.yaml"
     metrics_path = REPO_ROOT / "lab" / "runs" / run_id / "metrics.json"
     bundle_path = REPO_ROOT / "runtime" / "packages" / bundle_id / "experiment_bundle.json"
     attempt_path = REPO_ROOT / "runtime" / "mt5_attempts" / attempt_id / "attempt_manifest.yaml"
+    terminal_summary_path = REPO_ROOT / terminal_summary["summary_path"]
+    campaign_path = REPO_ROOT / "lab" / "campaigns" / "campaign_minimal_onnx_mt5_vertical_slice_v0" / "campaign_manifest.yaml"
 
     run = load_json(run_path)
+    receipt = load_yaml(receipt_path)
+    lineage = load_json(lineage_path)
     runtime = load_yaml(runtime_path)
     metrics = load_json(metrics_path)
     bundle = load_json(bundle_path)
     attempt = load_yaml(attempt_path)
+    campaign = load_yaml(campaign_path) if campaign_path.exists() else None
 
     matched = probe_summary["result"]["status"] == "matched"
     release_ok = probe_summary["result"]["handle_release_log"]["release_attempted"] and probe_summary["result"][
         "handle_release_log"
     ]["release_return"]
 
-    for record in [run, runtime, attempt]:
+    terminal_summary.setdefault(
+        "terminal_cleanup_policy",
+        {
+            "default_terminate_existing": False,
+            "explicit_termination_requested": False,
+            "historical_cleanup_actions_recorded": bool(terminal_summary.get("terminal_cleanup_actions")),
+            "allowed_scope": "explicit_user_requested_only_for_future_runs",
+            "formal_runtime_claim_effect": "historical_global_cleanup_lowers_any_formal_runtime_claim",
+        },
+    )
+    for action in terminal_summary.get("terminal_cleanup_actions", []):
+        if action.get("method") == "taskkill_by_image_name":
+            action["safety_boundary"] = "historical_default_behavior_recorded_do_not_reuse_for_formal_runtime_authority"
+            action["future_policy"] = "script_default_no_global_taskkill"
+
+    for record in [run, receipt, runtime, attempt]:
         coverage = record.setdefault("required_gate_coverage", {})
         passed = coverage.setdefault("passed", [])
         missing = coverage.setdefault("missing", [])
@@ -369,7 +423,9 @@ def update_closeout_records(
             passed.append("handle_release_log")
 
     run["status"] = "mt5_native_onnx_fixed_fixture_probe_matched" if matched else "mt5_native_onnx_fixed_fixture_probe_failed"
-    run["result_judgment"] = "inconclusive"
+    run["result_judgment"] = "preserved_clue"
+    run["result_qualifier"] = "fixed_fixture_parity_learning_only"
+    run["result_disposition"] = "preserved_clue"
     run["claim_scope"] = FIXTURE_CLAIM_BOUNDARY
     run["missing_evidence"] = []
     run["next_action"] = "fixed-fixture parity learning recorded; do not infer runtime authority or economics"
@@ -380,6 +436,7 @@ def update_closeout_records(
     runtime["runtime_debt_state"] = "none_for_fixed_fixture_micro_probe" if matched and release_ok else "fixture_closeout_debt"
     runtime["repair_required"] = not (matched and release_ok)
     runtime["runtime_claim_boundary"] = FIXTURE_CLAIM_BOUNDARY
+    runtime["result_judgment"] = "preserved_clue"
     runtime["missing_evidence"] = []
     runtime["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
     if (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used"):
@@ -392,6 +449,8 @@ def update_closeout_records(
     metrics["mt5_native_onnx_tolerance"] = probe_summary["result"]["tolerance"]
     metrics["mt5_native_onnx_status"] = probe_summary["result"]["status"]
     metrics["mt5_native_onnx_output_path"] = probe_summary["telemetry"]["path"]
+    metrics["result_judgment"] = "preserved_clue"
+    metrics["claim_boundary"] = "fixed_fixture_parity_learning_only_not_performance_metrics"
 
     bundle["claim_boundary"] = FIXTURE_CLAIM_BOUNDARY
     bundle["mt5_fixed_fixture_probe"] = probe_summary["result"] | {
@@ -402,37 +461,187 @@ def update_closeout_records(
     }
 
     attempt["status"] = "completed_matched" if matched else "completed_failed"
+    attempt["runtime_probe_routing"] = {
+        "primary_family": "runtime_probe",
+        "primary_skill": "spacesonar-runtime-parity",
+        "support_skills": [
+            "spacesonar-run-evidence-system",
+            "spacesonar-result-judgment",
+            "spacesonar-claim-discipline",
+        ],
+        "routing_scope": "mt5_fixed_fixture_micro_probe_closeout",
+        "claim_boundary": FIXTURE_CLAIM_BOUNDARY,
+        "runtime_period_profile_id": "period_profile_split_set_v0",
+        "runtime_period_set_id": "specific_fixture_micro_probe_no_period_completion",
+    }
     attempt["compile_provenance"] = compile_summary
     attempt["terminal_run_provenance"] = terminal_summary
     attempt["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
     attempt["mt5_probe_summary"] = probe_summary
     attempt["claim_boundary"] = FIXTURE_CLAIM_BOUNDARY
+    attempt["result_judgment"] = "preserved_clue"
     attempt["missing_evidence"] = []
     attempt["next_action"] = "none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics or runtime authority"
+    attempt["artifact_identity"]["ea_entrypoint"]["sha256"] = compile_summary["ea_source"]["sha256"]
+    attempt["artifact_identity"]["ea_binary"] = compile_summary.get("ea_binary")
     attempt["artifact_identity"]["bundle"]["sha256"] = sha256(bundle_path)
 
+    receipt["result_judgment"] = "preserved_clue"
+    receipt["result_qualifier"] = "fixed_fixture_parity_learning_only"
+    receipt["result_disposition"] = "preserved_clue"
+    receipt["missing_evidence"] = []
+    receipt["claim_boundary"] = FIXTURE_CLAIM_BOUNDARY
+    receipt["next_action"] = "none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics or runtime authority"
+    receipt["mt5_fixed_fixture_probe"] = probe_summary["result"]
+    receipt["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
+
+    lineage_refs = [
+        artifact_ref(run_path),
+        artifact_ref(receipt_path),
+        artifact_ref(runtime_path),
+        artifact_ref(metrics_path),
+        artifact_ref(bundle_path),
+        artifact_ref(attempt_path),
+        artifact_ref(REPO_ROOT / compile_summary["summary_path"]),
+        artifact_ref(REPO_ROOT / terminal_summary["summary_path"]),
+        artifact_ref(REPO_ROOT / probe_summary["summary_path"]),
+        artifact_ref(REPO_ROOT / probe_summary["telemetry"]["path"]),
+        artifact_ref(REPO_ROOT / attempt["artifact_identity"]["set_file"]["path"]),
+        artifact_ref(EA_SOURCE),
+    ]
+    prepare_summary_path = REPO_ROOT / "runtime" / "mt5_attempts" / attempt_id / "prepare_summary.yaml"
+    if prepare_summary_path.exists():
+        lineage_refs.append(artifact_ref(prepare_summary_path))
+    for item in run.get("provenance", {}).get("input_hashes", []):
+        if item.get("path") and (REPO_ROOT / item["path"]).exists():
+            lineage_refs.append(artifact_ref(REPO_ROOT / item["path"]))
+    ea_binary = compile_summary.get("ea_binary") or {}
+    if ea_binary.get("path") and (REPO_ROOT / ea_binary["path"]).exists():
+        lineage_refs.append(artifact_ref(REPO_ROOT / ea_binary["path"]))
+    compile_log = compile_summary.get("compile_log") or {}
+    if compile_log.get("path") and (REPO_ROOT / compile_log["path"]).exists():
+        lineage_refs.append(artifact_ref(REPO_ROOT / compile_log["path"]))
+
+    existing_refs = lineage.get("artifact_paths") or []
+    by_path: dict[str, dict[str, Any]] = {
+        item["path"]: item for item in existing_refs if isinstance(item, dict) and item.get("path")
+    }
+    for item in lineage_refs:
+        by_path[item["path"]] = item
+    lineage["artifact_paths"] = list(by_path.values())
+    lineage["artifact_hashes"] = [item["sha256"] for item in lineage["artifact_paths"] if item.get("sha256")]
+    lineage["artifact_sizes"] = [item["size_bytes"] for item in lineage["artifact_paths"] if "size_bytes" in item]
+    source_paths = set(lineage.get("source_of_truth_paths") or [])
+    source_paths.update(
+        [
+            repo_relative(run_path),
+            repo_relative(receipt_path),
+            repo_relative(lineage_path),
+            repo_relative(runtime_path),
+            repo_relative(metrics_path),
+            repo_relative(bundle_path),
+            repo_relative(attempt_path),
+        ]
+    )
+    lineage["source_of_truth_paths"] = sorted(source_paths)
+    lineage["closeout_status"] = "fixed_fixture_mt5_closeout_synchronized"
+    lineage["lineage_judgment"] = "preserved_clue_with_fixed_fixture_boundary"
+
+    if campaign is not None:
+        entry_contract = campaign.setdefault("vertical_slice_entry_contract", {})
+        if "dataset" in entry_contract:
+            entry_contract["dataset"]["status"] = "materialized_with_hash_recorded"
+            entry_contract["dataset"]["materialized_run_id"] = run_id
+        if "feature_recipe" in entry_contract:
+            entry_contract["feature_recipe"]["status"] = "defined_for_fixture_plumbing_only"
+        if "label_recipe" in entry_contract:
+            entry_contract["label_recipe"]["status"] = "defined_for_fixture_plumbing_only"
+        if "model_recipe" in entry_contract:
+            entry_contract["model_recipe"]["status"] = "defined_for_fixture_plumbing_only"
+        campaign["result_judgment"] = "preserved_clue"
+        campaign["claim_boundary"] = "fixed_fixture_parity_learning_only_no_baseline_no_runtime_authority"
+        campaign["evidence_debt"] = {
+            "status": "none_for_fixed_fixture_micro_probe",
+            "remaining_claim_limits": [
+                "no_strategy_tester_economics_claim",
+                "no_runtime_authority_claim",
+                "no_candidate_or_baseline_claim",
+                "no_standard_portable_runtime_completion_claim",
+            ],
+        }
+
     write_json(run_path, run)
+    write_yaml(receipt_path, receipt)
     write_yaml(runtime_path, runtime)
     write_json(metrics_path, metrics)
     write_json(bundle_path, bundle)
+    write_json(lineage_path, lineage)
+    write_yaml(terminal_summary_path, terminal_summary)
     attempt["artifact_identity"]["bundle"]["sha256"] = sha256(bundle_path)
     write_yaml(attempt_path, attempt)
+    if campaign is not None:
+        write_yaml(campaign_path, campaign)
+
+    refreshed_refs = [
+        artifact_ref(run_path),
+        artifact_ref(receipt_path),
+        artifact_ref(runtime_path),
+        artifact_ref(metrics_path),
+        artifact_ref(bundle_path),
+        artifact_ref(attempt_path),
+        artifact_ref(REPO_ROOT / compile_summary["summary_path"]),
+        artifact_ref(REPO_ROOT / terminal_summary["summary_path"]),
+        artifact_ref(REPO_ROOT / probe_summary["summary_path"]),
+        artifact_ref(REPO_ROOT / probe_summary["telemetry"]["path"]),
+        artifact_ref(REPO_ROOT / attempt["artifact_identity"]["set_file"]["path"]),
+        artifact_ref(EA_SOURCE),
+    ]
+    if prepare_summary_path.exists():
+        refreshed_refs.append(artifact_ref(prepare_summary_path))
+    for item in run.get("provenance", {}).get("input_hashes", []):
+        if item.get("path") and (REPO_ROOT / item["path"]).exists():
+            refreshed_refs.append(artifact_ref(REPO_ROOT / item["path"]))
+    ea_binary = compile_summary.get("ea_binary") or {}
+    if ea_binary.get("path") and (REPO_ROOT / ea_binary["path"]).exists():
+        refreshed_refs.append(artifact_ref(REPO_ROOT / ea_binary["path"]))
+    compile_log = compile_summary.get("compile_log") or {}
+    if compile_log.get("path") and (REPO_ROOT / compile_log["path"]).exists():
+        refreshed_refs.append(artifact_ref(REPO_ROOT / compile_log["path"]))
+    by_path = {
+        item["path"]: item
+        for item in lineage.get("artifact_paths", [])
+        if isinstance(item, dict) and item.get("path")
+    }
+    for item in refreshed_refs:
+        by_path[item["path"]] = item
+    lineage["artifact_paths"] = list(by_path.values())
+    lineage["artifact_hashes"] = [item["sha256"] for item in lineage["artifact_paths"] if item.get("sha256")]
+    lineage["artifact_sizes"] = [item["size_bytes"] for item in lineage["artifact_paths"] if "size_bytes" in item]
+    write_json(lineage_path, lineage)
 
 
-def main() -> int:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run fixed-fixture ONNX/MT5 probe with compact evidence summaries.")
     parser.add_argument("--metaeditor", default=str(DEFAULT_METAEDITOR))
     parser.add_argument("--terminal", default=str(DEFAULT_TERMINAL))
     parser.add_argument("--requested-branch", default=None)
     parser.add_argument("--terminal-timeout-seconds", type=int, default=180)
     parser.add_argument("--skip-terminal-run", action="store_true")
-    parser.add_argument("--keep-existing-terminal", action="store_true")
+    parser.add_argument("--terminate-existing-terminal", action="store_true")
+    parser.add_argument("--keep-existing-terminal", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--no-main-mode-fallback", action="store_true")
-    args = parser.parse_args()
+    return parser.parse_args(argv)
 
-    requested_branch = args.requested_branch or subprocess.run(
-        ["git", "branch", "--show-current"], cwd=REPO_ROOT, text=True, capture_output=True, check=False
-    ).stdout.strip()
+
+def main() -> int:
+    args = parse_args()
+
+    requested_branch = args.requested_branch or current_git_branch()
+    try:
+        require_branch_fit(requested_branch)
+    except RuntimeError as exc:
+        print(json.dumps({"status": "branch_mismatch_blocked", "error": str(exc)}, indent=2))
+        return 2
     prepare_argv = [
         sys.executable,
         str(PREPARE_SCRIPT),
@@ -495,7 +704,7 @@ def main() -> int:
         tester_config=tester_config,
         common_telemetry=common_telemetry,
         timeout_seconds=args.terminal_timeout_seconds,
-        terminate_existing=not args.keep_existing_terminal,
+        terminate_existing=args.terminate_existing_terminal,
         allow_main_mode_fallback=not args.no_main_mode_fallback,
     )
     terminal_summary = {

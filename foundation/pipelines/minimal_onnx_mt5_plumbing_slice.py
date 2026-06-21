@@ -13,7 +13,6 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-import MetaTrader5 as mt5
 import numpy as np
 import pandas as pd
 import yaml
@@ -163,6 +162,24 @@ def git_identity(repo_root: Path) -> dict[str, Any]:
     }
 
 
+def branch_worktree_or_raise(git: dict[str, Any], requested_branch: str | None) -> dict[str, str]:
+    current_branch = str(git.get("branch") or "unknown")
+    expected_branch = requested_branch or current_branch
+    if current_branch != expected_branch:
+        raise RuntimeError(
+            "branch mismatch before artifact mutation: "
+            f"current={current_branch!r} requested={expected_branch!r}"
+        )
+    return {
+        "current_branch": current_branch,
+        "requested_branch": expected_branch,
+        "branch_worktree_fit": "fit",
+        "branch_action": "keep_current_branch",
+        "policy_reference": "docs/policies/branch_policy.md",
+        "mismatch_claim_effect": "not_applicable",
+    }
+
+
 def dependency_summary() -> dict[str, str]:
     packages = ["MetaTrader5", "numpy", "pandas", "sklearn", "onnx", "onnxruntime", "yaml"]
     versions: dict[str, str] = {}
@@ -180,6 +197,11 @@ def dependency_summary() -> dict[str, str]:
 def export_mt5_bars(symbol: str, start_utc: datetime, end_utc: datetime) -> pd.DataFrame:
     if symbol != SUPPORTED_SYMBOL:
         raise ValueError(f"minimal fixture is fixed to {SUPPORTED_SYMBOL}; got {symbol!r}")
+    try:
+        import MetaTrader5 as mt5
+    except ImportError as exc:
+        raise RuntimeError("MetaTrader5 is required only for MT5 bar export, not for pure fixture logic") from exc
+
     if not mt5.initialize():
         raise RuntimeError(f"Failed to initialize MetaTrader5: {mt5.last_error()}")
     try:
@@ -396,6 +418,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         raise ValueError(f"minimal fixture is fixed to {SUPPORTED_SYMBOL}; got {args.symbol!r}")
     started_at = utc_now()
     git = git_identity(repo_root)
+    branch_worktree = branch_worktree_or_raise(git, args.requested_branch)
     run_id = args.run_id or f"onnxlab_{compact_ts(started_at)}_{RUN_SLUG}"
     bundle_id = args.bundle_id or f"bundle_{compact_ts(started_at)}_fixture_plumbing_v0"
     attempt_id = args.attempt_id or f"attempt_{compact_ts(started_at)}_mt5_onnx_fixture_v0"
@@ -531,17 +554,6 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "input_hashes": input_hashes,
         "output_hashes": output_hashes,
         "unknown_git_claim_effect": "not_applicable_git_identity_recorded_but_dirty_state_lowers_reproducibility_until_committed",
-    }
-
-    requested_branch = args.requested_branch or git["branch"]
-    branch_fit = "fit" if git["branch"] == requested_branch else "mismatch"
-    branch_worktree = {
-        "current_branch": git["branch"],
-        "requested_branch": requested_branch,
-        "branch_worktree_fit": branch_fit,
-        "branch_action": "keep_current_branch" if branch_fit == "fit" else "switch_or_lower_claim",
-        "policy_reference": "docs/policies/branch_policy.md",
-        "mismatch_claim_effect": "not_applicable" if branch_fit == "fit" else "reproducible_run_claim_lowered",
     }
 
     tester_config_path = attempt_root / "tester_config.ini"

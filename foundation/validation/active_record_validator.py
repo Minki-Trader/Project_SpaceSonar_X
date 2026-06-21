@@ -24,6 +24,8 @@ CLAIM_BLOCKING_WORDS = {
     "selected_baseline",
 }
 HASH_REQUIRED_AVAILABILITY = {"committed_manifest", "present_hash_recorded"}
+FIXTURE_BOUNDARY = "fixed_fixture_parity_learning_only_no_runtime_authority"
+FIXTURE_GATE = "mt5_native_onnx_fixed_fixture_probe"
 
 
 def read_text(path: Path) -> str:
@@ -72,6 +74,30 @@ def as_set(values: Any) -> set[str]:
     if isinstance(values, str):
         return {item for item in values.split("|") if item}
     return {str(item) for item in values}
+
+
+def claim_boundary_of(data: dict[str, Any]) -> str | None:
+    return data.get("claim_boundary") or data.get("claim_scope") or data.get("runtime_claim_boundary")
+
+
+def coverage_sets(data: dict[str, Any]) -> tuple[set[str], set[str], set[str]]:
+    coverage = data.get("required_gate_coverage") or {}
+    return as_set(coverage.get("passed")), as_set(coverage.get("missing")), as_set(coverage.get("not_applicable"))
+
+
+def lineage_path_sets(lineage: dict[str, Any]) -> tuple[set[str], set[str], set[str]]:
+    artifact_paths = {
+        str(item.get("path"))
+        for item in lineage.get("artifact_paths", [])
+        if isinstance(item, dict) and item.get("path")
+    }
+    source_paths = {str(item) for item in lineage.get("source_of_truth_paths", [])}
+    excluded_paths = {
+        str(item.get("path"))
+        for item in lineage.get("lineage_exclusions", [])
+        if isinstance(item, dict) and item.get("path")
+    }
+    return artifact_paths, source_paths, excluded_paths
 
 
 def walk_values(value: Any, prefix: str = "") -> list[tuple[str, Any]]:
@@ -211,6 +237,8 @@ def validate_run_registry(repo_root: Path) -> list[str]:
             errors.append(f"run_registry.csv {row['run_id']}: primary_skill mismatch")
         if manifest.get("claim_scope") and row.get("claim_boundary") not in {manifest.get("claim_scope"), manifest.get("claim_boundary")}:
             errors.append(f"run_registry.csv {row['run_id']}: claim boundary does not match manifest")
+        if row.get("result_judgment") and manifest.get("result_judgment") != row.get("result_judgment"):
+            errors.append(f"run_registry.csv {row['run_id']}: result_judgment mismatch")
     return errors
 
 
@@ -274,6 +302,153 @@ def validate_bundle_attempt_relation(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_active_evidence_graph(repo_root: Path) -> list[str]:
+    state = load_yaml(repo_root / "docs" / "workspace" / "workspace_state.yaml")
+    claims = state.get("current_claims") or {}
+    run_id = claims.get("first_vertical_slice_run_id")
+    bundle_id = claims.get("first_vertical_slice_bundle_id")
+    attempt_id = claims.get("first_vertical_slice_attempt_id")
+    campaign_id = claims.get("first_vertical_slice_entry")
+    if not run_id or not bundle_id or not attempt_id:
+        return []
+
+    run_path = repo_root / "lab" / "runs" / run_id / "run_manifest.json"
+    receipt_path = repo_root / "lab" / "runs" / run_id / "experiment_receipt.yaml"
+    lineage_path = repo_root / "lab" / "runs" / run_id / "artifact_lineage.json"
+    runtime_path = repo_root / "lab" / "runs" / run_id / "runtime_evidence.yaml"
+    metrics_path = repo_root / "lab" / "runs" / run_id / "metrics.json"
+    bundle_path = repo_root / "runtime" / "packages" / bundle_id / "experiment_bundle.json"
+    attempt_path = repo_root / "runtime" / "mt5_attempts" / attempt_id / "attempt_manifest.yaml"
+    campaign_path = repo_root / "lab" / "campaigns" / str(campaign_id) / "campaign_manifest.yaml"
+
+    required_paths = [run_path, receipt_path, lineage_path, runtime_path, metrics_path, bundle_path, attempt_path]
+    errors = [f"active evidence graph: missing {rel(path, repo_root)}" for path in required_paths if not path.exists()]
+    if errors:
+        return errors
+
+    run = load_json(run_path)
+    receipt = load_yaml(receipt_path)
+    lineage = load_json(lineage_path)
+    runtime = load_yaml(runtime_path)
+    metrics = load_json(metrics_path)
+    bundle = load_json(bundle_path)
+    attempt = load_yaml(attempt_path)
+    campaign = load_yaml(campaign_path) if campaign_path.exists() else {}
+
+    id_pairs = [
+        ("receipt", receipt.get("run_id"), run_id),
+        ("runtime", runtime.get("run_id"), run_id),
+        ("metrics", metrics.get("run_id"), run_id),
+        ("bundle", bundle.get("run_id"), run_id),
+        ("attempt", attempt.get("run_id"), run_id),
+        ("bundle", bundle.get("bundle_id"), bundle_id),
+        ("runtime", runtime.get("bundle_id"), bundle_id),
+        ("attempt", attempt.get("bundle_id"), bundle_id),
+        ("attempt", attempt.get("attempt_id"), attempt_id),
+    ]
+    for label, observed, expected in id_pairs:
+        if observed != expected:
+            errors.append(f"active evidence graph: {label} id mismatch expected={expected} observed={observed}")
+
+    for label, record in [
+        ("run", run),
+        ("receipt", receipt),
+        ("runtime", runtime),
+        ("bundle", bundle),
+        ("attempt", attempt),
+    ]:
+        branch = record.get("branch_worktree") or {}
+        if branch and branch.get("branch_worktree_fit") != "fit":
+            errors.append(f"active evidence graph: {label} branch_worktree_fit is not fit")
+        if branch and branch.get("branch_action") != "keep_current_branch":
+            errors.append(f"active evidence graph: {label} branch_action is not keep_current_branch")
+
+    matched = (
+        run.get("status") == "mt5_native_onnx_fixed_fixture_probe_matched"
+        or attempt.get("status") == "completed_matched"
+        or ((bundle.get("mt5_fixed_fixture_probe") or {}).get("status") == "matched")
+    )
+    if matched:
+        for label, record in [("run", run), ("receipt", receipt), ("runtime", runtime), ("attempt", attempt)]:
+            passed, missing, _not_applicable = coverage_sets(record)
+            if FIXTURE_GATE not in passed:
+                errors.append(f"active evidence graph: {label} missing {FIXTURE_GATE} in passed gates")
+            if FIXTURE_GATE in missing:
+                errors.append(f"active evidence graph: {label} still lists {FIXTURE_GATE} as missing")
+            if record.get("missing_evidence"):
+                errors.append(f"active evidence graph: {label} has missing_evidence after matched closeout")
+            if claim_boundary_of(record) != FIXTURE_BOUNDARY:
+                errors.append(f"active evidence graph: {label} claim boundary mismatch")
+            if record.get("result_judgment") != "preserved_clue":
+                errors.append(f"active evidence graph: {label} result_judgment must be preserved_clue")
+        if bundle.get("claim_boundary") != FIXTURE_BOUNDARY:
+            errors.append("active evidence graph: bundle claim boundary mismatch")
+
+    probe = attempt.get("mt5_probe_summary") or {}
+    telemetry = probe.get("telemetry") or {}
+    telemetry_path = telemetry.get("path")
+    if matched and telemetry_path:
+        full_telemetry_path = repo_root / telemetry_path
+        if not full_telemetry_path.exists():
+            errors.append(f"active evidence graph: missing telemetry {telemetry_path}")
+        else:
+            observed_hash = sha256(full_telemetry_path)
+            for label, expected_hash in [
+                ("attempt telemetry", telemetry.get("sha256")),
+                ("bundle telemetry", (bundle.get("mt5_fixed_fixture_probe") or {}).get("telemetry_sha256")),
+            ]:
+                if expected_hash and expected_hash != observed_hash:
+                    errors.append(f"active evidence graph: {label} sha256 mismatch")
+            if metrics.get("mt5_native_onnx_output_path") != telemetry_path:
+                errors.append("active evidence graph: metrics telemetry path mismatch")
+            if metrics.get("mt5_native_onnx_status") != "matched":
+                errors.append("active evidence graph: metrics MT5 status is not matched")
+
+    runtime_probe_routing = attempt.get("runtime_probe_routing") or {}
+    if matched and runtime_probe_routing.get("primary_family") != "runtime_probe":
+        errors.append("active evidence graph: attempt missing runtime_probe routing")
+
+    compile_provenance = attempt.get("compile_provenance") or {}
+    ea_source = compile_provenance.get("ea_source") or {}
+    ea_entrypoint = ((attempt.get("artifact_identity") or {}).get("ea_entrypoint") or {})
+    if matched:
+        if not ea_entrypoint.get("sha256"):
+            errors.append("active evidence graph: attempt ea_entrypoint sha256 is missing")
+        elif ea_source.get("sha256") and ea_entrypoint.get("sha256") != ea_source.get("sha256"):
+            errors.append("active evidence graph: attempt ea_entrypoint sha256 does not match compile provenance")
+        if ea_entrypoint.get("path") and (repo_root / ea_entrypoint["path"]).exists():
+            if ea_entrypoint.get("sha256") != sha256(repo_root / ea_entrypoint["path"]):
+                errors.append("active evidence graph: attempt ea_entrypoint sha256 does not match file")
+
+    artifact_paths, source_paths, excluded_paths = lineage_path_sets(lineage)
+    registry_rows = [
+        row
+        for row in read_csv_rows(repo_root / "docs" / "registers" / "artifact_registry.csv")
+        if row.get("run_id") == run_id
+    ]
+    for row in registry_rows:
+        path = row.get("path_or_uri", "")
+        if not path or "://" in path:
+            continue
+        if path not in artifact_paths and path not in source_paths and path not in excluded_paths:
+            errors.append(f"active evidence graph: registry path missing from lineage {path}")
+
+    for item in lineage.get("artifact_paths", []):
+        if not isinstance(item, dict) or not item.get("path") or not item.get("sha256"):
+            continue
+        path = repo_root / item["path"]
+        if path.exists() and item["sha256"] != sha256(path):
+            errors.append(f"active evidence graph: lineage sha256 mismatch {item['path']}")
+
+    entry_contract = campaign.get("vertical_slice_entry_contract") or {}
+    if campaign.get("completed_run_id") == run_id:
+        for key, value in walk_values(entry_contract):
+            if key.endswith(".status") and isinstance(value, str) and value.startswith("to_"):
+                errors.append(f"active evidence graph: completed campaign retains planning status {key}={value}")
+
+    return errors
+
+
 def validate(repo_root: Path) -> list[str]:
     errors: list[str] = []
     errors.extend(validate_workspace_active_ids(repo_root))
@@ -281,6 +456,7 @@ def validate(repo_root: Path) -> list[str]:
     errors.extend(validate_artifact_registry(repo_root))
     errors.extend(validate_active_manifests(repo_root))
     errors.extend(validate_bundle_attempt_relation(repo_root))
+    errors.extend(validate_active_evidence_graph(repo_root))
     return errors
 
 

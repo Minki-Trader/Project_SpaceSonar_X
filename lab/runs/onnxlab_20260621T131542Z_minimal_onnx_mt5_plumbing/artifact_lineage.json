@@ -28,7 +28,12 @@
     "MT5 common files"
   ],
   "source_of_truth_paths": [
+    "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json",
+    "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/experiment_receipt.yaml",
+    "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/metrics.json",
     "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json",
+    "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/runtime_evidence.yaml",
+    "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml",
     "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/experiment_bundle.json"
   ],
   "artifact_paths": [
@@ -56,6 +61,81 @@
       "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/tester_config.ini",
       "sha256": "d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0",
       "size_bytes": 1083
+    },
+    {
+      "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json",
+      "sha256": "f0f7d473f9ccc61724a68cb445ec20376d7ca2fecefddea1e174e88b4b9f1588",
+      "size_bytes": 11093
+    },
+    {
+      "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/experiment_receipt.yaml",
+      "sha256": "698b445c66026235bb2875aab689e3c335e02767007268812dfdff1d4b4ed210",
+      "size_bytes": 9164
+    },
+    {
+      "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/runtime_evidence.yaml",
+      "sha256": "f1852156369fc3ba8a214f9b79ec2e62d03970972255a1c20eed81ed642a0ae7",
+      "size_bytes": 4434
+    },
+    {
+      "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/metrics.json",
+      "sha256": "2a30cad83ff8be09b7632c4ed6107661eba8e2b2037fb23e3db176c4f945d4a0",
+      "size_bytes": 866
+    },
+    {
+      "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/experiment_bundle.json",
+      "sha256": "a42e9432b1b1ae3feebcc39a466b1feee3c7850eaba2e8a44a9d410529b270fd",
+      "size_bytes": 6958
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml",
+      "sha256": "6fad7c3138fb71cfdb58ecbe288ddfbb1c6838327e396c422510e191570488e0",
+      "size_bytes": 15343
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/compile_summary.yaml",
+      "sha256": "b46bdd47b85761dc28356e53b3ff80e7c24426ef452035fc184283399337707c",
+      "size_bytes": 1587
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/terminal_run_summary.yaml",
+      "sha256": "7981801780ff848beabe188d45261c175e9b18c06937d7e95467c862593ed824",
+      "size_bytes": 4863
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/mt5_probe_summary.yaml",
+      "sha256": "20aab2ba0876fa1b729620f425d736794bc54a9539d87749ac31c321d43c7040",
+      "size_bytes": 877
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/telemetry/mt5_probe_output.csv",
+      "sha256": "936804dedcb0f73de8e1b93a8bd91186b6a2867ced176122961f5d84c2e6e157",
+      "size_bytes": 254
+    },
+    {
+      "path": "foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5",
+      "sha256": "10e406ca80b5304b441d7549523671beda87c911c857d3138af840ffc772133d",
+      "size_bytes": 7847
+    },
+    {
+      "path": "foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.ex5",
+      "sha256": "b1ff5ca1ddf172174fb9ebcde346fb9045740bea60e93486555e71cb58a6ecc3",
+      "size_bytes": 15170
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/compile.log",
+      "sha256": "c965f621cf8c6c5f0878fcaeda81dcf16ed6fa48fa5ea1264fa8ebd99f0edaf4",
+      "size_bytes": 3456
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/prepare_summary.yaml",
+      "sha256": "b94002a88ad36ad38e5362ca60d60c4dbdf35f4749be2e5c46f9b5a212c01cb6",
+      "size_bytes": 1181
+    },
+    {
+      "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifacts/dataset_us100_m5_closed_bar_v0.csv",
+      "sha256": "fa8b33d01a29d48419e3ae326dbb57c9429719c181949777ca4bddfbd8eb4efb",
+      "size_bytes": 868182
     }
   ],
   "artifact_hashes": [
@@ -63,14 +143,44 @@
     "68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647",
     "a835b8cc7479192cd446b4b4c2fcd53c721f01622e941a412f32e11257ff4b36",
     "c4d277a67f6a893554b9f0901b2cd2fdd3c7a8a834d602d5498f47c9adc89652",
-    "d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0"
+    "d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0",
+    "f0f7d473f9ccc61724a68cb445ec20376d7ca2fecefddea1e174e88b4b9f1588",
+    "698b445c66026235bb2875aab689e3c335e02767007268812dfdff1d4b4ed210",
+    "f1852156369fc3ba8a214f9b79ec2e62d03970972255a1c20eed81ed642a0ae7",
+    "2a30cad83ff8be09b7632c4ed6107661eba8e2b2037fb23e3db176c4f945d4a0",
+    "a42e9432b1b1ae3feebcc39a466b1feee3c7850eaba2e8a44a9d410529b270fd",
+    "6fad7c3138fb71cfdb58ecbe288ddfbb1c6838327e396c422510e191570488e0",
+    "b46bdd47b85761dc28356e53b3ff80e7c24426ef452035fc184283399337707c",
+    "7981801780ff848beabe188d45261c175e9b18c06937d7e95467c862593ed824",
+    "20aab2ba0876fa1b729620f425d736794bc54a9539d87749ac31c321d43c7040",
+    "936804dedcb0f73de8e1b93a8bd91186b6a2867ced176122961f5d84c2e6e157",
+    "10e406ca80b5304b441d7549523671beda87c911c857d3138af840ffc772133d",
+    "b1ff5ca1ddf172174fb9ebcde346fb9045740bea60e93486555e71cb58a6ecc3",
+    "c965f621cf8c6c5f0878fcaeda81dcf16ed6fa48fa5ea1264fa8ebd99f0edaf4",
+    "b94002a88ad36ad38e5362ca60d60c4dbdf35f4749be2e5c46f9b5a212c01cb6",
+    "fa8b33d01a29d48419e3ae326dbb57c9429719c181949777ca4bddfbd8eb4efb"
   ],
   "artifact_sizes": [
     618,
     57,
     14,
     4263,
-    1083
+    1083,
+    11093,
+    9164,
+    4434,
+    866,
+    6958,
+    15343,
+    1587,
+    4863,
+    877,
+    254,
+    7847,
+    15170,
+    3456,
+    1181,
+    868182
   ],
   "regeneration_commands": [
     "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py --requested-branch codex/control-plane-runtime-spine-hardening"
@@ -81,5 +191,6 @@
   ],
   "availability": "local_generated_artifacts_ignored_by_git_with_hashes",
   "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
-  "lineage_judgment": "usable_with_boundary"
+  "lineage_judgment": "preserved_clue_with_fixed_fixture_boundary",
+  "closeout_status": "fixed_fixture_mt5_closeout_synchronized"
 }

@@ -61,6 +61,8 @@ terminal_cleanup_actions:
   no_process_exit_codes:
   - 128
   claim_boundary: terminal_preflight_evidence_only
+  safety_boundary: historical_default_behavior_recorded_do_not_reuse_for_formal_runtime_authority
+  future_policy: script_default_no_global_taskkill
 - action: terminate_existing_terminal_processes
   method: taskkill_by_image_name
   image_name: terminal64.exe
@@ -76,6 +78,8 @@ terminal_cleanup_actions:
   no_process_exit_codes:
   - 128
   claim_boundary: terminal_preflight_evidence_only
+  safety_boundary: historical_default_behavior_recorded_do_not_reuse_for_formal_runtime_authority
+  future_policy: script_default_no_global_taskkill
 terminal_mode_policy:
   standard_contract_terminal_mode: portable_required
   portable_attempted: true
@@ -91,3 +95,9 @@ tester_config:
   sha256: d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0
   size_bytes: 1083
 claim_boundary: terminal_execution_evidence_only_not_runtime_authority
+terminal_cleanup_policy:
+  default_terminate_existing: false
+  explicit_termination_requested: false
+  historical_cleanup_actions_recorded: true
+  allowed_scope: explicit_user_requested_only_for_future_runs
+  formal_runtime_claim_effect: historical_global_cleanup_lowers_any_formal_runtime_claim
