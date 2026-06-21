@@ -9,6 +9,7 @@
 input string InpOnnxPath       = "SpaceSonar\\l4_score_probe\\bundle\\model.onnx";
 input string InpOutputPath     = "SpaceSonar\\l4_score_probe\\attempt\\score_telemetry.csv";
 input string InpFeatureColumns = "";
+input string InpFeatureColumnsPath = "";
 input int    InpFeatureCount   = 0;
 input string InpInputFamily    = "";
 input string InpDecisionFamily = "";
@@ -467,6 +468,35 @@ bool RunOneClosedBar()
    return true;
 }
 
+bool LoadFeatureColumns()
+{
+   string raw_columns = InpFeatureColumns;
+   if(StringLen(InpFeatureColumnsPath) > 0)
+   {
+      const int common_flag = (InpUseCommonFiles ? FILE_COMMON : 0);
+      ResetLastError();
+      const int handle = FileOpen(InpFeatureColumnsPath, FILE_READ | FILE_TXT | FILE_ANSI | common_flag);
+      if(handle == INVALID_HANDLE)
+      {
+         PrintFormat("Feature columns file open failed path=%s err=%d", InpFeatureColumnsPath, GetLastError());
+         return false;
+      }
+      raw_columns = "";
+      while(!FileIsEnding(handle))
+         raw_columns += FileReadString(handle);
+      FileClose(handle);
+      StringReplace(raw_columns, "\r", "");
+      StringReplace(raw_columns, "\n", "");
+   }
+
+   if(StringSplit(raw_columns, ';', ExtColumns) != InpFeatureCount)
+   {
+      PrintFormat("Feature column count mismatch expected=%d actual=%d", InpFeatureCount, ArraySize(ExtColumns));
+      return false;
+   }
+   return true;
+}
+
 int OnInit()
 {
    if(InpFeatureCount <= 0)
@@ -474,11 +504,8 @@ int OnInit()
       Print("InpFeatureCount must be positive.");
       return INIT_FAILED;
    }
-   if(StringSplit(InpFeatureColumns, ';', ExtColumns) != InpFeatureCount)
-   {
-      PrintFormat("Feature column count mismatch expected=%d actual=%d", InpFeatureCount, ArraySize(ExtColumns));
+   if(!LoadFeatureColumns())
       return INIT_FAILED;
-   }
 
    const uint onnx_flags = (uint)((InpUseCommonFiles ? ONNX_COMMON_FOLDER : 0) | ONNX_LOGLEVEL_INFO | ONNX_USE_CPU_ONLY);
    ResetLastError();

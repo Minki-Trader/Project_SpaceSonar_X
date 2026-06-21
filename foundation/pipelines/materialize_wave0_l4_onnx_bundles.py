@@ -278,15 +278,15 @@ def write_score_csv(path: Path, values: np.ndarray) -> None:
 
 def exportable_from_preflight(preflight: dict[str, Any]) -> tuple[list[str], dict[str, str]]:
     exportable: list[str] = []
-    blocked: dict[str, str] = {}
+    adapter_attempt_required: dict[str, str] = {}
     for row in preflight.get("run_preflight", []):
         run_id = str(row["run_id"])
         model_family = str(row.get("model_family") or "")
         if model_family in EXPORTABLE_MODEL_FAMILIES:
             exportable.append(run_id)
         else:
-            blocked[run_id] = "blocked_unknown_model_family_export_adapter_requires_attempted_probe"
-    return exportable, blocked
+            adapter_attempt_required[run_id] = "unknown_model_family_requires_export_adapter_probe_before_disposition"
+    return exportable, adapter_attempt_required
 
 
 def materialize_one(
@@ -613,17 +613,17 @@ def materialize_one(
     }
 
 
-def build_blocked_rows(preflight: dict[str, Any], blocked: dict[str, str]) -> list[dict[str, Any]]:
+def build_adapter_attempt_rows(preflight: dict[str, Any], adapter_attempt_required: dict[str, str]) -> list[dict[str, Any]]:
     by_run = {str(row["run_id"]): row for row in preflight.get("run_preflight", [])}
     rows = []
-    for run_id, reason in sorted(blocked.items()):
+    for run_id, reason in sorted(adapter_attempt_required.items()):
         source = by_run.get(run_id, {})
         rows.append(
             {
                 "run_id": run_id,
                 "bundle_id": "",
                 "cell_id": run_id.replace("onnxlab_", "").replace("_surface_scout_v0", ""),
-                "status": "blocked_export_adapter_required",
+                "status": "requires_export_adapter_attempt_before_materialization",
                 "result_judgment": source.get("result_judgment"),
                 "model_family": source.get("model_family"),
                 "task_kind": source.get("task_kind"),
@@ -635,7 +635,7 @@ def build_blocked_rows(preflight: dict[str, Any], blocked: dict[str, str]) -> li
                 "onnx_sha256": "",
                 "onnx_size_bytes": "",
                 "onnx_adapter_ids": "",
-                "parity_status": "not_run",
+                "parity_status": "not_run_adapter_attempt_required",
                 "parity_max_abs_error": "",
                 "parity_mean_abs_error": "",
                 "parity_sample_rows": "",
@@ -649,7 +649,7 @@ def build_blocked_rows(preflight: dict[str, Any], blocked: dict[str, str]) -> li
 def materialize(repo_root: Path, *, command_argv: list[str], started_at_utc: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     row_manifest = load_yaml(repo_root / ROW_MEMBERSHIP_MANIFEST)
     preflight = load_yaml(repo_root / PREFLIGHT)
-    exportable_run_ids, blocked = exportable_from_preflight(preflight)
+    exportable_run_ids, adapter_attempt_required = exportable_from_preflight(preflight)
     run_refs = {row["run_id"]: row for row in read_csv_rows(repo_root / RUN_REFS)}
     row_frame = load_row_membership(repo_root, row_manifest)
     feature_cache: dict[str, tuple[pd.DataFrame, FeatureSchema]] = {}
@@ -678,8 +678,8 @@ def materialize(repo_root: Path, *, command_argv: list[str], started_at_utc: str
         except Exception as exc:  # noqa: BLE001 - per-run materialization failure is evidence.
             errors.append({"run_id": run_id, "error_type": type(exc).__name__, "error": str(exc)})
 
-    blocked_rows = build_blocked_rows(preflight, blocked)
-    all_rows = [*results, *blocked_rows]
+    adapter_attempt_rows = build_adapter_attempt_rows(preflight, adapter_attempt_required)
+    all_rows = [*results, *adapter_attempt_rows]
     counts = Counter(str(row["status"]) for row in all_rows)
     parity_counts = Counter(str(row["parity_status"]) for row in all_rows)
     model_counts = Counter(str(row["model_family"]) for row in all_rows)
@@ -707,7 +707,8 @@ def materialize(repo_root: Path, *, command_argv: list[str], started_at_utc: str
         "counts": {
             "valid_proxy_runs_requiring_l4": len(preflight.get("run_preflight", [])),
             "exportable_bundle_count": len(results),
-            "blocked_export_adapter_count": len(blocked_rows),
+            "adapter_attempt_required_count": len(adapter_attempt_rows),
+            "blocked_export_adapter_count": 0,
             "failed_materialization_count": len(errors),
             "status_counts": dict(sorted(counts.items())),
             "parity_status_counts": dict(sorted(parity_counts.items())),
@@ -727,7 +728,8 @@ def materialize(repo_root: Path, *, command_argv: list[str], started_at_utc: str
             "onnx_artifact_paths": [row["onnx_path"] for row in results],
         },
         "errors": errors,
-        "blocked_runs": blocked_rows,
+        "adapter_attempt_required_runs": adapter_attempt_rows,
+        "blocked_runs": [],
         "exported_runs": results,
         "judgment": {
             "judgment_class": "bundle_preflight",

@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T19:30:24Z'
+updated_utc: '2026-06-21T20:11:03Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -63,7 +63,7 @@ current_claims:
   active_hypothesis_id: hyp_surface_diversity_before_model_search_v0
   active_surface_id: surface_us100_task_input_decision_rotation_v0
   active_sweep_id: sweep_wave0_broad_surface_scout_v0
-  active_goal_phase: wave01_operating_proof_window_l4_terminal_execution_next
+  active_goal_phase: wave01_operating_proof_window_l4_terminal_execution_in_progress
   next_work_item_id: work_wave0_first_batch_l4_follow_through_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
@@ -208,6 +208,25 @@ current_claims:
       validation: 12
     common_copy_status_counts:
       copied_to_mt5_common_files: 24
+  wave0_l4_runtime_execution_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  wave0_l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
+  wave0_l4_runtime_execution_counts:
+    prepared_attempt_count: 24
+    selected_attempt_count: 24
+    indexed_execution_count: 24
+    executed_attempt_count: 24
+    completed_manifest_count: 24
+    telemetry_observed_count: 24
+    telemetry_missing_count: 0
+    tester_report_observed_count: 0
+    tester_report_missing_count: 24
+    period_role_counts:
+      research_oos: 12
+      validation: 12
+    status_counts:
+      completed_l4_score_telemetry_observed: 24
+    result_judgment_counts:
+      runtime_probe: 24
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

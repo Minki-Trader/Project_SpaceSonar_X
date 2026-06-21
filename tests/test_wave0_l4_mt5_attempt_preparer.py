@@ -54,6 +54,7 @@ def test_tester_config_uses_semicolon_feature_delimiter_and_l4_probe_ea() -> Non
 
     assert "SpaceSonar_ONNX_L4_ScoreProbe.ex5" in text
     assert "InpFeatureColumns=ret_1;rolling_ret_mean_12" in text
+    assert f"InpFeatureColumnsPath={COMMON_REL_ROOT}\\bundle_test_l4_onnx_export_v0\\feature_columns.txt" in text
     assert "InpFeatureColumns=ret_1|rolling_ret_mean_12" not in text
     assert f"InpOnnxPath={COMMON_REL_ROOT}\\bundle_test_l4_onnx_export_v0\\model.onnx" in text
     assert "InpFixedLot=0.02" in text
@@ -81,6 +82,7 @@ def test_build_attempt_plan_creates_two_l4_roles_per_exported_bundle_without_wri
     assert {row["period_role"] for row in rows} == {"validation", "research_oos"}
     assert all(row["claim_boundary"] == CLAIM_BOUNDARY for row in rows)
     assert all("pending_write" == manifest["artifact_identity"]["tester_config"]["status"] for manifest in manifests.values())
+    assert all("feature_columns.txt" in manifest["artifact_identity"]["common_files"] for manifest in manifests.values())
 
 
 def test_generated_attempt_records_match_index_when_present() -> None:
@@ -109,8 +111,13 @@ def test_generated_attempt_records_match_index_when_present() -> None:
         assert manifest["period_identity"]["period_role"] == row["period_role"]
         assert manifest["period_identity"]["locked_final_oos_b"] == "excluded_forbidden_by_default"
         assert manifest["required_gate_coverage"]["missing"]
-        assert "Strategy_Tester_terminal_execution" in manifest["required_gate_coverage"]["missing"]
+        if str(manifest.get("status", "")).startswith("completed_"):
+            assert "Strategy_Tester_terminal_execution" not in manifest["required_gate_coverage"]["missing"]
+            assert "score_telemetry_csv" not in manifest["required_gate_coverage"]["missing"]
+        else:
+            assert "Strategy_Tester_terminal_execution" in manifest["required_gate_coverage"]["missing"]
         assert f"FromDate={row['from_date']}" in config_text
         assert f"ToDate={row['to_date']}" in config_text
+        assert "InpFeatureColumnsPath=SpaceSonar\\l4_score_probe" in config_text
         assert "2025.12.02" not in config_text
         assert "2026.06.18" not in config_text

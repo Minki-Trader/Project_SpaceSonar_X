@@ -25,10 +25,12 @@ def test_exportable_from_preflight_includes_repaired_hgb_adapter_family() -> Non
 def test_exportable_from_preflight_unknown_family_requires_attempted_probe() -> None:
     preflight = {"run_preflight": [{"run_id": "run_unknown", "model_family": "new_model_family"}]}
 
-    exportable, blocked = exportable_from_preflight(preflight)
+    exportable, adapter_attempt_required = exportable_from_preflight(preflight)
 
     assert exportable == []
-    assert blocked == {"run_unknown": "blocked_unknown_model_family_export_adapter_requires_attempted_probe"}
+    assert adapter_attempt_required == {
+        "run_unknown": "unknown_model_family_requires_export_adapter_probe_before_disposition"
+    }
 
 
 def test_materializer_uses_mt5_compatible_preflight_boundary() -> None:

@@ -1,6 +1,6 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-21T19:30:24Z'
+updated_at_utc: '2026-06-21T20:11:03Z'
 cursor_state: active
 active_phase: wave01_operating_proof_window_l4_follow_through_next
 current_truth_sources:
@@ -21,6 +21,8 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_index.csv
 - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
 - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_index.csv
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_index.csv
 active_ids:
   idea_id: idea_us100_m5_blank_slate_surface_map_v0
   hypothesis_id: hyp_surface_diversity_before_model_search_v0
@@ -29,12 +31,12 @@ active_ids:
   surface_id: surface_us100_task_input_decision_rotation_v0
   sweep_id: sweep_wave0_broad_surface_scout_v0
 latest_completed_work:
-  work_item_id: work_wave0_l4_mt5_attempt_preparation_v0
-  result_judgment: inconclusive
-  claim_boundary: l4_strategy_tester_attempt_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+  work_item_id: work_wave0_l4_mt5_runtime_execution_v0
+  result_judgment: runtime_probe
+  claim_boundary: l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_mt5_attempt_preparation_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_mt5_runtime_execution_v0_closeout.yaml
 next_work_item:
   work_item_id: work_wave0_first_batch_l4_follow_through_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

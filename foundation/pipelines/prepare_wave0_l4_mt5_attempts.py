@@ -223,6 +223,7 @@ def build_tester_config_text(
     feature_columns = bundle["feature_schema_contract"]["feature_columns"]
     low, high, has_low_high = score_thresholds(bundle)
     onnx_common_path = f"{COMMON_REL_ROOT}\\{bundle['bundle_id']}\\model.onnx"
+    feature_columns_common_path = f"{COMMON_REL_ROOT}\\{bundle['bundle_id']}\\feature_columns.txt"
     telemetry_common_path = f"{COMMON_REL_ROOT}\\{attempt_id}\\score_telemetry.csv"
     report_name = f"Project_SpaceSonar_X\\runtime\\mt5_attempts\\{attempt_id}\\tester_report"
     lines = [
@@ -253,6 +254,7 @@ def build_tester_config_text(
         f"InpOnnxPath={onnx_common_path}",
         f"InpOutputPath={telemetry_common_path}",
         f"InpFeatureColumns={';'.join(feature_columns)}",
+        f"InpFeatureColumnsPath={feature_columns_common_path}",
         f"InpFeatureCount={len(feature_columns)}",
         f"InpInputFamily={bundle['feature_schema_contract']['input_family']}",
         f"InpDecisionFamily={bundle['decision_surface']['decision_family']}",
@@ -362,6 +364,8 @@ def attempt_manifest(
             "feature_count": len(feature_columns),
             "feature_order_hash": feature_order_hash(feature_columns),
             "feature_columns_delimiter": "semicolon",
+            "feature_columns_transport": "common_file_with_inline_fallback",
+            "feature_columns_common_relative_path": f"{COMMON_REL_ROOT}\\{bundle['bundle_id']}\\feature_columns.txt",
             "output_name": "score",
             "output_contract": bundle["output_schema"]["mt5_output_contract"],
             "decision_family": bundle["decision_surface"]["decision_family"],
@@ -507,12 +511,25 @@ def attempt_manifest(
 def common_copy_record(repo_root: Path, bundle: dict[str, Any], *, copy_common_files: bool) -> dict[str, Any]:
     onnx_source = repo_root / bundle["onnx_path"]
     common_relative_path = f"{COMMON_REL_ROOT}\\{bundle['bundle_id']}\\model.onnx"
+    feature_columns = bundle["feature_schema_contract"]["feature_columns"]
+    feature_columns_text = ";".join(feature_columns)
+    feature_columns_common_path = f"{COMMON_REL_ROOT}\\{bundle['bundle_id']}\\feature_columns.txt"
     record = {
         "model.onnx": {
             "common_relative_path": common_relative_path,
             "redacted_absolute_path": mt5_common_redacted(common_relative_path),
             "sha256": sha256(onnx_source),
             "size_bytes": onnx_source.stat().st_size,
+            "durable_identity": "common_relative_path_plus_sha256",
+            "path_boundary": "redacted_local_context_only",
+            "copy_status": "not_copied_by_request",
+        },
+        "feature_columns.txt": {
+            "common_relative_path": feature_columns_common_path,
+            "redacted_absolute_path": mt5_common_redacted(feature_columns_common_path),
+            "sha256": hashlib.sha256(feature_columns_text.encode("utf-8")).hexdigest(),
+            "size_bytes": len(feature_columns_text.encode("utf-8")),
+            "feature_count": len(feature_columns),
             "durable_identity": "common_relative_path_plus_sha256",
             "path_boundary": "redacted_local_context_only",
             "copy_status": "not_copied_by_request",
@@ -528,6 +545,11 @@ def common_copy_record(repo_root: Path, bundle: dict[str, Any], *, copy_common_f
         shutil.copy2(onnx_source, destination)
         record["model.onnx"]["copy_status"] = "copied_to_mt5_common_files"
         record["model.onnx"]["copied_sha256"] = sha256(destination)
+        feature_destination = root / feature_columns_common_path
+        feature_destination.parent.mkdir(parents=True, exist_ok=True)
+        feature_destination.write_text(feature_columns_text, encoding="utf-8")
+        record["feature_columns.txt"]["copy_status"] = "copied_to_mt5_common_files"
+        record["feature_columns.txt"]["copied_sha256"] = sha256(feature_destination)
     return record
 
 

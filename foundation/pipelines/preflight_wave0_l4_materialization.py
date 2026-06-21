@@ -174,7 +174,7 @@ def model_export_assessment(model_family: str, dependencies: dict[str, dict[str,
         return {
             "export_adapter_status": "skl2onnx_converter_likely_available"
             if skl2onnx_ready
-            else "blocked_missing_skl2onnx",
+            else "missing_skl2onnx_requires_dependency_repair_attempt",
             "python_onnx_parity_possible": bool(skl2onnx_ready and onnxruntime_ready),
             "runtime_readiness_claim": "not_materialization_ready_until_retrained_exported_and_parity_checked",
         }

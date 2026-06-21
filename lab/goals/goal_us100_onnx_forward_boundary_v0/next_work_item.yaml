@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: planned_next_l4_strategy_tester_execution_after_attempt_preparation
+status: l4_strategy_tester_execution_completed_for_prepared_attempts
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -81,6 +81,25 @@ current_truth:
       validation: 12
     common_copy_status_counts:
       copied_to_mt5_common_files: 24
+  l4_runtime_execution_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
+  l4_runtime_execution_counts:
+    prepared_attempt_count: 24
+    selected_attempt_count: 24
+    indexed_execution_count: 24
+    executed_attempt_count: 24
+    completed_manifest_count: 24
+    telemetry_observed_count: 24
+    telemetry_missing_count: 0
+    tester_report_observed_count: 0
+    tester_report_missing_count: 24
+    period_role_counts:
+      research_oos: 12
+      validation: 12
+    status_counts:
+      completed_l4_score_telemetry_observed: 24
+    result_judgment_counts:
+      runtime_probe: 24
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -232,8 +251,5 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_material_if_relevant:
-- L4_strategy_tester_terminal_execution_absent_for_prepared_attempts
-- L4_validation_and_research_oos_reports_absent
-- score_telemetry_csv_absent_until_terminal_run
-next_action: Run the prepared L4 Strategy Tester attempts for validation and research_oos,
-  then close each result with parity judgment.
+- paired_L4_period_aggregation_pending
+next_action: aggregate paired validation/research_oos L4 telemetry and decide L5 routing
