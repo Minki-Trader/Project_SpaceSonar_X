@@ -21,24 +21,44 @@ claim_classes:
       - at_least_one_required_artifact_missing
   blocked:
     allowed_when:
-      - recovery_attempt_or_failure_log_exists
       - failure_disposition_gate_recorded
-      - required_user_action_or_external_blocker_exists
+      - failing_layer_reproduced_or_reproduction_blocker_recorded
+      - bounded_repair_or_fallback_attempt_recorded_or_narrow_attempt_blocker_recorded
+      - remaining_blocker_named
+      - reopen_condition_named
+    forbidden_when:
+      - diagnosis_only
+      - explanation_only_closeout
+      - adapter_absence_only
   deferred:
     allowed_when:
       - failure_disposition_gate_recorded
       - bounded_repair_or_fallback_attempt_recorded
       - remaining_blocker_named
       - reopen_condition_named
+    forbidden_when:
+      - diagnosis_only
+      - explanation_only_closeout
+      - adapter_absence_only
   discarded:
     allowed_when:
       - failure_disposition_gate_recorded
       - bounded_repair_or_fallback_attempt_recorded
       - no_actionable_salvage_or_reopen_scope_named
+    forbidden_when:
+      - diagnosis_only
+      - explanation_only_closeout
+      - adapter_absence_only
   invalid:
     allowed_when:
       - setup_data_or_scope_mismatch_found
+      - failing_layer_reproduced_or_reproduction_blocker_recorded
       - repair_or_reinterpretation_attempt_recorded
+      - claim_boundary_lowered
+    forbidden_when:
+      - diagnosis_only
+      - explanation_only_closeout
+      - adapter_absence_only
   verified:
     allowed_when:
       - requested_verification_layer_passed

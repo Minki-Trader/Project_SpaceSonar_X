@@ -92,6 +92,7 @@ Git integration cadence:
 - If L4 still looks usable under the declared surface and execution profile, continue to `L5_candidate_runtime_evidence`.
 - A planned proxy surface must include an executable ONNX/EA/MT5 follow-through path. If it cannot be made executable, repair the surface before treating it as proxy evidence.
 - Try-first disposition rule: do not close a surface as blocked, deferred, invalid, or discarded until the failure reason is identified, the failing layer is reproduced, a smallest credible repair/fallback under repo control is attempted, and the evidence/reopen condition is recorded.
+- Explanation-only closeout is forbidden. A diagnosis, advisory note, missing-helper observation, or agent consensus does not count as an attempt. Use the smallest concrete fixture, parser run, conversion shim, EA/ONNX glue patch, compile, command, or MT5 micro-probe that can test the failure before lowering the claim.
 - Missing converter, conversion adapter, export adapter, EA adapter, parser support, or runtime glue is not by itself a valid closeout reason. First reproduce the failure and capture the root cause.
 - If the missing piece is under repo/control, build and test the smallest credible repair or fallback adapter. "Adapter absent" is not a blocker.
 - If a needed conversion adapter does not exist, create the smallest explicit translation layer needed to test the hypothesis. Only narrow feasibility exceptions may stop that attempt.

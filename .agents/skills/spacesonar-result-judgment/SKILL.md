@@ -39,6 +39,7 @@ Use this skill when a run, model, bundle, package, backtest, PR, or user-facing 
 - Negative is interpretable evidence.
 - Invalid means the setup cannot be interpreted after a repair or reinterpretation attempt, or the attempt blocker is recorded.
 - Try-first disposition: before blocked, deferred, invalid, or discarded, identify why the attempt failed, reproduce the failing layer, try the smallest credible fix/fallback under repo control, and record evidence plus reopen condition.
+- Explanation-only closeout is forbidden: diagnosis text, advisory notes, missing-helper observations, or agent consensus do not count as repair/fallback attempts.
 - Inconclusive is not success or failure.
 - Blocked, deferred, invalid, or discarded due to "cannot", "unsupported", "not available", or missing support require a failure disposition record: reproduction, exact failing layer, bounded repair/fallback attempt, evidence path, remaining blocker, and reopen condition.
 - Missing converter, conversion adapter, export, EA, parser, or runtime glue under repo/control requires building and testing the smallest adapter/fallback before disposition; "adapter absent" alone is not a blocker.

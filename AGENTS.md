@@ -108,6 +108,7 @@ Unknown git/env identity is planning scaffold only; it lowers reproducible-run, 
 - If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
 - Failure handling order is mandatory: diagnose -> reproduce -> attempt the smallest repo-controlled repair/adapter/fallback -> record evidence -> only then block, defer, invalidate, or discard.
 - Try-first disposition rule: when something does not work, first identify why, reproduce the failing layer, try the smallest credible fix/fallback under repo control, and record the evidence. Only then may it become blocked, deferred, invalid, or discarded.
+- Diagnosis text, agent advice, or "helper/adapter does not exist" is not a repair attempt. If the missing piece is repo-controlled, make the smallest concrete implementation, fixture, compile, parser, runner, or runtime attempt needed to test the hypothesis before lowering the claim.
 - "Cannot", "unsupported", "not available", or "missing adapter/glue" is a diagnosis state, not a final disposition.
 - Before any valid surface is marked blocked, deferred, invalid, or discarded because something does not work, record the failure reproduction, the exact failing layer, at least one bounded repair or fallback attempt, the evidence path, the remaining blocker, and the reopen condition.
 - If a repair attempt is impossible because it needs user secrets, unavailable external state, destructive action, or policy violation, record that as the repair attempt blocker instead of silently deferring.

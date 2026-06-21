@@ -102,12 +102,15 @@ completion_rule:
     - artifact_lineage_connected_or_bounded
     - final_claim_guard_passed
     - storage_contract_satisfied
-  blocked_requires_one_of:
-    - recovery_attempt
-    - execution_attempt
-    - failure_log
-    - required_user_action
-    - claim_lowered_with_boundary
+  blocked_deferred_invalid_discarded_for_failure_requires:
+    - failure_disposition_gate_recorded
+    - failure_reproduction_or_reproduction_blocker
+    - exact_failing_layer
+    - bounded_repair_or_fallback_attempt_or_attempt_blocker
+    - evidence_path
+    - remaining_blocker
+    - reopen_condition
+  explanation_only_closeout_rule: "Diagnosis text, advisory notes, missing-helper observations, or agent consensus do not count as repair attempts."
   failure_disposition_requires_all_before_blocked_deferred_invalid_or_discarded:
     - failure_reproduction
     - exact_failing_layer
