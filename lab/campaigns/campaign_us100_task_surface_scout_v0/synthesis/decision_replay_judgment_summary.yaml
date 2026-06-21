@@ -1,0 +1,103 @@
+version: decision_replay_judgment_summary_v1
+summary_id: wave0_l4_decision_replay_judgment_summary_v0
+work_item_id: work_wave0_l4_decision_replay_judgment_v0
+parent_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: '2026-06-21T21:17:09Z'
+ended_at_utc: '2026-06-21T21:17:09Z'
+status: decision_replay_judgment_completed_no_l5_candidates
+claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
+counts:
+  cell_pair_count: 3
+  negative_count: 3
+  candidate_count: 0
+  l5_candidate_count: 0
+  tester_log_pair_observed_count: 3
+  tester_report_pair_observed_count: 0
+  loss_in_both_periods_count: 3
+  open_action_count: 39598
+  close_action_count: 11727
+  result_judgment_counts:
+    negative: 3
+  l5_routing_status_counts:
+    no_l5_decision_replay_loss_observed: 3
+  final_balance_pair_class_counts:
+    loss_in_validation_and_research_oos: 3
+judgment:
+  result_subject: Wave01 preserved-clue sparse decision replay over validation and
+    research_oos
+  judgment_label: negative
+  metric_identity: MT5 tester-log final_balance from score replay decision probes;
+    no tester report/equity/PF/DD claim
+  comparison_baseline: 500 USD initial deposit under us100_m5_fpmarkets_tester_execution_v0
+  claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
+  missing_evidence:
+  - tester_reports_missing_for_all_decision_replay_pairs
+  - equity_curve_missing
+  - pf_dd_trade_list_metrics_missing
+  - locked_final_oos_b_not_used
+  next_action: Record negative memory, keep candidate count at zero, and rotate to
+    a new multi-axis surface or a genuinely new decision-policy question. Do not continue
+    momentum_ret_1 score replay to L5.
+runtime_contract_effect:
+  runtime_level: score_replay_decision_probe_not_standard_l4_completion
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  standard_l4_completion: not_claimed_tester_reports_missing
+  l5_continuation: not_opened_loss_observed_and_no_candidate_evidence
+  locked_final_oos_b: not_used
+prevention_memory:
+- A preserved score telemetry clue does not imply a tradeable sparse decision policy.
+- Naive momentum_ret_1 direction mapping produced losses across all tested preserved
+  tradeability cells.
+- Tester log final_balance may support negative memory, but report/equity evidence
+  is required before PF/DD/economics claims.
+- Do not carry a losing decision replay forward as a new campaign without a genuinely
+  new decision/risk/holding surface.
+negative_memory:
+  memory_id: neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  path: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+artifact_outputs:
+  judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  judgment_index: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_index.csv
+  negative_memory: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/judge_wave0_l4_decision_replay_results.py
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: a692d242fa5f674fe6919b6cc8a2193ea767be73
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M docs/registers/artifact_registry.csv
+  - ' M docs/registers/negative_memory_registry.csv'
+  - ?? foundation/pipelines/judge_wave0_l4_decision_replay_results.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_index.csv
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
+  - ?? lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  - ?? tests/test_wave0_l4_decision_replay_judgment.py
+  started_at_utc: '2026-06-21T21:17:09Z'
+  ended_at_utc: '2026-06-21T21:17:09Z'
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

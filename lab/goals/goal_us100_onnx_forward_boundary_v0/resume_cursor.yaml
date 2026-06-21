@@ -1,8 +1,8 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-21T21:04:47Z'
+updated_at_utc: '2026-06-21T21:17:09Z'
 cursor_state: active
-active_phase: wave01_operating_proof_window_l4_follow_through_next
+active_phase: wave01_operating_proof_window_decision_replay_judgment_completed
 current_truth_sources:
 - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
@@ -39,6 +39,11 @@ current_truth_sources:
 - foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
 - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
 - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_index.csv
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_index.csv
+- lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
+- docs/registers/negative_memory_registry.csv
 active_ids:
   idea_id: idea_us100_m5_blank_slate_surface_map_v0
   hypothesis_id: hyp_surface_diversity_before_model_search_v0
@@ -47,12 +52,13 @@ active_ids:
   surface_id: surface_us100_task_input_decision_rotation_v0
   sweep_id: sweep_wave0_broad_surface_scout_v0
 latest_completed_work:
-  work_item_id: work_wave0_l4_decision_replay_runtime_execution_v0
-  result_judgment: runtime_probe
-  claim_boundary: score_replay_decision_runtime_progress_only_no_runtime_authority_no_economics_pass_no_candidate
+  work_item_id: work_wave0_l4_decision_replay_judgment_v0
+  result_judgment: negative
+  claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_runtime_execution_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
+  - lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
 next_work_item:
   work_item_id: work_wave0_first_batch_l4_follow_through_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

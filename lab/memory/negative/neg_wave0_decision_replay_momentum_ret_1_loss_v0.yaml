@@ -1,0 +1,25 @@
+version: negative_memory_v1
+memory_id: neg_wave0_decision_replay_momentum_ret_1_loss_v0
+hypothesis_id: hyp_surface_diversity_before_model_search_v0
+surface_id: surface_us100_task_input_decision_rotation_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+run_id: onnxlab_wave0_cell_008_surface_scout_v0;onnxlab_wave0_cell_011_surface_scout_v0;onnxlab_wave0_cell_012_surface_scout_v0
+failed_boundary: score_replay_sparse_decision_momentum_ret_1_validation_and_research_oos
+why_failed: All tested preserved-clue tradeability cells using the naive momentum_ret_1
+  score replay decision adapter ended below the 500 USD tester deposit in both validation
+  and research_oos tester-log final balances.
+salvage_value: Confirms the MT5 sparse decision execution path can run and records
+  that score-observed preserved clues do not automatically become tradeable when replayed
+  with a naive momentum direction policy.
+reopen_condition: Reopen only with a genuinely new decision/risk/holding policy, report/equity
+  parser evidence, or a new surface question; do not relabel the same momentum_ret_1
+  replay as a new candidate.
+do_not_repeat_note: Do not promote momentum_ret_1 score replay of preserved score
+  clues to L5/candidate/economics without new decision-policy evidence and tester
+  report/equity metrics.
+evidence_path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+storage_contract:
+  source_of_truth: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  registry_rows:
+  - docs/registers/negative_memory_registry.csv
+claim_boundary: negative_memory_no_candidate_no_economics_pass_no_runtime_authority

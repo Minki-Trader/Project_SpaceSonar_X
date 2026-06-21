@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: decision_replay_terminal_execution_attempted_for_prepared_attempts
+status: decision_replay_judgment_completed_no_l5_candidates
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -161,6 +161,25 @@ current_truth:
       completed_decision_replay_execution_telemetry_observed: 6
     result_judgment_counts:
       runtime_probe: 6
+  l4_decision_replay_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  l4_decision_replay_judgment_status: decision_replay_judgment_completed_no_l5_candidates
+  l4_decision_replay_judgment_counts:
+    cell_pair_count: 3
+    negative_count: 3
+    candidate_count: 0
+    l5_candidate_count: 0
+    tester_log_pair_observed_count: 3
+    tester_report_pair_observed_count: 0
+    loss_in_both_periods_count: 3
+    open_action_count: 39598
+    close_action_count: 11727
+    result_judgment_counts:
+      negative: 3
+    l5_routing_status_counts:
+      no_l5_decision_replay_loss_observed: 3
+    final_balance_pair_class_counts:
+      loss_in_validation_and_research_oos: 3
+  l4_decision_replay_negative_memory: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -266,87 +285,72 @@ branch_worktree:
   branch_worktree_fit: fit
   branch_action: keep_current_branch
   policy_reference: docs/policies/branch_policy.md
-  mismatch_claim_effect: no_branch_mismatch_detected_for_decision_replay_adapter_preparation
+  mismatch_claim_effect: no_branch_mismatch_detected_for_decision_replay_judgment
 agent_allocation:
-  phase: wave0_l4_ingredient_materialization
+  phase: wave0_l4_decision_replay_judgment
   selected_agents: []
   role_modes: []
-  selection_reason: Deterministic materialization of already judged preserved clues;
-    no protected claim, promotion, or policy change required.
-  why_not_smaller: Codex alone is the smallest allocation for registry/card materialization.
-  why_not_larger: No runtime authority, reviewed/pass, promotion, or cross-system
-    handoff claim is being made.
+  selection_reason: Deterministic evidence judgment over executed MT5 decision replay
+    attempts; no protected promotion or policy change required.
+  why_not_smaller: Codex alone is the smallest allocation for evidence aggregation
+    and registry sync.
+  why_not_larger: No runtime authority, economics pass, reviewed/pass, promotion,
+    or cross-system handoff claim is being made.
   max_threads_is_capacity_only: true
   claim_effect: no_new_advisory_claim
 execution_provenance:
-  git_sha: f0eeb1d694d561cab6931c62ddf0a0a6df122568
+  git_sha: a692d242fa5f674fe6919b6cc8a2193ea767be73
   branch: codex/l4-pair-judgment-closeout
   dirty_flag: true
   changed_files:
   - M docs/registers/artifact_registry.csv
-  - ' M docs/registers/goal_registry.csv'
-  - ' M docs/workspace/workspace_state.yaml'
-  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
-  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
-  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
-  - ?? foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
-  - ?? foundation/mt5/score_replay_decision_adapter.py
-  - ?? foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_index.csv
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_adapter_preparation_v0_closeout.yaml
-  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/
-  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/
-  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/
-  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/
-  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/
-  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/
-  - ?? tests/test_score_replay_decision_adapter.py
+  - ' M docs/registers/negative_memory_registry.csv'
+  - ?? foundation/pipelines/judge_wave0_l4_decision_replay_results.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_index.csv
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
+  - ?? lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  - ?? tests/test_wave0_l4_decision_replay_judgment.py
   command_argv:
   - python
-  - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
-  - --write-records
+  - foundation/pipelines/judge_wave0_l4_decision_replay_results.py
+  - --write-control-records
   python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
   python_version: 3.13.9
   key_package_versions:
     python: 3.13.9
     yaml: 6.0.3
-  started_at_utc: '2026-06-21T20:44:04Z'
-  ended_at_utc: '2026-06-21T20:44:04Z'
+  started_at_utc: '2026-06-21T21:17:09Z'
+  ended_at_utc: '2026-06-21T21:17:09Z'
   input_hashes:
-  - path: docs/registers/ingredient_card_registry.csv
-    sha256: 8584ffdbd4cff4d4307d93aea3c5706df23c3c62f99bd5a5acc2c0cf86f094c4
-    size_bytes: 5304
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_index.csv
+    sha256: b274586f4c6b7483a1f018ccde7b86fafcfaa0db9a1321337b2f052b8b720441
+    size_bytes: 6992
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
+    sha256: 1555e00b07345d9ffce49c8671e9261aea0bf8dda62405f0eca4912d5f237ccd
+    size_bytes: 10234
     availability: present_hash_recorded
   - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
     sha256: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
     size_bytes: 9149
     availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_index.csv
-    sha256: c773fe9b9ff6797e08aebeb9015f055c3cbecb9ea7e85f1f4e1a965cc41c5286
-    size_bytes: 18621
-    availability: present_hash_recorded
   output_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
-    sha256: f57b8ae49f01a8a91a219f710688e0b2095d5203232cde37a556b1bc9b2c5e8f
-    size_bytes: 5222
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+    sha256: 0017becbc2337a6f4ab612b9f614a8950c36392f513729c3224f831903a9f71c
+    size_bytes: 4836
     availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_index.csv
-    sha256: 076a48c4df7bfb864ed7a61b33934d099f38c81499edd2cb18ee9edeb81bd19d
-    size_bytes: 6171
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_index.csv
+    sha256: 3127cefa32570e3856787e9a92927d6ac61860a3d8100939d59bca66753ecd4f
+    size_bytes: 7644
     availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
-    sha256: 562e2f2d1d00ca47a5b21f16c6fd5ae8106ae6b5f9122b5f398a09f278dbba27
-    size_bytes: 1019
+  - path: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+    sha256: 57dc1473a063b76cd8a23ef2b1593dd1a30aab38b2f59a9b034a551d2ecc9dc1
+    size_bytes: 1704
     availability: present_hash_recorded
-  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_adapter_preparation_v0_closeout.yaml
-    sha256: 6fbb402cbe9e66d014fff1272488a9f2635913bbf00020a1a4ded7f18c4c49ec
-    size_bytes: 1582
-    availability: present_hash_recorded
-  - path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
-    sha256: 986c35990b6a0fcb6e2d36a1e4af566d87e1a67e3e20157a744c7e69519b0495
-    size_bytes: 9861
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_judgment_v0_closeout.yaml
+    sha256: 323ec0b15c4cf2c91ff588b89caff76d2842ba2e3cd7681f9433620b4d9d37a9
+    size_bytes: 1977
     availability: present_hash_recorded
   unknown_git_claim_effect: not_applicable_git_state_recorded_claim_still_lowered_no_runtime_authority
 forbidden_claims:
@@ -359,6 +363,10 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_material_if_relevant:
-- tester_report_export_or_tester_log_economics_parser_pending
-next_action: judge sparse decision surfaces from execution telemetry and tester log
-  summaries; no economics pass until report/equity parser evidence exists
+- tester_reports_missing_for_all_decision_replay_pairs
+- equity_curve_missing
+- pf_dd_trade_list_metrics_missing
+- locked_final_oos_b_not_used
+next_action: Record negative memory, keep candidate count at zero, and rotate to a
+  new multi-axis surface or a genuinely new decision-policy question. Do not continue
+  momentum_ret_1 score replay to L5.

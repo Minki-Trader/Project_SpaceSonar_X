@@ -2,7 +2,7 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-21T21:04:47Z'
+updated_at_utc: '2026-06-21T21:17:09Z'
 claim_boundary: planning_scaffold_active_goal_control_plane
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -59,7 +59,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_operating_proof_window_decision_replay_terminal_execution_attempted
+active_phase: wave01_operating_proof_window_decision_replay_judgment_completed
 active_ids:
   idea_id: idea_us100_m5_blank_slate_surface_map_v0
   hypothesis_id: hyp_surface_diversity_before_model_search_v0
@@ -314,6 +314,26 @@ program_budgets:
         completed_decision_replay_execution_telemetry_observed: 6
       result_judgment_counts:
         runtime_probe: 6
+    l4_decision_replay_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+    l4_decision_replay_judgment_status: decision_replay_judgment_completed_no_l5_candidates
+    l4_decision_replay_judgment_counts:
+      cell_pair_count: 3
+      negative_count: 3
+      candidate_count: 0
+      l5_candidate_count: 0
+      tester_log_pair_observed_count: 3
+      tester_report_pair_observed_count: 0
+      loss_in_both_periods_count: 3
+      open_action_count: 39598
+      close_action_count: 11727
+      result_judgment_counts:
+        negative: 3
+      l5_routing_status_counts:
+        no_l5_decision_replay_loss_observed: 3
+      final_balance_pair_class_counts:
+        loss_in_validation_and_research_oos: 3
+    negative_memory_ids:
+    - neg_wave0_decision_replay_momentum_ret_1_loss_v0
 goal_achieve_state:
   complete_state: codex_operating_system_stable_through_Wave01_closeout
   requires:
