@@ -53,6 +53,7 @@ Wave/campaign ownership rule:
 - Campaign source-of-truth folders stay in central `lab/campaigns/<campaign_id>/`.
 - Do not create `lab/waves/<wave_id>/campaigns/<campaign_id>/` as a second source of truth.
 - Use `campaign_refs.csv` and `campaign.wave_ids` to bind central campaigns to waves.
+- A wave or campaign must not become a long repair track for one candidate. Candidate-local fixes belong in bounded runs or sweeps. Repeated repair requires a reusable surface/divergence question, a new campaign, or closeout.
 
 Git integration cadence:
 
@@ -85,6 +86,7 @@ Git integration cadence:
 - Every valid proxy/model-bearing run must be driven to `L4_split_runtime_probe`; proxy-only closure is not an allowed endpoint.
 - If L4 still looks usable under the declared surface and execution profile, continue to `L5_candidate_runtime_evidence`.
 - A planned proxy surface must include an executable ONNX/EA/MT5 follow-through path. If it cannot be made executable, repair the surface before treating it as proxy evidence.
+- Repair is for interpretation, parity, execution, or prevention memory. It is not permission to keep one weak candidate alive through wave/campaign budget.
 - Parity is tracked per campaign from the first proxy-bearing run. Do not wait for a selected candidate before checking whether Python/proxy semantics, ONNX semantics, EA semantics, and MT5 tester semantics are still the same experiment.
 - Parity is not forced equality. When proxy and MT5 disagree, make at least one explicit reconciliation attempt, then either repair the contract or record the accepted difference with a prevention rule.
 - Failed hypotheses become `negative_memory`, `invalid_setup`, `blocked_retry`, or `inconclusive` records with salvage value and reopen conditions.
@@ -156,6 +158,7 @@ Stop, narrow, repair, or lower the claim when:
 - ONNX export or parity breaks
 - trade density is too sparse or too dense for the decision use
 - repeated work is only micro-tuning without a new surface clue
+- a single candidate consumes repeated repair budget without producing reusable surface knowledge, parity prevention memory, or a divergence hypothesis
 
 ## Required Run Fields
 

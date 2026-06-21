@@ -56,5 +56,8 @@ Formal review is only for:
 - Agent consensus is not evidence.
 - Self-review is not Task Force review.
 - Stale agent output is not review evidence.
+- Do not follow agent advice verbatim. Parent Codex must source-check advice against current repo files, selected skills, active workspace state, and user constraints before accepting it.
+- If an agent did not read the relevant source-of-truth file or was spawned without full context, classify its output as advisory hypothesis only.
+- If advice conflicts with project definitions, reject or rewrite it; do not bend project terms to match the advice.
 - Legacy external reviews have no active or archive path in this workspace.
 - Codex owns final direction after local verification.

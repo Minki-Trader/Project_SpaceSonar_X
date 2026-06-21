@@ -29,3 +29,9 @@ Purpose: keep Task Force usage active and phase-driven without treating agent ag
 Agent receipts must record selected agents, role modes, selection reason, why the route was not smaller, why it was not larger, critical agents not selected, not-selected claim effect, and claim boundary.
 
 Agent output is advisory only. Codex owns final direction after local verification.
+
+## Acceptance Gate
+
+Parent Codex must not accept agent advice verbatim. Before using it, Codex records whether repo source-of-truth files, selected skill rules, active workspace state, and user constraints were checked.
+
+If advice conflicts with active project definitions, Codex rejects or rewrites the advice and records the conflict boundary. Agent consensus cannot override source-of-truth files.

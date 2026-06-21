@@ -7,6 +7,11 @@ hypothesis_ids: []
 objective: ""
 axis_tags: []
 surface_policy: broad_first
+candidate_repair_policy:
+  allowed_scope: bounded_run_or_sweep_only
+  max_repeated_candidate_repairs_without_new_surface_clue: 1
+  repeated_repair_action: close_or_open_new_surface_or_divergence_campaign
+  forbidden_use: long_candidate_extension_inside_wave_or_campaign
 storage_contract:
   source_of_truth: lab/campaigns/<campaign_id>/campaign_manifest.yaml
   wave_campaign_refs: []

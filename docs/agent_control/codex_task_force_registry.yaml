@@ -67,6 +67,10 @@ review_policy:
     - rejected
     - needs_local_verification
   final_authority: "Parent Codex owns final direction after local verification."
+  source_of_truth_precedence_rule: "Repo source-of-truth files, selected skills, active workspace state, and user constraints override sub-agent advice."
+  no_verbatim_adoption_rule: "Parent Codex must not adopt sub-agent recommendations verbatim without source-checking against active project definitions and rules."
+  context_gap_rule: "If forked context is false or relevant files were not read by the agent, classify the output as advisory hypothesis only."
+  conflict_handling_rule: "When advice conflicts with source-of-truth definitions, reject or rewrite the advice and record the conflict boundary; do not reinterpret project terms to fit the advice."
   autonomy_rule: "Agent prompts must ask for independent inspection, disagreements, risks, missing evidence, and recommended actions; do not ask agents to confirm a preselected answer."
   context_rule: "Because forked context is not reliable, prompts must include enough objective, workspace, active-file, constraint, and forbidden-assumption context for independent work."
   passive_agreement_rule: "A response that only agrees without evidence, risk review, or local reasoning is advisory noise and must not be treated as review evidence."
@@ -99,6 +103,12 @@ micro_consult_receipt_schema:
     - allowed_claim_effect
     - forbidden_claims
   allowed_claim_effect: advisory_only_no_reviewed_pass
+  required_owner_checks:
+    - source_of_truth_files_checked
+    - project_definition_conflicts_checked
+    - selected_skill_rules_checked
+    - user_constraints_checked
+    - owner_accept_reject_or_rewrite_decision
 
 roster:
   - id: agent_01_system_governor

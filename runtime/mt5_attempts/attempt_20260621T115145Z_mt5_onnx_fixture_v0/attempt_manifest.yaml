@@ -103,14 +103,14 @@ execution_identity:
 artifact_identity:
   ea_entrypoint:
     path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5
-    sha256: e5f4931844548f7844fea3980dc816ef40c8feea0d998fefb7bec2219c4ff93a
+    sha256: 754396ab5f7a74ab001b11b489faabf5debe6195f18820cefbfd41e6e0dab7f1
   include_modules: []
   set_file:
     path: runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/tester_config.ini
     sha256: d545ca71cc2da652ea66f84970ff39bf0251912f0da1c4c0358def18b93e9978
   bundle:
     path: runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/experiment_bundle.json
-    sha256: 789579cd8e7ea10b75b9ab7c4b3d5b6b3b02134a6937d417e7711454eaa0c23e
+    sha256: 4b85c966f2f6933f796201478733af50da4de74d83e3bb63beb7ecabd9e81d7a
   tester_reports:
   - path: runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/telemetry/mt5_probe_output.csv
     sha256: 489fa03e8ec4dea0b5a033f4feeb9a9d7ef257656780ac6d7ead9fca7ac1c354
@@ -146,7 +146,7 @@ artifact_identity:
       path_boundary: redacted_local_context_only
   ea_binary:
     path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.ex5
-    sha256: 75588032ce3918ad75cb2a249333e837c7d667131fad22243e3e3fbc58a7179e
+    sha256: b1ff5ca1ddf172174fb9ebcde346fb9045740bea60e93486555e71cb58a6ecc3
   compile_log:
     path: runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/compile.log
     sha256: 7d915ca86187ee6c30e478b2e7f2362b61c42b1adf67800d85f8e7a793d41d7e
@@ -186,8 +186,7 @@ missing_evidence:
 - handle_release_log
 - compile_terminal_exit_code_provenance
 - clean_commit_superseding_rerun
-next_action: supersede with clean orchestrated prepare/compile/terminal-run/closeout
-  rerun
+next_action: supersede with clean orchestrated prepare/compile/terminal-run/closeout rerun
 evidence_debt:
   status: acknowledged_claim_blocking_until_clean_superseding_rerun
   items:

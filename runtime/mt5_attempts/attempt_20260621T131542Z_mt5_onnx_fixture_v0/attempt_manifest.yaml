@@ -90,14 +90,14 @@ execution_identity:
 artifact_identity:
   ea_entrypoint:
     path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5
-    sha256: 10e406ca80b5304b441d7549523671beda87c911c857d3138af840ffc772133d
+    sha256: 754396ab5f7a74ab001b11b489faabf5debe6195f18820cefbfd41e6e0dab7f1
   include_modules: []
   set_file:
     path: runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/tester_config.ini
     sha256: d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0
   bundle:
     path: runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/experiment_bundle.json
-    sha256: a42e9432b1b1ae3feebcc39a466b1feee3c7850eaba2e8a44a9d410529b270fd
+    sha256: 43984cb5518961622070ff543cd2fde25337d410cef3fedb801f7f1c222ccc25
   tester_reports: []
   common_files:
     model.onnx:
@@ -153,8 +153,7 @@ forbidden_claims:
 - live_readiness
 - goal_achieve
 missing_evidence: []
-next_action: none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics
-  or runtime authority
+next_action: none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics or runtime authority
 compile_provenance:
   command_argv_redacted:
   - ${PROGRAMFILES}\MetaTrader 5\MetaEditor64.exe
@@ -180,8 +179,8 @@ compile_provenance:
     compile_warnings: 0
   ea_source:
     path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5
-    sha256: 10e406ca80b5304b441d7549523671beda87c911c857d3138af840ffc772133d
-    size_bytes: 7847
+    sha256: 754396ab5f7a74ab001b11b489faabf5debe6195f18820cefbfd41e6e0dab7f1
+    size_bytes: 7941
   ea_binary:
     path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.ex5
     sha256: b1ff5ca1ddf172174fb9ebcde346fb9045740bea60e93486555e71cb58a6ecc3

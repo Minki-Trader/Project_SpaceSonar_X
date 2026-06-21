@@ -171,8 +171,12 @@ fields:
       - why_not_smaller
       - why_not_larger
       - max_threads_is_capacity_only
+      - source_of_truth_files_checked
+      - selected_skill_rules_checked
+      - user_constraints_checked
+      - owner_accept_reject_or_rewrite_decision
       - claim_effect
-    rule: "Agent use is phase-driven and advisory unless a protected formal review is explicitly required."
+    rule: "Agent use is phase-driven and advisory unless a protected formal review is explicitly required. Parent Codex must source-check advice before adoption and must reject or rewrite conflicting advice."
 
   execution_provenance:
     required_fields:

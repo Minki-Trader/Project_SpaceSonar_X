@@ -21,6 +21,9 @@ git_integration:
 budget:
   max_runs: null
   max_wallclock_hours: null
+  max_repairs_per_surface: 1
+  max_total_repairs_fraction: 0.15
+  repair_budget_policy: bounded_surface_or_parity_repair_only_not_single_candidate_extension
 fixed_controls:
   base_symbol: US100
   timeframe: M5
@@ -31,5 +34,8 @@ sampling_plan:
   mode: mixed
   notes: ""
 campaign_allocations: []
+rotation_conditions:
+  - rotate_if_candidate_local_repairs_repeat_without_reusable_surface_clue
+  - open_divergence_campaign_if_repair_reveals_proxy_runtime_semantics_gap
 stop_conditions: []
 notes: ""

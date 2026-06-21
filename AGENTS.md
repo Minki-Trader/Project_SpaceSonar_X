@@ -59,6 +59,7 @@ Every non-trivial work item chooses exactly one `primary_family` and one `primar
 - indexes only: `docs/registers/`
 
 Wave owns allocation and refs only. Campaign folders stay central under `lab/campaigns/`; do not duplicate them under waves.
+Wave/campaign scope must not become a long repair room for one candidate. Small repair attempts are bounded run/sweep work; if a repair does not reveal a reusable surface clue, close it as negative, invalid, inconclusive, or preserved clue and rotate.
 
 ## Code Layout
 
@@ -101,6 +102,7 @@ Unknown git/env identity is planning scaffold only; it lowers reproducible-run, 
 - Required follow-through: reach `L4_split_runtime_probe` under active period/execution profiles.
 - If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
 - If a surface cannot be made MT5-executable, repair it before treating proxy output as evidence.
+- Do not stretch a wave or campaign around repeated tiny repairs for one candidate. One bounded repair can create prevention memory; repeated repair needs a new surface question, divergence campaign, or closeout.
 - Campaigns must maintain `proxy_runtime_parity`: shared contract, known differences, MT5 risks, one reconciliation attempt, unit semantics, comparison class, divergence judgment, prevention memory, follow-up.
 - Parity does not mean forced equality. Record genuine MT5 unit/execution differences as prevention memory.
 - Samples/previews/diagnostic rows support learning only; they cannot create runtime authority, economics pass, materialization-ready, or handoff-complete claims.
@@ -130,6 +132,9 @@ Forbidden without matching evidence:
 
 - Codex owns final judgment.
 - Micro-consult is advisory only.
+- Never adopt sub-agent advice verbatim. Before using it, compare it against repo source-of-truth files, project rules, selected skills, current workspace state, and user constraints.
+- If agent advice conflicts with source-of-truth files or active project definitions, reject or revise the advice and record the conflict boundary.
+- When a delegated agent lacks forked context or did not read the relevant source files, treat its output as hypothesis/advice only, not project truth.
 - Agent roles are proactive modes: `scout`, `design`, `preflight`, `adversarial_check`, `evidence_check`, `runtime_check`, `closeout_check`.
 - `.codex/config.toml` `max_threads` is capacity only; actual agent count is phase-driven.
 - Formal Task Force review only for policy change, runtime authority, operating promotion, cross-system handoff, or protected reviewed/verified/pass claims.

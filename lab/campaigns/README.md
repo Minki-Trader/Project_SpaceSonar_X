@@ -14,3 +14,5 @@ Preferred shape:
 - `surfaces/<surface_id>/sweeps/<sweep_id>/run_refs.csv`: references to run-local evidence under `lab/runs/<run_id>/`.
 
 Campaigns allocate and organize experiments. They do not contain durable proof by themselves.
+
+A campaign is not a parking place for one candidate's endless repairs. Candidate-local fixes must stay bounded to a run or sweep. If the fix does not generalize into a surface clue, parity rule, prevention memory, or divergence hypothesis, close it and rotate.
