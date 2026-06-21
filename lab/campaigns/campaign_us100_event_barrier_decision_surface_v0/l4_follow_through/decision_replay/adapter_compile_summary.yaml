@@ -1,0 +1,27 @@
+version: wave01_decision_replay_adapter_compile_summary_v1
+summary_id: wave01_decision_replay_adapter_compile_summary_v0
+created_at_utc: '2026-06-21T23:37:02Z'
+status: ea_binary_available
+claim_boundary: ea_compile_evidence_only_not_strategy_tester_output
+ea_source:
+  path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+  sha256: bf581be01427668605619ef9f010e5d82a015d0501f4db3186ddec354f9da4cc
+  size_bytes: 11542
+  availability: present_hash_recorded
+ea_binary:
+  path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+  sha256: bb76cdf82bc1f24205f8b10b8a7bfc82c0d19fdb77d28656df19f7d2063f9b4b
+  size_bytes: 41046
+  availability: local_binary_hash_recorded_ignored_by_git
+compile_log:
+  path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_compile.log
+  sha256: 4699b9822af612ddbac5f0da100c86ed9f4e159395c6e92e6401dbc067f83317
+  size_bytes: 7192
+  compile_errors: 0
+  compile_warnings: 0
+  exists_at_generation: true
+  availability: local_ignored_not_committed_contains_absolute_paths
+raw_log_policy: not_committed_because_MetaEditor_log_contains_local_absolute_paths
+compile_result: compile_success_derived_from_log_and_binary
+compile_success_derived_from_log_and_binary: true
+missing_evidence: []

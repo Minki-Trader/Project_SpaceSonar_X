@@ -1,6 +1,6 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-21T23:15:21Z'
+updated_at_utc: '2026-06-21T23:37:02Z'
 cursor_state: active
 active_phase: wave01_campaign_002_proxy_executed_l4_required
 current_truth_sources:
@@ -18,18 +18,22 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
 - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_pair_judgment_v0_closeout.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0_closeout.yaml
 active_ids:
   wave_id: wave_us100_closedbar_surface_cartography_v0
   campaign_id: campaign_us100_event_barrier_decision_surface_v0
   surface_id: surface_us100_event_barrier_decision_surface_v0
   sweep_id: sweep_us100_event_barrier_broad_v0
 latest_completed_work:
-  work_item_id: work_wave01_event_barrier_l4_pair_judgment_v0
+  work_item_id: work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0
   result_judgment: runtime_probe
-  claim_boundary: wave01_event_barrier_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+  claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_pair_judgment_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0_closeout.yaml
 next_work_item:
   work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

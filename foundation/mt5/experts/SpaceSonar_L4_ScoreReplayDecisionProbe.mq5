@@ -3,7 +3,7 @@
 //| Replays MT5 score telemetry into sparse tester trades.            |
 //+------------------------------------------------------------------+
 #property strict
-#property version   "1.00"
+#property version   "1.01"
 #property description "Score-telemetry replay EA for sparse decision-execution probing."
 
 #include <Trade/Trade.mqh>
@@ -14,6 +14,7 @@ input bool   InpUseCommonFiles          = true;
 input string InpDecisionFamily          = "";
 input string InpDirectionPolicy         = "momentum_ret_1";
 input double InpScoreHigh               = 0.0;
+input double InpScoreLow                = 0.0;
 input double InpFixedLot                = 0.02;
 input int    InpHoldBars                = 1;
 input bool   InpCloseOnFlat             = true;
@@ -120,13 +121,57 @@ string DirectionFromPolicy()
       return (ret1 >= 0.0 ? "long" : "short");
    if(InpDirectionPolicy == "contrarian_ret_1")
       return (ret1 >= 0.0 ? "short" : "long");
+   if(InpDirectionPolicy == "score_band_side")
+      return "flat";
    return "flat";
+}
+
+bool IsScoreBandDirectionalFamily()
+{
+   if(InpDecisionFamily == "abstain_band_with_barrier_exit")
+      return true;
+   if(InpDecisionFamily == "breakout_entry_abstain_timeout_exit")
+      return true;
+   if(InpDecisionFamily == "reversal_entry_abstain_timeout_exit")
+      return true;
+   if(InpDecisionFamily == "mean_reversion_abstain_barrier_exit")
+      return true;
+   if(InpDecisionFamily == "sparse_event_abstain_barrier_exit")
+      return true;
+   if(InpDecisionFamily == "fast_event_abstain_timeout_exit")
+      return true;
+   if(InpDecisionFamily == "session_gated_abstain_barrier_exit")
+      return true;
+   if(InpDecisionFamily == "range_edge_abstain_timeout_exit")
+      return true;
+   return false;
+}
+
+bool IsDiagnosticOrNoTradeFamily()
+{
+   if(InpDecisionFamily == "diagnostic_rank_only")
+      return true;
+   if(InpDecisionFamily == "no_trade_vs_fast_event_abstain")
+      return true;
+   if(InpDecisionFamily == "no_trade_regime_filter")
+      return true;
+   if(InpDecisionFamily == "diagnostic_path_quality_no_trade_until_decision_surface")
+      return true;
+   return false;
 }
 
 string ExecutionSignal(const string source_decision, const double score)
 {
    const string decision = source_decision;
-   if(InpDecisionFamily == "diagnostic_rank_only")
+   if(IsScoreBandDirectionalFamily())
+   {
+      if(score >= InpScoreHigh)
+         return "long";
+      if(score <= InpScoreLow)
+         return "short";
+      return "flat";
+   }
+   if(IsDiagnosticOrNoTradeFamily())
       return "flat";
    if(InpDecisionFamily == "abstain_capable_long_short")
    {

@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T23:15:21Z'
+updated_utc: '2026-06-21T23:37:02Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -63,7 +63,7 @@ current_claims:
   active_hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
   active_surface_id: surface_us100_event_barrier_decision_surface_v0
   active_sweep_id: sweep_us100_event_barrier_broad_v0
-  active_goal_phase: wave01_event_barrier_l4_pair_judgment_completed_decision_adapter_required
+  active_goal_phase: wave01_event_barrier_l4_decision_replay_adapter_prepared_terminal_execution_next
   next_work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
@@ -404,6 +404,25 @@ current_claims:
     comparison_class_counts:
       proxy_inconclusive_runtime_score_observed: 4
       proxy_preserved_clue_runtime_score_observed: 8
+  wave01_event_barrier_l4_decision_replay_adapter_preparation_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  wave01_event_barrier_l4_decision_replay_adapter_preparation_status: wave01_decision_replay_adapter_attempts_prepared_terminal_execution_next
+  wave01_event_barrier_l4_decision_replay_adapter_preparation_counts:
+    preserved_clue_count: 8
+    direct_trade_adapter_eligible_cell_count: 5
+    not_direct_trade_adapter_eligible_cell_count: 3
+    prepared_attempt_count: 10
+    period_role_counts:
+      research_oos: 5
+      validation: 5
+    decision_family_counts:
+      breakout_entry_abstain_timeout_exit: 2
+      fast_event_abstain_timeout_exit: 2
+      range_edge_abstain_timeout_exit: 2
+      session_gated_abstain_barrier_exit: 2
+      sparse_event_abstain_barrier_exit: 2
+    eligibility_reason_counts:
+      eligible_score_band_directional_adapter: 5
+      requires_new_decision_surface_not_direct_trade_adapter: 3
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

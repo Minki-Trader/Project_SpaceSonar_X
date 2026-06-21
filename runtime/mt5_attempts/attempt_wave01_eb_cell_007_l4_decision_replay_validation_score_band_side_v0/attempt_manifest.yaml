@@ -1,0 +1,144 @@
+version: mt5_attempt_manifest_v1
+attempt_id: attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0
+parent_score_attempt_id: attempt_wave01_eb_cell_007_l4_validation_v0
+adapter_id: score_replay_sparse_decision_adapter_v0
+run_id: onnxlab_wave01_eb_cell_007_event_barrier_surface_v0
+cell_id: wave01_eb_cell_007
+bundle_id: bundle_wave01_eb_cell_007_l4_onnx_export_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0
+created_at_utc: '2026-06-21T23:37:02Z'
+status: prepared_pending_terminal_execution
+claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+source_of_truth: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  required_runtime_level: score_band_decision_replay_probe_before_L5
+  reason: Wave01 preserved clue has a declared directional score-band decision surface;
+    score telemetry must be replayed into MT5 sparse orders before any L5 candidate
+    claim.
+  lowered_claim_if_not_run: decision_replay_adapter_preparation_only_no_runtime_authority_no_economics_pass
+period_identity:
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: validation
+  from_date: 2024.06.05
+  to_date: 2025.03.10
+  locked_final_oos_b: excluded_forbidden_by_default
+execution_identity:
+  execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  symbol: US100
+  timeframe: M5
+  sizing_policy:
+    fixed_lot: 0.02
+    source: configs/mt5/tester_execution_profile_v0.yaml
+  score_replay_not_onnx_execution: true
+runtime_surface_contract:
+  surface_scope: full_period_sparse_decision_surface_from_mt5_score_telemetry
+  source_score_telemetry_common_path: SpaceSonar\l4_score_probe\attempt_wave01_eb_cell_007_l4_validation_v0\score_telemetry.csv
+  source_score_attempt_manifest: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/attempt_manifest.yaml
+  decision_family: fast_event_abstain_timeout_exit
+  decision_execution_kind: score_band_directional
+  direction_policy: score_band_side
+  score_low_threshold: 0.774300467967987
+  score_high_threshold: 1.145575761795044
+  hold_bars: 3
+  decision_output: score_ge_high_long_score_le_low_short_otherwise_flat
+  forbidden_interpretation: not_ONNX_runtime_authority_not_economics_pass_until_terminal_report_and_judgment_exist
+proxy_runtime_parity:
+  status: adapter_prepared_terminal_execution_pending
+  shared_contract:
+  - US100_M5_closed_bar_base_frame
+  - period_profile_split_set_v0
+  - us100_m5_fpmarkets_tester_execution_v0
+  - source_MT5_score_telemetry_full_period
+  - score_band_thresholds_from_experiment_bundle
+  known_differences:
+  - This adapter replays previously observed MT5 score telemetry and does not run
+    ONNX in the trading EA.
+  - Proxy score-band decision used gross future return; MT5 replay creates sparse
+    orders with tester fills and spread.
+  interpretation_drift_risks:
+  - bar_close_time_lookup_alignment
+  - score_low_high_threshold_translation
+  - hold_bars_exit_semantics
+  - tester_fill_cost_spread_lot_rounding
+  minimum_reconciliation_attempt:
+    status: prepared
+    attempt: score telemetry bar_close_time will be replayed into score-band sparse
+      orders in MT5 terminal
+    forced_equality_required: false
+  unit_semantics:
+    score: single_float_score_from_prior_MT5_score_probe
+    high_threshold: 1.145575761795044
+    low_threshold: 0.774300467967987
+    side_mapping: score_ge_high_long_score_le_low_short
+    lot: fixed_lot_0.02
+    hold: 3_M5_closed_bars
+    point_tick_digits: to_be_recorded_from_tester_report
+  comparison_class: pending_terminal_execution
+  divergence_judgment: pending_terminal_execution
+  prevention_memory:
+  - Do not treat score telemetry as economics evidence.
+  - Do not convert diagnostic/no-trade clues into trades without a newly declared
+    decision surface.
+  - If score replay behavior differs from proxy score-band expectation, record threshold
+    and bar-close semantics before judging the surface.
+  follow_up_action: execute prepared Wave01 score-band decision replay attempts before
+    any L5/economics claim
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+artifact_identity:
+  ea_entrypoint:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+    sha256: bf581be01427668605619ef9f010e5d82a015d0501f4db3186ddec354f9da4cc
+    size_bytes: 11542
+    availability: present_hash_recorded
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+    sha256: bb76cdf82bc1f24205f8b10b8a7bfc82c0d19fdb77d28656df19f7d2063f9b4b
+    size_bytes: 41046
+    availability: local_binary_hash_recorded_ignored_by_git
+  bundle:
+    path: runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/experiment_bundle.json
+    sha256: e941c4d4f9743600a19b53988b482b8ddee0ab1581f4fb363e09aa305cfd99ce
+    size_bytes: 28678
+    availability: present_hash_recorded
+  source_score_attempt:
+    path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/attempt_manifest.yaml
+    availability: present_hash_recorded
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/tester_config.ini
+    sha256: e7fb838f2919afbe5f60e8769fea4696ca9dd3189a9eb7e7d7ed7dc6f7c8cd85
+    size_bytes: 1254
+    availability: present_hash_recorded
+required_gate_coverage:
+  passed:
+  - source_score_telemetry_observed
+  - decision_replay_adapter_source_created
+  - tester_config_prepared
+  - locked_final_excluded
+  missing:
+  - Strategy_Tester_terminal_execution
+  - tester_report_hash
+  - economics_metrics
+  not_applicable:
+  - locked_final_oos_b_access
+missing_evidence:
+- decision_replay_terminal_execution_not_run
+- tester_report_missing_until_terminal_execution
+- economics_metrics_missing_until_tester_report
+next_action: execute Wave01 score-band decision replay attempts; keep L5/economics
+  claims forbidden until reports and judgment exist
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

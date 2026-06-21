@@ -19,6 +19,15 @@ claim_classes:
     allowed_when:
       - some_required_artifacts_exist
       - at_least_one_required_artifact_missing
+  investigation_in_progress:
+    allowed_when:
+      - failure_or_support_gap_observed
+      - failure_disposition_gate_not_complete
+      - no_final_failure_disposition_claimed
+    forbidden_when:
+      - used_as_blocked_deferred_invalid_or_discarded_substitute
+      - used_to_skip_repo_controlled_repair_attempt
+      - used_to_claim_negative_result
   blocked:
     allowed_when:
       - failure_disposition_gate_recorded

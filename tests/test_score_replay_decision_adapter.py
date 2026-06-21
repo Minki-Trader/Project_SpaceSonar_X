@@ -8,7 +8,9 @@ from foundation.mt5.score_replay_decision_adapter import (
     ADAPTER_ID,
     CLAIM_BOUNDARY,
     attempt_id_for,
+    decision_family_execution_kind,
     direction_from_policy,
+    is_direct_trade_adapter_eligible,
     score_to_execution_signal,
 )
 from foundation.pipelines.prepare_wave0_l4_decision_replay_attempts import (
@@ -63,10 +65,60 @@ def test_diagnostic_surface_is_not_adapter_eligible() -> None:
     assert "diagnostic" in signal.reason
 
 
+def test_wave01_score_band_directional_surface_maps_high_low_to_side() -> None:
+    long_signal = score_to_execution_signal(
+        decision_family="breakout_entry_abstain_timeout_exit",
+        source_decision="unknown",
+        score=0.81,
+        score_low_threshold=0.25,
+        score_high_threshold=0.80,
+        direction_policy="score_band_side",
+    )
+    short_signal = score_to_execution_signal(
+        decision_family="breakout_entry_abstain_timeout_exit",
+        source_decision="unknown",
+        score=0.24,
+        score_low_threshold=0.25,
+        score_high_threshold=0.80,
+        direction_policy="score_band_side",
+    )
+    flat_signal = score_to_execution_signal(
+        decision_family="breakout_entry_abstain_timeout_exit",
+        source_decision="unknown",
+        score=0.50,
+        score_low_threshold=0.25,
+        score_high_threshold=0.80,
+        direction_policy="score_band_side",
+    )
+
+    assert long_signal.signal == "long"
+    assert short_signal.signal == "short"
+    assert flat_signal.signal == "flat"
+    assert decision_family_execution_kind("breakout_entry_abstain_timeout_exit") == "score_band_directional"
+    assert is_direct_trade_adapter_eligible("breakout_entry_abstain_timeout_exit") is True
+
+
+def test_wave01_no_trade_preserved_clue_requires_new_decision_surface() -> None:
+    signal = score_to_execution_signal(
+        decision_family="no_trade_regime_filter",
+        source_decision="unknown",
+        score=0.99,
+        score_low_threshold=0.10,
+        score_high_threshold=0.90,
+        direction_policy="score_band_side",
+    )
+
+    assert signal.signal == "flat"
+    assert is_direct_trade_adapter_eligible("no_trade_regime_filter") is False
+
+
 def test_policy_and_attempt_id_are_stable() -> None:
     assert direction_from_policy("contrarian_ret_1", 0.01).signal == "short"
     assert attempt_id_for("wave0_cell_011", "validation", "momentum_ret_1") == (
         "attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0"
+    )
+    assert attempt_id_for("wave01_eb_cell_002", "validation", "score_band_side") == (
+        "attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0"
     )
     assert ADAPTER_ID == "score_replay_sparse_decision_adapter_v0"
     assert "no_candidate" in CLAIM_BOUNDARY
@@ -117,6 +169,9 @@ def test_score_replay_ea_source_is_trade_adapter_not_onnx_probe() -> None:
     assert "#include <Trade/Trade.mqh>" in source
     assert "InpScoreTelemetryPath" in source
     assert "InpDirectionPolicy" in source
+    assert "InpScoreLow" in source
+    assert "breakout_entry_abstain_timeout_exit" in source
+    assert "score <= InpScoreLow" in source
     assert "ExtTrade.Buy" in source
     assert "ExtTrade.Sell" in source
     assert "OnnxRun" not in source

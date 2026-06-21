@@ -11,6 +11,27 @@ SUPPORTED_DIRECTION_POLICIES = (
     "short_only",
     "momentum_ret_1",
     "contrarian_ret_1",
+    "score_band_side",
+)
+SCORE_BAND_DIRECTIONAL_FAMILIES = frozenset(
+    {
+        "abstain_band_with_barrier_exit",
+        "breakout_entry_abstain_timeout_exit",
+        "reversal_entry_abstain_timeout_exit",
+        "mean_reversion_abstain_barrier_exit",
+        "sparse_event_abstain_barrier_exit",
+        "fast_event_abstain_timeout_exit",
+        "session_gated_abstain_barrier_exit",
+        "range_edge_abstain_timeout_exit",
+    }
+)
+NON_TRADE_DIAGNOSTIC_FAMILIES = frozenset(
+    {
+        "diagnostic_rank_only",
+        "no_trade_vs_fast_event_abstain",
+        "no_trade_regime_filter",
+        "diagnostic_path_quality_no_trade_until_decision_surface",
+    }
 )
 
 
@@ -33,6 +54,8 @@ def direction_from_policy(policy: str, ret_1: float | None = None) -> ExecutionS
         return ExecutionSignal("long", "direction_policy_long_only")
     if policy == "short_only":
         return ExecutionSignal("short", "direction_policy_short_only")
+    if policy == "score_band_side":
+        return ExecutionSignal("flat", "score_band_side_requires_score_thresholds")
     if ret_1 is None:
         return ExecutionSignal("flat", "ret_1_required_for_direction_policy")
     if policy == "momentum_ret_1":
@@ -42,6 +65,27 @@ def direction_from_policy(policy: str, ret_1: float | None = None) -> ExecutionS
     raise ValueError(f"unsupported direction policy: {policy}")
 
 
+def decision_family_execution_kind(decision_family: str) -> str:
+    family = str(decision_family).strip()
+    if family in SCORE_BAND_DIRECTIONAL_FAMILIES:
+        return "score_band_directional"
+    if family in NON_TRADE_DIAGNOSTIC_FAMILIES or "diagnostic_path_quality_no_trade" in family:
+        return "diagnostic_or_no_trade"
+    if family == "abstain_capable_long_short":
+        return "source_long_short"
+    if family == "abstain_capable_direction_agnostic_tradeability":
+        return "direction_policy_required"
+    return "unsupported"
+
+
+def is_direct_trade_adapter_eligible(decision_family: str) -> bool:
+    return decision_family_execution_kind(decision_family) in {
+        "score_band_directional",
+        "source_long_short",
+        "direction_policy_required",
+    }
+
+
 def score_to_execution_signal(
     *,
     decision_family: str,
@@ -49,13 +93,26 @@ def score_to_execution_signal(
     score: float,
     score_high_threshold: float,
     direction_policy: str,
+    score_low_threshold: float | None = None,
     ret_1: float | None = None,
 ) -> ExecutionSignal:
     family = str(decision_family).strip()
     decision = str(source_decision).strip().lower()
+    kind = decision_family_execution_kind(family)
 
-    if family == "diagnostic_rank_only":
-        return ExecutionSignal("flat", "diagnostic_rank_only_not_trade_adapter_eligible")
+    if kind == "score_band_directional":
+        if score_low_threshold is None:
+            return ExecutionSignal("flat", "score_low_threshold_required_for_score_band_side")
+        if score >= score_high_threshold:
+            return ExecutionSignal("long", "score_at_or_above_high_threshold")
+        if score <= score_low_threshold:
+            return ExecutionSignal("short", "score_at_or_below_low_threshold")
+        return ExecutionSignal("flat", "score_inside_abstain_band")
+
+    if kind == "diagnostic_or_no_trade":
+        if family == "diagnostic_rank_only":
+            return ExecutionSignal("flat", "diagnostic_rank_only_not_trade_adapter_eligible")
+        return ExecutionSignal("flat", "decision_family_not_direct_trade_adapter_eligible")
 
     if family == "abstain_capable_long_short":
         if decision in {"long", "short"}:
@@ -84,5 +141,9 @@ def direction_policy_slug(policy: str) -> str:
 
 
 def attempt_id_for(cell_id: str, period_role: str, direction_policy: str) -> str:
-    cell_fragment = str(cell_id).replace("wave0_", "")
+    raw_cell = str(cell_id)
+    if raw_cell.startswith("wave01_"):
+        cell_fragment = raw_cell.replace("wave01_", "", 1)
+        return f"attempt_wave01_{cell_fragment}_l4_decision_replay_{period_role}_{normalize_policy(direction_policy)}_v0"
+    cell_fragment = raw_cell.replace("wave0_", "", 1)
     return f"attempt_wave0_{cell_fragment}_l4_decision_replay_{period_role}_{normalize_policy(direction_policy)}_v0"

@@ -1,0 +1,110 @@
+version: wave01_event_barrier_l4_decision_replay_adapter_preparation_summary_v1
+summary_id: wave01_event_barrier_l4_decision_replay_adapter_preparation_v0
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0
+created_at_utc: '2026-06-21T23:37:02Z'
+status: wave01_decision_replay_adapter_attempts_prepared_terminal_execution_next
+adapter_id: score_replay_sparse_decision_adapter_v0
+claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+counts:
+  preserved_clue_count: 8
+  direct_trade_adapter_eligible_cell_count: 5
+  not_direct_trade_adapter_eligible_cell_count: 3
+  prepared_attempt_count: 10
+  period_role_counts:
+    research_oos: 5
+    validation: 5
+  decision_family_counts:
+    breakout_entry_abstain_timeout_exit: 2
+    fast_event_abstain_timeout_exit: 2
+    range_edge_abstain_timeout_exit: 2
+    session_gated_abstain_barrier_exit: 2
+    sparse_event_abstain_barrier_exit: 2
+  eligibility_reason_counts:
+    eligible_score_band_directional_adapter: 5
+    requires_new_decision_surface_not_direct_trade_adapter: 3
+source_records:
+  pair_judgment_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  score_attempt_preparation_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+  runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
+  period_profile: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+artifact_paths:
+  summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  attempt_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  eligibility_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  compile_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/adapter_compile_summary.yaml
+  closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  ea_source: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+judgment:
+  result_subject: Wave01 preserved-clue score-band decision replay adapter preparation
+  judgment_label: runtime_probe
+  metric_identity: no performance metric; adapter/config preparation only
+  comparison_baseline: Wave01 paired L4 score telemetry preserved clues
+  claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+  missing_evidence:
+  - decision_replay_terminal_execution_not_run
+  - tester_reports_missing_until_execution
+  - economics_metrics_missing_until_tester_report
+  - diagnostic_or_no_trade_preserved_clues_require_new_decision_surface_before_trade_replay
+  next_action: execute prepared Wave01 score-band decision replay attempts, then judge
+    validation/research_oos pairs before any L5 claim
+prevention_memory:
+- Do not defer because a decision replay adapter is missing; build the smallest repo-controlled
+  adapter first.
+- Do not force diagnostic/no-trade preserved clues into orders without a newly declared
+  decision surface.
+- Score-band side mapping is score >= high -> long, score <= low -> short, otherwise
+  flat.
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: ada242f58af6db5ca0e9cbddec8b8aa08ebc6991
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M docs/agent_control/claim_vocabulary.yaml
+  - ' M docs/policies/result_judgment_policy.md'
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5'
+  - ' M foundation/mt5/score_replay_decision_adapter.py'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ' M tests/test_score_replay_decision_adapter.py'
+  - ?? foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/
+  - ?? tests/test_wave01_event_barrier_l4_decision_replay_preparer.py
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
