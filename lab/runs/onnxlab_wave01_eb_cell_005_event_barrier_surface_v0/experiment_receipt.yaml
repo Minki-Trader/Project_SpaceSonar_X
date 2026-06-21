@@ -62,14 +62,63 @@ agent_allocation:
   max_threads_is_capacity_only: true
   claim_effect: advisory_only_no_reviewed_pass
 provenance:
-  git_sha: ac9880d8ffe0b86d27b43ad1cbd89eff8c091b0b
+  git_sha: 673b3d56273e7bc8bd209fe2857d048691734abe
   branch: codex/l4-pair-judgment-closeout
   dirty_flag: dirty
   changed_files:
-  - ?? lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/
-  - ?? lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/
-  - ?? lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/
-  - ?? lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/
+  - M docs/registers/artifact_registry.csv
+  - M docs/registers/goal_registry.csv
+  - M docs/workspace/workspace_state.yaml
+  - M foundation/training/wave01_event_barrier_models.py
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifact_lineage.json
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/model_summary.json
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/experiment_receipt.yaml
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/metrics.json
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  - M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/run_manifest.json
+  - M lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/experiment_receipt.yaml
+  - M lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/run_manifest.json
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifact_lineage.json
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/model_summary.json
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/experiment_receipt.yaml
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/metrics.json
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  - M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/run_manifest.json
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifact_lineage.json
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/model_summary.json
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/experiment_receipt.yaml
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/metrics.json
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  - M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/run_manifest.json
+  - M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/model_summary.json
+  - M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv
+  - M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  - ?? foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_onnx_materialization_v0_closeout.yaml
+  - ?? runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/
+  - ?? tests/test_wave01_event_barrier_l4_onnx_materializer.py
   command_argv:
   - foundation\pipelines\run_wave01_event_barrier_proxy_batch.py
   - --expected-branch
@@ -83,8 +132,8 @@ provenance:
     pandas: 2.3.3
     sklearn: 1.8.0
     yaml: 6.0.3
-  started_at_utc: '2026-06-21T22:13:57.349181Z'
-  ended_at_utc: '2026-06-21T22:13:59.758714Z'
+  started_at_utc: '2026-06-21T22:29:35.684151Z'
+  ended_at_utc: '2026-06-21T22:29:38.353975Z'
   input_hashes:
   - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs/wave01_eb_cell_005.yaml
     sha256: 535eb35f40c6770a3cf5535d06174c82b446d677515b07e5f950e046c1f548f0
@@ -136,7 +185,7 @@ provenance:
     size_bytes: 1591
     availability: present_hash_recorded
   - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/model_summary.json
-    sha256: 51c72725e206e9bebc8349e967be95669273e9361ffca87e0ef8150898e0ebef
+    sha256: 3a0517eed35d3bc3217167f60ea28ad6d99306a1554a91c8488a53636b56db1e
     size_bytes: 991
     availability: present_hash_recorded
   - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/split_profile.json
@@ -144,16 +193,16 @@ provenance:
     size_bytes: 651
     availability: present_hash_recorded
   - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv
-    sha256: afe8e3a4756231b76849a3a4bd6ee611c59fdb40e3274994f3ed3ead5a372ddf
-    size_bytes: 52414
+    sha256: 5fe3153d78ad005e11278b639379cf97b073ce57a2d596ee87371ed5eccae904
+    size_bytes: 52417
     availability: present_hash_recorded
   - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv
-    sha256: 40d6406b6383697179a249fe223169b2889778f5ed0f3716fbf7993d3b1b8156
-    size_bytes: 54400
+    sha256: d9308652752cb9929227073841b3bd9b4bf9f244f741025c5eebe61ad3358ea9
+    size_bytes: 54419
     availability: present_hash_recorded
   - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
-    sha256: 9c38f8b8831d05bc075d6680e2d10432ae88da23832c0da861ca9a8697b29a98
-    size_bytes: 5060
+    sha256: a523843a9ee0a679f08aee9794f73726d65e9653313b503a163fac69e9419d26
+    size_bytes: 5065
     availability: present_hash_recorded
   unknown_git_claim_effect: planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve
   dirty_worktree_claim_effect: proxy_observation_only_no_reproducible_candidate_bundle_runtime_or_goal_achieve_claim

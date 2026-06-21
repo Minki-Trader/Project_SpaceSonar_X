@@ -82,9 +82,9 @@
     "output_head": "classification_score_or_regression_rank_declared_by_fit"
   },
   "status": "executed_proxy_observation_l4_required",
-  "created_at_utc": "2026-06-21T22:13:57.295578Z",
+  "created_at_utc": "2026-06-21T22:29:35.630443Z",
   "timezone": "UTC",
-  "git_commit": "ac9880d8ffe0b86d27b43ad1cbd89eff8c091b0b",
+  "git_commit": "673b3d56273e7bc8bd209fe2857d048691734abe",
   "dirty_state": "dirty",
   "command": "foundation\\pipelines\\run_wave01_event_barrier_proxy_batch.py --expected-branch codex/l4-pair-judgment-closeout",
   "entrypoint": "foundation/pipelines/run_wave01_event_barrier_proxy_batch.py",
@@ -97,13 +97,55 @@
     "yaml": "6.0.3"
   },
   "provenance": {
-    "git_sha": "ac9880d8ffe0b86d27b43ad1cbd89eff8c091b0b",
+    "git_sha": "673b3d56273e7bc8bd209fe2857d048691734abe",
     "branch": "codex/l4-pair-judgment-closeout",
     "dirty_flag": "dirty",
     "changed_files": [
-      "?? lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/",
-      "?? lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/",
-      "?? lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/"
+      "M docs/registers/artifact_registry.csv",
+      "M docs/registers/goal_registry.csv",
+      "M docs/workspace/workspace_state.yaml",
+      "M foundation/training/wave01_event_barrier_models.py",
+      "M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml",
+      "M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml",
+      "M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifact_lineage.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/model_summary.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/experiment_receipt.yaml",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/metrics.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/run_manifest.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/experiment_receipt.yaml",
+      "M lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/run_manifest.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifact_lineage.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/model_summary.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/experiment_receipt.yaml",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/metrics.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/run_manifest.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/model_summary.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+      "?? foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py",
+      "?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/",
+      "?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_onnx_materialization_v0_closeout.yaml",
+      "?? runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/",
+      "?? tests/test_wave01_event_barrier_l4_onnx_materializer.py"
     ],
     "command_argv": [
       "foundation\\pipelines\\run_wave01_event_barrier_proxy_batch.py",
@@ -120,8 +162,8 @@
       "sklearn": "1.8.0",
       "yaml": "6.0.3"
     },
-    "started_at_utc": "2026-06-21T22:13:54.329983Z",
-    "ended_at_utc": "2026-06-21T22:13:57.273620Z",
+    "started_at_utc": "2026-06-21T22:29:32.350945Z",
+    "ended_at_utc": "2026-06-21T22:29:35.605617Z",
     "input_hashes": [
       {
         "path": "lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs/wave01_eb_cell_004.yaml",
@@ -199,7 +241,7 @@
       },
       {
         "path": "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/model_summary.json",
-        "sha256": "ecf07e7468796343e9fcde1900d8d4054af0d225a13607ea63cef68f937d0e66",
+        "sha256": "3277855875fe7f7f47b13292c03de04c1ada043e15d69502232fb88dcc4ee7a5",
         "size_bytes": 978,
         "availability": "present_hash_recorded"
       },
@@ -211,20 +253,20 @@
       },
       {
         "path": "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
-        "sha256": "7fda057ec89127ee048e9d2613074f903aaf40c9f5353deab0d50c6b6a0c08df",
-        "size_bytes": 49633,
+        "sha256": "22a9a56d48ca5b7d6592cca4156e8a66b8de8db57d589104e20e325e37c8c861",
+        "size_bytes": 49621,
         "availability": "present_hash_recorded"
       },
       {
         "path": "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
-        "sha256": "1dbaab2f53850783cb35682f9190f1b7c562360061bfd21508828951cd095698",
-        "size_bytes": 51304,
+        "sha256": "a26679a120f53056855ebafb72b945824c9611e817c522d4faf590f3783f5bc0",
+        "size_bytes": 51327,
         "availability": "present_hash_recorded"
       },
       {
         "path": "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
-        "sha256": "58e868289ff49766782458fe938848c6834d0717938ad36320397922969d60bd",
-        "size_bytes": 4785,
+        "sha256": "4688ce113c32f778df45c01777074342b95d86ca18f7f2508a229565b6f1c183",
+        "size_bytes": 4783,
         "availability": "present_hash_recorded"
       }
     ],

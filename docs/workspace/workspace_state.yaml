@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T22:14:31.833808Z'
+updated_utc: '2026-06-21T22:34:04Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -63,7 +63,7 @@ current_claims:
   active_hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
   active_surface_id: surface_us100_event_barrier_decision_surface_v0
   active_sweep_id: sweep_us100_event_barrier_broad_v0
-  active_goal_phase: wave01_campaign_002_proxy_executed_l4_required
+  active_goal_phase: wave01_event_barrier_l4_attempts_prepared_terminal_execution_next
   next_work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
@@ -338,7 +338,35 @@ current_claims:
     inconclusive: 4
     preserved_clue: 8
   wave0_second_campaign_executed_proxy_run_count: 12
-  wave0_second_campaign_L4_status: L4_materialization_preflight_required_next
+  wave0_second_campaign_L4_status: L4_attempts_prepared_terminal_execution_required_next
+  wave0_second_campaign_l4_onnx_materialization_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  wave0_second_campaign_l4_onnx_materialization_status: completed_exportable_bundles_l4_attempt_preparation_required
+  wave0_second_campaign_l4_onnx_materialization_counts:
+    valid_proxy_runs_requiring_l4: 12
+    exportable_bundle_count: 12
+    failed_materialization_count: 0
+    status_counts:
+      onnx_exported_python_onnxruntime_parity_passed: 12
+    parity_status_counts:
+      passed: 12
+    model_family_counts:
+      logistic_or_linear_rank_scout: 8
+      small_mlp_secondary_only: 1
+      tree_or_boosted_onnx_feasible_scout: 3
+    task_kind_counts:
+      classification: 9
+      regression: 3
+  wave0_second_campaign_l4_attempt_preparation_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  wave0_second_campaign_l4_attempt_preparation_status: prepared_attempts_pending_terminal_execution
+  wave0_second_campaign_l4_attempt_preparation_counts:
+    exported_bundle_count: 12
+    required_period_role_count: 2
+    prepared_attempt_count: 24
+    period_role_counts:
+      research_oos: 12
+      validation: 12
+    common_copy_status_counts:
+      copied_to_mt5_common_files: 24
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

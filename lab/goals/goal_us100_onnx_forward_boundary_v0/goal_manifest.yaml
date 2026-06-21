@@ -2,7 +2,7 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-21T22:14:31.798440Z'
+updated_at_utc: '2026-06-21T22:34:04Z'
 claim_boundary: active_goal_wave01_proxy_executed_L4_required_not_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -58,7 +58,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_campaign_002_proxy_executed_l4_required
+active_phase: wave01_event_barrier_l4_attempts_prepared_terminal_execution_next
 active_ids:
   idea_id: idea_us100_m5_event_barrier_decision_surface_v0
   hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
@@ -397,3 +397,31 @@ event_barrier_campaign:
   result_counts:
     inconclusive: 4
     preserved_clue: 8
+  l4_onnx_materialization_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  l4_onnx_materialization_status: completed_exportable_bundles_l4_attempt_preparation_required
+  l4_onnx_materialization_counts:
+    valid_proxy_runs_requiring_l4: 12
+    exportable_bundle_count: 12
+    failed_materialization_count: 0
+    status_counts:
+      onnx_exported_python_onnxruntime_parity_passed: 12
+    parity_status_counts:
+      passed: 12
+    model_family_counts:
+      logistic_or_linear_rank_scout: 8
+      small_mlp_secondary_only: 1
+      tree_or_boosted_onnx_feasible_scout: 3
+    task_kind_counts:
+      classification: 9
+      regression: 3
+  l4_attempt_preparation_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  l4_attempt_preparation_status: prepared_attempts_pending_terminal_execution
+  l4_attempt_preparation_counts:
+    exported_bundle_count: 12
+    required_period_role_count: 2
+    prepared_attempt_count: 24
+    period_role_counts:
+      research_oos: 12
+      validation: 12
+    common_copy_status_counts:
+      copied_to_mt5_common_files: 24

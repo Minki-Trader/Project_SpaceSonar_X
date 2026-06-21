@@ -82,9 +82,9 @@
     "output_head": "classification_score_or_regression_rank_declared_by_fit"
   },
   "status": "executed_proxy_observation_l4_required",
-  "created_at_utc": "2026-06-21T22:13:49.593364Z",
+  "created_at_utc": "2026-06-21T22:29:27.707415Z",
   "timezone": "UTC",
-  "git_commit": "ac9880d8ffe0b86d27b43ad1cbd89eff8c091b0b",
+  "git_commit": "673b3d56273e7bc8bd209fe2857d048691734abe",
   "dirty_state": "dirty",
   "command": "foundation\\pipelines\\run_wave01_event_barrier_proxy_batch.py --expected-branch codex/l4-pair-judgment-closeout",
   "entrypoint": "foundation/pipelines/run_wave01_event_barrier_proxy_batch.py",
@@ -97,12 +97,41 @@
     "yaml": "6.0.3"
   },
   "provenance": {
-    "git_sha": "ac9880d8ffe0b86d27b43ad1cbd89eff8c091b0b",
+    "git_sha": "673b3d56273e7bc8bd209fe2857d048691734abe",
     "branch": "codex/l4-pair-judgment-closeout",
     "dirty_flag": "dirty",
     "changed_files": [
-      "?? lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/",
-      "?? lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/"
+      "M docs/registers/artifact_registry.csv",
+      "M docs/registers/goal_registry.csv",
+      "M docs/workspace/workspace_state.yaml",
+      "M foundation/training/wave01_event_barrier_models.py",
+      "M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml",
+      "M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml",
+      "M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifact_lineage.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/model_summary.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/experiment_receipt.yaml",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/metrics.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+      "M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/run_manifest.json",
+      "?? foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py",
+      "?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/",
+      "?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_onnx_materialization_v0_closeout.yaml",
+      "?? runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/",
+      "?? tests/test_wave01_event_barrier_l4_onnx_materializer.py"
     ],
     "command_argv": [
       "foundation\\pipelines\\run_wave01_event_barrier_proxy_batch.py",
@@ -119,8 +148,8 @@
       "sklearn": "1.8.0",
       "yaml": "6.0.3"
     },
-    "started_at_utc": "2026-06-21T22:13:42.392505Z",
-    "ended_at_utc": "2026-06-21T22:13:49.566906Z",
+    "started_at_utc": "2026-06-21T22:29:21.111956Z",
+    "ended_at_utc": "2026-06-21T22:29:27.690788Z",
     "input_hashes": [
       {
         "path": "lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs/wave01_eb_cell_002.yaml",

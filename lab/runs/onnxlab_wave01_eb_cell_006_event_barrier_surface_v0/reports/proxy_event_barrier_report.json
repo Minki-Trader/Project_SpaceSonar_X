@@ -51,35 +51,35 @@
   "comparison_baseline": "no_trade_baseline_named_only_not_materialized_as_selection",
   "train_metrics": {
     "row_count": 143761,
-    "score_mean": 0.8641243778148147,
-    "score_std": 0.166708906637715,
+    "score_mean": 0.8641243775269484,
+    "score_std": 0.16670891162734544,
     "accuracy": 0.8897475671426882,
     "balanced_accuracy": 0.6650385504953155,
-    "roc_auc": 0.8712103213060305,
-    "average_precision": 0.9755609488970461,
-    "log_loss": 0.2751980757331844,
+    "roc_auc": 0.8712103196546029,
+    "average_precision": 0.9755609487993678,
+    "log_loss": 0.2751980719019007,
     "positive_rate": 0.8644208095380528
   },
   "validation_metrics": {
     "row_count": 53794,
-    "score_mean": 0.862075736945448,
-    "score_std": 0.16943110933755326,
+    "score_mean": 0.8620757347943858,
+    "score_std": 0.16943111230952745,
     "accuracy": 0.8641855969067183,
     "balanced_accuracy": 0.6174498229615222,
-    "roc_auc": 0.8107795945595734,
-    "average_precision": 0.9618172179748508,
-    "log_loss": 0.32448395611800185,
+    "roc_auc": 0.8107795916573413,
+    "average_precision": 0.9618172176260367,
+    "log_loss": 0.3244839553207522,
     "positive_rate": 0.8618433282522214
   },
   "research_oos_metrics": {
     "row_count": 45533,
-    "score_mean": 0.8646512310561303,
-    "score_std": 0.16209158679242475,
+    "score_mean": 0.8646512295371215,
+    "score_std": 0.16209158900170095,
     "accuracy": 0.869720861792546,
     "balanced_accuracy": 0.5840653910642442,
-    "roc_auc": 0.7894747962264699,
-    "average_precision": 0.9649345647506067,
-    "log_loss": 0.3114796083864196,
+    "roc_auc": 0.7894748101587499,
+    "average_precision": 0.9649345674788052,
+    "log_loss": 0.3114796079320447,
     "positive_rate": 0.8822831792326444
   },
   "validation_decision_metrics": {
@@ -94,8 +94,8 @@
     "trade_density": 0.4307915380897498,
     "gross_proxy_mean_return": -7.721958935481679e-05,
     "gross_proxy_profit_factor": 0.9347770280836775,
-    "score_low_threshold": 0.8109826835981943,
-    "score_high_threshold": 0.9802037915462446
+    "score_low_threshold": 0.810982683843714,
+    "score_high_threshold": 0.9802038056379959
   },
   "research_oos_decision_metrics": {
     "decision_family": "sparse_event_abstain_barrier_exit",
@@ -109,8 +109,8 @@
     "trade_density": 0.40623284211451033,
     "gross_proxy_mean_return": -0.0001482454758998783,
     "gross_proxy_profit_factor": 0.8856388717011882,
-    "score_low_threshold": 0.8109826835981943,
-    "score_high_threshold": 0.9802037915462446
+    "score_low_threshold": 0.810982683843714,
+    "score_high_threshold": 0.9802038056379959
   },
   "judgment_reasons": [
     "validation_research_auc_preserved_clue_0.8108_0.7895"

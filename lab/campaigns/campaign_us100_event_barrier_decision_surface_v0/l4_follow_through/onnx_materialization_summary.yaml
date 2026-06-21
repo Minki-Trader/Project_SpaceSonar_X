@@ -1,0 +1,533 @@
+version: wave01_event_barrier_l4_onnx_materialization_summary_v1
+summary_id: wave01_event_barrier_l4_onnx_materialization_summary_v0
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_onnx_materialization_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0
+created_at_utc: '2026-06-21T22:33:48Z'
+status: completed_exportable_bundles_l4_attempt_preparation_required
+claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+source_inputs:
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+input_hashes:
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  sha256: 915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c
+  size_bytes: 4857
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  sha256: fec5b67fc264edcefc77641d49faa058621f5d84b845c93bf23e7b07ba0e216b
+  size_bytes: 11321
+  availability: present_hash_recorded
+counts:
+  valid_proxy_runs_requiring_l4: 12
+  exportable_bundle_count: 12
+  failed_materialization_count: 0
+  status_counts:
+    onnx_exported_python_onnxruntime_parity_passed: 12
+  parity_status_counts:
+    passed: 12
+  model_family_counts:
+    logistic_or_linear_rank_scout: 8
+    small_mlp_secondary_only: 1
+    tree_or_boosted_onnx_feasible_scout: 3
+  task_kind_counts:
+    classification: 9
+    regression: 3
+runtime_contract_binding:
+  required_runtime_level: L4_split_runtime_probe
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  locked_final_oos_b: excluded_forbidden_by_default
+  l5_rule: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
+artifact_outputs:
+  index_csv: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/onnx_materialization_index.csv
+  bundle_manifest_paths:
+  - runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/experiment_bundle.json
+  onnx_artifact_paths:
+  - runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/artifacts/model.onnx
+errors: []
+exported_runs:
+- run_id: onnxlab_wave01_eb_cell_001_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_001
+  cell_id: wave01_eb_cell_001
+  bundle_id: bundle_wave01_eb_cell_001_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: inconclusive
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: abstain_band_with_barrier_exit
+  barrier_unit: atr_multiplier
+  feature_count: 17
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 9932e09c005acd0898dbba22cc79da5258a004940d499b1070a194e071a17641
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 71b176f946562f26ed4af1b1f7fb25fccee292409e2f210847e5df9a009507b3
+  onnx_size_bytes: 1091
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 3.260397674065274e-08
+  parity_mean_abs_error: 8.742300222283617e-09
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_002_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_002
+  cell_id: wave01_eb_cell_002
+  bundle_id: bundle_wave01_eb_cell_002_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: tree_or_boosted_onnx_feasible_scout
+  task_kind: classification
+  decision_family: breakout_entry_abstain_timeout_exit
+  barrier_unit: atr_multiplier
+  feature_count: 47
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 18b09c63afebee53617ea4816497d6b27ea4d4aefa89f8440b8966f2902738b0
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 816d8b868904172106e6aabeceba14682c1ec466d420bf5f2531ce3441bb819a
+  onnx_size_bytes: 75364
+  onnx_adapter_ids: skl2onnx_hgb_numpy_scalar_cast_v0|onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 8.822505442873663e-08
+  parity_mean_abs_error: 2.2937556393111055e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_003_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_003
+  cell_id: wave01_eb_cell_003
+  bundle_id: bundle_wave01_eb_cell_003_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: inconclusive
+  model_family: logistic_or_linear_rank_scout
+  task_kind: regression
+  decision_family: direction_agnostic_tradeability_abstain
+  barrier_unit: price_range_ratio
+  feature_count: 70
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 6703914f684d921334444262afd4a9842b7a3a5d32b88513393fdcc29bd834ba
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: c80c83aa2f6a665d3547a3912af3e26707e453b84d2c86e13d1b9a06a7317f70
+  onnx_size_bytes: 1984
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.7285346984863281e-06
+  parity_mean_abs_error: 4.595494829118252e-07
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_004_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_004
+  cell_id: wave01_eb_cell_004
+  bundle_id: bundle_wave01_eb_cell_004_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: no_trade_vs_fast_event_abstain
+  barrier_unit: atr_multiplier
+  feature_count: 16
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 669dd929653d10a09d89e40027cdb9ef93a2bb5f395491cb27989a460b9e705e
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: e430adab5f597f0735396ef55782a45b61e54b9821afdb23a1f7f3070dd3f6ac
+  onnx_size_bytes: 1066
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.5612259773867265e-07
+  parity_mean_abs_error: 2.892848195338908e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_005_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_005
+  cell_id: wave01_eb_cell_005
+  bundle_id: bundle_wave01_eb_cell_005_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: inconclusive
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: reversal_entry_abstain_timeout_exit
+  barrier_unit: atr_multiplier
+  feature_count: 17
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 68cc5c229c86e01ae2d2eb340434d4619d22c046fa86d6ed2e2f624f579768ea
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: d4c224768123ae828be61fef25ea98ac826f6762b9c25b38dcef95cd0a554d08
+  onnx_size_bytes: 1091
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 3.493310285485052e-08
+  parity_mean_abs_error: 1.4251751964764608e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_006_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_006
+  cell_id: wave01_eb_cell_006
+  bundle_id: bundle_wave01_eb_cell_006_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: tree_or_boosted_onnx_feasible_scout
+  task_kind: classification
+  decision_family: sparse_event_abstain_barrier_exit
+  barrier_unit: atr_multiplier
+  feature_count: 70
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: b5d30b052ce7421c39790e97c15882efd99970e6dfff99ab5bcc800b33c1c955
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 2937df44029897186023e503d51e1d9330e9299ffdcdffb191ece12f5f179d2d
+  onnx_size_bytes: 75479
+  onnx_adapter_ids: skl2onnx_hgb_numpy_scalar_cast_v0|onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 2.3651989594641876e-07
+  parity_mean_abs_error: 3.364509288934867e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_007_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_007
+  cell_id: wave01_eb_cell_007
+  bundle_id: bundle_wave01_eb_cell_007_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: logistic_or_linear_rank_scout
+  task_kind: regression
+  decision_family: fast_event_abstain_timeout_exit
+  barrier_unit: atr_multiplier
+  feature_count: 17
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: e941c4d4f9743600a19b53988b482b8ddee0ab1581f4fb363e09aa305cfd99ce
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: f8fb31a70df22c67fc26910df4572da335e11e346c2ce04385b8c4a356724b4e
+  onnx_size_bytes: 920
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 2.384185791015625e-07
+  parity_mean_abs_error: 2.578599378466606e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_008_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_008
+  cell_id: wave01_eb_cell_008
+  bundle_id: bundle_wave01_eb_cell_008_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: session_gated_abstain_barrier_exit
+  barrier_unit: atr_multiplier
+  feature_count: 16
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: d9552e26b90f00cca35c49a55a99ac64d48973284cd9c9be0449799a47bef98c
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: b02c7b83d8c69e3e4671559cbe94fc240d4469cdee168da2108b36416f25b361
+  onnx_size_bytes: 1066
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.1445247699581884e-07
+  parity_mean_abs_error: 3.176685444227878e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_009_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_009
+  cell_id: wave01_eb_cell_009
+  bundle_id: bundle_wave01_eb_cell_009_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: tree_or_boosted_onnx_feasible_scout
+  task_kind: classification
+  decision_family: no_trade_regime_filter
+  barrier_unit: atr_multiplier
+  feature_count: 70
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: ee1bfad51cc2822c12e157e04e50e67357cc62796db0db3a58a80106d6eaa573
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 28ca116571a0126d21b0b2d78e6ba317297988b933f658945c0d3f1f62d4b211
+  onnx_size_bytes: 75479
+  onnx_adapter_ids: skl2onnx_hgb_numpy_scalar_cast_v0|onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.0638787151240336e-07
+  parity_mean_abs_error: 3.092931599034301e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_010_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_010
+  cell_id: wave01_eb_cell_010
+  bundle_id: bundle_wave01_eb_cell_010_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: inconclusive
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: mean_reversion_abstain_barrier_exit
+  barrier_unit: atr_multiplier
+  feature_count: 47
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: b282318bb533b69d7c7b008b4080b86e6b9d03fe710d248200b68f65f946f8c9
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 4c04fef1be6025ca21baa11f480a7a256e1a4aee8a5420ec8c2d3d73cc28b220
+  onnx_size_bytes: 1844
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 8.795139871953239e-08
+  parity_mean_abs_error: 1.796111687027771e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_011_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_011
+  cell_id: wave01_eb_cell_011
+  bundle_id: bundle_wave01_eb_cell_011_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: small_mlp_secondary_only
+  task_kind: classification
+  decision_family: range_edge_abstain_timeout_exit
+  barrier_unit: price_range_ratio
+  feature_count: 17
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 4637a614a7a6f7a379d88a388c9fd765b24c01233c6b799adf75fe603cbb58f8
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: a95d5ee06c112f0d5add404c89eb92baf171c7dfb058513ceeec688141d55b2e
+  onnx_size_bytes: 2945
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.7881393432617188e-07
+  parity_mean_abs_error: 3.8475263863801956e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_eb_cell_012_event_barrier_surface_v0
+  run_spec_id: wave01_eb_cell_012
+  cell_id: wave01_eb_cell_012
+  bundle_id: bundle_wave01_eb_cell_012_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: logistic_or_linear_rank_scout
+  task_kind: regression
+  decision_family: diagnostic_path_quality_no_trade_until_decision_surface
+  barrier_unit: mfe_mae_ratio
+  feature_count: 47
+  bundle_manifest_path: runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 47eed75915d6049b08a1de3779f3a73dac44c102145b7873f54fba5fb21afc1b
+  onnx_path: runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 2f7db7aec56113419a94613e1f62142f304e2978511762042a3e9cbb8d597e58
+  onnx_size_bytes: 1524
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 7.748603820800781e-07
+  parity_mean_abs_error: 1.2648524716496468e-07
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_event_barrier_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+judgment:
+  judgment_class: bundle_preflight
+  materialization_ready: false
+  runtime_probe_completed: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: Prepare L4 MT5 validation and research_oos attempts for every exported
+    Wave01 bundle.
+try_first_evidence:
+  status: adapter_probe_attempted
+  reproduction: all Wave01 model families retrained and converted through current
+    skl2onnx adapter path
+  repaired_or_supported_surfaces:
+  - tree_or_boosted_onnx_feasible_scout via skl2onnx_hgb_numpy_scalar_cast_v0
+  - small_mlp_secondary_only via direct skl2onnx plus single-score output adapter
+  blocked_or_deferred_runs: []
+  claim_effect: no_missing_adapter_blocker_for_wave01_onnx_materialization
+prevention_memory:
+- Do not close Wave01 proxy runs proxy-only; every valid model-bearing run remains
+  L4-bound.
+- Small MLP conversion is supported for this batch; preserve parity evidence before
+  MT5 attempt preparation.
+- Barrier-unit runtime semantics remain pending until MT5 L4 observation and reconciliation.
+- Python ONNXRuntime parity is bundle preflight only, not runtime authority or economics
+  evidence.
+environment:
+  command: python foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
+    --write-control-records
+  command_argv:
+  - python
+  - foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    onnx: 1.20.1
+    onnxruntime: 1.24.3
+    skl2onnx: 1.20.0
+    yaml: 6.0.3
+  started_at_utc: '2026-06-21T22:33:04Z'
+  ended_at_utc: '2026-06-21T22:33:48Z'
+  git_sha: 673b3d56273e7bc8bd209fe2857d048691734abe
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M docs/registers/artifact_registry.csv
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/registers/run_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M foundation/training/wave01_event_barrier_models.py'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/anti_selection_ledger.yaml'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_execute_first_batch_proxy_v0_closeout.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/run_manifest.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifact_lineage.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/model_summary.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/experiment_receipt.yaml'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/metrics.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/reports/proxy_event_barrier_report.json'
+  - ' M lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/run_manifest.json'
+  - ?? foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
+  - ?? foundation/pipelines/prepare_wave01_event_barrier_l4_mt5_attempts.py
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_onnx_materialization_v0_closeout.yaml
+  - ?? runtime/packages/bundle_wave01_eb_cell_001_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_002_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_003_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_004_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_005_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_006_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_007_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_008_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_009_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_010_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_011_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_eb_cell_012_l4_onnx_export_v0/
+  - ?? tests/test_wave01_event_barrier_l4_mt5_attempt_preparer.py
+  - ?? tests/test_wave01_event_barrier_l4_onnx_materializer.py
+  unknown_git_claim_effect: bundle_preflight_only_lower_reproducibility_claim
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

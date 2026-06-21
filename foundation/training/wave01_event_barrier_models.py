@@ -97,7 +97,10 @@ def fit_proxy_model(
     threshold_policy: str,
     target_threshold: float | None,
 ) -> ProxyFit:
-    x_train = features.loc[train_mask]
+    # ONNX and MT5 consume float32 tensors. Fit and score the proxy on the same
+    # dtype to avoid tree-threshold boundary drift during materialization.
+    runtime_features = features.astype("float32")
+    x_train = runtime_features.loc[train_mask]
     y_train = target.loc[train_mask]
     if len(x_train) < 1000:
         raise ValueError(f"not enough train rows for Wave01 proxy model: {len(x_train)}")
@@ -200,6 +203,7 @@ def _assert_two_classes(target: pd.Series) -> None:
 
 
 def score_model(model: Pipeline, features: pd.DataFrame, task_kind: str) -> np.ndarray:
+    features = features.astype("float32")
     if task_kind == "classification":
         if hasattr(model, "predict_proba"):
             return model.predict_proba(features)[:, 1].astype(float)
