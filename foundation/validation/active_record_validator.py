@@ -370,6 +370,52 @@ def validate_run_campaign_chain(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_bounded_synthesis_campaigns(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    campaign_root = repo_root / "lab" / "campaigns"
+    if not campaign_root.exists():
+        return errors
+    for campaign_path in sorted(campaign_root.glob("*/campaign_manifest.yaml")):
+        campaign = load_yaml(campaign_path)
+        synthesis = campaign.get("bounded_synthesis") or {}
+        if campaign.get("campaign_type") != "bounded_synthesis" and synthesis.get("enabled") is not True:
+            continue
+
+        label = rel(campaign_path, repo_root)
+        if synthesis.get("source_scope") != "previous_material_only":
+            errors.append(f"{label}: bounded synthesis source_scope must be previous_material_only")
+
+        source_campaign_ids = [str(item) for item in synthesis.get("source_campaign_ids") or []]
+        if not source_campaign_ids:
+            errors.append(f"{label}: bounded synthesis requires source_campaign_ids")
+        campaign_id = str(campaign.get("campaign_id") or "")
+        if campaign_id and campaign_id in source_campaign_ids:
+            errors.append(f"{label}: bounded synthesis cannot use itself as a source campaign")
+
+        mix_policy = synthesis.get("mix_depth_policy") or {}
+        if mix_policy.get("default_sequence") != ["mix-2", "mix-3"]:
+            errors.append(f"{label}: bounded synthesis mix depth must default to mix-2 then mix-3")
+        if "exception" not in str(mix_policy.get("mix4_policy", "")):
+            errors.append(f"{label}: bounded synthesis mix-4 must be exception-only with a recorded reason")
+        if "forbidden" not in str(mix_policy.get("mix5_plus_policy", "")):
+            errors.append(f"{label}: bounded synthesis mix-5+ must be forbidden")
+
+        if not str(synthesis.get("next_wave_influence", "")).startswith("forbidden"):
+            errors.append(f"{label}: bounded synthesis next_wave_influence must be forbidden")
+
+        follow_through = synthesis.get("runtime_follow_through") or {}
+        if follow_through.get("valid_proxy_model_bearing_mix_requires_l4") is not True:
+            errors.append(f"{label}: bounded synthesis proxy/model-bearing mixes must require L4")
+        if "L5" not in str(follow_through.get("l4_promising_result_effect", "")):
+            errors.append(f"{label}: bounded synthesis promising L4 result must continue to L5")
+
+        boundary = str(synthesis.get("claim_boundary") or campaign.get("claim_boundary") or "").lower()
+        for protected in ["selected_baseline", "runtime_authority", "economics_pass", "live_readiness", "goal_achieve"]:
+            if protected in boundary and f"no_{protected}" not in boundary:
+                errors.append(f"{label}: bounded synthesis claim_boundary mentions {protected!r} without no_ guard")
+    return errors
+
+
 def validate_active_manifests(repo_root: Path) -> list[str]:
     paths = [
         *sorted((repo_root / "lab" / "runs").glob("*/run_manifest.json")),
@@ -566,6 +612,7 @@ def validate(repo_root: Path) -> list[str]:
     errors.extend(validate_workspace_active_ids(repo_root))
     errors.extend(validate_wave_campaign_graph(repo_root))
     errors.extend(validate_run_campaign_chain(repo_root))
+    errors.extend(validate_bounded_synthesis_campaigns(repo_root))
     errors.extend(validate_run_registry(repo_root))
     errors.extend(validate_artifact_registry(repo_root))
     errors.extend(validate_active_manifests(repo_root))

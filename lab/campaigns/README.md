@@ -20,3 +20,5 @@ A campaign is not a parking place for one candidate's endless repairs. Candidate
 Do not move unfinished repair into a later campaign as if it were a new hypothesis. A later campaign can continue only a recorded new surface, divergence, or prevention-memory question.
 
 Neighborhood perturbation is bounded to meaningful adjacent variables. Once it becomes generic micro-tuning around one candidate, close or reclassify it.
+
+Bounded synthesis campaigns are campaign-local previous-material mixing runs. They use ingredient cards and a mix queue under `lab/campaigns/<campaign_id>/synthesis/`, may produce preserved clues or new surface questions, and must not decide the next wave/campaign direction.

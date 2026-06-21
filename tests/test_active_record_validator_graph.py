@@ -109,3 +109,77 @@ def test_active_validator_rejects_missing_ea_entrypoint_hash(tmp_path: Path) -> 
     errors = validate(repo)
 
     assert any("ea_entrypoint sha256 is missing" in error for error in errors)
+
+
+def test_active_validator_rejects_bad_bounded_synthesis_mix_depth(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_bad_mix_v0"
+    campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign_path.parent.mkdir(parents=True)
+    write_yaml(
+        campaign_path,
+        {
+            "campaign_id": campaign_id,
+            "campaign_type": "bounded_synthesis",
+            "bounded_synthesis": {
+                "enabled": True,
+                "source_scope": "previous_material_only",
+                "source_campaign_ids": ["campaign_minimal_onnx_mt5_vertical_slice_v0"],
+                "mix_depth_policy": {
+                    "default_sequence": ["mix-3"],
+                    "mix4_policy": "exception_only_with_recorded_reason",
+                    "mix5_plus_policy": "forbidden",
+                },
+                "next_wave_influence": "forbidden_reference_only",
+                "runtime_follow_through": {
+                    "valid_proxy_model_bearing_mix_requires_l4": True,
+                    "l4_promising_result_effect": "continue_to_L5_candidate_runtime_evidence",
+                },
+                "claim_boundary": (
+                    "synthesis_learning_only_no_next_wave_direction_"
+                    "no_selected_baseline_no_runtime_authority"
+                ),
+            },
+        },
+    )
+
+    errors = validate(repo)
+
+    assert any("bounded synthesis mix depth" in error for error in errors)
+
+
+def test_active_validator_rejects_synthesis_next_wave_influence(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_bad_influence_v0"
+    campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign_path.parent.mkdir(parents=True)
+    write_yaml(
+        campaign_path,
+        {
+            "campaign_id": campaign_id,
+            "campaign_type": "bounded_synthesis",
+            "bounded_synthesis": {
+                "enabled": True,
+                "source_scope": "previous_material_only",
+                "source_campaign_ids": ["campaign_minimal_onnx_mt5_vertical_slice_v0"],
+                "mix_depth_policy": {
+                    "default_sequence": ["mix-2", "mix-3"],
+                    "mix4_policy": "exception_only_with_recorded_reason",
+                    "mix5_plus_policy": "forbidden",
+                },
+                "next_wave_influence": "allowed_to_direct_next_wave",
+                "runtime_follow_through": {
+                    "valid_proxy_model_bearing_mix_requires_l4": True,
+                    "l4_promising_result_effect": "continue_to_L5_candidate_runtime_evidence",
+                },
+                "claim_boundary": (
+                    "synthesis_learning_only_no_next_wave_direction_"
+                    "no_selected_baseline_no_runtime_authority"
+                ),
+            },
+        },
+    )
+
+    errors = validate(repo)
+
+    assert any("next_wave_influence must be forbidden" in error for error in errors)

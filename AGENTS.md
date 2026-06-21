@@ -61,6 +61,7 @@ Every non-trivial work item chooses exactly one `primary_family` and one `primar
 Wave owns allocation and refs only. Campaign folders stay central under `lab/campaigns/`; do not duplicate them under waves.
 Wave/campaign scope must not become a long repair room for one candidate. Small repair attempts are bounded run/sweep work; if a repair does not reveal a reusable surface clue, close it as negative, invalid, inconclusive, or preserved clue and rotate.
 Do not carry repair work into the next campaign or wave disguised as a new hypothesis. Carryover is allowed only when the prior record names a genuinely new surface, divergence, or prevention-memory question.
+Bounded synthesis campaign: campaign-level previous-material-only mixing. It may combine closed campaign clues, negative memory, and divergence records, but it cannot set or bias the next wave/campaign direction. Default depth is `mix-2 -> mix-3`; `mix-4` requires an explicit reason; `mix-5+` is forbidden unless the project policy is changed first.
 
 ## Code Layout
 

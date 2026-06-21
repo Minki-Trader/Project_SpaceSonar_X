@@ -1,12 +1,36 @@
 version: campaign_manifest_v1
 campaign_id: campaign_short_slug
 status: planned
+campaign_type: standard_experiment
 wave_ids: []
 idea_ids: []
 hypothesis_ids: []
 objective: ""
 axis_tags: []
 surface_policy: broad_first
+bounded_synthesis:
+  enabled: false
+  source_scope: previous_material_only
+  source_campaign_ids: []
+  source_run_ids: []
+  source_clue_ids: []
+  source_negative_memory_ids: []
+  source_divergence_ids: []
+  ingredient_registry: docs/registers/ingredient_card_registry.csv
+  synthesis_registry: docs/registers/synthesis_campaign_registry.csv
+  ingredient_cards_path: lab/campaigns/<campaign_id>/synthesis/ingredients/
+  mix_queue_path: lab/campaigns/<campaign_id>/synthesis/mix_queue.yaml
+  mix_depth_policy:
+    default_sequence:
+      - mix-2
+      - mix-3
+    mix4_policy: exception_only_with_recorded_reason
+    mix5_plus_policy: forbidden
+  next_wave_influence: forbidden_reference_only
+  runtime_follow_through:
+    valid_proxy_model_bearing_mix_requires_l4: true
+    l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+  claim_boundary: synthesis_learning_only_no_next_wave_direction_no_selected_baseline_no_runtime_authority
 candidate_repair_policy:
   allowed_scope: bounded_run_or_sweep_only
   max_repeated_candidate_repairs_without_new_surface_clue: 1

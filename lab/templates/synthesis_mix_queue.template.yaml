@@ -1,0 +1,24 @@
+version: synthesis_mix_queue_v1
+campaign_id: campaign_synthesis_short_slug
+queue_id: synthesis_mix_queue_short_slug
+source_scope: previous_material_only
+default_sequence:
+  - mix-2
+  - mix-3
+mix_depth_policy:
+  mix2: required_first
+  mix3: default_completion_depth
+  mix4: exception_only_with_recorded_reason
+  mix5_plus: forbidden
+mix_items: []
+selection_policy:
+  pf_only_selection_forbidden: true
+  require_axis_diversity: true
+  require_source_lineage: true
+  require_l4_for_valid_proxy_model_bearing_mix: true
+next_wave_influence: forbidden_reference_only
+storage_contract:
+  source_of_truth: lab/campaigns/<campaign_id>/synthesis/mix_queue.yaml
+  registry_rows:
+    - docs/registers/synthesis_campaign_registry.csv
+claim_boundary: synthesis_queue_only_no_candidate_no_selected_baseline_no_next_wave_direction

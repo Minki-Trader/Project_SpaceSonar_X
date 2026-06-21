@@ -93,6 +93,24 @@ Git integration cadence:
 - Parity is not forced equality. When proxy and MT5 disagree, make at least one explicit reconciliation attempt, then either repair the contract or record the accepted difference with a prevention rule.
 - Failed hypotheses become `negative_memory`, `invalid_setup`, `blocked_retry`, or `inconclusive` records with salvage value and reopen conditions.
 
+## Bounded Synthesis Campaign
+
+A bounded synthesis campaign is the current-lab equivalent of a previous-material mixing sandbox. Do not use legacy stage language in active records.
+
+Rules:
+
+- Use `campaign_type: bounded_synthesis`.
+- Source scope is previous material only: closed campaign clues, negative memory, divergence records, and run evidence from earlier campaigns.
+- Ingredient cards are required. Each ingredient must name source campaign/run/clue/memory IDs, evidence paths, salvage value, and forbidden uses.
+- A synthesis campaign may create learning records, reference surfaces, preserved clues, negative memory, divergence questions, or new surface questions.
+- It must not direct the next wave, choose the next campaign theme, claim baseline status, or hide a repair continuation as a fresh hypothesis.
+- Default mix depth is `mix-2 -> mix-3`.
+- `mix-4` is exception-only and needs a recorded reason before opening the queue item.
+- `mix-5+` is forbidden unless the project policy is explicitly changed.
+- Every valid proxy/model-bearing synthesis run still follows the normal `L4_split_runtime_probe` requirement.
+- If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
+- Closeout remains claim-boundary explicit: no selected baseline, runtime authority, economics pass, live readiness, reviewed/pass, or Goal Achieve without matching evidence.
+
 ## Campaign Parity Rule
 
 Each campaign that creates proxy/model-bearing evidence must maintain a `proxy_runtime_parity` record or field.

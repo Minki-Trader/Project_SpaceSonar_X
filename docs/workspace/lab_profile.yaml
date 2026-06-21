@@ -28,6 +28,7 @@ axis_tags:
   - decision_surface
   - risk_shape
   - runtime_parity
+  - synthesis_mix
 
 candidate_lifecycle:
   - idea_open
@@ -46,6 +47,17 @@ claim_default: exploration_only
 concept_start_state: blank_slate
 repair_carryover_policy: forbidden_without_recorded_new_surface_divergence_or_prevention_memory
 neighborhood_perturbation_policy: meaningful_adjacent_variables_only
+bounded_synthesis_policy:
+  campaign_type: bounded_synthesis
+  source_scope: previous_material_only
+  default_mix_depth:
+    - mix-2
+    - mix-3
+  mix4_policy: exception_only_with_recorded_reason
+  mix5_plus_policy: forbidden
+  next_wave_influence: forbidden
+  valid_proxy_runtime_level_required: L4_split_runtime_probe
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
 north_star_objective:
   role: final_objective_not_exploration_gate
   timeframe_fixed: false

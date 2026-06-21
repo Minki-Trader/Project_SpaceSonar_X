@@ -1,0 +1,26 @@
+version: ingredient_card_v1
+ingredient_card_id: ingredient_short_slug
+status: draft
+source_campaign_ids: []
+source_run_ids: []
+source_clue_ids: []
+source_negative_memory_ids: []
+source_divergence_ids: []
+material_type: preserved_clue
+axis_tags: []
+observed_pattern: ""
+salvage_value: ""
+negative_memory: ""
+do_not_repeat: ""
+evidence_paths: []
+evidence_hashes: {}
+selection_eligibility: eligible_for_mix
+forbidden_uses:
+  - selected_baseline
+  - next_wave_direction
+  - repair_relabeling
+storage_contract:
+  source_of_truth: lab/campaigns/<campaign_id>/synthesis/ingredients/<ingredient_card_id>.yaml
+  registry_rows:
+    - docs/registers/ingredient_card_registry.csv
+claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority

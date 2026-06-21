@@ -4,7 +4,7 @@ claim_boundary: routing_behavior_smoke_only_no_reviewed_pass
 prompt_count_policy:
   min: 12
   max: 20
-  current: 16
+  current: 17
 cases:
   - id: route_smoke_001_policy_branch_receipt
     prompt: "Wire branch policy into run receipts and claim downgrade rules."
@@ -66,6 +66,25 @@ cases:
       - campaign_proxy_runtime_parity_policy
       - final_claim_guard
     expected_claim_boundary: design_only
+
+  - id: route_smoke_005_bounded_synthesis
+    prompt: "Open a previous-material-only synthesis campaign that mixes preserved clues without selecting the next wave direction."
+    expected_primary_family: synthesis_campaign
+    expected_primary_skill: spacesonar-experiment-design
+    expected_support_skills:
+      - spacesonar-exploration-mandate
+      - spacesonar-run-evidence-system
+      - spacesonar-runtime-parity
+      - spacesonar-result-judgment
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - synthesis_source_lineage_check
+      - ingredient_card_lineage_check
+      - mix_depth_policy_check
+      - next_wave_influence_block
+      - campaign_proxy_runtime_parity_policy
+      - final_claim_guard
+    expected_claim_boundary: synthesis_learning_only
 
   - id: route_smoke_005_model_training
     prompt: "Train a simple provisional model and check overfit risk before any candidate wording."

@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T17:25:41Z'
+updated_utc: '2026-06-21T18:20:00Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -127,6 +127,13 @@ current_claims:
   proxy_to_runtime_policy: all_valid_proxy_runs_require_L4_split_runtime_probe
   l4_to_l5_policy: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
   proxy_only_closeout_allowed: false
+  bounded_synthesis_policy: previous_material_only_mix2_mix3_mix4_exception_no_next_wave_influence
+  bounded_synthesis_templates:
+  - lab/templates/ingredient_card.template.yaml
+  - lab/templates/synthesis_mix_queue.template.yaml
+  bounded_synthesis_registries:
+  - docs/registers/ingredient_card_registry.csv
+  - docs/registers/synthesis_campaign_registry.csv
   wave0_preserved_clue_ids:
   - clue_wave0_tradeability_mid_horizon_v0
   - clue_wave0_path_quality_h12_side_signal_v0

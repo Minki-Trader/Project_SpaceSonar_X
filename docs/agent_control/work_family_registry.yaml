@@ -12,6 +12,7 @@ global_rules:
   subagent_advice_policy: "Sub-agent output is advisory only. Parent Codex must source-check it against repo source-of-truth files, selected skills, workspace state, and user constraints before adoption."
   subagent_conflict_policy: "If agent advice conflicts with project definitions, reject or rewrite the advice; do not follow it verbatim."
   repair_carryover_policy: "Do not relabel unfinished repair or candidate-local perturbation as a fresh hypothesis in the next campaign/wave without a recorded new surface, divergence, or prevention-memory question."
+  bounded_synthesis_policy: "Bounded synthesis is previous-material-only campaign work. It cannot set next wave/campaign direction; use mix-2 then mix-3 by default, allow mix-4 only with a recorded reason, and forbid mix-5+ without policy change."
   agent_role_modes:
     - scout
     - design
@@ -161,6 +162,22 @@ work_families:
       - spacesonar-claim-discipline
     required_gates:
       - design_contract_check
+      - campaign_proxy_runtime_parity_policy
+      - final_claim_guard
+
+  synthesis_campaign:
+    primary_skill: spacesonar-experiment-design
+    support_skills:
+      - spacesonar-exploration-mandate
+      - spacesonar-run-evidence-system
+      - spacesonar-runtime-parity
+      - spacesonar-result-judgment
+      - spacesonar-claim-discipline
+    required_gates:
+      - synthesis_source_lineage_check
+      - ingredient_card_lineage_check
+      - mix_depth_policy_check
+      - next_wave_influence_block
       - campaign_proxy_runtime_parity_policy
       - final_claim_guard
 

@@ -220,9 +220,14 @@ def validate_templates(repo_root: Path) -> list[str]:
         "experiment_bundle.template.json": load_json(repo_root / "lab" / "templates" / "experiment_bundle.template.json"),
         "attempt_manifest.template.yaml": load_yaml(repo_root / "lab" / "templates" / "attempt_manifest.template.yaml"),
         "runtime_evidence.template.yaml": load_yaml(repo_root / "lab" / "templates" / "runtime_evidence.template.yaml"),
+        "campaign_manifest.template.yaml": load_yaml(repo_root / "lab" / "templates" / "campaign_manifest.template.yaml"),
+        "ingredient_card.template.yaml": load_yaml(repo_root / "lab" / "templates" / "ingredient_card.template.yaml"),
+        "synthesis_mix_queue.template.yaml": load_yaml(repo_root / "lab" / "templates" / "synthesis_mix_queue.template.yaml"),
     }
 
     for name, data in templates.items():
+        if name in {"campaign_manifest.template.yaml", "ingredient_card.template.yaml", "synthesis_mix_queue.template.yaml"}:
+            continue
         if name in {"experiment_bundle.template.json", "attempt_manifest.template.yaml", "runtime_evidence.template.yaml"}:
             required_top = {"branch_worktree", "provenance"}
         else:
@@ -254,6 +259,61 @@ def validate_templates(repo_root: Path) -> list[str]:
                 observed=set(data.get("skill_routing", {})),
                 required=REQUIRED_SKILL_ROUTING_FIELDS,
             )
+    campaign_template = templates["campaign_manifest.template.yaml"]
+    add_missing(
+        errors,
+        label="campaign_manifest.template.yaml top-level",
+        observed=set(campaign_template),
+        required={"campaign_type", "bounded_synthesis", "candidate_repair_policy", "proxy_runtime_parity"},
+    )
+    synthesis = campaign_template.get("bounded_synthesis", {})
+    add_missing(
+        errors,
+        label="campaign_manifest.template.yaml bounded_synthesis",
+        observed=set(synthesis),
+        required={
+            "source_scope",
+            "source_campaign_ids",
+            "ingredient_registry",
+            "synthesis_registry",
+            "mix_depth_policy",
+            "next_wave_influence",
+            "runtime_follow_through",
+            "claim_boundary",
+        },
+    )
+    ingredient_template = templates["ingredient_card.template.yaml"]
+    add_missing(
+        errors,
+        label="ingredient_card.template.yaml top-level",
+        observed=set(ingredient_template),
+        required={
+            "version",
+            "ingredient_card_id",
+            "source_campaign_ids",
+            "evidence_paths",
+            "forbidden_uses",
+            "storage_contract",
+            "claim_boundary",
+        },
+    )
+    mix_template = templates["synthesis_mix_queue.template.yaml"]
+    add_missing(
+        errors,
+        label="synthesis_mix_queue.template.yaml top-level",
+        observed=set(mix_template),
+        required={
+            "version",
+            "campaign_id",
+            "queue_id",
+            "source_scope",
+            "mix_depth_policy",
+            "selection_policy",
+            "next_wave_influence",
+            "storage_contract",
+            "claim_boundary",
+        },
+    )
     return errors
 
 
@@ -343,6 +403,10 @@ def validate(repo_root: Path) -> list[str]:
                 "docs/agent_control/routing_smoke_prompts.yaml",
                 "lab/templates/experiment_receipt.template.yaml",
                 "lab/templates/run_manifest.template.json",
+                "lab/templates/ingredient_card.template.yaml",
+                "lab/templates/synthesis_mix_queue.template.yaml",
+                "docs/registers/ingredient_card_registry.csv",
+                "docs/registers/synthesis_campaign_registry.csv",
             ],
         )
     )
