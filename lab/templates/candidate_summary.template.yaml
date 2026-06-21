@@ -1,0 +1,32 @@
+version: candidate_summary_v1
+candidate_id: candidate_YYYYMMDDTHHMMSSZ_short_slug
+run_id: null
+bundle_id: null
+surface_id: null
+status: research_candidate
+allocation_reason: ""
+storage_contract:
+  source_of_truth: lab/candidates/<candidate_id>/candidate_summary.yaml
+  registry_rows:
+    - docs/registers/candidate_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+evidence_paths: []
+metrics_paths: []
+runtime_attempt_ids: []
+claim_boundary: candidate_for_further_work_not_selected
+allowed_claims:
+  - candidate
+  - further_work_allocation
+forbidden_claims:
+  - selected_baseline
+  - operating_promotion
+  - runtime_authority
+  - economics_pass
+  - materialization_ready
+  - handoff_complete
+  - live_readiness
+  - reviewed_verified_pass
+  - goal_achieve
+missing_evidence: []
+risk_notes: []
+next_action: null

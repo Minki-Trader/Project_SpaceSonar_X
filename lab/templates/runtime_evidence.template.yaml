@@ -1,0 +1,30 @@
+version: runtime_evidence_v2
+run_id: ""
+surface_id: ""
+bundle_id: null
+decision_surface_id: null
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: ""
+  forbidden_skip_reasons_checked: []
+  lowered_claim_if_not_run: null
+levels:
+  L0_contract_declared: pending
+  L1_python_onnx_parity: pending
+  L2_label_outcome_parity: pending
+  L3_mt5_micro_probe: pending
+  L4_split_runtime_probe: not_applicable
+  L5_candidate_runtime_evidence: not_applicable
+evidence_paths: []
+mt5_attempt_ids: []
+known_differences: []
+required_gate_coverage:
+  passed: []
+  not_applicable: []
+  missing: []
+runtime_debt_state: accepted_learning_debt
+repair_required: false
+repair_surface: null
+runtime_claim_boundary: planning_scaffold
+missing_evidence: []

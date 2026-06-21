@@ -1,0 +1,34 @@
+version: mt5_observation_v2
+level: L3_mt5_micro_probe
+run_id: ""
+surface_id: ""
+bundle_id: null
+attempt_id: ""
+attempt_path: runtime/mt5_attempts/<attempt_id>
+attempt_manifest_path: runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+probe_profile: micro_probe
+report_paths: []
+tester_identity:
+  symbol: US100
+  timeframe: M5
+  model: null
+  deposit: null
+  leverage: null
+  spread: floating
+  commission: null
+  swap_source: null
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  reason: ""
+  forbidden_skip_reasons_checked:
+    - probe_is_heavy
+    - probe_is_expensive
+    - proxy_result_is_weak
+    - trade_count_is_low
+    - candidate_is_ambiguous
+    - setup_might_fail
+observations: []
+repair_required: false
+runtime_claim_effect: learning_observation_only
+missing_evidence: []

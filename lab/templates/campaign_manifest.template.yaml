@@ -1,0 +1,32 @@
+version: campaign_manifest_v1
+campaign_id: campaign_short_slug
+status: planned
+wave_ids: []
+idea_ids: []
+hypothesis_ids: []
+objective: ""
+axis_tags: []
+surface_policy: broad_first
+storage_contract:
+  source_of_truth: lab/campaigns/<campaign_id>/campaign_manifest.yaml
+  registry_rows:
+    - docs/registers/campaign_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+skill_routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills: []
+required_gates: []
+claim_boundary: exploration_only
+default_runtime_level_target: L3_mt5_micro_probe
+stop_conditions: []
+runtime_learning_probe_decision_default:
+  required_when_runtime_question: true
+  forbidden_standalone_skip_reasons:
+    - probe_is_heavy
+    - probe_is_expensive
+    - proxy_result_is_weak
+    - trade_count_is_low
+    - candidate_is_ambiguous
+    - setup_might_fail
+notes: ""

@@ -1,0 +1,6 @@
+interface:
+  display_name: "SpaceSonar Claim Discipline"
+  short_description: "Prevent overclaims around status, closure, readiness, promotion, and runtime."
+  default_prompt: "Use $spacesonar-claim-discipline for status, docs, reports, closure, readiness, promotion, or runtime claims. Keep allowed and forbidden claims explicit."
+policy:
+  allow_implicit_invocation: true

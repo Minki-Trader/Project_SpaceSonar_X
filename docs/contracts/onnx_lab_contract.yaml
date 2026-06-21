@@ -1,0 +1,124 @@
+version: onnx_lab_contract_v2
+status: active_us100_with_live_chart_aux_contract
+instrument: FPMarkets US100 primary
+timeframe: M5
+
+contract_boundary:
+  purpose: "Define the active ONNX lab bundle and claim boundary with no inherited feature count, feature list, target, direction, holding-period, or model-head concept."
+  deleted_prior_concepts: deleted_by_user_request_no_current_evidence
+  explicit_definition_required_for:
+    - feature_set
+    - feature_construction
+    - label_definition
+    - prediction_target
+    - decision_use
+    - direction_mapping
+    - holding_period_policy
+    - split_policy
+    - objective_function
+    - model_io_shape
+    - output_head
+    - threshold_policy
+    - risk_logic
+    - mt5_ea_input_order
+
+concept_contract:
+  start_state: blank_slate
+  inherited_feature_set_allowed: false
+  inherited_label_allowed: false
+  inherited_prediction_target_allowed: false
+  inherited_direction_mapping_allowed: false
+  inherited_holding_period_allowed: false
+  inherited_model_io_allowed: false
+  rule: "No default feature set, target, direction class, holding time, model family, output head, threshold, or risk logic exists. Each experiment must define its own task surface before claiming results."
+
+bundle_contract:
+  source_of_truth: runtime/packages/<bundle_id>/experiment_bundle.json
+  required_identity:
+    - bundle_id
+    - run_id
+    - dataset_id
+    - feature_recipe_id
+    - feature_schema_hash
+    - feature_order_hash
+    - label_recipe_id
+    - label_id
+    - split_id
+    - task_surface_id
+    - decision_use
+    - decision_recipe_id
+    - model_framework
+    - model_opset
+    - input_schema
+    - output_schema
+    - onnx_sha256
+    - parser_version
+    - runtime_contract_version
+    - decision_surface_id
+    - producer_command
+    - environment_summary
+
+feature_contract:
+  base_frame: US100_M5_closed_bar
+  symbol_universe_status: primary_us100_with_live_chart_auxiliary_allowed
+  primary_symbol: US100
+  default_symbols:
+    - US100
+  live_chart_auxiliary_symbols_allowed: true
+  live_chart_auxiliary_symbol_rule: "Broker-native MT5 symbols may be used for research and development only when the target FPMarkets terminal can select the exact broker symbol, update its chart in real time, and return current bars or ticks."
+  forbidden_symbol_rule: "Delayed feeds, offline data, non-updating charts, VIX-like unavailable feeds, single-stock symbols without live MT5 charts, proxy datasets, and constituent baskets are out of scope for active research, feature generation, model input, runtime bundles, and EA input contracts."
+  runtime_auxiliary_symbol_rule: "Runtime use of an auxiliary symbol requires an explicit symbol contract, merge policy, feature schema, EA input contract, and MT5 runtime probe evidence."
+  feature_set_status: undefined_by_design
+  timestamp_policy: explicit_contract_required
+  merge_policy: explicit_contract_required
+  rolling_policy: right_aligned_closed_bar_only
+  future_fill_allowed: false
+  cross_session_forward_fill_allowed: false
+  partial_bar_allowed: false
+
+label_target_contract:
+  status: undefined_by_design
+  default_target: null
+  default_direction_mapping: null
+  default_holding_period: null
+  default_horizon: null
+  rule: "A run may define a label, target, ranking objective, regression target, classification target, policy objective, or non-trading diagnostic target, but it must be explicit and local to that experiment until promoted by evidence."
+
+model_io:
+  status: undefined_by_design
+  default_input_shape: null
+  default_output_head: null
+  rule: "Do not assume any archived input shape, output head, or fixed prediction task."
+
+split_contract:
+  random_shuffle_allowed: false
+  active_split_catalog: configs/onnx_lab/split_recipes/split_set_v0.yaml
+  active_split_catalog_boundary: research_split_catalog_only_not_canonical_not_pass
+  default_split_type: split_catalog_required
+  threshold_fit_scope: train_only
+  scaler_fit_scope: train_only
+  selector_fit_scope: train_only
+
+parity_contract:
+  python_onnx_smoke_required_for_bundle_claim: true
+  mt5_runtime_probe_required_for_runtime_claim: true
+  runtime_learning_probe_decision_required: true
+  fixture_set_status: undefined_by_design
+
+claim_boundary:
+  export_smoke_is_runtime_authority: false
+  compile_is_runtime_authority: false
+  parity_preflight_is_economics_pass: false
+  mt5_completed_reports_required_for_runtime_claim: true
+  deleted_legacy_concepts_are_current_evidence: false
+
+storage_contract:
+  durable_identity: repo_relative_paths_only
+  absolute_paths: local_context_only
+  registry_rows_are_evidence_indexes_only: true
+  heavy_artifact_policy: track_by_path_hash_size_command_or_uri
+  source_of_truth_required_for:
+    - run
+    - bundle
+    - candidate
+    - mt5_attempt

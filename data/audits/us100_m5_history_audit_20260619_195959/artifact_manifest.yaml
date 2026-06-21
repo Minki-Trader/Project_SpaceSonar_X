@@ -1,0 +1,48 @@
+version: artifact_manifest_v1
+artifact_id: us100_m5_history_audit_20260619_195959
+artifact_type: mt5_history_quality_audit
+claim_boundary: quality_audit_only_not_raw_bar_dataset
+
+producer:
+  tool: SpaceSonar_US100_HistoryAudit.mq5
+  execution: MT5 Strategy Tester
+  source_run_dir: C:/Users/awdse/AppData/Roaming/MetaQuotes/Terminal/Common/Files/SpaceSonar/history_audit/run_20260619_195959_347656_US100_PERIOD_M5
+
+source_scope:
+  broker_symbol: US100
+  timeframe: M5
+  requested_from_mt5: "1970.01.01 00:00:00"
+  requested_to_mt5: "2026.06.21 00:00:00"
+  first_bar_mt5: "2018.05.07 01:00:00"
+  last_bar_mt5: "2026.06.19 19:55:00"
+  copied_bars: 570392
+  daily_rows: 2099
+  time_axis: MT5 server datetime, bar-open timestamps
+
+project_artifacts:
+  - path: data/audits/us100_m5_history_audit_20260619_195959/daily.csv
+    role: daily_quality_audit
+    bytes: 325727
+    sha256: 97674A2D5752697B0A0B882EA36EFBBF78B6EFA05D5F6A60E5BE2CD87885E890
+  - path: data/audits/us100_m5_history_audit_20260619_195959/gaps.csv
+    role: internal_gap_audit
+    bytes: 49400
+    sha256: 7CC2DEB5B8FE2D9F9BE17A75EA0986E6EAFF2BB5C323425B5A1E8601E832BB25
+  - path: data/audits/us100_m5_history_audit_20260619_195959/summary.txt
+    role: audit_summary
+    bytes: 1334
+    sha256: EBC97E49E434806D53C86C3D091F18A25DC476007F9357DE004810983EF0C8FB
+
+intended_consumers:
+  - split catalog design
+  - data-quality masks
+  - gap and partial-session exclusions
+  - feature/proxy-test interpretation
+
+not_for:
+  - OHLC feature generation
+  - label generation
+  - model training input
+  - proxy backtest price source
+
+lineage_judgment: usable_as_quality_audit_with_boundary

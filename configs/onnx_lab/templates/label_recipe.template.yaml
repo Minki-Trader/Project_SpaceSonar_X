@@ -1,0 +1,14 @@
+version: label_recipe_v1
+label_recipe_id: lbl_short_slug_v001
+base_frame: fpmarkets_us100_m5_closed_bars
+timestamp_key: us100_bar_close_time
+label_start: after_feature_bar_t
+target_definition: null
+horizon_policy: null
+class_or_value_schema: null
+neutral_or_invalid_policy: null
+cost_assumptions: null
+output_labels: []
+leakage_boundary: label_may_use_future_bars_features_may_not
+runtime_observability: not_applicable_for_training_label_unless_runtime_target
+claim_boundary: recipe_spec_only

@@ -1,0 +1,42 @@
+{
+  "version": "experiment_bundle_v2",
+  "bundle_id": "bundle_YYYYMMDDTHHMMSSZ_short_slug",
+  "run_id": "onnxlab_YYYYMMDDTHHMMSSZ_short_slug",
+  "source_of_truth": "runtime/packages/<bundle_id>/experiment_bundle.json",
+  "dataset_id": null,
+  "task_surface_id": null,
+  "decision_use": null,
+  "feature_recipe_id": null,
+  "feature_schema_hash": null,
+  "feature_order_hash": null,
+  "label_recipe_id": null,
+  "label_id": null,
+  "target_id": null,
+  "horizon_or_holding_policy": null,
+  "split_id": null,
+  "decision_recipe_id": null,
+  "model_framework": null,
+  "model_opset": null,
+  "input_schema": null,
+  "output_schema": null,
+  "onnx_path": null,
+  "onnx_sha256": null,
+  "parser_version": null,
+  "runtime_contract_version": null,
+  "decision_surface_id": null,
+  "producer_command": null,
+  "environment_summary": {},
+  "runtime_learning_probe_decision": {
+    "required": false,
+    "decision": "not_applicable_no_runtime_question",
+    "reason": ""
+  },
+  "claim_boundary": "bundle_planning_scaffold",
+  "forbidden_claims": [
+    "runtime_authority",
+    "economics_pass",
+    "handoff_complete",
+    "live_readiness",
+    "goal_achieve"
+  ]
+}

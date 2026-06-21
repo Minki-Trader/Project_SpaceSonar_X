@@ -1,0 +1,161 @@
+version: codex_task_force_registry_v2
+source_of_truth: docs/agent_control/codex_task_force_registry.yaml
+purpose: "Define the SpaceSonar X ONNX Lab Codex Task Force roster and consultation policy."
+
+scope_boundary:
+  active_review_scope: "Project-native Codex Task Force consultation for ONNX lab design, evidence, data, model, runtime, and policy work."
+  legacy_review_scope: "Bulk legacy review trees and docs/archive were deleted by user request; no external-review/archive path remains in the active workspace."
+  does_not_replace:
+    - local verification
+    - hashes
+    - manifests
+    - run outputs
+    - MT5 reports
+    - claim boundaries
+
+model_policy:
+  current_floor_model: gpt-5.5
+  current_reasoning_effort: xhigh
+  current_service_tier: priority
+  default_alias: highest_available_xhigh
+  upgrade_rule: "Use the highest Codex-available xhigh model when allowed unless the user pins another model."
+  non_authority_rule: "Model strength is an execution setting, not evidence and not permission to relax gates, thresholds, or claim boundaries."
+
+custom_agent_config:
+  project_config_path: .codex/config.toml
+  project_agent_dir: .codex/agents
+  name_match_rule: "Each roster id must match the custom agent TOML file name and the TOML name field."
+  spawn_rule: "Use the custom agent name matching roster id when current Codex tool metadata exposes it."
+
+review_policy:
+  default_mode: micro_consult
+  micro_consult_default_agent_count: 1
+  micro_consult_default_max_agents: 2
+  micro_consult_claim_effect: advisory_only_no_reviewed_pass
+  three_or_more_requires: escalation_reason
+  five_or_more_requires: why_not_smaller
+  full_roster_requires:
+    - escalation_reason
+    - why_not_smaller
+    - full_roster_call_reason
+  formal_review_only_for:
+    - policy_change
+    - runtime_authority
+    - operating_promotion
+    - cross_system_handoff
+    - protected_reviewed_verified_pass_claim
+  review_pass_limit_default: 2
+  third_pass_rule: "Only when new evidence appears."
+  advice_classification:
+    - accepted
+    - rejected
+    - needs_local_verification
+  final_authority: "Parent Codex owns final direction after local verification."
+  autonomy_rule: "Agent prompts must ask for independent inspection, disagreements, risks, missing evidence, and recommended actions; do not ask agents to confirm a preselected answer."
+  context_rule: "Because forked context is not reliable, prompts must include enough objective, workspace, active-file, constraint, and forbidden-assumption context for independent work."
+  passive_agreement_rule: "A response that only agrees without evidence, risk review, or local reasoning is advisory noise and must not be treated as review evidence."
+  forbidden_claims:
+    - completion
+    - selected_baseline
+    - operating_promotion
+    - runtime_authority
+    - live_readiness
+    - goal_achieve
+    - parity_only_economics
+
+micro_consult_receipt_schema:
+  required_fields:
+    - consult_id
+    - trigger_source
+    - selected_agents
+    - selection_reason
+    - claim_surface
+    - question_or_context_digest
+    - opinion_classification
+    - owner_response
+    - local_verification_required
+    - allowed_claim_effect
+    - forbidden_claims
+  allowed_claim_effect: advisory_only_no_reviewed_pass
+
+roster:
+  - id: agent_01_system_governor
+    display_name: System Governor
+    custom_agent_name: agent_01_system_governor
+    custom_agent_path: .codex/agents/agent_01_system_governor.toml
+    remit: "Keep objective, scope, risk posture, and final claim boundary aligned."
+    required_for:
+      - policy_skill_governance
+      - protected_claim_boundary
+
+  - id: agent_02_platform_routing_architect
+    display_name: Platform Routing Architect
+    custom_agent_name: agent_02_platform_routing_architect
+    custom_agent_path: .codex/agents/agent_02_platform_routing_architect.toml
+    remit: "Own cold-start routing, registry wiring, model policy, and work-family integration."
+    required_for:
+      - agent_routing
+      - skill_routing
+      - cold_start
+      - folder_structure
+
+  - id: agent_03_philosophy_policy_skill_governance
+    display_name: Philosophy Policy Skill Governance Lead
+    custom_agent_name: agent_03_philosophy_policy_skill_governance
+    custom_agent_path: .codex/agents/agent_03_philosophy_policy_skill_governance.toml
+    remit: "Preserve reference-not-inheritance, exploration freedom, and active skill-role reduction."
+    required_for:
+      - AGENTS.md
+      - policies
+      - skills
+
+  - id: agent_04_evidence_control_plane
+    display_name: Evidence Control Plane Lead
+    custom_agent_name: agent_04_evidence_control_plane
+    custom_agent_path: .codex/agents/agent_04_evidence_control_plane.toml
+    remit: "Own receipts, gate coverage, artifact lineage, and index-first evidence discipline."
+    required_for:
+      - receipts
+      - required_gates
+      - archive_boundary
+      - closeout_audit
+
+  - id: agent_05_data_feature_contract
+    display_name: Data Feature Contract Lead
+    custom_agent_name: agent_05_data_feature_contract
+    custom_agent_path: .codex/agents/agent_05_data_feature_contract.toml
+    remit: "Own data identity, time axis, feature order, label boundary, split boundary, and leakage risks."
+    required_for:
+      - data_feature_build
+      - data_integrity
+      - feature_schema_contract
+
+  - id: agent_06_quant_research
+    display_name: Quant Research Lead
+    custom_agent_name: agent_06_quant_research
+    custom_agent_path: .codex/agents/agent_06_quant_research.toml
+    remit: "Push broad and extreme sweeps plus multi-axis surface rotation without baseline claims."
+    required_for:
+      - experiment_design
+      - experiment_execution
+      - sweep_design
+
+  - id: agent_07_model_validation_risk
+    display_name: Model Validation Risk Lead
+    custom_agent_name: agent_07_model_validation_risk
+    custom_agent_path: .codex/agents/agent_07_model_validation_risk.toml
+    remit: "Own overfit, selection, calibration, risk-stop, and anti-authority-laundering checks."
+    required_for:
+      - model_training
+      - candidate_evaluation
+      - selection_bias_check
+
+  - id: agent_08_mt5_onnx_runtime
+    display_name: MT5 ONNX Runtime Lead
+    custom_agent_name: agent_08_mt5_onnx_runtime
+    custom_agent_path: .codex/agents/agent_08_mt5_onnx_runtime.toml
+    remit: "Own ONNX/EA parity preflight, runtime surface classification, and MT5 probe evidence boundaries."
+    required_for:
+      - onnx_export_parity
+      - bundle_materialization
+      - runtime_probe

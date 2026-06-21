@@ -1,0 +1,7 @@
+interface:
+  display_name: "SpaceSonar Lane Classifier"
+  short_description: "Classify ONNX lab work as exploration, evidence, data, model, bundle, runtime, handoff, cleanup, or mixed."
+  default_prompt: "Use $spacesonar-lane-classifier when task intent mixes exploration, evidence, model, ONNX, runtime, handoff, cleanup, or hard-claim meaning."
+policy:
+  allow_implicit_invocation: true
+

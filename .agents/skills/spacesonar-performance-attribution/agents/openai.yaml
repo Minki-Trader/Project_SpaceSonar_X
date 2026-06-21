@@ -1,0 +1,6 @@
+interface:
+  display_name: "SpaceSonar Performance Attribution"
+  short_description: "Decompose KPI changes by time, sample, tier, model, threshold, trade shape, drawdown, regime."
+  default_prompt: "Use $spacesonar-performance-attribution when KPI or behavior changes. Record observed change, baseline, likely drivers, segment checks, alternatives, confidence, and next probe."
+policy:
+  allow_implicit_invocation: true

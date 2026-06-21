@@ -1,0 +1,6 @@
+interface:
+  display_name: "SpaceSonar Result Judgment"
+  short_description: "Classify result label and claim boundary before positive, negative, invalid, blocked, promotion, or runtime claims."
+  default_prompt: "Use $spacesonar-result-judgment for run, experiment, model, package, backtest, PR, or candidate outcomes. Record evidence, missing evidence, label, and boundary."
+policy:
+  allow_implicit_invocation: true

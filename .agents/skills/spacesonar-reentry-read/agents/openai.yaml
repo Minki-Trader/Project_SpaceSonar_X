@@ -1,0 +1,6 @@
+interface:
+  display_name: "SpaceSonar Reentry Read"
+  short_description: "Cold/warm re-entry with narrow current-truth reads and stale-assumption control."
+  default_prompt: "Use $spacesonar-reentry-read when starting or resuming ONNX lab work. Read only current truth sources needed for the task and avoid legacy inheritance."
+policy:
+  allow_implicit_invocation: true

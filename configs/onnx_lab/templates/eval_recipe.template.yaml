@@ -1,0 +1,11 @@
+version: eval_recipe_v1
+eval_recipe_id: eval_short_slug_v001
+metrics: []
+sample_filters: []
+decision_surface_ref: null
+cost_model_ref: null
+runtime_level_required: L3_mt5_micro_probe
+north_star_role: final_objective_not_exploration_gate
+major_window_dd_policy: explicit_windows_required
+oos_policy: explicit_split_or_wfo_required
+claim_boundary: research_only_until_mt5_probe

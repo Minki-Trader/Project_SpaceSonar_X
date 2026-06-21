@@ -1,0 +1,54 @@
+version: claim_vocabulary_v1
+claim_classes:
+  completed:
+    allowed_when:
+      - all_acceptance_criteria_passed
+      - all_required_gates_passed
+      - storage_contract_satisfied
+      - no_blocking_findings
+    forbidden_when:
+      - scope_missing_without_user_quote
+      - triggered_skill_receipt_missing
+      - required_kpi_missing
+  completed_reduced_scope:
+    allowed_when:
+      - explicit_user_scope_reduction_quote_exists
+      - reduced_scope_artifacts_pass
+      - full_scope_claims_forbidden
+  partial:
+    allowed_when:
+      - some_required_artifacts_exist
+      - at_least_one_required_artifact_missing
+  blocked:
+    allowed_when:
+      - recovery_attempt_or_failure_log_exists
+      - required_user_action_or_external_blocker_exists
+  invalid:
+    allowed_when:
+      - setup_data_or_scope_mismatch_found
+  verified:
+    allowed_when:
+      - requested_verification_layer_passed
+      - source_authority_matches_claim
+  runtime_probe:
+    allowed_when:
+      - mt5_or_runtime_observation_exists
+      - runtime_authority_not_claimed
+      - runtime_learning_probe_decision_recorded
+  runtime_authority:
+    allowed_when:
+      - runtime_authority_contract_passed
+      - explicit_policy_allows_authority_claim
+  planning_scaffold:
+    allowed_when:
+      - no_runtime_or_operating_claim
+      - missing_evidence_named
+      - next_action_named
+forbidden_substitutions:
+  - "answer_clarity_cannot_replace_runtime_parity"
+  - "claim_discipline_cannot_replace_missing_evidence"
+  - "run_evidence_cannot_replace_artifact_lineage"
+  - "python_structural_result_cannot_replace_mt5_result"
+  - "top_k_probe_cannot_replace_full_scope_verification_without_user_quote"
+  - "registry_row_cannot_replace_run_local_evidence"
+  - "agent_consensus_cannot_replace_required_evidence"

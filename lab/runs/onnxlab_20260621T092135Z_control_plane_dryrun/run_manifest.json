@@ -1,0 +1,153 @@
+{
+  "version": "run_manifest_v2",
+  "run_id": "onnxlab_20260621T092135Z_control_plane_dryrun",
+  "id_chain": {
+    "idea_id": "idea_control_plane_v0",
+    "hypothesis_id": "hyp_control_plane_v0",
+    "surface_id": "surface_codex_operating_control_v0",
+    "sweep_id": "sweep_not_applicable_control_plane",
+    "artifact_ids": [
+      "artifact_control_plane_policy_patch_v0",
+      "artifact_control_plane_template_patch_v0"
+    ],
+    "bundle_id": null,
+    "candidate_id": null
+  },
+  "trigger_source": "goal_objective",
+  "agent_consult_status": "advisory_prior_consult_available_not_review_evidence",
+  "selected_agents": [],
+  "skill_routing": {
+    "primary_family": "policy_skill_governance",
+    "primary_skill": "spacesonar-work-item-router",
+    "support_skills": [
+      "spacesonar-architecture-guard",
+      "spacesonar-run-evidence-system",
+      "spacesonar-workflow-drift-guard",
+      "spacesonar-claim-discipline"
+    ],
+    "required_gates": [
+      "skill_metadata_lint",
+      "storage_contract_check",
+      "dry_run_receipt",
+      "encoding_check",
+      "final_claim_guard"
+    ],
+    "not_applicable_gates": [
+      "onnx_export_smoke",
+      "python_onnx_parity",
+      "mt5_runtime_probe_contract_audit",
+      "runtime_surface_contract"
+    ]
+  },
+  "objective": "Prove the control-plane templates can record routing, storage, gates, runtime probe decision, judgment, missing evidence, and next action without model or runtime claims.",
+  "task_surface": {
+    "task_type": "control_plane_dry_run",
+    "target_or_label": null,
+    "direction_mapping": null,
+    "horizon_or_holding_policy": null,
+    "output_head": null
+  },
+  "status": "completed_for_planning_scaffold",
+  "created_at_utc": "2026-06-21T09:21:35Z",
+  "timezone": "UTC",
+  "git_commit": "unknown",
+  "dirty_state": "dirty_expected_policy_goal",
+  "command": "manual control-plane dry-run receipt creation",
+  "entrypoint": "not_applicable_document_only",
+  "environment_summary": {
+    "workspace": "Project_SpaceSonar_X",
+    "execution_layer": "document_edit_only"
+  },
+  "storage_contract": {
+    "source_of_truth": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json",
+    "receipt_path": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/experiment_receipt.yaml",
+    "lineage_path": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/artifact_lineage.json",
+    "metrics_path": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/metrics.json",
+    "supporting_paths": [
+      "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/logs/",
+      "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/reports/",
+      "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/artifacts/",
+      "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/mt5/"
+    ],
+    "registry_rows": [
+      "docs/registers/run_registry.csv",
+      "docs/registers/artifact_registry.csv"
+    ],
+    "durable_identity_policy": "repo_relative_paths_only",
+    "duplicate_policy": "single_source_of_truth_copy_requires_reason",
+    "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri"
+  },
+  "data_scope": {
+    "instrument": "FPMarkets US100",
+    "timeframe": "M5",
+    "dataset_id": null,
+    "split_id": null,
+    "date_range": null,
+    "timezone_or_session_policy": null,
+    "feature_boundary": "not_applicable_no_feature_generation",
+    "label_boundary": "not_applicable_no_label_generation",
+    "leakage_boundary": "not_applicable_document_only",
+    "missing_gap_policy": null
+  },
+  "model_export": {
+    "framework": null,
+    "opset": null,
+    "input_schema": null,
+    "output_schema": null,
+    "onnx_sha256": null
+  },
+  "runtime_learning_probe_decision": {
+    "required": false,
+    "decision": "not_applicable_no_runtime_question",
+    "reason": "This dry-run validates policy/template evidence recording only. It does not ask a runtime behavior, economics, EA/ONNX meaning, Strategy Tester, or handoff question.",
+    "forbidden_skip_reasons_checked": [
+      "probe_is_heavy",
+      "probe_is_expensive",
+      "proxy_result_is_weak",
+      "trade_count_is_low",
+      "candidate_is_ambiguous",
+      "setup_might_fail"
+    ],
+    "lowered_claim_if_not_run": "planning_scaffold_only"
+  },
+  "required_gate_coverage": {
+    "passed": [
+      "skill_metadata_lint",
+      "storage_contract_check",
+      "dry_run_receipt",
+      "encoding_check",
+      "json_yaml_csv_syntax_check",
+      "drift_scan",
+      "final_claim_guard"
+    ],
+    "not_applicable": [
+      "onnx_export_smoke",
+      "python_onnx_parity",
+      "mt5_runtime_probe_contract_audit",
+      "runtime_surface_contract"
+    ],
+    "missing": []
+  },
+  "result_judgment": "positive",
+  "missing_evidence": [],
+  "claim_scope": "planning_scaffold",
+  "forbidden_claims": [
+    "selected_baseline",
+    "runtime_authority",
+    "economics_pass",
+    "materialization_ready",
+    "handoff_complete",
+    "live_readiness",
+    "reviewed_verified_pass",
+    "goal_achieve"
+  ],
+  "invalid_conditions": [
+    "any_runtime_or_model_claim_from_this_dry_run"
+  ],
+  "stop_conditions": [
+    "dry_run_makes_model_or_runtime_claim",
+    "storage_contract_missing",
+    "registry_row_used_as_proof"
+  ],
+  "next_action": "ready_for_actual_onnx_development_entry"
+}

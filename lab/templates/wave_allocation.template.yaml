@@ -1,0 +1,26 @@
+version: wave_allocation_v1
+wave_id: wave_YYYYMMDD_short_slug
+role: allocation_batch
+status: planned
+claim_boundary: planning_scaffold
+allocation_goal: ""
+storage_contract:
+  source_of_truth: lab/waves/<wave_id>/wave_allocation.yaml
+  registry_rows:
+    - docs/registers/wave_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+budget:
+  max_runs: null
+  max_wallclock_hours: null
+fixed_controls:
+  base_symbol: US100
+  timeframe: M5
+  broker: FPMarkets
+  row_key: us100_bar_close_time
+  parity_policy: declare_runtime_level_per_surface
+sampling_plan:
+  mode: mixed
+  notes: ""
+campaign_allocations: []
+stop_conditions: []
+notes: ""

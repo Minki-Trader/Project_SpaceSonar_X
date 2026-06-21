@@ -1,0 +1,75 @@
+version: mt5_runtime_probe_contract_v2
+standard_probe_profile: explicit_period_profile_required
+claim_boundary: runtime_probe_contract_only_no_runtime_authority_no_pass
+
+period_authority:
+  dates_embedded_in_this_file: false
+  required_period_profile_id: period_profile_split_set_v0
+  required_period_profile_path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  default_runtime_period_set_id: split_base_anchor_v0_research_l4
+  locked_final_period_set_id: split_base_anchor_v0_locked_final
+  locked_final_requires_explicit_unlock: true
+  rule: "Runtime attempts must name period_profile_id and runtime_period_set_id. This contract does not define train, validation, OOS, or WFO dates."
+
+execution_authority:
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  tester_execution_profile_path: configs/mt5/tester_execution_profile_v0.yaml
+  rule: "Execution settings live in the tester execution profile. Date windows live in period profiles."
+
+runtime_learning_probe_decision:
+  required_for_runtime_claim_surfaces: true
+  record_field: runtime_learning_probe_decision
+  allowed_decisions:
+    - run_required
+    - not_applicable_no_runtime_question
+    - blocked_no_actionable_runtime_surface
+    - lowered_claim_runtime_probe_needed
+  forbidden_standalone_skip_reasons:
+    - probe_is_heavy
+    - probe_is_expensive
+    - proxy_result_is_weak
+    - trade_count_is_low
+    - candidate_is_ambiguous
+    - setup_might_fail
+  rule: "If runtime behavior, economics, EA/ONNX meaning, Strategy Tester output, materialization, handoff, or live-like operation is the question, run the narrow sufficient MT5 probe or lower the claim."
+
+completion:
+  required_period_roles:
+    - validation
+    - research_oos
+  required_report_status: completed
+  runtime_probe_completed_requires_all_required_period_roles: true
+  runtime_probe_completed_requires_period_profile_id: true
+  runtime_probe_completed_requires_runtime_period_set_id: true
+  runtime_probe_completed_requires_execution_profile_id: true
+  runtime_probe_completed_requires_surface_contract: true
+  allowed_surface_scopes_for_completion:
+    - full_period_deterministic
+    - full_period_sparse_decision_surface
+  forbidden_source_artifact_roles_for_completion:
+    - diagnostic_sample
+    - proxy_score_sample
+    - score_sample
+    - sampled_rows
+    - preview_rows
+execution:
+  profile_ref: configs/mt5/tester_execution_profile_v0.yaml
+  terminal_mode: portable_required
+  required_terminal_args:
+    - /portable
+exception_profiles:
+  materialization_smoke:
+    completion_claim_allowed: false
+    reason_code: materialization_smoke_only
+  debug_reproduction:
+    completion_claim_allowed: false
+    reason_code: debug_reproduction_only
+  specific_period_probe:
+    completion_claim_allowed: false
+    reason_code: explicit_specific_period_only
+  regime_slice_probe:
+    completion_claim_allowed: false
+    reason_code: explicit_regime_slice_only
+  source_replay:
+    completion_claim_allowed: false
+    reason_code: historical_source_replay_only

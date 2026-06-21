@@ -1,0 +1,72 @@
+version: experiment_receipt_v2
+run_id: onnxlab_YYYYMMDDTHHMMSSZ_short_slug
+id_chain:
+  idea_id: null
+  hypothesis_id: null
+  surface_id: null
+  sweep_id: null
+  artifact_ids: []
+  bundle_id: null
+  candidate_id: null
+skill_routing:
+  primary_family: null
+  primary_skill: null
+  support_skills: []
+  required_gates: []
+  not_applicable_gates: []
+hypothesis: ""
+decision_use: ""
+task_surface:
+  task_type: null
+  target_or_label: null
+  direction_mapping: null
+  horizon_or_holding_policy: null
+  output_head: null
+comparison_baseline: null
+control_variables: []
+changed_variables: []
+sample_scope:
+  instrument: FPMarkets US100
+  timeframe: M5
+  dataset_id: null
+  split_id: null
+  timezone_or_session_policy: null
+  feature_boundary: null
+  label_boundary: null
+  leakage_boundary: null
+storage_contract:
+  source_of_truth: lab/runs/<run_id>/run_manifest.json
+  receipt_path: lab/runs/<run_id>/experiment_receipt.yaml
+  lineage_path: lab/runs/<run_id>/artifact_lineage.json
+  metrics_path: lab/runs/<run_id>/metrics.json
+  registry_rows: []
+  durable_identity_policy: repo_relative_paths_only
+  heavy_artifact_policy: track_by_path_hash_size_command_or_uri
+success_criteria: []
+failure_criteria: []
+invalid_conditions: []
+stop_conditions: []
+evidence_plan: []
+required_gate_coverage:
+  passed: []
+  not_applicable: []
+  missing: []
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: ""
+  forbidden_skip_reasons_checked: []
+  lowered_claim_if_not_run: null
+result_judgment: not_evaluated
+missing_evidence: []
+claim_boundary: exploration_only
+forbidden_claims:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - materialization_ready
+  - handoff_complete
+  - live_readiness
+  - reviewed_verified_pass
+  - goal_achieve
+next_action: null

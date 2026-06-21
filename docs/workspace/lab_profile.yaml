@@ -1,0 +1,81 @@
+version: onnx_lab_profile_v1
+lab_id: spacesonar_onnx_lab
+instrument: FPMarkets US100
+timeframe: M5
+
+identity_hierarchy:
+  - idea_id
+  - hypothesis_id
+  - surface_id
+  - sweep_id
+  - run_id
+  - artifact_id
+  - bundle_id
+  - candidate_id
+
+axis_tags:
+  - task_surface
+  - feature_surface
+  - target_or_label_surface
+  - decision_use
+  - horizon_or_holding_policy
+  - model_family
+  - objective
+  - calibration
+  - decision_surface
+  - risk_shape
+  - runtime_parity
+
+candidate_lifecycle:
+  - idea_open
+  - scout_surface
+  - research_candidate
+  - probe_candidate
+  - advisory_queue
+  - preserved_clue
+  - negative_memory
+  - invalid_setup
+  - blocked_retry
+
+run_id_format: "onnxlab_<YYYYMMDDTHHMMSSZ>_<short_slug>"
+bundle_id_format: "bundle_<YYYYMMDDTHHMMSSZ>_<short_slug>"
+claim_default: exploration_only
+concept_start_state: blank_slate
+north_star_objective:
+  role: final_objective_not_exploration_gate
+  timeframe_fixed: false
+  task_fixed: false
+  target:
+    average_trades_per_active_day_min: 5
+    profit_factor_min: 1.5
+    profit_factor_preferred_range:
+      - 1.5
+      - 3.0
+    drawdown_pct_max_across_major_windows: 10
+    concentration_risk_rule: avoid_short_period_profit_concentration
+  claim_effect: "Use as the final direction of travel. Do not reject early scout experiments only because they do not meet this objective yet."
+no_default_assumptions:
+  - feature_set
+  - feature_count
+  - feature_recipe_mix
+  - label_definition
+  - prediction_target
+  - direction_mapping
+  - holding_period
+  - model_io_shape
+  - output_head
+  - threshold_policy
+  - risk_logic
+
+storage_contract:
+  durable_identity: repo_relative_paths_only
+  registry_rows_are_proof: false
+  source_of_truth_paths:
+    campaign: lab/campaigns/<campaign_id>/campaign_manifest.yaml
+    run_manifest: lab/runs/<run_id>/run_manifest.json
+    experiment_receipt: lab/runs/<run_id>/experiment_receipt.yaml
+    artifact_lineage: lab/runs/<run_id>/artifact_lineage.json
+    metrics: lab/runs/<run_id>/metrics.json
+    candidate_summary: lab/candidates/<candidate_id>/candidate_summary.yaml
+    experiment_bundle: runtime/packages/<bundle_id>/experiment_bundle.json
+    mt5_attempt_manifest: runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml

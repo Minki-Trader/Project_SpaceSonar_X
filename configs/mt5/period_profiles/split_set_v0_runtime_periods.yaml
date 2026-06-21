@@ -1,0 +1,88 @@
+version: runtime_period_profile_v1
+period_profile_id: period_profile_split_set_v0
+status: active_research_period_profile
+created_at_utc: "2026-06-21T00:00:00Z"
+claim_boundary: runtime_period_mapping_only_no_runtime_authority_no_pass
+
+source_split_recipe:
+  recipe_id: split_set_v0
+  path: configs/onnx_lab/split_recipes/split_set_v0.yaml
+  primary_split_id: split_base_anchor_v0
+  auxiliary_wfo_split_id: split_block_wfo_v0
+
+time_axis:
+  date_key: mt5_date
+  timestamp_source: MT5 server datetime from history audit
+  utc_conversion_status: not_claimed_by_source_audit
+
+runtime_period_sets:
+  - runtime_period_set_id: split_base_anchor_v0_research_l4
+    role: default_formal_runtime_research_periods
+    claim_boundary: L4_research_observation_only_not_pass
+    required_roles:
+      - validation
+      - research_oos
+    periods:
+      validation:
+        split_role: validation
+        from_date: "2024.06.05"
+        to_date: "2025.03.10"
+      research_oos:
+        split_role: oos_a
+        from_date: "2025.04.03"
+        to_date: "2025.11.21"
+    locked_final_excluded_by_default: true
+
+  - runtime_period_set_id: split_base_anchor_v0_locked_final
+    role: final_locked_observation_period
+    claim_boundary: locked_final_observation_only_not_pass
+    requires_explicit_unlock: true
+    periods:
+      locked_final_oos:
+        split_role: oos_b_locked_final
+        from_date: "2025.12.02"
+        to_date: "2026.06.18"
+
+  - runtime_period_set_id: split_block_wfo_v0_runtime_rotation
+    role: wfo_runtime_stability_observation
+    claim_boundary: WFO_observation_only_not_canonical
+    folds:
+      - fold_id: F1
+        train:
+          from_date: "2022.02.09"
+          to_date: "2023.05.02"
+        validation:
+          from_date: "2023.05.04"
+          to_date: "2024.02.23"
+        oos:
+          from_date: "2024.06.05"
+          to_date: "2025.03.10"
+      - fold_id: F2
+        train:
+          from_date: "2022.02.09"
+          to_date: "2024.02.23"
+        validation:
+          from_date: "2024.06.05"
+          to_date: "2025.03.10"
+        oos:
+          from_date: "2025.04.03"
+          to_date: "2025.11.21"
+      - fold_id: F3
+        train:
+          from_date: "2022.02.09"
+          to_date: "2025.03.10"
+        validation:
+          from_date: "2025.04.03"
+          to_date: "2025.11.21"
+        oos:
+          from_date: "2025.12.02"
+          to_date: "2026.06.18"
+
+rules:
+  no_embedded_legacy_dates: true
+  runtime_contract_must_reference_period_profile_id: true
+  oos_b_locked_final_default_use: forbidden_for_adaptive_selection
+  if_oos_used_for_repair_mark:
+    - research_oos_seen
+    - adaptive_oos_result
+    - candidate_requires_fresh_validation

@@ -1,0 +1,195 @@
+version: split_set_v0
+recipe_id: split_set_v0
+recipe_type: split
+status: active_research_split_set
+created_at_utc: "2026-06-21T00:00:00Z"
+claim_boundary: split_definition_only_no_reviewed_pass_no_selected_baseline
+
+source_evidence:
+  audit_id: us100_m5_history_audit_20260619_195959
+  daily_csv: data/audits/us100_m5_history_audit_20260619_195959/daily.csv
+  gaps_csv: data/audits/us100_m5_history_audit_20260619_195959/gaps.csv
+  manifest: data/audits/us100_m5_history_audit_20260619_195959/artifact_manifest.yaml
+  daily_csv_sha256: "97674A2D5752697B0A0B882EA36EFBBF78B6EFA05D5F6A60E5BE2CD87885E890"
+  gaps_csv_sha256: "7CC2DEB5B8FE2D9F9BE17A75EA0986E6EAFF2BB5C323425B5A1E8601E832BB25"
+  evidence_boundary: mt5_history_quality_audit_only_not_training_dataset
+
+time_axis:
+  instrument: US100
+  timeframe: M5
+  date_key: mt5_date
+  timestamp_source: MT5 server datetime from history audit
+  bar_timestamp_convention: bar_open_timestamp
+  utc_conversion_status: not_claimed_by_source_audit
+  ordering: ascending_by_mt5_date
+
+adoption_note:
+  decision: use_split_set_v0
+  decision_effect: active_research_split_catalog
+  not_claims:
+    - reviewed
+    - verified
+    - pass
+    - selected_baseline
+    - runtime_authority
+    - economics_pass
+  canonical_split_policy: "No single canonical split is declared. This file defines the adopted split catalog v0."
+
+clean_universe:
+  role: usable_clean_research_universe
+  from_date: "2022.02.09"
+  to_date: "2026.06.18"
+  exclude_ranges:
+    - from_date: "2018.05.07"
+      to_date: "2022.02.08"
+      reason: pre_clean_universe_gap_or_missing_history
+  exclude_dates:
+    - date: "2026.06.19"
+      reason: last_copied_partial_day_outside_clean_universe
+  internal_gap_dates:
+    count: 16
+    dates:
+      - "2022.09.13"
+      - "2023.05.03"
+      - "2024.02.26"
+      - "2024.02.29"
+      - "2024.04.25"
+      - "2024.05.30"
+      - "2024.05.31"
+      - "2024.06.04"
+      - "2025.03.11"
+      - "2025.03.12"
+      - "2025.03.13"
+      - "2025.03.14"
+      - "2025.04.02"
+      - "2025.11.24"
+      - "2025.11.28"
+      - "2025.12.01"
+
+clean_blocks:
+  - block_id: clean_block_1
+    from_date: "2022.02.09"
+    to_date: "2022.09.12"
+  - block_id: clean_block_2
+    from_date: "2022.09.14"
+    to_date: "2023.05.02"
+  - block_id: clean_block_3
+    from_date: "2023.05.04"
+    to_date: "2024.02.23"
+  - block_id: clean_block_4
+    from_date: "2024.06.05"
+    to_date: "2025.03.10"
+  - block_id: clean_block_5
+    from_date: "2025.04.03"
+    to_date: "2025.11.21"
+  - block_id: clean_block_6
+    from_date: "2025.12.02"
+    to_date: "2026.06.18"
+
+primary_split:
+  split_id: split_base_anchor_v0
+  role: primary_anchor_split
+  claim_boundary: research_split_not_baseline_not_pass
+  train:
+    from_date: "2022.02.09"
+    to_date: "2024.02.23"
+    clean_blocks:
+      - clean_block_1
+      - clean_block_2
+      - clean_block_3
+    approx_clean_trading_days: 525
+  validation:
+    from_date: "2024.06.05"
+    to_date: "2025.03.10"
+    clean_blocks:
+      - clean_block_4
+    approx_clean_trading_days: 197
+  is:
+    from_date: "2022.02.09"
+    to_date: "2025.03.10"
+    composition:
+      - train
+      - validation
+  oos_a:
+    from_date: "2025.04.03"
+    to_date: "2025.11.21"
+    clean_blocks:
+      - clean_block_5
+    approx_clean_trading_days: 166
+    use_boundary: research_oos
+  oos_b_locked_final:
+    from_date: "2025.12.02"
+    to_date: "2026.06.18"
+    clean_blocks:
+      - clean_block_6
+    approx_clean_trading_days: 141
+    use_boundary: locked_final_oos_not_for_adaptive_repair
+  combined_oos:
+    approx_clean_trading_days: 307
+    composition:
+      - oos_a
+      - oos_b_locked_final
+
+wfo_splits:
+  split_id: split_block_wfo_v0
+  role: auxiliary_wfo_split
+  claim_boundary: stability_check_only_not_canonical
+  folds:
+    - fold_id: F1
+      train:
+        from_date: "2022.02.09"
+        to_date: "2023.05.02"
+      validation:
+        from_date: "2023.05.04"
+        to_date: "2024.02.23"
+      oos:
+        from_date: "2024.06.05"
+        to_date: "2025.03.10"
+    - fold_id: F2
+      train:
+        from_date: "2022.02.09"
+        to_date: "2024.02.23"
+      validation:
+        from_date: "2024.06.05"
+        to_date: "2025.03.10"
+      oos:
+        from_date: "2025.04.03"
+        to_date: "2025.11.21"
+    - fold_id: F3
+      train:
+        from_date: "2022.02.09"
+        to_date: "2025.03.10"
+      validation:
+        from_date: "2025.04.03"
+        to_date: "2025.11.21"
+      oos:
+        from_date: "2025.12.02"
+        to_date: "2026.06.18"
+
+oos_consumption_policy:
+  oos_a:
+    allowed_use: research_oos_observation_and_repair_tracking
+    if_used_for_selection_or_repair:
+      mark:
+        - research_oos_seen
+        - adaptive_oos_result
+        - candidate_requires_fresh_validation
+  oos_b_locked_final:
+    allowed_use: final_locked_observation_only
+    default_access: locked
+    unlock_requires: explicit_user_or_policy_decision
+    if_used_for_selection_or_repair:
+      mark:
+        - locked_final_consumed
+        - candidate_requires_new_future_validation
+
+leakage_controls:
+  random_shuffle_allowed: false
+  train_fit_scope_only:
+    - scalers
+    - imputers
+    - selectors
+    - calibration
+    - thresholds
+  purge_embargo_status: task_horizon_dependent_required_when_label_horizon_exists
+  label_crossing_split_boundary_policy: drop_or_explicitly_purge_after_label_definition

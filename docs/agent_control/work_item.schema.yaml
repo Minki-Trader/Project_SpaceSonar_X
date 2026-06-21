@@ -1,0 +1,161 @@
+version: onnx_lab_work_item_schema_v1
+new_work_item_required_version: onnx_lab_work_item_v1
+legacy_routing_record_policy: deleted_no_inheritance
+
+required_top_level:
+  - work_item_id
+  - created_at_utc
+  - user_request
+  - current_truth
+  - work_classification
+  - interpreted_scope
+  - verification_profile
+  - acceptance_criteria
+  - work_plan
+  - skill_routing
+  - storage_contract
+  - evidence_contract
+  - gates
+  - runtime_learning_probe_decision
+  - final_claim_policy
+
+scope_units_allowed:
+  - file
+  - document
+  - run
+  - surface
+  - sweep
+  - candidate
+  - bundle
+  - code_module
+  - metric_row
+  - registry_row
+  - artifact
+  - report
+  - policy
+  - skill
+  - runtime_attempt
+
+execution_layers_allowed:
+  - read_only
+  - document_edit
+  - code_edit
+  - python_execution
+  - onnx_export
+  - parity_check
+  - mt5_execution
+  - metric_recording
+  - registry_update
+  - cleanup
+  - publish
+
+verification_profile_ids_allowed:
+  - information_only
+  - design_only
+  - code_change
+  - lab_experiment
+  - onnx_bundle
+  - runtime
+  - policy_skill_governance
+  - cleanup_archive
+
+fields:
+  work_item_id:
+    required: true
+    rule: "Stable id for this unit of work."
+
+  current_truth:
+    required_fields:
+      - truth_sources_read
+      - deleted_legacy_boundary
+      - current_claim_boundary
+
+  work_classification:
+    required_fields:
+      - primary_family
+      - detected_families
+      - touched_surfaces
+      - mutation_intent
+      - execution_intent
+
+  interpreted_scope:
+    required_fields:
+      - target_surfaces
+      - scope_units
+      - execution_layers
+      - mutation_policy
+      - evidence_layers
+      - reduction_policy
+      - claim_boundary
+
+  verification_profile:
+    required_fields:
+      - profile_id
+      - claim_surface
+      - trigger_sources
+      - protected_claims
+      - required_evidence
+      - gates_not_run_with_reason
+      - stop_conditions
+
+  evidence_contract:
+    required_fields:
+      - raw_evidence
+      - machine_readable
+      - human_readable
+      - generated_or_ignored_artifacts
+      - source_of_truth_paths
+      - registry_rows
+      - heavy_artifact_policy
+
+  storage_contract:
+    required_fields:
+      - durable_identity_policy
+      - run_root
+      - manifest_path
+      - receipt_path
+      - lineage_path
+      - metrics_path
+      - registry_paths
+      - source_of_truth
+      - duplicate_policy
+    rule: "Durable identity must use repo-relative paths. Absolute terminal paths are local context only."
+
+  skill_routing:
+    required_fields:
+      - primary_family
+      - primary_skill
+      - support_skills
+      - skills_selected
+      - skills_not_used
+      - required_gates
+    rule: "Values must be derived from docs/agent_control/work_family_registry.yaml before implementation starts."
+
+  final_claim_policy:
+    required_fields:
+      - allowed_claims
+      - forbidden_claims
+      - claim_vocabulary_reference
+
+  runtime_learning_probe_decision:
+    required_fields:
+      - required
+      - decision
+      - reason
+      - forbidden_skip_reasons_checked
+      - lowered_claim_if_not_run
+
+runtime_required_evidence_terms:
+  - dataset_id
+  - feature_schema_hash
+  - feature_order_hash
+  - label_id
+  - split_id
+  - onnx_sha256
+  - ea_source_hash
+  - ea_binary_hash
+  - set_ini_hash
+  - tester_identity
+  - report_hash
+  - trade_list_hash
+  - telemetry_hash

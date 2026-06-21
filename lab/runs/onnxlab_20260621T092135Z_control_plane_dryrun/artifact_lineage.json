@@ -1,0 +1,84 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_20260621T092135Z_control_plane_dryrun",
+  "source_inputs": [
+    "C:/Users/awdse/.codex/attachments/f4245fe2-1426-4cb4-b8f5-028563d0b3ce/goal-objective.md",
+    "AGENTS.md",
+    "docs/agent_control/work_family_registry.yaml",
+    "docs/agent_control/work_item.schema.yaml",
+    "docs/agent_control/codex_operating_format.yaml",
+    "docs/contracts/onnx_lab_contract.yaml",
+    "foundation/config/mt5_runtime_probe_contract.yaml",
+    "lab/templates/"
+  ],
+  "producer": {
+    "type": "manual_codex_policy_edit",
+    "identity": "active_goal_control_plane",
+    "command": "apply_patch and directory creation",
+    "environment_summary": {
+      "shell": "powershell",
+      "workspace": "Project_SpaceSonar_X"
+    }
+  },
+  "consumer": [
+    "future_non_trivial_onnx_lab_work"
+  ],
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json",
+    "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/experiment_receipt.yaml",
+    "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/artifact_lineage.json",
+    "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/metrics.json"
+  ],
+  "artifact_paths": [
+    {
+      "artifact_id": "artifact_control_plane_dryrun_manifest_v0",
+      "path_or_uri": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json",
+      "sha256": "d9592ee86ab453bb46de02d18d7378df1d7054808082d69ba31dcaca51cd5842",
+      "size_bytes": 5279,
+      "availability": "present_hash_recorded",
+      "regeneration_command": "manual control-plane dry-run creation from active goal objective",
+      "source_of_truth": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json",
+      "copy_reason": null
+    },
+    {
+      "artifact_id": "artifact_control_plane_dryrun_receipt_v0",
+      "path_or_uri": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/experiment_receipt.yaml",
+      "sha256": "4d03a0efd081d96935a6b194f0338cc31a6b30cf7110a6c6e9757d687e8307ea",
+      "size_bytes": 4605,
+      "availability": "present_hash_recorded",
+      "regeneration_command": "manual control-plane dry-run creation from active goal objective",
+      "source_of_truth": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/experiment_receipt.yaml",
+      "copy_reason": null
+    },
+    {
+      "artifact_id": "artifact_control_plane_dryrun_metrics_v0",
+      "path_or_uri": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/metrics.json",
+      "sha256": "3a2ca9222e8aa311344ffddeb96b2f13044ac0a366a74865d4348081cf749a84",
+      "size_bytes": 999,
+      "availability": "present_hash_recorded",
+      "regeneration_command": "manual control-plane dry-run creation from active goal objective",
+      "source_of_truth": "lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/metrics.json",
+      "copy_reason": null
+    }
+  ],
+  "artifact_hashes": [
+    "d9592ee86ab453bb46de02d18d7378df1d7054808082d69ba31dcaca51cd5842",
+    "4d03a0efd081d96935a6b194f0338cc31a6b30cf7110a6c6e9757d687e8307ea",
+    "3a2ca9222e8aa311344ffddeb96b2f13044ac0a366a74865d4348081cf749a84"
+  ],
+  "artifact_sizes": [
+    5279,
+    4605,
+    999
+  ],
+  "regeneration_commands": [
+    "Recreate from active control-plane templates and goal objective; do not infer model or runtime evidence."
+  ],
+  "registry_links": [
+    "docs/registers/run_registry.csv",
+    "docs/registers/artifact_registry.csv"
+  ],
+  "availability": "present_hash_recorded",
+  "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
+  "lineage_judgment": "positive_planning_scaffold_only"
+}

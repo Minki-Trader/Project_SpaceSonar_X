@@ -1,0 +1,18 @@
+version: parity_level_v1
+level: L1_python_onnx_parity
+run_id: ""
+surface_id: ""
+bundle_id: null
+fixture_set_id: null
+input_hash: null
+onnx_sha256: null
+source_of_truth: lab/runs/<run_id>/artifacts/parity_level.yaml
+checks: []
+tolerances: {}
+known_differences: []
+status: pending
+claim_effect: bundle_preflight_only
+forbidden_claims:
+  - runtime_authority
+  - economics_pass
+  - handoff_complete

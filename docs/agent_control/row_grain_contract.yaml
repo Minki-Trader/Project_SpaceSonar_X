@@ -1,0 +1,25 @@
+version: onnx_lab_row_grain_contract_v1
+purpose: "Define row identity for run, artifact, candidate, and runtime metric records."
+
+row_grains:
+  run:
+    identity_fields:
+      - run_id
+  artifact:
+    identity_fields:
+      - artifact_id
+  bundle:
+    identity_fields:
+      - bundle_id
+  candidate:
+    identity_fields:
+      - candidate_id
+  runtime_attempt:
+    identity_fields:
+      - attempt_id
+
+rules:
+  - "Do not mix run-level and candidate-level judgments in one row."
+  - "Do not mix proxy metrics and runtime metrics in one row."
+  - "If a metric aggregates multiple runs, record source run ids explicitly."
+

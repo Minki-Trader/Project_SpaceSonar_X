@@ -1,0 +1,36 @@
+version: onnx_lab_risk_flag_registry_v1
+purpose: "Risk flags for ONNX lab routing and final claim discipline."
+
+risk_flags:
+  legacy_inheritance_risk:
+    triggers:
+      - archive material referenced
+      - legacy routing record or review cited
+    required_response: "Mark reference_only or prior_evidence_only."
+
+  data_leakage_risk:
+    triggers:
+      - feature/label/split changes
+      - external joins
+      - timestamp assumptions
+    required_response: "Run data integrity checks."
+
+  selection_bias_risk:
+    triggers:
+      - top-N selection
+      - threshold tuning
+      - candidate ranking
+    required_response: "Run model validation/risk review."
+
+  runtime_laundering_risk:
+    triggers:
+      - proxy result used for runtime claim
+      - compile used as runtime evidence
+      - parity preflight used as economics pass
+    required_response: "Lower claim or require MT5 runtime evidence."
+
+  heavy_artifact_risk:
+    triggers:
+      - generated ONNX/data/report payloads
+      - large local outputs
+    required_response: "Use manifest/hash/URI/regeneration command unless tracking is explicitly required."

@@ -1,0 +1,32 @@
+version: onnx_lab_code_surface_baseline_v1
+purpose: "Define current code ownership boundaries for the ID-based ONNX lab."
+
+active_owners:
+  package_code: src/spacesonar
+  collectors: foundation/collectors
+  features: foundation/features
+  labels: foundation/labels
+  training: foundation/training
+  onnx_export: foundation/onnx
+  parity: foundation/parity
+  mt5_runtime: foundation/mt5
+  orchestration: foundation/pipelines
+  run_evidence: lab/runs
+  runtime_packages: runtime/packages
+  mt5_attempts: runtime/mt5_attempts
+
+legacy_reference:
+  deleted_workspace_material:
+    status: deleted_by_user_request
+    rule: "Do not treat deleted archives, old review trees, legacy routing trees, or old pipeline material as available evidence."
+
+forbidden_import_patterns:
+  - importer_owner: src/spacesonar
+    imported_owner: lab/runs/*
+    reason: "Package code must not depend on run-local evidence."
+  - importer_owner: foundation/*
+    imported_owner: lab/runs/*
+    reason: "Reusable foundation code must not depend on run-local evidence."
+  - importer_owner: foundation/*
+    imported_owner: runtime/packages/*
+    reason: "Reusable code must not depend on generated runtime package payloads."

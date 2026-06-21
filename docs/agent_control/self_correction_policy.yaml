@@ -1,0 +1,63 @@
+version: self_correction_policy_v1
+purpose: "Classify failed gates into repair plans without weakening the operating harness."
+default_mode: plan_only
+max_attempts: 2
+same_failure_twice: human_decision_required
+new_failure_after_repair: stop_and_report
+modes:
+  plan_only:
+    mutates_files: false
+    description: "Classify failures and write a repair plan. No file edits are made."
+  safe_autofix:
+    mutates_files: true
+    description: "May apply only allowlisted low-risk work-item or closeout wiring fixes."
+  guarded_autofix:
+    mutates_files: false
+    description: "Writes patch proposals for code, policy, test, threshold, or runtime changes."
+safe_autofix_allowlist:
+  - add_missing_required_gate
+  - attach_existing_audit_json_to_closeout
+  - normalize_skills_not_used_reason
+  - add_expected_work_item_output
+  - sync_closeout_report_gate_list
+forbidden_actions:
+  - remove_required_gate
+  - relax_audit_threshold
+  - edit_audit_result_to_pass
+  - delete_or_skip_test
+  - change_runtime_logic
+  - change_model_result_judgment
+  - lower_forbidden_claim_boundary
+invariants:
+  - "Self-correction may not reduce required gates, required skills, thresholds, or forbidden claims."
+  - "Self-correction may not edit audit output files to turn a failing audit into pass."
+  - "Runtime, model, test, and policy semantics require guarded proposals, not silent autofix."
+  - "The default mode is plan_only; automatic mutation must be explicitly requested by a caller."
+failure_taxonomy:
+  missing_closeout_gate_execution:
+    preferred_action: attach_existing_audit_json_to_closeout
+    default_repair_mode: safe_autofix
+  missing_required_gate_declaration:
+    preferred_action: add_missing_required_gate
+    default_repair_mode: safe_autofix
+  missing_skill_receipt:
+    preferred_action: add_or_fix_skill_receipt
+    default_repair_mode: guarded_autofix
+  schema_invalid:
+    preferred_action: fix_schema_or_work_item_shape
+    default_repair_mode: guarded_autofix
+  state_sync_mismatch:
+    preferred_action: sync_current_truth_or_block_merge
+    default_repair_mode: guarded_autofix
+  code_surface_violation:
+    preferred_action: split_large_module_or_move_owner_logic
+    default_repair_mode: guarded_autofix
+  final_claim_blocked:
+    preferred_action: withhold_completion_claim_until_source_audits_pass
+    default_repair_mode: plan_only
+  test_failure:
+    preferred_action: fix_behavior_or_test_contract
+    default_repair_mode: guarded_autofix
+  human_decision_required:
+    preferred_action: stop_and_request_decision
+    default_repair_mode: plan_only

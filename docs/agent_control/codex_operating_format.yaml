@@ -1,0 +1,109 @@
+version: onnx_lab_operating_format_v1
+purpose: "Define compact lifecycle records for non-trivial SpaceSonar X ONNX lab work."
+
+does_not_replace:
+  - docs/registers/run_registry.csv
+  - docs/registers/artifact_registry.csv
+  - docs/registers/candidate_registry.csv
+  - lab/runs/<run_id>/run_manifest.json
+  - runtime/packages/<bundle_id>/experiment_bundle.json
+
+lifecycle:
+  - phase: intake
+    required_outputs:
+      - user_intent
+      - current_truth_need
+      - primary_family_candidate
+      - claim_boundary
+
+  - phase: routing
+    required_outputs:
+      - primary_family
+      - primary_skill
+      - support_skills
+      - required_gates
+      - verification_profile
+      - claim_boundary
+      - forbidden_claims
+
+  - phase: design_or_plan
+    required_outputs:
+      - hypothesis_or_objective
+      - changed_variables
+      - control_variables
+      - success_failure_invalid_conditions
+      - stop_conditions
+      - storage_contract
+      - runtime_learning_probe_decision
+
+  - phase: execution
+    required_when:
+      - command_runs
+      - artifact_generation
+      - model_training
+      - onnx_export
+      - mt5_probe
+    required_outputs:
+      - command
+      - environment_summary
+      - source_inputs
+      - output_paths
+      - hashes_or_reason_unavailable
+      - source_of_truth_paths
+      - heavy_artifact_policy
+
+  - phase: evidence
+    required_outputs:
+      - run_manifest_or_not_applicable
+      - artifact_lineage_or_not_applicable
+      - metrics_or_not_applicable
+      - registry_updates_or_not_applicable
+      - required_gate_coverage
+      - missing_evidence
+
+  - phase: closeout
+    required_outputs:
+      - result_judgment
+      - required_gate_coverage
+      - final_claim_guard
+      - next_action
+      - forbidden_claims_respected
+
+artifact_roles:
+  raw_evidence:
+    examples:
+      - lab/runs/<run_id>/reports/**
+      - runtime/mt5_attempts/<attempt_id>/reports/**
+      - runtime/mt5_attempts/<attempt_id>/telemetry/**
+    rule: "Raw evidence proves what actually ran."
+
+  machine_readable:
+    examples:
+      - lab/runs/<run_id>/run_manifest.json
+      - lab/runs/<run_id>/experiment_receipt.yaml
+      - lab/runs/<run_id>/artifact_lineage.json
+      - lab/runs/<run_id>/metrics.json
+      - runtime/packages/<bundle_id>/experiment_bundle.json
+      - runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+    rule: "Machine records are used by gates and audits."
+
+  human_readable:
+    examples:
+      - README.md
+      - lab/candidates/<candidate_id>/summary.md
+      - runtime/packages/<bundle_id>/README.md
+    rule: "Human reports must not contradict machine records."
+
+completion_rule:
+  completed_requires:
+    - acceptance_criteria_passed_or_not_applicable_with_reason
+    - required_gates_executed_or_not_applicable_with_reason
+    - artifact_lineage_connected_or_bounded
+    - final_claim_guard_passed
+    - storage_contract_satisfied
+  blocked_requires_one_of:
+    - recovery_attempt
+    - execution_attempt
+    - failure_log
+    - required_user_action
+    - claim_lowered_with_boundary

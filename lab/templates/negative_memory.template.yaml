@@ -1,0 +1,17 @@
+version: negative_memory_v1
+memory_id: neg_short_slug
+hypothesis_id: ""
+surface_id: ""
+sweep_id: ""
+run_id: ""
+failed_boundary: ""
+why_failed: ""
+salvage_value: ""
+reopen_condition: ""
+do_not_repeat_note: ""
+evidence_path: lab/runs/<run_id>/
+storage_contract:
+  source_of_truth: lab/memory/negative/<memory_id>.yaml
+  registry_rows:
+    - docs/registers/negative_memory_registry.csv
+claim_boundary: negative_memory

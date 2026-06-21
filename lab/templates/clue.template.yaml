@@ -1,0 +1,14 @@
+version: clue_memory_v1
+clue_id: clue_short_slug
+surface_id: ""
+sweep_id: ""
+run_ids: []
+observed_pattern: ""
+salvage_value: ""
+next_reopen_condition: ""
+evidence_paths: []
+storage_contract:
+  source_of_truth: lab/memory/clues/<clue_id>.yaml
+  registry_rows:
+    - docs/registers/clue_registry.csv
+claim_boundary: preserved_clue

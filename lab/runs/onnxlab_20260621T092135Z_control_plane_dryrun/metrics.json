@@ -1,0 +1,30 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_20260621T092135Z_control_plane_dryrun",
+  "status": "completed_for_planning_scaffold",
+  "task_surface_id": "surface_codex_operating_control_v0",
+  "sample_counts": {},
+  "task_surface_metrics": {
+    "ids_recorded": true,
+    "routing_recorded": true,
+    "storage_contract_recorded": true,
+    "runtime_learning_probe_decision_recorded": true,
+    "claim_boundary_recorded": true,
+    "forbidden_claims_recorded": true,
+    "missing_evidence_recorded": true,
+    "next_action_recorded": true
+  },
+  "model_metrics": {},
+  "trading_proxy_metrics": {},
+  "runtime_metrics": {},
+  "north_star_context": {
+    "role": "final_objective_not_exploration_gate",
+    "average_trades_per_active_day_min": 5,
+    "profit_factor_preferred_range": [1.5, 3.0],
+    "major_window_drawdown_pct_max": 10
+  },
+  "measurement_scope": "control_plane_recording_only",
+  "judgment_label": "positive",
+  "claim_boundary": "planning_scaffold",
+  "missing_evidence": []
+}

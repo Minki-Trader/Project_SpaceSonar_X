@@ -1,0 +1,25 @@
+SpaceSonar US100 M5 History Audit
+claim_boundary: broker MT5 history observation only; not runtime authority, economics pass, or live-readiness claim.
+generated_at_local: 2026.06.19 19:59:59
+file_scope: common_files
+terminal_data_path: C:\Users\awdse\AppData\Roaming\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000
+common_data_path: C:\Users\awdse\AppData\Roaming\MetaQuotes\Terminal\Common
+symbol: US100
+timeframe: PERIOD_M5
+requested_from_mt5: 1970.01.01 00:00:00
+requested_to_mt5: 2026.06.21 00:00:00
+copied_bars: 570392
+first_bar_mt5: 2018.05.07 01:00:00
+last_bar_mt5: 2026.06.19 19:55:00
+daily_rows: 2099
+normal_full_day_candidates: 911
+early_close_candidates: 414
+gap_or_missing_days: 773
+duplicate_or_over_expected_days: 0
+range_edge_partial_days: 1
+total_internal_gap_events: 836
+max_gap_seconds: 36600
+daily_csv: SpaceSonar\history_audit\run_20260619_195959_347656_US100_PERIOD_M5\daily.csv
+gaps_csv: SpaceSonar\history_audit\run_20260619_195959_347656_US100_PERIOD_M5\gaps.csv
+time_axis_note: MQL5 datetime values are written as MT5 terminal/server bar-open timestamps; UTC conversion is intentionally not claimed here.
+download_note: CopyRates/Bars calls request the terminal to load available broker history; terminal max-bars and broker availability still cap the result.

@@ -1,0 +1,23 @@
+version: sweep_manifest_v1
+sweep_id: sweep_short_slug
+campaign_id: campaign_short_slug
+surface_id: surface_short_slug
+status: planned
+sweep_type: broad
+axes: []
+fixed_controls: []
+parameter_space: {}
+run_ref_path: run_refs.csv
+storage_contract:
+  source_of_truth: lab/campaigns/<campaign_id>/sweeps/<sweep_id>/sweep_manifest.yaml
+  registry_rows:
+    - docs/registers/sweep_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: ""
+evidence_boundary: learning_observation
+required_gates: []
+stop_conditions: []
+notes: ""

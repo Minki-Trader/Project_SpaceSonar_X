@@ -1,0 +1,260 @@
+version: onnx_lab_work_family_registry_v1
+mode: id_based_onnx_lab
+purpose: "Route non-trivial SpaceSonar X ONNX lab work without loading legacy governance."
+
+global_rules:
+  primary_family_count: 1
+  primary_skill_count: 1
+  support_skill_policy: "select only skills that change execution, evidence, or closeout"
+  internal_record_style: "english_friendly_id_oriented_machine_readable"
+  final_answer_filter:
+    - spacesonar-answer-clarity
+    - spacesonar-claim-discipline
+  cold_start_rule: "read AGENTS.md first; read this registry only for non-trivial routing"
+  legacy_archive_deleted:
+    status: deleted_by_user_request
+    claim_effect: unavailable_no_inheritance
+    recovery_rule: "Do not route to legacy archive material unless the user restores it and explicitly asks for archive recovery."
+
+verification_profiles:
+  information_only:
+    claim_surface: "answer_or_status_only"
+    extra_gates: []
+  design_only:
+    claim_surface: "plan_or_design_no_execution"
+    extra_gates:
+      - final_claim_guard
+  code_change:
+    claim_surface: "code_mutation"
+    extra_gates:
+      - test_or_syntax_check
+      - final_claim_guard
+  lab_experiment:
+    claim_surface: "python_or_research_run"
+    extra_gates:
+      - run_manifest
+      - experiment_receipt
+      - storage_contract_check
+      - runtime_learning_probe_decision
+      - result_judgment
+      - final_claim_guard
+  onnx_bundle:
+    claim_surface: "onnx_export_schema_bundle_or_parity"
+    extra_gates:
+      - onnx_export_smoke
+      - feature_schema_contract
+      - bundle_integrity_hash
+      - final_claim_guard
+  runtime:
+    claim_surface: "mt5_runtime_economics_or_handoff"
+    extra_gates:
+      - runtime_learning_probe_decision
+      - mt5_runtime_probe_contract_audit
+      - runtime_surface_contract
+      - final_claim_guard
+  policy_skill_governance:
+    claim_surface: "policy_skill_agent_or_control_plane_change"
+    extra_gates:
+      - skill_metadata_lint
+      - storage_contract_check
+      - dry_run_receipt
+      - encoding_check
+      - final_claim_guard
+  cleanup_archive:
+    claim_surface: "delete_move_archive_or_restore"
+    extra_gates:
+      - target_path_safety
+      - archive_or_boundary_record
+      - final_claim_guard
+
+work_families:
+  information_only:
+    primary_skill: spacesonar-answer-clarity
+    support_skills:
+      - spacesonar-claim-discipline
+      - spacesonar-reentry-read
+    required_gates: []
+
+  workspace_state_sync:
+    primary_skill: spacesonar-workspace-state-sync
+    support_skills:
+      - spacesonar-reentry-read
+      - spacesonar-claim-discipline
+    required_gates:
+      - workspace_state_consistency
+      - final_claim_guard
+
+  policy_skill_governance:
+    primary_skill: spacesonar-work-item-router
+    support_skills:
+      - spacesonar-architecture-guard
+      - spacesonar-task-force-review
+      - spacesonar-run-evidence-system
+      - spacesonar-workflow-drift-guard
+      - spacesonar-claim-discipline
+    required_gates:
+      - skill_metadata_lint
+      - storage_contract_check
+      - dry_run_receipt
+      - encoding_check
+      - final_claim_guard
+
+  code_edit:
+    primary_skill: spacesonar-code-surface-guard
+    support_skills:
+      - spacesonar-code-quality
+      - spacesonar-reference-scout
+      - spacesonar-claim-discipline
+    required_gates:
+      - test_or_syntax_check
+      - final_claim_guard
+
+  code_refactor:
+    primary_skill: spacesonar-code-surface-guard
+    support_skills:
+      - spacesonar-code-quality
+      - spacesonar-architecture-guard
+      - spacesonar-claim-discipline
+    required_gates:
+      - ownership_boundary_check
+      - test_or_syntax_check
+      - final_claim_guard
+
+  data_feature_build:
+    primary_skill: spacesonar-data-integrity
+    support_skills:
+      - spacesonar-artifact-lineage
+      - spacesonar-claim-discipline
+    required_gates:
+      - time_axis_check
+      - feature_label_boundary_check
+      - feature_schema_contract
+      - final_claim_guard
+
+  experiment_design:
+    primary_skill: spacesonar-experiment-design
+    support_skills:
+      - spacesonar-exploration-mandate
+      - spacesonar-data-integrity
+      - spacesonar-claim-discipline
+    required_gates:
+      - design_contract_check
+      - final_claim_guard
+
+  model_training:
+    primary_skill: spacesonar-model-validation
+    support_skills:
+      - spacesonar-experiment-design
+      - spacesonar-data-integrity
+      - spacesonar-run-evidence-system
+      - spacesonar-claim-discipline
+    required_gates:
+      - split_boundary_check
+      - selection_bias_check
+      - run_manifest
+      - experiment_receipt
+      - storage_contract_check
+      - runtime_learning_probe_decision
+      - final_claim_guard
+
+  onnx_export_parity:
+    primary_skill: spacesonar-runtime-parity
+    support_skills:
+      - spacesonar-artifact-lineage
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    required_gates:
+      - onnx_export_smoke
+      - python_onnx_parity
+      - bundle_integrity_hash
+      - final_claim_guard
+
+  candidate_evaluation:
+    primary_skill: spacesonar-result-judgment
+    support_skills:
+      - spacesonar-performance-attribution
+      - spacesonar-model-validation
+      - spacesonar-claim-discipline
+    required_gates:
+      - metrics_source_check
+      - candidate_registry_update
+      - final_claim_guard
+
+  bundle_materialization:
+    primary_skill: spacesonar-artifact-lineage
+    support_skills:
+      - spacesonar-runtime-parity
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    required_gates:
+      - experiment_bundle_manifest
+      - bundle_integrity_hash
+      - final_claim_guard
+
+  runtime_probe:
+    primary_skill: spacesonar-runtime-parity
+    support_skills:
+      - spacesonar-backtest-forensics
+      - spacesonar-run-evidence-system
+      - spacesonar-result-judgment
+      - spacesonar-claim-discipline
+    required_gates:
+      - runtime_learning_probe_decision
+      - mt5_runtime_probe_contract_audit
+      - runtime_surface_contract
+      - final_claim_guard
+
+  artifact_lineage:
+    primary_skill: spacesonar-artifact-lineage
+    support_skills:
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    required_gates:
+      - lineage_record
+      - final_claim_guard
+
+  cleanup_archive:
+    primary_skill: spacesonar-artifact-lineage
+    support_skills:
+      - spacesonar-workflow-drift-guard
+      - spacesonar-claim-discipline
+    required_gates:
+      - target_path_safety
+      - archive_or_boundary_record
+      - final_claim_guard
+
+  publish_handoff:
+    primary_skill: spacesonar-artifact-lineage
+    support_skills:
+      - spacesonar-runtime-parity
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    required_gates:
+      - handoff_surface_check
+      - final_claim_guard
+
+claim_boundaries:
+  exploration_no_gate: true
+  storage_identity:
+    durable_identity_policy: repo_relative_paths_only
+    absolute_paths: local_context_only
+    registry_rows_are_proof: false
+    source_of_truth_rule: "Each run, bundle, candidate, campaign, and MT5 attempt must name one source-of-truth manifest."
+  legacy_inheritance_forbidden:
+    - winner
+    - selected_baseline
+    - promotion_history
+    - runtime_authority
+    - live_readiness
+    - goal_achieve
+    - economics_pass
+  strong_claims_require_matching_evidence:
+    - runtime_authority
+    - operating_promotion
+    - economics_pass
+    - materialization_ready
+    - handoff_complete
+    - selected_baseline
+    - reviewed
+    - verified
+    - pass

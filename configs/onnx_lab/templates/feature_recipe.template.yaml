@@ -1,0 +1,19 @@
+version: feature_recipe_v1
+feature_recipe_id: feat_short_slug_v001
+base_frame: fpmarkets_us100_m5_closed_bars
+timestamp_key: us100_bar_close_time
+inputs:
+  source: base_us100_m5
+  columns: []
+compute_ref: foundation.features.<module>:<function>
+params: {}
+lookback_bars: null
+warmup_bars: null
+output_features: []
+feature_order: []
+feature_order_hash: null
+external_sources: []
+missing_policy: null
+runtime_feasibility: explicit_check_required
+leakage_boundary: uses_data_available_at_or_before_closed_bar_t
+claim_boundary: recipe_spec_only

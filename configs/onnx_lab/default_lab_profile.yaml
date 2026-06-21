@@ -1,0 +1,34 @@
+version: default_lab_profile_v1
+instrument: FPMarkets US100
+timeframe: M5
+default_claim_boundary: exploration_only
+default_run_root: lab/runs
+default_wave_root: lab/waves
+default_surface_root: lab/surfaces
+default_memory_root: lab/memory
+default_recipe_root: configs/onnx_lab
+default_feature_recipe_mix_root: configs/onnx_lab/feature_recipe_mixes
+default_runtime_package_root: runtime/packages
+default_mt5_attempt_root: runtime/mt5_attempts
+source_of_truth_paths:
+  campaign: lab/campaigns/<campaign_id>/campaign_manifest.yaml
+  run_manifest: lab/runs/<run_id>/run_manifest.json
+  experiment_receipt: lab/runs/<run_id>/experiment_receipt.yaml
+  artifact_lineage: lab/runs/<run_id>/artifact_lineage.json
+  metrics: lab/runs/<run_id>/metrics.json
+  candidate_summary: lab/candidates/<candidate_id>/candidate_summary.yaml
+  experiment_bundle: runtime/packages/<bundle_id>/experiment_bundle.json
+  mt5_attempt_manifest: runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+default_registers:
+  ideas: docs/registers/idea_registry.csv
+  hypotheses: docs/registers/hypothesis_registry.csv
+  waves: docs/registers/wave_registry.csv
+  campaigns: docs/registers/campaign_registry.csv
+  surfaces: docs/registers/experiment_surface_registry.csv
+  sweeps: docs/registers/sweep_registry.csv
+  recipes: docs/registers/recipe_index.csv
+  runs: docs/registers/run_registry.csv
+  artifacts: docs/registers/artifact_registry.csv
+  clues: docs/registers/clue_registry.csv
+  candidates: docs/registers/candidate_registry.csv
+  negative_memory: docs/registers/negative_memory_registry.csv

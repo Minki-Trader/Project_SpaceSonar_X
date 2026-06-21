@@ -1,0 +1,91 @@
+version: onnx_lab_surface_registry_v1
+mode: id_based
+
+surfaces:
+  workspace_truth:
+    paths:
+      - AGENTS.md
+      - README.md
+      - docs/workspace/**
+      - docs/registers/**
+    risks:
+      - stale_current_truth
+      - claim_boundary_drift
+    gates:
+      - workspace_state_consistency
+
+  policy_and_agent_control:
+    paths:
+      - docs/agent_control/**
+      - docs/contracts/**
+      - docs/policies/**
+      - .agents/skills/**
+      - .codex/**
+    risks:
+      - routing_drift
+      - skill_abandonment
+      - encoding_drift
+    gates:
+      - skill_metadata_lint
+      - encoding_check
+      - final_claim_guard
+
+  source_code:
+    paths:
+      - src/**
+      - foundation/**
+      - tests/**
+    risks:
+      - code_surface_drift
+      - regression_risk
+    gates:
+      - test_or_syntax_check
+
+  lab_runs:
+    paths:
+      - lab/hypotheses/**
+      - lab/campaigns/**
+      - lab/runs/**
+      - lab/candidates/**
+      - lab/templates/**
+    risks:
+      - run_identity_drift
+      - evidence_gap
+      - selection_bias
+    gates:
+      - run_manifest
+      - experiment_receipt
+      - artifact_lineage_record
+
+  data_feature_materialization:
+    paths:
+      - data/processed/onnx_lab/**
+      - foundation/collectors/**
+      - foundation/features/**
+      - foundation/labels/**
+    risks:
+      - time_axis_drift
+      - feature_label_leakage
+      - schema_drift
+    gates:
+      - time_axis_check
+      - feature_schema_contract
+      - split_boundary_check
+
+  onnx_bundle_runtime:
+    paths:
+      - foundation/onnx/**
+      - foundation/parity/**
+      - foundation/mt5/**
+      - runtime/packages/**
+      - runtime/mt5_attempts/**
+    risks:
+      - onnx_schema_drift
+      - python_runtime_parity_gap
+      - handoff_identity_gap
+      - mt5_runtime_claim_risk
+    gates:
+      - onnx_export_smoke
+      - python_onnx_parity
+      - bundle_integrity_hash
+      - mt5_runtime_probe_contract_audit

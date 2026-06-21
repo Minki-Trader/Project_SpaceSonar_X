@@ -1,0 +1,6 @@
+interface:
+  display_name: "SpaceSonar Answer Clarity"
+  short_description: "Final-answer filter for user-facing summaries, reports, plain meaning, claim boundaries, and next action."
+  default_prompt: "Use $spacesonar-answer-clarity only as the final user-facing answer filter. Keep internal receipts, schemas, routing records, and Codex operating notes compact, English-friendly, id-oriented, and machine-readable."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,64 @@
+version: onnx_lab_skill_receipt_schema_v1
+purpose: "Compact receipt schema for repo-scoped skills in ONNX lab work."
+
+required_common_fields:
+  - receipt_id
+  - skill_name
+  - trigger_source
+  - claim_surface
+  - inputs_read
+  - outputs_or_decisions
+  - storage_contract_effect
+  - required_gate_coverage
+  - claim_boundary
+  - forbidden_claims
+
+skill_specific:
+  spacesonar-workspace-state-sync:
+    required_fields:
+      - changed_surfaces
+      - register_effect
+      - archive_boundary_effect
+
+  spacesonar-data-integrity:
+    required_fields:
+      - time_axis
+      - feature_label_boundary
+      - split_boundary
+      - leakage_risk
+      - integrity_judgment
+
+  spacesonar-runtime-parity:
+    required_fields:
+      - shared_contract
+      - parity_check
+      - parity_identity
+      - runtime_claim_boundary
+
+  spacesonar-artifact-lineage:
+    required_fields:
+      - source_inputs
+      - artifact_paths
+      - artifact_hashes
+      - source_of_truth_paths
+      - regeneration_commands
+      - availability
+      - lineage_judgment
+
+  spacesonar-task-force-review:
+    required_fields:
+      - selected_agents
+      - spawned_agent_ids
+      - opinion_classification
+      - allowed_claim_effect
+
+  spacesonar-run-evidence-system:
+    required_fields:
+      - storage_contract
+      - required_gate_coverage
+      - runtime_learning_probe_decision
+      - missing_evidence
+
+archive_policy:
+  status: "Legacy routing and external-review archive surfaces were deleted by user request."
+  claim_effect: "Absent archive material cannot create current advice, review evidence, prior-evidence claims, or operating inheritance."

@@ -1,0 +1,67 @@
+version: mt5_attempt_manifest_v1
+attempt_id: attempt_YYYYMMDDTHHMMSSZ_short_slug
+run_id: null
+surface_id: null
+bundle_id: null
+created_at_utc: YYYY-MM-DDTHH:MM:SSZ
+status: planned
+storage_contract:
+  source_of_truth: runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+  supporting_paths:
+    - runtime/mt5_attempts/<attempt_id>/reports/
+    - runtime/mt5_attempts/<attempt_id>/telemetry/
+    - runtime/mt5_attempts/<attempt_id>/logs/
+  registry_rows:
+    - docs/registers/artifact_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  reason: ""
+  forbidden_skip_reasons_checked:
+    - probe_is_heavy
+    - probe_is_expensive
+    - proxy_result_is_weak
+    - trade_count_is_low
+    - candidate_is_ambiguous
+    - setup_might_fail
+period_identity:
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: null
+  period_roles: []
+execution_identity:
+  execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  symbol: US100
+  timeframe: M5
+  tester_model: null
+  deposit: null
+  leverage: null
+  spread: floating
+  commission_assumption: null
+  swap_assumption_or_source: null
+artifact_identity:
+  ea_entrypoint:
+    path: null
+    sha256: null
+  include_modules: []
+  set_file:
+    path: null
+    sha256: null
+  bundle:
+    path: null
+    sha256: null
+  tester_reports: []
+required_gate_coverage:
+  passed: []
+  not_applicable: []
+  missing: []
+claim_boundary: runtime_probe_learning_observation
+forbidden_claims:
+  - runtime_authority
+  - economics_pass
+  - handoff_complete
+  - live_readiness
+  - reviewed_verified_pass
+  - goal_achieve
+missing_evidence: []
+next_action: null

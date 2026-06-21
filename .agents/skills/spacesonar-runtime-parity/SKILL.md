@@ -1,0 +1,49 @@
+---
+name: spacesonar-runtime-parity
+description: Check Python/artifact/ONNX/EA/MT5 runtime meaning before runtime or handoff claims.
+---
+
+# SpaceSonar Runtime Parity
+
+Use when work touches ONNX export, model bundles, EA modules, `.mq5/.mqh/.set` files, tester output, handoff files, live-like execution, or Python-vs-runtime behavior.
+
+## Required Reads
+
+- `foundation/config/mt5_runtime_probe_contract.yaml` for runtime claim requirements.
+- `configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml` for runtime date-window sets.
+- `configs/mt5/tester_execution_profile_v0.yaml` for tester execution settings.
+
+## Required Output
+
+- `research_path`
+- `runtime_path`
+- `shared_contract`
+- `known_differences`
+- `parity_identity`
+- `runtime_evidence_identity`
+- `runtime_period_profile_id`
+- `runtime_period_set_id`
+- `runtime_learning_probe_decision`
+- `runtime_claim_boundary`
+
+## Guardrails
+
+- Python success is not runtime authority.
+- ONNX export smoke is not runtime authority.
+- MetaEditor compile is not tester output.
+- Python-vs-ONNX parity is not economics pass.
+- Samples, previews, and diagnostic rows are runtime learning observations only.
+- Runtime/materialization/handoff/economics claims require the narrow sufficient runtime probe or a lowered claim boundary.
+- Do not skip a runtime learning probe only because proxy results are weak, trade count is low, long/short balance is poor, or cost is high.
+- Do not embed date defaults in this skill. Runtime windows live in the period profile.
+- If no actionable runtime surface exists, require at least one repair attempt before `blocked` or `inconclusive`.
+
+## Standard MT5 Probe
+
+Source of truth:
+
+- contract: `foundation/config/mt5_runtime_probe_contract.yaml`
+- period profile: `configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml`
+- execution profile: `configs/mt5/tester_execution_profile_v0.yaml`
+
+`runtime_probe_completed` requires the contract's required period roles, period profile id, runtime period set id, execution profile id, surface contract, and completed reports.

@@ -1,0 +1,6 @@
+interface:
+  display_name: "SpaceSonar Data Integrity"
+  short_description: "Check time axis, splits, leakage, duplicates, missing rows, and feature-label boundaries."
+  default_prompt: "Use $spacesonar-data-integrity when work touches datasets, features, labels, splits, timestamps, joins, runtime inputs, or KPI interpretation."
+policy:
+  allow_implicit_invocation: true

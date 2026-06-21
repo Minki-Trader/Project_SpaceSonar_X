@@ -1,0 +1,90 @@
+version: mt5_tester_execution_profile_v0
+profile_id: us100_m5_fpmarkets_tester_execution_v0
+status: candidate_default
+claim_boundary: execution_comparison_profile_only_not_runtime_authority
+
+purpose:
+  - Keep MT5 Strategy Tester runs comparable while SpaceSonar explores blank-slate US100 M5 ideas.
+  - Record economic/tester assumptions before looking at performance.
+  - Avoid inheriting legacy runtime-probe periods or old defaults by accident.
+
+scope:
+  broker_server: FPMarketsSC-Live
+  account_currency: USD
+  symbol: US100
+  timeframe: M5
+  symbol_note: US100_BROKER_SYMBOL_NOTE.md
+  broker_cost_note: BROKER_COST_NOTE.md
+
+tester_defaults:
+  initial_deposit:
+    value: 500
+    currency: USD
+    rationale: Small-account stress baseline and current local tester convention; not an optimization result.
+  leverage:
+    value: "1:100"
+    source: US100_BROKER_SYMBOL_NOTE.md account_leverage
+  model:
+    mt5_value: 4
+    meaning: real_ticks_or_best_available_tester_model
+  execution_mode:
+    mt5_value: 0
+    meaning: broker_or_default_tester_execution
+  remote_agents: false
+  cloud_agents: false
+  local_agent_only: true
+  replace_report: true
+  shutdown_terminal: true
+
+cost_defaults:
+  spread:
+    mode: floating_from_tester_or_broker_feed
+    fixed_spread_points: null
+    note: Do not hard-code the probe spread as a permanent cost.
+  commission:
+    default_value: 0.00
+    currency: USD
+    source: BROKER_COST_NOTE.md observed US100 report history
+    boundary: Re-check specific Strategy Tester report before economics claims.
+  swap:
+    default_mode: tester_report_when_available
+    estimated_long: -3.94
+    estimated_short: 1.34
+    swap_mode: 2
+    rollover_3_days: 5
+    boundary: Only relevant when holding can cross rollover.
+  slippage:
+    default_points: null
+    rule: EA or experiment must declare slippage/skip policy before performance comparison.
+
+position_sizing_boundary:
+  default_lot: 0.02
+  default_sizing_mode: fixed_lot
+  risk_per_trade: null
+  rationale: Initial US100 M5 exploration default for 500 USD tester balance; less noisy than 0.01 lot and less aggressive than 0.10 lot.
+  stress_lot: 0.10
+  rule: Compare primary MT5 results with fixed_lot 0.02 unless a run explicitly declares another sizing profile.
+
+comparison_rules:
+  - Compare MT5 results only when profile_id, symbol, timeframe, cost mode, period, and decision surface match.
+  - If initial_deposit, leverage, spread mode, commission, swap handling, slippage, or sizing changes, create a new profile_id.
+  - PF, DD percent, trades/day, and exposure must be reported with the tester profile id.
+  - This profile does not define train, validation, OOS, feature, label, holding period, threshold, or runtime authority.
+
+required_run_record_fields:
+  - profile_id
+  - terminal_data_path
+  - broker_server
+  - account_currency
+  - symbol
+  - timeframe
+  - tested_period
+  - deposit
+  - leverage
+  - model
+  - spread_mode
+  - commission_policy
+  - swap_policy
+  - slippage_policy
+  - sizing_policy
+  - report_path_or_missing_reason

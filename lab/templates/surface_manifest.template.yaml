@@ -1,0 +1,50 @@
+version: surface_manifest_v1
+surface_id: surface_short_slug
+hypothesis_id: ""
+status: planned
+inheritance_policy: no_prior_feature_label_target_model_or_runtime_defaults
+problem_shape:
+  input_surface: null
+  target_or_label_surface: null
+  decision_use: null
+  holding_logic: null
+  evaluation_method: null
+recipe_refs:
+  data_surface_id: null
+  label_recipe_id: null
+  feature_recipe_id: null
+  feature_recipe_mix_id: null
+  model_recipe_id: null
+  decision_recipe_id: null
+  split_recipe_id: null
+  eval_recipe_id: null
+data_contract:
+  symbol_contract: null
+  timeframe: M5
+  timezone_or_session_policy: null
+  feature_boundary: null
+  label_boundary: null
+  leakage_boundary: null
+  missing_gap_policy: null
+storage_contract:
+  source_of_truth: lab/surfaces/<surface_id>/surface_manifest.yaml
+  registry_rows:
+    - docs/registers/experiment_surface_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_level_target: L3_mt5_micro_probe
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: ""
+claim_boundary: scout_surface
+forbidden_claims:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - materialization_ready
+  - handoff_complete
+  - live_readiness
+  - reviewed_verified_pass
+  - goal_achieve
+known_differences: []
+notes: ""

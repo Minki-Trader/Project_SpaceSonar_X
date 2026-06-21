@@ -1,0 +1,83 @@
+# Python / local tooling
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Local editor noise
+.vscode/
+.idea/
+
+# Project-local heavy experiment outputs
+catboost_info/
+data/raw/**
+data/processed/**
+data/snapshots/**
+!data/
+!data/README.md
+!data/raw/
+!data/raw/README.md
+!data/raw/mt5_bars/
+!data/raw/mt5_bars/README.md
+!data/raw/mt5_bars/m5/
+!data/raw/mt5_bars/m5/README.md
+!data/raw/real_ticks/
+!data/raw/real_ticks/README.md
+!data/raw/real_ticks/us100/
+!data/raw/real_ticks/us100/README.md
+!data/processed/
+!data/processed/README.md
+!data/processed/onnx_lab/
+!data/processed/onnx_lab/README.md
+!data/processed/onnx_lab/us100_m5/
+!data/processed/onnx_lab/us100_m5/README.md
+!data/processed/datasets/
+!data/processed/datasets/README.md
+!data/processed/coverage_audits/
+!data/processed/coverage_audits/README.md
+!data/processed/runtime_snapshots/
+!data/processed/runtime_snapshots/README.md
+!data/snapshots/
+!data/snapshots/README.md
+
+# ONNX lab generated artifacts
+lab/runs/*/logs/**
+lab/runs/*/reports/**
+lab/runs/*/artifacts/**
+runtime/packages/*/artifacts/**
+runtime/packages/*/reports/**
+runtime/mt5_attempts/*/reports/**
+runtime/mt5_attempts/*/telemetry/**
+
+# Large model / dataset artifacts
+*.parquet
+*.joblib
+*.onnx
+*.bin
+*.npy
+*.npz
+
+# Runtime / export artifacts
+*.xml
+*.html
+*.svg
+*.ex5
+
+# Logs and ledgers
+*.log
+*.pid
+*_stdout.log
+*_stderr.log
+*_shadow.csv
+*_trades.csv
+
+# Local scratch fetches / exports
+tmp/git_refs/
+tmp/pdfs/
+temp_policy_drafts/
+
+# OS noise
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,6 @@
+interface:
+  display_name: "SpaceSonar Workflow Drift Guard"
+  short_description: "Keep work on the blocker; separate missing material, tools, environment, permission, or changed goals."
+  default_prompt: "Use $spacesonar-workflow-drift-guard when a task risks drifting from the real blocker or pretending missing material, tools, environment, or permissions are available."
+policy:
+  allow_implicit_invocation: true

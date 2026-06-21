@@ -1,0 +1,23 @@
+version: onnx_lab_na_reason_registry_v1
+purpose: "Allowed not-applicable reason codes for ONNX lab gates."
+
+reasons:
+  information_only:
+    claim_effect: no_execution_claim
+    use_when: "The task only answers a question or reports status."
+  design_only_no_execution:
+    claim_effect: design_claim_only
+    use_when: "The task creates a plan or structure without running code."
+  runtime_claim_out_of_scope:
+    claim_effect: no_runtime_claim
+    use_when: "The work does not claim runtime behavior, economics, authority, or handoff completion."
+  no_artifact_created:
+    claim_effect: no_artifact_lineage_claim
+    use_when: "No generated artifact was produced."
+  archive_reference_only:
+    claim_effect: no_current_evidence_inheritance
+    use_when: "Legacy archive material is inspected only as historical reference."
+  user_scope_excludes_execution:
+    claim_effect: execution_not_claimed
+    use_when: "The user explicitly requests no execution."
+

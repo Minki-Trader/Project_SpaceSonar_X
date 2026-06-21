@@ -1,0 +1,37 @@
+version: onnx_lab_metric_source_authority_v1
+purpose: "Define metric source authority for ONNX lab runs and runtime probes."
+
+required_identity_fields:
+  research_metrics:
+    - run_id
+    - hypothesis_id
+    - surface_id
+    - sweep_id
+    - dataset_id
+    - split_id
+    - metric_source_path
+    - metric_source_hash
+  runtime_metrics:
+    - attempt_id
+    - bundle_id
+    - tester_identity
+    - report_path
+    - report_hash
+    - telemetry_hash
+
+authority_order:
+  runtime_claims:
+    - completed_mt5_report
+    - parsed_trade_list
+    - telemetry
+    - runtime_contract_audit
+  research_claims:
+    - run_manifest
+    - metrics_json
+    - artifact_lineage
+    - registry_row
+
+forbidden:
+  - "Do not use a human summary as the sole metric source."
+  - "Do not use proxy metrics for runtime authority or economics pass."
+
