@@ -6,10 +6,15 @@ required_common_fields:
   - skill_name
   - trigger_source
   - claim_surface
+  - branch_worktree_fit
+  - branch_action
   - inputs_read
   - outputs_or_decisions
+  - provenance
   - storage_contract_effect
   - required_gate_coverage
+  - critical_skills_not_selected
+  - not_selected_claim_effect
   - claim_boundary
   - forbidden_claims
 
@@ -48,6 +53,7 @@ skill_specific:
   spacesonar-task-force-review:
     required_fields:
       - selected_agents
+      - role_modes
       - spawned_agent_ids
       - opinion_classification
       - allowed_claim_effect

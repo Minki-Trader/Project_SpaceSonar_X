@@ -11,6 +11,7 @@ Read order:
 5. `docs/agent_control/work_family_registry.yaml` only for non-trivial routing
 6. `docs/contracts/onnx_lab_contract.yaml` only for ONNX bundle/schema/export work
 7. `foundation/config/mt5_runtime_probe_contract.yaml` only for MT5/runtime claims
+8. `docs/agent_control/routing_smoke_prompts.yaml` only for routing smoke evaluation
 
 Project identity:
 
@@ -29,6 +30,7 @@ Important roots:
 - `runtime/`: ONNX/EA bundle packages and MT5 attempt records
 - `docs/`: workspace truth, policies, contracts, registers, and agent control
 - `.agents/skills/`: project-specific Codex skills
+- `.github/workflows/control-plane.yml`: minimal control-plane CI for tests and validators
 
 Storage rules:
 
@@ -56,3 +58,9 @@ Runtime rule:
 
 Runtime behavior, Strategy Tester output, EA/ONNX handoff, economics, runtime authority, live readiness, and handoff-complete claims require matching MT5 runtime evidence. Proxy or ONNX smoke evidence cannot replace it.
 
+Current preflight:
+
+- routing smoke prompts: `docs/agent_control/routing_smoke_prompts.yaml`
+- agent allocation policy: `docs/policies/agent_allocation_policy.md`
+- control-plane validator: `foundation/validation/control_plane_validator.py`
+- first vertical-slice entry contract: `lab/campaigns/campaign_minimal_onnx_mt5_vertical_slice_v0/campaign_manifest.yaml`

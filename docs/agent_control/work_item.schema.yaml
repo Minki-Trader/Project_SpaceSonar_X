@@ -7,12 +7,15 @@ required_top_level:
   - created_at_utc
   - user_request
   - current_truth
+  - branch_worktree
   - work_classification
   - interpreted_scope
   - verification_profile
   - acceptance_criteria
   - work_plan
   - skill_routing
+  - agent_allocation
+  - execution_provenance
   - storage_contract
   - evidence_contract
   - gates
@@ -59,6 +62,22 @@ verification_profile_ids_allowed:
   - policy_skill_governance
   - cleanup_archive
 
+branch_actions_allowed:
+  - keep_current_branch
+  - switch_existing_branch
+  - create_codex_branch
+  - create_or_use_worktree
+  - block_and_report_mismatch
+
+agent_role_modes_allowed:
+  - scout
+  - design
+  - preflight
+  - adversarial_check
+  - evidence_check
+  - runtime_check
+  - closeout_check
+
 fields:
   work_item_id:
     required: true
@@ -69,6 +88,16 @@ fields:
       - truth_sources_read
       - deleted_legacy_boundary
       - current_claim_boundary
+
+  branch_worktree:
+    required_fields:
+      - current_branch
+      - requested_branch
+      - branch_worktree_fit
+      - branch_action
+      - policy_reference
+      - mismatch_claim_effect
+    rule: "Derive branch_worktree_fit and branch_action from docs/policies/branch_policy.md before mutation."
 
   work_classification:
     required_fields:
@@ -128,14 +157,46 @@ fields:
       - support_skills
       - skills_selected
       - skills_not_used
+      - critical_skills_not_selected
+      - not_selected_claim_effect
       - required_gates
     rule: "Values must be derived from docs/agent_control/work_family_registry.yaml before implementation starts."
+
+  agent_allocation:
+    required_fields:
+      - phase
+      - selected_agents
+      - role_modes
+      - selection_reason
+      - why_not_smaller
+      - why_not_larger
+      - max_threads_is_capacity_only
+      - claim_effect
+    rule: "Agent use is phase-driven and advisory unless a protected formal review is explicitly required."
+
+  execution_provenance:
+    required_fields:
+      - git_sha
+      - branch
+      - dirty_flag
+      - changed_files
+      - command_argv
+      - python_executable
+      - python_version
+      - key_package_versions
+      - started_at_utc
+      - ended_at_utc
+      - input_hashes
+      - output_hashes
+      - unknown_git_claim_effect
+    rule: "Unknown git or environment identity is allowed for planning scaffold only and lowers reproducible-run, bundle, runtime, handoff, pass, readiness, and Goal Achieve claims."
 
   final_claim_policy:
     required_fields:
       - allowed_claims
       - forbidden_claims
       - claim_vocabulary_reference
+      - claim_downgrade_rules
 
   runtime_learning_probe_decision:
     required_fields:

@@ -31,6 +31,22 @@ review_policy:
   default_mode: micro_consult
   micro_consult_default_agent_count: 1
   micro_consult_default_max_agents: 2
+  max_threads_capacity_rule: "Configured max_threads is an upper capacity only; actual agent use must be phase-driven and justified."
+  default_allocation_rule: "Codex works alone by default. Add agents only when a role mode materially changes design, evidence, risk discovery, runtime boundary, or closeout."
+  allocation_shapes:
+    codex_alone: "Default for direct edits, local verification, and low-risk implementation."
+    one_agent: "Narrow micro-consult for one specialized remit."
+    two_agents: "Two-remit checks, especially routing plus evidence or data plus runtime."
+    three_to_four_agents: "Policy, runtime, data, or architecture intersections where smaller routing would miss a material surface."
+    full_roster: "Major direction change, protected claim preparation, or user-requested deep full-team review only."
+  role_modes:
+    scout: "Find experiment or design options without creating a claim."
+    design: "Shape implementation, interfaces, or evidence before edits."
+    preflight: "Check branch, scope, stale truth, and stop conditions before execution."
+    adversarial_check: "Look for counterarguments, leakage, missing evidence, or claim laundering."
+    evidence_check: "Specify receipts, manifests, hashes, and storage-contract requirements."
+    runtime_check: "Check ONNX/EA/MT5 meaning boundaries and probe requirements."
+    closeout_check: "Classify result boundary and forbidden claims after local evidence exists."
   micro_consult_claim_effect: advisory_only_no_reviewed_pass
   three_or_more_requires: escalation_reason
   five_or_more_requires: why_not_smaller
@@ -54,6 +70,7 @@ review_policy:
   autonomy_rule: "Agent prompts must ask for independent inspection, disagreements, risks, missing evidence, and recommended actions; do not ask agents to confirm a preselected answer."
   context_rule: "Because forked context is not reliable, prompts must include enough objective, workspace, active-file, constraint, and forbidden-assumption context for independent work."
   passive_agreement_rule: "A response that only agrees without evidence, risk review, or local reasoning is advisory noise and must not be treated as review evidence."
+  role_mode_receipt_rule: "Consult receipts must record selected role_modes and the not-selected claim effect for critical roles that were intentionally skipped."
   forbidden_claims:
     - completion
     - selected_baseline
@@ -68,7 +85,12 @@ micro_consult_receipt_schema:
     - consult_id
     - trigger_source
     - selected_agents
+    - role_modes
     - selection_reason
+    - why_not_smaller
+    - why_not_larger
+    - critical_agents_not_selected
+    - not_selected_claim_effect
     - claim_surface
     - question_or_context_digest
     - opinion_classification

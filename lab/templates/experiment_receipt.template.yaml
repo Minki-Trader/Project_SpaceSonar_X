@@ -12,8 +12,42 @@ skill_routing:
   primary_family: null
   primary_skill: null
   support_skills: []
+  skills_selected: []
+  skills_not_used: []
+  critical_skills_not_selected: []
+  not_selected_claim_effect: null
   required_gates: []
   not_applicable_gates: []
+branch_worktree:
+  current_branch: null
+  requested_branch: null
+  branch_worktree_fit: unchecked
+  branch_action: null
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: lower_or_block_claim_until_resolved
+agent_allocation:
+  phase: null
+  selected_agents: []
+  role_modes: []
+  selection_reason: null
+  why_not_smaller: null
+  why_not_larger: null
+  max_threads_is_capacity_only: true
+  claim_effect: advisory_only_no_reviewed_pass
+provenance:
+  git_sha: unknown
+  branch: unknown
+  dirty_flag: unknown
+  changed_files: []
+  command_argv: []
+  python_executable: null
+  python_version: null
+  key_package_versions: {}
+  started_at_utc: null
+  ended_at_utc: null
+  input_hashes: []
+  output_hashes: []
+  unknown_git_claim_effect: planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve
 hypothesis: ""
 decision_use: ""
 task_surface:

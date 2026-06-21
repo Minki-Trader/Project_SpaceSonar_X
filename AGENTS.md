@@ -106,6 +106,7 @@ Each meaningful run should prefer:
 Heavy artifacts are not committed just to close an evidence gap. Prefer hashes, manifests, external URI, or a regeneration command.
 
 Run-local records must name `primary_family`, `primary_skill`, `required_gates`, `claim_boundary`, `forbidden_claims`, `runtime_learning_probe_decision`, `missing_evidence`, `result_judgment`, and `next_action` when applicable.
+Run-local records for non-trivial work must also name `branch_worktree_fit`, `branch_action`, `critical_skills_not_selected`, `not_selected_claim_effect`, and provenance for git state, command/runtime identity, timing, and input/output hashes. Unknown git or environment identity is allowed for planning scaffold only and lowers reproducible-run, bundle, runtime, handoff, pass, readiness, and Goal Achieve claims.
 
 ## Claim Discipline
 
@@ -169,6 +170,8 @@ No model bundle, EA input contract, or runtime package may assume a fixed predic
 Codex owns final judgment.
 
 - Micro-consult is advisory only.
+- Agent roles are proactive modes, not passive approval: `scout`, `design`, `preflight`, `adversarial_check`, `evidence_check`, `runtime_check`, and `closeout_check`.
+- `.codex/config.toml` `max_threads` is capacity only. Actual agent use is phase-driven: Codex alone by default, 1 agent for narrow micro-consult, 2 agents for two-remit checks, 3-4 agents for policy/runtime/structure intersections, and full roster only for major direction changes or protected claims.
 - Formal Task Force review is only for policy change, runtime authority, operating promotion, cross-system handoff, or protected reviewed/verified/pass claims.
 - If formal review is required but callable custom agents are unavailable, mark blocked for that review.
 - Legacy external review has no active or archive path in this workspace. Do not create outside-review calls, prompts, receipts, gates, or review paths.

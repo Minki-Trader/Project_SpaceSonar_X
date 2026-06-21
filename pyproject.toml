@@ -5,6 +5,12 @@ description = "ID-based ONNX development lab for FPMarkets US100 M5 research."
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "PyYAML>=6.0",
+]
+
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
 testpaths = ["tests"]

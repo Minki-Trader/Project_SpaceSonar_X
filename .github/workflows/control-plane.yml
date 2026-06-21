@@ -1,0 +1,32 @@
+name: control-plane
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "codex/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dev dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Run tests
+        run: python -m pytest
+
+      - name: Validate control plane
+        run: python foundation/validation/control_plane_validator.py --repo-root .
+
+      - name: Run routing smoke eval
+        run: python foundation/validation/routing_smoke_eval.py --repo-root .

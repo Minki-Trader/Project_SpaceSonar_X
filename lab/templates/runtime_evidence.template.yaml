@@ -3,12 +3,33 @@ run_id: ""
 surface_id: ""
 bundle_id: null
 decision_surface_id: null
+branch_worktree:
+  current_branch: null
+  requested_branch: null
+  branch_worktree_fit: unchecked
+  branch_action: null
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: lower_or_block_claim_until_resolved
 runtime_learning_probe_decision:
   required: false
   decision: not_applicable_no_runtime_question
   reason: ""
   forbidden_skip_reasons_checked: []
   lowered_claim_if_not_run: null
+provenance:
+  git_sha: unknown
+  branch: unknown
+  dirty_flag: unknown
+  changed_files: []
+  command_argv: []
+  python_executable: null
+  python_version: null
+  key_package_versions: {}
+  started_at_utc: null
+  ended_at_utc: null
+  input_hashes: []
+  output_hashes: []
+  unknown_git_claim_effect: runtime_evidence_probe_only_no_runtime_authority_economics_handoff_pass_readiness_or_goal_achieve
 levels:
   L0_contract_declared: pending
   L1_python_onnx_parity: pending

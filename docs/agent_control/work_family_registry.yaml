@@ -6,6 +6,16 @@ global_rules:
   primary_family_count: 1
   primary_skill_count: 1
   support_skill_policy: "select only skills that change execution, evidence, or closeout"
+  branch_worktree_policy: "derive branch_worktree_fit and branch_action from docs/policies/branch_policy.md before mutation"
+  max_threads_policy: "max_threads is capacity only; actual agent allocation must be phase-driven and justified"
+  agent_role_modes:
+    - scout
+    - design
+    - preflight
+    - adversarial_check
+    - evidence_check
+    - runtime_check
+    - closeout_check
   internal_record_style: "english_friendly_id_oriented_machine_readable"
   final_answer_filter:
     - spacesonar-answer-clarity
@@ -55,8 +65,11 @@ verification_profiles:
   policy_skill_governance:
     claim_surface: "policy_skill_agent_or_control_plane_change"
     extra_gates:
+      - branch_worktree_fit
+      - provenance_capture
       - skill_metadata_lint
       - storage_contract_check
+      - routing_smoke_eval
       - dry_run_receipt
       - encoding_check
       - final_claim_guard
@@ -93,8 +106,11 @@ work_families:
       - spacesonar-workflow-drift-guard
       - spacesonar-claim-discipline
     required_gates:
+      - branch_worktree_fit
+      - provenance_capture
       - skill_metadata_lint
       - storage_contract_check
+      - routing_smoke_eval
       - dry_run_receipt
       - encoding_check
       - final_claim_guard

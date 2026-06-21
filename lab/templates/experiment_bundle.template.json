@@ -3,6 +3,14 @@
   "bundle_id": "bundle_YYYYMMDDTHHMMSSZ_short_slug",
   "run_id": "onnxlab_YYYYMMDDTHHMMSSZ_short_slug",
   "source_of_truth": "runtime/packages/<bundle_id>/experiment_bundle.json",
+  "branch_worktree": {
+    "current_branch": null,
+    "requested_branch": null,
+    "branch_worktree_fit": "unchecked",
+    "branch_action": null,
+    "policy_reference": "docs/policies/branch_policy.md",
+    "mismatch_claim_effect": "lower_or_block_claim_until_resolved"
+  },
   "dataset_id": null,
   "task_surface_id": null,
   "decision_use": null,
@@ -26,6 +34,21 @@
   "decision_surface_id": null,
   "producer_command": null,
   "environment_summary": {},
+  "provenance": {
+    "git_sha": "unknown",
+    "branch": "unknown",
+    "dirty_flag": "unknown",
+    "changed_files": [],
+    "command_argv": [],
+    "python_executable": null,
+    "python_version": null,
+    "key_package_versions": {},
+    "started_at_utc": null,
+    "ended_at_utc": null,
+    "input_hashes": [],
+    "output_hashes": [],
+    "unknown_git_claim_effect": "bundle_planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve"
+  },
   "runtime_learning_probe_decision": {
     "required": false,
     "decision": "not_applicable_no_runtime_question",

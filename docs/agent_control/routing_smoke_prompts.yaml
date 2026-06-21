@@ -1,0 +1,243 @@
+version: spacesonar_routing_smoke_prompts_v1
+purpose: "Small preflight set for checking work-family, skill, gate, and claim-boundary routing before broad benchmark work."
+claim_boundary: routing_behavior_smoke_only_no_reviewed_pass
+prompt_count_policy:
+  min: 12
+  max: 20
+  current: 16
+cases:
+  - id: route_smoke_001_policy_branch_receipt
+    prompt: "Wire branch policy into run receipts and claim downgrade rules."
+    expected_primary_family: policy_skill_governance
+    expected_primary_skill: spacesonar-work-item-router
+    expected_support_skills:
+      - spacesonar-architecture-guard
+      - spacesonar-run-evidence-system
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - branch_worktree_fit
+      - provenance_capture
+      - skill_metadata_lint
+      - storage_contract_check
+      - routing_smoke_eval
+      - dry_run_receipt
+      - encoding_check
+      - final_claim_guard
+    expected_claim_boundary: planning_scaffold
+
+  - id: route_smoke_002_feature_time_axis
+    prompt: "Create a provisional US100 M5 feature recipe and check feature-label boundary."
+    expected_primary_family: data_feature_build
+    expected_primary_skill: spacesonar-data-integrity
+    expected_support_skills:
+      - spacesonar-artifact-lineage
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - time_axis_check
+      - feature_label_boundary_check
+      - feature_schema_contract
+      - final_claim_guard
+    expected_claim_boundary: scout_surface
+
+  - id: route_smoke_003_label_split
+    prompt: "Draft a provisional label with horizon and purge impact for split_set_v0."
+    expected_primary_family: data_feature_build
+    expected_primary_skill: spacesonar-data-integrity
+    expected_support_skills:
+      - spacesonar-artifact-lineage
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - time_axis_check
+      - feature_label_boundary_check
+      - feature_schema_contract
+      - final_claim_guard
+    expected_claim_boundary: planning_scaffold
+
+  - id: route_smoke_004_experiment_surface
+    prompt: "Design a campaign surface for comparing label families without selecting a baseline."
+    expected_primary_family: experiment_design
+    expected_primary_skill: spacesonar-experiment-design
+    expected_support_skills:
+      - spacesonar-exploration-mandate
+      - spacesonar-data-integrity
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - design_contract_check
+      - final_claim_guard
+    expected_claim_boundary: design_only
+
+  - id: route_smoke_005_model_training
+    prompt: "Train a simple provisional model and check overfit risk before any candidate wording."
+    expected_primary_family: model_training
+    expected_primary_skill: spacesonar-model-validation
+    expected_support_skills:
+      - spacesonar-experiment-design
+      - spacesonar-data-integrity
+      - spacesonar-run-evidence-system
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - split_boundary_check
+      - selection_bias_check
+      - run_manifest
+      - experiment_receipt
+      - storage_contract_check
+      - runtime_learning_probe_decision
+      - final_claim_guard
+    expected_claim_boundary: scout_surface
+
+  - id: route_smoke_006_onnx_export
+    prompt: "Export a model to ONNX and compare Python output against ONNXRuntime."
+    expected_primary_family: onnx_export_parity
+    expected_primary_skill: spacesonar-runtime-parity
+    expected_support_skills:
+      - spacesonar-artifact-lineage
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - onnx_export_smoke
+      - python_onnx_parity
+      - bundle_integrity_hash
+      - final_claim_guard
+    expected_claim_boundary: bundle_preflight
+
+  - id: route_smoke_007_mt5_native_onnx
+    prompt: "Run an MT5 native ONNX fixed-fixture micro-probe."
+    expected_primary_family: runtime_probe
+    expected_primary_skill: spacesonar-runtime-parity
+    expected_support_skills:
+      - spacesonar-backtest-forensics
+      - spacesonar-run-evidence-system
+      - spacesonar-result-judgment
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - runtime_learning_probe_decision
+      - mt5_runtime_probe_contract_audit
+      - runtime_surface_contract
+      - final_claim_guard
+    expected_claim_boundary: runtime_probe
+
+  - id: route_smoke_008_strategy_tester
+    prompt: "Inspect a Strategy Tester report for PF, drawdown, cost assumptions, and trade list hashes."
+    expected_primary_family: runtime_probe
+    expected_primary_skill: spacesonar-runtime-parity
+    expected_support_skills:
+      - spacesonar-backtest-forensics
+      - spacesonar-run-evidence-system
+      - spacesonar-result-judgment
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - runtime_learning_probe_decision
+      - mt5_runtime_probe_contract_audit
+      - runtime_surface_contract
+      - final_claim_guard
+    expected_claim_boundary: runtime_probe
+
+  - id: route_smoke_009_result_judgment
+    prompt: "Classify a run as positive, negative, inconclusive, invalid, preserved clue, or candidate."
+    expected_primary_family: candidate_evaluation
+    expected_primary_skill: spacesonar-result-judgment
+    expected_support_skills:
+      - spacesonar-performance-attribution
+      - spacesonar-model-validation
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - metrics_source_check
+      - candidate_registry_update
+      - final_claim_guard
+    expected_claim_boundary: result_judgment
+
+  - id: route_smoke_010_artifact_lineage
+    prompt: "Record an artifact path, hash, size, producer command, and regeneration command."
+    expected_primary_family: artifact_lineage
+    expected_primary_skill: spacesonar-artifact-lineage
+    expected_support_skills:
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - lineage_record
+      - final_claim_guard
+    expected_claim_boundary: evidence_only
+
+  - id: route_smoke_011_workspace_state
+    prompt: "Update current workspace truth after a policy and template change."
+    expected_primary_family: workspace_state_sync
+    expected_primary_skill: spacesonar-workspace-state-sync
+    expected_support_skills:
+      - spacesonar-reentry-read
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - workspace_state_consistency
+      - final_claim_guard
+    expected_claim_boundary: workspace_state
+
+  - id: route_smoke_012_cleanup
+    prompt: "Delete a stale generated artifact tree after confirming it is outside active evidence."
+    expected_primary_family: cleanup_archive
+    expected_primary_skill: spacesonar-artifact-lineage
+    expected_support_skills:
+      - spacesonar-workflow-drift-guard
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - target_path_safety
+      - archive_or_boundary_record
+      - final_claim_guard
+    expected_claim_boundary: cleanup_boundary
+
+  - id: route_smoke_013_publish_handoff
+    prompt: "Prepare a bundle handoff manifest without claiming handoff complete."
+    expected_primary_family: publish_handoff
+    expected_primary_skill: spacesonar-artifact-lineage
+    expected_support_skills:
+      - spacesonar-runtime-parity
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - handoff_surface_check
+      - final_claim_guard
+    expected_claim_boundary: handoff_preflight
+
+  - id: route_smoke_014_code_edit
+    prompt: "Fix a small Python parser bug and run focused tests."
+    expected_primary_family: code_edit
+    expected_primary_skill: spacesonar-code-surface-guard
+    expected_support_skills:
+      - spacesonar-code-quality
+      - spacesonar-reference-scout
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - test_or_syntax_check
+      - final_claim_guard
+    expected_claim_boundary: code_change
+
+  - id: route_smoke_015_reproducibility
+    prompt: "Capture command, environment, package versions, hashes, and regeneration command for a run."
+    expected_primary_family: artifact_lineage
+    expected_primary_skill: spacesonar-artifact-lineage
+    expected_support_skills:
+      - spacesonar-environment-reproducibility
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - lineage_record
+      - final_claim_guard
+    expected_claim_boundary: evidence_only
+
+  - id: route_smoke_016_task_force
+    prompt: "Ask agents for a policy-risk consultation before changing runtime claim rules."
+    expected_primary_family: policy_skill_governance
+    expected_primary_skill: spacesonar-work-item-router
+    expected_support_skills:
+      - spacesonar-architecture-guard
+      - spacesonar-task-force-review
+      - spacesonar-run-evidence-system
+      - spacesonar-workflow-drift-guard
+      - spacesonar-claim-discipline
+    expected_required_gates:
+      - branch_worktree_fit
+      - provenance_capture
+      - skill_metadata_lint
+      - storage_contract_check
+      - routing_smoke_eval
+      - dry_run_receipt
+      - encoding_check
+      - final_claim_guard
+    expected_claim_boundary: advisory_only_no_reviewed_pass
