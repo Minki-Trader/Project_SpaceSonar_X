@@ -1,0 +1,29 @@
+version: work_closeout_v1
+work_item_id: work_wave01_event_barrier_first_batch_spec_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: first_batch_specs_materialized_not_executed
+closed_at_utc: '2026-06-21T23:05:00Z'
+result_judgment: planning_scaffold
+claim_boundary: first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+evidence_paths:
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_matrix.csv
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs_index.csv
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/anti_selection_ledger.yaml
+spec_count: 12
+runtime_follow_through:
+  valid_proxy_model_bearing_specs_require_L4: true
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave01_event_barrier_execute_first_batch_proxy_v0

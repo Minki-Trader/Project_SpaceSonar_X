@@ -1,0 +1,156 @@
+version: planned_run_spec_v1
+run_spec_id: wave01_eb_cell_004
+planned_run_id: onnxlab_wave01_eb_cell_004_event_barrier_surface_v0
+status: planned_not_executed
+created_at_utc: '2026-06-21T23:05:00Z'
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_id: campaign_us100_event_barrier_decision_surface_v0
+  idea_id: idea_us100_m5_event_barrier_decision_surface_v0
+  hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
+  surface_id: surface_us100_event_barrier_decision_surface_v0
+  sweep_id: sweep_us100_event_barrier_broad_v0
+claim_boundary: first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+data_contract:
+  dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  base_frame: FPMarkets_US100_M5_closed_bars
+  row_key: us100_bar_close_time
+  timestamp_source: MT5_server_datetime_from_history_audit
+  utc_conversion_status: not_claimed
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  feature_boundary: causal_history_only_declared_per_run
+  label_boundary: future_event_barrier_with_tail_drop_and_split_boundary_check
+  split_boundary: split_set_v0_train_validation_research_oos_a_locked_final_excluded
+  locked_final_oos_b_used: false
+  auxiliary_symbols: none
+axis_values:
+  spec_id: wave01_eb_cell_004
+  label_surface: time_to_event_or_no_touch
+  horizon_bars: 24
+  barrier_unit: atr_multiplier
+  upper_barrier: 1.4
+  lower_barrier: 1.4
+  timeout_bars: 24
+  feature_family: session_state_context
+  feature_scope: cash_pre_after_session_flags_only
+  model_family: logistic_or_linear_rank_scout
+  model_task: time_to_touch_bucket
+  decision_family: no_trade_vs_fast_event_abstain
+  holding_policy: fast_event_or_timeout
+  risk_policy: distance_units_declared_before_MT5
+  threshold_policy: none_diagnostic_rank
+  split_use: train_validation_research_oos_a_no_locked_final
+  purpose: session-conditioned fast touch/no-touch scout
+  valid_proxy_model_bearing: true
+  locked_final_oos_b_used: false
+  auxiliary_symbols: none
+  feature_count_policy: variable_declared_per_run_no_fixed_count
+  runtime_level_required: L4_split_runtime_probe
+feature_contract:
+  feature_family: session_state_context
+  feature_scope: cash_pre_after_session_flags_only
+  feature_count_policy: variable_declared_per_run_no_fixed_count
+  feature_order_policy: declared_and_hashed_before_ONNX_export
+  forbidden_defaults:
+  - fixed_feature_count
+  - inherited_feature_list
+label_contract:
+  label_surface: time_to_event_or_no_touch
+  horizon_bars: 24
+  timeout_bars: 24
+  barrier_unit: atr_multiplier
+  upper_barrier: 1.4
+  lower_barrier: 1.4
+  tail_drop_policy: required_for_timeout_or_horizon
+  direction_mapping: declared_by_this_spec_not_inherited
+model_contract:
+  model_family: logistic_or_linear_rank_scout
+  model_task: time_to_touch_bucket
+  output_head: declared_at_execution_no_default_head
+  hyperparameter_policy: no_micro_search_before_broad_clue
+  onnx_feasibility_required_before_runtime: true
+decision_contract:
+  decision_family: no_trade_vs_fast_event_abstain
+  holding_policy: fast_event_or_timeout
+  risk_policy: distance_units_declared_before_MT5
+  threshold_policy: none_diagnostic_rank
+  sizing_policy: fixed_lot_0_02_default_when_MT5_runs_execute
+proxy_runtime_parity:
+  required: true
+  shared_contract:
+  - dataset_id
+  - us100_bar_close_time
+  - split_set_v0
+  - declared_feature_order
+  - declared_label_surface
+  - declared_decision_holding_risk_policy
+  - us100_m5_fpmarkets_tester_execution_v0
+  known_differences:
+  - proxy_barrier_touch_order_may_not_equal_MT5_intra_bar_execution
+  - spread_fill_and_timeout_close_timing_may_differ
+  - price_distance_units_require_point_digits_tick_size_conversion
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending_first_proxy_runtime_difference
+    forced_equality_required: false
+  unit_semantics:
+    barrier_unit: atr_multiplier
+    point: must_record_before_MT5_L4
+    digits: must_record_before_MT5_L4
+    tick_size: must_record_before_MT5_L4
+    price_distance_conversion: required_before_MT5_L4
+    lot_step: tester_profile_default_until_run_specific
+    rounding_policy: explicit_before_MT5_L4
+  comparison_classes:
+  - proxy_good_runtime_good
+  - proxy_good_runtime_bad
+  - proxy_bad_runtime_bad
+  - proxy_bad_runtime_good
+  - invalid_or_unmaterializable
+  divergence_judgment: pending_execution_and_L4
+  prevention_memory:
+  - do_not_reuse_momentum_ret_1_score_replay_negative_memory_as_candidate
+  - record_price_distance_unit_conversion_before_reusing_barrier_or_ATR_stop_logic
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required_after_valid_proxy_model_execution
+  target_level: L4_split_runtime_probe
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  required_period_roles:
+  - validation
+  - research_oos
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+  proxy_only_closeout_allowed: false
+failure_disposition_policy:
+  required_before_blocked_deferred_invalid_or_discarded:
+  - failure_reproduction
+  - exact_failing_layer
+  - bounded_repair_or_fallback_attempt
+  - evidence_path
+  - remaining_blocker
+  - reopen_condition
+  repo_controlled_support_gap_action: build_or_patch_smallest_adapter_or_fallback
+  no_adapter_exists_claim_effect: repair_trigger_not_blocker
+result_judgment: not_evaluated
+missing_evidence:
+- features_not_materialized
+- labels_not_materialized
+- model_not_trained
+- proxy_metrics_not_computed
+- onnx_not_exported
+- MT5_L4_not_run
+next_action: work_wave01_event_barrier_execute_first_batch_proxy_v0

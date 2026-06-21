@@ -1,8 +1,8 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-21T21:30:10Z'
+updated_at_utc: '2026-06-21T23:05:00Z'
 cursor_state: active
-active_phase: wave01_campaign_002_event_barrier_opened
+active_phase: wave01_campaign_002_first_batch_specs_materialized
 current_truth_sources:
 - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
@@ -50,6 +50,12 @@ current_truth_sources:
 - lab/hypotheses/idea_us100_m5_event_barrier_decision_surface_v0.yaml
 - lab/hypotheses/hyp_us100_event_barrier_decision_surface_v0.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_open_event_barrier_decision_campaign_v0_closeout.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_matrix.csv
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs_index.csv
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/anti_selection_ledger.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_first_batch_spec_v0_closeout.yaml
 active_ids:
   idea_id: idea_us100_m5_event_barrier_decision_surface_v0
   hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
@@ -58,16 +64,17 @@ active_ids:
   surface_id: surface_us100_event_barrier_decision_surface_v0
   sweep_id: sweep_us100_event_barrier_broad_v0
 latest_completed_work:
-  work_item_id: work_wave01_open_event_barrier_decision_campaign_v0
-  result_judgment: planning_scaffold
-  claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
-  evidence_paths:
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
-  - lab/surfaces/surface_us100_event_barrier_decision_surface_v0/surface_manifest.yaml
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_open_event_barrier_decision_campaign_v0_closeout.yaml
-next_work_item:
   work_item_id: work_wave01_event_barrier_first_batch_spec_v0
+  result_judgment: planning_scaffold
+  claim_boundary: first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+  evidence_paths:
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_matrix.csv
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs_index.csv
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/anti_selection_ledger.yaml
+next_work_item:
+  work_item_id: work_wave01_event_barrier_execute_first_batch_proxy_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
 operating_goal_context:
   primary_objective: durable_codex_operation

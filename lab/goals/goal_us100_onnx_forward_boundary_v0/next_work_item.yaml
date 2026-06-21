@@ -1,56 +1,51 @@
 version: onnx_lab_work_item_v1
-work_item_id: work_wave01_event_barrier_first_batch_spec_v0
+work_item_id: work_wave01_event_barrier_execute_first_batch_proxy_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-created_at_utc: '2026-06-21T21:30:10Z'
+created_at_utc: '2026-06-21T23:05:00Z'
 status: planned_not_started
-user_request: Materialize the first broad batch specs for the event/barrier decision
-  campaign while preserving Wave01 Codex operating stability.
+user_request: Execute the first broad proxy batch for the Wave01 event/barrier decision
+  campaign, then force valid proxy/model-bearing results through L4 follow-through.
 current_truth:
+  first_batch_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml
+  run_specs_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs_index.csv
   campaign_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
-  surface_manifest: lab/surfaces/surface_us100_event_barrier_decision_surface_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
-  run_refs: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
-  negative_memory_boundary: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
 work_classification:
-  primary_family: experiment_design
+  primary_family: model_training
   detected_families:
-  - experiment_design
   - data_feature_build
   - model_training
+  - onnx_export_parity
   - runtime_probe
-  mutation_intent: materialize_first_batch_run_specs_not_execute_yet
-  execution_intent: design_to_L4_follow_through_path_for_valid_proxy_model_runs
+  mutation_intent: execute_proxy_batch_and_prepare_L4_follow_through
 skill_routing:
-  primary_family: experiment_design
-  primary_skill: spacesonar-experiment-design
+  primary_family: model_training
+  primary_skill: spacesonar-model-validation
   support_skills:
-  - spacesonar-exploration-mandate
+  - spacesonar-experiment-design
   - spacesonar-data-integrity
-  - spacesonar-model-validation
+  - spacesonar-run-evidence-system
   - spacesonar-runtime-parity
   - spacesonar-claim-discipline
   required_gates:
-  - design_contract_check
-  - exploration_coverage_check
+  - split_boundary_check
   - feature_label_boundary_check
-  - campaign_proxy_runtime_parity_policy
+  - run_manifest
+  - experiment_receipt
+  - proxy_runtime_parity_decision
+  - L4_follow_through_required_for_valid_proxy_model_runs
   - final_claim_guard
 acceptance_criteria:
-- Create a first broad batch matrix for the event/barrier decision surface.
-- Do not fix feature count, model head, direction mapping, or holding duration as
-  defaults.
-- Every valid proxy/model-bearing spec must include an L4 follow-through path or a
-  failure-disposition requirement.
-- Do not use locked final OOS-B.
-- Do not claim candidate, baseline, runtime authority, economics pass, or Goal Achieve.
-runtime_learning_probe_decision:
-  required: true
-  decision: L4_required_after_valid_proxy_model_execution
-  reason: Project policy forbids proxy-only closeout for valid proxy/model-bearing
-    runs.
-claim_boundary: planned_first_batch_spec_only_no_run_no_candidate_no_runtime_authority
+- Execute proxy/model-bearing specs without using locked final OOS-B.
+- Create run-local manifest, receipt, lineage, and metrics for every executed meaningful
+  run.
+- Do not close any valid proxy/model-bearing run proxy-only.
+- Materialize ONNX/EA/MT5 L4 path or record try-first failure disposition before invalid/block/defer/discard.
+claim_boundary: planned_proxy_execution_work_item_no_run_no_candidate_no_runtime_authority
 forbidden_claims:
 - selected_baseline
+- operating_reference
+- operating_promotion
 - runtime_authority
 - economics_pass
 - materialization_ready
@@ -58,5 +53,4 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
-next_action: write first batch specs and anti-selection ledger for event/barrier decision
-  campaign
+next_action: build_or_run_event_barrier_proxy_executor_then_L4_follow_through

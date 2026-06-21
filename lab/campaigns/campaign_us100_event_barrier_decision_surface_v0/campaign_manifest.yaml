@@ -2,9 +2,9 @@ version: campaign_manifest_v1
 campaign_id: campaign_us100_event_barrier_decision_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: opened_planned_not_executed
+status: first_batch_specs_materialized_not_executed
 created_at_utc: '2026-06-21T21:30:10Z'
-updated_at_utc: '2026-06-21T21:30:10Z'
+updated_at_utc: '2026-06-21T23:05:00Z'
 target_branch: codex/l4-pair-judgment-closeout
 wave_ids:
 - wave_us100_closedbar_surface_cartography_v0
@@ -109,7 +109,7 @@ required_gates:
 - campaign_proxy_runtime_parity_policy
 - first_batch_spec_before_execution
 - final_claim_guard
-claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
+claim_boundary: first_batch_specs_only_no_run_no_candidate_no_runtime_authority
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -247,7 +247,17 @@ proxy_runtime_parity:
   - record_price_distance_unit_conversion_before_reusing_barrier_or_ATR_stop_logic
   follow_up_action: work_wave01_event_barrier_first_batch_spec_v0
   claim_boundary: campaign_parity_tracking_only_no_runtime_authority
-next_action: work_wave01_event_barrier_first_batch_spec_v0
+next_action: work_wave01_event_barrier_execute_first_batch_proxy_v0
 notes: Campaign opened as a new multi-axis surface, not bounded synthesis and not
   a repair continuation. No runs, models, candidates, economics, runtime authority,
   or Goal Achieve claim.
+first_batch_specs:
+  status: materialized_not_executed
+  spec_count: 12
+  matrix: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_matrix.csv
+  run_specs_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs_index.csv
+  run_refs: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml
+  anti_selection_ledger: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/anti_selection_ledger.yaml
+  runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
+  claim_boundary: first_batch_specs_only_no_run_no_candidate_no_runtime_authority

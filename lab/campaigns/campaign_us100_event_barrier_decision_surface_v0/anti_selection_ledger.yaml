@@ -1,0 +1,64 @@
+version: anti_selection_ledger_v1
+ledger_id: anti_selection_wave01_event_barrier_first_batch_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0
+created_at_utc: '2026-06-21T23:05:00Z'
+status: initialized_before_results
+result_viewed: false
+claim_boundary: first_batch_spec_anti_selection_plan_only_no_result_no_candidate
+source_inputs:
+  first_batch_matrix:
+    path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_matrix.csv
+    sha256: 074f0c1eecac628c5101eae663609da35b0ecb60f0a9a3528f5f31ef249b304a
+    size_bytes: 6682
+  campaign_manifest:
+    path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+    sha256: 4226fa557d46f0c8676b74401205cdf6fbcb0ae21523e672b529cdecf8c40e12
+    size_bytes: 12549
+  sweep_manifest:
+    path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
+    sha256: 6ec0fc90934e9d6b7258bd548a6c70a8beeb720a03732f3e1b694fe9cd9cea3c
+    size_bytes: 3594
+search_space_budget:
+  initial_batch_size: 12
+  max_repairs_per_surface: 1
+  repair_scope: invalid_setup_or_parity_semantics_only_not_performance_rescue
+  locked_final_oos_use: forbidden
+  fine_search_gate: requires_repeated_surface_clue_after_broad_batch
+selection_rules:
+- No spec can become a candidate from a planned run spec or a single proxy observation.
+- Every valid proxy/model-bearing spec must reach L4 validation and research_oos or
+  record invalid/failure disposition with repair evidence.
+- OOS-A can be observed for research; adaptive repair after OOS-A must be labeled
+  adaptive_oos_result.
+- OOS-B locked final stays inaccessible until candidate freeze and explicit unlock.
+- Threshold knife-edge behavior is preserved as clue, inconclusive, or negative memory,
+  not candidate.
+- Proxy-bad/runtime-good and proxy-good/runtime-bad both become parity divergence
+  evidence.
+first_batch_specs:
+- wave01_eb_cell_001
+- wave01_eb_cell_002
+- wave01_eb_cell_003
+- wave01_eb_cell_004
+- wave01_eb_cell_005
+- wave01_eb_cell_006
+- wave01_eb_cell_007
+- wave01_eb_cell_008
+- wave01_eb_cell_009
+- wave01_eb_cell_010
+- wave01_eb_cell_011
+- wave01_eb_cell_012
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave01_event_barrier_execute_first_batch_proxy_v0
