@@ -88,6 +88,24 @@ def redact_user_path(path: str) -> str:
     return normalized
 
 
+def redact_command_arg(value: str, repo_root: Path) -> str:
+    text = str(value)
+    try:
+        path = Path(text)
+        if path.is_absolute():
+            try:
+                return path.resolve().relative_to(repo_root.resolve()).as_posix()
+            except ValueError:
+                return redact_user_path(text)
+    except OSError:
+        return redact_user_path(text)
+    return redact_user_path(text)
+
+
+def durable_command_argv(argv: list[str], repo_root: Path) -> list[str]:
+    return [redact_command_arg(arg, repo_root) for arg in argv]
+
+
 def redact_common_path(path: Path, commondata_path: str) -> str:
     common_root = Path(commondata_path)
     try:
@@ -500,9 +518,11 @@ def run(args: argparse.Namespace) -> dict[str, str]:
     input_hashes = [asdict(dataset_ref)]
     output_hashes = [asdict(onnx_ref), asdict(fixture_input_ref), asdict(expected_output_ref), asdict(fixture_manifest_ref)]
     ended_at = utc_now()
+    command_argv = durable_command_argv(sys.argv, repo_root)
+    command_text = " ".join(command_argv)
     provenance = {
         **git,
-        "command_argv": sys.argv,
+        "command_argv": command_argv,
         "python_executable": redact_user_path(sys.executable),
         "python_version": platform.python_version(),
         "key_package_versions": dependency_summary(),
@@ -574,7 +594,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "parser_version": PARSER_VERSION,
         "runtime_contract_version": RUNTIME_CONTRACT_VERSION,
         "decision_surface_id": DECISION_SURFACE_ID,
-        "producer_command": " ".join(sys.argv),
+        "producer_command": command_text,
         "environment_summary": dependency_summary(),
         "provenance": provenance,
         "runtime_learning_probe_decision": {
@@ -671,7 +691,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "timezone": "UTC",
         "git_commit": git["git_sha"],
         "dirty_state": git["dirty_flag"],
-        "command": " ".join(sys.argv),
+        "command": command_text,
         "entrypoint": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py",
         "environment_summary": dependency_summary(),
         "provenance": provenance,
@@ -789,7 +809,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "producer": {
             "type": "python_pipeline",
             "identity": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py",
-            "command": " ".join(sys.argv),
+            "command": command_text,
             "environment_summary": dependency_summary(),
         },
         "consumer": ["runtime/packages", "runtime/mt5_attempts", "MT5 common files"],
@@ -797,7 +817,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "artifact_paths": output_hashes + [asdict(tester_config_ref)],
         "artifact_hashes": [item["sha256"] for item in output_hashes] + [tester_config_ref.sha256],
         "artifact_sizes": [item["size_bytes"] for item in output_hashes] + [tester_config_ref.size_bytes],
-        "regeneration_commands": [" ".join(sys.argv)],
+        "regeneration_commands": [command_text],
         "registry_links": ["docs/registers/run_registry.csv", "docs/registers/artifact_registry.csv"],
         "availability": "local_generated_artifacts_ignored_by_git_with_hashes",
         "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
