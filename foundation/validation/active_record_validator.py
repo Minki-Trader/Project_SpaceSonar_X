@@ -407,6 +407,9 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
     runtime_probe_routing = attempt.get("runtime_probe_routing") or {}
     if matched and runtime_probe_routing.get("primary_family") != "runtime_probe":
         errors.append("active evidence graph: attempt missing runtime_probe routing")
+    receipt_runtime_probe_routing = receipt.get("runtime_probe_routing") or {}
+    if matched and receipt_runtime_probe_routing.get("primary_family") != "runtime_probe":
+        errors.append("active evidence graph: receipt missing runtime_probe routing")
 
     compile_provenance = attempt.get("compile_provenance") or {}
     ea_source = compile_provenance.get("ea_source") or {}

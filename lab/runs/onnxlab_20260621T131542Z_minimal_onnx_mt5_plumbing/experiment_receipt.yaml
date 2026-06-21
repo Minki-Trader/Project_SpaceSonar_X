@@ -233,3 +233,14 @@ terminal_mode_evidence:
   main_mode_fallback_used: true
   fallback_reason: portable_attempt_did_not_produce_mt5_probe_telemetry
   claim_effect: fixed_fixture_micro_probe_only_no_runtime_authority
+runtime_probe_routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-parity
+  support_skills:
+  - spacesonar-run-evidence-system
+  - spacesonar-result-judgment
+  - spacesonar-claim-discipline
+  routing_scope: mt5_fixed_fixture_micro_probe_closeout
+  claim_boundary: fixed_fixture_parity_learning_only_no_runtime_authority
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: specific_fixture_micro_probe_no_period_completion

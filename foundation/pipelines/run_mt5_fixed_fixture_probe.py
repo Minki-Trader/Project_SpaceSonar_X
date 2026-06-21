@@ -461,7 +461,7 @@ def update_closeout_records(
     }
 
     attempt["status"] = "completed_matched" if matched else "completed_failed"
-    attempt["runtime_probe_routing"] = {
+    runtime_probe_routing = {
         "primary_family": "runtime_probe",
         "primary_skill": "spacesonar-runtime-parity",
         "support_skills": [
@@ -474,6 +474,7 @@ def update_closeout_records(
         "runtime_period_profile_id": "period_profile_split_set_v0",
         "runtime_period_set_id": "specific_fixture_micro_probe_no_period_completion",
     }
+    attempt["runtime_probe_routing"] = runtime_probe_routing
     attempt["compile_provenance"] = compile_summary
     attempt["terminal_run_provenance"] = terminal_summary
     attempt["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
@@ -492,6 +493,7 @@ def update_closeout_records(
     receipt["missing_evidence"] = []
     receipt["claim_boundary"] = FIXTURE_CLAIM_BOUNDARY
     receipt["next_action"] = "none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics or runtime authority"
+    receipt["runtime_probe_routing"] = runtime_probe_routing
     receipt["mt5_fixed_fixture_probe"] = probe_summary["result"]
     receipt["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
 
