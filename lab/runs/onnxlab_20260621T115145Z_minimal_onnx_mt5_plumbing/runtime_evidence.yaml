@@ -44,7 +44,7 @@ provenance:
   - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
   command_argv:
   - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
-  python_executable: C:\Users\awdse\AppData\Local\Programs\Python\Python313\python.exe
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
   python_version: 3.13.9
   key_package_versions:
     MetaTrader5: 5.0.5640
@@ -95,7 +95,6 @@ required_gate_coverage:
   passed:
   - branch_worktree_fit
   - bundle_integrity_hash
-  - feature_label_boundary_check
   - feature_schema_contract
   - mt5_native_onnx_fixed_fixture_probe
   - onnx_export_smoke
@@ -103,11 +102,30 @@ required_gate_coverage:
   - python_onnx_parity
   - runtime_learning_probe_decision
   - time_axis_check
+  - final_claim_guard
   not_applicable:
   - strategy_tester_economics
-  missing: []
-runtime_debt_state: none_for_fixed_fixture_micro_probe
-repair_required: false
-repair_surface: null
-runtime_claim_boundary: fixed_fixture_parity_learning_only_no_runtime_authority
-missing_evidence: []
+  missing:
+  - split_boundary_purge_check
+  - active_record_validator_clean_before_rerun
+  - handle_release_log
+  - compile_terminal_exit_code_provenance
+  - clean_commit_superseding_rerun
+runtime_debt_state: fixed_fixture_observed_with_boundary_debt
+repair_required: true
+repair_surface: clean_superseding_fixture_rerun_after_spine_hardening
+runtime_claim_boundary: fixed_fixture_parity_learning_only_with_boundary_debt_no_runtime_authority
+missing_evidence:
+- split_boundary_purge_check
+- active_record_validator_clean_before_rerun
+- handle_release_log
+- compile_terminal_exit_code_provenance
+- clean_commit_superseding_rerun
+evidence_debt:
+  status: acknowledged_claim_blocking_until_clean_superseding_rerun
+  items:
+  - split_boundary_purge_check
+  - active_record_validator_clean_before_rerun
+  - handle_release_log
+  - compile_terminal_exit_code_provenance
+  - clean_commit_superseding_rerun

@@ -19,14 +19,17 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dev dependencies
-        run: python -m pip install -e ".[dev]"
+      - name: Install dev and ONNX lab dependencies
+        run: python -m pip install -e ".[dev,onnxlab]"
 
       - name: Run tests
         run: python -m pytest
 
       - name: Validate control plane
         run: python foundation/validation/control_plane_validator.py --repo-root .
+
+      - name: Validate active records
+        run: python foundation/validation/active_record_validator.py --repo-root .
 
       - name: Run routing smoke eval
         run: python foundation/validation/routing_smoke_eval.py --repo-root .

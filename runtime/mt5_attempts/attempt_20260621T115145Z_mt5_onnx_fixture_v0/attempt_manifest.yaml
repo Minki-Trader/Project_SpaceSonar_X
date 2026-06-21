@@ -4,7 +4,7 @@ run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
 surface_id: surface_fixture_next_m5_probability_v0
 bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
 created_at_utc: '2026-06-21T11:51:45.383682Z'
-status: completed_matched
+status: completed_matched_with_boundary_debt
 branch_worktree:
   current_branch: codex/minimal-onnx-mt5-plumbing-slice
   requested_branch: codex/minimal-onnx-mt5-plumbing-slice
@@ -53,7 +53,7 @@ provenance:
   - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
   command_argv:
   - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
-  python_executable: C:\Users\awdse\AppData\Local\Programs\Python\Python313\python.exe
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
   python_version: 3.13.9
   key_package_versions:
     MetaTrader5: 5.0.5640
@@ -110,7 +110,7 @@ artifact_identity:
     sha256: d545ca71cc2da652ea66f84970ff39bf0251912f0da1c4c0358def18b93e9978
   bundle:
     path: runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/experiment_bundle.json
-    sha256: 3d49fdc12fec1341068fb0a8203a1c8b83a5dbefb10c68860ad7a7559de75494
+    sha256: 1401767156e4bc94c9609b1364f44e2b78d182879e01c0cbda71f6de7d75b038
   tester_reports:
   - path: runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/telemetry/mt5_probe_output.csv
     sha256: 489fa03e8ec4dea0b5a033f4feeb9a9d7ef257656780ac6d7ead9fca7ac1c354
@@ -118,32 +118,32 @@ artifact_identity:
   common_files:
     model.onnx:
       common_relative_path: SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\model.onnx
-      local_absolute_path: C:\Users\awdse\AppData\Roaming\MetaQuotes\Terminal\Common\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\model.onnx
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\model.onnx
       sha256: 7bd7f9a5a1af7c3069732229c96be1a5228d927efaff00c682a046fb47b53618
       size_bytes: 618
       durable_identity: common_relative_path_plus_sha256
-      absolute_path_boundary: local_context_only
+      path_boundary: redacted_local_context_only
     fixture_input.csv:
       common_relative_path: SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\fixture_input.csv
-      local_absolute_path: C:\Users\awdse\AppData\Roaming\MetaQuotes\Terminal\Common\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\fixture_input.csv
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\fixture_input.csv
       sha256: 68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647
       size_bytes: 57
       durable_identity: common_relative_path_plus_sha256
-      absolute_path_boundary: local_context_only
+      path_boundary: redacted_local_context_only
     expected_output.csv:
       common_relative_path: SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\expected_output.csv
-      local_absolute_path: C:\Users\awdse\AppData\Roaming\MetaQuotes\Terminal\Common\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\expected_output.csv
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\expected_output.csv
       sha256: de134c319ff558f777565538039ba698b299b1f94b33a02fe9143571f5f6bad9
       size_bytes: 14
       durable_identity: common_relative_path_plus_sha256
-      absolute_path_boundary: local_context_only
+      path_boundary: redacted_local_context_only
     mt5_probe_output.csv:
       common_relative_path: SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\mt5_probe_output.csv
-      local_absolute_path: C:\Users\awdse\AppData\Roaming\MetaQuotes\Terminal\Common\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\mt5_probe_output.csv
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\onnx_fixture\bundle_20260621T115145Z_fixture_plumbing_v0\mt5_probe_output.csv
       sha256: 489fa03e8ec4dea0b5a033f4feeb9a9d7ef257656780ac6d7ead9fca7ac1c354
       size_bytes: 168
       durable_identity: common_relative_path_plus_sha256
-      absolute_path_boundary: local_context_only
+      path_boundary: redacted_local_context_only
   ea_binary:
     path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.ex5
     sha256: 75588032ce3918ad75cb2a249333e837c7d667131fad22243e3e3fbc58a7179e
@@ -154,7 +154,6 @@ required_gate_coverage:
   passed:
   - branch_worktree_fit
   - bundle_integrity_hash
-  - feature_label_boundary_check
   - feature_schema_contract
   - mt5_native_onnx_fixed_fixture_probe
   - onnx_export_smoke
@@ -162,10 +161,16 @@ required_gate_coverage:
   - python_onnx_parity
   - runtime_learning_probe_decision
   - time_axis_check
+  - final_claim_guard
   not_applicable:
   - strategy_tester_economics
-  missing: []
-claim_boundary: fixed_fixture_parity_learning_only_no_runtime_authority
+  missing:
+  - split_boundary_purge_check
+  - active_record_validator_clean_before_rerun
+  - handle_release_log
+  - compile_terminal_exit_code_provenance
+  - clean_commit_superseding_rerun
+claim_boundary: fixed_fixture_parity_learning_only_with_boundary_debt_no_runtime_authority
 forbidden_claims:
 - reviewed_verified_pass
 - selected_baseline
@@ -175,6 +180,19 @@ forbidden_claims:
 - handoff_complete
 - live_readiness
 - goal_achieve
-missing_evidence: []
-next_action: none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics
-  or runtime authority
+missing_evidence:
+- split_boundary_purge_check
+- active_record_validator_clean_before_rerun
+- handle_release_log
+- compile_terminal_exit_code_provenance
+- clean_commit_superseding_rerun
+next_action: supersede with clean orchestrated prepare/compile/terminal-run/closeout
+  rerun
+evidence_debt:
+  status: acknowledged_claim_blocking_until_clean_superseding_rerun
+  items:
+  - split_boundary_purge_check
+  - active_record_validator_clean_before_rerun
+  - handle_release_log
+  - compile_terminal_exit_code_provenance
+  - clean_commit_superseding_rerun

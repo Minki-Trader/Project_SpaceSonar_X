@@ -62,7 +62,11 @@ void WriteProbeOutput(const string status,
                       const double expected,
                       const double observed,
                       const double abs_error,
-                      const int last_error)
+                      const int last_error,
+                      const bool release_attempted,
+                      const bool release_return,
+                      const int release_last_error,
+                      const string release_stage)
 {
    const int common_flag = (InpUseCommonFiles ? FILE_COMMON : 0);
    ResetLastError();
@@ -81,7 +85,11 @@ void WriteProbeOutput(const string status,
              "mt5_probability",
              "abs_error",
              "tolerance",
-             "last_error");
+             "last_error",
+             "release_attempted",
+             "release_return",
+             "release_last_error",
+             "release_stage");
    FileWrite(handle,
              status,
              input_count,
@@ -90,8 +98,22 @@ void WriteProbeOutput(const string status,
              DoubleToString(observed, 10),
              DoubleToString(abs_error, 10),
              DoubleToString(InpTolerance, 10),
-             last_error);
+             last_error,
+             (release_attempted ? "true" : "false"),
+             (release_return ? "true" : "false"),
+             release_last_error,
+             release_stage);
    FileClose(handle);
+}
+
+bool ReleaseOnnxHandle(const long handle, const string stage, int &release_last_error)
+{
+   ResetLastError();
+   const bool released = OnnxRelease(handle);
+   release_last_error = GetLastError();
+   PrintFormat("SpaceSonar ONNX release stage=%s released=%s last_error=%d",
+               stage, (released ? "true" : "false"), release_last_error);
+   return released;
 }
 
 bool RunProbe()
@@ -116,7 +138,7 @@ bool RunProbe()
    {
       const int err = GetLastError();
       PrintFormat("OnnxCreate failed path=%s err=%d", InpOnnxPath, err);
-      WriteProbeOutput("onnx_create_failed", -1, -1, expected, 0.0, 0.0, err);
+      WriteProbeOutput("onnx_create_failed", -1, -1, expected, 0.0, 0.0, err, false, false, 0, "not_created");
       return false;
    }
 
@@ -130,18 +152,20 @@ bool RunProbe()
    if(!OnnxSetInputShape(handle, 0, input_shape))
    {
       const int err = GetLastError();
+      int release_last_error = 0;
+      const bool release_return = ReleaseOnnxHandle(handle, "input_shape_failed", release_last_error);
       PrintFormat("OnnxSetInputShape failed err=%d", err);
-      WriteProbeOutput("input_shape_failed", (int)input_count, (int)output_count, expected, 0.0, 0.0, err);
-      OnnxRelease(handle);
+      WriteProbeOutput("input_shape_failed", (int)input_count, (int)output_count, expected, 0.0, 0.0, err, true, release_return, release_last_error, "input_shape_failed");
       return false;
    }
 
    if(!OnnxSetOutputShape(handle, 0, output_shape))
    {
       const int err = GetLastError();
+      int release_last_error = 0;
+      const bool release_return = ReleaseOnnxHandle(handle, "output_shape_failed", release_last_error);
       PrintFormat("OnnxSetOutputShape failed err=%d", err);
-      WriteProbeOutput("output_shape_failed", (int)input_count, (int)output_count, expected, 0.0, 0.0, err);
-      OnnxRelease(handle);
+      WriteProbeOutput("output_shape_failed", (int)input_count, (int)output_count, expected, 0.0, 0.0, err, true, release_return, release_last_error, "output_shape_failed");
       return false;
    }
 
@@ -150,20 +174,22 @@ bool RunProbe()
    if(!OnnxRun(handle, ONNX_NO_CONVERSION | ONNX_LOGLEVEL_INFO, fixture_values, output))
    {
       const int err = GetLastError();
+      int release_last_error = 0;
+      const bool release_return = ReleaseOnnxHandle(handle, "onnx_run_failed", release_last_error);
       PrintFormat("OnnxRun failed err=%d", err);
-      WriteProbeOutput("onnx_run_failed", (int)input_count, (int)output_count, expected, 0.0, 0.0, err);
-      OnnxRelease(handle);
+      WriteProbeOutput("onnx_run_failed", (int)input_count, (int)output_count, expected, 0.0, 0.0, err, true, release_return, release_last_error, "onnx_run_failed");
       return false;
    }
 
    const double observed = (double)output[0];
    const double abs_error = MathAbs(observed - expected);
    const string status = (abs_error <= InpTolerance ? "matched" : "mismatch");
-   WriteProbeOutput(status, (int)input_count, (int)output_count, expected, observed, abs_error, 0);
+   int release_last_error = 0;
+   const bool release_return = ReleaseOnnxHandle(handle, status, release_last_error);
+   WriteProbeOutput(status, (int)input_count, (int)output_count, expected, observed, abs_error, 0, true, release_return, release_last_error, status);
    PrintFormat("SpaceSonar ONNX fixture probe status=%s expected=%.10f observed=%.10f abs_error=%.10f tolerance=%.10f",
                status, expected, observed, abs_error, InpTolerance);
 
-   OnnxRelease(handle);
    return (status == "matched");
 }
 

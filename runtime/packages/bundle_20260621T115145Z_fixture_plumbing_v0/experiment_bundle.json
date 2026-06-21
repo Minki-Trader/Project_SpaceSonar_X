@@ -16,7 +16,7 @@
   "dataset_row_count": 6205,
   "row_time_key": "us100_bar_close_time",
   "task_surface_id": "surface_fixture_next_m5_probability_v0",
-  "decision_use": "fixed_fixture_probability_only_no_trade_decision",
+  "decision_use": "fixed_fixture_sigmoid_output_only_no_calibration_or_trade_decision_claim",
   "feature_recipe_id": "feature_fixture_minimal_v0",
   "feature_schema_hash": "d0722ffb2154c1fd361415d0fa42305d10de6b5bb403462b615f3e6d29cbf6e3",
   "feature_order_hash": "a0dc0110eae8066f8458ff08d1c8b4ef9dd2e9beae99cb636e2bc2347d725048",
@@ -81,7 +81,7 @@
     "command_argv": [
       "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py"
     ],
-    "python_executable": "C:\\Users\\awdse\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_executable": "${USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
     "python_version": "3.13.9",
     "key_package_versions": {
       "MetaTrader5": "5.0.5640",
@@ -132,7 +132,7 @@
     "decision": "run_required",
     "reason": "MT5 native ONNX meaning is in scope for this plumbing slice."
   },
-  "claim_boundary": "python_onnxruntime_and_mt5_native_fixed_fixture_parity_learning_only",
+  "claim_boundary": "fixed_fixture_parity_learning_only_with_boundary_debt",
   "forbidden_claims": [
     "reviewed_verified_pass",
     "selected_baseline",
@@ -169,36 +169,53 @@
     "common_files": {
       "model.onnx": {
         "common_relative_path": "SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\model.onnx",
-        "local_absolute_path": "C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\model.onnx",
+        "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\model.onnx",
         "sha256": "7bd7f9a5a1af7c3069732229c96be1a5228d927efaff00c682a046fb47b53618",
         "size_bytes": 618,
         "durable_identity": "common_relative_path_plus_sha256",
-        "absolute_path_boundary": "local_context_only"
+        "path_boundary": "redacted_local_context_only"
       },
       "fixture_input.csv": {
         "common_relative_path": "SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\fixture_input.csv",
-        "local_absolute_path": "C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\fixture_input.csv",
+        "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\fixture_input.csv",
         "sha256": "68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647",
         "size_bytes": 57,
         "durable_identity": "common_relative_path_plus_sha256",
-        "absolute_path_boundary": "local_context_only"
+        "path_boundary": "redacted_local_context_only"
       },
       "expected_output.csv": {
         "common_relative_path": "SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\expected_output.csv",
-        "local_absolute_path": "C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\expected_output.csv",
+        "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\expected_output.csv",
         "sha256": "de134c319ff558f777565538039ba698b299b1f94b33a02fe9143571f5f6bad9",
         "size_bytes": 14,
         "durable_identity": "common_relative_path_plus_sha256",
-        "absolute_path_boundary": "local_context_only"
+        "path_boundary": "redacted_local_context_only"
       },
       "mt5_probe_output.csv": {
         "common_relative_path": "SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\mt5_probe_output.csv",
-        "local_absolute_path": "C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\Common\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\mt5_probe_output.csv",
+        "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\onnx_fixture\\bundle_20260621T115145Z_fixture_plumbing_v0\\mt5_probe_output.csv",
         "sha256": "489fa03e8ec4dea0b5a033f4feeb9a9d7ef257656780ac6d7ead9fca7ac1c354",
         "size_bytes": 168,
         "durable_identity": "common_relative_path_plus_sha256",
-        "absolute_path_boundary": "local_context_only"
+        "path_boundary": "redacted_local_context_only"
       }
     }
+  },
+  "missing_evidence": [
+    "split_boundary_purge_check",
+    "active_record_validator_clean_before_rerun",
+    "handle_release_log",
+    "compile_terminal_exit_code_provenance",
+    "clean_commit_superseding_rerun"
+  ],
+  "evidence_debt": {
+    "status": "acknowledged_claim_blocking_until_clean_superseding_rerun",
+    "items": [
+      "split_boundary_purge_check",
+      "active_record_validator_clean_before_rerun",
+      "handle_release_log",
+      "compile_terminal_exit_code_provenance",
+      "clean_commit_superseding_rerun"
+    ]
   }
 }

@@ -30,6 +30,7 @@ from foundation.parity.onnx_fixture import run_onnx_fixture, sigmoid_logistic_pr
 
 
 RUN_SLUG = "minimal_onnx_mt5_plumbing"
+SUPPORTED_SYMBOL = "US100"
 DATASET_ID = "dataset_us100_m5_closed_bar_v0"
 FEATURE_RECIPE_ID = "feature_fixture_minimal_v0"
 LABEL_RECIPE_ID = "label_fixture_minimal_v0"
@@ -51,6 +52,19 @@ class ArtifactRef:
     size_bytes: int
 
 
+@dataclass(frozen=True)
+class FixtureSplit:
+    train_candidate_rows: int
+    train_fit_rows: int
+    purged_rows: int
+    validation_rows: int
+    validation_start_index: int
+    first_validation_time: str | None
+    max_train_label_end_time: str | None
+    policy: str
+    boundary_status: str
+
+
 def utc_now() -> datetime:
     return datetime.now(tz=UTC)
 
@@ -64,6 +78,23 @@ def repo_relative(path: Path, repo_root: Path) -> str:
         return path.resolve().relative_to(repo_root.resolve()).as_posix()
     except ValueError:
         return str(path.resolve())
+
+
+def redact_user_path(path: str) -> str:
+    user_profile = str(Path.home())
+    normalized = str(path)
+    if normalized.startswith(user_profile):
+        return "${USERPROFILE}" + normalized[len(user_profile) :]
+    return normalized
+
+
+def redact_common_path(path: Path, commondata_path: str) -> str:
+    common_root = Path(commondata_path)
+    try:
+        suffix = path.resolve().relative_to(common_root.resolve())
+    except ValueError:
+        return redact_user_path(str(path))
+    return "${MT5_COMMONDATA}\\" + str(suffix)
 
 
 def file_sha256(path: Path) -> str:
@@ -129,6 +160,8 @@ def dependency_summary() -> dict[str, str]:
 
 
 def export_mt5_bars(symbol: str, start_utc: datetime, end_utc: datetime) -> pd.DataFrame:
+    if symbol != SUPPORTED_SYMBOL:
+        raise ValueError(f"minimal fixture is fixed to {SUPPORTED_SYMBOL}; got {symbol!r}")
     if not mt5.initialize():
         raise RuntimeError(f"Failed to initialize MetaTrader5: {mt5.last_error()}")
     try:
@@ -197,12 +230,50 @@ def write_fixture_csv(path: Path, values: list[float]) -> None:
         writer.writerow([f"{value:.10g}" for value in values])
 
 
-def train_fixture_model(features: pd.DataFrame, labels: pd.Series) -> tuple[LogisticRegression, np.ndarray, np.ndarray]:
-    train_end = int(len(features) * 0.70)
-    if train_end < 50:
+def build_fixture_split(combined: pd.DataFrame) -> FixtureSplit:
+    train_candidate_rows = int(len(combined) * 0.70)
+    train_fit_rows = max(0, train_candidate_rows - HORIZON_BARS)
+    purged_rows = train_candidate_rows - train_fit_rows
+    validation_rows = int(len(combined) - train_candidate_rows)
+    first_validation_time = None
+    max_train_label_end_time = None
+    boundary_status = "not_evaluable_no_validation_or_train_rows"
+    if validation_rows > 0:
+        first_validation_time = str(combined.loc[train_candidate_rows, "us100_bar_close_time"])
+    if train_fit_rows > 0:
+        max_train_label_end_time = str(combined.loc[train_fit_rows - 1, "label_end_time"])
+    if first_validation_time is not None and max_train_label_end_time is not None:
+        max_label_ts = pd.Timestamp(combined.loc[train_fit_rows - 1, "label_end_time"])
+        first_validation_ts = pd.Timestamp(combined.loc[train_candidate_rows, "us100_bar_close_time"])
+        boundary_status = (
+            "passed_label_end_time_lt_first_validation_time"
+            if max_label_ts < first_validation_ts
+            else "failed_label_end_time_crosses_validation_start"
+        )
+    return FixtureSplit(
+        train_candidate_rows=train_candidate_rows,
+        train_fit_rows=train_fit_rows,
+        purged_rows=purged_rows,
+        validation_rows=validation_rows,
+        validation_start_index=train_candidate_rows,
+        first_validation_time=first_validation_time,
+        max_train_label_end_time=max_train_label_end_time,
+        policy="chronological_70_30_with_horizon_purge_before_fit",
+        boundary_status=boundary_status,
+    )
+
+
+def train_fixture_model(
+    features: pd.DataFrame,
+    labels: pd.Series,
+    split: FixtureSplit,
+) -> tuple[LogisticRegression, np.ndarray, np.ndarray]:
+    if split.train_fit_rows < 50:
         raise RuntimeError("not enough rows for fixture training")
-    x_train = features.iloc[:train_end].to_numpy(dtype=np.float32)
-    y_train = labels.iloc[:train_end].to_numpy(dtype=np.int64)
+    if split.boundary_status != "passed_label_end_time_lt_first_validation_time":
+        raise RuntimeError(f"fixture split boundary failed: {split.boundary_status}")
+    x_train = features.iloc[: split.train_fit_rows].to_numpy(dtype=np.float32)
+    y_train = labels.iloc[: split.train_fit_rows].to_numpy(dtype=np.int64)
     if len(set(y_train.tolist())) < 2:
         raise RuntimeError("fixture training labels contain only one class")
     mean = x_train.mean(axis=0)
@@ -219,12 +290,13 @@ def build_frame_for_training(raw: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series
     combined = pd.concat(
         [
             raw[["us100_bar_close_time", "us100_bar_open_time", "close"]].copy(),
+            raw["us100_bar_close_time"].shift(-HORIZON_BARS).rename("label_end_time"),
             feature_frame,
             label_series.rename("label_next_m5_up"),
         ],
         axis=1,
     )
-    combined = combined.dropna().iloc[:-HORIZON_BARS].reset_index(drop=True)
+    combined = combined.dropna().reset_index(drop=True)
     features = combined[FEATURE_COLUMNS].astype("float32")
     labels = combined["label_next_m5_up"].astype("int64")
     return features, labels, combined
@@ -247,11 +319,11 @@ def copy_fixture_to_common(
         shutil.copy2(source, target)
         copied[source.name] = {
             "common_relative_path": f"SpaceSonar\\onnx_fixture\\{bundle_id}\\{source.name}",
-            "local_absolute_path": str(target),
+            "redacted_absolute_path": redact_common_path(target, terminal_commondata_path),
             "sha256": file_sha256(target),
             "size_bytes": target.stat().st_size,
             "durable_identity": "common_relative_path_plus_sha256",
-            "absolute_path_boundary": "local_context_only",
+            "path_boundary": "redacted_local_context_only",
         }
     return copied
 
@@ -301,8 +373,11 @@ InpRemoveAfterRun=true||false||0||true||N
 
 
 def run(args: argparse.Namespace) -> dict[str, str]:
-    repo_root = Path.cwd()
+    repo_root = REPO_ROOT
+    if args.symbol != SUPPORTED_SYMBOL:
+        raise ValueError(f"minimal fixture is fixed to {SUPPORTED_SYMBOL}; got {args.symbol!r}")
     started_at = utc_now()
+    git = git_identity(repo_root)
     run_id = args.run_id or f"onnxlab_{compact_ts(started_at)}_{RUN_SLUG}"
     bundle_id = args.bundle_id or f"bundle_{compact_ts(started_at)}_fixture_plumbing_v0"
     attempt_id = args.attempt_id or f"attempt_{compact_ts(started_at)}_mt5_onnx_fixture_v0"
@@ -320,7 +395,8 @@ def run(args: argparse.Namespace) -> dict[str, str]:
     dataset_ref = artifact_ref(dataset_path, repo_root)
 
     features, labels, combined = build_frame_for_training(raw)
-    model, mean, scale = train_fixture_model(features, labels)
+    split = build_fixture_split(combined)
+    model, mean, scale = train_fixture_model(features, labels, split)
     coefficients = model.coef_.astype(np.float32).reshape(-1)
     intercept = float(model.intercept_[0])
 
@@ -364,7 +440,6 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         expected_output_path=expected_output_path,
     )
 
-    train_end = int(len(features) * 0.70)
     fixture_manifest = {
         "version": "fixture_manifest_v1",
         "run_id": run_id,
@@ -381,9 +456,15 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "label_horizon_bars": HORIZON_BARS,
         "split_id": SPLIT_ID,
         "split": {
-            "train_rows": train_end,
-            "validation_rows": int(len(features) - train_end),
-            "policy": "chronological fixture split only; no OOS, no candidate, no baseline",
+            "train_candidate_rows": split.train_candidate_rows,
+            "train_fit_rows": split.train_fit_rows,
+            "purged_rows": split.purged_rows,
+            "validation_rows": split.validation_rows,
+            "validation_start_index": split.validation_start_index,
+            "first_validation_time": split.first_validation_time,
+            "max_train_label_end_time": split.max_train_label_end_time,
+            "boundary_status": split.boundary_status,
+            "policy": f"{split.policy}; no OOS, no candidate, no baseline",
         },
         "fixture_row": {
             "index": int(fixture_index),
@@ -418,12 +499,11 @@ def run(args: argparse.Namespace) -> dict[str, str]:
     fixture_manifest_ref = artifact_ref(fixture_manifest_path, repo_root)
     input_hashes = [asdict(dataset_ref)]
     output_hashes = [asdict(onnx_ref), asdict(fixture_input_ref), asdict(expected_output_ref), asdict(fixture_manifest_ref)]
-    git = git_identity(repo_root)
     ended_at = utc_now()
     provenance = {
         **git,
         "command_argv": sys.argv,
-        "python_executable": sys.executable,
+        "python_executable": redact_user_path(sys.executable),
         "python_version": platform.python_version(),
         "key_package_versions": dependency_summary(),
         "started_at_utc": started_at.isoformat().replace("+00:00", "Z"),
@@ -433,13 +513,15 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "unknown_git_claim_effect": "not_applicable_git_identity_recorded_but_dirty_state_lowers_reproducibility_until_committed",
     }
 
+    requested_branch = args.requested_branch or git["branch"]
+    branch_fit = "fit" if git["branch"] == requested_branch else "mismatch"
     branch_worktree = {
         "current_branch": git["branch"],
-        "requested_branch": "codex/minimal-onnx-mt5-plumbing-slice",
-        "branch_worktree_fit": "fit",
-        "branch_action": "keep_current_branch",
+        "requested_branch": requested_branch,
+        "branch_worktree_fit": branch_fit,
+        "branch_action": "keep_current_branch" if branch_fit == "fit" else "switch_or_lower_claim",
         "policy_reference": "docs/policies/branch_policy.md",
-        "mismatch_claim_effect": "not_applicable",
+        "mismatch_claim_effect": "not_applicable" if branch_fit == "fit" else "reproducible_run_claim_lowered",
     }
 
     tester_config_path = attempt_root / "tester_config.ini"
@@ -472,6 +554,16 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "target_id": LABEL_ID,
         "horizon_or_holding_policy": "horizon_1_closed_m5_bar_tail_drop_1_no_holding_policy",
         "split_id": SPLIT_ID,
+        "split_boundary": {
+            "policy": split.policy,
+            "train_candidate_rows": split.train_candidate_rows,
+            "train_fit_rows": split.train_fit_rows,
+            "purged_rows": split.purged_rows,
+            "validation_rows": split.validation_rows,
+            "first_validation_time": split.first_validation_time,
+            "max_train_label_end_time": split.max_train_label_end_time,
+            "boundary_status": split.boundary_status,
+        },
         "decision_recipe_id": DECISION_RECIPE_ID,
         "model_framework": "manual_onnx_linear_sigmoid_from_sklearn_logistic_regression",
         "model_opset": 13,
@@ -534,7 +626,8 @@ def run(args: argparse.Namespace) -> dict[str, str]:
                 "spacesonar-data-integrity",
                 "spacesonar-artifact-lineage",
                 "spacesonar-environment-reproducibility",
-                "spacesonar-code-surface-guard",
+                "spacesonar-run-evidence-system",
+                "spacesonar-claim-discipline",
             ],
             "skills_not_used": [],
             "critical_skills_not_selected": [],
@@ -606,7 +699,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
             "timezone_or_session_policy": "MT5 Python API unix seconds; row key is us100_bar_close_time UTC timestamp derived from bar close",
             "feature_boundary": "right_aligned_closed_bar_features_only",
             "label_boundary": "label uses next closed M5 bar and tail_drop_1",
-            "leakage_boundary": "fixture model trained chronologically; no OOS/candidate/performance claim",
+            "leakage_boundary": "fixture model fit rows are purged so label_end_time is before first validation bar; no OOS/candidate/performance claim",
             "missing_gap_policy": "raw continuity not used for economics; row_count and source command recorded",
         },
         "model_export": {
@@ -717,8 +810,11 @@ def run(args: argparse.Namespace) -> dict[str, str]:
         "metric_scope": "fixed_fixture_plumbing_only",
         "dataset_rows": int(len(raw)),
         "feature_label_rows": int(len(features)),
-        "train_rows": int(train_end),
-        "validation_rows": int(len(features) - train_end),
+        "train_candidate_rows": int(split.train_candidate_rows),
+        "train_fit_rows": int(split.train_fit_rows),
+        "purged_rows": int(split.purged_rows),
+        "validation_rows": int(split.validation_rows),
+        "split_boundary_status": split.boundary_status,
         "python_onnxruntime_abs_error": parity_abs_error,
         "python_onnxruntime_tolerance": TOLERANCE,
         "mt5_native_onnx_abs_error": None,
@@ -831,12 +927,13 @@ def run(args: argparse.Namespace) -> dict[str, str]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build the minimal SpaceSonar ONNX-MT5 plumbing fixture.")
-    parser.add_argument("--symbol", default="US100")
+    parser.add_argument("--symbol", default=SUPPORTED_SYMBOL, help="Fixed fixture symbol; only US100 is supported.")
     parser.add_argument("--start-utc", default="2024-06-05T00:00:00Z")
     parser.add_argument("--end-utc", default="2024-07-05T23:59:59Z")
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--bundle-id", default=None)
     parser.add_argument("--attempt-id", default=None)
+    parser.add_argument("--requested-branch", default=None)
     return parser.parse_args()
 
 

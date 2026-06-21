@@ -68,12 +68,14 @@ current_claims:
   data_materialized: local_fixture_dataset_only_hash_recorded
   model_materialized: local_fixture_model_only_hash_recorded
   onnx_bundle_materialized: local_fixture_bundle_only_hash_recorded
-  mt5_runtime_probe_completed: fixed_fixture_micro_probe_only_no_runtime_authority
+  mt5_runtime_probe_completed: fixed_fixture_micro_probe_observed_with_boundary_debt_no_runtime_authority
   runtime_authority: false
-  first_vertical_slice_status: fixed_fixture_parity_learning_only
+  first_vertical_slice_status: fixed_fixture_parity_learning_only_with_boundary_debt
   first_vertical_slice_run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
   first_vertical_slice_bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
   first_vertical_slice_attempt_id: attempt_20260621T115145Z_mt5_onnx_fixture_v0
+  first_vertical_slice_debt: split_boundary_purge_check, handle_release_log, compile_terminal_exit_code_provenance,
+    active_record_validator_clean_before_rerun, clean_commit_superseding_rerun
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

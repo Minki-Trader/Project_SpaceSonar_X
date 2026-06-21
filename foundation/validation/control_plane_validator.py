@@ -322,6 +322,7 @@ def validate_import_smoke(repo_root: Path) -> list[str]:
     for module_name in [
         "spacesonar",
         "foundation.collectors.raw_m5_inventory",
+        "foundation.validation.active_record_validator",
         "foundation.validation.control_plane_validator",
     ]:
         try:
@@ -352,6 +353,9 @@ def validate(repo_root: Path) -> list[str]:
     errors.extend(validate_task_force_registry(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))
+    from foundation.validation.active_record_validator import validate as validate_active_records
+
+    errors.extend(validate_active_records(repo_root))
     return errors
 
 

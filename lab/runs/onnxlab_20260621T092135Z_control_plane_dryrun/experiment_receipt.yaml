@@ -6,31 +6,42 @@ id_chain:
   surface_id: surface_codex_operating_control_v0
   sweep_id: sweep_not_applicable_control_plane
   artifact_ids:
-    - artifact_control_plane_policy_patch_v0
-    - artifact_control_plane_template_patch_v0
+  - artifact_control_plane_policy_patch_v0
+  - artifact_control_plane_template_patch_v0
   bundle_id: null
   candidate_id: null
 skill_routing:
   primary_family: policy_skill_governance
   primary_skill: spacesonar-work-item-router
   support_skills:
-    - spacesonar-architecture-guard
-    - spacesonar-run-evidence-system
-    - spacesonar-workflow-drift-guard
-    - spacesonar-claim-discipline
+  - spacesonar-architecture-guard
+  - spacesonar-run-evidence-system
+  - spacesonar-workflow-drift-guard
+  - spacesonar-claim-discipline
   required_gates:
-    - skill_metadata_lint
-    - storage_contract_check
-    - dry_run_receipt
-    - encoding_check
-    - final_claim_guard
+  - skill_metadata_lint
+  - storage_contract_check
+  - dry_run_receipt
+  - encoding_check
+  - final_claim_guard
   not_applicable_gates:
-    - onnx_export_smoke
-    - python_onnx_parity
-    - mt5_runtime_probe_contract_audit
-    - runtime_surface_contract
-hypothesis: "If active policies and templates require ID routing, storage, runtime probe decision, gate coverage, and claim boundary fields, future ONNX work can start without implicit inheritance or weak evidence."
-decision_use: "control-plane readiness for future ONNX development"
+  - onnx_export_smoke
+  - python_onnx_parity
+  - mt5_runtime_probe_contract_audit
+  - runtime_surface_contract
+  skills_selected:
+  - spacesonar-work-item-router
+  - spacesonar-architecture-guard
+  - spacesonar-run-evidence-system
+  - spacesonar-workflow-drift-guard
+  - spacesonar-claim-discipline
+  skills_not_used: []
+  critical_skills_not_selected: []
+  not_selected_claim_effect: not_applicable_selected_primary_and_support_only
+hypothesis: If active policies and templates require ID routing, storage, runtime
+  probe decision, gate coverage, and claim boundary fields, future ONNX work can start
+  without implicit inheritance or weak evidence.
+decision_use: control-plane readiness for future ONNX development
 task_surface:
   task_type: control_plane_dry_run
   target_or_label: null
@@ -39,13 +50,13 @@ task_surface:
   output_head: null
 comparison_baseline: null
 control_variables:
-  - no_model_training
-  - no_onnx_export
-  - no_mt5_runtime_execution
+- no_model_training
+- no_onnx_export
+- no_mt5_runtime_execution
 changed_variables:
-  - policy_templates
-  - storage_contract_fields
-  - runtime_probe_decision_fields
+- policy_templates
+- storage_contract_fields
+- runtime_probe_decision_fields
 sample_scope:
   instrument: FPMarkets US100
   timeframe: M5
@@ -61,70 +72,71 @@ storage_contract:
   lineage_path: lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/artifact_lineage.json
   metrics_path: lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/metrics.json
   registry_rows:
-    - docs/registers/run_registry.csv
-    - docs/registers/artifact_registry.csv
+  - docs/registers/run_registry.csv
+  - docs/registers/artifact_registry.csv
   durable_identity_policy: repo_relative_paths_only
   heavy_artifact_policy: track_by_path_hash_size_command_or_uri
 success_criteria:
-  - ID chain is recorded.
-  - primary_family and primary_skill are recorded.
-  - evidence paths are recorded.
-  - claim boundary is explicit.
-  - required gates are recorded.
-  - runtime learning probe decision is recorded.
-  - result judgment and missing evidence are recorded.
-  - next action is recorded.
+- ID chain is recorded.
+- primary_family and primary_skill are recorded.
+- evidence paths are recorded.
+- claim boundary is explicit.
+- required gates are recorded.
+- runtime learning probe decision is recorded.
+- result judgment and missing evidence are recorded.
+- next action is recorded.
 failure_criteria:
-  - registry row is treated as proof.
-  - dry-run claims model, runtime, economics, handoff, live readiness, reviewed, verified, pass, or Goal Achieve.
+- registry row is treated as proof.
+- dry-run claims model, runtime, economics, handoff, live readiness, reviewed, verified,
+  pass, or Goal Achieve.
 invalid_conditions:
-  - any real model or runtime result is inferred from this dry-run.
+- any real model or runtime result is inferred from this dry-run.
 stop_conditions:
-  - storage_contract missing.
-  - claim boundary missing.
-  - runtime_learning_probe_decision missing.
+- storage_contract missing.
+- claim boundary missing.
+- runtime_learning_probe_decision missing.
 evidence_plan:
-  - lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json
-  - lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/experiment_receipt.yaml
-  - lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/artifact_lineage.json
-  - lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/metrics.json
+- lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json
+- lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/experiment_receipt.yaml
+- lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/artifact_lineage.json
+- lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/metrics.json
 required_gate_coverage:
   passed:
-    - skill_metadata_lint
-    - storage_contract_check
-    - dry_run_receipt
-    - encoding_check
-    - json_yaml_csv_syntax_check
-    - drift_scan
-    - final_claim_guard
+  - skill_metadata_lint
+  - storage_contract_check
+  - dry_run_receipt
+  - encoding_check
+  - json_yaml_csv_syntax_check
+  - drift_scan
+  - final_claim_guard
   not_applicable:
-    - onnx_export_smoke
-    - python_onnx_parity
-    - mt5_runtime_probe_contract_audit
-    - runtime_surface_contract
+  - onnx_export_smoke
+  - python_onnx_parity
+  - mt5_runtime_probe_contract_audit
+  - runtime_surface_contract
   missing: []
 runtime_learning_probe_decision:
   required: false
   decision: not_applicable_no_runtime_question
-  reason: "This is policy/template evidence recording only."
+  reason: This is policy/template evidence recording only.
   forbidden_skip_reasons_checked:
-    - probe_is_heavy
-    - probe_is_expensive
-    - proxy_result_is_weak
-    - trade_count_is_low
-    - candidate_is_ambiguous
-    - setup_might_fail
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
   lowered_claim_if_not_run: planning_scaffold_only
 result_judgment: positive
 missing_evidence: []
 claim_boundary: planning_scaffold
 forbidden_claims:
-  - selected_baseline
-  - runtime_authority
-  - economics_pass
-  - materialization_ready
-  - handoff_complete
-  - live_readiness
-  - reviewed_verified_pass
-  - goal_achieve
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
 next_action: ready_for_actual_onnx_development_entry

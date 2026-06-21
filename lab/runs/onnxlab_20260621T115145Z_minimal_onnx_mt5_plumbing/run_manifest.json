@@ -32,11 +32,12 @@
       "spacesonar-data-integrity",
       "spacesonar-artifact-lineage",
       "spacesonar-environment-reproducibility",
-      "spacesonar-code-surface-guard"
+      "spacesonar-run-evidence-system",
+      "spacesonar-claim-discipline"
     ],
     "skills_not_used": [],
     "critical_skills_not_selected": [],
-    "not_selected_claim_effect": null,
+    "not_selected_claim_effect": "not_applicable_selected_primary_and_support_only",
     "required_gates": [
       "branch_worktree_fit",
       "provenance_capture",
@@ -80,7 +81,7 @@
     "horizon_or_holding_policy": "horizon_1_closed_m5_bar_no_trade_holding_policy",
     "output_head": "single_probability_float32"
   },
-  "status": "mt5_native_onnx_fixed_fixture_probe_matched",
+  "status": "mt5_native_onnx_fixed_fixture_probe_matched_with_boundary_debt",
   "created_at_utc": "2026-06-21T11:51:45.383682Z",
   "timezone": "UTC",
   "git_commit": "c7b9345980abb007229cb0cfc74ef4b1254ae051",
@@ -114,7 +115,7 @@
     "command_argv": [
       "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py"
     ],
-    "python_executable": "C:\\Users\\awdse\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_executable": "${USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
     "python_version": "3.13.9",
     "key_package_versions": {
       "MetaTrader5": "5.0.5640",
@@ -189,8 +190,8 @@
     },
     "timezone_or_session_policy": "MT5 Python API unix seconds; row key is us100_bar_close_time UTC timestamp derived from bar close",
     "feature_boundary": "right_aligned_closed_bar_features_only",
-    "label_boundary": "label uses next closed M5 bar and tail_drop_1",
-    "leakage_boundary": "fixture model trained chronologically; no OOS/candidate/performance claim",
+    "label_boundary": "label uses next closed M5 bar; current historical record lacks split-boundary purge proof",
+    "leakage_boundary": "boundary debt: old fit rows were not proven purged from validation label source",
     "missing_gap_policy": "raw continuity not used for economics; row_count and source command recorded"
   },
   "model_export": {
@@ -236,23 +237,36 @@
     "passed": [
       "branch_worktree_fit",
       "bundle_integrity_hash",
-      "feature_label_boundary_check",
       "feature_schema_contract",
       "mt5_native_onnx_fixed_fixture_probe",
       "onnx_export_smoke",
       "provenance_capture",
       "python_onnx_parity",
       "runtime_learning_probe_decision",
-      "time_axis_check"
+      "time_axis_check",
+      "final_claim_guard"
     ],
     "not_applicable": [
       "strategy_tester_economics"
     ],
-    "missing": []
+    "missing": [
+      "feature_label_boundary_check",
+      "split_boundary_purge_check",
+      "active_record_validator_clean_before_rerun",
+      "handle_release_log",
+      "compile_terminal_exit_code_provenance",
+      "clean_commit_superseding_rerun"
+    ]
   },
-  "result_judgment": "positive",
-  "missing_evidence": [],
-  "claim_scope": "fixed_fixture_parity_learning_only",
+  "result_judgment": "inconclusive",
+  "missing_evidence": [
+    "split_boundary_purge_check",
+    "active_record_validator_clean_before_rerun",
+    "handle_release_log",
+    "compile_terminal_exit_code_provenance",
+    "clean_commit_superseding_rerun"
+  ],
+  "claim_scope": "fixed_fixture_parity_learning_only_with_boundary_debt",
   "forbidden_claims": [
     "reviewed_verified_pass",
     "selected_baseline",
@@ -270,5 +284,17 @@
     "MT5 probe output missing for runtime claim",
     "fixture parity abs_error exceeds tolerance"
   ],
-  "next_action": "control-plane and minimal ONNX-MT5 fixed-fixture slice complete; no performance, candidate, baseline, runtime-authority, or economics claim"
+  "next_action": "harden evidence spine and supersede with clean fixed-fixture rerun; do not promote this record",
+  "claim_boundary": "fixed_fixture_parity_learning_only_with_boundary_debt",
+  "evidence_debt": {
+    "status": "acknowledged_claim_blocking_until_clean_superseding_rerun",
+    "items": [
+      "split_boundary_purge_check",
+      "active_record_validator_clean_before_rerun",
+      "handle_release_log",
+      "compile_terminal_exit_code_provenance",
+      "clean_commit_superseding_rerun"
+    ],
+    "claim_effect": "no reviewed/pass, candidate, baseline, runtime authority, economics, handoff, live readiness, or Goal Achieve claim"
+  }
 }

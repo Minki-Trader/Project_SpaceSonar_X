@@ -1,6 +1,6 @@
 version: campaign_manifest_v1
 campaign_id: campaign_minimal_onnx_mt5_vertical_slice_v0
-status: fixed_fixture_slice_completed
+status: fixed_fixture_slice_observed_with_boundary_debt
 target_branch: codex/minimal-onnx-mt5-plumbing-slice
 wave_ids: []
 idea_ids:
@@ -42,7 +42,7 @@ required_gates:
 - runtime_learning_probe_decision
 - mt5_native_onnx_fixed_fixture_probe
 - final_claim_guard
-claim_boundary: fixed_fixture_parity_learning_only_no_baseline_no_runtime_authority
+claim_boundary: fixed_fixture_parity_learning_only_with_boundary_debt_no_baseline_no_runtime_authority
 forbidden_claims:
 - reviewed_verified_pass
 - selected_baseline
@@ -122,9 +122,8 @@ runtime_learning_probe_decision_default:
   - trade_count_is_low
   - candidate_is_ambiguous
   - setup_might_fail
-notes: Completed fixed-fixture ONNX-MT5 micro-probe only. No performance, candidate,
-  baseline, economics, handoff, live readiness, reviewed/pass, runtime authority,
-  or final trading Goal Achieve claim.
+notes: Fixed-fixture ONNX-MT5 micro-probe observed, but split-boundary/release/provenance
+  debt blocks clean evidence or promotion claims.
 completed_run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
 completed_bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
 completed_attempt_id: attempt_20260621T115145Z_mt5_onnx_fixture_v0
@@ -132,3 +131,11 @@ evidence_paths:
 - lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json
 - runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/experiment_bundle.json
 - runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+evidence_debt:
+  status: acknowledged_claim_blocking_until_clean_superseding_rerun
+  items:
+  - split_boundary_purge_check
+  - active_record_validator_clean_before_rerun
+  - handle_release_log
+  - compile_terminal_exit_code_provenance
+  - clean_commit_superseding_rerun
