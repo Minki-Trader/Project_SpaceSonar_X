@@ -1,0 +1,65 @@
+version: work_closeout_v1
+work_item_id: work_wave0_l4_materialization_preflight_v0
+parent_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: '2026-06-21T18:45:57Z'
+status: completed_preflight_l4_execution_pending
+result_judgment: inconclusive
+claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.yaml
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.csv
+summary:
+  valid_proxy_runs_requiring_l4: 12
+  direct_l4_ready_runs: 0
+  runs_requiring_retrain: 12
+  runs_requiring_onnx_export: 12
+  runs_requiring_strategy_tester_adapter: 12
+  diagnostic_surfaces_requiring_runtime_observation_mode: 5
+  model_family_counts:
+    linear_or_ridge_rank_scout: 5
+    logistic_classification_scout: 5
+    onnx_realistic_tree_or_boosted_scout: 2
+  export_adapter_status_counts:
+    requires_export_adapter_probe: 2
+    skl2onnx_converter_likely_available: 10
+  result_judgment_counts:
+    inconclusive: 8
+    preserved_clue: 4
+  blocker_counts:
+    requires_declared_runtime_observation_mode_for_diagnostic_surface: 5
+    requires_export_adapter_probe: 2
+    requires_onnx_export_after_retrain: 12
+    requires_retrain_for_materialization: 12
+    requires_strategy_tester_ea_or_runtime_adapter: 12
+claim_effect:
+  materialization_ready: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+next_work_item:
+  work_item_id: work_wave0_first_batch_l4_follow_through_v0
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  required_next_action: retrain/export model-bearing runs into bundles, add a full-period
+    Strategy Tester decision adapter, then execute L4 validation and research_oos
+    probes.
+output_hashes:
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.yaml
+  sha256: 06467e7b0ab85a2b86adde7f9723b4efeedb88b62fc906d2604c1e714ef96978
+  size_bytes: 22397
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.csv
+  sha256: 29dc336eb23331b2c911804091a2d0e1748695e763f51a54760e1d4b4905db78
+  size_bytes: 6712
+  availability: present_hash_recorded
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

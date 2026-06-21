@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: planned_next
+status: planned_next_l4_materialization_after_preflight
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -30,6 +30,31 @@ current_truth:
   l5_rule: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
   candidate_count: 0
   wave_campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+  materialization_preflight: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.yaml
+  materialization_preflight_status: completed_direct_l4_ready_0_materialization_required
+  materialization_preflight_summary:
+    valid_proxy_runs_requiring_l4: 12
+    direct_l4_ready_runs: 0
+    runs_requiring_retrain: 12
+    runs_requiring_onnx_export: 12
+    runs_requiring_strategy_tester_adapter: 12
+    diagnostic_surfaces_requiring_runtime_observation_mode: 5
+    model_family_counts:
+      linear_or_ridge_rank_scout: 5
+      logistic_classification_scout: 5
+      onnx_realistic_tree_or_boosted_scout: 2
+    export_adapter_status_counts:
+      requires_export_adapter_probe: 2
+      skl2onnx_converter_likely_available: 10
+    result_judgment_counts:
+      inconclusive: 8
+      preserved_clue: 4
+    blocker_counts:
+      requires_declared_runtime_observation_mode_for_diagnostic_surface: 5
+      requires_export_adapter_probe: 2
+      requires_onnx_export_after_retrain: 12
+      requires_retrain_for_materialization: 12
+      requires_strategy_tester_ea_or_runtime_adapter: 12
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -68,8 +93,8 @@ skill_routing:
   - result_judgment
   - final_claim_guard
 acceptance_criteria:
-- Preserve the active goal meaning: long-running Codex operating stability is primary;
-  Wave01 closeout is the proof window.
+- 'Preserve the active goal meaning: long-running Codex operating stability is primary;
+  Wave01 closeout is the proof window.'
 - For each of the 12 Wave0 first-batch proxy runs, either produce L4 MT5 split-runtime
   evidence or record a repair/invalid reason before it can count as proxy evidence.
 - For each L4 follow-through attempt, record proxy_runtime_parity with shared contract,
@@ -180,3 +205,9 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
+missing_material_if_relevant:
+- fitted_model_artifacts_absent_for_current_proxy_runs
+- onnx_exports_absent_for_current_proxy_runs
+- full_period_strategy_tester_adapter_absent_for_current_proxy_runs
+next_action: retrain/export model-bearing runs into bundles, add a full-period Strategy
+  Tester decision adapter, then execute L4 validation and research_oos probes.

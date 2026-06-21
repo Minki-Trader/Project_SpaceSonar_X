@@ -1,0 +1,471 @@
+version: l4_materialization_preflight_v1
+preflight_id: l4_materialization_preflight_wave0_first_batch_v0
+work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: '2026-06-21T18:45:57Z'
+status: completed_direct_l4_ready_0_materialization_required
+claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+source_inputs:
+  run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+  axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
+  runtime_period_profile: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  tester_execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+input_hashes:
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+  sha256: 2d0d6dda63f0375c39338ccf6fbdbad813d0a329afa0542d58d0ad693bf68009
+  size_bytes: 3776
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  sha256: e368d3f13ec5ef4b775b03d6f7aab39d67134a4613400af171905c431b808004
+  size_bytes: 20730
+  availability: present_hash_recorded
+runtime_contract_binding:
+  required_runtime_level: L4_split_runtime_probe
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  locked_final_oos_b: forbidden_by_default
+  l5_rule: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
+adapter_inventory:
+  strategy_tester_adapter_candidates:
+  - path: foundation/mt5/experts/SpaceSonar_ONNX_StrategyProbe.mq5
+    present: false
+  - path: foundation/mt5/experts/SpaceSonar_ONNX_DecisionProbe.mq5
+    present: false
+  fixed_fixture_ea:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5
+    present: true
+    claim_effect: proves_native_ONNX_fixed_fixture_only_not_full_L4_strategy_tester_surface
+environment:
+  command: python foundation/pipelines/preflight_wave0_l4_materialization.py --write-control-records
+  command_argv:
+  - python
+  - foundation/pipelines/preflight_wave0_l4_materialization.py
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python:
+      status: available
+      version: 3.13.9
+    numpy:
+      status: available
+      version: 2.3.4
+    pandas:
+      status: available
+      version: 2.3.3
+    sklearn:
+      status: available
+      version: 1.8.0
+    onnx:
+      status: available
+      version: 1.20.1
+    onnxruntime:
+      status: available
+      version: 1.24.3
+    skl2onnx:
+      status: available
+      version: 1.20.0
+    yaml:
+      status: available
+      version: 6.0.3
+  started_at_utc: '2026-06-21T18:45:56Z'
+  ended_at_utc: '2026-06-21T18:45:57Z'
+  git_sha: c75287f06c2936e32a139379d0b5810e0b5c502f
+  branch: main
+  dirty_flag: true
+  changed_files:
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  - ' M pyproject.toml'
+  - ?? foundation/pipelines/preflight_wave0_l4_materialization.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_materialization_preflight_v0_closeout.yaml
+  - ?? tests/test_wave0_l4_materialization_preflight.py
+  unknown_git_claim_effect: planning_or_preflight_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve
+summary:
+  valid_proxy_runs_requiring_l4: 12
+  direct_l4_ready_runs: 0
+  runs_requiring_retrain: 12
+  runs_requiring_onnx_export: 12
+  runs_requiring_strategy_tester_adapter: 12
+  diagnostic_surfaces_requiring_runtime_observation_mode: 5
+  model_family_counts:
+    linear_or_ridge_rank_scout: 5
+    logistic_classification_scout: 5
+    onnx_realistic_tree_or_boosted_scout: 2
+  export_adapter_status_counts:
+    requires_export_adapter_probe: 2
+    skl2onnx_converter_likely_available: 10
+  result_judgment_counts:
+    inconclusive: 8
+    preserved_clue: 4
+  blocker_counts:
+    requires_declared_runtime_observation_mode_for_diagnostic_surface: 5
+    requires_export_adapter_probe: 2
+    requires_onnx_export_after_retrain: 12
+    requires_retrain_for_materialization: 12
+    requires_strategy_tester_ea_or_runtime_adapter: 12
+run_preflight:
+- run_id: onnxlab_wave0_cell_001_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/run_manifest.json
+  target_family: future_return_rank_or_quantile
+  horizon_bars: '1'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 13
+  feature_order_hash: 75b244dd3841aefbf9c2f775f3d6e0b4d1c22526ef2721596d0d155792682bc0
+  label_schema_hash: 562bc36af330b453f13dff99e1964e6d7261ec9b3835b9538bf901cfd0164d23
+  target_name_used_for_model: target_continuous
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  - requires_declared_runtime_observation_mode_for_diagnostic_surface
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_002_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/run_manifest.json
+  target_family: future_return_rank_or_quantile
+  horizon_bars: '3'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: abstain_capable_long_short
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 13
+  feature_order_hash: 75b244dd3841aefbf9c2f775f3d6e0b4d1c22526ef2721596d0d155792682bc0
+  label_schema_hash: ae0e42e1522de6b90e5462b321f548d75b7b4ce4cfae74a8dab7773586079690
+  target_name_used_for_model: target_binary_raw
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_003_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/run_manifest.json
+  target_family: future_return_rank_or_quantile
+  horizon_bars: '12'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 43
+  feature_order_hash: 71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd
+  label_schema_hash: 287be7292197691167405c83755609bd101d333a0047657686c8e6910f5d3882
+  target_name_used_for_model: target_continuous
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  - requires_declared_runtime_observation_mode_for_diagnostic_surface
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_004_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/run_manifest.json
+  target_family: atr_scaled_barrier_event
+  horizon_bars: '3'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: abstain_capable_long_short
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 13
+  feature_order_hash: 75b244dd3841aefbf9c2f775f3d6e0b4d1c22526ef2721596d0d155792682bc0
+  label_schema_hash: ba090ad44c580909b5e1a4c45f51d8d3d451740f4153e0c4d99ff37bde8ec706
+  target_name_used_for_model: target_binary_raw
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_005_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/run_manifest.json
+  target_family: atr_scaled_barrier_event
+  horizon_bars: '6'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: abstain_capable_long_short
+  model_family: onnx_realistic_tree_or_boosted_scout
+  task_kind: classification
+  feature_count: 43
+  feature_order_hash: 71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd
+  label_schema_hash: 569829f99d61c3855f15b09276e70559b77b72d4d6dbc2fd373f1f4e7c307232
+  target_name_used_for_model: target_binary_raw
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: requires_export_adapter_probe
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_export_adapter_probe
+  - requires_strategy_tester_ea_or_runtime_adapter
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_006_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/run_manifest.json
+  target_family: atr_scaled_barrier_event
+  horizon_bars: '24'
+  input_family: causal_rolling_regime_context
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 66
+  feature_order_hash: dc3fde8df52dab56c708e2c05bf430c8d59e36887a816718767bee0c7383a369
+  label_schema_hash: d52e9bfb23fd3649dd501b077b9e0b96d31b6107839d485c67ea584148428f27
+  target_name_used_for_model: target_continuous
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  - requires_declared_runtime_observation_mode_for_diagnostic_surface
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_007_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/run_manifest.json
+  target_family: path_quality_mfe_mae_payoff_suitability
+  horizon_bars: '6'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 13
+  feature_order_hash: 75b244dd3841aefbf9c2f775f3d6e0b4d1c22526ef2721596d0d155792682bc0
+  label_schema_hash: 61d4acd69fab3cd6c228bf6d93ac498e13f2e04dc890a62831542c29975500c9
+  target_name_used_for_model: target_continuous
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_008_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json
+  target_family: path_quality_mfe_mae_payoff_suitability
+  horizon_bars: '12'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 43
+  feature_order_hash: 71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd
+  label_schema_hash: 2b7c3e3d73da76fb15e67a2df1056837606831e20d4cd9abd16fd6cdc0f1cb25
+  target_name_used_for_model: target_continuous_train_q60
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_009_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: inconclusive
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/run_manifest.json
+  target_family: path_quality_mfe_mae_payoff_suitability
+  horizon_bars: '24'
+  input_family: causal_rolling_regime_context
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 66
+  feature_order_hash: dc3fde8df52dab56c708e2c05bf430c8d59e36887a816718767bee0c7383a369
+  label_schema_hash: 1a56b3e84651ea0c772a8814d607ad18bcec2f4b325a3eed57c16c008b270ff1
+  target_name_used_for_model: target_continuous
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  - requires_declared_runtime_observation_mode_for_diagnostic_surface
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_010_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/run_manifest.json
+  target_family: tradeability_or_no_trade_regime
+  horizon_bars: '3'
+  input_family: session_calendar_state
+  decision_family: diagnostic_rank_only
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 9
+  feature_order_hash: 21488031fb202e42c5e57413211d6a90b6fa73a10ce25c7e17d3e98aea59093f
+  label_schema_hash: 27e254884b69b58b30f6a0735e38efe465f4f12fda88c869ec3ccfa8f67e5c7e
+  target_name_used_for_model: target_continuous_train_q60
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  - requires_declared_runtime_observation_mode_for_diagnostic_surface
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_011_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/run_manifest.json
+  target_family: tradeability_or_no_trade_regime
+  horizon_bars: '6'
+  input_family: causal_rolling_regime_context
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 66
+  feature_order_hash: dc3fde8df52dab56c708e2c05bf430c8d59e36887a816718767bee0c7383a369
+  label_schema_hash: 8d12c4ee8a6e111e09b21bf4bedee841218ced05ff88b55a09eb7bd992463c92
+  target_name_used_for_model: target_continuous_train_q60
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: skl2onnx_converter_likely_available
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_strategy_tester_ea_or_runtime_adapter
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave0_cell_012_surface_scout_v0
+  status: executed_proxy_scout
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/run_manifest.json
+  target_family: tradeability_or_no_trade_regime
+  horizon_bars: '12'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: onnx_realistic_tree_or_boosted_scout
+  task_kind: classification
+  feature_count: 43
+  feature_order_hash: 71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd
+  label_schema_hash: 79f2de3613feba6fdb731dd622f95e02ae98534e2cb90f17b6194c833f839e07
+  target_name_used_for_model: target_continuous_train_q60
+  fitted_model_artifacts: []
+  onnx_artifact_present: false
+  export_adapter_status: requires_export_adapter_probe
+  python_onnx_parity_possible: true
+  strategy_tester_adapter_present: false
+  fixed_fixture_ea_present_not_sufficient_for_l4: true
+  direct_l4_ready: false
+  materialization_blockers:
+  - requires_retrain_for_materialization
+  - requires_onnx_export_after_retrain
+  - requires_export_adapter_probe
+  - requires_strategy_tester_ea_or_runtime_adapter
+  required_next_action: retrain_export_and_build_or_select_strategy_tester_adapter_before_L4
+  claim_boundary: l4_materialization_preflight_only_no_runtime_authority_no_candidate_no_baseline
+judgment:
+  judgment_class: preflight_completed_l4_execution_pending
+  materialization_ready: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: retrain/export model-bearing runs into bundles, add a full-period Strategy
+    Tester decision adapter, then execute L4 validation and research_oos probes.
+prevention_memory:
+- Do not call a proxy scout L4-ready unless fitted model, ONNX export/parity, bundle,
+  and MT5 Strategy Tester adapter exist.
+- Fixed-fixture native ONNX parity is useful plumbing evidence but not a substitute
+  for split-period L4 Strategy Tester evidence.
+- Diagnostic score surfaces need an explicit runtime observation or decision translation
+  before MT5 follow-through.
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

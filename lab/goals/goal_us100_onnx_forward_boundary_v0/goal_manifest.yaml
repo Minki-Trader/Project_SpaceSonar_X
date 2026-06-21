@@ -2,7 +2,7 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-21T18:33:56Z'
+updated_at_utc: '2026-06-21T18:45:57Z'
 claim_boundary: planning_scaffold_active_goal_control_plane
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -27,8 +27,8 @@ branch_worktree:
   branch_action: keep_current_branch
   current_branch: main
   bootstrap_base_commit: e6053875b8106a665cff347dac01918f1f3a28c6
-  mismatch_claim_effect: Goal bootstrap is a planning/control-plane change only; no reproducible run,
-    bundle, runtime, pass, readiness, or Goal Achieve claim.
+  mismatch_claim_effect: Goal bootstrap is a planning/control-plane change only; no
+    reproducible run, bundle, runtime, pass, readiness, or Goal Achieve claim.
 routing:
   primary_family: policy_skill_governance
   primary_skill: spacesonar-work-item-router
@@ -183,6 +183,31 @@ program_budgets:
     - clue_wave0_tradeability_mid_horizon_v0
     - clue_wave0_path_quality_h12_side_signal_v0
     proxy_to_runtime_policy: all_valid_proxy_runs_require_L4_split_runtime_probe
+    l4_materialization_preflight: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.yaml
+    l4_materialization_preflight_status: completed_direct_l4_ready_0_materialization_required
+    l4_materialization_preflight_summary:
+      valid_proxy_runs_requiring_l4: 12
+      direct_l4_ready_runs: 0
+      runs_requiring_retrain: 12
+      runs_requiring_onnx_export: 12
+      runs_requiring_strategy_tester_adapter: 12
+      diagnostic_surfaces_requiring_runtime_observation_mode: 5
+      model_family_counts:
+        linear_or_ridge_rank_scout: 5
+        logistic_classification_scout: 5
+        onnx_realistic_tree_or_boosted_scout: 2
+      export_adapter_status_counts:
+        requires_export_adapter_probe: 2
+        skl2onnx_converter_likely_available: 10
+      result_judgment_counts:
+        inconclusive: 8
+        preserved_clue: 4
+      blocker_counts:
+        requires_declared_runtime_observation_mode_for_diagnostic_surface: 5
+        requires_export_adapter_probe: 2
+        requires_onnx_export_after_retrain: 12
+        requires_retrain_for_materialization: 12
+        requires_strategy_tester_ea_or_runtime_adapter: 12
 goal_achieve_state:
   complete_state: codex_operating_system_stable_through_Wave01_closeout
   requires:
@@ -229,4 +254,5 @@ forbidden_claims:
 next_work_item:
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
   work_item_id: work_wave0_first_batch_l4_follow_through_v0
-  summary: Drive every valid Wave0 first-batch proxy/model-bearing run to L4 MT5 split-runtime evidence.
+  summary: Drive every valid Wave0 first-batch proxy/model-bearing run to L4 MT5 split-runtime
+    evidence.
