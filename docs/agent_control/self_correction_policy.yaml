@@ -11,6 +11,8 @@ disposition_gate:
     - invalid
     - discarded
   rule: "Try-first disposition: a failed or unsupported operation may not be closed with these dispositions until root cause, exact failing layer, at least one bounded repair or fallback attempt, evidence path, remaining blocker, and reopen condition are recorded."
+  nonworking_result_rule: "A thing is not considered truly unavailable until Codex has identified why it failed, reproduced or bounded the failure, and tried the smallest credible fix, adapter, or fallback that the repo can own."
+  discard_or_defer_rule: "Discard or defer only after the failed layer and attempted repair evidence prove that continuing would need a narrow exception, user decision, external state, unsafe action, or a new surface question."
   adapter_absence_rule: "If missing converter/conversion-adapter/export/EA/parser/runtime glue is under repo/control, the bounded attempt is to build and test the smallest adapter or fallback. Adapter absence alone is not an attempt blocker."
   conversion_adapter_rule: "If a conversion adapter does not exist yet, create the smallest explicit translation layer needed to test the hypothesis unless an exception below applies."
   repair_attempt_exceptions:

@@ -49,6 +49,7 @@ repair_carryover_policy: forbidden_without_recorded_new_surface_divergence_or_pr
 neighborhood_perturbation_policy: meaningful_adjacent_variables_only
 failure_disposition_policy:
   cannot_or_unsupported_is_final: false
+  nonworking_result_is_diagnosis_until_attempted: true
   order:
     - diagnose
     - reproduce_failing_layer
@@ -64,6 +65,7 @@ failure_disposition_policy:
     - reopen_condition
   repo_controlled_support_gap_action: build_or_patch_smallest_adapter_or_fallback
   no_adapter_exists_claim_effect: repair_trigger_not_blocker
+  discard_or_defer_requires_failed_attempt_or_narrow_attempt_blocker: true
   attempt_exception_policy: record_attempt_blocker_and_lower_claim_boundary
 campaign_exploration_policy:
   mode: unexplored_surface_discovery_not_single_axis_progression

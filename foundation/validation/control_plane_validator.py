@@ -405,6 +405,7 @@ def validate_import_smoke(repo_root: Path) -> list[str]:
         "foundation.collectors.raw_m5_inventory",
         "foundation.validation.active_record_validator",
         "foundation.validation.control_plane_validator",
+        "foundation.validation.refresh_artifact_registry_hashes",
     ]:
         try:
             importlib.import_module(module_name)

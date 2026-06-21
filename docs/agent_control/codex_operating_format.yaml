@@ -111,6 +111,7 @@ completion_rule:
     - remaining_blocker
     - reopen_condition
   explanation_only_closeout_rule: "Diagnosis text, advisory notes, missing-helper observations, or agent consensus do not count as repair attempts."
+  nonworking_result_rule: "When an operation does not work, first determine why, reproduce or bound the failing layer, and attempt the smallest repo-controlled fix, adapter, or fallback. Only a recorded failed attempt or narrow attempt blocker can support blocked, deferred, invalid, or discarded."
   failure_disposition_requires_all_before_blocked_deferred_invalid_or_discarded:
     - failure_reproduction
     - exact_failing_layer

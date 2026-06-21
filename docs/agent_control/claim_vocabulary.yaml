@@ -30,6 +30,7 @@ claim_classes:
       - diagnosis_only
       - explanation_only_closeout
       - adapter_absence_only
+      - no_attempt_after_identified_repo_controlled_fix
   deferred:
     allowed_when:
       - failure_disposition_gate_recorded
@@ -40,6 +41,7 @@ claim_classes:
       - diagnosis_only
       - explanation_only_closeout
       - adapter_absence_only
+      - no_attempt_after_identified_repo_controlled_fix
   discarded:
     allowed_when:
       - failure_disposition_gate_recorded
@@ -49,6 +51,7 @@ claim_classes:
       - diagnosis_only
       - explanation_only_closeout
       - adapter_absence_only
+      - no_attempt_after_identified_repo_controlled_fix
   invalid:
     allowed_when:
       - setup_data_or_scope_mismatch_found
@@ -59,6 +62,7 @@ claim_classes:
       - diagnosis_only
       - explanation_only_closeout
       - adapter_absence_only
+      - no_attempt_after_identified_repo_controlled_fix
   verified:
     allowed_when:
       - requested_verification_layer_passed
