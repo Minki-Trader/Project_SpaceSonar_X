@@ -30,5 +30,16 @@ runtime_learning_probe_decision:
     - setup_might_fail
 observations: []
 repair_required: false
+failure_disposition:
+  required_before_blocked_deferred_invalid_or_discarded: true
+  status: not_applicable
+  failure_reproduction: null
+  failing_layer: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: runtime_investigation_in_progress_until_recorded
 runtime_claim_effect: learning_observation_only
 missing_evidence: []

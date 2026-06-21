@@ -15,6 +15,7 @@ global_rules:
   repair_carryover_policy: "Do not relabel unfinished repair or candidate-local perturbation as a fresh hypothesis in the next campaign/wave without a recorded new surface, divergence, or prevention-memory question."
   failure_disposition_policy: "Cannot/unsupported/unavailable is diagnosis, not disposition. Before blocked, deferred, invalid, or discarded status, record failure reproduction, exact failing layer, at least one bounded repair or fallback attempt, evidence path, remaining blocker, and reopen condition; if the repair attempt itself is impossible, record the attempt blocker."
   adapter_blocker_policy: "Missing converter/conversion-adapter/export/EA/parser/runtime support is diagnostic only. If the missing piece is under repo/control, build and test the smallest adapter or fallback before disposition; 'adapter absent' alone is never a blocker. If a conversion adapter does not exist yet, create the smallest explicit translation layer needed to test the hypothesis unless a narrow exception applies. Exceptions are user secrets, unavailable external state, destructive/unsafe action, or policy violation, and must be recorded as attempt blockers."
+  disposition_record_policy: "Any blocked, deferred, invalid, or discarded result caused by a failing tool, adapter, runtime, parser, converter, data path, or support gap must include a failure_disposition record. Without that record, lower the claim to investigation_in_progress."
   bounded_synthesis_policy: "Bounded synthesis is previous-material-only campaign work. It cannot set next wave/campaign direction; use mix-2 then mix-3 by default, allow mix-4 only with a recorded reason, and forbid mix-5+ without policy change."
   agent_role_modes:
     - scout
@@ -46,6 +47,7 @@ verification_profiles:
     claim_surface: "code_mutation"
     extra_gates:
       - test_or_syntax_check
+      - failure_disposition_record_if_blocked_deferred_invalid_or_discarded
       - final_claim_guard
   lab_experiment:
     claim_surface: "python_or_research_run"
@@ -55,6 +57,7 @@ verification_profiles:
       - storage_contract_check
       - runtime_learning_probe_decision
       - proxy_runtime_parity_decision
+      - failure_disposition_record_if_blocked_deferred_invalid_or_discarded
       - result_judgment
       - final_claim_guard
   onnx_bundle:
@@ -63,6 +66,7 @@ verification_profiles:
       - onnx_export_smoke
       - feature_schema_contract
       - bundle_integrity_hash
+      - failure_disposition_record_if_blocked_deferred_invalid_or_discarded
       - final_claim_guard
   runtime:
     claim_surface: "mt5_runtime_economics_or_handoff"
@@ -71,6 +75,7 @@ verification_profiles:
       - mt5_runtime_probe_contract_audit
       - proxy_runtime_parity_record
       - runtime_surface_contract
+      - failure_disposition_record_if_blocked_deferred_invalid_or_discarded
       - final_claim_guard
   policy_skill_governance:
     claim_surface: "policy_skill_agent_or_control_plane_change"

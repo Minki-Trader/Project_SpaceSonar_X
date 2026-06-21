@@ -33,6 +33,7 @@ Emit compact internal fields:
 - `not_applicable_gates`
 - `storage_contract`
 - `runtime_learning_probe_decision`
+- `failure_disposition_policy`
 - `phase_plan`
 - `stop_conditions`
 - `claim_boundary`
@@ -61,3 +62,4 @@ Internal receipts are not user reports.
 - claim completion/review/pass without required gate coverage
 - route a non-trivial item without a storage contract
 - skip a runtime learning probe decision when runtime behavior, economics, EA/ONNX meaning, or handoff is in scope
+- route or close a repo-controlled support gap as blocked/deferred/invalid/discarded without a failure disposition record: reproduction, failing layer, repair/fallback attempt, evidence, remaining blocker, and reopen condition

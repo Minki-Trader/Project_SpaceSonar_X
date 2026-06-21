@@ -117,6 +117,29 @@ proxy_runtime_parity:
   prevention_memory: []
   follow_up_action: pending
   claim_boundary: proxy_runtime_parity_tracking_only
+failure_disposition:
+  required_before_judgments:
+    - blocked
+    - deferred
+    - invalid
+    - discarded
+  status: not_applicable
+  diagnosis_state_only_tokens:
+    - cannot
+    - unsupported
+    - not_available
+    - missing_adapter
+    - missing_glue
+  failure_reproduction: null
+  failing_layer: null
+  root_cause_hypothesis: null
+  repo_controlled_support_gap: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: lower_to_investigation_in_progress_until_recorded
 result_judgment: not_evaluated
 missing_evidence: []
 claim_boundary: exploration_only

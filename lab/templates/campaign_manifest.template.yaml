@@ -58,6 +58,17 @@ candidate_repair_policy:
   carryover_policy: forbidden_to_relabel_repair_as_new_hypothesis_without_recorded_new_surface_or_divergence
   neighborhood_perturbation_scope: meaningful_adjacent_variables_only
   neighborhood_stop_condition: stop_when_micro_tuning_candidate_laundering_or_no_new_prevention_memory
+failure_disposition_policy:
+  cannot_unsupported_unavailable_are_diagnosis_only: true
+  required_before_blocked_deferred_invalid_or_discarded:
+    - failure_reproduction
+    - failing_layer
+    - bounded_repair_or_fallback_attempt
+    - evidence_path
+    - remaining_blocker
+    - reopen_condition
+  repo_controlled_support_gap_action: build_or_patch_smallest_adapter_or_fallback
+  no_adapter_exists_claim_effect: repair_trigger_not_blocker
 storage_contract:
   source_of_truth: lab/campaigns/<campaign_id>/campaign_manifest.yaml
   wave_campaign_refs: []

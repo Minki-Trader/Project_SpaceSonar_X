@@ -105,6 +105,8 @@ parity_contract:
   runtime_learning_probe_decision_required: true
   proxy_runtime_parity_required_for_proxy_model_bearing_campaigns: true
   proxy_runtime_parity_rule: "Every campaign that creates proxy/model-bearing evidence must record how proxy assumptions map to MT5 runtime behavior, including at least one reconciliation attempt, unit semantics, divergence, prevention memory, and surprise classes. This does not force equality when proxy and MT5 semantics truly differ."
+  try_first_disposition_required: true
+  failure_disposition_rule: "Cannot, unsupported, unavailable, or missing adapter/glue is diagnosis only. Before blocked, deferred, invalid, or discarded status, record failure reproduction, failing layer, bounded repair/fallback attempt, evidence path, remaining blocker, and reopen condition. Repo-controlled adapter or glue gaps require the smallest explicit adapter/fallback build-and-test attempt first."
   fixture_set_status: undefined_by_design
 
 claim_boundary:

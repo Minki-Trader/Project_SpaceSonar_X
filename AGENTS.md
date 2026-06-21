@@ -93,6 +93,7 @@ Non-trivial run records must include:
 - `claim_boundary`, `forbidden_claims`
 - `runtime_learning_probe_decision`
 - `proxy_runtime_parity`
+- `failure_disposition` when anything is blocked, deferred, invalid, or discarded
 - `missing_evidence`, `result_judgment`, `next_action`
 - `branch_worktree_fit`, `branch_action`
 - provenance: git state, command/runtime identity, timing, input/output hashes
@@ -109,6 +110,7 @@ Unknown git/env identity is planning scaffold only; it lowers reproducible-run, 
 - "Cannot", "unsupported", "not available", or "missing adapter/glue" is a diagnosis state, not a final disposition.
 - Before any valid surface is marked blocked, deferred, invalid, or discarded because something does not work, record the failure reproduction, the exact failing layer, at least one bounded repair or fallback attempt, the evidence path, the remaining blocker, and the reopen condition.
 - If a repair attempt is impossible because it needs user secrets, unavailable external state, destructive action, or policy violation, record that as the repair attempt blocker instead of silently deferring.
+- Do not answer or record "blocked/deferred/discarded" for a repo-controlled support gap until the failure disposition record proves the diagnosis and the repair/fallback attempt.
 - If a surface cannot be made MT5-executable, repair it before treating proxy output as evidence.
 - Missing converters, conversion adapters, export adapters, EA adapters, parser support, or runtime glue must trigger a minimal adapter/fallback build-and-test attempt when the missing piece is under repo/control. "No adapter exists" is never a sufficient blocker by itself.
 - If a conversion adapter does not exist, create the smallest explicit adapter or translation layer needed to test the hypothesis unless a narrow feasibility exception applies.
