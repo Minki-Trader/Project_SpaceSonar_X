@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: l4_strategy_tester_execution_completed_for_prepared_attempts
+status: l4_pair_judgment_completed_no_l5_candidates
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -100,6 +100,19 @@ current_truth:
       completed_l4_score_telemetry_observed: 24
     result_judgment_counts:
       runtime_probe: 24
+  l4_pair_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  l4_pair_judgment_status: l4_pair_judgment_completed_no_l5_candidates
+  l4_pair_judgment_counts:
+    cell_pair_count: 12
+    both_period_roles_observed_count: 12
+    tester_report_pair_observed_count: 0
+    standard_l4_incomplete_count: 12
+    l5_status_counts:
+      no_l5_diagnostic_score_probe_only: 5
+      no_l5_yet_requires_trading_or_sparse_decision_tester_adapter: 7
+    comparison_class_counts:
+      proxy_inconclusive_runtime_score_observed: 8
+      proxy_preserved_clue_runtime_score_observed: 4
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -200,47 +213,69 @@ stop_conditions:
 - runtime_period_profile_missing
 claim_boundary: l4_follow_through_required_no_runtime_authority_no_candidate
 branch_worktree:
-  current_branch: codex/active-goal-program-bootstrap
-  requested_branch: codex/active-goal-program-bootstrap
+  current_branch: codex/l4-pair-judgment-closeout
+  requested_branch: codex/l4-pair-judgment-closeout
   branch_worktree_fit: fit
   branch_action: keep_current_branch
   policy_reference: docs/policies/branch_policy.md
-  mismatch_claim_effect: block_l4_follow_through_until_resolved
+  mismatch_claim_effect: no_branch_mismatch_detected_for_l4_pair_judgment
 agent_allocation:
-  phase: wave0_first_batch_l4_follow_through
+  phase: wave0_l4_pair_judgment_closeout
   selected_agents: []
   role_modes: []
-  selection_reason: User clarified execution policy; Codex applies record correction
-    before runtime execution.
-  why_not_smaller: Codex alone is the smallest allocation for deterministic policy-record
-    sync.
-  why_not_larger: No formal Task Force protected claim is being made; actual L4 execution
-    can allocate agents in the next work item if needed.
+  selection_reason: Deterministic pair aggregation and claim-boundary closeout; no
+    protected claim or policy change required.
+  why_not_smaller: Codex alone is the smallest allocation for deterministic aggregation.
+  why_not_larger: No runtime authority, reviewed/pass, promotion, or cross-system
+    handoff claim is being made.
   max_threads_is_capacity_only: true
   claim_effect: no_new_advisory_claim
 execution_provenance:
-  git_sha: unknown_dirty_worktree_policy_sync
-  branch: codex/active-goal-program-bootstrap
-  dirty_flag: dirty
+  git_sha: 4e7fa073f1328405ccbcc50023c4537a9f402945
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
   changed_files:
-  - policy_and_record_sync_by_apply_proxy_l4_policy_clarification
+  - M docs/registers/artifact_registry.csv
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ?? foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_pair_judgment_v0_closeout.yaml
+  - ?? tests/test_wave0_l4_pair_judgments.py
   command_argv:
   - python
-  - foundation/pipelines/apply_proxy_l4_policy_clarification.py
+  - foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
+  - --write-control-records
   python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
   python_version: 3.13.9
   key_package_versions:
     python: 3.13.9
     yaml: 6.0.3
-  started_at_utc: '2026-06-21T17:10:54Z'
-  ended_at_utc: '2026-06-21T17:10:54Z'
+  started_at_utc: '2026-06-21T20:22:34Z'
+  ended_at_utc: '2026-06-21T20:22:34Z'
   input_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
-    sha256: 9481f5fd40cbd7876c280b58f4ac7e37fe007f8280603b210c91f35fdf9302a2
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
-    sha256: e368d3f13ec5ef4b775b03d6f7aab39d67134a4613400af171905c431b808004
-  output_hashes: []
-  unknown_git_claim_effect: planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_index.csv
+    sha256: a50982d3635bcfab7edd8056d706fb65677c52d33b5b856ac1a8bf80be711431
+    size_bytes: 17245
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+    sha256: 62072948b427e70c993990cdec4b11eb9caf50fbb16287d332e46214a6ebc9f8
+    size_bytes: 4305
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+    sha256: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
+    size_bytes: 9149
+    availability: present_hash_recorded
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_pair_judgment_v0_closeout.yaml
+    sha256: 2d352dd8429be014cfdf232cc8e420643e25919445e0b39e5c05c4d7e2172ae6
+    size_bytes: 1577
+    availability: present_hash_recorded
+  unknown_git_claim_effect: not_applicable_git_state_recorded_claim_still_lowered_no_runtime_authority
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -251,5 +286,9 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_material_if_relevant:
-- paired_L4_period_aggregation_pending
-next_action: aggregate paired validation/research_oos L4 telemetry and decide L5 routing
+- tester_reports_missing_for_all_pairs
+- trading_or_sparse_decision_EA_not_present
+- row_level_proxy_vs_MT5_score_alignment_not_performed
+- economics_metrics_not_available_from_non_trading_probe
+next_action: design decision/trading adapter for preserved clues or rotate; do not
+  open L5 from score telemetry alone

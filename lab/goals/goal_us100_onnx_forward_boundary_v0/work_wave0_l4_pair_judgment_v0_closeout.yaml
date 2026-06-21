@@ -1,0 +1,38 @@
+version: work_closeout_v1
+work_item_id: work_wave0_l4_pair_judgment_v0
+parent_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-21T20:22:34Z'
+result_judgment: runtime_probe
+status: l4_pair_judgment_completed_no_l5_candidates
+claim_boundary: l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+counts:
+  cell_pair_count: 12
+  both_period_roles_observed_count: 12
+  tester_report_pair_observed_count: 0
+  standard_l4_incomplete_count: 12
+  l5_status_counts:
+    no_l5_diagnostic_score_probe_only: 5
+    no_l5_yet_requires_trading_or_sparse_decision_tester_adapter: 7
+  comparison_class_counts:
+    proxy_inconclusive_runtime_score_observed: 8
+    proxy_preserved_clue_runtime_score_observed: 4
+missing_evidence:
+- tester_reports_missing_for_all_pairs
+- trading_or_sparse_decision_EA_not_present
+- row_level_proxy_vs_MT5_score_alignment_not_performed
+- economics_metrics_not_available_from_non_trading_probe
+next_action: design decision/trading adapter for preserved clues or rotate; do not
+  open L5 from score telemetry alone
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
