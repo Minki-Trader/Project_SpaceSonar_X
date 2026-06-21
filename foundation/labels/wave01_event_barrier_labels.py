@@ -86,6 +86,30 @@ def _causal_atr(frame: pd.DataFrame, window: int = 48) -> pd.Series:
     return true_range.rolling(window, min_periods=12).mean()
 
 
+def _barrier_distances(
+    frame: pd.DataFrame,
+    *,
+    barrier_unit: str,
+    upper_barrier: float,
+    lower_barrier: float,
+) -> tuple[pd.Series, pd.Series, pd.Series, str]:
+    atr = _causal_atr(frame)
+    if barrier_unit == "atr_multiplier":
+        base_distance = atr
+        source = "causal_atr_48"
+    elif barrier_unit == "price_range_ratio":
+        high = frame["high"].astype(float)
+        low = frame["low"].astype(float)
+        base_distance = (high - low).rolling(48, min_periods=12).mean()
+        source = "causal_rolling_high_low_range_48"
+    elif barrier_unit == "mfe_mae_ratio":
+        base_distance = atr
+        source = "causal_atr_48_for_mfe_mae_ratio_proxy"
+    else:
+        raise ValueError(f"unsupported Wave01 barrier_unit: {barrier_unit}")
+    return base_distance, base_distance * upper_barrier, base_distance * lower_barrier, source
+
+
 def same_role_horizon_mask(frame: pd.DataFrame, horizon_bars: int) -> pd.Series:
     if "primary_split_role" not in frame.columns:
         raise ValueError("missing primary_split_role for Wave01 label horizon boundary")
@@ -174,15 +198,16 @@ def build_wave01_labels(frame: pd.DataFrame, label_contract: dict[str, Any]) -> 
     barrier_unit = str(label_contract.get("barrier_unit", "atr_multiplier"))
     if horizon_bars <= 0 or timeout_bars <= 0:
         raise ValueError("Wave01 horizon_bars and timeout_bars must be positive")
-    if barrier_unit != "atr_multiplier":
-        raise ValueError(f"unsupported Wave01 barrier_unit: {barrier_unit}")
 
     close = frame["close"].astype(float)
     high = frame["high"].astype(float)
     low = frame["low"].astype(float)
-    atr = _causal_atr(frame)
-    upper_distance = atr * upper_barrier
-    lower_distance = atr * lower_barrier
+    base_distance, upper_distance, lower_distance, barrier_distance_source = _barrier_distances(
+        frame,
+        barrier_unit=barrier_unit,
+        upper_barrier=upper_barrier,
+        lower_barrier=lower_barrier,
+    )
     future_close = close.shift(-horizon_bars)
     future_return = future_close / close - 1.0
     future_high = _future_extreme(high, horizon_bars, "max")
@@ -200,7 +225,7 @@ def build_wave01_labels(frame: pd.DataFrame, label_contract: dict[str, Any]) -> 
         horizon_bars=horizon_bars,
     )
     path_quality = up_progress - down_progress.clip(lower=0.0) * 0.75
-    future_abs_return_atr = _safe_div(future_return.abs(), _safe_div(atr, close))
+    future_abs_return_atr = _safe_div(future_return.abs(), _safe_div(base_distance, close))
     same_role = same_role_horizon_mask(frame, horizon_bars)
 
     continuous, binary, boundary = _surface_targets(
@@ -218,11 +243,11 @@ def build_wave01_labels(frame: pd.DataFrame, label_contract: dict[str, Any]) -> 
     result = pd.DataFrame(index=frame.index)
     result["future_return"] = future_return
     result["future_abs_return"] = future_return.abs()
-    result["future_up_move_atr"] = _safe_div(up_move, atr)
-    result["future_down_move_atr"] = _safe_div(down_move, atr)
+    result["future_up_move_barrier_base"] = _safe_div(up_move, base_distance)
+    result["future_down_move_barrier_base"] = _safe_div(down_move, base_distance)
     result["upper_barrier_atr_multiple"] = upper_barrier
     result["lower_barrier_atr_multiple"] = lower_barrier
-    result["atr_distance"] = atr
+    result["barrier_base_distance"] = base_distance
     result["up_barrier_distance_price"] = upper_distance
     result["down_barrier_distance_price"] = lower_distance
     result["up_barrier_progress"] = up_progress
@@ -246,6 +271,7 @@ def build_wave01_labels(frame: pd.DataFrame, label_contract: dict[str, Any]) -> 
         "horizon_bars": horizon_bars,
         "timeout_bars": timeout_bars,
         "barrier_unit": barrier_unit,
+        "barrier_distance_source": barrier_distance_source,
         "upper_barrier": upper_barrier,
         "lower_barrier": lower_barrier,
         "target_columns": columns,

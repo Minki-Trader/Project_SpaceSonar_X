@@ -63,3 +63,24 @@ def test_wave01_label_contract_keeps_horizon_boundary_and_train_target() -> None
     assert target_name in {"target_binary_raw", "target_continuous_train_q60"}
     assert threshold is None or isinstance(threshold, float)
     assert target.notna().any()
+
+
+def test_wave01_label_supports_non_atr_barrier_units_from_specs() -> None:
+    frame = sample_frame()
+
+    for barrier_unit in ["price_range_ratio", "mfe_mae_ratio"]:
+        labels, schema = build_wave01_labels(
+            frame,
+            {
+                "label_surface": "mfe_mae_path_quality_ratio",
+                "horizon_bars": 6,
+                "timeout_bars": 6,
+                "barrier_unit": barrier_unit,
+                "upper_barrier": 1.0,
+                "lower_barrier": 1.0,
+            },
+        )
+
+        assert schema.label_surface == "mfe_mae_path_quality_ratio"
+        assert "barrier_base_distance" in labels.columns
+        assert labels["target_continuous"].notna().any()
