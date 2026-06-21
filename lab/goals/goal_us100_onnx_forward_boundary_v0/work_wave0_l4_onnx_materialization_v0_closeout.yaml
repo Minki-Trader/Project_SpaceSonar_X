@@ -1,0 +1,61 @@
+version: work_closeout_v1
+work_item_id: work_wave0_l4_onnx_materialization_v0
+parent_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: '2026-06-21T18:57:13Z'
+status: completed_exportable_onnx_bundle_preflight_l4_pending
+result_judgment: inconclusive
+claim_boundary: onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_index.csv
+summary_counts:
+  valid_proxy_runs_requiring_l4: 12
+  exportable_bundle_count: 10
+  blocked_export_adapter_count: 2
+  failed_materialization_count: 0
+  status_counts:
+    blocked_export_adapter_required: 2
+    onnx_exported_python_onnxruntime_parity_passed: 10
+  parity_status_counts:
+    not_run: 2
+    passed: 10
+  model_family_counts:
+    linear_or_ridge_rank_scout: 5
+    logistic_classification_scout: 5
+    onnx_realistic_tree_or_boosted_scout: 2
+claim_effect:
+  judgment_class: bundle_preflight
+  materialization_ready: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: Build the full-period MT5 Strategy Tester adapter for exported ONNX
+    bundles, then run L4 validation and research_oos; separately repair/probe boosted
+    tree export.
+next_work_item:
+  work_item_id: work_wave0_first_batch_l4_follow_through_v0
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  required_next_action: Build the full-period MT5 Strategy Tester adapter for exported
+    ONNX bundles, then run L4 validation and research_oos; separately repair/probe
+    boosted tree export.
+output_hashes:
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml
+  sha256: 6919fc99d3c011afac62127acb365885542be03062884a5ab2e8dc9ba233119e
+  size_bytes: 19522
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_index.csv
+  sha256: 2481985275c9d7168a49db1e26376485d97f956b16bf1463a58ab2b8aedae523
+  size_bytes: 7983
+  availability: present_hash_recorded
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

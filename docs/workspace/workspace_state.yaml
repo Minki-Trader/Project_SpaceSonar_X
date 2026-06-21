@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T18:45:57Z'
+updated_utc: '2026-06-21T18:57:13Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -182,6 +182,23 @@ current_claims:
       requires_onnx_export_after_retrain: 12
       requires_retrain_for_materialization: 12
       requires_strategy_tester_ea_or_runtime_adapter: 12
+  wave0_l4_onnx_materialization_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml
+  wave0_l4_onnx_materialization_status: completed_exportable_bundles_l4_still_pending
+  wave0_l4_onnx_materialization_counts:
+    valid_proxy_runs_requiring_l4: 12
+    exportable_bundle_count: 10
+    blocked_export_adapter_count: 2
+    failed_materialization_count: 0
+    status_counts:
+      blocked_export_adapter_required: 2
+      onnx_exported_python_onnxruntime_parity_passed: 10
+    parity_status_counts:
+      not_run: 2
+      passed: 10
+    model_family_counts:
+      linear_or_ridge_rank_scout: 5
+      logistic_classification_scout: 5
+      onnx_realistic_tree_or_boosted_scout: 2
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

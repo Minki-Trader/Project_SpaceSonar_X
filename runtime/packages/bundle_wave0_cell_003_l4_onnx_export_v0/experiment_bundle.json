@@ -1,0 +1,443 @@
+{
+  "version": "experiment_bundle_v3",
+  "bundle_id": "bundle_wave0_cell_003_l4_onnx_export_v0",
+  "run_id": "onnxlab_wave0_cell_003_surface_scout_v0",
+  "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
+  "campaign_id": "campaign_us100_task_surface_scout_v0",
+  "sweep_id": "sweep_wave0_broad_surface_scout_v0",
+  "source_of_truth": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/experiment_bundle.json",
+  "created_at_utc": "2026-06-21T18:56:58Z",
+  "status": "onnx_exported_python_onnxruntime_parity_passed",
+  "claim_boundary": "onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline",
+  "id_chain": {
+    "wave_id": "wave_us100_closedbar_surface_cartography_v0",
+    "campaign_id": "campaign_us100_task_surface_scout_v0",
+    "idea_id": "idea_us100_m5_blank_slate_surface_map_v0",
+    "hypothesis_id": "hyp_surface_diversity_before_model_search_v0",
+    "surface_id": "surface_us100_task_input_decision_rotation_v0",
+    "sweep_id": "sweep_wave0_broad_surface_scout_v0",
+    "artifact_ids": [
+      "artifact_dataset_wave0_us100_m5_row_membership_v0"
+    ],
+    "bundle_id": "bundle_wave0_cell_003_l4_onnx_export_v0",
+    "candidate_id": null
+  },
+  "dataset_id": "dataset_raw_us100_m5_wave0_export_20260621T152827Z",
+  "data_source": {
+    "base_frame": "US100_M5_closed_bar",
+    "row_key": "us100_bar_close_time",
+    "row_membership_manifest": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+    "row_membership_csv_sha256": "b458b765bab21f725ae7ae2368d953b7f35581b13b1debd3b35b2b33fef4938f",
+    "time_axis": {
+      "raw_time_basis": "MT5_PY_API_UNIX_SECONDS",
+      "raw_timezone_status": "UNRESOLVED_REQUIRES_MANUAL_BINDING",
+      "split_recipe_date_key": "mt5_date",
+      "split_recipe_timestamp_convention": "bar_open_timestamp",
+      "split_membership_date_binding": "date component of time_open_unix rendered from the MT5 Python API UNIX seconds field; used as the explicit split_set_v0 mt5_date binding for Wave0 research row membership",
+      "model_row_key": "us100_bar_close_time",
+      "model_row_key_derivation": "us100_bar_close_time_utc_rendered from time_close_unix",
+      "utc_semantics_claim": false,
+      "server_timezone_claim": false
+    },
+    "sample_scope": {
+      "train_rows_used_for_fit": 143797,
+      "validation_rows_available_for_L4": 53806,
+      "research_oos_a_rows_available_for_L4": 45545,
+      "locked_final_oos_b_rows_withheld": 38623
+    },
+    "split_boundary": "train_only_fit_validation_and_research_oos_reserved_for_L4_runtime_observation",
+    "locked_final_oos_b_use": "withheld_forbidden_by_default"
+  },
+  "feature_recipe_id": "feature_wave0_us100_closedbar_price_session_regime_v0",
+  "feature_schema_hash": "241557e649440a0b614525accb6b69aa2bcbda663d497e5e752fc60a6d42caab",
+  "feature_order_hash": "71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd",
+  "feature_schema_contract": {
+    "input_family": "multiscale_us100_m5_aggregates",
+    "feature_count": 43,
+    "feature_columns": [
+      "ret_1",
+      "ret_3",
+      "ret_6",
+      "hl_range_pct",
+      "body_pct",
+      "upper_wick_pct",
+      "lower_wick_pct",
+      "spread_scaled",
+      "tick_volume_log1p",
+      "rolling_ret_mean_12",
+      "rolling_ret_std_12",
+      "rolling_range_mean_12",
+      "rolling_spread_mean_12",
+      "ret_12",
+      "ret_mean_12",
+      "ret_std_12",
+      "range_mean_12",
+      "close_to_sma_12",
+      "tick_volume_z_12",
+      "ret_24",
+      "ret_mean_24",
+      "ret_std_24",
+      "range_mean_24",
+      "close_to_sma_24",
+      "tick_volume_z_24",
+      "ret_48",
+      "ret_mean_48",
+      "ret_std_48",
+      "range_mean_48",
+      "close_to_sma_48",
+      "tick_volume_z_48",
+      "ret_96",
+      "ret_mean_96",
+      "ret_std_96",
+      "range_mean_96",
+      "close_to_sma_96",
+      "tick_volume_z_96",
+      "ret_288",
+      "ret_mean_288",
+      "ret_std_288",
+      "range_mean_288",
+      "close_to_sma_288",
+      "tick_volume_z_288"
+    ],
+    "all_nan_train_columns_dropped": [],
+    "boundary": "right_aligned_closed_bar_multiscale_us100_only_current_and_past_bars"
+  },
+  "label_recipe_id": "label_wave0_surface_grid_v0",
+  "label_id": "future_return_rank_or_quantile_h12_target_continuous",
+  "label_schema_hash": "287be7292197691167405c83755609bd101d333a0047657686c8e6910f5d3882",
+  "target_and_label": {
+    "target_family": "future_return_rank_or_quantile",
+    "target_name": "target_continuous",
+    "target_threshold": null,
+    "target_threshold_fit_scope": "not_applicable",
+    "horizon_bars": 12,
+    "label_boundary": "future_return_over_declared_horizon_same_primary_role_rows_only"
+  },
+  "split_id": "split_set_v0",
+  "primary_split_id": "split_base_anchor_v0",
+  "task_surface_id": "surface_us100_task_input_decision_rotation_v0",
+  "task_surface": {
+    "task_type": "future_return_rank_or_quantile",
+    "target_or_label": "future_return_rank_or_quantile",
+    "direction_mapping": "declared_by_cell_decision_family_not_inherited",
+    "horizon_or_holding_policy": "12_bars_planned_label_horizon_not_fixed_holding_baseline",
+    "output_head": "declared_by_model_family_at_execution_no_legacy_output_head",
+    "decision_family": "diagnostic_rank_only",
+    "input_family": "multiscale_us100_m5_aggregates",
+    "threshold_policy": "none_diagnostic"
+  },
+  "decision_use": "diagnostic_rank_only",
+  "decision_recipe_id": "decision_wave0_abstain_density_scout_v0",
+  "decision_surface_id": "diagnostic_rank_only_none_diagnostic",
+  "decision_surface": {
+    "decision_family": "diagnostic_rank_only",
+    "threshold_policy": "none_diagnostic",
+    "score_low_threshold": null,
+    "score_high_threshold": null,
+    "diagnostic_only": true,
+    "runtime_translation_status": "pending_strategy_tester_adapter"
+  },
+  "model_family": "linear_or_ridge_rank_scout",
+  "model_framework": "sklearn_pipeline_skl2onnx",
+  "model_opset": 13,
+  "model_training": {
+    "fit_scope": "train_only",
+    "preprocessing_fit_scope": "train_only",
+    "calibration": "none",
+    "selection_metric": "none_selected_materialization_follows_existing_proxy_run",
+    "overfit_risk": "first_batch_multiple_surface_scout_no_selection_allowed",
+    "calibration_risk": "scores_are_model_scores_not_calibrated_probabilities"
+  },
+  "input_schema": {
+    "input_name": "features",
+    "dtype": "float32",
+    "shape": [
+      null,
+      43
+    ],
+    "feature_order_hash": "71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd",
+    "feature_columns": [
+      "ret_1",
+      "ret_3",
+      "ret_6",
+      "hl_range_pct",
+      "body_pct",
+      "upper_wick_pct",
+      "lower_wick_pct",
+      "spread_scaled",
+      "tick_volume_log1p",
+      "rolling_ret_mean_12",
+      "rolling_ret_std_12",
+      "rolling_range_mean_12",
+      "rolling_spread_mean_12",
+      "ret_12",
+      "ret_mean_12",
+      "ret_std_12",
+      "range_mean_12",
+      "close_to_sma_12",
+      "tick_volume_z_12",
+      "ret_24",
+      "ret_mean_24",
+      "ret_std_24",
+      "range_mean_24",
+      "close_to_sma_24",
+      "tick_volume_z_24",
+      "ret_48",
+      "ret_mean_48",
+      "ret_std_48",
+      "range_mean_48",
+      "close_to_sma_48",
+      "tick_volume_z_48",
+      "ret_96",
+      "ret_mean_96",
+      "ret_std_96",
+      "range_mean_96",
+      "close_to_sma_96",
+      "tick_volume_z_96",
+      "ret_288",
+      "ret_mean_288",
+      "ret_std_288",
+      "range_mean_288",
+      "close_to_sma_288",
+      "tick_volume_z_288"
+    ]
+  },
+  "output_schema": {
+    "task_kind": "regression",
+    "score_semantics": "regression_rank_score",
+    "onnx_outputs": [
+      "variable"
+    ],
+    "score_extraction": "variable.reshape(-1)",
+    "probability_calibration_claim": false
+  },
+  "onnx_path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/model.onnx",
+  "onnx_sha256": "234494fa0f1b1ea514781ee5a2753fafe20d39d7699fb65e04cb499797859cb2",
+  "onnx_size_bytes": 1316,
+  "parser_version": "spacesonar_wave0_l4_materializer_v1",
+  "runtime_contract_version": "mt5_runtime_probe_contract_v2",
+  "runtime_period_profile_id": "period_profile_split_set_v0",
+  "runtime_period_set_id": "split_base_anchor_v0_research_l4",
+  "tester_execution_profile_id": "us100_m5_fpmarkets_tester_execution_v0",
+  "python_onnxruntime_parity": {
+    "status": "passed",
+    "sample_scope": "first_validation_rows_after_train_only_fit",
+    "sample_rows": 512,
+    "max_abs_error": 6.713034120421754e-10,
+    "mean_abs_error": 9.9608785092543e-11,
+    "tolerance": 1e-05,
+    "fixture_input": {
+      "path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
+      "sha256": "82091ac7cd771eeb91b7106cfea66e32f40fe8360c1aa5bf127278d973d78593",
+      "size_bytes": 282306,
+      "availability": "local_artifact_hash_recorded"
+    },
+    "expected_score": {
+      "path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
+      "sha256": "ddb9d7a3c4b7b490fc0c9e0f79fe9d9e8319c1f1c74742eb82227567d2c2a7f4",
+      "size_bytes": 12278,
+      "availability": "local_artifact_hash_recorded"
+    },
+    "observed_score": {
+      "path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
+      "sha256": "915ebf26871c7fbb6c6bee9d451f2d51ba0d37b3fe2e0c96d5fe1e2ee1326dcf",
+      "size_bytes": 12272,
+      "availability": "local_artifact_hash_recorded"
+    }
+  },
+  "runtime_learning_probe_decision": {
+    "required": true,
+    "decision": "run_required",
+    "required_runtime_level": "L4_split_runtime_probe",
+    "reason": "Valid proxy/model-bearing run now has ONNX bundle preflight; Strategy Tester L4 remains required.",
+    "lowered_claim_if_not_run": "bundle_preflight_only_no_runtime_authority_no_economics_pass"
+  },
+  "proxy_runtime_parity": {
+    "status": "pending_L4_strategy_tester",
+    "shared_contract": [
+      "US100_M5_closed_bar_base_frame",
+      "us100_bar_close_time_row_key",
+      "feature_order_hash",
+      "train_only_fit_scope",
+      "split_base_anchor_v0_research_l4"
+    ],
+    "known_differences": [
+      "Python proxy and ONNXRuntime parity is not Strategy Tester execution",
+      "MT5 EA decision timing, costs, spread, lot rounding, and no-trade semantics still pending"
+    ],
+    "interpretation_drift_risks": [
+      "bar_close_timing",
+      "feature_reconstruction_in_EA",
+      "score_threshold_translation",
+      "diagnostic_surface_runtime_observation_mode"
+    ],
+    "minimum_reconciliation_attempt": {
+      "status": "pending_MT5_L4",
+      "forced_equality_required": false
+    },
+    "unit_semantics": {
+      "feature_input": "float32_feature_vector_in_declared_order",
+      "price_units": "pending_EA_strategy_adapter",
+      "point_tick_digits": "pending_EA_strategy_adapter",
+      "lot_rounding": "pending_EA_strategy_adapter"
+    },
+    "comparison_class": "pending_L4",
+    "divergence_judgment": "pending_L4",
+    "prevention_memory": [
+      "Do not treat ONNXRuntime parity as MT5 runtime parity.",
+      "Record feature reconstruction and threshold interpretation before reusing this surface."
+    ],
+    "follow_up_action": "work_wave0_first_batch_l4_follow_through_v0",
+    "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority"
+  },
+  "producer_command": "python foundation/pipelines/materialize_wave0_l4_onnx_bundles.py --write-control-records",
+  "environment_summary": {
+    "python": "3.13.9",
+    "numpy": "2.3.4",
+    "pandas": "2.3.3",
+    "sklearn": "1.8.0",
+    "onnx": "1.20.1",
+    "onnxruntime": "1.24.3",
+    "skl2onnx": "1.20.0",
+    "yaml": "6.0.3"
+  },
+  "provenance": {
+    "command_argv": [
+      "python",
+      "foundation/pipelines/materialize_wave0_l4_onnx_bundles.py",
+      "--write-control-records"
+    ],
+    "cwd": ".",
+    "python_executable": "${USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_version": "3.13.9",
+    "started_at_utc": "2026-06-21T18:56:51Z",
+    "ended_at_utc": "2026-06-21T18:56:58Z",
+    "input_hashes": [
+      {
+        "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+        "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+        "size_bytes": 4857,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv",
+        "sha256": "2d0d6dda63f0375c39338ccf6fbdbad813d0a329afa0542d58d0ad693bf68009",
+        "size_bytes": 3776,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_materialization_preflight.yaml",
+        "sha256": "06467e7b0ab85a2b86adde7f9723b4efeedb88b62fc906d2604c1e714ef96978",
+        "size_bytes": 22397,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifacts/feature_schema.json",
+        "sha256": "0551d2a4190c9659f22b93a3c82c78b66b8066ee9a1758ab037f1a99d744febf",
+        "size_bytes": 2513,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifacts/label_schema.json",
+        "sha256": "a9c5d957f1cada38b7e68171b5e11cbbcc0663a574fec73313367f44eced8442",
+        "size_bytes": 863,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifacts/model_summary.json",
+        "sha256": "815d87591c14cc1d1bb9a4be2a8f9bbcb7c1efb33102cc3582d1eaf797a19c07",
+        "size_bytes": 913,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifacts/split_profile.json",
+        "sha256": "b36a925339b29ed0296ba08685c359faaedf1f2cf292152f008aabdee57145de",
+        "size_bytes": 648,
+        "availability": "present_hash_recorded"
+      }
+    ],
+    "output_hashes": [
+      {
+        "path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/model.onnx",
+        "sha256": "234494fa0f1b1ea514781ee5a2753fafe20d39d7699fb65e04cb499797859cb2",
+        "size_bytes": 1316,
+        "availability": "local_artifact_hash_recorded"
+      },
+      {
+        "path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
+        "sha256": "82091ac7cd771eeb91b7106cfea66e32f40fe8360c1aa5bf127278d973d78593",
+        "size_bytes": 282306,
+        "availability": "local_artifact_hash_recorded"
+      },
+      {
+        "path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
+        "sha256": "ddb9d7a3c4b7b490fc0c9e0f79fe9d9e8319c1f1c74742eb82227567d2c2a7f4",
+        "size_bytes": 12278,
+        "availability": "local_artifact_hash_recorded"
+      },
+      {
+        "path": "runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
+        "sha256": "915ebf26871c7fbb6c6bee9d451f2d51ba0d37b3fe2e0c96d5fe1e2ee1326dcf",
+        "size_bytes": 12272,
+        "availability": "local_artifact_hash_recorded"
+      }
+    ],
+    "git_sha": "f3c1afcc029f531beb77d22a547c405de92e8b21",
+    "branch": "main",
+    "dirty_flag": true,
+    "changed_files": [
+      "M docs/registers/artifact_registry.csv",
+      " M docs/workspace/workspace_state.yaml",
+      " M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml",
+      " M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml",
+      " M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml",
+      "?? lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_index.csv",
+      "?? lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml",
+      "?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_onnx_materialization_v0_closeout.yaml",
+      "?? runtime/packages/bundle_wave0_cell_001_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_002_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_004_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_007_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_008_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_009_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_010_l4_onnx_export_v0/",
+      "?? runtime/packages/bundle_wave0_cell_011_l4_onnx_export_v0/"
+    ],
+    "unknown_git_claim_effect": "bundle_preflight_only_lower_reproducibility_claim"
+  },
+  "required_gate_coverage": {
+    "passed": [
+      "onnx_export_smoke",
+      "python_onnx_parity",
+      "feature_schema_contract",
+      "bundle_integrity_hash",
+      "mt5_runtime_probe_contract_audit",
+      "final_claim_guard"
+    ],
+    "missing": [
+      "L4_split_runtime_probe_for_valid_proxy_run",
+      "full_period_strategy_tester_adapter"
+    ],
+    "not_applicable": [
+      "locked_final_oos_b_access"
+    ]
+  },
+  "missing_evidence": [
+    "MT5_L4_split_runtime_probe_not_run",
+    "full_period_strategy_tester_adapter_pending",
+    "Strategy_Tester_report_pending"
+  ],
+  "next_action": "build_or_select_full_period_strategy_tester_adapter_then_execute_L4_validation_and_research_oos",
+  "forbidden_claims": [
+    "selected_baseline",
+    "runtime_authority",
+    "economics_pass",
+    "materialization_ready",
+    "handoff_complete",
+    "live_readiness",
+    "reviewed_verified_pass",
+    "goal_achieve"
+  ]
+}

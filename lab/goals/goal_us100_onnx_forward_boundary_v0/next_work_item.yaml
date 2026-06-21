@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: planned_next_l4_materialization_after_preflight
+status: planned_next_l4_strategy_tester_adapter_after_onnx_materialization
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -55,6 +55,23 @@ current_truth:
       requires_onnx_export_after_retrain: 12
       requires_retrain_for_materialization: 12
       requires_strategy_tester_ea_or_runtime_adapter: 12
+  onnx_materialization_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml
+  onnx_materialization_status: completed_exportable_bundles_l4_still_pending
+  onnx_materialization_counts:
+    valid_proxy_runs_requiring_l4: 12
+    exportable_bundle_count: 10
+    blocked_export_adapter_count: 2
+    failed_materialization_count: 0
+    status_counts:
+      blocked_export_adapter_required: 2
+      onnx_exported_python_onnxruntime_parity_passed: 10
+    parity_status_counts:
+      not_run: 2
+      passed: 10
+    model_family_counts:
+      linear_or_ridge_rank_scout: 5
+      logistic_classification_scout: 5
+      onnx_realistic_tree_or_boosted_scout: 2
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -206,8 +223,8 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_material_if_relevant:
-- fitted_model_artifacts_absent_for_current_proxy_runs
-- onnx_exports_absent_for_current_proxy_runs
 - full_period_strategy_tester_adapter_absent_for_current_proxy_runs
-next_action: retrain/export model-bearing runs into bundles, add a full-period Strategy
-  Tester decision adapter, then execute L4 validation and research_oos probes.
+- L4_validation_and_research_oos_reports_absent
+- hist_gradient_boosting_export_adapter_unproven_for_two_runs
+next_action: Build the full-period MT5 Strategy Tester adapter for exported ONNX bundles,
+  then run L4 validation and research_oos; separately repair/probe boosted tree export.
