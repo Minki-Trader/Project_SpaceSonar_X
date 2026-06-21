@@ -183,3 +183,30 @@ def test_active_validator_rejects_synthesis_next_wave_influence(tmp_path: Path) 
     errors = validate(repo)
 
     assert any("next_wave_influence must be forbidden" in error for error in errors)
+
+
+def test_active_validator_rejects_research_campaign_missing_exploration_coverage(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_path = repo / "lab" / "campaigns" / "campaign_us100_task_surface_scout_v0" / "campaign_manifest.yaml"
+    campaign = load_yaml(campaign_path)
+    campaign.pop("exploration_coverage", None)
+    write_yaml(campaign_path, campaign)
+
+    errors = validate(repo)
+
+    assert any("research campaign missing exploration_coverage" in error for error in errors)
+
+
+def test_active_validator_rejects_research_campaign_missing_model_axis(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_path = repo / "lab" / "campaigns" / "campaign_us100_task_surface_scout_v0" / "campaign_manifest.yaml"
+    campaign = load_yaml(campaign_path)
+    campaign["exploration_coverage"]["required_research_axes"] = [
+        "target_or_label_surface",
+        "feature_or_input_surface",
+    ]
+    write_yaml(campaign_path, campaign)
+
+    errors = validate(repo)
+
+    assert any("exploration_coverage missing research axes" in error and "model_or_training_surface" in error for error in errors)

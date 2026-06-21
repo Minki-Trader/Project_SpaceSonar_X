@@ -15,10 +15,32 @@ objective: Scout explicit US100 M5 task, target, label, decision, and holding su
 axis_tags:
 - task_surface
 - target_or_label_surface
+- feature_or_input_surface
+- model_or_training_surface
 - decision_use
+- evaluation_or_runtime_surface
 - horizon_or_holding_policy
 - us100_m5_closed_bar_only
 surface_policy: broad_and_extreme_first_no_micro_search_until_repeated_clue
+exploration_coverage:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  primary_unknown_axis: task_target_decision_holding_surface_map
+  required_research_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  companion_axes:
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  forbidden_research_shapes:
+  - feature_only_wave_or_campaign
+  - label_only_wave_or_campaign
+  - model_only_wave_or_campaign
+  - threshold_only_wave_or_campaign
+  - repair_only_wave_or_campaign
+  single_axis_exception_policy: not_applicable_research_campaign
+  novelty_claim: first_blank_slate_surface_cartography_across_target_input_decision_holding_and_model_scout_axes
 candidate_repair_policy:
   allowed_scope: bounded_run_or_sweep_only
   max_repeated_candidate_repairs_without_new_surface_clue: 1

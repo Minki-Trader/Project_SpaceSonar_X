@@ -117,13 +117,14 @@ fields:
       - mutation_policy
       - evidence_layers
       - reduction_policy
+      - exploration_coverage_check
       - repair_carryover_check
       - neighborhood_perturbation_scope
       - bounded_synthesis_scope
       - mix_depth_policy
       - next_wave_influence_check
       - claim_boundary
-    rule: "Repair carryover must not be relabeled as a fresh hypothesis without a recorded new surface, divergence, or prevention-memory question. Neighborhood perturbation must stay within meaningful adjacent variables. Bounded synthesis must be previous-material-only and cannot direct the next wave/campaign."
+    rule: "Research campaigns must not be feature-only, label-only, model-only, threshold-only, or repair-only programs. Repair carryover must not be relabeled as a fresh hypothesis without a recorded new surface, divergence, or prevention-memory question. Neighborhood perturbation must stay within meaningful adjacent variables. Bounded synthesis must be previous-material-only and cannot direct the next wave/campaign."
 
   verification_profile:
     required_fields:

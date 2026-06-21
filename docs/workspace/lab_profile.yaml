@@ -47,6 +47,23 @@ claim_default: exploration_only
 concept_start_state: blank_slate
 repair_carryover_policy: forbidden_without_recorded_new_surface_divergence_or_prevention_memory
 neighborhood_perturbation_policy: meaningful_adjacent_variables_only
+campaign_exploration_policy:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  forbidden_research_shapes:
+    - feature_only_wave_or_campaign
+    - label_only_wave_or_campaign
+    - model_only_wave_or_campaign
+    - threshold_only_wave_or_campaign
+    - repair_only_wave_or_campaign
+  required_research_axes:
+    - target_or_label_surface
+    - feature_or_input_surface
+    - model_or_training_surface
+  companion_axes:
+    - decision_surface
+    - horizon_or_holding_policy
+    - evaluation_or_runtime_surface
+  single_axis_exception_policy: control_fixture_plumbing_runtime_micro_probe_or_bug_repair_only_with_lowered_claim_boundary
 bounded_synthesis_policy:
   campaign_type: bounded_synthesis
   source_scope: previous_material_only

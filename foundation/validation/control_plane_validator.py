@@ -264,7 +264,28 @@ def validate_templates(repo_root: Path) -> list[str]:
         errors,
         label="campaign_manifest.template.yaml top-level",
         observed=set(campaign_template),
-        required={"campaign_type", "bounded_synthesis", "candidate_repair_policy", "proxy_runtime_parity"},
+        required={
+            "campaign_type",
+            "exploration_coverage",
+            "bounded_synthesis",
+            "candidate_repair_policy",
+            "proxy_runtime_parity",
+        },
+    )
+    coverage = campaign_template.get("exploration_coverage", {})
+    add_missing(
+        errors,
+        label="campaign_manifest.template.yaml exploration_coverage",
+        observed=set(coverage),
+        required={
+            "mode",
+            "primary_unknown_axis",
+            "required_research_axes",
+            "companion_axes",
+            "forbidden_research_shapes",
+            "single_axis_exception_policy",
+            "novelty_claim",
+        },
     )
     synthesis = campaign_template.get("bounded_synthesis", {})
     add_missing(

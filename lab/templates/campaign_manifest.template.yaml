@@ -8,6 +8,25 @@ hypothesis_ids: []
 objective: ""
 axis_tags: []
 surface_policy: broad_first
+exploration_coverage:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  primary_unknown_axis: null
+  required_research_axes:
+    - target_or_label_surface
+    - feature_or_input_surface
+    - model_or_training_surface
+  companion_axes:
+    - decision_surface
+    - horizon_or_holding_policy
+    - evaluation_or_runtime_surface
+  forbidden_research_shapes:
+    - feature_only_wave_or_campaign
+    - label_only_wave_or_campaign
+    - model_only_wave_or_campaign
+    - threshold_only_wave_or_campaign
+    - repair_only_wave_or_campaign
+  single_axis_exception_policy: control_fixture_plumbing_runtime_micro_probe_or_bug_repair_only_with_lowered_claim_boundary
+  novelty_claim: must_name_untried_or_underexplored_surface_before_opening
 bounded_synthesis:
   enabled: false
   source_scope: previous_material_only

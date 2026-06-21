@@ -23,6 +23,23 @@ CLAIM_BLOCKING_WORDS = {
     "live_readiness",
     "selected_baseline",
 }
+REQUIRED_RESEARCH_AXES = {
+    "target_or_label_surface",
+    "feature_or_input_surface",
+    "model_or_training_surface",
+}
+REQUIRED_COMPANION_AXES = {
+    "decision_surface",
+    "horizon_or_holding_policy",
+    "evaluation_or_runtime_surface",
+}
+FORBIDDEN_SINGLE_AXIS_RESEARCH_SHAPES = {
+    "feature_only_wave_or_campaign",
+    "label_only_wave_or_campaign",
+    "model_only_wave_or_campaign",
+    "threshold_only_wave_or_campaign",
+    "repair_only_wave_or_campaign",
+}
 HASH_REQUIRED_AVAILABILITY = {"committed_manifest", "present_hash_recorded"}
 FIXTURE_BOUNDARY = "fixed_fixture_parity_learning_only_no_runtime_authority"
 FIXTURE_GATE = "mt5_native_onnx_fixed_fixture_probe"
@@ -416,6 +433,48 @@ def validate_bounded_synthesis_campaigns(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_campaign_exploration_coverage(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    campaign_root = repo_root / "lab" / "campaigns"
+    if not campaign_root.exists():
+        return errors
+    for campaign_path in sorted(campaign_root.glob("*/campaign_manifest.yaml")):
+        campaign = load_yaml(campaign_path)
+        routing = campaign.get("skill_routing") or {}
+        if routing.get("primary_family") != "experiment_design":
+            continue
+        if campaign.get("campaign_type") == "bounded_synthesis":
+            continue
+
+        label = rel(campaign_path, repo_root)
+        coverage = campaign.get("exploration_coverage") or {}
+        if not coverage:
+            errors.append(f"{label}: research campaign missing exploration_coverage")
+            continue
+        if coverage.get("mode") != "unexplored_surface_discovery_not_single_axis_progression":
+            errors.append(f"{label}: exploration_coverage.mode must require unexplored multi-axis discovery")
+        if not coverage.get("primary_unknown_axis"):
+            errors.append(f"{label}: exploration_coverage.primary_unknown_axis is required")
+        if not coverage.get("novelty_claim"):
+            errors.append(f"{label}: exploration_coverage.novelty_claim is required")
+
+        research_axes = set(coverage.get("required_research_axes") or [])
+        missing_research_axes = sorted(REQUIRED_RESEARCH_AXES - research_axes)
+        if missing_research_axes:
+            errors.append(f"{label}: exploration_coverage missing research axes {missing_research_axes}")
+
+        companion_axes = set(coverage.get("companion_axes") or [])
+        missing_companion_axes = sorted(REQUIRED_COMPANION_AXES - companion_axes)
+        if missing_companion_axes:
+            errors.append(f"{label}: exploration_coverage missing companion axes {missing_companion_axes}")
+
+        forbidden_shapes = set(coverage.get("forbidden_research_shapes") or [])
+        missing_forbidden_shapes = sorted(FORBIDDEN_SINGLE_AXIS_RESEARCH_SHAPES - forbidden_shapes)
+        if missing_forbidden_shapes:
+            errors.append(f"{label}: exploration_coverage missing forbidden single-axis shapes {missing_forbidden_shapes}")
+    return errors
+
+
 def validate_active_manifests(repo_root: Path) -> list[str]:
     paths = [
         *sorted((repo_root / "lab" / "runs").glob("*/run_manifest.json")),
@@ -612,6 +671,7 @@ def validate(repo_root: Path) -> list[str]:
     errors.extend(validate_workspace_active_ids(repo_root))
     errors.extend(validate_wave_campaign_graph(repo_root))
     errors.extend(validate_run_campaign_chain(repo_root))
+    errors.extend(validate_campaign_exploration_coverage(repo_root))
     errors.extend(validate_bounded_synthesis_campaigns(repo_root))
     errors.extend(validate_run_registry(repo_root))
     errors.extend(validate_artifact_registry(repo_root))

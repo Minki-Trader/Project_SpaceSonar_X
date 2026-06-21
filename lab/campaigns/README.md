@@ -4,6 +4,8 @@ Campaigns group related sweeps without creating legacy inheritance.
 
 A campaign may define axis tags, budget, stop conditions, and output expectations.
 
+Research campaigns should open unexplored or underexplored surfaces. They must not become feature-only, label-only, model-only, threshold-only, or repair-only tracks. A campaign can emphasize one unknown, but it must record companion label/target, feature/input, model/training, decision, and evaluation/runtime axes.
+
 Campaigns are centrally stored here even when a wave funds them. Waves link to campaigns through `lab/waves/<wave_id>/campaign_refs.csv` and `wave_allocation.yaml`; campaign folders are not copied under waves.
 
 Preferred shape:

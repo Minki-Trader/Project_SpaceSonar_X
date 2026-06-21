@@ -84,6 +84,10 @@ Git integration cadence:
 - Prefer runnable experiments over advisory loops once a hypothesis and executable surface exist.
 - MT5 runtime probes are normal verification for runtime questions, not extraordinary spend.
 - Cost, heaviness, weak proxy results, low trade count, or imbalance are not standalone reasons to skip a narrow sufficient runtime probe.
+- Research campaigns should be unexplored-surface discovery, not progressive single-axis optimization.
+- A research campaign may emphasize one primary unknown, but it must keep companion axes visible: target/label, feature/input, model/training, decision, and horizon/holding/eval/runtime meaning.
+- Waves and research campaigns must not be feature-only, label-only, model-only, threshold-only, or repair-only programs.
+- Single-axis work is allowed only for control-plane, fixture, plumbing, parser, runtime micro-probe, or narrow bug-repair campaigns, and its claim boundary must say it is not research surface discovery.
 - Every valid proxy/model-bearing run must be driven to `L4_split_runtime_probe`; proxy-only closure is not an allowed endpoint.
 - If L4 still looks usable under the declared surface and execution profile, continue to `L5_candidate_runtime_evidence`.
 - A planned proxy surface must include an executable ONNX/EA/MT5 follow-through path. If it cannot be made executable, repair the surface before treating it as proxy evidence.
@@ -136,15 +140,16 @@ Example: if proxy ATR SL/TP uses `120/180` as point-like distances but MT5 inter
 Default research flow:
 
 1. Task-surface scout
-2. Input/target/decision definition
-3. Broad sweep
-4. Extreme sweep
-5. WFO or split-aware narrowing when a repeated clue exists
-6. ONNX export and parity preflight for every valid proxy/model-bearing surface
-7. Bundle materialization
-8. Proxy-vs-runtime parity and divergence record
-9. Mandatory L4 MT5 split runtime probe for every valid proxy/model-bearing surface
-10. L5 candidate runtime evidence when L4 remains promising
+2. Multi-axis surface coverage: label/target, feature/input, model/training, decision, horizon/holding, and eval/runtime meaning
+3. Input/target/decision definition
+4. Broad sweep
+5. Extreme sweep
+6. WFO or split-aware narrowing when a repeated clue exists
+7. ONNX export and parity preflight for every valid proxy/model-bearing surface
+8. Bundle materialization
+9. Proxy-vs-runtime parity and divergence record
+10. Mandatory L4 MT5 split runtime probe for every valid proxy/model-bearing surface
+11. L5 candidate runtime evidence when L4 remains promising
 
 Fine search starts only after broad/extreme sweeps show a repeated surface clue.
 

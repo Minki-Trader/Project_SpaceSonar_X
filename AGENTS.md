@@ -9,6 +9,7 @@ Purpose: minimal cold-start rules for an ID-based ONNX development lab. Internal
 - Primary instrument: `US100` `M5`.
 - Final north star, not an exploration gate: 5+ trades/day, PF about 1.5-3.0, <=10% DD across major windows.
 - Active split catalog: `configs/onnx_lab/split_recipes/split_set_v0.yaml`; research split set only, not baseline/pass/review.
+- Research campaigns are not progressive single-axis optimization tracks. They must explore untried or underexplored surfaces and keep label/target, feature/input, model/training, decision, and holding/eval meaning in view.
 
 ## Non-Inheritance
 
@@ -59,6 +60,7 @@ Every non-trivial work item chooses exactly one `primary_family` and one `primar
 - indexes only: `docs/registers/`
 
 Wave owns allocation and refs only. Campaign folders stay central under `lab/campaigns/`; do not duplicate them under waves.
+Waves and research campaigns must not be feature-only, label-only, model-only, threshold-only, or repair-only programs. A campaign can emphasize one primary unknown, but it must declare companion axes so the lab still learns how feature/input, label/target, model/training, decision, and evaluation/runtime meanings interact.
 Wave/campaign scope must not become a long repair room for one candidate. Small repair attempts are bounded run/sweep work; if a repair does not reveal a reusable surface clue, close it as negative, invalid, inconclusive, or preserved clue and rotate.
 Do not carry repair work into the next campaign or wave disguised as a new hypothesis. Carryover is allowed only when the prior record names a genuinely new surface, divergence, or prevention-memory question.
 Bounded synthesis campaign: campaign-level previous-material-only mixing. It may combine closed campaign clues, negative memory, and divergence records, but it cannot set or bias the next wave/campaign direction. Default depth is `mix-2 -> mix-3`; `mix-4` requires an explicit reason; `mix-5+` is forbidden unless the project policy is changed first.

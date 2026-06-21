@@ -7,6 +7,23 @@ created_at_utc: '2026-06-21T15:18:51Z'
 claim_boundary: planning_scaffold_scout_surface_only_not_candidate_not_baseline
 allocation_goal: Map US100 M5 closed-bar task, label, input, decision, and holding surfaces before feature-count,
   model-family, threshold, ONNX, or runtime optimization.
+exploration_coverage_policy:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  forbidden_wave_shapes:
+  - feature_only_wave
+  - label_only_wave
+  - model_only_wave
+  - threshold_only_wave
+  - repair_only_wave
+  required_axis_families:
+  - target_label_axes
+  - input_axes
+  - model_axes
+  companion_axis_families:
+  - decision_axes
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  claim_effect: wave_budget_allocates_multi_axis_discovery_not_single_axis_progression
 storage_contract:
   source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
   campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv

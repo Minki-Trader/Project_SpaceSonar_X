@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T18:20:00Z'
+updated_utc: '2026-06-21T18:27:01Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -85,6 +85,17 @@ current_claims:
   agent_allocation_policy: phase_driven_capacity_not_thread_count
   first_vertical_slice_entry: campaign_minimal_onnx_mt5_vertical_slice_v0
   concept_start_state: blank_slate
+  campaign_exploration_policy: unexplored_multi_axis_discovery_not_single_axis_progression
+  forbidden_research_campaign_shapes:
+  - feature_only_wave_or_campaign
+  - label_only_wave_or_campaign
+  - model_only_wave_or_campaign
+  - threshold_only_wave_or_campaign
+  - repair_only_wave_or_campaign
+  required_research_campaign_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
   symbol_universe: primary_us100_with_live_chart_auxiliary_allowed
   auxiliary_symbol_research: live_chart_verified_only
   auxiliary_symbol_features: contract_required_before_runtime
