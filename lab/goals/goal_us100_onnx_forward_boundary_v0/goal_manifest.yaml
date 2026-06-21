@@ -2,19 +2,30 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-21T17:10:54Z'
+updated_at_utc: '2026-06-21T18:33:56Z'
 claim_boundary: planning_scaffold_active_goal_control_plane
 objective_identity:
-  source_type: codex_goal_objective_attachment
-  content_hash_sha256: 06C9F62796413E14A7240EE29B98BA7FC6E47BBC876A886BC3FD2D31898A668F
-  source_path_local_context_only: C:/Users/awdse/.codex/attachments/f642ff4e-e28a-4379-9942-86e3e87eed69/goal-objective.md
-  summary: Develop a blank-slate FPMarkets US100 M5 ONNX research candidate until only explicit forward/demo/live-chart
-    market observation remains.
+  source_type: repo_goal_objective_revision
+  content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
+  source_path: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
+  summary: Build and stabilize long-running Codex operation for the ONNX lab, using
+    Wave01 closeout as the first bounded proof window.
+objective_revision:
+  revision_id: goal_objective_codex_operating_wave01_v1
+  source_of_truth: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
+  primary_objective: durable_codex_operation
+  proof_window: Wave01_closeout
+  proof_window_role: first_bounded_proof_window_not_final_purpose
+  internal_active_wave_id: wave_us100_closedbar_surface_cartography_v0
+  internal_existing_wave_label: wave0
+  wave_label_policy: user_facing_Wave01_maps_to_existing_active_first_wave_without_midstream_rename
+  recurring_failure_policy: weigh_recurrence_risk_impact_and_operating_importance_then_apply_smallest_sufficient_guard_unless_structure_is_needed
+  bureaucracy_guard: durable_structure_only_when_it_prevents_likely_recurrence_or_protects_evidence_drift_MT5_follow_through_or_long_session_reliability
 branch_worktree:
   policy_reference: docs/policies/branch_policy.md
-  branch_worktree_fit: mismatch_resolved
-  branch_action: create_codex_branch
-  current_branch: codex/active-goal-program-bootstrap
+  branch_worktree_fit: main_integrated
+  branch_action: keep_current_branch
+  current_branch: main
   bootstrap_base_commit: e6053875b8106a665cff347dac01918f1f3a28c6
   mismatch_claim_effect: Goal bootstrap is a planning/control-plane change only; no reproducible run,
     bundle, runtime, pass, readiness, or Goal Achieve claim.
@@ -48,7 +59,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave0_first_batch_l4_follow_through_next
+active_phase: wave01_operating_proof_window_l4_follow_through_next
 active_ids:
   idea_id: idea_us100_m5_blank_slate_surface_map_v0
   hypothesis_id: hyp_surface_diversity_before_model_search_v0
@@ -117,8 +128,8 @@ split_runtime_references:
 terminal_eligibility:
   contract_id: terminal_eligibility_contract_us100_forward_boundary_v0
   source_of_truth: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
-  status: preflight_contract_created_not_satisfied
-  claim_boundary: terminal_eligibility_contract_only_no_runtime_authority_no_economics_pass
+  status: retained_candidate_contract_not_current_goal_achieve_gate
+  claim_boundary: terminal_eligibility_contract_only_no_runtime_authority_no_economics_pass_no_goal_achieve
 north_star_reference:
   source: docs/workspace/lab_profile.yaml
   role: terminal_candidate_qualification_target_not_early_exploration_gate
@@ -131,7 +142,17 @@ north_star_reference:
     drawdown_pct_max_across_major_windows: 10
     concentration_risk_rule: avoid_short_period_profit_concentration
 program_budgets:
-  goal_budget: unbounded_until_terminal_or_non_complete_stop
+  goal_budget: unbounded_long_running_codex_operation_until_goal_achieve_or_user_stop
+  operating_stabilization:
+    primary_objective: durable_codex_operation
+    proof_window: Wave01_closeout
+    not_final_purpose: true
+    recurring_failure_fix_weighting:
+    - recurrence_risk
+    - impact
+    - operating_importance
+    preferred_guard: smallest_sufficient_durable_guard
+    stronger_guard_allowed_when: structurally_important_issue
   initial_wave:
     max_runs: 48
     initial_batch_size: 12
@@ -162,19 +183,28 @@ program_budgets:
     - clue_wave0_tradeability_mid_horizon_v0
     - clue_wave0_path_quality_h12_side_signal_v0
     proxy_to_runtime_policy: all_valid_proxy_runs_require_L4_split_runtime_probe
-terminal_state:
-  complete_state: terminal_research_candidate_forward_market_validation_required
+goal_achieve_state:
+  complete_state: codex_operating_system_stable_through_Wave01_closeout
   requires:
-  - immutable_terminal_candidate_id
-  - linked_bundle_id
-  - terminal_eligibility_contract_satisfied
-  - all_candidate_triggered_project_valid_offline_historical_parity_bundle_ea_mt5_tester_gates_completed
-  - no_required_gate_deferred_or_waived_because_forward_validation_remains
-  - no_repair_required_python_onnx_ea_mt5_mismatch
-  - no_unresolved_material_task_force_objection
-  - missing_evidence_limited_to_forward_demo_live_chart_market_observation
-  - forward_validation_observation_plan_and_logging_schema_prepared
-  - no_capital_execution_deployment_or_activation_authority
+  - coherent_wave_campaign_run_source_of_truth_manifests
+  - coherent_registry_indexes_without_using_registries_as_proof
+  - meaningful_runs_have_evidence_paths_claim_boundary_result_judgment_next_action
+  - research_campaigns_remain_multi_axis_unexplored_surface_oriented
+  - all_valid_proxy_model_bearing_runs_reach_L4_or_record_invalid_repair_reason
+  - L4_promising_results_have_L5_next_action
+  - parity_differences_recorded_as_prevention_memory
+  - negative_invalid_inconclusive_preserved_clue_outcomes_recorded_as_assets
+  - recurring_operational_or_system_failures_repaired_at_appropriate_weight
+  - validators_and_tests_useful_and_passing
+  - Wave01_closeout_handoff_records_clues_negative_memory_unresolved_risks_next_wave_candidates
+  does_not_require:
+  - live_readiness
+  - final_profitability
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - reviewed_pass_status
+  - production_deployment
 non_complete_stop_states:
 - stopped_no_viable_candidate
 - blocked_missing_local_evidence

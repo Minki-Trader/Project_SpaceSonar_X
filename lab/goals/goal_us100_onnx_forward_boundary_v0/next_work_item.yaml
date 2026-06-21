@@ -4,8 +4,24 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
 status: planned_next
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
-  valid Wave0 first-batch proxy/model-bearing run.
+  valid first proof-window proxy/model-bearing run while preserving Codex long-running
+  operating stability.
+operating_goal_context:
+  primary_objective: durable_codex_operation
+  proof_window: Wave01_closeout
+  proof_window_role: first_bounded_proof_window_not_final_purpose
+  internal_active_wave_id: wave_us100_closedbar_surface_cartography_v0
+  internal_existing_wave_label: wave0
+  wave_label_policy: user_facing_Wave01_maps_to_existing_active_first_wave_without_midstream_rename
+  recurring_failure_policy:
+    decision_basis:
+    - recurrence_risk
+    - impact
+    - operating_importance
+    preferred_guard: smallest_sufficient_durable_guard
+    stronger_guard_allowed_when: structurally_important_issue
 current_truth:
+  goal_objective_revision: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
   axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
   policy_clarification: lab/goals/goal_us100_onnx_forward_boundary_v0/user_clarification_proxy_l4_policy_v0.yaml
   source_run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
@@ -22,7 +38,7 @@ work_classification:
   - runtime_probe
   - model_training
   mutation_intent: materialize_runtime_follow_through_for_existing_proxy_runs
-  execution_intent: all_valid_proxy_runs_to_L4_then_L5_if_promising
+  execution_intent: all_valid_proxy_runs_to_L4_then_L5_if_promising_with_operating_stability_repairs_at_right_weight
 skill_routing:
   primary_family: runtime_probe
   primary_skill: spacesonar-runtime-parity
@@ -52,6 +68,8 @@ skill_routing:
   - result_judgment
   - final_claim_guard
 acceptance_criteria:
+- Preserve the active goal meaning: long-running Codex operating stability is primary;
+  Wave01 closeout is the proof window.
 - For each of the 12 Wave0 first-batch proxy runs, either produce L4 MT5 split-runtime
   evidence or record a repair/invalid reason before it can count as proxy evidence.
 - For each L4 follow-through attempt, record proxy_runtime_parity with shared contract,
@@ -69,6 +87,9 @@ acceptance_criteria:
 - If an L4 result remains promising, write the next work item toward L5_candidate_runtime_evidence.
 - Do not claim runtime authority, economics pass, selected baseline, live readiness,
   or Goal Achieve.
+- If recurring operational/system failure appears, classify it as operational or system,
+  weigh recurrence risk, impact, and operating importance, then add an appropriately
+  weighted guard without unnecessary bureaucracy.
 runtime_learning_probe_decision:
   required: true
   decision: run_required

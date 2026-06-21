@@ -278,6 +278,69 @@ def validate_workspace_active_ids(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_active_goal_records(repo_root: Path) -> list[str]:
+    state = load_yaml(repo_root / "docs" / "workspace" / "workspace_state.yaml")
+    claims = state.get("current_claims") or {}
+    goal_id = claims.get("active_goal_id")
+    goal_manifest_text = claims.get("active_goal_manifest")
+    if not goal_id or not goal_manifest_text:
+        return []
+
+    errors: list[str] = []
+    goal_manifest_path = repo_root / str(goal_manifest_text)
+    if not goal_manifest_path.exists():
+        return [f"workspace_state.yaml: active goal manifest missing {goal_manifest_text}"]
+    manifest = load_yaml(goal_manifest_path)
+    if manifest.get("active_goal_id") != goal_id:
+        errors.append(
+            f"workspace_state.yaml: active_goal_id {goal_id} does not match goal manifest {manifest.get('active_goal_id')}"
+        )
+
+    if claims.get("active_goal_phase") and manifest.get("active_phase") != claims.get("active_goal_phase"):
+        errors.append("workspace_state.yaml: active_goal_phase does not match goal_manifest active_phase")
+
+    revision = manifest.get("objective_revision") or {}
+    revision_path_text = claims.get("active_goal_objective_revision") or revision.get("source_of_truth")
+    if not revision_path_text:
+        errors.append(f"{rel(goal_manifest_path, repo_root)}: missing active goal objective revision path")
+    else:
+        revision_path = repo_root / str(revision_path_text)
+        if not revision_path.exists():
+            errors.append(f"{rel(goal_manifest_path, repo_root)}: missing objective revision {revision_path_text}")
+        else:
+            identity = manifest.get("objective_identity") or {}
+            expected_hash = str(identity.get("content_hash_sha256") or "").lower()
+            if expected_hash and expected_hash != sha256(revision_path):
+                errors.append(f"{rel(goal_manifest_path, repo_root)}: objective revision sha256 mismatch")
+            if identity.get("source_path") and identity.get("source_path") != str(revision_path_text):
+                errors.append(f"{rel(goal_manifest_path, repo_root)}: objective_identity.source_path mismatch")
+            if revision.get("source_of_truth") and revision.get("source_of_truth") != str(revision_path_text):
+                errors.append(f"{rel(goal_manifest_path, repo_root)}: objective_revision.source_of_truth mismatch")
+
+    for claim_key, revision_key in [
+        ("active_goal_primary_objective", "primary_objective"),
+        ("active_goal_proof_window", "proof_window"),
+    ]:
+        if claims.get(claim_key) and revision.get(revision_key) != claims.get(claim_key):
+            errors.append(f"workspace_state.yaml: {claim_key} does not match goal_manifest objective_revision")
+
+    registry_path = repo_root / "docs" / "registers" / "goal_registry.csv"
+    if registry_path.exists():
+        rows = [row for row in read_csv_rows(registry_path) if row.get("goal_id") == goal_id]
+        if not rows:
+            errors.append(f"goal_registry.csv: missing active goal row {goal_id}")
+        else:
+            row = rows[0]
+            if row.get("goal_path") != str(goal_manifest_text):
+                errors.append(f"goal_registry.csv {goal_id}: goal_path mismatch")
+            if row.get("active_phase") != manifest.get("active_phase"):
+                errors.append(f"goal_registry.csv {goal_id}: active_phase mismatch")
+            next_work_item = (manifest.get("next_work_item") or {}).get("work_item_id")
+            if next_work_item and row.get("next_work_item") != next_work_item:
+                errors.append(f"goal_registry.csv {goal_id}: next_work_item mismatch")
+    return errors
+
+
 def validate_wave_campaign_graph(repo_root: Path) -> list[str]:
     errors: list[str] = []
     wave_registry_path = repo_root / "docs" / "registers" / "wave_registry.csv"
@@ -669,6 +732,7 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
 def validate(repo_root: Path) -> list[str]:
     errors: list[str] = []
     errors.extend(validate_workspace_active_ids(repo_root))
+    errors.extend(validate_active_goal_records(repo_root))
     errors.extend(validate_wave_campaign_graph(repo_root))
     errors.extend(validate_run_campaign_chain(repo_root))
     errors.extend(validate_campaign_exploration_coverage(repo_root))

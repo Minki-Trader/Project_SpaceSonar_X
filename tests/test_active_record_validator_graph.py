@@ -210,3 +210,29 @@ def test_active_validator_rejects_research_campaign_missing_model_axis(tmp_path:
     errors = validate(repo)
 
     assert any("exploration_coverage missing research axes" in error and "model_or_training_surface" in error for error in errors)
+
+
+def test_active_validator_rejects_missing_goal_objective_revision(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    state_path = repo / "docs" / "workspace" / "workspace_state.yaml"
+    state = load_yaml(state_path)
+    state["current_claims"]["active_goal_objective_revision"] = (
+        "lab/goals/goal_us100_onnx_forward_boundary_v0/missing_goal_revision.yaml"
+    )
+    write_yaml(state_path, state)
+
+    errors = validate(repo)
+
+    assert any("missing objective revision" in error for error in errors)
+
+
+def test_active_validator_rejects_goal_objective_hash_mismatch(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    goal_path = repo / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml"
+    goal = load_yaml(goal_path)
+    goal["objective_identity"]["content_hash_sha256"] = "0" * 64
+    write_yaml(goal_path, goal)
+
+    errors = validate(repo)
+
+    assert any("objective revision sha256 mismatch" in error for error in errors)

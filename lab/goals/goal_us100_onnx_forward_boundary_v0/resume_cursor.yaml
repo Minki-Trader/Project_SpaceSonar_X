@@ -1,10 +1,11 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-21T17:25:41Z'
+updated_at_utc: '2026-06-21T18:33:56Z'
 cursor_state: active
-active_phase: wave0_first_batch_l4_follow_through_next
+active_phase: wave01_operating_proof_window_l4_follow_through_next
 current_truth_sources:
 - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
 - lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_first_batch_axis_review_v0_closeout.yaml
 - lab/memory/clues/clue_wave0_tradeability_mid_horizon_v0.yaml
@@ -31,6 +32,14 @@ latest_completed_work:
 next_work_item:
   work_item_id: work_wave0_first_batch_l4_follow_through_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+operating_goal_context:
+  primary_objective: durable_codex_operation
+  proof_window: Wave01_closeout
+  internal_active_wave_id: wave_us100_closedbar_surface_cartography_v0
+  internal_existing_wave_label: wave0
+  wave_label_policy: user_facing_Wave01_maps_to_existing_active_first_wave_without_midstream_rename
+  recurrence_fix_policy: weigh_recurrence_risk_impact_and_operating_importance_before_selecting_guard_weight
+  claim_boundary: active_goal_control_plane_only_not_goal_achieve
 pause_policy:
   session_or_token_or_tool_limit: pause_only_not_terminal
   before_pause_required:

@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T18:27:01Z'
+updated_utc: '2026-06-21T18:33:56Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -44,12 +44,18 @@ current_claims:
   active_goal_id: goal_us100_onnx_forward_boundary_v0
   active_goal_status: active_long_running
   active_goal_manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+  active_goal_objective_revision: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
   active_goal_terminal_contract: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
   active_goal_resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
   active_goal_next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
   active_goal_claim_boundary: planning_scaffold_active_goal_control_plane_not_goal_achieve
-  active_goal_terminal_state: terminal_research_candidate_forward_market_validation_required
-  active_goal_terminal_contract_status: preflight_contract_created_not_satisfied
+  active_goal_primary_objective: durable_codex_operation
+  active_goal_proof_window: Wave01_closeout
+  active_goal_proof_window_role: first_bounded_proof_window_not_final_purpose
+  active_goal_internal_wave_label: wave0
+  active_goal_wave_label_policy: user_facing_Wave01_maps_to_existing_active_first_wave_without_midstream_rename
+  active_goal_terminal_state: codex_operating_system_stable_through_Wave01_closeout
+  active_goal_terminal_contract_status: retained_candidate_contract_not_current_goal_achieve_gate
   active_wave_id: wave_us100_closedbar_surface_cartography_v0
   active_campaign_id: campaign_us100_task_surface_scout_v0
   wave_campaign_storage_policy: wave_allocates_central_campaigns_by_reference
@@ -57,7 +63,7 @@ current_claims:
   active_hypothesis_id: hyp_surface_diversity_before_model_search_v0
   active_surface_id: surface_us100_task_input_decision_rotation_v0
   active_sweep_id: sweep_wave0_broad_surface_scout_v0
-  active_goal_phase: wave0_first_batch_l4_follow_through_next
+  active_goal_phase: wave01_operating_proof_window_l4_follow_through_next
   next_work_item_id: work_wave0_first_batch_l4_follow_through_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
@@ -83,6 +89,8 @@ current_claims:
   routing_preflight: scaffold_with_local_validator
   routing_smoke_eval: prompt_fixture_defined_not_behavior_benchmark
   agent_allocation_policy: phase_driven_capacity_not_thread_count
+  recurring_failure_fix_policy: weigh_recurrence_risk_impact_and_operating_importance_then_apply_appropriate_weight_guard
+  bureaucracy_guard: add_durable_structure_only_for_likely_recurrence_evidence_quality_drift_MT5_follow_through_or_long_session_reliability
   first_vertical_slice_entry: campaign_minimal_onnx_mt5_vertical_slice_v0
   concept_start_state: blank_slate
   campaign_exploration_policy: unexplored_multi_axis_discovery_not_single_axis_progression
