@@ -1,0 +1,176 @@
+version: wave01_event_barrier_l4_pair_judgment_summary_v1
+summary_id: wave01_event_barrier_l4_pair_judgment_summary_v0
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_pair_judgment_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0
+created_at_utc: '2026-06-21T23:15:21Z'
+ended_at_utc: '2026-06-21T23:15:21Z'
+status: wave01_event_barrier_l4_pair_judgment_completed_no_l5_candidates
+claim_boundary: wave01_event_barrier_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+counts:
+  cell_pair_count: 12
+  both_period_roles_observed_count: 12
+  nonempty_telemetry_pair_count: 12
+  tester_report_pair_observed_count: 0
+  standard_l4_incomplete_count: 12
+  decision_unknown_pair_count: 12
+  proxy_judgment_counts:
+    inconclusive: 4
+    preserved_clue: 8
+  l5_status_counts:
+    no_l5_score_probe_only: 4
+    no_l5_yet_preserved_clue_requires_decision_execution_adapter: 8
+  comparison_class_counts:
+    proxy_inconclusive_runtime_score_observed: 4
+    proxy_preserved_clue_runtime_score_observed: 8
+judgment:
+  result_subject: Wave01 event/barrier first-batch L4 score telemetry pair aggregation
+  judgment_label: runtime_probe
+  metric_identity: paired validation/research_oos MT5 score telemetry summaries; no
+    trading report/economics metric
+  comparison_baseline: source proxy validation judgment plus MT5 score-observation
+    presence
+  claim_boundary: wave01_event_barrier_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+  missing_evidence:
+  - tester_reports_missing_for_all_pairs
+  - decision_execution_adapter_not_yet_applied_to_preserved_clues
+  - row_level_proxy_vs_MT5_score_alignment_not_performed
+  - economics_metrics_not_available_from_non_trading_score_probe
+  next_action: prepare bounded Wave01 decision/trading execution adapter for preserved
+    clues before any L5 candidate claim
+runtime_contract_effect:
+  l4_score_observation: observed_nonempty_for_all_pairs
+  standard_l4_completion: not_claimed_tester_reports_missing
+  l5_continuation: not_opened_until_decision_execution_adapter_observed
+  locked_final_oos_b: not_used
+prevention_memory:
+- empty score telemetry must not count as completed L4 telemetry
+- Wave01 EA adapter must include every declared feature column before L4 rerun
+- score telemetry observation is useful runtime evidence but is not Strategy Tester
+  economics evidence
+- unknown score-probe decision mapping keeps preserved clues below L5 candidate status
+artifact_outputs:
+  pair_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  pair_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  runtime_execution_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/aggregate_wave01_event_barrier_l4_pair_judgments.py
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: db178cb64ad7a91d89d7868cd9fde2e6a3a840e2
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M AGENTS.md
+  - ' M docs/agent_control/codex_operating_format.yaml'
+  - ' M docs/agent_control/self_correction_policy.yaml'
+  - ' M docs/agent_control/work_family_registry.yaml'
+  - ' M docs/policies/onnx_lab_operating_policy.md'
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/workspace/lab_profile.yaml'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ' M lab/templates/experiment_receipt.template.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/attempt_manifest.yaml'
+  - ?? foundation/pipelines/aggregate_wave01_event_barrier_l4_pair_judgments.py
+  - ?? foundation/pipelines/run_wave01_event_barrier_l4_mt5_attempts.py
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_mt5_runtime_execution_v0_closeout.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/score_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/terminal_run_summary.yaml
+  - ?? tests/test_wave01_event_barrier_l4_mt5_runner.py
+  started_at_utc: '2026-06-21T23:15:21Z'
+  ended_at_utc: '2026-06-21T23:15:21Z'
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

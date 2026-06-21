@@ -104,6 +104,17 @@ Git integration cadence:
 - Parity is not forced equality. When proxy and MT5 disagree, make at least one explicit reconciliation attempt, then either repair the contract or record the accepted difference with a prevention rule.
 - Failed hypotheses become `negative_memory`, `invalid_setup`, `blocked_retry`, or `inconclusive` records with salvage value and reopen conditions.
 
+## Attempt Before Disposition
+
+This is a global operating rule, not only a runtime rule.
+
+- A failed, unsupported, missing, or nonworking path starts as `investigation_in_progress`.
+- Before `blocked`, `deferred`, `invalid`, or `discarded`, Codex must identify the failure reason, reproduce or bound the failing layer, try the smallest repo-controlled repair/adapter/fallback, and record the evidence.
+- "Cannot", "unsupported", "not available", missing helper, missing adapter, missing parser, missing runner, missing converter, missing EA glue, or agent consensus is diagnosis only.
+- When the missing layer is repo-controlled, the next action is to create or patch the smallest concrete translation/support layer needed to test the hypothesis.
+- The repair attempt may be skipped only for user secrets, unavailable external state, destructive or unsafe action, or project-policy violation. The exception must be recorded as the attempt blocker with evidence and reopen condition.
+- Discarding or deferring is valid only when the repair/fallback attempt or narrow blocker proves that continuing would require a new surface question, external state, unsafe action, or user decision.
+
 ## Bounded Synthesis Campaign
 
 A bounded synthesis campaign is the current-lab equivalent of a previous-material mixing sandbox. Do not use legacy stage language in active records.

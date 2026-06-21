@@ -100,6 +100,15 @@ Non-trivial run records must include:
 
 Unknown git/env identity is planning scaffold only; it lowers reproducible-run, bundle, runtime, handoff, pass, readiness, and Goal Achieve claims.
 
+## Attempt Before Disposition
+
+- This rule is global: it applies to code, data, feature, label, model, ONNX, EA, MT5, parser, validator, routing, artifact, and policy-support failures.
+- A nonworking result is `investigation_in_progress` until Codex has identified why it failed, reproduced or bounded the failing layer, and attempted the smallest repo-controlled repair, adapter, fixture, parser, command, compile, runtime probe, or fallback that can test the hypothesis.
+- Diagnosis text, agent advice, "unsupported", "not available", "cannot", or "no helper/adapter exists" is not enough to block, defer, invalidate, or discard.
+- If missing support is inside repo control, create or patch the smallest explicit support layer needed to test the hypothesis before lowering the claim.
+- Only narrow exceptions can stop the repair attempt: user secrets, unavailable external state, destructive or unsafe action, or project-policy violation. Record the exception, evidence path, remaining blocker, and reopen condition.
+- Only after the failed layer, attempted repair/fallback or narrow blocker, evidence path, remaining blocker, and reopen condition are recorded may a work item become `blocked`, `deferred`, `invalid`, or `discarded`.
+
 ## Runtime And Parity
 
 - Every valid proxy/model-bearing experiment must be designed for ONNX/EA/MT5 follow-through.

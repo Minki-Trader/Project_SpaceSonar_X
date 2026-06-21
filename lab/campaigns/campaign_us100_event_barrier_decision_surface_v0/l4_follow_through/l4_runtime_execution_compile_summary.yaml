@@ -1,0 +1,45 @@
+version: wave01_event_barrier_l4_runtime_execution_compile_summary_v1
+summary_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
+created_at_utc: '2026-06-21T22:57:58Z'
+ea_source:
+  path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  sha256: 6015eba74ed746755d8f6c939428ed898bf1ba708fa9584df3e6d78b86e9b260
+  size_bytes: 19975
+  availability: present_hash_recorded
+ea_binary:
+  path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+  sha256: 3ff73f625b09501ab8b07dd116c44afac4f8e329af3f5d859e9670c2e7248e92
+  size_bytes: 30656
+  availability: local_binary_hash_recorded_ignored_by_git
+compile_attempted: true
+compile_process:
+  command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\MetaEditor64.exe
+  - /portable
+  - /compile:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  - /log:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\lab\campaigns\campaign_us100_event_barrier_decision_surface_v0\l4_follow_through\l4_runtime_execution_compile.log
+  cwd: .
+  started_at_utc: '2026-06-21T22:57:59.428572Z'
+  ended_at_utc: '2026-06-21T22:58:02.070536Z'
+  exit_code: 1
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+compile_log:
+  path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_compile.log
+  exists: true
+  sha256: e897b8ec7f5eb04798d6bc5eb750c1144cda62d18fe36bcfce0c96e0cba10c1b
+  size_bytes: 3462
+  compile_errors: 0
+  compile_warnings: 0
+status: ea_compiled_for_runtime_execution
+claim_boundary: ea_compile_or_binary_preflight_only_not_strategy_tester_output
+compile_success_derived_from_log_and_binary: true
+summary_id: wave01_event_barrier_l4_runtime_execution_compile_summary_v0
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_mt5_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0

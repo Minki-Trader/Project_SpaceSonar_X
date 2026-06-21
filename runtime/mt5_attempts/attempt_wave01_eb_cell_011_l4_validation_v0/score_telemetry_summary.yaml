@@ -1,0 +1,42 @@
+version: wave01_event_barrier_l4_score_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/score_telemetry_summary.yaml
+attempt_id: attempt_wave01_eb_cell_011_l4_validation_v0
+run_id: onnxlab_wave01_eb_cell_011_event_barrier_surface_v0
+bundle_id: bundle_wave01_eb_cell_011_l4_onnx_export_v0
+period_role: validation
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/telemetry/score_telemetry.csv
+  sha256: 7cd5d482e95131375919356aa6a7a0443b125f212b05cdcb2cf2f779a79e98b2
+  size_bytes: 7464330
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave01_eb_cell_011_l4_validation_v0\score_telemetry.csv
+stats:
+  status: telemetry_observed
+  row_count: 53554
+  first_bar_close_time: 2024.06.05 00:00:00
+  last_bar_close_time: 2025.03.07 23:50:00
+  symbol_counts:
+    US100: 53554
+  period_counts:
+    PERIOD_M5: 53554
+  feature_count_values:
+    '17': 53554
+  decision_counts:
+    unknown: 53554
+  score_stats:
+    finite_count: 53554
+    min: 0.0424275994
+    max: 1.0
+    mean: 0.9496690129018412
+  spread_points_stats:
+    finite_count: 53554
+    min: 0.0
+    max: 140.0
+    mean: 130.46745341150987
+  tick_volume_nonzero_count: 53554
+claim_boundary: wave01_event_barrier_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_mt5_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0

@@ -124,6 +124,12 @@ failure_disposition:
     - invalid
     - discarded
   status: not_applicable
+  attempt_before_disposition:
+    required: true
+    policy_reference: docs/agent_control/self_correction_policy.yaml
+    scope: global_all_repo_controlled_failures
+    not_yet_attempted_claim_effect: investigation_in_progress_no_blocked_deferred_invalid_or_discarded
+    missing_repo_controlled_support_action: build_or_patch_smallest_adapter_or_fallback
   diagnosis_state_only_tokens:
     - cannot
     - unsupported

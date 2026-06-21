@@ -1,0 +1,79 @@
+command_argv_redacted:
+- ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+- /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_008_l4_validation_v0\tester_config.ini
+cwd: .
+started_at_utc: '2026-06-21T23:04:51.475544Z'
+ended_at_utc: '2026-06-21T23:05:11.643058Z'
+exit_code: 0
+timed_out: false
+stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stdout_tail: ''
+stderr_tail: ''
+mode: main_mode_config_fallback
+attempt_claim_boundary: local_l4_main_mode_fallback_only_no_runtime_authority
+telemetry_exists_after_attempt: true
+terminal_attempts:
+- command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_008_l4_validation_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-21T23:04:46.124104Z'
+  ended_at_utc: '2026-06-21T23:04:51.474291Z'
+  exit_code: 3294954941
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  telemetry_exists_after_attempt: false
+- command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_008_l4_validation_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-21T23:04:51.475544Z'
+  ended_at_utc: '2026-06-21T23:05:11.643058Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: main_mode_config_fallback
+  attempt_claim_boundary: local_l4_main_mode_fallback_only_no_runtime_authority
+  telemetry_exists_after_attempt: true
+terminal_cleanup_actions: []
+terminal_cleanup_policy:
+  default_terminate_existing: false
+  explicit_termination_requested: false
+  allowed_scope: explicit_user_requested_only
+  formal_runtime_claim_effect: no_global_cleanup_used
+terminal_mode_policy:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  main_mode_fallback_allowed: true
+  main_mode_fallback_used: true
+  fallback_reason: portable_attempt_did_not_produce_l4_score_telemetry
+  claim_effect: l4_local_main_mode_fallback_observation_only_no_standard_portable_completion_claim
+selected_attempt_index: 1
+telemetry_observed: true
+version: wave01_event_barrier_l4_terminal_run_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/terminal_run_summary.yaml
+attempt_id: attempt_wave01_eb_cell_008_l4_validation_v0
+run_id: onnxlab_wave01_eb_cell_008_event_barrier_surface_v0
+bundle_id: bundle_wave01_eb_cell_008_l4_onnx_export_v0
+tester_config:
+  path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/tester_config.ini
+  sha256: c81e24e845da50dca0477a253501276e4565a38dafe4768a6772faaf6f227a94
+  size_bytes: 1448
+  availability: present_hash_recorded
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave01_eb_cell_008_l4_validation_v0\score_telemetry.csv
+claim_boundary: terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_mt5_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0

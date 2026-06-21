@@ -3,7 +3,7 @@
 //| Non-trading EA: full-period feature -> ONNX score -> decision log.|
 //+------------------------------------------------------------------+
 #property strict
-#property version   "1.00"
+#property version   "1.01"
 #property description "Non-trading full-period ONNX score probe for SpaceSonar X L4."
 
 input string InpOnnxPath       = "SpaceSonar\\l4_score_probe\\bundle\\model.onnx";
@@ -59,6 +59,15 @@ double RangePctAt(const MqlRates &rates[], const int index)
    return SafeDiv(rates[index].high - rates[index].low, rates[index].close);
 }
 
+double TrueRangeAt(const MqlRates &rates[], const int index)
+{
+   const double previous_close = (index > 0 ? rates[index - 1].close : rates[index].close);
+   const double range_high_low = rates[index].high - rates[index].low;
+   const double range_high_close = MathAbs(rates[index].high - previous_close);
+   const double range_low_close = MathAbs(rates[index].low - previous_close);
+   return MathMax(range_high_low, MathMax(range_high_close, range_low_close));
+}
+
 bool MeanClose(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean)
 {
    double sum = 0.0;
@@ -81,6 +90,21 @@ bool MeanRange(const MqlRates &rates[], const int index, const int window, const
    for(int i = MathMax(0, index - window + 1); i <= index; i++)
    {
       sum += RangePctAt(rates, i);
+      count++;
+   }
+   if(count < min_count)
+      return false;
+   mean = sum / (double)count;
+   return true;
+}
+
+bool MeanTrueRange(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean)
+{
+   double sum = 0.0;
+   int count = 0;
+   for(int i = MathMax(0, index - window + 1); i <= index; i++)
+   {
+      sum += TrueRangeAt(rates, i);
       count++;
    }
    if(count < min_count)
@@ -238,6 +262,7 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
    double std_value = 0.0;
 
    if(column == "ret_1") { value = RetAt(rates, index, 1); return true; }
+   if(column == "ret_2") { value = RetAt(rates, index, 2); return true; }
    if(column == "ret_3") { value = RetAt(rates, index, 3); return true; }
    if(column == "ret_6") { value = RetAt(rates, index, 6); return true; }
    if(column == "hl_range_pct") { value = RangePctAt(rates, index); return true; }
@@ -250,6 +275,23 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
    if(column == "lower_wick_pct")
    {
       value = SafeDiv(MathMin(rates[index].open, rates[index].close) - rates[index].low, rates[index].close);
+      return true;
+   }
+   if(column == "true_range_pct")
+   {
+      value = SafeDiv(TrueRangeAt(rates, index), rates[index].close);
+      return true;
+   }
+   if(column == "atr_12_pct")
+   {
+      if(!MeanTrueRange(rates, index, 12, 6, mean)) return false;
+      value = SafeDiv(mean, rates[index].close);
+      return true;
+   }
+   if(column == "atr_48_pct")
+   {
+      if(!MeanTrueRange(rates, index, 48, 12, mean)) return false;
+      value = SafeDiv(mean, rates[index].close);
       return true;
    }
    if(column == "spread_scaled") { value = ((double)rates[index].spread) / 1000.0; return true; }
@@ -276,6 +318,12 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
    {
       if(!MeanSpreadScaled(rates, index, 12, 6, mean)) return false;
       value = mean;
+      return true;
+   }
+   if(column == "body_to_range")
+   {
+      const double body_pct = SafeDiv(rates[index].close - rates[index].open, rates[index].open);
+      value = SafeDiv(MathAbs(body_pct), MathAbs(RangePctAt(rates, index)));
       return true;
    }
    if(ParseWindowSuffix(column, "ret_", window))
