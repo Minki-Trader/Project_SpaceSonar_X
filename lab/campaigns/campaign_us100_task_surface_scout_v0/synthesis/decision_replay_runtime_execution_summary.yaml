@@ -1,0 +1,155 @@
+version: decision_replay_runtime_execution_summary_v1
+summary_id: wave0_l4_decision_replay_runtime_execution_summary_v0
+work_item_id: work_wave0_first_batch_l4_follow_through_v0
+subwork_item_id: work_wave0_l4_decision_replay_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: '2026-06-21T21:04:47Z'
+ended_at_utc: '2026-06-21T21:04:47Z'
+status: decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+claim_boundary: score_replay_decision_runtime_progress_only_no_runtime_authority_no_economics_pass_no_candidate
+runtime_contract_binding:
+  runtime_level: score_replay_decision_probe_not_standard_l4_completion
+  source_l4_score_probe: prior MT5 score telemetry from validation/research_oos period
+    roles
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  locked_final_oos_b: excluded_forbidden_by_default
+counts:
+  prepared_attempt_count: 6
+  selected_attempt_count: 0
+  indexed_execution_count: 6
+  executed_attempt_count: 6
+  completed_manifest_count: 6
+  source_score_telemetry_observed_count: 6
+  execution_telemetry_observed_count: 6
+  execution_telemetry_missing_count: 0
+  tester_report_observed_count: 0
+  tester_report_missing_count: 6
+  tester_log_observed_count: 6
+  open_action_count: 39598
+  close_action_count: 11727
+  open_failed_count: 0
+  period_role_counts:
+    research_oos: 3
+    validation: 3
+  direction_policy_counts:
+    momentum_ret_1: 6
+  status_counts:
+    completed_decision_replay_execution_telemetry_observed: 6
+  result_judgment_counts:
+    runtime_probe: 6
+compile_summary:
+  path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_compile_summary.yaml
+  status: ea_binary_available
+  compile_attempted: false
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+    sha256: a2d4266dbc94ce2df1aa266be16d139726972e8a9c5fac5198a41503dabf1e3a
+    size_bytes: 39860
+    availability: local_binary_hash_recorded_ignored_by_git
+artifact_outputs:
+  runtime_execution_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
+  runtime_execution_index: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_index.csv
+  attempt_terminal_summaries:
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+  attempt_execution_telemetry_summaries:
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  attempt_tester_log_summaries:
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+  - --limit
+  - '0'
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+    platform: win32
+  started_at_utc: '2026-06-21T21:04:47Z'
+  ended_at_utc: '2026-06-21T21:04:47Z'
+  git_sha: d7a8166ca592b3364862a03b68420bd590485493
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M docs/registers/artifact_registry.csv
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+  - ?? foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_compile_summary.yaml
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_index.csv
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_runtime_execution_v0_closeout.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+  - ?? tests/test_wave0_l4_decision_replay_runner.py
+  dirty_claim_effect: runtime_execution_records_may_be_partial
+judgment:
+  judgment_class: runtime_probe_progress
+  standard_l4_completed: false
+  score_replay_decision_probe_observed: true
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: judge sparse decision surfaces from execution telemetry and tester
+    log summaries; no economics pass until report/equity parser evidence exists
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

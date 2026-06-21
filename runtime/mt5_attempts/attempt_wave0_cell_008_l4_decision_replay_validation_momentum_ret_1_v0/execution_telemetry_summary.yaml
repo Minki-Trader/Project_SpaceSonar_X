@@ -1,0 +1,59 @@
+version: decision_replay_execution_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+attempt_id: attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0
+source_attempt_id: attempt_wave0_cell_008_l4_validation_v0
+run_id: onnxlab_wave0_cell_008_surface_scout_v0
+bundle_id: bundle_wave0_cell_008_l4_onnx_export_v0
+period_role: validation
+direction_policy: momentum_ret_1
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/execution_telemetry.csv
+  sha256: 27ae0b914d0f2df2e6d4e0b87e28ade4176c0d4c6029dcfc607fb4518e0d8948
+  size_bytes: 7622011
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_decision_replay\attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0\execution_telemetry.csv
+stats:
+  status: execution_telemetry_observed
+  row_count: 53554
+  first_bar_close_time: 2024.06.05 00:00:00
+  last_bar_close_time: 2025.03.07 23:50:00
+  symbol_counts:
+    US100: 53554
+  period_counts:
+    PERIOD_M5: 53554
+  decision_family_counts:
+    abstain_capable_direction_agnostic_tradeability: 53554
+  direction_policy_counts:
+    momentum_ret_1: 53554
+  source_decision_counts:
+    flat: 40907
+    tradeable: 12647
+  execution_signal_counts:
+    flat: 40907
+    long: 6340
+    short: 6307
+  action_counts:
+    close_flat: 1936
+    close_hold_elapsed: 3
+    hold_same_direction: 5394
+    no_trade_flat: 38970
+    open_long: 3586
+    open_short: 3665
+  trade_action_counts:
+    open_action_count: 7251
+    close_action_count: 1939
+    open_failed_count: 0
+    skip_spread_count: 0
+    no_trade_flat_count: 38970
+    hold_same_direction_count: 5394
+  score_stats:
+    finite_count: 53554
+    min: 0.1856921017
+    max: 0.8461859226
+    mean: 0.5107071068110411
+  spread_points_stats:
+    finite_count: 53554
+    min: 120.0
+    max: 700.0
+    mean: 130.75045748216752
+claim_boundary: score_replay_decision_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate

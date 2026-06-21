@@ -1,0 +1,29 @@
+version: work_closeout_v1
+work_item_id: work_wave0_l4_decision_replay_runtime_execution_v0
+parent_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-21T21:04:47Z'
+result_judgment: runtime_probe
+claim_boundary: score_replay_decision_runtime_progress_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_index.csv
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_compile_summary.yaml
+required_gate_coverage:
+  passed:
+  - mt5_runtime_probe_contract_audit
+  - runtime_surface_contract
+  - terminal_execution_attempt_record
+  - execution_telemetry_summary
+  - result_judgment
+  - final_claim_guard
+  missing:
+  - tester_report_hash_or_report_export_adapter_for_economics_claim
+  not_applicable:
+  - runtime_authority
+  - economics_pass
+  - selected_baseline
+  - goal_achieve
+next_action: judge sparse decision surfaces from execution telemetry and tester log
+  summaries; no economics pass until report/equity parser evidence exists
+forbidden_claims_respected: true

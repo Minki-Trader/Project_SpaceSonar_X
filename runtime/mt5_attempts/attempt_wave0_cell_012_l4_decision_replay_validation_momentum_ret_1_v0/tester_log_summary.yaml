@@ -1,0 +1,78 @@
+version: decision_replay_tester_log_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+attempt_id: attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0
+status: tester_log_observed
+tester_log:
+  redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\Tester\logs\20260622.log
+  sha256: 84390481a7cfe5c13babed025bbc9d0db51eb368f9766f04817956050178ab55
+  size_bytes: 76795062
+  availability: local_tester_log_hash_recorded_not_committed
+final_balance: 274.42
+final_balance_currency: USD
+orders_attempted: 6878
+rows_loaded: 53554
+rows_observed: 53554
+test_passed_duration: 0:00:25.670 (including ticks preprocessing 0:00:03.484).
+terminal_finished_result: null
+terminal_finished_duration: null
+agent_log_redacted_path: ${APPDATA}\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000\logs\20260622.log
+context_tail:
+- "IG\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   deal performed [#13753 buy\
+  \ 0.02 US100 at 19903.30]"
+- "GJ\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   order performed buy 0.02 at\
+  \ 19903.30 [#13753 buy 0.02 US100 at 19903.30]"
+- "JH\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   CTrade::OrderSend: market buy\
+  \ 0.02 position #13752 US100 [done at 19903.30]"
+- "HD\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   market buy 0.02 US100 (19902.10\
+  \ / 19903.30)"
+- "RQ\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   deal #13754 buy 0.02 US100\
+  \ at 19903.30 done (based on order #13754)"
+- "RL\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   deal performed [#13754 buy\
+  \ 0.02 US100 at 19903.30]"
+- "PP\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   order performed buy 0.02 at\
+  \ 19903.30 [#13754 buy 0.02 US100 at 19903.30]"
+- "LR\t0\t06:02:42.459\tCore 01\t2025.03.07 17:45:00   CTrade::OrderSend: market buy\
+  \ 0.02 US100 [done at 19903.30]"
+- "NK\t0\t06:02:42.459\tCore 01\t2025.03.07 17:50:00   market sell 0.02 US100, close\
+  \ #13754 (19997.98 / 19999.18)"
+- "GK\t0\t06:02:42.459\tCore 01\t2025.03.07 17:50:00   deal #13755 sell 0.02 US100\
+  \ at 19997.98 done (based on order #13755)"
+- "JE\t0\t06:02:42.459\tCore 01\t2025.03.07 17:50:00   deal performed [#13755 sell\
+  \ 0.02 US100 at 19997.98]"
+- "ON\t0\t06:02:42.459\tCore 01\t2025.03.07 17:50:00   order performed sell 0.02 at\
+  \ 19997.98 [#13755 sell 0.02 US100 at 19997.98]"
+- "GS\t0\t06:02:42.459\tCore 01\t2025.03.07 17:50:00   CTrade::OrderSend: market sell\
+  \ 0.02 position #13754 US100 [done at 19997.98]"
+- "IO\t0\t06:02:42.459\tCore 01\t2025.03.07 17:55:00   market sell 0.02 US100 (19983.10\
+  \ / 19984.30)"
+- "QR\t0\t06:02:42.459\tCore 01\t2025.03.07 17:55:00   deal #13756 sell 0.02 US100\
+  \ at 19983.10 done (based on order #13756)"
+- "QO\t0\t06:02:42.459\tCore 01\t2025.03.07 17:55:00   deal performed [#13756 sell\
+  \ 0.02 US100 at 19983.10]"
+- "OD\t0\t06:02:42.459\tCore 01\t2025.03.07 17:55:00   order performed sell 0.02 at\
+  \ 19983.10 [#13756 sell 0.02 US100 at 19983.10]"
+- "OI\t0\t06:02:42.459\tCore 01\t2025.03.07 17:55:00   CTrade::OrderSend: market sell\
+  \ 0.02 US100 [done at 19983.10]"
+- "KH\t0\t06:02:42.459\tCore 01\t2025.03.07 18:00:00   market buy 0.02 US100, close\
+  \ #13756 (19977.10 / 19978.30)"
+- "RG\t0\t06:02:42.459\tCore 01\t2025.03.07 18:00:00   deal #13757 buy 0.02 US100\
+  \ at 19978.30 done (based on order #13757)"
+- "KN\t0\t06:02:42.459\tCore 01\t2025.03.07 18:00:00   deal performed [#13757 buy\
+  \ 0.02 US100 at 19978.30]"
+- "IR\t0\t06:02:42.459\tCore 01\t2025.03.07 18:00:00   order performed buy 0.02 at\
+  \ 19978.30 [#13757 buy 0.02 US100 at 19978.30]"
+- "LP\t0\t06:02:42.459\tCore 01\t2025.03.07 18:00:00   CTrade::OrderSend: market buy\
+  \ 0.02 position #13756 US100 [done at 19978.30]"
+- "IM\t0\t06:02:42.459\tCore 01\tfinal balance 274.42 USD"
+- "GD\t0\t06:02:42.459\tCore 01\t2025.03.07 23:54:59   SpaceSonar score replay deinit\
+  \ reason=1 rows_loaded=53554 rows_observed=53554 orders_attempted=6878"
+- "OH\t0\t06:02:42.459\tCore 01\tUS100,M5: 63218445 ticks, 53554 bars generated. Test\
+  \ passed in 0:00:25.670 (including ticks preprocessing 0:00:03.484)."
+- "CF\t0\t06:02:42.459\tCore 01\t1474 Mb memory used including 9 Mb of history data,\
+  \ 1280 Mb of tick data"
+- "CI\t0\t06:02:42.459\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\\
+  Tester\\D0E8209F77C8CF37AD8BF550E51FF075\\Agent-127.0.0.1-3000\\logs\\20260622.log\"\
+  \ written"
+- "ID\t0\t06:02:42.844\tTester\tautomatical testing finished"
+- "RO\t0\t06:02:42.844\tCore 01\tconnection closed"
+claim_boundary: tester_log_summary_observation_only_no_economics_pass
