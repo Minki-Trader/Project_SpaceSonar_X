@@ -1,7 +1,7 @@
 version: campaign_manifest_v1
 campaign_id: campaign_minimal_onnx_mt5_vertical_slice_v0
-status: fixed_fixture_slice_observed_with_boundary_debt
-target_branch: codex/minimal-onnx-mt5-plumbing-slice
+status: fixed_fixture_slice_superseded_by_clean_micro_probe
+target_branch: codex/control-plane-runtime-spine-hardening
 wave_ids: []
 idea_ids:
 - idea_a_to_z_validation_spine_v0
@@ -42,7 +42,7 @@ required_gates:
 - runtime_learning_probe_decision
 - mt5_native_onnx_fixed_fixture_probe
 - final_claim_guard
-claim_boundary: fixed_fixture_parity_learning_only_with_boundary_debt_no_baseline_no_runtime_authority
+claim_boundary: fixed_fixture_parity_learning_only_no_baseline_no_runtime_authority
 forbidden_claims:
 - reviewed_verified_pass
 - selected_baseline
@@ -122,20 +122,26 @@ runtime_learning_probe_decision_default:
   - trade_count_is_low
   - candidate_is_ambiguous
   - setup_might_fail
-notes: Fixed-fixture ONNX-MT5 micro-probe observed, but split-boundary/release/provenance
-  debt blocks clean evidence or promotion claims.
-completed_run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
-completed_bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
-completed_attempt_id: attempt_20260621T115145Z_mt5_onnx_fixture_v0
+notes: Clean superseding fixed-fixture ONNX-MT5 micro-probe recorded. Portable
+  contract attempt produced no telemetry on this local terminal path, then main-mode
+  config fallback produced matched fixed-fixture telemetry. No performance, candidate,
+  baseline, economics, live, handoff, reviewed, pass, or runtime-authority claim.
+completed_run_id: onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing
+completed_bundle_id: bundle_20260621T131542Z_fixture_plumbing_v0
+completed_attempt_id: attempt_20260621T131542Z_mt5_onnx_fixture_v0
 evidence_paths:
-- lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json
-- runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/experiment_bundle.json
-- runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+- lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json
+- runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/experiment_bundle.json
+- runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
 evidence_debt:
-  status: acknowledged_claim_blocking_until_clean_superseding_rerun
-  items:
-  - split_boundary_purge_check
-  - active_record_validator_clean_before_rerun
-  - handle_release_log
-  - compile_terminal_exit_code_provenance
-  - clean_commit_superseding_rerun
+  status: none_for_fixed_fixture_micro_probe
+  remaining_claim_limits:
+  - no_strategy_tester_economics_claim
+  - no_runtime_authority_claim
+  - no_candidate_or_baseline_claim
+  - no_standard_portable_runtime_completion_claim
+terminal_mode_evidence:
+  portable_attempted: true
+  main_mode_fallback_used: true
+  fallback_reason: portable_attempt_did_not_produce_mt5_probe_telemetry
+  claim_effect: fixed_fixture_micro_probe_only_no_runtime_authority

@@ -1,0 +1,108 @@
+version: runtime_evidence_v2
+run_id: onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing
+surface_id: surface_fixture_next_m5_probability_v0
+bundle_id: bundle_20260621T131542Z_fixture_plumbing_v0
+decision_surface_id: decision_surface_no_trade_fixture_v0
+branch_worktree:
+  current_branch: codex/control-plane-runtime-spine-hardening
+  requested_branch: codex/control-plane-runtime-spine-hardening
+  branch_worktree_fit: fit
+  branch_action: keep_current_branch
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: not_applicable
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  reason: MT5 native ONNX meaning is in scope.
+  forbidden_skip_reasons_checked:
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
+  lowered_claim_if_not_run: bundle_preflight_only
+provenance:
+  git_sha: 39d52c7aec0fb65c3cb3f35ba12c7ac255429cc2
+  branch: codex/control-plane-runtime-spine-hardening
+  dirty_flag: clean
+  changed_files: []
+  command_argv:
+  - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
+  - --requested-branch
+  - codex/control-plane-runtime-spine-hardening
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    MetaTrader5: 5.0.5640
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    onnx: 1.20.1
+    onnxruntime: 1.24.3
+    yaml: 6.0.3
+    python: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+  started_at_utc: '2026-06-21T13:15:42.793895Z'
+  ended_at_utc: '2026-06-21T13:15:49.111408Z'
+  input_hashes:
+  - path: lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifacts/dataset_us100_m5_closed_bar_v0.csv
+    sha256: fa8b33d01a29d48419e3ae326dbb57c9429719c181949777ca4bddfbd8eb4efb
+    size_bytes: 868182
+  output_hashes:
+  - path: runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/model.onnx
+    sha256: 226a205d3ed5b6bac07eb3a0cbc6741c6527e92581b68b52df0bd4a518496a8e
+    size_bytes: 618
+  - path: runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/fixture_input.csv
+    sha256: 68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647
+    size_bytes: 57
+  - path: runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/expected_output.csv
+    sha256: a835b8cc7479192cd446b4b4c2fcd53c721f01622e941a412f32e11257ff4b36
+    size_bytes: 14
+  - path: runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/fixture_manifest.json
+    sha256: c4d277a67f6a893554b9f0901b2cd2fdd3c7a8a834d602d5498f47c9adc89652
+    size_bytes: 4263
+  unknown_git_claim_effect: not_applicable_git_identity_recorded_but_dirty_state_lowers_reproducibility_until_committed
+levels:
+  L0_contract_declared: passed
+  L1_python_onnx_parity: passed
+  L2_label_outcome_parity: not_applicable_fixture_only
+  L3_mt5_micro_probe: passed_fixed_fixture_only
+  L4_split_runtime_probe: not_applicable
+  L5_candidate_runtime_evidence: not_applicable
+evidence_paths:
+- runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/experiment_bundle.json
+- runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+mt5_attempt_ids:
+- attempt_20260621T131542Z_mt5_onnx_fixture_v0
+known_differences:
+- terminal_main_mode_fallback_after_portable_attempt
+required_gate_coverage:
+  passed:
+  - branch_worktree_fit
+  - provenance_capture
+  - time_axis_check
+  - feature_label_boundary_check
+  - feature_schema_contract
+  - onnx_export_smoke
+  - python_onnx_parity
+  - bundle_integrity_hash
+  - runtime_learning_probe_decision
+  - final_claim_guard
+  - mt5_native_onnx_fixed_fixture_probe
+  - handle_release_log
+  not_applicable:
+  - strategy_tester_economics
+  missing: []
+runtime_debt_state: none_for_fixed_fixture_micro_probe
+repair_required: false
+repair_surface: null
+runtime_claim_boundary: fixed_fixture_parity_learning_only_no_runtime_authority
+missing_evidence: []
+terminal_mode_evidence:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  main_mode_fallback_allowed: true
+  main_mode_fallback_used: true
+  fallback_reason: portable_attempt_did_not_produce_mt5_probe_telemetry
+  claim_effect: fixed_fixture_micro_probe_only_no_runtime_authority

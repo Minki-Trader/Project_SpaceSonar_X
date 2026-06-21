@@ -1,0 +1,93 @@
+command_argv_redacted:
+- ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+- /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_20260621T131542Z_mt5_onnx_fixture_v0\tester_config.ini
+cwd: .
+started_at_utc: '2026-06-21T13:15:55.836356Z'
+ended_at_utc: '2026-06-21T13:16:02.978853Z'
+exit_code: 0
+timed_out: false
+stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stdout_tail: ''
+stderr_tail: ''
+mode: main_mode_config_fallback
+attempt_claim_boundary: local_fixed_fixture_fallback_only_no_runtime_authority
+telemetry_exists_after_attempt: true
+terminal_attempts:
+- command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_20260621T131542Z_mt5_onnx_fixture_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-21T13:15:50.852209Z'
+  ended_at_utc: '2026-06-21T13:15:55.599217Z'
+  exit_code: 3294954941
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  telemetry_exists_after_attempt: false
+- command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_20260621T131542Z_mt5_onnx_fixture_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-21T13:15:55.836356Z'
+  ended_at_utc: '2026-06-21T13:16:02.978853Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: main_mode_config_fallback
+  attempt_claim_boundary: local_fixed_fixture_fallback_only_no_runtime_authority
+  telemetry_exists_after_attempt: true
+terminal_cleanup_actions:
+- action: terminate_existing_terminal_processes
+  method: taskkill_by_image_name
+  image_name: terminal64.exe
+  started_at_utc: '2026-06-21T13:15:50.521235Z'
+  ended_at_utc: '2026-06-21T13:15:50.851986Z'
+  exit_code: 0
+  stdout_sha256: b2f939e0f1c121f006fe707812d3aab07d13711e30e093a5ff0c169076997f6b
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: 'SUCCESS: The process "terminal64.exe" with PID 22472 has been terminated.
+
+    '
+  stderr_tail: ''
+  no_process_exit_codes:
+  - 128
+  claim_boundary: terminal_preflight_evidence_only
+- action: terminate_existing_terminal_processes
+  method: taskkill_by_image_name
+  image_name: terminal64.exe
+  started_at_utc: '2026-06-21T13:15:55.600278Z'
+  ended_at_utc: '2026-06-21T13:15:55.836305Z'
+  exit_code: 128
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: 145d83ae1b5593100359b1e065e0959d534f74a5de8c63e7aadb1403e5f035ff
+  stdout_tail: ''
+  stderr_tail: 'ERROR: The process "terminal64.exe" not found.
+
+    '
+  no_process_exit_codes:
+  - 128
+  claim_boundary: terminal_preflight_evidence_only
+terminal_mode_policy:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  main_mode_fallback_allowed: true
+  main_mode_fallback_used: true
+  fallback_reason: portable_attempt_did_not_produce_mt5_probe_telemetry
+  claim_effect: fixed_fixture_micro_probe_only_no_runtime_authority
+selected_attempt_index: 1
+telemetry_observed: true
+summary_path: runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/terminal_run_summary.yaml
+tester_config:
+  path: runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/tester_config.ini
+  sha256: d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0
+  size_bytes: 1083
+claim_boundary: terminal_execution_evidence_only_not_runtime_authority

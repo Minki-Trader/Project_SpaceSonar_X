@@ -1,0 +1,286 @@
+{
+  "version": "run_manifest_v2",
+  "run_id": "onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing",
+  "id_chain": {
+    "idea_id": "idea_a_to_z_validation_spine_v0",
+    "hypothesis_id": "hyp_minimal_onnx_mt5_plumbing_v0",
+    "surface_id": "surface_fixture_next_m5_probability_v0",
+    "sweep_id": "sweep_not_applicable_fixture_plumbing",
+    "artifact_ids": [
+      "dataset_us100_m5_closed_bar_v0",
+      "artifact_fixture_onnx_v0",
+      "artifact_fixture_inputs_v0"
+    ],
+    "bundle_id": "bundle_20260621T131542Z_fixture_plumbing_v0",
+    "candidate_id": null
+  },
+  "trigger_source": "goal_objective",
+  "agent_consult_status": "not_requested_for_local_implementation",
+  "selected_agents": [],
+  "skill_routing": {
+    "primary_family": "onnx_export_parity",
+    "primary_skill": "spacesonar-runtime-parity",
+    "support_skills": [
+      "spacesonar-data-integrity",
+      "spacesonar-artifact-lineage",
+      "spacesonar-environment-reproducibility",
+      "spacesonar-run-evidence-system",
+      "spacesonar-claim-discipline"
+    ],
+    "skills_selected": [
+      "spacesonar-runtime-parity",
+      "spacesonar-data-integrity",
+      "spacesonar-artifact-lineage",
+      "spacesonar-environment-reproducibility",
+      "spacesonar-run-evidence-system",
+      "spacesonar-claim-discipline"
+    ],
+    "skills_not_used": [],
+    "critical_skills_not_selected": [],
+    "not_selected_claim_effect": null,
+    "required_gates": [
+      "branch_worktree_fit",
+      "provenance_capture",
+      "time_axis_check",
+      "feature_label_boundary_check",
+      "feature_schema_contract",
+      "onnx_export_smoke",
+      "python_onnx_parity",
+      "bundle_integrity_hash",
+      "runtime_learning_probe_decision",
+      "mt5_native_onnx_fixed_fixture_probe",
+      "final_claim_guard"
+    ],
+    "not_applicable_gates": [
+      "strategy_tester_economics"
+    ]
+  },
+  "branch_worktree": {
+    "current_branch": "codex/control-plane-runtime-spine-hardening",
+    "requested_branch": "codex/control-plane-runtime-spine-hardening",
+    "branch_worktree_fit": "fit",
+    "branch_action": "keep_current_branch",
+    "policy_reference": "docs/policies/branch_policy.md",
+    "mismatch_claim_effect": "not_applicable"
+  },
+  "agent_allocation": {
+    "phase": "vertical_slice_local_implementation",
+    "selected_agents": [],
+    "role_modes": [],
+    "selection_reason": "local implementation after prior advisory design",
+    "why_not_smaller": "codex_alone_is_smallest",
+    "why_not_larger": "MT5 runtime check occurs through local probe evidence, not agent consensus",
+    "max_threads_is_capacity_only": true,
+    "claim_effect": "no_reviewed_pass"
+  },
+  "objective": "Create a minimal US100 M5 closed-bar feature-label-model-ONNX bundle and prepare MT5 native ONNX fixed-fixture probe.",
+  "task_surface": {
+    "task_type": "fixed_fixture_probability",
+    "target_or_label": "label_fixture_next_m5_up_v0",
+    "direction_mapping": "next_closed_m5_bar_up_probability_fixture_only",
+    "horizon_or_holding_policy": "horizon_1_closed_m5_bar_no_trade_holding_policy",
+    "output_head": "single_probability_float32"
+  },
+  "status": "mt5_native_onnx_fixed_fixture_probe_matched",
+  "created_at_utc": "2026-06-21T13:15:42.793895Z",
+  "timezone": "UTC",
+  "git_commit": "39d52c7aec0fb65c3cb3f35ba12c7ac255429cc2",
+  "dirty_state": "clean",
+  "command": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py --requested-branch codex/control-plane-runtime-spine-hardening",
+  "entrypoint": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py",
+  "environment_summary": {
+    "MetaTrader5": "5.0.5640",
+    "numpy": "2.3.4",
+    "pandas": "2.3.3",
+    "sklearn": "1.8.0",
+    "onnx": "1.20.1",
+    "onnxruntime": "1.24.3",
+    "yaml": "6.0.3",
+    "python": "3.13.9",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "provenance": {
+    "git_sha": "39d52c7aec0fb65c3cb3f35ba12c7ac255429cc2",
+    "branch": "codex/control-plane-runtime-spine-hardening",
+    "dirty_flag": "clean",
+    "changed_files": [],
+    "command_argv": [
+      "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py",
+      "--requested-branch",
+      "codex/control-plane-runtime-spine-hardening"
+    ],
+    "python_executable": "${USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_version": "3.13.9",
+    "key_package_versions": {
+      "MetaTrader5": "5.0.5640",
+      "numpy": "2.3.4",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "onnx": "1.20.1",
+      "onnxruntime": "1.24.3",
+      "yaml": "6.0.3",
+      "python": "3.13.9",
+      "platform": "Windows-11-10.0.26200-SP0"
+    },
+    "started_at_utc": "2026-06-21T13:15:42.793895Z",
+    "ended_at_utc": "2026-06-21T13:15:49.111408Z",
+    "input_hashes": [
+      {
+        "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifacts/dataset_us100_m5_closed_bar_v0.csv",
+        "sha256": "fa8b33d01a29d48419e3ae326dbb57c9429719c181949777ca4bddfbd8eb4efb",
+        "size_bytes": 868182
+      }
+    ],
+    "output_hashes": [
+      {
+        "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/model.onnx",
+        "sha256": "226a205d3ed5b6bac07eb3a0cbc6741c6527e92581b68b52df0bd4a518496a8e",
+        "size_bytes": 618
+      },
+      {
+        "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/fixture_input.csv",
+        "sha256": "68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647",
+        "size_bytes": 57
+      },
+      {
+        "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/expected_output.csv",
+        "sha256": "a835b8cc7479192cd446b4b4c2fcd53c721f01622e941a412f32e11257ff4b36",
+        "size_bytes": 14
+      },
+      {
+        "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/fixture_manifest.json",
+        "sha256": "c4d277a67f6a893554b9f0901b2cd2fdd3c7a8a834d602d5498f47c9adc89652",
+        "size_bytes": 4263
+      }
+    ],
+    "unknown_git_claim_effect": "not_applicable_git_identity_recorded_but_dirty_state_lowers_reproducibility_until_committed"
+  },
+  "storage_contract": {
+    "source_of_truth": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json",
+    "receipt_path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/experiment_receipt.yaml",
+    "lineage_path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json",
+    "metrics_path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/metrics.json",
+    "supporting_paths": [
+      "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifacts/",
+      "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/",
+      "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/"
+    ],
+    "registry_rows": [
+      "docs/registers/run_registry.csv",
+      "docs/registers/artifact_registry.csv"
+    ],
+    "durable_identity_policy": "repo_relative_paths_only",
+    "duplicate_policy": "single_source_of_truth_copy_requires_reason",
+    "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri"
+  },
+  "data_scope": {
+    "instrument": "FPMarkets US100",
+    "timeframe": "M5",
+    "dataset_id": "dataset_us100_m5_closed_bar_v0",
+    "split_id": "split_fixture_chronological_smoke_v0",
+    "date_range": {
+      "start_utc": "2024-06-05T00:00:00Z",
+      "end_utc": "2024-07-05T23:59:59Z"
+    },
+    "timezone_or_session_policy": "MT5 Python API unix seconds; row key is us100_bar_close_time UTC timestamp derived from bar close",
+    "feature_boundary": "right_aligned_closed_bar_features_only",
+    "label_boundary": "label uses next closed M5 bar and tail_drop_1",
+    "leakage_boundary": "fixture model fit rows are purged so label_end_time is before first validation bar; no OOS/candidate/performance claim",
+    "missing_gap_policy": "raw continuity not used for economics; row_count and source command recorded"
+  },
+  "model_export": {
+    "framework": "manual ONNX graph from sklearn LogisticRegression coefficients",
+    "opset": 13,
+    "input_schema": {
+      "name": "features",
+      "dtype": "float32",
+      "shape": [
+        4
+      ],
+      "feature_order": [
+        "ret_1",
+        "range_pct",
+        "body_pct",
+        "spread_scaled"
+      ]
+    },
+    "output_schema": {
+      "name": "probability",
+      "dtype": "float32",
+      "shape": [
+        1
+      ]
+    },
+    "onnx_sha256": "226a205d3ed5b6bac07eb3a0cbc6741c6527e92581b68b52df0bd4a518496a8e"
+  },
+  "runtime_learning_probe_decision": {
+    "required": true,
+    "decision": "run_required",
+    "reason": "MT5 native ONNX meaning is in scope for this plumbing slice."
+  },
+  "required_gate_coverage": {
+    "passed": [
+      "branch_worktree_fit",
+      "provenance_capture",
+      "time_axis_check",
+      "feature_label_boundary_check",
+      "feature_schema_contract",
+      "onnx_export_smoke",
+      "python_onnx_parity",
+      "bundle_integrity_hash",
+      "runtime_learning_probe_decision",
+      "final_claim_guard",
+      "mt5_native_onnx_fixed_fixture_probe",
+      "handle_release_log"
+    ],
+    "not_applicable": [
+      "strategy_tester_economics"
+    ],
+    "missing": []
+  },
+  "result_judgment": "inconclusive",
+  "missing_evidence": [],
+  "claim_scope": "fixed_fixture_parity_learning_only_no_runtime_authority",
+  "forbidden_claims": [
+    "reviewed_verified_pass",
+    "selected_baseline",
+    "candidate",
+    "runtime_authority",
+    "economics_pass",
+    "handoff_complete",
+    "live_readiness",
+    "goal_achieve"
+  ],
+  "invalid_conditions": [
+    "any performance, candidate, baseline, economics, runtime authority, or live readiness claim"
+  ],
+  "stop_conditions": [
+    "MT5 probe output missing for runtime claim",
+    "fixture parity abs_error exceeds tolerance"
+  ],
+  "next_action": "fixed-fixture parity learning recorded; do not infer runtime authority or economics",
+  "mt5_fixed_fixture_probe": {
+    "status": "matched",
+    "input_count": 1,
+    "output_count": 1,
+    "expected_probability": 0.5178662539,
+    "mt5_probability": 0.5178662539,
+    "abs_error": 0.0,
+    "tolerance": 1e-05,
+    "last_error": 0,
+    "handle_release_log": {
+      "release_attempted": true,
+      "release_return": true,
+      "release_last_error": 0,
+      "release_stage": "matched"
+    }
+  },
+  "terminal_mode_evidence": {
+    "standard_contract_terminal_mode": "portable_required",
+    "portable_attempted": true,
+    "main_mode_fallback_allowed": true,
+    "main_mode_fallback_used": true,
+    "fallback_reason": "portable_attempt_did_not_produce_mt5_probe_telemetry",
+    "claim_effect": "fixed_fixture_micro_probe_only_no_runtime_authority"
+  }
+}

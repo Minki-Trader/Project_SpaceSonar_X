@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T11:55:00Z'
+updated_utc: '2026-06-21T13:20:00Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -65,17 +65,17 @@ current_claims:
   holding_period_policy: undefined_by_design
   model_io_shape: undefined_by_design
   output_head: undefined_by_design
-  data_materialized: local_fixture_dataset_only_hash_recorded
-  model_materialized: local_fixture_model_only_hash_recorded
-  onnx_bundle_materialized: local_fixture_bundle_only_hash_recorded
-  mt5_runtime_probe_completed: fixed_fixture_micro_probe_observed_with_boundary_debt_no_runtime_authority
+  data_materialized: local_fixture_dataset_hash_recorded_from_clean_superseding_rerun
+  model_materialized: local_fixture_model_hash_recorded_from_clean_superseding_rerun
+  onnx_bundle_materialized: clean_fixture_bundle_manifest_hash_recorded
+  mt5_runtime_probe_completed: fixed_fixture_micro_probe_matched_no_runtime_authority
   runtime_authority: false
-  first_vertical_slice_status: fixed_fixture_parity_learning_only_with_boundary_debt
-  first_vertical_slice_run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
-  first_vertical_slice_bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
-  first_vertical_slice_attempt_id: attempt_20260621T115145Z_mt5_onnx_fixture_v0
-  first_vertical_slice_debt: split_boundary_purge_check, handle_release_log, compile_terminal_exit_code_provenance,
-    active_record_validator_clean_before_rerun, clean_commit_superseding_rerun
+  first_vertical_slice_status: fixed_fixture_parity_learning_only_no_runtime_authority
+  first_vertical_slice_run_id: onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing
+  first_vertical_slice_bundle_id: bundle_20260621T131542Z_fixture_plumbing_v0
+  first_vertical_slice_attempt_id: attempt_20260621T131542Z_mt5_onnx_fixture_v0
+  first_vertical_slice_terminal_mode: portable_attempted_then_main_mode_fallback_used
+  first_vertical_slice_debt: none_for_fixed_fixture_micro_probe; no_strategy_tester_economics_or_runtime_authority
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

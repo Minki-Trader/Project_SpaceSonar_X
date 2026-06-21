@@ -1,0 +1,85 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing",
+  "source_inputs": [
+    "MT5.copy_rates_range US100 M5",
+    "foundation/features/fixture_features.py",
+    "foundation/labels/fixture_labels.py"
+  ],
+  "producer": {
+    "type": "python_pipeline",
+    "identity": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py",
+    "command": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py --requested-branch codex/control-plane-runtime-spine-hardening",
+    "environment_summary": {
+      "MetaTrader5": "5.0.5640",
+      "numpy": "2.3.4",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "onnx": "1.20.1",
+      "onnxruntime": "1.24.3",
+      "yaml": "6.0.3",
+      "python": "3.13.9",
+      "platform": "Windows-11-10.0.26200-SP0"
+    }
+  },
+  "consumer": [
+    "runtime/packages",
+    "runtime/mt5_attempts",
+    "MT5 common files"
+  ],
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json",
+    "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/experiment_bundle.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/model.onnx",
+      "sha256": "226a205d3ed5b6bac07eb3a0cbc6741c6527e92581b68b52df0bd4a518496a8e",
+      "size_bytes": 618
+    },
+    {
+      "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/fixture_input.csv",
+      "sha256": "68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647",
+      "size_bytes": 57
+    },
+    {
+      "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/expected_output.csv",
+      "sha256": "a835b8cc7479192cd446b4b4c2fcd53c721f01622e941a412f32e11257ff4b36",
+      "size_bytes": 14
+    },
+    {
+      "path": "runtime/packages/bundle_20260621T131542Z_fixture_plumbing_v0/artifacts/fixture_manifest.json",
+      "sha256": "c4d277a67f6a893554b9f0901b2cd2fdd3c7a8a834d602d5498f47c9adc89652",
+      "size_bytes": 4263
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/tester_config.ini",
+      "sha256": "d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0",
+      "size_bytes": 1083
+    }
+  ],
+  "artifact_hashes": [
+    "226a205d3ed5b6bac07eb3a0cbc6741c6527e92581b68b52df0bd4a518496a8e",
+    "68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647",
+    "a835b8cc7479192cd446b4b4c2fcd53c721f01622e941a412f32e11257ff4b36",
+    "c4d277a67f6a893554b9f0901b2cd2fdd3c7a8a834d602d5498f47c9adc89652",
+    "d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0"
+  ],
+  "artifact_sizes": [
+    618,
+    57,
+    14,
+    4263,
+    1083
+  ],
+  "regeneration_commands": [
+    "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py --requested-branch codex/control-plane-runtime-spine-hardening"
+  ],
+  "registry_links": [
+    "docs/registers/run_registry.csv",
+    "docs/registers/artifact_registry.csv"
+  ],
+  "availability": "local_generated_artifacts_ignored_by_git_with_hashes",
+  "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
+  "lineage_judgment": "usable_with_boundary"
+}
