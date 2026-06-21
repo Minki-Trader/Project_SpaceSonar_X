@@ -4,6 +4,19 @@ default_mode: plan_only
 max_attempts: 2
 same_failure_twice: human_decision_required
 new_failure_after_repair: stop_and_report
+disposition_gate:
+  applies_to:
+    - blocked
+    - deferred
+    - invalid
+    - discarded
+  rule: "A failed or unsupported operation may not be closed with these dispositions until root cause, exact failing layer, at least one bounded repair or fallback attempt, evidence path, remaining blocker, and reopen condition are recorded."
+  repair_attempt_exceptions:
+    - user_secret_required
+    - unavailable_external_state
+    - destructive_or_unsafe_action
+    - project_policy_violation
+  exception_rule: "If no repair attempt is allowed, record the exception as the attempt blocker and lower the claim boundary."
 modes:
   plan_only:
     mutates_files: false
@@ -58,6 +71,12 @@ failure_taxonomy:
   test_failure:
     preferred_action: fix_behavior_or_test_contract
     default_repair_mode: guarded_autofix
+  unsupported_or_missing_adapter:
+    preferred_action: reproduce_root_cause_then_build_minimal_adapter_or_fallback
+    default_repair_mode: guarded_autofix
+  unsupported_external_environment:
+    preferred_action: record_environment_blocker_and_reopen_condition
+    default_repair_mode: plan_only
   human_decision_required:
     preferred_action: stop_and_request_decision
     default_repair_mode: plan_only

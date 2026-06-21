@@ -47,10 +47,10 @@ If any relevant field contains one of these tokens, lower the claim unless match
 ## Guardrails
 
 - A completed command is not a meaningful experiment by itself.
+- "Cannot", "unsupported", "not available", or missing support is not enough to claim blocked, deferred, invalid, or discarded; name the reproduction, repair/fallback attempt, evidence path, remaining blocker, and reopen condition.
 - ONNX export smoke is not runtime authority.
 - MetaEditor compile is not Strategy Tester evidence.
 - Python/ONNX parity is not economics pass.
 - A candidate is not a selected baseline.
 - Legacy archive material is prior evidence only.
 - If closure is claimed, name the backing manifest, report, hash, or decision memo.
-

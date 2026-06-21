@@ -22,10 +22,23 @@ claim_classes:
   blocked:
     allowed_when:
       - recovery_attempt_or_failure_log_exists
+      - failure_disposition_gate_recorded
       - required_user_action_or_external_blocker_exists
+  deferred:
+    allowed_when:
+      - failure_disposition_gate_recorded
+      - bounded_repair_or_fallback_attempt_recorded
+      - remaining_blocker_named
+      - reopen_condition_named
+  discarded:
+    allowed_when:
+      - failure_disposition_gate_recorded
+      - bounded_repair_or_fallback_attempt_recorded
+      - no_actionable_salvage_or_reopen_scope_named
   invalid:
     allowed_when:
       - setup_data_or_scope_mismatch_found
+      - repair_or_reinterpretation_attempt_recorded
   verified:
     allowed_when:
       - requested_verification_layer_passed

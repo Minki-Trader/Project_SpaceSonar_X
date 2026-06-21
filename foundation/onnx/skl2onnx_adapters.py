@@ -6,11 +6,13 @@ from typing import Any, Iterator
 
 import numpy as np
 import onnx
+from onnx import TensorProto, helper
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
 
 
 HIST_GRADIENT_BOOSTING_CAST_ADAPTER_ID = "skl2onnx_hgb_numpy_scalar_cast_v0"
+SINGLE_SCORE_OUTPUT_ADAPTER_ID = "onnx_single_score_output_v0"
 
 
 @dataclass(frozen=True)
@@ -105,8 +107,10 @@ def convert_sklearn_pipeline_for_lab(
             target_opset=target_opset,
             options=options,
         )
+    converted = _with_single_score_output(converted, task_kind=task_kind)
     onnx.checker.check_model(converted)
     adapter_ids = [HIST_GRADIENT_BOOSTING_CAST_ADAPTER_ID] if _uses_hist_gradient_boosting(model) else []
+    adapter_ids.append(SINGLE_SCORE_OUTPUT_ADAPTER_ID)
     return OnnxConversionResult(model=converted, adapter_ids=adapter_ids)
 
 
@@ -114,3 +118,42 @@ def _uses_hist_gradient_boosting(model: Any) -> bool:
     steps = getattr(model, "steps", [])
     raw_estimators = [step for _, step in steps] if steps else [model]
     return any(estimator.__class__.__name__.startswith("HistGradientBoosting") for estimator in raw_estimators)
+
+
+def _with_single_score_output(model: onnx.ModelProto, *, task_kind: str) -> onnx.ModelProto:
+    graph = model.graph
+    if task_kind == "classification":
+        if len(graph.output) < 2:
+            raise ValueError("classification ONNX model must expose probability output before score adapter")
+        probability_output = graph.output[1].name
+        index_name = "spacesonar_class1_index"
+        graph.initializer.append(helper.make_tensor(index_name, TensorProto.INT64, [], [1]))
+        graph.node.append(
+            helper.make_node(
+                "Gather",
+                [probability_output, index_name],
+                ["score"],
+                name="SpaceSonarClass1Score",
+                axis=1,
+            )
+        )
+    elif task_kind == "regression":
+        if len(graph.output) != 1:
+            raise ValueError("regression ONNX model must expose exactly one output before score adapter")
+        source_output = graph.output[0].name
+        shape_name = "spacesonar_flat_score_shape"
+        graph.initializer.append(helper.make_tensor(shape_name, TensorProto.INT64, [1], [-1]))
+        graph.node.append(
+            helper.make_node(
+                "Reshape",
+                [source_output, shape_name],
+                ["score"],
+                name="SpaceSonarFlatRegressionScore",
+            )
+        )
+    else:
+        raise ValueError(f"unsupported task_kind for ONNX score adapter: {task_kind}")
+
+    del graph.output[:]
+    graph.output.append(helper.make_tensor_value_info("score", TensorProto.FLOAT, [None]))
+    return model

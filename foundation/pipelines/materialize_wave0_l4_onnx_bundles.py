@@ -262,12 +262,6 @@ def convert_model_to_onnx(fit: ProxyFit, feature_count: int) -> tuple[bytes, lis
 def onnx_score(onnx_path: Path, features: np.ndarray, task_kind: str) -> np.ndarray:
     session = ort.InferenceSession(str(onnx_path), providers=["CPUExecutionProvider"])
     outputs = session.run(None, {"features": features.astype(np.float32)})
-    if task_kind == "classification":
-        if len(outputs) >= 2 and isinstance(outputs[1], np.ndarray):
-            return outputs[1][:, 1].astype(float)
-        if len(outputs) >= 2 and isinstance(outputs[1], list):
-            return np.array([row.get(1, np.nan) for row in outputs[1]], dtype=float)
-        raise RuntimeError("classification ONNX output did not expose probability scores")
     return np.asarray(outputs[0]).reshape(-1).astype(float)
 
 
@@ -477,9 +471,10 @@ def materialize_one(
         "output_schema": {
             "task_kind": fit.task_kind,
             "score_semantics": "class_1_probability" if fit.task_kind == "classification" else "regression_rank_score",
-            "onnx_outputs": ["label", "probabilities"] if fit.task_kind == "classification" else ["variable"],
-            "score_extraction": "probabilities[:,1]" if fit.task_kind == "classification" else "variable.reshape(-1)",
+            "onnx_outputs": ["score"],
+            "score_extraction": "score.reshape(-1)",
             "probability_calibration_claim": False,
+            "mt5_output_contract": "single_float_score_vector_shape_1_for_single_row_inference",
         },
         "onnx_path": rel(onnx_path, repo_root),
         "onnx_sha256": sha256(onnx_path),

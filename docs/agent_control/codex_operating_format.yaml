@@ -107,3 +107,10 @@ completion_rule:
     - failure_log
     - required_user_action
     - claim_lowered_with_boundary
+  failure_disposition_requires_all_before_blocked_deferred_invalid_or_discarded:
+    - failure_reproduction
+    - exact_failing_layer
+    - bounded_repair_or_fallback_attempt_or_attempt_blocker
+    - evidence_path
+    - remaining_blocker
+    - reopen_condition

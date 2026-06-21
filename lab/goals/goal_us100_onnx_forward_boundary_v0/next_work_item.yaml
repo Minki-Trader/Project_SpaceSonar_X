@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: planned_next_l4_strategy_tester_adapter_after_onnx_materialization
+status: planned_next_l4_strategy_tester_execution_after_attempt_preparation
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -70,6 +70,17 @@ current_truth:
       linear_or_ridge_rank_scout: 5
       logistic_classification_scout: 5
       onnx_realistic_tree_or_boosted_scout: 2
+  l4_attempt_preparation_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  l4_attempt_preparation_status: prepared_attempts_pending_terminal_execution
+  l4_attempt_preparation_counts:
+    exported_bundle_count: 12
+    required_period_role_count: 2
+    prepared_attempt_count: 24
+    period_role_counts:
+      research_oos: 12
+      validation: 12
+    common_copy_status_counts:
+      copied_to_mt5_common_files: 24
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -221,7 +232,8 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_material_if_relevant:
-- full_period_strategy_tester_adapter_absent_for_current_proxy_runs
+- L4_strategy_tester_terminal_execution_absent_for_prepared_attempts
 - L4_validation_and_research_oos_reports_absent
-next_action: Build the full-period MT5 Strategy Tester adapter for exported ONNX bundles,
-  then run L4 validation and research_oos.
+- score_telemetry_csv_absent_until_terminal_run
+next_action: Run the prepared L4 Strategy Tester attempts for validation and research_oos,
+  then close each result with parity judgment.

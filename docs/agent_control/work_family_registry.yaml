@@ -13,7 +13,8 @@ global_rules:
   subagent_conflict_policy: "If agent advice conflicts with project definitions, reject or rewrite the advice; do not follow it verbatim."
   research_campaign_axis_policy: "Research campaigns are unexplored multi-axis discovery. They must not be feature-only, label-only, model-only, threshold-only, or repair-only programs; declare target/label, feature/input, model/training, decision, and eval/runtime companion axes."
   repair_carryover_policy: "Do not relabel unfinished repair or candidate-local perturbation as a fresh hypothesis in the next campaign/wave without a recorded new surface, divergence, or prevention-memory question."
-  adapter_blocker_policy: "Missing converter/export/EA/parser/runtime support is diagnostic only. Before blocked, deferred, invalid, or discarded status, record root-cause reproduction, at least one concrete repair or fallback adapter attempt, evidence path, and remaining blocker."
+  failure_disposition_policy: "Cannot/unsupported/unavailable is diagnosis, not disposition. Before blocked, deferred, invalid, or discarded status, record failure reproduction, exact failing layer, at least one bounded repair or fallback attempt, evidence path, remaining blocker, and reopen condition; if the repair attempt itself is impossible, record the attempt blocker."
+  adapter_blocker_policy: "Missing converter/export/EA/parser/runtime support is diagnostic only. Build a minimal adapter or fallback when feasible; only after the attempt fails with evidence may the work item be blocked, deferred, invalid, or discarded for missing support."
   bounded_synthesis_policy: "Bounded synthesis is previous-material-only campaign work. It cannot set next wave/campaign direction; use mix-2 then mix-3 by default, allow mix-4 only with a recorded reason, and forbid mix-5+ without policy change."
   agent_role_modes:
     - scout

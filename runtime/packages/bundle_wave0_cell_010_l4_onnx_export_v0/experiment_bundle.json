@@ -6,7 +6,7 @@
   "campaign_id": "campaign_us100_task_surface_scout_v0",
   "sweep_id": "sweep_wave0_broad_surface_scout_v0",
   "source_of_truth": "runtime/packages/bundle_wave0_cell_010_l4_onnx_export_v0/experiment_bundle.json",
-  "created_at_utc": "2026-06-21T19:08:29Z",
+  "created_at_utc": "2026-06-21T19:14:15Z",
   "status": "onnx_exported_python_onnxruntime_parity_passed",
   "claim_boundary": "onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline",
   "id_chain": {
@@ -107,7 +107,9 @@
   "model_framework": "sklearn_pipeline_skl2onnx",
   "onnx_conversion": {
     "target_opset": 13,
-    "adapter_ids": [],
+    "adapter_ids": [
+      "onnx_single_score_output_v0"
+    ],
     "passive_block_policy": "unsupported_or_missing_adapter_requires_root_cause_probe_and_repair_attempt_before_blocked_or_discarded"
   },
   "model_opset": 13,
@@ -143,16 +145,18 @@
     "task_kind": "classification",
     "score_semantics": "class_1_probability",
     "onnx_outputs": [
-      "label",
-      "probabilities"
+      "score"
     ],
-    "score_extraction": "probabilities[:,1]",
-    "probability_calibration_claim": false
+    "score_extraction": "score.reshape(-1)",
+    "probability_calibration_claim": false,
+    "mt5_output_contract": "single_float_score_vector_shape_1_for_single_row_inference"
   },
   "onnx_path": "runtime/packages/bundle_wave0_cell_010_l4_onnx_export_v0/artifacts/model.onnx",
-  "onnx_sha256": "0887bff9282014d1e7a47dac98f7558facc8f525ec78e161122be8f2478b7638",
-  "onnx_size_bytes": 796,
-  "onnx_adapter_ids": [],
+  "onnx_sha256": "8c77536503bebc25ab0e35669bc033913a25f7c7daf9c2ac0e21633863958edb",
+  "onnx_size_bytes": 890,
+  "onnx_adapter_ids": [
+    "onnx_single_score_output_v0"
+  ],
   "parser_version": "spacesonar_wave0_l4_materializer_v1",
   "runtime_contract_version": "mt5_runtime_probe_contract_v2",
   "runtime_period_profile_id": "period_profile_split_set_v0",
@@ -250,8 +254,8 @@
     "cwd": ".",
     "python_executable": "${USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
     "python_version": "3.13.9",
-    "started_at_utc": "2026-06-21T19:08:07Z",
-    "ended_at_utc": "2026-06-21T19:08:29Z",
+    "started_at_utc": "2026-06-21T19:13:52Z",
+    "ended_at_utc": "2026-06-21T19:14:15Z",
     "input_hashes": [
       {
         "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
@@ -299,8 +303,8 @@
     "output_hashes": [
       {
         "path": "runtime/packages/bundle_wave0_cell_010_l4_onnx_export_v0/artifacts/model.onnx",
-        "sha256": "0887bff9282014d1e7a47dac98f7558facc8f525ec78e161122be8f2478b7638",
-        "size_bytes": 796,
+        "sha256": "8c77536503bebc25ab0e35669bc033913a25f7c7daf9c2ac0e21633863958edb",
+        "size_bytes": 890,
         "availability": "local_artifact_hash_recorded"
       },
       {
@@ -322,38 +326,22 @@
         "availability": "local_artifact_hash_recorded"
       }
     ],
-    "git_sha": "b92f580eed99e25f51952a83e9fc71c638bf39cb",
+    "git_sha": "6589cc6caddd5724cfbbcd7b6c9da04f08f50453",
     "branch": "main",
     "dirty_flag": true,
     "changed_files": [
-      "M AGENTS.md",
-      " M docs/agent_control/work_family_registry.yaml",
-      " M docs/policies/onnx_lab_operating_policy.md",
-      " M docs/registers/artifact_registry.csv",
-      " M docs/workspace/workspace_state.yaml",
-      " M foundation/config/mt5_runtime_probe_contract.yaml",
+      "M foundation/onnx/skl2onnx_adapters.py",
       " M foundation/pipelines/materialize_wave0_l4_onnx_bundles.py",
-      " M lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_index.csv",
-      " M lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/onnx_materialization_summary.yaml",
-      " M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml",
-      " M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml",
-      " M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml",
-      " M lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_onnx_materialization_v0_closeout.yaml",
       " M runtime/packages/bundle_wave0_cell_001_l4_onnx_export_v0/experiment_bundle.json",
       " M runtime/packages/bundle_wave0_cell_002_l4_onnx_export_v0/experiment_bundle.json",
       " M runtime/packages/bundle_wave0_cell_003_l4_onnx_export_v0/experiment_bundle.json",
       " M runtime/packages/bundle_wave0_cell_004_l4_onnx_export_v0/experiment_bundle.json",
+      " M runtime/packages/bundle_wave0_cell_005_l4_onnx_export_v0/experiment_bundle.json",
       " M runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/experiment_bundle.json",
       " M runtime/packages/bundle_wave0_cell_007_l4_onnx_export_v0/experiment_bundle.json",
       " M runtime/packages/bundle_wave0_cell_008_l4_onnx_export_v0/experiment_bundle.json",
       " M runtime/packages/bundle_wave0_cell_009_l4_onnx_export_v0/experiment_bundle.json",
-      " M runtime/packages/bundle_wave0_cell_010_l4_onnx_export_v0/experiment_bundle.json",
-      " M runtime/packages/bundle_wave0_cell_011_l4_onnx_export_v0/experiment_bundle.json",
-      " M tests/test_wave0_l4_onnx_materializer.py",
-      "?? foundation/onnx/skl2onnx_adapters.py",
-      "?? runtime/packages/bundle_wave0_cell_005_l4_onnx_export_v0/",
-      "?? runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/",
-      "?? tests/test_skl2onnx_adapters.py"
+      " M tests/test_skl2onnx_adapters.py"
     ],
     "unknown_git_claim_effect": "bundle_preflight_only_lower_reproducibility_claim"
   },
