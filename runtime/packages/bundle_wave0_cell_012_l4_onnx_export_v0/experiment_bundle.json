@@ -1,12 +1,12 @@
 {
   "version": "experiment_bundle_v3",
-  "bundle_id": "bundle_wave0_cell_006_l4_onnx_export_v0",
-  "run_id": "onnxlab_wave0_cell_006_surface_scout_v0",
+  "bundle_id": "bundle_wave0_cell_012_l4_onnx_export_v0",
+  "run_id": "onnxlab_wave0_cell_012_surface_scout_v0",
   "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
   "campaign_id": "campaign_us100_task_surface_scout_v0",
   "sweep_id": "sweep_wave0_broad_surface_scout_v0",
-  "source_of_truth": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/experiment_bundle.json",
-  "created_at_utc": "2026-06-21T19:08:22Z",
+  "source_of_truth": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/experiment_bundle.json",
+  "created_at_utc": "2026-06-21T19:08:35Z",
   "status": "onnx_exported_python_onnxruntime_parity_passed",
   "claim_boundary": "onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline",
   "id_chain": {
@@ -19,7 +19,7 @@
     "artifact_ids": [
       "artifact_dataset_wave0_us100_m5_row_membership_v0"
     ],
-    "bundle_id": "bundle_wave0_cell_006_l4_onnx_export_v0",
+    "bundle_id": "bundle_wave0_cell_012_l4_onnx_export_v0",
     "candidate_id": null
   },
   "dataset_id": "dataset_raw_us100_m5_wave0_export_20260621T152827Z",
@@ -40,20 +40,20 @@
       "server_timezone_claim": false
     },
     "sample_scope": {
-      "train_rows_used_for_fit": 143750,
-      "validation_rows_available_for_L4": 53794,
-      "research_oos_a_rows_available_for_L4": 45533,
-      "locked_final_oos_b_rows_withheld": 38611
+      "train_rows_used_for_fit": 143797,
+      "validation_rows_available_for_L4": 53806,
+      "research_oos_a_rows_available_for_L4": 45545,
+      "locked_final_oos_b_rows_withheld": 38623
     },
     "split_boundary": "train_only_fit_validation_and_research_oos_reserved_for_L4_runtime_observation",
     "locked_final_oos_b_use": "withheld_forbidden_by_default"
   },
   "feature_recipe_id": "feature_wave0_us100_closedbar_price_session_regime_v0",
-  "feature_schema_hash": "3b22b726fd4f5bbea8a82f30220658bee234d79f3f23ba2ab5cdcafd338e4fa5",
-  "feature_order_hash": "dc3fde8df52dab56c708e2c05bf430c8d59e36887a816718767bee0c7383a369",
+  "feature_schema_hash": "241557e649440a0b614525accb6b69aa2bcbda663d497e5e752fc60a6d42caab",
+  "feature_order_hash": "71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd",
   "feature_schema_contract": {
-    "input_family": "causal_rolling_regime_context",
-    "feature_count": 66,
+    "input_family": "multiscale_us100_m5_aggregates",
+    "feature_count": 43,
     "feature_columns": [
       "ret_1",
       "ret_3",
@@ -97,74 +97,53 @@
       "ret_std_288",
       "range_mean_288",
       "close_to_sma_288",
-      "tick_volume_z_288",
-      "close_z_48",
-      "drawdown_from_roll_high_48",
-      "drawup_from_roll_low_48",
-      "volatility_48",
-      "range_regime_48",
-      "close_z_96",
-      "drawdown_from_roll_high_96",
-      "drawup_from_roll_low_96",
-      "volatility_96",
-      "range_regime_96",
-      "close_z_288",
-      "drawdown_from_roll_high_288",
-      "drawup_from_roll_low_288",
-      "volatility_288",
-      "range_regime_288",
-      "close_z_576",
-      "drawdown_from_roll_high_576",
-      "drawup_from_roll_low_576",
-      "volatility_576",
-      "range_regime_576",
-      "volatility_ratio_48_288",
-      "range_ratio_48_288",
-      "trend_ratio_48_288"
+      "tick_volume_z_288"
     ],
     "all_nan_train_columns_dropped": [],
-    "boundary": "right_aligned_closed_bar_rolling_regime_current_and_past_bars"
+    "boundary": "right_aligned_closed_bar_multiscale_us100_only_current_and_past_bars"
   },
   "label_recipe_id": "label_wave0_surface_grid_v0",
-  "label_id": "atr_scaled_barrier_event_h24_target_continuous",
-  "label_schema_hash": "d52e9bfb23fd3649dd501b077b9e0b96d31b6107839d485c67ea584148428f27",
+  "label_id": "tradeability_or_no_trade_regime_h12_target_continuous_train_q60",
+  "label_schema_hash": "79f2de3613feba6fdb731dd622f95e02ae98534e2cb90f17b6194c833f839e07",
   "target_and_label": {
-    "target_family": "atr_scaled_barrier_event",
-    "target_name": "target_continuous",
-    "target_threshold": null,
-    "target_threshold_fit_scope": "not_applicable",
-    "horizon_bars": 24,
-    "label_boundary": "atr_scaled_future_path_barrier_over_declared_horizon_same_primary_role_rows_only"
+    "target_family": "tradeability_or_no_trade_regime",
+    "target_name": "target_continuous_train_q60",
+    "target_threshold": 1.7896042092563453,
+    "target_threshold_fit_scope": "train_only",
+    "horizon_bars": 12,
+    "label_boundary": "future_abs_return_vs_causal_atr_tradeability_score_same_primary_role_rows_only"
   },
   "split_id": "split_set_v0",
   "primary_split_id": "split_base_anchor_v0",
   "task_surface_id": "surface_us100_task_input_decision_rotation_v0",
   "task_surface": {
-    "task_type": "atr_scaled_barrier_event",
-    "target_or_label": "atr_scaled_barrier_event",
+    "task_type": "tradeability_or_no_trade_regime",
+    "target_or_label": "tradeability_or_no_trade_regime",
     "direction_mapping": "declared_by_cell_decision_family_not_inherited",
-    "horizon_or_holding_policy": "24_bars_planned_label_horizon_not_fixed_holding_baseline",
+    "horizon_or_holding_policy": "12_bars_planned_label_horizon_not_fixed_holding_baseline",
     "output_head": "declared_by_model_family_at_execution_no_legacy_output_head",
-    "decision_family": "diagnostic_rank_only",
-    "input_family": "causal_rolling_regime_context",
-    "threshold_policy": "none_diagnostic"
+    "decision_family": "abstain_capable_direction_agnostic_tradeability",
+    "input_family": "multiscale_us100_m5_aggregates",
+    "threshold_policy": "coarse_density_bands_train_only"
   },
-  "decision_use": "diagnostic_rank_only",
+  "decision_use": "abstain_capable_direction_agnostic_tradeability",
   "decision_recipe_id": "decision_wave0_abstain_density_scout_v0",
-  "decision_surface_id": "diagnostic_rank_only_none_diagnostic",
+  "decision_surface_id": "abstain_capable_direction_agnostic_tradeability_coarse_density_bands_train_only",
   "decision_surface": {
-    "decision_family": "diagnostic_rank_only",
-    "threshold_policy": "none_diagnostic",
-    "score_low_threshold": null,
-    "score_high_threshold": null,
-    "diagnostic_only": true,
+    "decision_family": "abstain_capable_direction_agnostic_tradeability",
+    "threshold_policy": "coarse_density_bands_train_only",
+    "score_low_threshold": 0.30027692907334824,
+    "score_high_threshold": 0.5592615936826834,
+    "diagnostic_only": false,
     "runtime_translation_status": "pending_strategy_tester_adapter"
   },
-  "model_family": "linear_or_ridge_rank_scout",
+  "model_family": "onnx_realistic_tree_or_boosted_scout",
   "model_framework": "sklearn_pipeline_skl2onnx",
   "onnx_conversion": {
     "target_opset": 13,
-    "adapter_ids": [],
+    "adapter_ids": [
+      "skl2onnx_hgb_numpy_scalar_cast_v0"
+    ],
     "passive_block_policy": "unsupported_or_missing_adapter_requires_root_cause_probe_and_repair_attempt_before_blocked_or_discarded"
   },
   "model_opset": 13,
@@ -181,9 +160,9 @@
     "dtype": "float32",
     "shape": [
       null,
-      66
+      43
     ],
-    "feature_order_hash": "dc3fde8df52dab56c708e2c05bf430c8d59e36887a816718767bee0c7383a369",
+    "feature_order_hash": "71c81a79dbe6ec9532b575d8334fb8b34971912dc10ef9b0566f1e94efe683cd",
     "feature_columns": [
       "ret_1",
       "ret_3",
@@ -227,45 +206,25 @@
       "ret_std_288",
       "range_mean_288",
       "close_to_sma_288",
-      "tick_volume_z_288",
-      "close_z_48",
-      "drawdown_from_roll_high_48",
-      "drawup_from_roll_low_48",
-      "volatility_48",
-      "range_regime_48",
-      "close_z_96",
-      "drawdown_from_roll_high_96",
-      "drawup_from_roll_low_96",
-      "volatility_96",
-      "range_regime_96",
-      "close_z_288",
-      "drawdown_from_roll_high_288",
-      "drawup_from_roll_low_288",
-      "volatility_288",
-      "range_regime_288",
-      "close_z_576",
-      "drawdown_from_roll_high_576",
-      "drawup_from_roll_low_576",
-      "volatility_576",
-      "range_regime_576",
-      "volatility_ratio_48_288",
-      "range_ratio_48_288",
-      "trend_ratio_48_288"
+      "tick_volume_z_288"
     ]
   },
   "output_schema": {
-    "task_kind": "regression",
-    "score_semantics": "regression_rank_score",
+    "task_kind": "classification",
+    "score_semantics": "class_1_probability",
     "onnx_outputs": [
-      "variable"
+      "label",
+      "probabilities"
     ],
-    "score_extraction": "variable.reshape(-1)",
+    "score_extraction": "probabilities[:,1]",
     "probability_calibration_claim": false
   },
-  "onnx_path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/model.onnx",
-  "onnx_sha256": "322196b5a2bd70e101873c0dc6fddca1031859dcc208c7e98b581c8dbe00d818",
-  "onnx_size_bytes": 1776,
-  "onnx_adapter_ids": [],
+  "onnx_path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/model.onnx",
+  "onnx_sha256": "ae584674aab6b0cbf4159b009398228e3681dc648bc3fdad32a13b21b5a8e317",
+  "onnx_size_bytes": 64639,
+  "onnx_adapter_ids": [
+    "skl2onnx_hgb_numpy_scalar_cast_v0"
+  ],
   "parser_version": "spacesonar_wave0_l4_materializer_v1",
   "runtime_contract_version": "mt5_runtime_probe_contract_v2",
   "runtime_period_profile_id": "period_profile_split_set_v0",
@@ -275,25 +234,25 @@
     "status": "passed",
     "sample_scope": "first_validation_rows_after_train_only_fit",
     "sample_rows": 512,
-    "max_abs_error": 1.735820034709512e-06,
-    "mean_abs_error": 4.7385996542720463e-07,
+    "max_abs_error": 1.3206363935758247e-07,
+    "mean_abs_error": 2.5568379875758355e-08,
     "tolerance": 1e-05,
     "fixture_input": {
-      "path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
-      "sha256": "4baecf1de9ab1e2a698404b54296b8cc8448eabd7078e3428914dd6ba3e71294",
-      "size_bytes": 429306,
+      "path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
+      "sha256": "82091ac7cd771eeb91b7106cfea66e32f40fe8360c1aa5bf127278d973d78593",
+      "size_bytes": 282306,
       "availability": "local_artifact_hash_recorded"
     },
     "expected_score": {
-      "path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
-      "sha256": "a72b36d0c2394b0457f92547d9147c29016365643476053e37d18695b7a8418b",
-      "size_bytes": 10932,
+      "path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
+      "sha256": "0a69d50649812d9aa3916abd32061027b69c1bdf77870e4c97956b0a964a6633",
+      "size_bytes": 10399,
       "availability": "local_artifact_hash_recorded"
     },
     "observed_score": {
-      "path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
-      "sha256": "d16209c43d601521228b21714a271287ce739d3559faf33979e3a2a0388eea35",
-      "size_bytes": 10924,
+      "path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
+      "sha256": "6c3e24271312d60bffedc1b0bab8b86af062a5b6003ca41b31a0ac08a24c07a9",
+      "size_bytes": 10354,
       "availability": "local_artifact_hash_recorded"
     }
   },
@@ -321,7 +280,7 @@
       "bar_close_timing",
       "feature_reconstruction_in_EA",
       "score_threshold_translation",
-      "diagnostic_surface_runtime_observation_mode"
+      "trade_decision_surface_translation"
     ],
     "minimum_reconciliation_attempt": {
       "status": "pending_MT5_L4",
@@ -364,7 +323,7 @@
     "python_executable": "${USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
     "python_version": "3.13.9",
     "started_at_utc": "2026-06-21T19:08:07Z",
-    "ended_at_utc": "2026-06-21T19:08:22Z",
+    "ended_at_utc": "2026-06-21T19:08:35Z",
     "input_hashes": [
       {
         "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
@@ -385,53 +344,53 @@
         "availability": "present_hash_recorded"
       },
       {
-        "path": "lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifacts/feature_schema.json",
-        "sha256": "71a34000426c057061f33580fc178ed0658373b6e5d43d0b9023ce399f7ea160",
-        "size_bytes": 3753,
+        "path": "lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifacts/feature_schema.json",
+        "sha256": "0551d2a4190c9659f22b93a3c82c78b66b8066ee9a1758ab037f1a99d744febf",
+        "size_bytes": 2513,
         "availability": "present_hash_recorded"
       },
       {
-        "path": "lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifacts/label_schema.json",
-        "sha256": "182d8b3b70e53b6e8b8a195a17f599924e467620c3bc33e6e5b5a8afb00c493a",
-        "size_bytes": 874,
+        "path": "lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifacts/label_schema.json",
+        "sha256": "3d9520cb6cc336ab4e1791a4f2d4f095f0145468433b91b2d39f62f93975f436",
+        "size_bytes": 899,
         "availability": "present_hash_recorded"
       },
       {
-        "path": "lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifacts/model_summary.json",
-        "sha256": "719338dd010c8fcfd71c9ad2e62adbdec3d92747ddf8ec74e69c494a9894dfec",
-        "size_bytes": 898,
+        "path": "lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifacts/model_summary.json",
+        "sha256": "ef530c9a2b93a61a5a9c28140579ff8b63e341e40e9363f4a1948f2be62ad444",
+        "size_bytes": 942,
         "availability": "present_hash_recorded"
       },
       {
-        "path": "lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifacts/split_profile.json",
-        "sha256": "8da5e5971df8c6d79061a1abc9d4807a9d29c24a826f9465373fcd6b57230d93",
+        "path": "lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifacts/split_profile.json",
+        "sha256": "959ea70c2f17b22f99ccf640c33b1046923c40d6b32036d06d5c2f765e1369b1",
         "size_bytes": 648,
         "availability": "present_hash_recorded"
       }
     ],
     "output_hashes": [
       {
-        "path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/model.onnx",
-        "sha256": "322196b5a2bd70e101873c0dc6fddca1031859dcc208c7e98b581c8dbe00d818",
-        "size_bytes": 1776,
+        "path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/model.onnx",
+        "sha256": "ae584674aab6b0cbf4159b009398228e3681dc648bc3fdad32a13b21b5a8e317",
+        "size_bytes": 64639,
         "availability": "local_artifact_hash_recorded"
       },
       {
-        "path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
-        "sha256": "4baecf1de9ab1e2a698404b54296b8cc8448eabd7078e3428914dd6ba3e71294",
-        "size_bytes": 429306,
+        "path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
+        "sha256": "82091ac7cd771eeb91b7106cfea66e32f40fe8360c1aa5bf127278d973d78593",
+        "size_bytes": 282306,
         "availability": "local_artifact_hash_recorded"
       },
       {
-        "path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
-        "sha256": "a72b36d0c2394b0457f92547d9147c29016365643476053e37d18695b7a8418b",
-        "size_bytes": 10932,
+        "path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
+        "sha256": "0a69d50649812d9aa3916abd32061027b69c1bdf77870e4c97956b0a964a6633",
+        "size_bytes": 10399,
         "availability": "local_artifact_hash_recorded"
       },
       {
-        "path": "runtime/packages/bundle_wave0_cell_006_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
-        "sha256": "d16209c43d601521228b21714a271287ce739d3559faf33979e3a2a0388eea35",
-        "size_bytes": 10924,
+        "path": "runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
+        "sha256": "6c3e24271312d60bffedc1b0bab8b86af062a5b6003ca41b31a0ac08a24c07a9",
+        "size_bytes": 10354,
         "availability": "local_artifact_hash_recorded"
       }
     ],

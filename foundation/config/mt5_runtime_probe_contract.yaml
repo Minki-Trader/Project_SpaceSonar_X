@@ -20,6 +20,7 @@ runtime_learning_probe_decision:
   required_for_runtime_claim_surfaces: true
   proxy_follow_through_required: true
   proxy_follow_through_rule: "Every valid proxy/model-bearing experiment must progress to L4_split_runtime_probe. Proxy-only closeout is not allowed for a valid proxy run."
+  adapter_blocker_rule: "Missing converter, export adapter, EA adapter, parser support, or runtime glue is a diagnostic state only. Before blocked, invalid, deferred, or discard status, record root-cause reproduction, at least one concrete repair or fallback adapter attempt, evidence path, and remaining blocker."
   l5_continuation_rule: "If L4_split_runtime_probe remains promising under the declared surface, continue to L5_candidate_runtime_evidence with candidate-specific manifests."
   campaign_parity_required: true
   campaign_parity_rule: "Every proxy/model-bearing campaign must record proxy_runtime_parity before closing proxy evidence. This includes matching behavior, expected runtime differences, at least one reconciliation attempt, unit semantics, unexplained divergence, prevention memory, and proxy-bad/runtime-good surprises. Parity reconciliation does not force equality when the true proxy and MT5 semantics differ."

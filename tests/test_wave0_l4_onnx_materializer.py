@@ -7,7 +7,7 @@ from foundation.pipelines.materialize_wave0_l4_onnx_bundles import (
 )
 
 
-def test_exportable_from_preflight_separates_supported_and_blocked_model_families() -> None:
+def test_exportable_from_preflight_includes_repaired_hgb_adapter_family() -> None:
     preflight = {
         "run_preflight": [
             {"run_id": "run_logistic", "model_family": "logistic_classification_scout"},
@@ -18,8 +18,17 @@ def test_exportable_from_preflight_separates_supported_and_blocked_model_familie
 
     exportable, blocked = exportable_from_preflight(preflight)
 
-    assert exportable == ["run_logistic", "run_ridge"]
-    assert blocked == {"run_hgb": "blocked_hist_gradient_boosting_skl2onnx_adapter_unproven"}
+    assert exportable == ["run_logistic", "run_ridge", "run_hgb"]
+    assert blocked == {}
+
+
+def test_exportable_from_preflight_unknown_family_requires_attempted_probe() -> None:
+    preflight = {"run_preflight": [{"run_id": "run_unknown", "model_family": "new_model_family"}]}
+
+    exportable, blocked = exportable_from_preflight(preflight)
+
+    assert exportable == []
+    assert blocked == {"run_unknown": "blocked_unknown_model_family_export_adapter_requires_attempted_probe"}
 
 
 def test_materializer_uses_mt5_compatible_preflight_boundary() -> None:

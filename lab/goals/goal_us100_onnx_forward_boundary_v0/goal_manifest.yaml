@@ -2,7 +2,7 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-21T18:57:13Z'
+updated_at_utc: '2026-06-21T19:08:35Z'
 claim_boundary: planning_scaffold_active_goal_control_plane
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -212,15 +212,13 @@ program_budgets:
     l4_onnx_materialization_status: completed_exportable_bundles_l4_still_pending
     l4_onnx_materialization_counts:
       valid_proxy_runs_requiring_l4: 12
-      exportable_bundle_count: 10
-      blocked_export_adapter_count: 2
+      exportable_bundle_count: 12
+      blocked_export_adapter_count: 0
       failed_materialization_count: 0
       status_counts:
-        blocked_export_adapter_required: 2
-        onnx_exported_python_onnxruntime_parity_passed: 10
+        onnx_exported_python_onnxruntime_parity_passed: 12
       parity_status_counts:
-        not_run: 2
-        passed: 10
+        passed: 12
       model_family_counts:
         linear_or_ridge_rank_scout: 5
         logistic_classification_scout: 5

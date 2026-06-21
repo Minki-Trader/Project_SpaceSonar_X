@@ -106,6 +106,7 @@ Unknown git/env identity is planning scaffold only; it lowers reproducible-run, 
 - Required follow-through: reach `L4_split_runtime_probe` under active period/execution profiles.
 - If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
 - If a surface cannot be made MT5-executable, repair it before treating proxy output as evidence.
+- Missing converters, export adapters, EA adapters, parser support, or runtime glue are diagnostic states, not final stop reasons. Before marking a valid proxy/model-bearing surface blocked, deferred, invalid, or discarded for missing support, record the root-cause reproduction, at least one concrete repair or fallback adapter attempt, the evidence path, and the remaining blocker.
 - Do not stretch a wave or campaign around repeated tiny repairs for one candidate. One bounded repair can create prevention memory; repeated repair needs a new surface question, divergence campaign, or closeout.
 - Repair and neighborhood perturbation stay inside the meaningful adjacent scope: unit conversion, parity semantics, execution interpretation, or directly neighboring surface variables. Stop when it becomes micro-tuning, candidate laundering, or a new-hypothesis label without new evidence.
 - Campaigns must maintain `proxy_runtime_parity`: shared contract, known differences, MT5 risks, one reconciliation attempt, unit semantics, comparison class, divergence judgment, prevention memory, follow-up.

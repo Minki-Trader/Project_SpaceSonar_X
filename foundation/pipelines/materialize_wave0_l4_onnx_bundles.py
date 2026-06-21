@@ -22,11 +22,10 @@ import onnx
 import onnxruntime as ort
 import pandas as pd
 import yaml
-from skl2onnx import convert_sklearn
-from skl2onnx.common.data_types import FloatTensorType
 
 from foundation.features.wave0_scout_features import FeatureSchema, build_wave0_features
 from foundation.labels.wave0_scout_labels import LabelSchema, build_wave0_labels
+from foundation.onnx.skl2onnx_adapters import convert_sklearn_pipeline_for_lab
 from foundation.training.wave0_proxy_models import (
     ProxyFit,
     build_model_target,
@@ -59,8 +58,11 @@ GOAL_MANIFEST = Path("lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifes
 WORKSPACE_STATE = Path("docs/workspace/workspace_state.yaml")
 ARTIFACT_REGISTRY = Path("docs/registers/artifact_registry.csv")
 
-EXPORTABLE_MODEL_FAMILIES = {"linear_or_ridge_rank_scout", "logistic_classification_scout"}
-BLOCKED_MODEL_FAMILIES = {"onnx_realistic_tree_or_boosted_scout"}
+EXPORTABLE_MODEL_FAMILIES = {
+    "linear_or_ridge_rank_scout",
+    "logistic_classification_scout",
+    "onnx_realistic_tree_or_boosted_scout",
+}
 
 
 class NoAliasDumper(yaml.SafeDumper):
@@ -247,16 +249,14 @@ def feature_label_for_cell(
     return features, feature_schema, labels, label_schema
 
 
-def convert_model_to_onnx(fit: ProxyFit, feature_count: int) -> bytes:
-    options = {id(fit.model): {"zipmap": False}} if fit.task_kind == "classification" else None
-    model = convert_sklearn(
+def convert_model_to_onnx(fit: ProxyFit, feature_count: int) -> tuple[bytes, list[str]]:
+    result = convert_sklearn_pipeline_for_lab(
         fit.model,
-        initial_types=[("features", FloatTensorType([None, feature_count]))],
+        feature_count=feature_count,
+        task_kind=fit.task_kind,
         target_opset=TARGET_OPSET,
-        options=options,
     )
-    onnx.checker.check_model(model)
-    return model.SerializeToString()
+    return result.model.SerializeToString(), result.adapter_ids
 
 
 def onnx_score(onnx_path: Path, features: np.ndarray, task_kind: str) -> np.ndarray:
@@ -290,10 +290,8 @@ def exportable_from_preflight(preflight: dict[str, Any]) -> tuple[list[str], dic
         model_family = str(row.get("model_family") or "")
         if model_family in EXPORTABLE_MODEL_FAMILIES:
             exportable.append(run_id)
-        elif model_family in BLOCKED_MODEL_FAMILIES:
-            blocked[run_id] = "blocked_hist_gradient_boosting_skl2onnx_adapter_unproven"
         else:
-            blocked[run_id] = "blocked_unknown_model_family_export_adapter"
+            blocked[run_id] = "blocked_unknown_model_family_export_adapter_requires_attempted_probe"
     return exportable, blocked
 
 
@@ -346,7 +344,7 @@ def materialize_one(
         target_threshold=target_threshold,
     )
 
-    onnx_bytes = convert_model_to_onnx(fit, len(columns))
+    onnx_bytes, onnx_adapter_ids = convert_model_to_onnx(fit, len(columns))
     onnx_path = artifact_root / "model.onnx"
     onnx_path.write_bytes(onnx_bytes)
 
@@ -455,6 +453,11 @@ def materialize_one(
         },
         "model_family": cell["model_family"],
         "model_framework": "sklearn_pipeline_skl2onnx",
+        "onnx_conversion": {
+            "target_opset": TARGET_OPSET,
+            "adapter_ids": onnx_adapter_ids,
+            "passive_block_policy": "unsupported_or_missing_adapter_requires_root_cause_probe_and_repair_attempt_before_blocked_or_discarded",
+        },
         "model_opset": TARGET_OPSET,
         "model_training": {
             "fit_scope": "train_only",
@@ -481,6 +484,7 @@ def materialize_one(
         "onnx_path": rel(onnx_path, repo_root),
         "onnx_sha256": sha256(onnx_path),
         "onnx_size_bytes": onnx_path.stat().st_size,
+        "onnx_adapter_ids": onnx_adapter_ids,
         "parser_version": "spacesonar_wave0_l4_materializer_v1",
         "runtime_contract_version": "mt5_runtime_probe_contract_v2",
         "runtime_period_profile_id": "period_profile_split_set_v0",
@@ -538,6 +542,7 @@ def materialize_one(
             "prevention_memory": [
                 "Do not treat ONNXRuntime parity as MT5 runtime parity.",
                 "Record feature reconstruction and threshold interpretation before reusing this surface.",
+                "Do not mark unsupported conversion as blocked until root cause, repair attempt, and fallback decision are recorded.",
             ],
             "follow_up_action": WORK_ITEM_ID,
             "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority",
@@ -603,6 +608,7 @@ def materialize_one(
         "onnx_path": rel(onnx_path, repo_root),
         "onnx_sha256": sha256(onnx_path),
         "onnx_size_bytes": onnx_path.stat().st_size,
+        "onnx_adapter_ids": "|".join(onnx_adapter_ids),
         "parity_status": parity_status,
         "parity_max_abs_error": max_abs_error,
         "parity_mean_abs_error": mean_abs_error,
@@ -633,6 +639,7 @@ def build_blocked_rows(preflight: dict[str, Any], blocked: dict[str, str]) -> li
                 "onnx_path": "",
                 "onnx_sha256": "",
                 "onnx_size_bytes": "",
+                "onnx_adapter_ids": "",
                 "parity_status": "not_run",
                 "parity_max_abs_error": "",
                 "parity_mean_abs_error": "",
@@ -736,12 +743,13 @@ def materialize(repo_root: Path, *, command_argv: list[str], started_at_utc: str
             "goal_achieve": False,
             "next_action": (
                 "Build the full-period MT5 Strategy Tester adapter for exported ONNX bundles, "
-                "then run L4 validation and research_oos; separately repair/probe boosted tree export."
+                "then run L4 validation and research_oos."
             ),
         },
         "prevention_memory": [
             "Record ONNX bundle manifests separately from proxy reports before attempting L4.",
-            "Treat HistGradientBoosting exports as blocked until an adapter probe succeeds under MT5-compatible opset/output semantics.",
+            "HistGradientBoosting export uses skl2onnx_hgb_numpy_scalar_cast_v0; keep converter adapter evidence before L4.",
+            "Unsupported conversion paths require root-cause capture and at least one repair or fallback adapter attempt before blocked/discarded status.",
             "Do not count Python ONNXRuntime parity as MT5 L4 or economics evidence.",
         ],
         "environment": {
@@ -785,6 +793,7 @@ def index_fieldnames() -> list[str]:
         "onnx_path",
         "onnx_sha256",
         "onnx_size_bytes",
+        "onnx_adapter_ids",
         "parity_status",
         "parity_max_abs_error",
         "parity_mean_abs_error",
@@ -956,7 +965,6 @@ def update_control_records(repo_root: Path, summary: dict[str, Any], closeout: d
     next_work["missing_material_if_relevant"] = [
         "full_period_strategy_tester_adapter_absent_for_current_proxy_runs",
         "L4_validation_and_research_oos_reports_absent",
-        "hist_gradient_boosting_export_adapter_unproven_for_two_runs",
     ]
     next_work["next_action"] = summary["judgment"]["next_action"]
     write_yaml(repo_root / NEXT_WORK_ITEM, next_work)

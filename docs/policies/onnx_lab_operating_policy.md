@@ -91,6 +91,7 @@ Git integration cadence:
 - Every valid proxy/model-bearing run must be driven to `L4_split_runtime_probe`; proxy-only closure is not an allowed endpoint.
 - If L4 still looks usable under the declared surface and execution profile, continue to `L5_candidate_runtime_evidence`.
 - A planned proxy surface must include an executable ONNX/EA/MT5 follow-through path. If it cannot be made executable, repair the surface before treating it as proxy evidence.
+- Missing converter, export adapter, EA adapter, parser support, or runtime glue is not by itself a valid closeout reason. First reproduce the failure, capture the root cause, attempt the smallest credible repair or fallback adapter, and record the attempt evidence. Only then may the item become `blocked_retry`, `invalid_setup`, `negative_memory`, or a lowered-boundary `inconclusive` record.
 - Repair is for interpretation, parity, execution, or prevention memory. It is not permission to keep one weak candidate alive through wave/campaign budget.
 - Neighborhood perturbation around a repair is allowed only while it tests meaningful adjacent semantics: unit conversion, parity mapping, execution interpretation, or directly neighboring surface variables. Stop when it becomes generic micro-tuning, candidate laundering, or a renamed continuation without new evidence.
 - Parity is tracked per campaign from the first proxy-bearing run. Do not wait for a selected candidate before checking whether Python/proxy semantics, ONNX semantics, EA semantics, and MT5 tester semantics are still the same experiment.
@@ -181,6 +182,7 @@ Stop, narrow, repair, or lower the claim when:
 - signal concentrates in one short regime
 - thresholds are knife-edge
 - ONNX export or parity breaks
+- converter, export adapter, EA adapter, parser, or runtime support is missing and no root-cause plus repair-attempt record exists yet
 - trade density is too sparse or too dense for the decision use
 - repeated work is only micro-tuning without a new surface clue
 - a single candidate consumes repeated repair budget without producing reusable surface knowledge, parity prevention memory, or a divergence hypothesis
