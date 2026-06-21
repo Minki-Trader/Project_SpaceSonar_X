@@ -11,6 +11,7 @@ disposition_gate:
     - invalid
     - discarded
   rule: "A failed or unsupported operation may not be closed with these dispositions until root cause, exact failing layer, at least one bounded repair or fallback attempt, evidence path, remaining blocker, and reopen condition are recorded."
+  adapter_absence_rule: "If missing converter/export/EA/parser/runtime glue is under repo/control, the bounded attempt is to build and test the smallest adapter or fallback. Adapter absence alone is not an attempt blocker."
   repair_attempt_exceptions:
     - user_secret_required
     - unavailable_external_state
@@ -72,7 +73,7 @@ failure_taxonomy:
     preferred_action: fix_behavior_or_test_contract
     default_repair_mode: guarded_autofix
   unsupported_or_missing_adapter:
-    preferred_action: reproduce_root_cause_then_build_minimal_adapter_or_fallback
+    preferred_action: reproduce_root_cause_then_build_and_test_minimal_adapter_or_fallback
     default_repair_mode: guarded_autofix
   unsupported_external_environment:
     preferred_action: record_environment_blocker_and_reopen_condition

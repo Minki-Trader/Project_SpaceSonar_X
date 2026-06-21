@@ -40,7 +40,8 @@ Use this skill when a run, model, bundle, package, backtest, PR, or user-facing 
 - Invalid means the setup cannot be interpreted after a repair or reinterpretation attempt, or the attempt blocker is recorded.
 - Inconclusive is not success or failure.
 - Blocked, deferred, invalid, or discarded due to "cannot", "unsupported", "not available", or missing support require a failure disposition record: reproduction, exact failing layer, bounded repair/fallback attempt, evidence path, remaining blocker, and reopen condition.
-- Missing converter, export, EA, parser, runtime, or environment support should trigger a minimal adapter/fallback attempt when feasible before disposition.
+- Missing converter, export, EA, parser, or runtime glue under repo/control requires building and testing the smallest adapter/fallback before disposition; "adapter absent" alone is not a blocker.
+- Attempt blockers are narrow: user secrets, unavailable external state, destructive/unsafe action, or project-policy violation. Record the blocker and reopen condition.
 - Research candidate is not selected baseline.
 - Runtime probe is not runtime authority.
 - Economics pass needs MT5 runtime evidence.

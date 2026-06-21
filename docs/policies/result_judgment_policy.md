@@ -16,4 +16,7 @@
 - `negative` is reusable evidence when the setup is valid.
 - `invalid` is not interpreted until the broken condition is repaired.
 - Missing required verification lowers the claim to `inconclusive`, `blocked`, or a narrower boundary.
+- `blocked`, `deferred`, `invalid`, or `discarded` cannot be based only on "cannot", "unsupported", "not available", or missing adapter/glue.
+- Before that disposition, record root cause, exact failing layer, repair/fallback attempt evidence, remaining blocker, and reopen condition.
+- If converter/export/EA/parser/runtime glue is missing and is under repo/control, build and test the smallest adapter or fallback before disposition. Only user secrets, unavailable external state, destructive/unsafe action, or policy violation can block the attempt.
 - `candidate` is not selected baseline, reviewed, verified, pass, runtime authority, or economics pass.

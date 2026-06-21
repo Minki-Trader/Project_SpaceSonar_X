@@ -47,7 +47,9 @@ If any relevant field contains one of these tokens, lower the claim unless match
 ## Guardrails
 
 - A completed command is not a meaningful experiment by itself.
-- "Cannot", "unsupported", "not available", or missing support is not enough to claim blocked, deferred, invalid, or discarded; name the reproduction, repair/fallback attempt, evidence path, remaining blocker, and reopen condition.
+- "Cannot", "unsupported", "not available", or missing support is not enough to claim blocked, deferred, invalid, or discarded; name the reproduction, exact failing layer, repair/fallback attempt, evidence path, remaining blocker, and reopen condition.
+- Missing converter/export/EA/parser/runtime glue under repo/control requires building and testing the smallest adapter or fallback before disposition. "No adapter exists" is not a blocker by itself.
+- Attempt blockers are narrow: user secrets, unavailable external state, destructive/unsafe action, or project-policy violation. Record the blocker instead of silently deferring.
 - ONNX export smoke is not runtime authority.
 - MetaEditor compile is not Strategy Tester evidence.
 - Python/ONNX parity is not economics pass.
