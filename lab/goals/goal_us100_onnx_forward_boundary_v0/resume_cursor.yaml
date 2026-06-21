@@ -1,6 +1,6 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-21T20:22:34Z'
+updated_at_utc: '2026-06-21T20:32:58Z'
 cursor_state: active
 active_phase: wave01_operating_proof_window_l4_follow_through_next
 current_truth_sources:
@@ -26,6 +26,13 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
 - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_pair_judgment_v0_closeout.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/l4_ingredient_materialization_summary.yaml
+- docs/registers/ingredient_card_registry.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_ingredient_materialization_v0_closeout.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_008_l4_runtime_score_observed_v0.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_010_l4_runtime_score_observed_v0.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_011_l4_runtime_score_observed_v0.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_012_l4_runtime_score_observed_v0.yaml
 active_ids:
   idea_id: idea_us100_m5_blank_slate_surface_map_v0
   hypothesis_id: hyp_surface_diversity_before_model_search_v0
@@ -34,12 +41,12 @@ active_ids:
   surface_id: surface_us100_task_input_decision_rotation_v0
   sweep_id: sweep_wave0_broad_surface_scout_v0
 latest_completed_work:
-  work_item_id: work_wave0_l4_pair_judgment_v0
-  result_judgment: runtime_probe
-  claim_boundary: l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+  work_item_id: work_wave0_l4_ingredient_materialization_v0
+  result_judgment: preserved_clue
+  claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority
   evidence_paths:
-  - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_pair_judgment_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/l4_ingredient_materialization_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_ingredient_materialization_v0_closeout.yaml
 next_work_item:
   work_item_id: work_wave0_first_batch_l4_follow_through_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

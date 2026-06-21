@@ -1,0 +1,87 @@
+version: wave0_l4_ingredient_materialization_summary_v1
+summary_id: wave0_l4_ingredient_materialization_summary_v0
+work_item_id: work_wave0_l4_ingredient_materialization_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: '2026-06-21T20:32:58Z'
+ended_at_utc: '2026-06-21T20:32:58Z'
+status: l4_preserved_clue_ingredients_materialized
+claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority
+counts:
+  ingredient_card_count: 4
+  status_counts:
+    ingredient_ready_diagnostic_runtime_score_control: 1
+    ingredient_ready_requires_decision_execution_adapter: 3
+  source_clue_counts:
+    clue_wave0_path_quality_h12_side_signal_v0: 1
+    clue_wave0_tradeability_mid_horizon_v0: 3
+source_records:
+  pair_judgment_index: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+  pair_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+ingredient_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_008_l4_runtime_score_observed_v0.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_010_l4_runtime_score_observed_v0.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_011_l4_runtime_score_observed_v0.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_012_l4_runtime_score_observed_v0.yaml
+judgment:
+  judgment_label: preserved_clue
+  result_subject: L4 score-observed preserved clue ingredient materialization
+  metric_identity: proxy preserved clue plus paired MT5 score telemetry observation;
+    no economics metric
+  comparison_baseline: Wave01 first-batch axis review and L4 pair judgment
+  missing_evidence:
+  - tester_reports_missing_for_all_ingredient_sources
+  - trading_or_sparse_decision_EA_not_present
+  - economics_metrics_not_available_from_non_trading_probe
+  - row_level_proxy_vs_MT5_score_alignment_not_performed
+  next_action: open decision-execution adapter design for non-diagnostic ingredients
+    or bounded synthesis mix queue; do not claim L5 candidate yet
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: 1e7abc87db3efd8eeac9d392a2f0fa05eeea8cb6
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M .agents/skills/spacesonar-claim-discipline/SKILL.md
+  - ' M .agents/skills/spacesonar-result-judgment/SKILL.md'
+  - ' M .agents/skills/spacesonar-runtime-parity/SKILL.md'
+  - ' M AGENTS.md'
+  - ' M docs/agent_control/self_correction_policy.yaml'
+  - ' M docs/agent_control/work_family_registry.yaml'
+  - ' M docs/policies/onnx_lab_operating_policy.md'
+  - ' M docs/policies/result_judgment_policy.md'
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/registers/clue_registry.csv'
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/registers/ingredient_card_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M foundation/config/mt5_runtime_probe_contract.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ?? foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_ingredient_materialization_v0_closeout.yaml
+  - ?? tests/test_wave0_l4_ingredient_cards.py
+  started_at_utc: '2026-06-21T20:32:58Z'
+  ended_at_utc: '2026-06-21T20:32:58Z'

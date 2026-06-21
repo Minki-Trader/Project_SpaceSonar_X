@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T20:22:34Z'
+updated_utc: '2026-06-21T20:32:58Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -63,7 +63,7 @@ current_claims:
   active_hypothesis_id: hyp_surface_diversity_before_model_search_v0
   active_surface_id: surface_us100_task_input_decision_rotation_v0
   active_sweep_id: sweep_wave0_broad_surface_scout_v0
-  active_goal_phase: wave01_operating_proof_window_l4_pair_judgment_completed
+  active_goal_phase: wave01_operating_proof_window_l4_ingredients_materialized
   next_work_item_id: work_wave0_first_batch_l4_follow_through_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
@@ -240,6 +240,16 @@ current_claims:
     comparison_class_counts:
       proxy_inconclusive_runtime_score_observed: 8
       proxy_preserved_clue_runtime_score_observed: 4
+  wave0_l4_ingredient_materialization_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/l4_ingredient_materialization_summary.yaml
+  wave0_l4_ingredient_materialization_status: l4_preserved_clue_ingredients_materialized
+  wave0_l4_ingredient_materialization_counts:
+    ingredient_card_count: 4
+    status_counts:
+      ingredient_ready_diagnostic_runtime_score_control: 1
+      ingredient_ready_requires_decision_execution_adapter: 3
+    source_clue_counts:
+      clue_wave0_path_quality_h12_side_signal_v0: 1
+      clue_wave0_tradeability_mid_horizon_v0: 3
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: l4_pair_judgment_completed_no_l5_candidates
+status: l4_ingredients_materialized_decision_adapter_design_next
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -113,6 +113,16 @@ current_truth:
     comparison_class_counts:
       proxy_inconclusive_runtime_score_observed: 8
       proxy_preserved_clue_runtime_score_observed: 4
+  l4_ingredient_materialization_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/l4_ingredient_materialization_summary.yaml
+  l4_ingredient_materialization_status: l4_preserved_clue_ingredients_materialized
+  l4_ingredient_materialization_counts:
+    ingredient_card_count: 4
+    status_counts:
+      ingredient_ready_diagnostic_runtime_score_control: 1
+      ingredient_ready_requires_decision_execution_adapter: 3
+    source_clue_counts:
+      clue_wave0_path_quality_h12_side_signal_v0: 1
+      clue_wave0_tradeability_mid_horizon_v0: 3
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -218,62 +228,96 @@ branch_worktree:
   branch_worktree_fit: fit
   branch_action: keep_current_branch
   policy_reference: docs/policies/branch_policy.md
-  mismatch_claim_effect: no_branch_mismatch_detected_for_l4_pair_judgment
+  mismatch_claim_effect: no_branch_mismatch_detected_for_l4_ingredient_materialization
 agent_allocation:
-  phase: wave0_l4_pair_judgment_closeout
+  phase: wave0_l4_ingredient_materialization
   selected_agents: []
   role_modes: []
-  selection_reason: Deterministic pair aggregation and claim-boundary closeout; no
-    protected claim or policy change required.
-  why_not_smaller: Codex alone is the smallest allocation for deterministic aggregation.
+  selection_reason: Deterministic materialization of already judged preserved clues;
+    no protected claim, promotion, or policy change required.
+  why_not_smaller: Codex alone is the smallest allocation for registry/card materialization.
   why_not_larger: No runtime authority, reviewed/pass, promotion, or cross-system
     handoff claim is being made.
   max_threads_is_capacity_only: true
   claim_effect: no_new_advisory_claim
 execution_provenance:
-  git_sha: 4e7fa073f1328405ccbcc50023c4537a9f402945
+  git_sha: 1e7abc87db3efd8eeac9d392a2f0fa05eeea8cb6
   branch: codex/l4-pair-judgment-closeout
   dirty_flag: true
   changed_files:
-  - M docs/registers/artifact_registry.csv
+  - M .agents/skills/spacesonar-claim-discipline/SKILL.md
+  - ' M .agents/skills/spacesonar-result-judgment/SKILL.md'
+  - ' M .agents/skills/spacesonar-runtime-parity/SKILL.md'
+  - ' M AGENTS.md'
+  - ' M docs/agent_control/self_correction_policy.yaml'
+  - ' M docs/agent_control/work_family_registry.yaml'
+  - ' M docs/policies/onnx_lab_operating_policy.md'
+  - ' M docs/policies/result_judgment_policy.md'
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/registers/clue_registry.csv'
   - ' M docs/registers/goal_registry.csv'
+  - ' M docs/registers/ingredient_card_registry.csv'
   - ' M docs/workspace/workspace_state.yaml'
+  - ' M foundation/config/mt5_runtime_probe_contract.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
-  - ?? foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_pair_judgment_v0_closeout.yaml
-  - ?? tests/test_wave0_l4_pair_judgments.py
+  - ?? foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_ingredient_materialization_v0_closeout.yaml
+  - ?? tests/test_wave0_l4_ingredient_cards.py
   command_argv:
   - python
-  - foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
+  - foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
   - --write-control-records
   python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
   python_version: 3.13.9
   key_package_versions:
     python: 3.13.9
     yaml: 6.0.3
-  started_at_utc: '2026-06-21T20:22:34Z'
-  ended_at_utc: '2026-06-21T20:22:34Z'
+  started_at_utc: '2026-06-21T20:32:58Z'
+  ended_at_utc: '2026-06-21T20:32:58Z'
   input_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_index.csv
-    sha256: a50982d3635bcfab7edd8056d706fb65677c52d33b5b856ac1a8bf80be711431
-    size_bytes: 17245
-    availability: present_hash_recorded
-  output_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-    sha256: 62072948b427e70c993990cdec4b11eb9caf50fbb16287d332e46214a6ebc9f8
-    size_bytes: 4305
-    availability: present_hash_recorded
   - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
     sha256: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
     size_bytes: 9149
     availability: present_hash_recorded
-  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_pair_judgment_v0_closeout.yaml
-    sha256: 2d352dd8429be014cfdf232cc8e420643e25919445e0b39e5c05c4d7e2172ae6
-    size_bytes: 1577
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+    sha256: 62072948b427e70c993990cdec4b11eb9caf50fbb16287d332e46214a6ebc9f8
+    size_bytes: 4305
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+    sha256: e368d3f13ec5ef4b775b03d6f7aab39d67134a4613400af171905c431b808004
+    size_bytes: 20730
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/l4_ingredient_materialization_summary.yaml
+    sha256: c5623037809cf18cf2c30d52fa068797c38f415e5ed5baea83adcaeada08a249
+    size_bytes: 4483
+    availability: present_hash_recorded
+  - path: docs/registers/ingredient_card_registry.csv
+    sha256: 8584ffdbd4cff4d4307d93aea3c5706df23c3c62f99bd5a5acc2c0cf86f094c4
+    size_bytes: 5304
+    availability: present_hash_recorded
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_ingredient_materialization_v0_closeout.yaml
+    sha256: 44705955d1d5091bd02e24d658fe5a8a5a0d3bf84ece728b804c7e6ba41876f9
+    size_bytes: 2001
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_008_l4_runtime_score_observed_v0.yaml
+    sha256: 514822868b324ee82a42e3035b3482cd8c7230cee4a21f8cc7995877c89886a1
+    size_bytes: 4186
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_010_l4_runtime_score_observed_v0.yaml
+    sha256: 631e3cc3ab6f7137df28fd5c9895dc0115d9b7482babd700785f35c975620a45
+    size_bytes: 4047
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_011_l4_runtime_score_observed_v0.yaml
+    sha256: 28e3ba16b40fed3a4c483716c1dbfc1a98ecd302da99362e04e6a296a3148ebc
+    size_bytes: 4163
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_012_l4_runtime_score_observed_v0.yaml
+    sha256: 4aaf274eff0cd48558529293358643858711ed96d9fc59dcd65e2e15fd2f00ea
+    size_bytes: 4173
     availability: present_hash_recorded
   unknown_git_claim_effect: not_applicable_git_state_recorded_claim_still_lowered_no_runtime_authority
 forbidden_claims:
@@ -286,9 +330,9 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_material_if_relevant:
-- tester_reports_missing_for_all_pairs
+- tester_reports_missing_for_all_ingredient_sources
 - trading_or_sparse_decision_EA_not_present
-- row_level_proxy_vs_MT5_score_alignment_not_performed
 - economics_metrics_not_available_from_non_trading_probe
-next_action: design decision/trading adapter for preserved clues or rotate; do not
-  open L5 from score telemetry alone
+- row_level_proxy_vs_MT5_score_alignment_not_performed
+next_action: open decision-execution adapter design for non-diagnostic ingredients
+  or bounded synthesis mix queue; do not claim L5 candidate yet

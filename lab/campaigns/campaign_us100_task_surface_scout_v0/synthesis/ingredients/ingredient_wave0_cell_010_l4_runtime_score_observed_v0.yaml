@@ -1,0 +1,66 @@
+version: ingredient_card_v1
+ingredient_card_id: ingredient_wave0_cell_010_l4_runtime_score_observed_v0
+status: ingredient_ready_diagnostic_runtime_score_control
+created_at_utc: '2026-06-21T20:32:58Z'
+source_campaign_ids:
+- campaign_us100_task_surface_scout_v0
+source_run_ids:
+- onnxlab_wave0_cell_010_surface_scout_v0
+source_clue_ids:
+- clue_wave0_tradeability_mid_horizon_v0
+source_negative_memory_ids: []
+source_divergence_ids: []
+material_type: preserved_l4_score_observed_clue
+axis_tags:
+- tradeability_or_no_trade_regime
+- horizon_3
+- session_calendar_state
+- diagnostic_rank_only
+- logistic_classification_scout
+- l4_score_observed
+- standard_l4_incomplete_tester_report_missing
+observed_pattern: wave0_cell_010 proxy preserved clue has MT5 score telemetry on validation
+  and research_oos; tester reports/economics are absent so standard L4 completion
+  and L5 remain lowered.
+salvage_value: runtime-score-observed diagnostic control for tradeability/session
+  surface mixing, not a candidate
+negative_memory: score telemetry alone is not a trading report, economics pass, L5
+  candidate, or baseline
+do_not_repeat: do_not_treat_as_candidate_or_baseline_from_train_validation_proxy;
+  do_not_open_L5_or_economics_claim_from_non_trading_score_telemetry
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/metrics.json
+- lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/run_manifest.json
+- runtime/packages/bundle_wave0_cell_010_l4_onnx_export_v0/experiment_bundle.json
+- runtime/mt5_attempts/attempt_wave0_cell_010_l4_validation_v0/score_telemetry_summary.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml
+evidence_hashes:
+  lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml: 62072948b427e70c993990cdec4b11eb9caf50fbb16287d332e46214a6ebc9f8
+  lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
+  lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/metrics.json: 3e301e720a9965096a05e49fac00970f57fe7ed8775e12088ae67b963e617e94
+  lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/run_manifest.json: fbb316692f5d6e74f60e5781d3795738f0315ffb105067ae482b85402e4e7ac3
+  runtime/packages/bundle_wave0_cell_010_l4_onnx_export_v0/experiment_bundle.json: b71f7ff9ab60f2a1d8e1b0a05ac7f4311b275ec8b51be59ec0bb6228346452ce
+  runtime/mt5_attempts/attempt_wave0_cell_010_l4_validation_v0/score_telemetry_summary.yaml: ac8c4fe8719c8bae55c6c72714ec23a78d23f582cebe0ee79ca2e1c91156a560
+  runtime/mt5_attempts/attempt_wave0_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml: fa571524f38a7b9bc9c674b6f8c78bbbff95d498d85300825cb42450807416a9
+runtime_observation:
+  validation_attempt_id: attempt_wave0_cell_010_l4_validation_v0
+  research_oos_attempt_id: attempt_wave0_cell_010_l4_research_oos_v0
+  both_period_roles_observed: 'true'
+  standard_l4_completion: incomplete_tester_report_missing
+  l5_routing_status: no_l5_diagnostic_score_probe_only
+  comparison_class: proxy_preserved_clue_runtime_score_observed
+  next_action: preserve_runtime_executable_diagnostic_surface_and_rotate_or_use_as_synthesis_ingredient
+selection_eligibility: eligible_for_mix_not_candidate
+forbidden_uses:
+- selected_baseline
+- next_wave_direction
+- repair_relabeling
+- L5_candidate_without_decision_execution_adapter
+- economics_or_runtime_authority_claim
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_010_l4_runtime_score_observed_v0.yaml
+  registry_rows:
+  - docs/registers/ingredient_card_registry.csv
+claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority

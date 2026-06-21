@@ -91,8 +91,10 @@ Git integration cadence:
 - Every valid proxy/model-bearing run must be driven to `L4_split_runtime_probe`; proxy-only closure is not an allowed endpoint.
 - If L4 still looks usable under the declared surface and execution profile, continue to `L5_candidate_runtime_evidence`.
 - A planned proxy surface must include an executable ONNX/EA/MT5 follow-through path. If it cannot be made executable, repair the surface before treating it as proxy evidence.
-- Missing converter, export adapter, EA adapter, parser support, or runtime glue is not by itself a valid closeout reason. First reproduce the failure and capture the root cause.
+- Try-first disposition rule: do not close a surface as blocked, deferred, invalid, or discarded until the failure reason is identified, the failing layer is reproduced, a smallest credible repair/fallback under repo control is attempted, and the evidence/reopen condition is recorded.
+- Missing converter, conversion adapter, export adapter, EA adapter, parser support, or runtime glue is not by itself a valid closeout reason. First reproduce the failure and capture the root cause.
 - If the missing piece is under repo/control, build and test the smallest credible repair or fallback adapter. "Adapter absent" is not a blocker.
+- If a needed conversion adapter does not exist, create the smallest explicit translation layer needed to test the hypothesis. Only narrow feasibility exceptions may stop that attempt.
 - If the attempt cannot be made because it needs user secrets, unavailable external state, destructive/unsafe action, or violates project policy, record that exact attempt blocker with evidence and a reopen condition.
 - Only after this may the item become `blocked_retry`, `invalid_setup`, `negative_memory`, or a lowered-boundary `inconclusive` record.
 - Repair is for interpretation, parity, execution, or prevention memory. It is not permission to keep one weak candidate alive through wave/campaign budget.

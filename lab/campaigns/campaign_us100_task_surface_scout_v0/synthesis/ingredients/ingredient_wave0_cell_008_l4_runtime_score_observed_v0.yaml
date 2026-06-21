@@ -1,0 +1,67 @@
+version: ingredient_card_v1
+ingredient_card_id: ingredient_wave0_cell_008_l4_runtime_score_observed_v0
+status: ingredient_ready_requires_decision_execution_adapter
+created_at_utc: '2026-06-21T20:32:58Z'
+source_campaign_ids:
+- campaign_us100_task_surface_scout_v0
+source_run_ids:
+- onnxlab_wave0_cell_008_surface_scout_v0
+source_clue_ids:
+- clue_wave0_path_quality_h12_side_signal_v0
+source_negative_memory_ids: []
+source_divergence_ids: []
+material_type: preserved_l4_score_observed_clue
+axis_tags:
+- path_quality_mfe_mae_payoff_suitability
+- horizon_12
+- multiscale_us100_m5_aggregates
+- abstain_capable_direction_agnostic_tradeability
+- logistic_classification_scout
+- l4_score_observed
+- standard_l4_incomplete_tester_report_missing
+observed_pattern: wave0_cell_008 proxy preserved clue has MT5 score telemetry on validation
+  and research_oos; tester reports/economics are absent so standard L4 completion
+  and L5 remain lowered.
+salvage_value: runtime-score-observed preserved clue for path_quality_mfe_mae_payoff_suitability
+  h12; usable as adapter-design input or synthesis ingredient
+negative_memory: score telemetry alone is not a trading report, economics pass, L5
+  candidate, or baseline
+do_not_repeat: do_not_treat_as_candidate_or_baseline_from_train_validation_proxy;
+  do_not_open_L5_or_economics_claim_from_non_trading_score_telemetry
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/metrics.json
+- lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json
+- runtime/packages/bundle_wave0_cell_008_l4_onnx_export_v0/experiment_bundle.json
+- runtime/mt5_attempts/attempt_wave0_cell_008_l4_validation_v0/score_telemetry_summary.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml
+evidence_hashes:
+  lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml: 62072948b427e70c993990cdec4b11eb9caf50fbb16287d332e46214a6ebc9f8
+  lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
+  lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/metrics.json: 53465277ce2b1d2423b303dae442068e0694be0ac16aea15ebc8a4cc58058d56
+  lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json: b6a3da97c392a41adaa1ed699b8a676a06dbcf76a7ccfdb0199b9b814d2d1408
+  runtime/packages/bundle_wave0_cell_008_l4_onnx_export_v0/experiment_bundle.json: 3d54e4140bcf92d775cac97d72b4897567a1988fbb6ddd03dd54f3957cb70f46
+  runtime/mt5_attempts/attempt_wave0_cell_008_l4_validation_v0/score_telemetry_summary.yaml: 930d1c211a1260d42d0a2509e40f2cffec04e14c2cf3643dc121d5b199f14127
+  runtime/mt5_attempts/attempt_wave0_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml: 6a46625aa4b4dcb3bb7c3077d0c0670656ce31c809f3310421885c826d27483c
+runtime_observation:
+  validation_attempt_id: attempt_wave0_cell_008_l4_validation_v0
+  research_oos_attempt_id: attempt_wave0_cell_008_l4_research_oos_v0
+  both_period_roles_observed: 'true'
+  standard_l4_completion: incomplete_tester_report_missing
+  l5_routing_status: no_l5_yet_requires_trading_or_sparse_decision_tester_adapter
+  comparison_class: proxy_preserved_clue_runtime_score_observed
+  next_action: build_decision_execution_adapter_before_candidate_L5; score telemetry
+    alone is not economics evidence
+selection_eligibility: eligible_for_mix_not_candidate
+forbidden_uses:
+- selected_baseline
+- next_wave_direction
+- repair_relabeling
+- L5_candidate_without_decision_execution_adapter
+- economics_or_runtime_authority_claim
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_008_l4_runtime_score_observed_v0.yaml
+  registry_rows:
+  - docs/registers/ingredient_card_registry.csv
+claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority

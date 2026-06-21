@@ -45,7 +45,9 @@ Use when work touches ONNX export, model bundles, EA modules, `.mq5/.mqh/.set` f
 - Preserve proxy-vs-runtime surprises as evidence: proxy-bad/runtime-good and proxy-good/runtime-bad are both investigation surfaces.
 - Make at least one explicit reconciliation attempt when proxy and MT5 disagree, but do not force equality if units or execution semantics are genuinely different.
 - Record unit semantics drift, such as point/pip/tick/digits/price-distance/ATR-stop conversion differences, as prevention memory.
-- If ONNX, EA, parser, tester, or runtime glue is missing and is under repo/control, build and test the smallest adapter or fallback before calling the surface blocked, deferred, invalid, or discarded.
+- Try-first disposition: before blocked, deferred, invalid, or discarded, identify why the attempt failed, reproduce the failing layer, try the smallest credible fix/fallback under repo control, and record evidence plus reopen condition.
+- If ONNX, conversion adapter, EA, parser, tester, or runtime glue is missing and is under repo/control, build and test the smallest adapter or fallback before calling the surface blocked, deferred, invalid, or discarded.
+- If the conversion adapter does not exist yet, create the smallest explicit translation layer needed to test the hypothesis unless a narrow attempt blocker applies.
 - "No adapter exists" is a repair trigger, not a final runtime blocker. Only user secrets, unavailable external state, destructive/unsafe action, or project-policy violation can block the attempt, and that blocker must be recorded.
 - Do not embed date defaults in this skill. Runtime windows live in the period profile.
 - If no actionable runtime surface exists, require at least one repair attempt before `blocked` or `inconclusive`.
