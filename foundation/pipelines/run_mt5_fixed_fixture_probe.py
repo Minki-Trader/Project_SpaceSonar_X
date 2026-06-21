@@ -133,6 +133,129 @@ def run_process(argv: list[str], *, cwd: Path, timeout_seconds: int | None = Non
     }
 
 
+def terminate_terminal_processes(terminal: Path) -> dict[str, Any]:
+    started_at = utc_now()
+    image_name = terminal.name
+    if platform.system().lower() != "windows":
+        ended_at = utc_now()
+        return {
+            "action": "terminate_existing_terminal_processes",
+            "method": "not_supported_non_windows",
+            "image_name": image_name,
+            "started_at_utc": started_at,
+            "ended_at_utc": ended_at,
+            "exit_code": None,
+            "claim_boundary": "terminal_preflight_evidence_only",
+        }
+    result = subprocess.run(
+        ["taskkill", "/IM", image_name, "/F"],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    ended_at = utc_now()
+    return {
+        "action": "terminate_existing_terminal_processes",
+        "method": "taskkill_by_image_name",
+        "image_name": image_name,
+        "started_at_utc": started_at,
+        "ended_at_utc": ended_at,
+        "exit_code": result.returncode,
+        "stdout_sha256": hashlib.sha256(result.stdout.encode("utf-8", errors="replace")).hexdigest(),
+        "stderr_sha256": hashlib.sha256(result.stderr.encode("utf-8", errors="replace")).hexdigest(),
+        "stdout_tail": result.stdout[-1000:],
+        "stderr_tail": result.stderr[-1000:],
+        "no_process_exit_codes": [128],
+        "claim_boundary": "terminal_preflight_evidence_only",
+    }
+
+
+def terminal_argvs(
+    *,
+    terminal: Path,
+    tester_config: Path,
+    allow_main_mode_fallback: bool,
+) -> list[dict[str, Any]]:
+    attempts = [
+        {
+            "mode": "portable_contract_attempt",
+            "argv": [str(terminal), "/portable", f"/config:{tester_config}"],
+            "claim_boundary": "standard_contract_attempt_only",
+        }
+    ]
+    if allow_main_mode_fallback:
+        attempts.append(
+            {
+                "mode": "main_mode_config_fallback",
+                "argv": [str(terminal), f"/config:{tester_config}"],
+                "claim_boundary": "local_fixed_fixture_fallback_only_no_runtime_authority",
+            }
+        )
+    return attempts
+
+
+def run_terminal_sequence(
+    *,
+    terminal: Path,
+    tester_config: Path,
+    common_telemetry: Path,
+    timeout_seconds: int,
+    terminate_existing: bool,
+    allow_main_mode_fallback: bool,
+) -> dict[str, Any]:
+    cleanup_actions: list[dict[str, Any]] = []
+    if terminate_existing:
+        cleanup_actions.append(terminate_terminal_processes(terminal))
+
+    attempts: list[dict[str, Any]] = []
+    selected_attempt_index: int | None = None
+    for attempt_spec in terminal_argvs(
+        terminal=terminal,
+        tester_config=tester_config,
+        allow_main_mode_fallback=allow_main_mode_fallback,
+    ):
+        attempt_result = run_process(attempt_spec["argv"], cwd=REPO_ROOT, timeout_seconds=timeout_seconds)
+        attempt_record = {
+            **attempt_result,
+            "mode": attempt_spec["mode"],
+            "attempt_claim_boundary": attempt_spec["claim_boundary"],
+            "telemetry_exists_after_attempt": common_telemetry.exists(),
+        }
+        attempts.append(attempt_record)
+        if common_telemetry.exists():
+            selected_attempt_index = len(attempts) - 1
+            break
+        if attempt_spec["mode"] == "portable_contract_attempt" and allow_main_mode_fallback and terminate_existing:
+            cleanup_actions.append(terminate_terminal_processes(terminal))
+
+    selected = attempts[selected_attempt_index] if selected_attempt_index is not None else attempts[-1]
+    fallback_used = selected.get("mode") == "main_mode_config_fallback"
+    return {
+        **selected,
+        "terminal_attempts": attempts,
+        "terminal_cleanup_actions": cleanup_actions,
+        "terminal_mode_policy": {
+            "standard_contract_terminal_mode": "portable_required",
+            "portable_attempted": True,
+            "main_mode_fallback_allowed": allow_main_mode_fallback,
+            "main_mode_fallback_used": fallback_used,
+            "fallback_reason": (
+                "portable_attempt_did_not_produce_mt5_probe_telemetry"
+                if fallback_used
+                else None
+            ),
+            "claim_effect": (
+                "fixed_fixture_micro_probe_only_no_runtime_authority"
+                if fallback_used
+                else "standard_portable_attempt_path"
+            ),
+        },
+        "selected_attempt_index": selected_attempt_index,
+        "telemetry_observed": common_telemetry.exists(),
+    }
+
+
 def parse_prepare_stdout(stdout_tail: str) -> dict[str, str]:
     start = stdout_tail.find("{")
     if start < 0:
@@ -251,12 +374,19 @@ def update_closeout_records(
     run["missing_evidence"] = []
     run["next_action"] = "fixed-fixture parity learning recorded; do not infer runtime authority or economics"
     run["mt5_fixed_fixture_probe"] = probe_summary["result"]
+    run["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
 
     runtime["levels"]["L3_mt5_micro_probe"] = "passed_fixed_fixture_only" if matched else "failed_fixed_fixture_only"
     runtime["runtime_debt_state"] = "none_for_fixed_fixture_micro_probe" if matched and release_ok else "fixture_closeout_debt"
     runtime["repair_required"] = not (matched and release_ok)
     runtime["runtime_claim_boundary"] = FIXTURE_CLAIM_BOUNDARY
     runtime["missing_evidence"] = []
+    runtime["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
+    if (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used"):
+        known = runtime.setdefault("known_differences", [])
+        note = "terminal_main_mode_fallback_after_portable_attempt"
+        if note not in known:
+            known.append(note)
 
     metrics["mt5_native_onnx_abs_error"] = probe_summary["result"]["abs_error"]
     metrics["mt5_native_onnx_tolerance"] = probe_summary["result"]["tolerance"]
@@ -274,6 +404,7 @@ def update_closeout_records(
     attempt["status"] = "completed_matched" if matched else "completed_failed"
     attempt["compile_provenance"] = compile_summary
     attempt["terminal_run_provenance"] = terminal_summary
+    attempt["terminal_mode_evidence"] = terminal_summary.get("terminal_mode_policy")
     attempt["mt5_probe_summary"] = probe_summary
     attempt["claim_boundary"] = FIXTURE_CLAIM_BOUNDARY
     attempt["missing_evidence"] = []
@@ -295,6 +426,8 @@ def main() -> int:
     parser.add_argument("--requested-branch", default=None)
     parser.add_argument("--terminal-timeout-seconds", type=int, default=180)
     parser.add_argument("--skip-terminal-run", action="store_true")
+    parser.add_argument("--keep-existing-terminal", action="store_true")
+    parser.add_argument("--no-main-mode-fallback", action="store_true")
     args = parser.parse_args()
 
     requested_branch = args.requested_branch or subprocess.run(
@@ -353,12 +486,18 @@ def main() -> int:
         return 0
 
     tester_config = REPO_ROOT / "runtime" / "mt5_attempts" / attempt_id / "tester_config.ini"
-    terminal_argv = [
-        str(Path(args.terminal)),
-        "/portable",
-        f"/config:{tester_config}",
-    ]
-    terminal_process = run_process(terminal_argv, cwd=REPO_ROOT, timeout_seconds=args.terminal_timeout_seconds)
+    bundle_manifest = load_json(REPO_ROOT / "runtime" / "packages" / bundle_id / "experiment_bundle.json")
+    common_telemetry = telemetry_common_path(bundle_id, bundle_manifest)
+    if common_telemetry.exists():
+        common_telemetry.unlink()
+    terminal_process = run_terminal_sequence(
+        terminal=Path(args.terminal),
+        tester_config=tester_config,
+        common_telemetry=common_telemetry,
+        timeout_seconds=args.terminal_timeout_seconds,
+        terminate_existing=not args.keep_existing_terminal,
+        allow_main_mode_fallback=not args.no_main_mode_fallback,
+    )
     terminal_summary = {
         **terminal_process,
         "summary_path": f"runtime/mt5_attempts/{attempt_id}/terminal_run_summary.yaml",
@@ -367,8 +506,6 @@ def main() -> int:
     }
     write_yaml(attempt_root / "terminal_run_summary.yaml", terminal_summary)
 
-    bundle_manifest = load_json(REPO_ROOT / "runtime" / "packages" / bundle_id / "experiment_bundle.json")
-    common_telemetry = telemetry_common_path(bundle_id, bundle_manifest)
     repo_telemetry = attempt_root / "telemetry" / "mt5_probe_output.csv"
     if not common_telemetry.exists():
         print(
