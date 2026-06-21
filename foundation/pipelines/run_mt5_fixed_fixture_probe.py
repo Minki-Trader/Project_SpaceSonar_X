@@ -59,6 +59,9 @@ def repo_relative(path: Path) -> str:
 
 def redact_path(value: str) -> str:
     text = str(value)
+    for prefix in ["/compile:", "/log:", "/config:"]:
+        if text.lower().startswith(prefix):
+            return prefix + redact_path(text[len(prefix) :])
     home = str(Path.home())
     appdata = os.environ.get("APPDATA")
     program_files = os.environ.get("ProgramFiles", "C:\\Program Files")
@@ -333,7 +336,15 @@ def main() -> int:
         "claim_boundary": "compile_evidence_only_not_strategy_tester_output",
     }
     write_yaml(attempt_root / "compile_summary.yaml", compile_summary)
-    if compile_process["exit_code"] not in {0, None}:
+    compile_log = compile_summary["compile_log"]
+    compile_ok = (
+        compile_log.get("compile_errors") == 0
+        and compile_log.get("compile_warnings") == 0
+        and EA_BINARY.exists()
+    )
+    compile_summary["compile_success_derived_from_log_and_binary"] = compile_ok
+    write_yaml(attempt_root / "compile_summary.yaml", compile_summary)
+    if not compile_ok:
         print(json.dumps({"status": "compile_failed", "run_id": run_id, "bundle_id": bundle_id, "attempt_id": attempt_id}, indent=2))
         return 1
 
