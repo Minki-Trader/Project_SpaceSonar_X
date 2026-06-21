@@ -1,0 +1,106 @@
+{
+  "version": "wave01_event_barrier_proxy_report_v1",
+  "run_id": "onnxlab_wave01_eb_cell_012_event_barrier_surface_v0",
+  "run_spec_id": "wave01_eb_cell_012",
+  "axis_values": {
+    "spec_id": "wave01_eb_cell_012",
+    "label_surface": "extreme_timeout_path_quality",
+    "horizon_bars": 48,
+    "barrier_unit": "mfe_mae_ratio",
+    "upper_barrier": 2.0,
+    "lower_barrier": 2.0,
+    "timeout_bars": 48,
+    "feature_family": "multiscale_price_range_volatility_context",
+    "feature_scope": "longer_context_price_range_path_context",
+    "model_family": "logistic_or_linear_rank_scout",
+    "model_task": "longer_path_quality_rank",
+    "decision_family": "diagnostic_path_quality_no_trade_until_decision_surface",
+    "holding_policy": "diagnostic_timeout_only",
+    "risk_policy": "diagnostic_no_position_until_trade_surface_declared",
+    "threshold_policy": "rank_only_no_probability_claim",
+    "split_use": "train_validation_research_oos_a_no_locked_final",
+    "purpose": "extreme horizon path-quality boundary scout",
+    "valid_proxy_model_bearing": true,
+    "locked_final_oos_b_used": false,
+    "auxiliary_symbols": "none",
+    "feature_count_policy": "variable_declared_per_run_no_fixed_count",
+    "runtime_level_required": "L4_split_runtime_probe"
+  },
+  "model_family": "logistic_or_linear_rank_scout",
+  "target_and_label": {
+    "label_surface": "extreme_timeout_path_quality",
+    "target_name": "target_continuous",
+    "horizon_bars": 48,
+    "timeout_bars": 48,
+    "barrier_unit": "mfe_mae_ratio",
+    "upper_barrier": 2.0,
+    "lower_barrier": 2.0,
+    "target_threshold": null,
+    "target_threshold_fit_scope": "not_applicable"
+  },
+  "split_method": "split_set_v0_train_validation_research_oos_a_locked_final_oos_b_withheld",
+  "selection_metric": "none_selected_first_batch_proxy_observation",
+  "secondary_metrics": [
+    "validation_model_metrics",
+    "research_oos_model_metrics",
+    "gross_proxy_decision_metrics"
+  ],
+  "threshold_policy": "rank_only_no_probability_claim",
+  "overfit_risk": "first_batch_multi_surface_observation_no_candidate_selection_allowed",
+  "calibration_risk": "scores_are_model_scores_or_ranks_not_calibrated_probabilities",
+  "comparison_baseline": "no_trade_baseline_named_only_not_materialized_as_selection",
+  "train_metrics": {
+    "row_count": 143678,
+    "score_mean": 0.422406300527195,
+    "score_std": 0.2844345497156118,
+    "mae": 2.3616138425898723,
+    "rmse": 3.304247016558556,
+    "pearson_corr": 0.08591960864859562,
+    "spearman_corr": 0.09180216780228813,
+    "target_mean": 0.422406300527195,
+    "target_std": 3.316522733336319
+  },
+  "validation_metrics": {
+    "row_count": 53770,
+    "score_mean": 0.4279524981665512,
+    "score_std": 0.24517960987112383,
+    "mae": 2.3606249055000266,
+    "rmse": 3.4405506011058242,
+    "pearson_corr": 0.034100194775707304,
+    "spearman_corr": 0.0595075308257929,
+    "target_mean": 0.2509670136233161,
+    "target_std": 3.435639538126563
+  },
+  "research_oos_metrics": {
+    "row_count": 45509,
+    "score_mean": 0.41449125418675753,
+    "score_std": 0.2792932861129287,
+    "mae": 2.304707337424969,
+    "rmse": 3.2069551695323772,
+    "pearson_corr": 0.041797523252964874,
+    "spearman_corr": 0.04753422074551942,
+    "target_mean": 0.3619016766145527,
+    "target_std": 3.206067665536961
+  },
+  "validation_decision_metrics": {
+    "decision_family": "diagnostic_path_quality_no_trade_until_decision_surface",
+    "threshold_policy": "rank_only_no_probability_claim",
+    "threshold_fit_scope": "train_only",
+    "trade_count": 0,
+    "trade_density": 0.0,
+    "proxy_boundary": "diagnostic_only_no_trade_proxy"
+  },
+  "research_oos_decision_metrics": {
+    "decision_family": "diagnostic_path_quality_no_trade_until_decision_surface",
+    "threshold_policy": "rank_only_no_probability_claim",
+    "threshold_fit_scope": "train_only",
+    "trade_count": 0,
+    "trade_density": 0.0,
+    "proxy_boundary": "diagnostic_only_no_trade_proxy"
+  },
+  "judgment_reasons": [
+    "validation_research_abs_spearman_preserved_clue_0.0595_0.0475"
+  ],
+  "validation_judgment": "preserved_clue",
+  "claim_boundary": "wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority"
+}

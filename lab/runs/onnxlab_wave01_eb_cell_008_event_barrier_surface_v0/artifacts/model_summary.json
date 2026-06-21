@@ -1,0 +1,27 @@
+{
+  "version": "wave01_proxy_model_summary_v1",
+  "run_id": "onnxlab_wave01_eb_cell_008_event_barrier_surface_v0",
+  "run_spec_id": "wave01_eb_cell_008",
+  "model_family": "logistic_or_linear_rank_scout",
+  "model_task": "session_touch_direction_or_timeout",
+  "task_kind": "classification",
+  "model_summary": {
+    "model_family": "logistic_or_linear_rank_scout",
+    "task_kind": "classification",
+    "target_name": "target_binary_raw",
+    "target_threshold_fit_scope": "not_applicable",
+    "threshold_policy": "train_only_session_density_bands",
+    "score_threshold_fit_scope": "train_only",
+    "preprocessing_fit_scope": "train_only",
+    "calibration": "none",
+    "selector": "none"
+  },
+  "train_score_summary": {
+    "min": 0.000343938731742328,
+    "p20": 0.43492659656644106,
+    "median": 0.794972537674596,
+    "p80": 0.9614335612891854,
+    "max": 0.9999999994474049
+  },
+  "claim_boundary": "proxy_model_summary_only_no_candidate_no_onnx_no_runtime"
+}

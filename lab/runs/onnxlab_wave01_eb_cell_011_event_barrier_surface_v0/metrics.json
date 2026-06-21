@@ -1,0 +1,107 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave01_eb_cell_011_event_barrier_surface_v0",
+  "status": "executed_proxy_observation_l4_required",
+  "task_surface_id": "surface_us100_event_barrier_decision_surface_v0",
+  "sample_counts": {
+    "raw_rows": 308002,
+    "same_role_horizon_rows": 307864,
+    "train_label_eligible_rows": 143815,
+    "validation_label_eligible_rows": 53812,
+    "research_oos_a_label_eligible_rows": 45551,
+    "locked_final_oos_b_withheld_rows": 38629
+  },
+  "task_surface_metrics": {
+    "label_surface": "range_edge_acceptance_rejection",
+    "feature_family": "price_return_range_volatility_context",
+    "model_family": "small_mlp_secondary_only",
+    "decision_family": "range_edge_abstain_timeout_exit"
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 143815,
+      "score_mean": 0.9167112452800759,
+      "score_std": 0.13856833147927056,
+      "accuracy": 0.9206967284358377,
+      "balanced_accuracy": 0.6178951390075541,
+      "roc_auc": 0.8688341512596373,
+      "average_precision": 0.9839799572491479,
+      "log_loss": 0.20681408946730143,
+      "positive_rate": 0.9138476514967145
+    },
+    "validation": {
+      "row_count": 53812,
+      "score_mean": 0.9524817127288663,
+      "score_std": 0.08540315773458439,
+      "accuracy": 0.9215788300007434,
+      "balanced_accuracy": 0.519310560894856,
+      "roc_auc": 0.8191340013585602,
+      "average_precision": 0.9803267957001138,
+      "log_loss": 0.2354326606772171,
+      "positive_rate": 0.9215230803538245
+    },
+    "research_oos_a": {
+      "row_count": 45551,
+      "score_mean": 0.9629861702985159,
+      "score_std": 0.06726677604023527,
+      "accuracy": 0.9315053456565169,
+      "balanced_accuracy": 0.5165919595128454,
+      "roc_auc": 0.7904870165124797,
+      "average_precision": 0.9795308040717414,
+      "log_loss": 0.23151929067329305,
+      "positive_rate": 0.9305833022326623
+    }
+  },
+  "trading_proxy_metrics": {
+    "validation": {
+      "decision_family": "range_edge_abstain_timeout_exit",
+      "threshold_policy": "no_micro_search_before_broad_clue",
+      "threshold_fit_scope": "train_only",
+      "long_count": 14509,
+      "short_count": 6276,
+      "directional_accuracy": 0.5067115708443589,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 20785,
+      "trade_density": 0.38625213706979855,
+      "gross_proxy_mean_return": -3.29630813817064e-05,
+      "gross_proxy_profit_factor": 0.9525229745025287,
+      "score_low_threshold": 0.902286382898325,
+      "score_high_threshold": 0.9917096055661216
+    },
+    "research_oos_a": {
+      "decision_family": "range_edge_abstain_timeout_exit",
+      "threshold_policy": "no_micro_search_before_broad_clue",
+      "threshold_fit_scope": "train_only",
+      "long_count": 13721,
+      "short_count": 3928,
+      "directional_accuracy": 0.5158932517423084,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 17649,
+      "trade_density": 0.387455818752607,
+      "gross_proxy_mean_return": 2.630073021192064e-05,
+      "gross_proxy_profit_factor": 1.0373124354203735,
+      "score_low_threshold": 0.902286382898325,
+      "score_high_threshold": 0.9917096055661216
+    }
+  },
+  "runtime_metrics": {},
+  "north_star_context": {
+    "role": "final_objective_not_exploration_gate",
+    "average_trades_per_active_day_min": 5,
+    "profit_factor_preferred_range": [
+      1.5,
+      3.0
+    ],
+    "major_window_drawdown_pct_max": 10
+  },
+  "measurement_scope": "proxy_model_observation_validation_and_research_oos_a_no_locked_final_no_cost_no_execution",
+  "judgment_label": "preserved_clue",
+  "claim_boundary": "wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "ONNX_export_not_materialized_for_L4_yet",
+    "MT5_L4_split_runtime_probe_not_run_yet",
+    "tester_report_not_available",
+    "candidate_selection_forbidden_before_L4",
+    "locked_final_oos_b_not_used"
+  ]
+}

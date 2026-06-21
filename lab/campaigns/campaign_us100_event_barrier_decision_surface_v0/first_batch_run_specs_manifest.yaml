@@ -5,8 +5,8 @@ wave_id: wave_us100_closedbar_surface_cartography_v0
 campaign_id: campaign_us100_event_barrier_decision_surface_v0
 sweep_id: sweep_us100_event_barrier_broad_v0
 created_at_utc: '2026-06-21T23:05:00Z'
-status: first_batch_specs_materialized_not_executed
-claim_boundary: first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+status: executed_proxy_observation_l4_required
+claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
 spec_count: 12
 coverage_summary:
   label_surface_count: 12
@@ -170,10 +170,19 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_evidence:
-- features_not_materialized
-- labels_not_materialized
-- models_not_trained
-- proxy_metrics_not_computed
-- ONNX_exports_not_materialized
+- ONNX_exports_not_materialized_for_L4_yet
 - MT5_L4_not_run
-next_action: work_wave01_event_barrier_execute_first_batch_proxy_v0
+- candidate_selection_forbidden_before_L4
+next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+updated_at_utc: '2026-06-21T22:14:31.742101Z'
+first_batch_proxy_result:
+  status: executed_proxy_observation_l4_required
+  run_count: 12
+  result_counts: &id001
+    inconclusive: 4
+    preserved_clue: 8
+  candidate_count: 0
+  runtime_claim: false
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+result_counts: *id001

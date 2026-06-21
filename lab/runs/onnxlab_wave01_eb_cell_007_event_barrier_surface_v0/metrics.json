@@ -1,0 +1,107 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave01_eb_cell_007_event_barrier_surface_v0",
+  "status": "executed_proxy_observation_l4_required",
+  "task_surface_id": "surface_us100_event_barrier_decision_surface_v0",
+  "sample_counts": {
+    "raw_rows": 308002,
+    "same_role_horizon_rows": 307933,
+    "train_label_eligible_rows": 143813,
+    "validation_label_eligible_rows": 53815,
+    "research_oos_a_label_eligible_rows": 45554,
+    "locked_final_oos_b_withheld_rows": 38632
+  },
+  "task_surface_metrics": {
+    "label_surface": "volatility_shock_continuation",
+    "feature_family": "price_return_range_volatility_context",
+    "model_family": "logistic_or_linear_rank_scout",
+    "decision_family": "fast_event_abstain_timeout_exit"
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 143813,
+      "score_mean": 0.9574128473962896,
+      "score_std": 0.32513847650118116,
+      "mae": 0.655510308986116,
+      "rmse": 1.0441534002773163,
+      "pearson_corr": 0.297314250724092,
+      "spearman_corr": 0.3237256932592719,
+      "target_mean": 0.9574128473962896,
+      "target_std": 1.0936104454071853
+    },
+    "validation": {
+      "row_count": 53815,
+      "score_mean": 1.1107065759618793,
+      "score_std": 0.25872042095574616,
+      "mae": 0.7058306870456849,
+      "rmse": 1.0462433920247143,
+      "pearson_corr": 0.2916721750608853,
+      "spearman_corr": 0.2980589199528694,
+      "target_mean": 0.9386048920007092,
+      "target_std": 1.0773520070522993
+    },
+    "research_oos_a": {
+      "row_count": 45554,
+      "score_mean": 1.1029318294040353,
+      "score_std": 0.32261039986578105,
+      "mae": 0.7220286309880249,
+      "rmse": 1.080872781452709,
+      "pearson_corr": 0.20368580771022626,
+      "spearman_corr": 0.25101248849273206,
+      "target_mean": 0.9428333676432014,
+      "target_std": 1.086945367045533
+    }
+  },
+  "trading_proxy_metrics": {
+    "validation": {
+      "decision_family": "fast_event_abstain_timeout_exit",
+      "threshold_policy": "train_only_density_floor",
+      "threshold_fit_scope": "train_only",
+      "long_count": 22029,
+      "short_count": 4100,
+      "directional_accuracy": 0.5124574227869417,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 26129,
+      "trade_density": 0.48553377311158596,
+      "gross_proxy_mean_return": -1.3270067720302193e-05,
+      "gross_proxy_profit_factor": 0.972479922037335,
+      "score_low_threshold": 0.7743017140038164,
+      "score_high_threshold": 1.1455758370340612
+    },
+    "research_oos_a": {
+      "decision_family": "fast_event_abstain_timeout_exit",
+      "threshold_policy": "train_only_density_floor",
+      "threshold_fit_scope": "train_only",
+      "long_count": 19616,
+      "short_count": 3146,
+      "directional_accuracy": 0.5146296459010632,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 22762,
+      "trade_density": 0.4996707204636256,
+      "gross_proxy_mean_return": 1.345788981206184e-05,
+      "gross_proxy_profit_factor": 1.0265052664448227,
+      "score_low_threshold": 0.7743017140038164,
+      "score_high_threshold": 1.1455758370340612
+    }
+  },
+  "runtime_metrics": {},
+  "north_star_context": {
+    "role": "final_objective_not_exploration_gate",
+    "average_trades_per_active_day_min": 5,
+    "profit_factor_preferred_range": [
+      1.5,
+      3.0
+    ],
+    "major_window_drawdown_pct_max": 10
+  },
+  "measurement_scope": "proxy_model_observation_validation_and_research_oos_a_no_locked_final_no_cost_no_execution",
+  "judgment_label": "preserved_clue",
+  "claim_boundary": "wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "ONNX_export_not_materialized_for_L4_yet",
+    "MT5_L4_split_runtime_probe_not_run_yet",
+    "tester_report_not_available",
+    "candidate_selection_forbidden_before_L4",
+    "locked_final_oos_b_not_used"
+  ]
+}

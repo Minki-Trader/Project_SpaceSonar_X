@@ -1,0 +1,191 @@
+version: work_closeout_v1
+work_item_id: work_wave01_event_barrier_execute_first_batch_proxy_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-21T22:14:31.761214Z'
+status: proxy_execution_completed_L4_required_next
+result_judgment: proxy_observation
+claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+completed_scope:
+- 12 Wave01 event/barrier proxy specs executed
+- run-local manifest, receipt, lineage, and metrics created for each run
+- locked_final_oos_b withheld from training, thresholding, and proxy observation
+- run registry and sweep run_refs connected to run-local source-of-truth records
+incomplete_scope_not_claimed:
+- ONNX materialization for L4
+- MT5 L4 split runtime probe
+- L5 candidate runtime evidence
+- economics pass
+- runtime authority
+- selected baseline
+result_counts:
+  inconclusive: 4
+  preserved_clue: 8
+candidate_count: 0
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required_next
+  target_level: L4_split_runtime_probe
+  next_work_item: work_wave01_event_barrier_l4_materialization_preflight_v0
+evidence_paths:
+  run_refs: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  run_registry: docs/registers/run_registry.csv
+  first_batch_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml
+run_results:
+- run_spec_id: wave01_eb_cell_001
+  run_id: onnxlab_wave01_eb_cell_001_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: inconclusive
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: valid_proxy_run_no_repeated_or_strong_surface_clue_yet_L4_still_required
+- run_spec_id: wave01_eb_cell_002
+  run_id: onnxlab_wave01_eb_cell_002_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.6427_0.6252
+- run_spec_id: wave01_eb_cell_003
+  run_id: onnxlab_wave01_eb_cell_003_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: inconclusive
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: valid_proxy_run_no_repeated_or_strong_surface_clue_yet_L4_still_required
+- run_spec_id: wave01_eb_cell_004
+  run_id: onnxlab_wave01_eb_cell_004_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.8458_0.8061
+- run_spec_id: wave01_eb_cell_005
+  run_id: onnxlab_wave01_eb_cell_005_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: inconclusive
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: valid_proxy_run_no_repeated_or_strong_surface_clue_yet_L4_still_required
+- run_spec_id: wave01_eb_cell_006
+  run_id: onnxlab_wave01_eb_cell_006_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.8108_0.7895
+- run_spec_id: wave01_eb_cell_007
+  run_id: onnxlab_wave01_eb_cell_007_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_abs_spearman_preserved_clue_0.2981_0.2510
+- run_spec_id: wave01_eb_cell_008
+  run_id: onnxlab_wave01_eb_cell_008_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.8367_0.7917
+- run_spec_id: wave01_eb_cell_009
+  run_id: onnxlab_wave01_eb_cell_009_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.8812_0.8425
+- run_spec_id: wave01_eb_cell_010
+  run_id: onnxlab_wave01_eb_cell_010_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: inconclusive
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: valid_proxy_run_no_repeated_or_strong_surface_clue_yet_L4_still_required
+- run_spec_id: wave01_eb_cell_011
+  run_id: onnxlab_wave01_eb_cell_011_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.8191_0.7905
+- run_spec_id: wave01_eb_cell_012
+  run_id: onnxlab_wave01_eb_cell_012_event_barrier_surface_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_manifest_path: lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/metrics.json
+  evidence_path: lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+  next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  notes: validation_research_abs_spearman_preserved_clue_0.0595_0.0475
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_work_item:
+  work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

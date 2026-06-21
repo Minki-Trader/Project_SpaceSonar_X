@@ -1,0 +1,337 @@
+version: experiment_receipt_v2
+run_id: onnxlab_wave01_eb_cell_005_event_barrier_surface_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_id: campaign_us100_event_barrier_decision_surface_v0
+  idea_id: idea_us100_m5_event_barrier_decision_surface_v0
+  hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
+  surface_id: surface_us100_event_barrier_decision_surface_v0
+  sweep_id: sweep_us100_event_barrier_broad_v0
+  artifact_ids: []
+  bundle_id: null
+  candidate_id: null
+skill_routing:
+  primary_family: model_training
+  primary_skill: spacesonar-model-validation
+  support_skills:
+  - spacesonar-experiment-design
+  - spacesonar-data-integrity
+  - spacesonar-run-evidence-system
+  - spacesonar-runtime-parity
+  - spacesonar-claim-discipline
+  skills_selected:
+  - spacesonar-model-validation
+  - spacesonar-experiment-design
+  - spacesonar-data-integrity
+  - spacesonar-run-evidence-system
+  - spacesonar-runtime-parity
+  - spacesonar-claim-discipline
+  skills_not_used: []
+  critical_skills_not_selected: []
+  not_selected_claim_effect: not_applicable_all_critical_execution_and_evidence_skills_selected
+  required_gates:
+  - branch_worktree_fit
+  - time_axis_check
+  - feature_label_boundary_check
+  - split_boundary_check
+  - selection_bias_check
+  - run_manifest
+  - experiment_receipt
+  - storage_contract_check
+  - runtime_learning_probe_decision
+  - proxy_runtime_parity_decision
+  - final_claim_guard
+  - L4_split_runtime_probe_for_valid_proxy_run
+  not_applicable_gates:
+  - locked_final_oos_access
+branch_worktree:
+  current_branch: codex/l4-pair-judgment-closeout
+  requested_branch: codex/l4-pair-judgment-closeout
+  branch_worktree_fit: fit
+  branch_action: keep_current_branch
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: not_applicable
+agent_allocation:
+  phase: wave01_proxy_execution
+  selected_agents: []
+  role_modes: []
+  selection_reason: Direct Codex execution of approved first-batch specs.
+  why_not_smaller: Execution touches data, model, evidence, parity, and claim surfaces.
+  why_not_larger: No protected reviewed/pass or runtime authority claim.
+  max_threads_is_capacity_only: true
+  claim_effect: advisory_only_no_reviewed_pass
+provenance:
+  git_sha: ac9880d8ffe0b86d27b43ad1cbd89eff8c091b0b
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: dirty
+  changed_files:
+  - ?? lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/
+  - ?? lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/
+  - ?? lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/
+  - ?? lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/
+  command_argv:
+  - foundation\pipelines\run_wave01_event_barrier_proxy_batch.py
+  - --expected-branch
+  - codex/l4-pair-judgment-closeout
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    python: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    yaml: 6.0.3
+  started_at_utc: '2026-06-21T22:13:57.349181Z'
+  ended_at_utc: '2026-06-21T22:13:59.758714Z'
+  input_hashes:
+  - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs/wave01_eb_cell_005.yaml
+    sha256: 535eb35f40c6770a3cf5535d06174c82b446d677515b07e5f950e046c1f548f0
+    size_bytes: 6294
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+    sha256: 915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c
+    size_bytes: 4857
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/feature_recipes/feature_wave01_us100_price_session_regime_flexible_v0.yaml
+    sha256: d03c21749a8a805f8c50e724944e23f71a872425d6c93104215ac4e0763069ce
+    size_bytes: 554
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/label_recipes/label_wave01_event_barrier_path_v0.yaml
+    sha256: 6385565d94d915700f241a8ced2c289d60114f74c8bd68372969ca2a585de99a
+    size_bytes: 487
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/model_recipes/model_wave01_onnx_feasible_scout_v0.yaml
+    sha256: 9aaeee24af3b631bfb11dbc823b21975d2f9a094b8b8b4c76477f1f22da7043a
+    size_bytes: 537
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/decision_recipes/decision_wave01_barrier_abstain_risk_v0.yaml
+    sha256: a3933fce29812e2fee3b74fe86a16ad7eb16563f814a3a55a8215d2b1b20cddb
+    size_bytes: 503
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/eval_recipes/eval_wave01_event_barrier_runtime_v0.yaml
+    sha256: e49df34e50b197f596080af6df225d7a402c6c0139742f695ec6c65985e4fc3b
+    size_bytes: 493
+    availability: present_hash_recorded
+  - path: foundation/config/mt5_runtime_probe_contract.yaml
+    sha256: 60b815ec2124ae8802d3f7637ab302d119cfe1a31d45f5e5cba37ccd0f037a3c
+    size_bytes: 5937
+    availability: present_hash_recorded
+  - path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+    sha256: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
+    size_bytes: 2691
+    availability: present_hash_recorded
+  - path: configs/mt5/tester_execution_profile_v0.yaml
+    sha256: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
+    size_bytes: 3036
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/feature_schema.json
+    sha256: 0a5a57a9d11e02aa8534f935b664a40c2d674e4983c116c41465f8a108d4a7a4
+    size_bytes: 1467
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/label_schema.json
+    sha256: 97ec44c2baded3ea19512206634783097ed14662cc608a82786dbf356a8b8440
+    size_bytes: 1591
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/model_summary.json
+    sha256: 51c72725e206e9bebc8349e967be95669273e9361ffca87e0ef8150898e0ebef
+    size_bytes: 991
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/split_profile.json
+    sha256: 3d944aa69728a133bffa1355d0f0d20435e364673b51b3b8820b87c3c692353f
+    size_bytes: 651
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv
+    sha256: afe8e3a4756231b76849a3a4bd6ee611c59fdb40e3274994f3ed3ead5a372ddf
+    size_bytes: 52414
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv
+    sha256: 40d6406b6383697179a249fe223169b2889778f5ed0f3716fbf7993d3b1b8156
+    size_bytes: 54400
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/reports/proxy_event_barrier_report.json
+    sha256: 9c38f8b8831d05bc075d6680e2d10432ae88da23832c0da861ca9a8697b29a98
+    size_bytes: 5060
+    availability: present_hash_recorded
+  unknown_git_claim_effect: planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve
+  dirty_worktree_claim_effect: proxy_observation_only_no_reproducible_candidate_bundle_runtime_or_goal_achieve_claim
+hypothesis: Event/barrier labels with explicit abstain/risk/holding decisions may
+  expose reusable US100 M5 surfaces.
+decision_use: reversal_entry_abstain_timeout_exit
+task_surface:
+  task_type: failed_event_direction_bucket
+  target_or_label: failed_breakout_reversal_barrier
+  direction_mapping: declared_by_this_spec_not_inherited
+  horizon_or_holding_policy: failed_touch_confirmation_or_timeout
+  output_head: classification_score_or_regression_rank_declared_by_fit
+comparison_baseline: no_trade_baseline_named_only_not_selected_or_materialized
+control_variables:
+- FPMarkets_US100_M5_closed_bar_base_frame
+- us100_bar_close_time_row_key
+- split_set_v0
+- locked_final_oos_b_forbidden
+- no_auxiliary_symbols
+changed_variables:
+- failed_breakout_reversal_barrier
+- price_return_range_volatility_context
+- logistic_or_linear_rank_scout
+- reversal_entry_abstain_timeout_exit
+- failed_touch_confirmation_or_timeout
+sample_scope:
+  instrument: FPMarkets US100
+  timeframe: M5
+  dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  split_id: split_set_v0
+  timezone_or_session_policy: MT5_server_datetime_from_history_audit
+  feature_boundary: right_aligned_closed_bar_price_range_volatility_current_and_past_bars
+  label_boundary: failed_breakout_reversal_barrier_same_split_role_rows
+  leakage_boundary: label horizon must remain in same primary_split_role; preprocessing,
+    target thresholds, and score thresholds fit train-only
+storage_contract:
+  source_of_truth: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/metrics.json
+  supporting_paths:
+  - lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/
+  - lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/reports/
+  registry_rows:
+  - docs/registers/run_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+  heavy_artifact_policy: track_by_path_hash_size_command_or_uri
+success_criteria: []
+failure_criteria: []
+invalid_conditions:
+- feature_or_label_leakage
+- locked_final_oos_b_used
+- missing_MT5_executable_path_after_try_first_repair_attempt
+stop_conditions:
+- proxy_observation_recorded
+- L4_materialization_preflight_next
+evidence_plan:
+- lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/experiment_receipt.yaml
+- lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/metrics.json
+required_gate_coverage:
+  passed:
+  - branch_worktree_fit
+  - time_axis_check
+  - feature_label_boundary_check
+  - split_boundary_check
+  - selection_bias_check
+  - run_manifest
+  - experiment_receipt
+  - storage_contract_check
+  - runtime_learning_probe_decision
+  - proxy_runtime_parity_decision
+  - final_claim_guard
+  not_applicable:
+  - locked_final_oos_access
+  missing:
+  - L4_split_runtime_probe_for_valid_proxy_run
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  reason: Every valid Wave01 proxy/model-bearing run must continue to L4_split_runtime_probe.
+  target_level: L4_split_runtime_probe
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  required_period_roles:
+  - validation
+  - research_oos
+  forbidden_skip_reasons_checked:
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
+  lowered_claim_if_not_run: proxy_observation_only_no_runtime_authority_no_economics_pass_no_candidate
+proxy_runtime_parity:
+  required: true
+  shared_contract:
+  - dataset_id
+  - us100_bar_close_time
+  - split_set_v0
+  - declared_feature_order
+  - declared_label_surface
+  - declared_decision_holding_risk_policy
+  - us100_m5_fpmarkets_tester_execution_v0
+  known_differences:
+  - proxy_barrier_touch_order_may_not_equal_MT5_intra_bar_execution
+  - spread_fill_and_timeout_close_timing_may_differ
+  - price_distance_units_require_point_digits_tick_size_conversion
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending_L4_materialization_and_runtime_difference
+    attempts: []
+    forced_equality_required: false
+  unit_semantics:
+    barrier_unit: atr_multiplier
+    point: must_record_before_MT5_L4
+    digits: must_record_before_MT5_L4
+    tick_size: must_record_before_MT5_L4
+    price_distance_conversion: required_before_MT5_L4
+    lot_step: tester_profile_default_until_run_specific
+    rounding_policy: explicit_before_MT5_L4
+  comparison_classes:
+  - proxy_good_runtime_good
+  - proxy_good_runtime_bad
+  - proxy_bad_runtime_bad
+  - proxy_bad_runtime_good
+  - invalid_or_unmaterializable
+  divergence_judgment: pending_L4
+  prevention_memory:
+  - do_not_reuse_momentum_ret_1_score_replay_negative_memory_as_candidate
+  - record_price_distance_unit_conversion_before_reusing_barrier_or_ATR_stop_logic
+  required_for_proxy_model_bearing_run: true
+  comparison_class: pending_L4
+  follow_up_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+failure_disposition:
+  required_before_judgments:
+  - blocked
+  - deferred
+  - invalid
+  - discarded
+  status: not_applicable
+  diagnosis_state_only_tokens:
+  - cannot
+  - unsupported
+  - not_available
+  - missing_adapter
+  - missing_glue
+  failure_reproduction: null
+  exact_failing_layer: null
+  root_cause_hypothesis: null
+  repo_controlled_support_gap: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: not_applicable_successful_proxy_execution_not_final_disposition
+result_judgment: inconclusive
+missing_evidence:
+- ONNX_export_not_materialized_for_L4_yet
+- MT5_L4_split_runtime_probe_not_run_yet
+- tester_report_not_available
+- candidate_selection_forbidden_before_L4
+- locked_final_oos_b_not_used
+claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave01_event_barrier_l4_materialization_preflight_v0

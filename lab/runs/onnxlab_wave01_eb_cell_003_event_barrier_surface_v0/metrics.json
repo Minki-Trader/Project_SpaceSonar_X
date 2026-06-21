@@ -1,0 +1,103 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave01_eb_cell_003_event_barrier_surface_v0",
+  "status": "executed_proxy_observation_l4_required",
+  "task_surface_id": "surface_us100_event_barrier_decision_surface_v0",
+  "sample_counts": {
+    "raw_rows": 308002,
+    "same_role_horizon_rows": 307726,
+    "train_label_eligible_rows": 143786,
+    "validation_label_eligible_rows": 53806,
+    "research_oos_a_label_eligible_rows": 45545,
+    "locked_final_oos_b_withheld_rows": 38623
+  },
+  "task_surface_metrics": {
+    "label_surface": "mfe_mae_path_quality_ratio",
+    "feature_family": "causal_regime_context",
+    "model_family": "logistic_or_linear_rank_scout",
+    "decision_family": "direction_agnostic_tradeability_abstain"
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 143786,
+      "score_mean": 0.46035267260588436,
+      "score_std": 0.21708875466013658,
+      "mae": 2.0874498832836403,
+      "rmse": 3.01294180789697,
+      "pearson_corr": 0.0722635170232813,
+      "spearman_corr": 0.05824977598635424,
+      "target_mean": 0.46035267260588414,
+      "target_std": 3.020849830069981
+    },
+    "validation": {
+      "row_count": 53806,
+      "score_mean": 0.43491623281621805,
+      "score_std": 0.2022103857217333,
+      "mae": 2.053494043979768,
+      "rmse": 3.034991786105184,
+      "pearson_corr": 0.03792240342402827,
+      "spearman_corr": 0.031821411606205934,
+      "target_mean": 0.32961692371383816,
+      "target_std": 3.0341229329136
+    },
+    "research_oos_a": {
+      "row_count": 45545,
+      "score_mean": 0.42451617411361003,
+      "score_std": 0.2305510613640232,
+      "mae": 2.073948715255065,
+      "rmse": 3.0718773189020814,
+      "pearson_corr": 0.031205050932414647,
+      "spearman_corr": 0.0264599079634515,
+      "target_mean": 0.41447443969581715,
+      "target_std": 3.0704334769542894
+    }
+  },
+  "trading_proxy_metrics": {
+    "validation": {
+      "decision_family": "direction_agnostic_tradeability_abstain",
+      "threshold_policy": "rank_only_no_probability_claim",
+      "threshold_fit_scope": "train_only",
+      "proxy_boundary": "direction_agnostic_future_abs_return_proxy_no_cost_no_execution",
+      "hit_rate": 0.9899298483819868,
+      "trade_count": 8838,
+      "trade_density": 0.1642567743374345,
+      "gross_proxy_mean_return": 0.002130524964826133,
+      "gross_proxy_profit_factor": null,
+      "score_low_threshold": 0.2993014587152595,
+      "score_high_threshold": 0.6162154186140193
+    },
+    "research_oos_a": {
+      "decision_family": "direction_agnostic_tradeability_abstain",
+      "threshold_policy": "rank_only_no_probability_claim",
+      "threshold_fit_scope": "train_only",
+      "proxy_boundary": "direction_agnostic_future_abs_return_proxy_no_cost_no_execution",
+      "hit_rate": 0.9848995550761763,
+      "trade_count": 7417,
+      "trade_density": 0.16284992864200243,
+      "gross_proxy_mean_return": 0.0025399664166586462,
+      "gross_proxy_profit_factor": null,
+      "score_low_threshold": 0.2993014587152595,
+      "score_high_threshold": 0.6162154186140193
+    }
+  },
+  "runtime_metrics": {},
+  "north_star_context": {
+    "role": "final_objective_not_exploration_gate",
+    "average_trades_per_active_day_min": 5,
+    "profit_factor_preferred_range": [
+      1.5,
+      3.0
+    ],
+    "major_window_drawdown_pct_max": 10
+  },
+  "measurement_scope": "proxy_model_observation_validation_and_research_oos_a_no_locked_final_no_cost_no_execution",
+  "judgment_label": "inconclusive",
+  "claim_boundary": "wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "ONNX_export_not_materialized_for_L4_yet",
+    "MT5_L4_split_runtime_probe_not_run_yet",
+    "tester_report_not_available",
+    "candidate_selection_forbidden_before_L4",
+    "locked_final_oos_b_not_used"
+  ]
+}

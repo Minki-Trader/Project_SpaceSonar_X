@@ -1,0 +1,107 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave01_eb_cell_010_event_barrier_surface_v0",
+  "status": "executed_proxy_observation_l4_required",
+  "task_surface_id": "surface_us100_event_barrier_decision_surface_v0",
+  "sample_counts": {
+    "raw_rows": 308002,
+    "same_role_horizon_rows": 307588,
+    "train_label_eligible_rows": 139840,
+    "validation_label_eligible_rows": 52906,
+    "research_oos_a_label_eligible_rows": 45010,
+    "locked_final_oos_b_withheld_rows": 38617
+  },
+  "task_surface_metrics": {
+    "label_surface": "pullback_to_barrier_mean_reversion",
+    "feature_family": "multiscale_price_range_volatility_context",
+    "model_family": "logistic_or_linear_rank_scout",
+    "decision_family": "mean_reversion_abstain_barrier_exit"
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 139840,
+      "score_mean": 0.49994296329226934,
+      "score_std": 0.021651591549592293,
+      "accuracy": 0.5125643592677346,
+      "balanced_accuracy": 0.5148382887681295,
+      "roc_auc": 0.5206712926994148,
+      "average_precision": 0.4993434185028163,
+      "log_loss": 0.6922155391050848,
+      "positive_rate": 0.48356693363844394
+    },
+    "validation": {
+      "row_count": 52906,
+      "score_mean": 0.5037023839785613,
+      "score_std": 0.020095283327832246,
+      "accuracy": 0.4997164782822364,
+      "balanced_accuracy": 0.5040456114959709,
+      "roc_auc": 0.5117834147171463,
+      "average_precision": 0.49776411099715906,
+      "log_loss": 0.6929575521963265,
+      "positive_rate": 0.48608853438173366
+    },
+    "research_oos_a": {
+      "row_count": 45010,
+      "score_mean": 0.5051102936721739,
+      "score_std": 0.025598089846927505,
+      "accuracy": 0.49784492335036656,
+      "balanced_accuracy": 0.5054092543927806,
+      "roc_auc": 0.5073524611839216,
+      "average_precision": 0.48258420287687476,
+      "log_loss": 0.6945880169366668,
+      "positive_rate": 0.47976005332148414
+    }
+  },
+  "trading_proxy_metrics": {
+    "validation": {
+      "decision_family": "mean_reversion_abstain_barrier_exit",
+      "threshold_policy": "train_only_coarse_abstain_band",
+      "threshold_fit_scope": "train_only",
+      "long_count": 15031,
+      "short_count": 8130,
+      "directional_accuracy": 0.5067138724580114,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 23161,
+      "trade_density": 0.4377764336748195,
+      "gross_proxy_mean_return": 3.3728314283054815e-05,
+      "gross_proxy_profit_factor": 1.0326216372677413,
+      "score_low_threshold": 0.4874548211751417,
+      "score_high_threshold": 0.514153602644399
+    },
+    "research_oos_a": {
+      "decision_family": "mean_reversion_abstain_barrier_exit",
+      "threshold_policy": "train_only_coarse_abstain_band",
+      "threshold_fit_scope": "train_only",
+      "long_count": 15742,
+      "short_count": 7113,
+      "directional_accuracy": 0.5151607963246554,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 22855,
+      "trade_density": 0.5077760497667185,
+      "gross_proxy_mean_return": 5.9281073656601926e-05,
+      "gross_proxy_profit_factor": 1.0521744339000585,
+      "score_low_threshold": 0.4874548211751417,
+      "score_high_threshold": 0.514153602644399
+    }
+  },
+  "runtime_metrics": {},
+  "north_star_context": {
+    "role": "final_objective_not_exploration_gate",
+    "average_trades_per_active_day_min": 5,
+    "profit_factor_preferred_range": [
+      1.5,
+      3.0
+    ],
+    "major_window_drawdown_pct_max": 10
+  },
+  "measurement_scope": "proxy_model_observation_validation_and_research_oos_a_no_locked_final_no_cost_no_execution",
+  "judgment_label": "inconclusive",
+  "claim_boundary": "wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "ONNX_export_not_materialized_for_L4_yet",
+    "MT5_L4_split_runtime_probe_not_run_yet",
+    "tester_report_not_available",
+    "candidate_selection_forbidden_before_L4",
+    "locked_final_oos_b_not_used"
+  ]
+}

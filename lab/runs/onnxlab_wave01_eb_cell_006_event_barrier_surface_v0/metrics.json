@@ -1,0 +1,107 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave01_eb_cell_006_event_barrier_surface_v0",
+  "status": "executed_proxy_observation_l4_required",
+  "task_surface_id": "surface_us100_event_barrier_decision_surface_v0",
+  "sample_counts": {
+    "raw_rows": 308002,
+    "same_role_horizon_rows": 307450,
+    "train_label_eligible_rows": 143761,
+    "validation_label_eligible_rows": 53794,
+    "research_oos_a_label_eligible_rows": 45533,
+    "locked_final_oos_b_withheld_rows": 38611
+  },
+  "task_surface_metrics": {
+    "label_surface": "compression_then_expansion_barrier",
+    "feature_family": "causal_regime_context",
+    "model_family": "tree_or_boosted_onnx_feasible_scout",
+    "decision_family": "sparse_event_abstain_barrier_exit"
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 143761,
+      "score_mean": 0.8641243778148147,
+      "score_std": 0.166708906637715,
+      "accuracy": 0.8897475671426882,
+      "balanced_accuracy": 0.6650385504953155,
+      "roc_auc": 0.8712103213060305,
+      "average_precision": 0.9755609488970461,
+      "log_loss": 0.2751980757331844,
+      "positive_rate": 0.8644208095380528
+    },
+    "validation": {
+      "row_count": 53794,
+      "score_mean": 0.862075736945448,
+      "score_std": 0.16943110933755326,
+      "accuracy": 0.8641855969067183,
+      "balanced_accuracy": 0.6174498229615222,
+      "roc_auc": 0.8107795945595734,
+      "average_precision": 0.9618172179748508,
+      "log_loss": 0.32448395611800185,
+      "positive_rate": 0.8618433282522214
+    },
+    "research_oos_a": {
+      "row_count": 45533,
+      "score_mean": 0.8646512310561303,
+      "score_std": 0.16209158679242475,
+      "accuracy": 0.869720861792546,
+      "balanced_accuracy": 0.5840653910642442,
+      "roc_auc": 0.7894747962264699,
+      "average_precision": 0.9649345647506067,
+      "log_loss": 0.3114796083864196,
+      "positive_rate": 0.8822831792326444
+    }
+  },
+  "trading_proxy_metrics": {
+    "validation": {
+      "decision_family": "sparse_event_abstain_barrier_exit",
+      "threshold_policy": "train_only_min_density_guard",
+      "threshold_fit_scope": "train_only",
+      "long_count": 11720,
+      "short_count": 11454,
+      "directional_accuracy": 0.48524208164322086,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 23174,
+      "trade_density": 0.4307915380897498,
+      "gross_proxy_mean_return": -7.721958935481679e-05,
+      "gross_proxy_profit_factor": 0.9347770280836775,
+      "score_low_threshold": 0.8109826835981943,
+      "score_high_threshold": 0.9802037915462446
+    },
+    "research_oos_a": {
+      "decision_family": "sparse_event_abstain_barrier_exit",
+      "threshold_policy": "train_only_min_density_guard",
+      "threshold_fit_scope": "train_only",
+      "long_count": 8907,
+      "short_count": 9590,
+      "directional_accuracy": 0.4767259555603611,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 18497,
+      "trade_density": 0.40623284211451033,
+      "gross_proxy_mean_return": -0.0001482454758998783,
+      "gross_proxy_profit_factor": 0.8856388717011882,
+      "score_low_threshold": 0.8109826835981943,
+      "score_high_threshold": 0.9802037915462446
+    }
+  },
+  "runtime_metrics": {},
+  "north_star_context": {
+    "role": "final_objective_not_exploration_gate",
+    "average_trades_per_active_day_min": 5,
+    "profit_factor_preferred_range": [
+      1.5,
+      3.0
+    ],
+    "major_window_drawdown_pct_max": 10
+  },
+  "measurement_scope": "proxy_model_observation_validation_and_research_oos_a_no_locked_final_no_cost_no_execution",
+  "judgment_label": "preserved_clue",
+  "claim_boundary": "wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "ONNX_export_not_materialized_for_L4_yet",
+    "MT5_L4_split_runtime_probe_not_run_yet",
+    "tester_report_not_available",
+    "candidate_selection_forbidden_before_L4",
+    "locked_final_oos_b_not_used"
+  ]
+}

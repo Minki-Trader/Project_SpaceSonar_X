@@ -1,0 +1,184 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave01_eb_cell_012_event_barrier_surface_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs/wave01_eb_cell_012.yaml",
+      "sha256": "853f8fecc5a7a2fe6943201b8a1db902178e7cd796f64845c3d80df84d9e670d",
+      "size_bytes": 6309,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/feature_recipes/feature_wave01_us100_price_session_regime_flexible_v0.yaml",
+      "sha256": "d03c21749a8a805f8c50e724944e23f71a872425d6c93104215ac4e0763069ce",
+      "size_bytes": 554,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/label_recipes/label_wave01_event_barrier_path_v0.yaml",
+      "sha256": "6385565d94d915700f241a8ced2c289d60114f74c8bd68372969ca2a585de99a",
+      "size_bytes": 487,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/model_recipes/model_wave01_onnx_feasible_scout_v0.yaml",
+      "sha256": "9aaeee24af3b631bfb11dbc823b21975d2f9a094b8b8b4c76477f1f22da7043a",
+      "size_bytes": 537,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/decision_recipes/decision_wave01_barrier_abstain_risk_v0.yaml",
+      "sha256": "a3933fce29812e2fee3b74fe86a16ad7eb16563f814a3a55a8215d2b1b20cddb",
+      "size_bytes": 503,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/eval_recipes/eval_wave01_event_barrier_runtime_v0.yaml",
+      "sha256": "e49df34e50b197f596080af6df225d7a402c6c0139742f695ec6c65985e4fc3b",
+      "size_bytes": 493,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "foundation/config/mt5_runtime_probe_contract.yaml",
+      "sha256": "60b815ec2124ae8802d3f7637ab302d119cfe1a31d45f5e5cba37ccd0f037a3c",
+      "size_bytes": 5937,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml",
+      "sha256": "309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851",
+      "size_bytes": 2691,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/mt5/tester_execution_profile_v0.yaml",
+      "sha256": "dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad",
+      "size_bytes": 3036,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave01_event_barrier_proxy_batch.py",
+    "command": "foundation\\pipelines\\run_wave01_event_barrier_proxy_batch.py --expected-branch codex/l4-pair-judgment-closeout",
+    "environment_summary": {
+      "python": "3.13.9",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "numpy": "2.3.4",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "yaml": "6.0.3"
+    }
+  },
+  "consumer": [
+    "future_L4_materialization_preflight"
+  ],
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/run_manifest.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/feature_schema.json",
+      "sha256": "e0cdb02fc4a610e76599100688b7eaaa12947175fdb24bb8620991cd7c39005a",
+      "size_bytes": 2727,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/label_schema.json",
+      "sha256": "dd61de346780d27b693f4d4d8be56f383be5e209763bd43df74b6ca71423c927",
+      "size_bytes": 1582,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/model_summary.json",
+      "sha256": "69cb6730382321801383333c96cc004d61af067f6cf0507b7fba9586c2c8a0a3",
+      "size_bytes": 980,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/split_profile.json",
+      "sha256": "b46326d4706bffd9761cdd8b4474839a66e0cb656dcbce6a4251a0a9fed788a6",
+      "size_bytes": 651,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "42cc07df2bf6850720d9f7882c12c6ee211cbe082cc5d338324b8a3994e884f2",
+      "size_bytes": 50748,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "5360c68b4186577010dd657e18d940af4dae4481fa6e3d5192c7251948834128",
+      "size_bytes": 53150,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+      "sha256": "42b4fa9dd211a25a27c8241ffcac09539f62970b8a04c0fc22b1e7ce6c4390ad",
+      "size_bytes": 4338,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/feature_schema.json": "e0cdb02fc4a610e76599100688b7eaaa12947175fdb24bb8620991cd7c39005a"
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/label_schema.json": "dd61de346780d27b693f4d4d8be56f383be5e209763bd43df74b6ca71423c927"
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/model_summary.json": "69cb6730382321801383333c96cc004d61af067f6cf0507b7fba9586c2c8a0a3"
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/split_profile.json": "b46326d4706bffd9761cdd8b4474839a66e0cb656dcbce6a4251a0a9fed788a6"
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv": "42cc07df2bf6850720d9f7882c12c6ee211cbe082cc5d338324b8a3994e884f2"
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv": "5360c68b4186577010dd657e18d940af4dae4481fa6e3d5192c7251948834128"
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/reports/proxy_event_barrier_report.json": "42b4fa9dd211a25a27c8241ffcac09539f62970b8a04c0fc22b1e7ce6c4390ad"
+    }
+  ],
+  "artifact_sizes": [
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/feature_schema.json": 2727
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/label_schema.json": 1582
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/model_summary.json": 980
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/split_profile.json": 651
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv": 50748
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv": 53150
+    },
+    {
+      "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/reports/proxy_event_barrier_report.json": 4338
+    }
+  ],
+  "regeneration_commands": [
+    "python foundation/pipelines/run_wave01_event_barrier_proxy_batch.py --expected-branch codex/l4-pair-judgment-closeout"
+  ],
+  "registry_links": [
+    "docs/registers/run_registry.csv"
+  ],
+  "availability": "present_hash_recorded",
+  "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing"
+}

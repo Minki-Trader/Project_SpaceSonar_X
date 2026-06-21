@@ -1,47 +1,50 @@
 version: onnx_lab_work_item_v1
-work_item_id: work_wave01_event_barrier_execute_first_batch_proxy_v0
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-created_at_utc: '2026-06-21T23:05:00Z'
-status: planned_not_started
-user_request: Execute the first broad proxy batch for the Wave01 event/barrier decision
-  campaign, then force valid proxy/model-bearing results through L4 follow-through.
+created_at_utc: '2026-06-21T22:14:31.773452Z'
+status: planned_next
+user_request: Materialize ONNX/EA/MT5 L4 path for every valid Wave01 event/barrier
+  proxy run before any proxy-only closeout.
 current_truth:
-  first_batch_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/first_batch_run_specs_manifest.yaml
-  run_specs_index: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/run_specs_index.csv
-  campaign_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
-  sweep_manifest: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/sweep_manifest.yaml
+  claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  run_refs: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv
+  run_registry: docs/registers/run_registry.csv
+  result_counts:
+    inconclusive: 4
+    preserved_clue: 8
+  valid_proxy_model_bearing_run_count: 12
 work_classification:
-  primary_family: model_training
+  primary_family: onnx_export_parity
   detected_families:
-  - data_feature_build
-  - model_training
   - onnx_export_parity
   - runtime_probe
-  mutation_intent: execute_proxy_batch_and_prepare_L4_follow_through
+  - artifact_lineage
+  mutation_intent: materialize_L4_follow_through_path_for_wave01_proxy_runs
 skill_routing:
-  primary_family: model_training
-  primary_skill: spacesonar-model-validation
+  primary_family: onnx_export_parity
+  primary_skill: spacesonar-runtime-parity
   support_skills:
-  - spacesonar-experiment-design
-  - spacesonar-data-integrity
+  - spacesonar-artifact-lineage
+  - spacesonar-environment-reproducibility
   - spacesonar-run-evidence-system
-  - spacesonar-runtime-parity
   - spacesonar-claim-discipline
   required_gates:
-  - split_boundary_check
-  - feature_label_boundary_check
-  - run_manifest
-  - experiment_receipt
-  - proxy_runtime_parity_decision
-  - L4_follow_through_required_for_valid_proxy_model_runs
+  - onnx_export_smoke
+  - python_onnx_parity
+  - proxy_runtime_parity_record
+  - bundle_integrity_hash
+  - L4_split_runtime_probe_for_valid_proxy_run
   - final_claim_guard
 acceptance_criteria:
-- Execute proxy/model-bearing specs without using locked final OOS-B.
-- Create run-local manifest, receipt, lineage, and metrics for every executed meaningful
+- Do not discard or defer any valid proxy run only because an adapter is missing.
+- Create or patch the smallest needed ONNX/export/EA/runtime adapter before any support-gap
+  disposition.
+- Prepare L4 validation and research_oos attempts for every valid proxy/model-bearing
   run.
-- Do not close any valid proxy/model-bearing run proxy-only.
-- Materialize ONNX/EA/MT5 L4 path or record try-first failure disposition before invalid/block/defer/discard.
-claim_boundary: planned_proxy_execution_work_item_no_run_no_candidate_no_runtime_authority
+- Do not use locked final OOS-B.
+- Keep any L4 result as runtime probe evidence only unless the runtime contract is
+  fully satisfied.
+claim_boundary: planned_L4_materialization_preflight_no_runtime_authority_no_candidate
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -53,4 +56,4 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
-next_action: build_or_run_event_barrier_proxy_executor_then_L4_follow_through
+next_action: build_wave01_onnx_materialization_and_L4_attempt_preparation

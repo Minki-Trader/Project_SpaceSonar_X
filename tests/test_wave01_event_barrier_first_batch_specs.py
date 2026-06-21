@@ -10,6 +10,7 @@ from foundation.pipelines.materialize_wave01_event_barrier_first_batch_specs imp
     first_batch_rows,
     validate_rows,
 )
+from foundation.pipelines.run_wave01_event_barrier_proxy_batch import CLAIM_BOUNDARY as EXECUTED_CLAIM_BOUNDARY
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,8 +43,11 @@ def test_wave01_first_batch_design_rows_are_broad_and_l4_bound() -> None:
 def test_wave01_materialized_first_batch_manifest_matches_policy() -> None:
     manifest = read_yaml(CAMPAIGN / "first_batch_run_specs_manifest.yaml")
 
-    assert manifest["status"] == "first_batch_specs_materialized_not_executed"
-    assert manifest["claim_boundary"] == CLAIM_BOUNDARY
+    assert manifest["status"] in {
+        "first_batch_specs_materialized_not_executed",
+        "executed_proxy_observation_l4_required",
+    }
+    assert manifest["claim_boundary"] in {CLAIM_BOUNDARY, EXECUTED_CLAIM_BOUNDARY}
     assert manifest["spec_count"] == 12
     assert manifest["coverage_summary"]["multi_axis_discovery"] is True
     assert manifest["coverage_summary"]["feature_only_or_label_only_or_model_only"] is False
@@ -52,10 +56,10 @@ def test_wave01_materialized_first_batch_manifest_matches_policy() -> None:
     assert manifest["runtime_learning_probe_decision"]["target_level"] == "L4_split_runtime_probe"
     assert manifest["runtime_learning_probe_decision"]["required_period_roles"] == ["validation", "research_oos"]
     assert "runtime_authority" in manifest["forbidden_claims"]
-    assert "MT5_L4_not_run" in manifest["missing_evidence"]
+    assert any("MT5_L4" in item for item in manifest["missing_evidence"])
 
 
-def test_wave01_run_specs_index_and_refs_are_planned_specs_not_runs() -> None:
+def test_wave01_run_specs_index_and_refs_keep_specs_and_link_runs_after_execution() -> None:
     index_rows = read_csv(CAMPAIGN / "run_specs_index.csv")
     ref_rows = read_csv(CAMPAIGN / "sweeps/sweep_us100_event_barrier_broad_v0/run_refs.csv")
 
@@ -64,8 +68,12 @@ def test_wave01_run_specs_index_and_refs_are_planned_specs_not_runs() -> None:
     assert all(row["status"] == "planned_not_executed" for row in index_rows)
     assert all(row["claim_boundary"] == CLAIM_BOUNDARY for row in index_rows)
     assert "run_spec_path" in ref_rows[0]
-    assert "run_manifest_path" not in ref_rows[0]
-    assert all(row["result_judgment"] == "not_evaluated" for row in ref_rows)
+    if "run_manifest_path" in ref_rows[0]:
+        assert all(row["run_manifest_path"].startswith("lab/runs/") for row in ref_rows)
+        assert all(row["claim_boundary"] == EXECUTED_CLAIM_BOUNDARY for row in ref_rows)
+        assert all(row["next_action"] == "work_wave01_event_barrier_l4_materialization_preflight_v0" for row in ref_rows)
+    else:
+        assert all(row["result_judgment"] == "not_evaluated" for row in ref_rows)
 
 
 def test_wave01_each_run_spec_preserves_blank_slate_and_parity_contract() -> None:

@@ -1,0 +1,27 @@
+{
+  "version": "wave01_proxy_model_summary_v1",
+  "run_id": "onnxlab_wave01_eb_cell_009_event_barrier_surface_v0",
+  "run_spec_id": "wave01_eb_cell_009",
+  "model_family": "tree_or_boosted_onnx_feasible_scout",
+  "model_task": "no_touch_or_tradeability_regime",
+  "task_kind": "classification",
+  "model_summary": {
+    "model_family": "tree_or_boosted_onnx_feasible_scout",
+    "task_kind": "classification",
+    "target_name": "target_binary_raw",
+    "target_threshold_fit_scope": "not_applicable",
+    "threshold_policy": "train_only_no_trade_density_guard",
+    "score_threshold_fit_scope": "train_only",
+    "preprocessing_fit_scope": "train_only",
+    "calibration": "none",
+    "selector": "none"
+  },
+  "train_score_summary": {
+    "min": 0.0019982424376940224,
+    "p20": 0.002861774686980195,
+    "median": 0.0082750024520921,
+    "p80": 0.048730966958116774,
+    "max": 0.8572729691088896
+  },
+  "claim_boundary": "proxy_model_summary_only_no_candidate_no_onnx_no_runtime"
+}

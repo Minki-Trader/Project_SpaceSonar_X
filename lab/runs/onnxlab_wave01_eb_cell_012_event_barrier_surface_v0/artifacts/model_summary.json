@@ -1,0 +1,27 @@
+{
+  "version": "wave01_proxy_model_summary_v1",
+  "run_id": "onnxlab_wave01_eb_cell_012_event_barrier_surface_v0",
+  "run_spec_id": "wave01_eb_cell_012",
+  "model_family": "logistic_or_linear_rank_scout",
+  "model_task": "longer_path_quality_rank",
+  "task_kind": "regression",
+  "model_summary": {
+    "model_family": "logistic_or_linear_rank_scout",
+    "task_kind": "regression",
+    "target_name": "target_continuous",
+    "target_threshold_fit_scope": "not_applicable",
+    "threshold_policy": "rank_only_no_probability_claim",
+    "score_threshold_fit_scope": "train_only",
+    "preprocessing_fit_scope": "train_only",
+    "calibration": "none",
+    "selector": "none"
+  },
+  "train_score_summary": {
+    "min": -1.3972133342012323,
+    "p20": 0.20292108336529577,
+    "median": 0.46408455916549773,
+    "p80": 0.6364365865548873,
+    "max": 3.6697286614334588
+  },
+  "claim_boundary": "proxy_model_summary_only_no_candidate_no_onnx_no_runtime"
+}
