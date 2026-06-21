@@ -721,6 +721,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
                 "python_onnx_parity",
                 "bundle_integrity_hash",
                 "runtime_learning_probe_decision",
+                "final_claim_guard",
             ],
             "not_applicable": ["strategy_tester_economics"],
             "missing": ["mt5_native_onnx_fixed_fixture_probe"],
