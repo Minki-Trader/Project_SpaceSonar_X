@@ -1,0 +1,19 @@
+version: score_replay_adapter_compile_summary_v1
+summary_id: score_replay_adapter_compile_summary_v0
+created_at_utc: '2026-06-21T20:44:04Z'
+status: ea_binary_available
+claim_boundary: ea_compile_evidence_only_not_strategy_tester_output
+ea_source:
+  path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+  sha256: 986c35990b6a0fcb6e2d36a1e4af566d87e1a67e3e20157a744c7e69519b0495
+  size_bytes: 9861
+  availability: present_hash_recorded
+ea_binary:
+  path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+  sha256: a2d4266dbc94ce2df1aa266be16d139726972e8a9c5fac5198a41503dabf1e3a
+  size_bytes: 39860
+  availability: local_binary_hash_recorded_ignored_by_git
+compile_result: 'Result: 0 errors, 0 warnings, 642 ms elapsed, cpu=''X64 Regular'''
+raw_log_policy: raw_compile_log_not_committed_because_it_contains_local_absolute_paths
+raw_log_path_local: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile.log
+missing_evidence: []

@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T17:10:54Z'
-status: l4_ingredients_materialized_decision_adapter_design_next
+status: decision_replay_adapter_prepared_terminal_execution_next
 user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
   valid first proof-window proxy/model-bearing run while preserving Codex long-running
   operating stability.
@@ -123,6 +123,18 @@ current_truth:
     source_clue_counts:
       clue_wave0_path_quality_h12_side_signal_v0: 1
       clue_wave0_tradeability_mid_horizon_v0: 3
+  l4_decision_replay_adapter_preparation_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
+  l4_decision_replay_adapter_preparation_status: decision_replay_adapter_attempts_prepared
+  l4_decision_replay_adapter_preparation_counts:
+    source_ingredient_count: 3
+    prepared_attempt_count: 6
+    direction_policy_counts:
+      momentum_ret_1: 6
+    period_role_counts:
+      validation: 3
+      research_oos: 3
+    decision_family_counts:
+      abstain_capable_direction_agnostic_tradeability: 6
 work_classification:
   primary_family: runtime_probe
   detected_families:
@@ -228,7 +240,7 @@ branch_worktree:
   branch_worktree_fit: fit
   branch_action: keep_current_branch
   policy_reference: docs/policies/branch_policy.md
-  mismatch_claim_effect: no_branch_mismatch_detected_for_l4_ingredient_materialization
+  mismatch_claim_effect: no_branch_mismatch_detected_for_decision_replay_adapter_preparation
 agent_allocation:
   phase: wave0_l4_ingredient_materialization
   selected_agents: []
@@ -241,83 +253,74 @@ agent_allocation:
   max_threads_is_capacity_only: true
   claim_effect: no_new_advisory_claim
 execution_provenance:
-  git_sha: 1e7abc87db3efd8eeac9d392a2f0fa05eeea8cb6
+  git_sha: f0eeb1d694d561cab6931c62ddf0a0a6df122568
   branch: codex/l4-pair-judgment-closeout
   dirty_flag: true
   changed_files:
-  - M .agents/skills/spacesonar-claim-discipline/SKILL.md
-  - ' M .agents/skills/spacesonar-result-judgment/SKILL.md'
-  - ' M .agents/skills/spacesonar-runtime-parity/SKILL.md'
-  - ' M AGENTS.md'
-  - ' M docs/agent_control/self_correction_policy.yaml'
-  - ' M docs/agent_control/work_family_registry.yaml'
-  - ' M docs/policies/onnx_lab_operating_policy.md'
-  - ' M docs/policies/result_judgment_policy.md'
-  - ' M docs/registers/artifact_registry.csv'
-  - ' M docs/registers/clue_registry.csv'
+  - M docs/registers/artifact_registry.csv
   - ' M docs/registers/goal_registry.csv'
-  - ' M docs/registers/ingredient_card_registry.csv'
   - ' M docs/workspace/workspace_state.yaml'
-  - ' M foundation/config/mt5_runtime_probe_contract.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
-  - ?? foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
-  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_ingredient_materialization_v0_closeout.yaml
-  - ?? tests/test_wave0_l4_ingredient_cards.py
+  - ?? foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+  - ?? foundation/mt5/score_replay_decision_adapter.py
+  - ?? foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_index.csv
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? tests/test_score_replay_decision_adapter.py
   command_argv:
   - python
-  - foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
-  - --write-control-records
+  - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+  - --write-records
   python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
   python_version: 3.13.9
   key_package_versions:
     python: 3.13.9
     yaml: 6.0.3
-  started_at_utc: '2026-06-21T20:32:58Z'
-  ended_at_utc: '2026-06-21T20:32:58Z'
+  started_at_utc: '2026-06-21T20:44:04Z'
+  ended_at_utc: '2026-06-21T20:44:04Z'
   input_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
-    sha256: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
-    size_bytes: 9149
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-    sha256: 62072948b427e70c993990cdec4b11eb9caf50fbb16287d332e46214a6ebc9f8
-    size_bytes: 4305
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
-    sha256: e368d3f13ec5ef4b775b03d6f7aab39d67134a4613400af171905c431b808004
-    size_bytes: 20730
-    availability: present_hash_recorded
-  output_hashes:
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/l4_ingredient_materialization_summary.yaml
-    sha256: c5623037809cf18cf2c30d52fa068797c38f415e5ed5baea83adcaeada08a249
-    size_bytes: 4483
-    availability: present_hash_recorded
   - path: docs/registers/ingredient_card_registry.csv
     sha256: 8584ffdbd4cff4d4307d93aea3c5706df23c3c62f99bd5a5acc2c0cf86f094c4
     size_bytes: 5304
     availability: present_hash_recorded
-  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_ingredient_materialization_v0_closeout.yaml
-    sha256: 44705955d1d5091bd02e24d658fe5a8a5a0d3bf84ece728b804c7e6ba41876f9
-    size_bytes: 2001
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+    sha256: 014f332e4ca5399777f1d3fc69482b8de62c87696e3feb6891526926ff436be9
+    size_bytes: 9149
     availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_008_l4_runtime_score_observed_v0.yaml
-    sha256: 514822868b324ee82a42e3035b3482cd8c7230cee4a21f8cc7995877c89886a1
-    size_bytes: 4186
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_index.csv
+    sha256: c773fe9b9ff6797e08aebeb9015f055c3cbecb9ea7e85f1f4e1a965cc41c5286
+    size_bytes: 18621
     availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_010_l4_runtime_score_observed_v0.yaml
-    sha256: 631e3cc3ab6f7137df28fd5c9895dc0115d9b7482babd700785f35c975620a45
-    size_bytes: 4047
+  output_hashes:
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
+    sha256: f57b8ae49f01a8a91a219f710688e0b2095d5203232cde37a556b1bc9b2c5e8f
+    size_bytes: 5222
     availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_011_l4_runtime_score_observed_v0.yaml
-    sha256: 28e3ba16b40fed3a4c483716c1dbfc1a98ecd302da99362e04e6a296a3148ebc
-    size_bytes: 4163
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_index.csv
+    sha256: 076a48c4df7bfb864ed7a61b33934d099f38c81499edd2cb18ee9edeb81bd19d
+    size_bytes: 6171
     availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_012_l4_runtime_score_observed_v0.yaml
-    sha256: 4aaf274eff0cd48558529293358643858711ed96d9fc59dcd65e2e15fd2f00ea
-    size_bytes: 4173
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
+    sha256: 562e2f2d1d00ca47a5b21f16c6fd5ae8106ae6b5f9122b5f398a09f278dbba27
+    size_bytes: 1019
+    availability: present_hash_recorded
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+    sha256: 6fbb402cbe9e66d014fff1272488a9f2635913bbf00020a1a4ded7f18c4c49ec
+    size_bytes: 1582
+    availability: present_hash_recorded
+  - path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+    sha256: 986c35990b6a0fcb6e2d36a1e4af566d87e1a67e3e20157a744c7e69519b0495
+    size_bytes: 9861
     availability: present_hash_recorded
   unknown_git_claim_effect: not_applicable_git_state_recorded_claim_still_lowered_no_runtime_authority
 forbidden_claims:
@@ -330,9 +333,8 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 missing_material_if_relevant:
-- tester_reports_missing_for_all_ingredient_sources
-- trading_or_sparse_decision_EA_not_present
-- economics_metrics_not_available_from_non_trading_probe
-- row_level_proxy_vs_MT5_score_alignment_not_performed
-next_action: open decision-execution adapter design for non-diagnostic ingredients
-  or bounded synthesis mix queue; do not claim L5 candidate yet
+- decision_replay_terminal_execution_not_run
+- tester_reports_missing_until_execution
+- economics_metrics_missing_until_tester_report
+next_action: compile and execute prepared score-replay decision attempts before any
+  L5/economics claim

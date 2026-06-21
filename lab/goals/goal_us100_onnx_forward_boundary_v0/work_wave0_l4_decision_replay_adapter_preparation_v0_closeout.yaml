@@ -1,0 +1,38 @@
+version: work_closeout_v1
+work_item_id: work_wave0_l4_decision_replay_adapter_preparation_v0
+parent_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-21T20:44:04Z'
+result_judgment: runtime_probe
+status: decision_replay_adapter_attempts_prepared
+claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_index.csv
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
+- foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+counts:
+  source_ingredient_count: 3
+  prepared_attempt_count: 6
+  direction_policy_counts:
+    momentum_ret_1: 6
+  period_role_counts:
+    validation: 3
+    research_oos: 3
+  decision_family_counts:
+    abstain_capable_direction_agnostic_tradeability: 6
+missing_evidence:
+- decision_replay_terminal_execution_not_run
+- tester_reports_missing_until_execution
+- economics_metrics_missing_until_tester_report
+next_action: compile and execute prepared score-replay decision attempts before any
+  L5/economics claim
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

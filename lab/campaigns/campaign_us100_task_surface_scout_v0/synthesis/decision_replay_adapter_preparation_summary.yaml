@@ -1,0 +1,95 @@
+version: wave0_l4_decision_replay_adapter_preparation_summary_v1
+summary_id: wave0_l4_decision_replay_adapter_preparation_v0
+work_item_id: work_wave0_l4_decision_replay_adapter_preparation_v0
+parent_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: '2026-06-21T20:44:04Z'
+status: decision_replay_adapter_attempts_prepared
+adapter_id: score_replay_sparse_decision_adapter_v0
+claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+counts:
+  source_ingredient_count: 3
+  prepared_attempt_count: 6
+  direction_policy_counts:
+    momentum_ret_1: 6
+  period_role_counts:
+    validation: 3
+    research_oos: 3
+  decision_family_counts:
+    abstain_capable_direction_agnostic_tradeability: 6
+source_records:
+  ingredient_registry: docs/registers/ingredient_card_registry.csv
+  pair_judgment_index: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_index.csv
+  score_attempt_preparation_index: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_attempt_preparation_index.csv
+  runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
+  period_profile: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+artifact_paths:
+  summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
+  index: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_index.csv
+  ea_source: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+  compile_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
+compile_status:
+  ea_binary_available: true
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+    sha256: a2d4266dbc94ce2df1aa266be16d139726972e8a9c5fac5198a41503dabf1e3a
+    size_bytes: 39860
+    availability: local_binary_hash_recorded_ignored_by_git
+  compile_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
+judgment:
+  judgment_label: runtime_probe
+  result_subject: score replay sparse decision adapter preparation
+  metric_identity: no performance metric; adapter/config preparation only
+  comparison_baseline: non-trading L4 score telemetry attempts
+  missing_evidence:
+  - decision_replay_terminal_execution_not_run
+  - tester_reports_missing_until_execution
+  - economics_metrics_missing_until_tester_report
+  next_action: compile and execute prepared score-replay decision attempts before
+    any L5/economics claim
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: f0eeb1d694d561cab6931c62ddf0a0a6df122568
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M docs/registers/artifact_registry.csv
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ?? foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+  - ?? foundation/mt5/score_replay_decision_adapter.py
+  - ?? foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_compile_summary.yaml
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_index.csv
+  - ?? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_adapter_preparation_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? tests/test_score_replay_decision_adapter.py

@@ -1,0 +1,139 @@
+version: mt5_attempt_manifest_v1
+attempt_id: attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0
+parent_score_attempt_id: attempt_wave0_cell_012_l4_research_oos_v0
+adapter_id: score_replay_sparse_decision_adapter_v0
+run_id: onnxlab_wave0_cell_012_surface_scout_v0
+cell_id: wave0_cell_012
+bundle_id: bundle_wave0_cell_012_l4_onnx_export_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: '2026-06-21T20:44:04Z'
+status: prepared_pending_terminal_execution
+claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+source_of_truth: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+work_item_id: work_wave0_first_batch_l4_follow_through_v0
+subwork_item_id: work_wave0_l4_decision_replay_adapter_preparation_v0
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  required_runtime_level: decision_replay_runtime_probe_before_L5
+  reason: Non-diagnostic L4 score-observed ingredient requires a sparse decision-execution
+    adapter before any L5/economics claim.
+  lowered_claim_if_not_run: score_replay_adapter_preparation_only_no_runtime_or_economics_claim
+period_identity:
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: research_oos
+  from_date: 2025.04.03
+  to_date: 2025.11.21
+  locked_final_oos_b: excluded_forbidden_by_default
+execution_identity:
+  execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  symbol: US100
+  timeframe: M5
+  sizing_policy:
+    fixed_lot: 0.02
+    source: configs/mt5/tester_execution_profile_v0.yaml
+  score_replay_not_onnx_execution: true
+runtime_surface_contract:
+  surface_scope: full_period_sparse_decision_surface_from_mt5_score_telemetry
+  source_score_telemetry_common_path: SpaceSonar\l4_score_probe\attempt_wave0_cell_012_l4_research_oos_v0\score_telemetry.csv
+  source_score_attempt_manifest: runtime/mt5_attempts/attempt_wave0_cell_012_l4_research_oos_v0/attempt_manifest.yaml
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  direction_policy: momentum_ret_1
+  score_high_threshold: 0.5592615936826834
+  hold_bars: 12
+  decision_output: sparse_tester_trade_orders
+  forbidden_interpretation: not_ONNX_runtime_authority_not_standard_L4_completion_until_terminal_report_exists
+proxy_runtime_parity:
+  status: adapter_prepared_terminal_execution_pending
+  shared_contract:
+  - US100_M5_closed_bar_base_frame
+  - period_profile_split_set_v0
+  - us100_m5_fpmarkets_tester_execution_v0
+  - source_MT5_score_telemetry_full_period
+  known_differences:
+  - This adapter replays previously observed MT5 score telemetry and does not run
+    ONNX in the trading EA.
+  - Direction-agnostic tradeability scores require an explicit side policy before
+    tester trades can exist.
+  interpretation_drift_risks:
+  - bar_close_time_lookup_alignment
+  - score_threshold_translation
+  - direction_policy_injected_for_direction_agnostic_surface
+  - tester_fill_cost_spread_lot_rounding
+  - hold_bars_exit_semantics
+  minimum_reconciliation_attempt:
+    status: prepared
+    attempt: score telemetry bar_close_time will be replayed into sparse orders in
+      MT5 terminal
+    forced_equality_required: false
+  unit_semantics:
+    score: single_float_score_from_prior_MT5_score_probe
+    direction: momentum_ret_1
+    lot: fixed_lot_0.02
+    hold: 12_M5_closed_bars
+    point_tick_digits: to_be_recorded_from_tester_report
+  comparison_class: pending_terminal_execution
+  divergence_judgment: pending_terminal_execution
+  prevention_memory:
+  - Do not treat score telemetry as economics evidence.
+  - Do not hide direction policy injection for direction-agnostic tradeability surfaces.
+  - If score replay trades differ from score-probe decisions, record bar-close lookup
+    and threshold semantics before judging the surface.
+  follow_up_action: execute prepared decision-replay attempts before any L5/economics
+    claim
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+artifact_identity:
+  ea_entrypoint:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+    sha256: 986c35990b6a0fcb6e2d36a1e4af566d87e1a67e3e20157a744c7e69519b0495
+    size_bytes: 9861
+    availability: present_hash_recorded
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+    sha256: a2d4266dbc94ce2df1aa266be16d139726972e8a9c5fac5198a41503dabf1e3a
+    size_bytes: 39860
+    availability: local_binary_hash_recorded_ignored_by_git
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_config.ini
+    sha256: 8e3e864c9a55329c9afba52df915cd40297e4584dc0b702a1bbec2ce36e203b4
+    size_bytes: 1199
+    availability: present_hash_recorded
+  bundle:
+    path: runtime/packages/bundle_wave0_cell_012_l4_onnx_export_v0/experiment_bundle.json
+    sha256: 30906f785c76fbce875f4edbbb74006a32a204e82673879c479ec47bff56c791
+    size_bytes: 18951
+    availability: present_hash_recorded
+  source_score_attempt:
+    path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_research_oos_v0/attempt_manifest.yaml
+    availability: present_hash_recorded
+required_gate_coverage:
+  passed:
+  - source_score_telemetry_observed
+  - decision_replay_adapter_source_created
+  - score_replay_EA_compile_succeeded
+  - tester_config_prepared
+  - locked_final_excluded
+  missing:
+  - Strategy_Tester_terminal_execution
+  - tester_report_hash
+  - economics_metrics
+  not_applicable:
+  - locked_final_oos_b_access
+missing_evidence:
+- decision_replay_terminal_execution_not_run
+- tester_report_missing_until_terminal_execution
+- economics_metrics_missing_until_tester_report
+next_action: compile and execute score-replay decision attempts; keep L5/economics
+  claims forbidden until tester reports exist
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
