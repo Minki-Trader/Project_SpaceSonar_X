@@ -1,46 +1,44 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: "2026-06-21T00:00:00Z"
-
+updated_utc: '2026-06-21T11:55:00Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
   timeframe: M5
-  primary_goal: "Large-scale ONNX development lab for research, export, parity, packaging, and MT5 runtime probes."
-
+  primary_goal: Large-scale ONNX development lab for research, export, parity, packaging,
+    and MT5 runtime probes.
 active_roots:
   source_code:
-    - src/spacesonar
-    - foundation
+  - src/spacesonar
+  - foundation
   configuration:
-    - configs
+  - configs
   lab_work:
-    - lab/hypotheses
-    - lab/campaigns
-    - lab/runs
-    - lab/candidates
-    - lab/templates
+  - lab/hypotheses
+  - lab/campaigns
+  - lab/runs
+  - lab/candidates
+  - lab/templates
   runtime_work:
-    - runtime/packages
-    - runtime/mt5_attempts
+  - runtime/packages
+  - runtime/mt5_attempts
   control:
-    - docs/workspace
-    - docs/registers
-    - docs/agent_control
-    - docs/contracts
-    - docs/policies
-
+  - docs/workspace
+  - docs/registers
+  - docs/agent_control
+  - docs/contracts
+  - docs/policies
 legacy_workspace_deleted:
   status: deleted_by_user_request
   removed_surfaces:
-    - bulk legacy routing tree
-    - bulk legacy external-review tree
-    - legacy boot/audit archive tree
-    - old numbered pipeline material
-    - cleanup and audit snapshots
+  - bulk legacy routing tree
+  - bulk legacy external-review tree
+  - legacy boot/audit archive tree
+  - old numbered pipeline material
+  - cleanup and audit snapshots
   claim_effect: unavailable_no_inheritance
-  recovery_rule: "Do not recreate from memory. Use only user-restored external backup material when explicitly requested."
-
+  recovery_rule: Do not recreate from memory. Use only user-restored external backup
+    material when explicitly requested.
 current_claims:
   lab_structure: planning_scaffold
   routing_preflight: scaffold_with_local_validator
@@ -57,7 +55,7 @@ current_claims:
   split_catalog_claim_boundary: research_split_catalog_only_not_canonical_not_pass
   primary_split_id: split_base_anchor_v0
   wfo_split_id: split_block_wfo_v0
-  clean_universe: "2022.02.09 -> 2026.06.18"
+  clean_universe: 2022.02.09 -> 2026.06.18
   runtime_period_profile: period_profile_split_set_v0
   runtime_period_profile_path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
   feature_contract: undefined_by_design
@@ -67,12 +65,15 @@ current_claims:
   holding_period_policy: undefined_by_design
   model_io_shape: undefined_by_design
   output_head: undefined_by_design
-  data_materialized: false
-  model_materialized: false
-  onnx_bundle_materialized: false
-  mt5_runtime_probe_completed: false
+  data_materialized: local_fixture_dataset_only_hash_recorded
+  model_materialized: local_fixture_model_only_hash_recorded
+  onnx_bundle_materialized: local_fixture_bundle_only_hash_recorded
+  mt5_runtime_probe_completed: fixed_fixture_micro_probe_only_no_runtime_authority
   runtime_authority: false
-
+  first_vertical_slice_status: fixed_fixture_parity_learning_only
+  first_vertical_slice_run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
+  first_vertical_slice_bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
+  first_vertical_slice_attempt_id: attempt_20260621T115145Z_mt5_onnx_fixture_v0
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

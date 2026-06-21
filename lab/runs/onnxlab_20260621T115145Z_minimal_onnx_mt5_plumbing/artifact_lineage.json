@@ -1,0 +1,113 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing",
+  "source_inputs": [
+    "MT5.copy_rates_range US100 M5",
+    "foundation/features/fixture_features.py",
+    "foundation/labels/fixture_labels.py"
+  ],
+  "producer": {
+    "type": "python_pipeline",
+    "identity": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py",
+    "command": "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py",
+    "environment_summary": {
+      "MetaTrader5": "5.0.5640",
+      "numpy": "2.3.4",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "onnx": "1.20.1",
+      "onnxruntime": "1.24.3",
+      "yaml": "6.0.3",
+      "python": "3.13.9",
+      "platform": "Windows-11-10.0.26200-SP0"
+    }
+  },
+  "consumer": [
+    "runtime/packages",
+    "runtime/mt5_attempts",
+    "MT5 common files"
+  ],
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json",
+    "runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/experiment_bundle.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/model.onnx",
+      "sha256": "7bd7f9a5a1af7c3069732229c96be1a5228d927efaff00c682a046fb47b53618",
+      "size_bytes": 618
+    },
+    {
+      "path": "runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/fixture_input.csv",
+      "sha256": "68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647",
+      "size_bytes": 57
+    },
+    {
+      "path": "runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/expected_output.csv",
+      "sha256": "de134c319ff558f777565538039ba698b299b1f94b33a02fe9143571f5f6bad9",
+      "size_bytes": 14
+    },
+    {
+      "path": "runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/fixture_manifest.json",
+      "sha256": "672eaee4f9897026737446cd731c046d8f08f06dfb321ee65251959dd97c7d9a",
+      "size_bytes": 4677
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/tester_config.ini",
+      "sha256": "d545ca71cc2da652ea66f84970ff39bf0251912f0da1c4c0358def18b93e9978",
+      "size_bytes": 1083
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/telemetry/mt5_probe_output.csv",
+      "sha256": "489fa03e8ec4dea0b5a033f4feeb9a9d7ef257656780ac6d7ead9fca7ac1c354",
+      "size_bytes": 168
+    },
+    {
+      "path": "runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/compile.log",
+      "sha256": "7d915ca86187ee6c30e478b2e7f2362b61c42b1adf67800d85f8e7a793d41d7e",
+      "size_bytes": 3456
+    },
+    {
+      "path": "foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5",
+      "sha256": "e5f4931844548f7844fea3980dc816ef40c8feea0d998fefb7bec2219c4ff93a",
+      "size_bytes": 6179
+    },
+    {
+      "path": "foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.ex5",
+      "sha256": "75588032ce3918ad75cb2a249333e837c7d667131fad22243e3e3fbc58a7179e",
+      "size_bytes": 15016
+    }
+  ],
+  "artifact_hashes": [
+    "7bd7f9a5a1af7c3069732229c96be1a5228d927efaff00c682a046fb47b53618",
+    "68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647",
+    "de134c319ff558f777565538039ba698b299b1f94b33a02fe9143571f5f6bad9",
+    "672eaee4f9897026737446cd731c046d8f08f06dfb321ee65251959dd97c7d9a",
+    "d545ca71cc2da652ea66f84970ff39bf0251912f0da1c4c0358def18b93e9978",
+    "489fa03e8ec4dea0b5a033f4feeb9a9d7ef257656780ac6d7ead9fca7ac1c354",
+    "7d915ca86187ee6c30e478b2e7f2362b61c42b1adf67800d85f8e7a793d41d7e",
+    "e5f4931844548f7844fea3980dc816ef40c8feea0d998fefb7bec2219c4ff93a",
+    "75588032ce3918ad75cb2a249333e837c7d667131fad22243e3e3fbc58a7179e"
+  ],
+  "artifact_sizes": [
+    618,
+    57,
+    14,
+    2920,
+    1083,
+    168,
+    3456,
+    6179,
+    15016
+  ],
+  "regeneration_commands": [
+    "foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py"
+  ],
+  "registry_links": [
+    "docs/registers/run_registry.csv",
+    "docs/registers/artifact_registry.csv"
+  ],
+  "availability": "local_generated_artifacts_ignored_by_git_with_hashes_and_committed_manifests",
+  "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
+  "lineage_judgment": "usable_with_fixed_fixture_runtime_boundary"
+}

@@ -1,78 +1,82 @@
 version: campaign_manifest_v1
 campaign_id: campaign_minimal_onnx_mt5_vertical_slice_v0
-status: prepared_for_vertical_slice_entry
+status: fixed_fixture_slice_completed
 target_branch: codex/minimal-onnx-mt5-plumbing-slice
 wave_ids: []
 idea_ids:
-  - idea_a_to_z_validation_spine_v0
+- idea_a_to_z_validation_spine_v0
 hypothesis_ids:
-  - hyp_minimal_onnx_mt5_plumbing_v0
-objective: "Use the reinforced control plane to run one minimal US100 M5 ONNX-to-MT5 fixed-fixture plumbing slice without performance, baseline, candidate, runtime-authority, or economics claims."
+- hyp_minimal_onnx_mt5_plumbing_v0
+objective: Use the reinforced control plane to run one minimal US100 M5 ONNX-to-MT5
+  fixed-fixture plumbing slice without performance, baseline, candidate, runtime-authority,
+  or economics claims.
 axis_tags:
-  - control_plane_validation
-  - onnx_export
-  - onnxruntime_parity
-  - mt5_native_onnx_micro_probe
+- control_plane_validation
+- onnx_export
+- onnxruntime_parity
+- mt5_native_onnx_micro_probe
 surface_policy: fixture_first_no_optimization
 storage_contract:
   source_of_truth: lab/campaigns/campaign_minimal_onnx_mt5_vertical_slice_v0/campaign_manifest.yaml
   registry_rows:
-    - docs/registers/campaign_registry.csv
+  - docs/registers/campaign_registry.csv
   durable_identity_policy: repo_relative_paths_only
 skill_routing:
   primary_family: onnx_export_parity
   primary_skill: spacesonar-runtime-parity
   support_skills:
-    - spacesonar-data-integrity
-    - spacesonar-artifact-lineage
-    - spacesonar-environment-reproducibility
-    - spacesonar-run-evidence-system
-    - spacesonar-claim-discipline
+  - spacesonar-data-integrity
+  - spacesonar-artifact-lineage
+  - spacesonar-environment-reproducibility
+  - spacesonar-run-evidence-system
+  - spacesonar-claim-discipline
 required_gates:
-  - branch_worktree_fit
-  - provenance_capture
-  - time_axis_check
-  - feature_label_boundary_check
-  - feature_schema_contract
-  - onnx_export_smoke
-  - python_onnx_parity
-  - bundle_integrity_hash
-  - runtime_learning_probe_decision
-  - mt5_native_onnx_fixed_fixture_probe
-  - final_claim_guard
-claim_boundary: fixed_fixture_plumbing_probe_only
+- branch_worktree_fit
+- provenance_capture
+- time_axis_check
+- feature_label_boundary_check
+- feature_schema_contract
+- onnx_export_smoke
+- python_onnx_parity
+- bundle_integrity_hash
+- runtime_learning_probe_decision
+- mt5_native_onnx_fixed_fixture_probe
+- final_claim_guard
+claim_boundary: fixed_fixture_parity_learning_only_no_baseline_no_runtime_authority
 forbidden_claims:
-  - reviewed_verified_pass
-  - selected_baseline
-  - candidate
-  - runtime_authority
-  - economics_pass
-  - handoff_complete
-  - live_readiness
-  - goal_achieve
+- reviewed_verified_pass
+- selected_baseline
+- candidate
+- runtime_authority
+- economics_pass
+- handoff_complete
+- live_readiness
+- goal_achieve
 vertical_slice_entry_contract:
   dataset:
     required_dataset_id: dataset_us100_m5_closed_bar_v0
     required_identity_fields:
-      - dataset_id
-      - sha256
-      - row_count
-      - source_command
-      - source_audit_reference
+    - dataset_id
+    - sha256
+    - row_count
+    - source_command
+    - source_audit_reference
     row_time_key: us100_bar_close_time
-    row_membership_rule: "Split, feature, label, ONNX fixture, and MT5 fixture must refer to the same closed-bar row membership key."
+    row_membership_rule: Split, feature, label, ONNX fixture, and MT5 fixture must
+      refer to the same closed-bar row membership key.
     status: to_materialize_in_target_branch
   feature_recipe:
     recipe_id: feature_fixture_minimal_v0
-    feature_count_policy: "tiny provisional 3-5 feature plumbing surface; not a good-feature or fixed-feature-set claim"
+    feature_count_policy: tiny provisional 3-5 feature plumbing surface; not a good-feature
+      or fixed-feature-set claim
     status: to_define_in_target_branch
   label_recipe:
     recipe_id: label_fixture_minimal_v0
     required_fields:
-      - horizon
-      - tail_drop
-      - purge_or_embargo_decision
-      - split_impact
+    - horizon
+    - tail_drop
+    - purge_or_embargo_decision
+    - split_impact
     status: to_define_in_target_branch
   model_recipe:
     recipe_id: model_fixture_simple_v0
@@ -81,40 +85,50 @@ vertical_slice_entry_contract:
     status: to_define_in_target_branch
   onnx_parity:
     required_before_mt5_probe:
-      - onnx_export
-      - onnx_sha256
-      - feature_order_hash
-      - onnxruntime_fixed_fixture_output
-      - python_fixed_fixture_output
-      - tolerance
+    - onnx_export
+    - onnx_sha256
+    - feature_order_hash
+    - onnxruntime_fixed_fixture_output
+    - python_fixed_fixture_output
+    - tolerance
   mt5_micro_probe:
     required_evidence:
-      - mt5_ea_or_script_path
-      - mt5_source_hash
-      - onnx_load_result
-      - shape_binding_log
-      - fixed_fixture_input_hash
-      - mt5_output
-      - comparison_tolerance
-      - handle_release_log
-    allowed_runtime_claim: "MT5 native ONNX fixed-fixture output matched declared Python/ONNXRuntime fixture within tolerance for this bundle only."
+    - mt5_ea_or_script_path
+    - mt5_source_hash
+    - onnx_load_result
+    - shape_binding_log
+    - fixed_fixture_input_hash
+    - mt5_output
+    - comparison_tolerance
+    - handle_release_log
+    allowed_runtime_claim: MT5 native ONNX fixed-fixture output matched declared Python/ONNXRuntime
+      fixture within tolerance for this bundle only.
 default_runtime_level_target: mt5_native_onnx_fixed_fixture_micro_probe
 stop_conditions:
-  - branch_worktree_mismatch_unresolved
-  - dataset_identity_missing
-  - row_time_key_not_single_source
-  - feature_label_boundary_unclear
-  - onnxruntime_parity_missing
-  - mt5_probe_not_run_for_runtime_claim
-  - any_strategy_tester_economics_claim
-  - any_candidate_or_baseline_wording
+- branch_worktree_mismatch_unresolved
+- dataset_identity_missing
+- row_time_key_not_single_source
+- feature_label_boundary_unclear
+- onnxruntime_parity_missing
+- mt5_probe_not_run_for_runtime_claim
+- any_strategy_tester_economics_claim
+- any_candidate_or_baseline_wording
 runtime_learning_probe_decision_default:
   required_when_runtime_question: true
   forbidden_standalone_skip_reasons:
-    - probe_is_heavy
-    - probe_is_expensive
-    - proxy_result_is_weak
-    - trade_count_is_low
-    - candidate_is_ambiguous
-    - setup_might_fail
-notes: "Prepared by routing preflight goal. This campaign is not proof and does not contain durable runtime evidence by itself."
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
+notes: Completed fixed-fixture ONNX-MT5 micro-probe only. No performance, candidate,
+  baseline, economics, handoff, live readiness, reviewed/pass, runtime authority,
+  or final trading Goal Achieve claim.
+completed_run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
+completed_bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
+completed_attempt_id: attempt_20260621T115145Z_mt5_onnx_fixture_v0
+evidence_paths:
+- lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json
+- runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/experiment_bundle.json
+- runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/attempt_manifest.yaml

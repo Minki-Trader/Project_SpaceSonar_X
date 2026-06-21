@@ -1,0 +1,222 @@
+version: experiment_receipt_v2
+run_id: onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing
+id_chain:
+  idea_id: idea_a_to_z_validation_spine_v0
+  hypothesis_id: hyp_minimal_onnx_mt5_plumbing_v0
+  surface_id: surface_fixture_next_m5_probability_v0
+  sweep_id: sweep_not_applicable_fixture_plumbing
+  artifact_ids:
+  - dataset_us100_m5_closed_bar_v0
+  - artifact_fixture_onnx_v0
+  - artifact_fixture_inputs_v0
+  bundle_id: bundle_20260621T115145Z_fixture_plumbing_v0
+  candidate_id: null
+skill_routing:
+  primary_family: onnx_export_parity
+  primary_skill: spacesonar-runtime-parity
+  support_skills:
+  - spacesonar-data-integrity
+  - spacesonar-artifact-lineage
+  - spacesonar-environment-reproducibility
+  - spacesonar-run-evidence-system
+  - spacesonar-claim-discipline
+  skills_selected:
+  - spacesonar-runtime-parity
+  - spacesonar-data-integrity
+  - spacesonar-artifact-lineage
+  - spacesonar-environment-reproducibility
+  - spacesonar-code-surface-guard
+  skills_not_used: []
+  critical_skills_not_selected: []
+  not_selected_claim_effect: null
+  required_gates:
+  - branch_worktree_fit
+  - provenance_capture
+  - time_axis_check
+  - feature_label_boundary_check
+  - feature_schema_contract
+  - onnx_export_smoke
+  - python_onnx_parity
+  - bundle_integrity_hash
+  - runtime_learning_probe_decision
+  - mt5_native_onnx_fixed_fixture_probe
+  - final_claim_guard
+  not_applicable_gates:
+  - strategy_tester_economics
+branch_worktree:
+  current_branch: codex/minimal-onnx-mt5-plumbing-slice
+  requested_branch: codex/minimal-onnx-mt5-plumbing-slice
+  branch_worktree_fit: fit
+  branch_action: keep_current_branch
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: not_applicable
+agent_allocation:
+  phase: vertical_slice_local_implementation
+  selected_agents: []
+  role_modes: []
+  selection_reason: local implementation after prior advisory design
+  why_not_smaller: codex_alone_is_smallest
+  why_not_larger: MT5 runtime check occurs through local probe evidence, not agent
+    consensus
+  max_threads_is_capacity_only: true
+  claim_effect: no_reviewed_pass
+provenance:
+  git_sha: c7b9345980abb007229cb0cfc74ef4b1254ae051
+  branch: codex/minimal-onnx-mt5-plumbing-slice
+  dirty_flag: dirty
+  changed_files:
+  - pyproject.toml
+  - foundation/features/fixture_features.py
+  - foundation/labels/fixture_labels.py
+  - foundation/mt5/experts/SpaceSonar_ONNX_FixtureProbe.mq5
+  - foundation/onnx/linear_sigmoid.py
+  - foundation/parity/onnx_fixture.py
+  - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
+  command_argv:
+  - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
+  python_executable: C:\Users\awdse\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    MetaTrader5: 5.0.5640
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    onnx: 1.20.1
+    onnxruntime: 1.24.3
+    yaml: 6.0.3
+    python: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+  started_at_utc: '2026-06-21T11:51:45.383682Z'
+  ended_at_utc: '2026-06-21T11:51:51.284634Z'
+  input_hashes:
+  - path: lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/artifacts/dataset_us100_m5_closed_bar_v0.csv
+    sha256: fa8b33d01a29d48419e3ae326dbb57c9429719c181949777ca4bddfbd8eb4efb
+    size_bytes: 868182
+  output_hashes:
+  - path: runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/model.onnx
+    sha256: 7bd7f9a5a1af7c3069732229c96be1a5228d927efaff00c682a046fb47b53618
+    size_bytes: 618
+  - path: runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/fixture_input.csv
+    sha256: 68293a98c0abfc85514b17b61a0a7ccdd8350591fdce3dec9b9a3a66313c2647
+    size_bytes: 57
+  - path: runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/expected_output.csv
+    sha256: de134c319ff558f777565538039ba698b299b1f94b33a02fe9143571f5f6bad9
+    size_bytes: 14
+  - path: runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/fixture_manifest.json
+    sha256: 672eaee4f9897026737446cd731c046d8f08f06dfb321ee65251959dd97c7d9a
+    size_bytes: 4677
+  unknown_git_claim_effect: not_applicable_git_identity_recorded_but_dirty_state_lowers_reproducibility_until_committed
+hypothesis: A tiny provisional feature/label/model can prove the ONNX plumbing path
+  without performance claims.
+decision_use: fixed fixture probability only
+task_surface:
+  task_type: fixed_fixture_probability
+  target_or_label: label_fixture_next_m5_up_v0
+  direction_mapping: next_closed_m5_bar_up_probability_fixture_only
+  horizon_or_holding_policy: horizon_1_closed_m5_bar_no_trade_holding_policy
+  output_head: single_probability_float32
+comparison_baseline: null
+control_variables:
+- US100
+- M5
+- closed_bar_row_key
+- fixed_fixture
+changed_variables:
+- new_provisional_fixture_feature_label_model_bundle
+sample_scope:
+  instrument: FPMarkets US100
+  timeframe: M5
+  dataset_id: dataset_us100_m5_closed_bar_v0
+  split_id: split_fixture_chronological_smoke_v0
+  date_range:
+    start_utc: '2024-06-05T00:00:00Z'
+    end_utc: '2024-07-05T23:59:59Z'
+  timezone_or_session_policy: MT5 Python API unix seconds; row key is us100_bar_close_time
+    UTC timestamp derived from bar close
+  feature_boundary: right_aligned_closed_bar_features_only
+  label_boundary: label uses next closed M5 bar and tail_drop_1
+  leakage_boundary: fixture model trained chronologically; no OOS/candidate/performance
+    claim
+  missing_gap_policy: raw continuity not used for economics; row_count and source
+    command recorded
+storage_contract:
+  source_of_truth: lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json
+  receipt_path: lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/metrics.json
+  supporting_paths:
+  - lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/artifacts/
+  - runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/artifacts/
+  - runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/
+  registry_rows:
+  - docs/registers/run_registry.csv
+  - docs/registers/artifact_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+  duplicate_policy: single_source_of_truth_copy_requires_reason
+  heavy_artifact_policy: track_by_path_hash_size_command_or_uri
+success_criteria:
+- Python/ONNXRuntime fixed fixture parity within tolerance
+- MT5 fixed fixture output within tolerance
+failure_criteria:
+- ONNX export fails
+- ONNXRuntime parity exceeds tolerance
+- MT5 OnnxRun fails or exceeds tolerance
+invalid_conditions:
+- any performance, candidate, baseline, economics, runtime authority, or live readiness
+  claim
+stop_conditions:
+- MT5 probe output missing for runtime claim
+- fixture parity abs_error exceeds tolerance
+evidence_plan:
+- lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json
+- runtime/packages/bundle_20260621T115145Z_fixture_plumbing_v0/experiment_bundle.json
+- runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+required_gate_coverage:
+  passed:
+  - branch_worktree_fit
+  - bundle_integrity_hash
+  - feature_label_boundary_check
+  - feature_schema_contract
+  - mt5_native_onnx_fixed_fixture_probe
+  - onnx_export_smoke
+  - provenance_capture
+  - python_onnx_parity
+  - runtime_learning_probe_decision
+  - time_axis_check
+  not_applicable:
+  - strategy_tester_economics
+  missing: []
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required_completed_as_fixed_fixture_micro_probe
+  reason: MT5 native ONNX meaning is in scope for this plumbing slice.
+  forbidden_skip_reasons_checked:
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
+  lowered_claim_if_not_run: bundle_preflight_only
+  result:
+    status: matched
+    expected_probability: 0.5178460479
+    mt5_probability: 0.5178460479
+    abs_error: 0.0
+    tolerance: 1.0e-05
+    telemetry_path: runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/telemetry/mt5_probe_output.csv
+    telemetry_sha256: 489fa03e8ec4dea0b5a033f4feeb9a9d7ef257656780ac6d7ead9fca7ac1c354
+result_judgment: positive
+missing_evidence: []
+claim_boundary: fixed_fixture_parity_learning_only
+forbidden_claims:
+- reviewed_verified_pass
+- selected_baseline
+- candidate
+- runtime_authority
+- economics_pass
+- handoff_complete
+- live_readiness
+- goal_achieve
+next_action: control-plane and minimal ONNX-MT5 fixed-fixture slice complete; no performance,
+  candidate, baseline, runtime-authority, or economics claim
