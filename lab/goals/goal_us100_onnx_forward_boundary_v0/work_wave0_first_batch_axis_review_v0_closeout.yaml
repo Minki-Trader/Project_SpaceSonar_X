@@ -1,0 +1,45 @@
+version: work_closeout_v1
+work_item_id: work_wave0_first_batch_axis_review_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-21T16:39:38Z'
+result_judgment: preserved_clue
+claim_boundary: first_batch_axis_review_l4_required_no_candidate_no_baseline_no_runtime_authority
+completed_scope:
+- reviewed all 12 Wave0 first-batch proxy scout run metrics and judgments
+- consulted four relevant agents for material axis rotation decision
+- recorded preserved clue memory for tradeability and path-quality side clue
+- reconciled next axis as second-batch tradeability repair/spec design
+source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+result_counts:
+  inconclusive: 8
+  preserved_clue: 4
+  negative: 0
+  invalid: 0
+candidate_count: 0
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: Axis review and second-batch spec design make no ONNX/EA/Strategy Tester/economics/runtime claim.
+  lowered_claim_if_not_run: no_runtime_claim
+evidence_paths:
+  axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  tradeability_clue: lab/memory/clues/clue_wave0_tradeability_mid_horizon_v0.yaml
+  path_quality_clue: lab/memory/clues/clue_wave0_path_quality_h12_side_signal_v0.yaml
+  run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+next_work_item:
+  work_item_id: work_wave0_first_batch_l4_follow_through_v0
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave0_first_batch_l4_follow_through_v0
+proxy_to_runtime_policy:
+  every_valid_proxy_run_requires_l4: true
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

@@ -1,0 +1,155 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave0_cell_008_surface_scout_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "477239044efd3a6ce17d85dfd2c2d7da35cd450cc34898384aa52e753042f833",
+      "size_bytes": 4964,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv",
+      "sha256": "c7d8b63e108584c82df0522e09531502cd80831d61eb494013f0d2721de0e92d",
+      "size_bytes": 3161,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml",
+      "sha256": "477a7878bed3300de85925b5841a55ed06fd68d20364ee6ccd027af0e6f952ea",
+      "size_bytes": 2390,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/label_recipes/label_wave0_surface_grid_v0.yaml",
+      "sha256": "aaab5e27ddfef0d3721165ebea15b68faecf0650c3ea9da4fb932288f91acad5",
+      "size_bytes": 1905,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml",
+      "sha256": "64cdd1617a9fecb8b6efc1ad282724915ed4599e66301b7aa36954aa306078e3",
+      "size_bytes": 1759,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml",
+      "sha256": "71fa6f0b3a89b4b1d04b341d1332211606a9fee2c1a16c233e6b4930e1971e24",
+      "size_bytes": 1965,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml",
+      "sha256": "5b80f98aeb83958ec1b149c4c4f3fa5fd5fc9f5934cb17a84e36203796716c66",
+      "size_bytes": 1847,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "python_pipeline",
+    "identity": "foundation/pipelines/run_wave0_first_batch_proxy_scout.py",
+    "command": "foundation\\pipelines\\run_wave0_first_batch_proxy_scout.py",
+    "environment_summary": {
+      "python": "3.13.9",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "numpy": "2.3.4",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "yaml": "6.0.3"
+    }
+  },
+  "consumer": [
+    "work_wave0_first_batch_l4_follow_through_v0"
+  ],
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json",
+      "sha256": "b6a3da97c392a41adaa1ed699b8a676a06dbcf76a7ccfdb0199b9b814d2d1408",
+      "size_bytes": 20559,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/experiment_receipt.yaml",
+      "sha256": "6b30c13dfb4448087e4fc86471e121ddf4356dc06c28dd62ee5c2755684078a8",
+      "size_bytes": 16003,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/metrics.json",
+      "sha256": "53465277ce2b1d2423b303dae442068e0694be0ac16aea15ebc8a4cc58058d56",
+      "size_bytes": 5822,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifacts/feature_schema.json",
+      "sha256": "0551d2a4190c9659f22b93a3c82c78b66b8066ee9a1758ab037f1a99d744febf",
+      "size_bytes": 2513,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifacts/label_schema.json",
+      "sha256": "ba04e512cf04f8293345ec3ccd5c7c4617609f2da12059acc65710684eaaed26",
+      "size_bytes": 906,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifacts/model_summary.json",
+      "sha256": "a0c55025cee388abccc8d323264647b31995db9b9c3a5afc9f71e68880d89b27",
+      "size_bytes": 926,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifacts/split_profile.json",
+      "sha256": "df48a3e99826f1289b6ecaca9f27cca4fdd5d7d889261deff4ac587ddd12d385",
+      "size_bytes": 648,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifacts/prediction_sample.csv",
+      "sha256": "e10e82bccd1c283a22e2f1fa094ce9058e8dec023483f0f936424e77c17744d1",
+      "size_bytes": 50373,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/reports/proxy_scout_report.json",
+      "sha256": "a67395bede6c1b277d87ff3d06af5a7ef60f75a2cecccbf12bf59e6f44b65ea0",
+      "size_bytes": 3263,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "artifact_hashes": [
+    "b6a3da97c392a41adaa1ed699b8a676a06dbcf76a7ccfdb0199b9b814d2d1408",
+    "6b30c13dfb4448087e4fc86471e121ddf4356dc06c28dd62ee5c2755684078a8",
+    "53465277ce2b1d2423b303dae442068e0694be0ac16aea15ebc8a4cc58058d56",
+    "0551d2a4190c9659f22b93a3c82c78b66b8066ee9a1758ab037f1a99d744febf",
+    "ba04e512cf04f8293345ec3ccd5c7c4617609f2da12059acc65710684eaaed26",
+    "a0c55025cee388abccc8d323264647b31995db9b9c3a5afc9f71e68880d89b27",
+    "df48a3e99826f1289b6ecaca9f27cca4fdd5d7d889261deff4ac587ddd12d385",
+    "e10e82bccd1c283a22e2f1fa094ce9058e8dec023483f0f936424e77c17744d1",
+    "a67395bede6c1b277d87ff3d06af5a7ef60f75a2cecccbf12bf59e6f44b65ea0"
+  ],
+  "artifact_sizes": [
+    20559,
+    16003,
+    5822,
+    2513,
+    906,
+    926,
+    648,
+    50373,
+    3263
+  ],
+  "regeneration_commands": [
+    "foundation\\pipelines\\run_wave0_first_batch_proxy_scout.py"
+  ],
+  "registry_links": [
+    "docs/registers/run_registry.csv",
+    "lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv"
+  ],
+  "availability": "run_local_evidence_with_heavy_artifacts_ignored_by_git_where_applicable",
+  "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
+  "lineage_judgment": "usable_proxy_evidence_with_l4_follow_through_required"
+}

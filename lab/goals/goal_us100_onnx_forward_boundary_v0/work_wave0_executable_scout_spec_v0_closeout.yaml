@@ -1,0 +1,43 @@
+version: work_closeout_v1
+work_item_id: work_wave0_executable_scout_spec_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: "2026-06-21T15:30:58Z"
+result_judgment: planning_scaffold
+claim_boundary: executable_scout_spec_only_no_run_no_candidate_no_baseline
+
+completed_outputs:
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/wave0_executable_scout_spec.yaml
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/raw_m5_inventory.json
+  - configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml
+  - configs/onnx_lab/label_recipes/label_wave0_surface_grid_v0.yaml
+  - configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml
+  - configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml
+  - configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml
+  - configs/onnx_lab/surface_contracts/surface_us100_task_input_decision_rotation_v0.yaml
+
+acceptance_criteria_status:
+  wave0_scout_executable_surface_sweep_plan: satisfied
+  dataset_identity: raw_export_materialized_with_hash_inventory_complete
+  recipe_skeletons: satisfied
+  legacy_inheritance_guard: satisfied
+  closeout_next_action: work_wave0_time_binding_and_first_batch_v0
+
+required_gate_coverage:
+  design_contract_check: satisfied
+  data_time_axis_preflight: satisfied_with_boundary_time_binding_required
+  split_leakage_preflight: satisfied_as_plan_no_model_run
+  broad_extreme_sweep_axes: satisfied
+  final_claim_guard: satisfied
+  runtime_learning_probe_decision: not_applicable_no_runtime_question
+
+missing_evidence:
+  - explicit_binding_between_MT5_PY_API_UNIX_SECONDS_and_split_set_v0_mt5_date_roles
+  - processed_row_membership_manifest_for_train_validation_research_oos_exclusions
+  - first_batch_run_manifests_with_exact_feature_and_label_columns
+  - first_model_training_or_proxy_run
+  - ONNX_export_or_runtime_probe
+
+next_action: work_wave0_time_binding_and_first_batch_v0
+

@@ -1,0 +1,21 @@
+version: clue_memory_v1
+clue_id: clue_wave0_path_quality_h12_side_signal_v0
+created_at_utc: '2026-06-21T16:39:38Z'
+status: weak_side_clue_for_label_shape_control
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+surface_id: surface_us100_task_input_decision_rotation_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+source_axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+run_ids:
+- onnxlab_wave0_cell_008_surface_scout_v0
+observed_pattern: path_quality h12 multiscale logistic crossed clue AUC threshold but has weak decision
+  evidence
+salvage_value: side control or label-shaping comparator, not next primary axis
+reopen_condition: revisit only with positive-class, direction, threshold, and label semantics repair
+do_not_repeat_note: do_not_expand_path_quality_as_lead_axis_from_single_weak_validation_clue
+claim_boundary: weak_preserved_clue_no_candidate_no_baseline_no_runtime
+next_action: work_wave0_first_batch_l4_follow_through_v0
+proxy_to_runtime_policy:
+  every_valid_proxy_run_requires_l4: true
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

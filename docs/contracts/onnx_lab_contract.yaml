@@ -103,6 +103,8 @@ parity_contract:
   python_onnx_smoke_required_for_bundle_claim: true
   mt5_runtime_probe_required_for_runtime_claim: true
   runtime_learning_probe_decision_required: true
+  proxy_runtime_parity_required_for_proxy_model_bearing_campaigns: true
+  proxy_runtime_parity_rule: "Every campaign that creates proxy/model-bearing evidence must record how proxy assumptions map to MT5 runtime behavior, including at least one reconciliation attempt, unit semantics, divergence, prevention memory, and surprise classes. This does not force equality when proxy and MT5 semantics truly differ."
   fixture_set_status: undefined_by_design
 
 claim_boundary:

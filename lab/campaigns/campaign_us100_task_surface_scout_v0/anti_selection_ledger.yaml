@@ -1,0 +1,66 @@
+version: anti_selection_ledger_v1
+ledger_id: anti_selection_wave0_first_batch_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: '2026-06-21T15:54:35Z'
+status: axis_review_closed_no_selection_made
+result_viewed: true
+claim_boundary: first_batch_axis_review_l4_required_no_candidate_no_baseline_no_runtime_authority
+source_inputs:
+  first_batch_matrix:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+    sha256: c7d8b63e108584c82df0522e09531502cd80831d61eb494013f0d2721de0e92d
+    row_count: 12
+  row_membership_manifest:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+    sha256: 477239044efd3a6ce17d85dfd2c2d7da35cd450cc34898384aa52e753042f833
+search_space_budget:
+  wave_max_runs: 48
+  initial_batch_size: 12
+  max_repairs_per_surface: 1
+  repair_scope: invalid_setup_only_not_performance_rescue
+  locked_final_oos_use: forbidden
+selection_rules:
+- No cell can become a candidate from a single validation observation.
+- Repeated clue is required across neighbor horizon, fold, regime, or related input surface before narrowing.
+- OOS-A can be observed for research and repair tracking only; using it for repair marks adaptive_oos_result.
+- OOS-B locked final stays inaccessible until candidate freeze and explicit unlock.
+- Threshold knife-edge behavior is preserved as clue or negative memory, not candidate.
+- Negative, invalid, and inconclusive cells remain recorded with reopen condition.
+first_batch_cells:
+- wave0_cell_001
+- wave0_cell_002
+- wave0_cell_003
+- wave0_cell_004
+- wave0_cell_005
+- wave0_cell_006
+- wave0_cell_007
+- wave0_cell_008
+- wave0_cell_009
+- wave0_cell_010
+- wave0_cell_011
+- wave0_cell_012
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+result_counts:
+  inconclusive: 8
+  preserved_clue: 4
+candidate_count: 0
+selection_decision: no_selection_preserved_clues_only
+next_action: work_wave0_first_batch_l4_follow_through_v0
+axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+preserved_clue_ids:
+- clue_wave0_tradeability_mid_horizon_v0
+- clue_wave0_path_quality_h12_side_signal_v0
+proxy_to_runtime_policy:
+  every_valid_proxy_run_requires_l4: true
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

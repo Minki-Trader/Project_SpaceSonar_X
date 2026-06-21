@@ -1,0 +1,111 @@
+version: sweep_manifest_v1
+sweep_id: sweep_wave0_broad_surface_scout_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+surface_id: surface_us100_task_input_decision_rotation_v0
+status: first_batch_axis_review_closed_l4_follow_through_required_next
+created_at_utc: '2026-06-21T15:18:51Z'
+sweep_type: broad_extreme_surface_scout
+axes:
+  target_label_axes:
+  - future_return_rank_or_quantile_horizons_1_3_6_12_24_bars
+  - atr_scaled_barrier_up_down_touch_no_touch
+  - path_quality_mfe_mae_payoff_suitability
+  - volatility_regime_or_tradeability_no_trade_detection
+  input_axes:
+  - price_only_m5_ohlc_range_return_volatility
+  - multiscale_from_us100_m5_only
+  - session_calendar_state
+  - causal_rolling_regime_context
+  decision_axes:
+  - abstain_capable_long_short_both
+  - fixed_horizon_exit_vs_score_decay_or_flip_exit
+  - coarse_threshold_bands_targeting_density_not_pf_max
+  - cost_slippage_sensitivity_from_first_eval
+  model_axes:
+  - linear_logistic_ridge_scout
+  - onnx_realistic_tree_or_boosted_scout
+  - small_mlp_secondary_only
+fixed_controls:
+- US100_M5_closed_bar_base_frame
+- us100_bar_close_time_row_key
+- split_set_v0_research_catalog
+- no_auxiliary_symbols_until_live_chart_verified
+- no_locked_final_oos
+- no_legacy_feature_label_target_model_or_threshold
+parameter_space:
+  max_runs: 48
+  initial_batch_size: 12
+  max_repairs_per_surface: 1
+  repair_scope: invalid_setup_only_not_performance_rescue
+  max_wfo_cells_initial: 24
+  formal_mt5_strategy_tester_runs: 0
+  runtime_probe_budget: none_until_executable_onnx_ea_surface_exists
+  first_batch_matrix: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  first_batch_run_specs_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
+  anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
+  recipe_refs:
+    feature_recipe_id: feature_wave0_us100_closedbar_price_session_regime_v0
+    label_recipe_id: label_wave0_surface_grid_v0
+    model_recipe_id: model_wave0_transparent_scout_v0
+    decision_recipe_id: decision_wave0_abstain_density_scout_v0
+    eval_recipe_id: eval_wave0_surface_scout_v0
+run_ref_path: run_refs.csv
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/sweep_manifest.yaml
+  registry_rows:
+  - docs/registers/sweep_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: No runtime behavior, economics, EA/ONNX meaning, handoff, or live-like operation claim in planned
+    scout.
+evidence_boundary: learning_observation_planning_only
+required_gates:
+- dataset_identity_or_missing_reason_before_first_run
+- label_feature_boundary_plan
+- split_leakage_plan
+- anti_selection_ledger_plan
+- negative_memory_plan
+- final_claim_guard
+stop_conditions:
+- dataset_identity_missing_blocks_first_research_run
+- time_axis_unclear_invalid_setup
+- inherited_surface_detected_invalid_setup
+- threshold_knife_edge_blocks_narrowing
+- wfo_instability_blocks_candidate_claim
+- no_repeated_clue_after_budget_close_as_negative_or_inconclusive
+next_action: work_wave0_first_batch_l4_follow_through_v0
+notes: First 12 planned run specs are materialized and not executed. Global run registry is deferred until
+  execution.
+first_batch_result:
+  status: executed_proxy_scout
+  run_count: 12
+  result_counts:
+    inconclusive: 8
+    preserved_clue: 4
+  claim_boundary: first_batch_proxy_scout_l4_required_no_candidate_no_baseline_no_runtime_authority
+  candidate_count: 0
+  selected_baseline_count: 0
+  runtime_claim: false
+  next_action: work_wave0_first_batch_l4_follow_through_v0
+axis_review:
+  status: closed
+  path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  result_counts:
+    inconclusive: 8
+    preserved_clue: 4
+    negative: 0
+    invalid: 0
+  candidate_count: 0
+  preserved_clue_ids:
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  claim_boundary: first_batch_axis_review_l4_required_no_candidate_no_baseline_no_runtime_authority
+  next_action: work_wave0_first_batch_l4_follow_through_v0
+proxy_to_runtime_policy:
+  every_valid_proxy_run_requires_l4: true
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

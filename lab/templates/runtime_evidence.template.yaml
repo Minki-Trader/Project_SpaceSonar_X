@@ -40,6 +40,29 @@ levels:
 evidence_paths: []
 mt5_attempt_ids: []
 known_differences: []
+proxy_runtime_parity:
+  shared_contract: []
+  proxy_assumptions: []
+  runtime_assumptions: []
+  known_differences: []
+  interpretation_drift_risks: []
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending
+    attempts: []
+  unit_semantics:
+    point: null
+    pip: null
+    tick_size: null
+    digits: null
+    price_distance: null
+    atr_multiplier: null
+    rounding_policy: null
+  comparison_class: pending
+  divergence_judgment: pending
+  prevention_memory: []
+  follow_up_action: pending
+  claim_boundary: runtime_probe_parity_observation_only_no_runtime_authority
 required_gate_coverage:
   passed: []
   not_applicable: []

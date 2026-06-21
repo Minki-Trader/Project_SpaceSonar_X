@@ -1,0 +1,97 @@
+version: task_force_consultation_record_v1
+consultation_id: tf_goal_us100_onnx_forward_boundary_initial_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: "2026-06-21T15:18:51Z"
+claim_boundary: advisory_only_not_reviewed_not_verified_not_pass
+purpose: "Mandatory initial consultation for goal framing and initial research-axis selection before the first research run."
+
+selected_agents:
+  - agent_id: 019eeabf-f5bd-7cc1-9739-037e77675ef4
+    role: System Governor
+    mode: design
+    opinion_classification: amend_support
+  - agent_id: 019eeac0-0bb6-78b2-8b58-940c192bd3b2
+    role: Data/Feature Contract
+    mode: data_contract_check
+    opinion_classification: amend_support
+  - agent_id: 019eeac0-32a2-7a10-b1c8-09f930d4d737
+    role: Quant Research
+    mode: scout_axis_design
+    opinion_classification: amend_support
+  - agent_id: 019eeac0-4b2f-7af2-a084-5bf2b0f939a8
+    role: Model Validation/Risk
+    mode: adversarial_check
+    opinion_classification: amend_support
+
+codex_local_verification:
+  truth_sources_read:
+    - AGENTS.md
+    - docs/workspace/workspace_state.yaml
+    - docs/workspace/lab_profile.yaml
+    - docs/agent_control/work_family_registry.yaml
+    - docs/contracts/onnx_lab_contract.yaml
+    - configs/onnx_lab/split_recipes/split_set_v0.yaml
+    - foundation/config/mt5_runtime_probe_contract.yaml
+    - configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+    - configs/mt5/tester_execution_profile_v0.yaml
+    - docs/policies/kpi_measurement_standard.md
+    - docs/policies/onnx_lab_operating_policy.md
+    - docs/policies/exploration_mandate.md
+  current_truth:
+    baseline: none
+    runtime_authority: false
+    economics_pass: false
+    first_vertical_slice_boundary: fixed_fixture_micro_probe_only_no_runtime_authority
+    active_goal_source_of_truth_before_this_work: absent
+
+independent_objections:
+  system_governor:
+    - "Do not open with model-family tuning or feature-count optimization."
+    - "Active goal manifest and terminal eligibility contract are planning scaffold, not evidence."
+    - "MT5 validation and research_oos reports are L4 research observation only, not economics pass."
+  data_feature_contract:
+    - "Do not open auxiliary-symbol research before current terminal live-chart eligibility evidence exists."
+    - "Do not use fixture/plumbing materialization as candidate data/model evidence."
+    - "Do not claim UTC semantics; current evidence supports MT5 server datetime only."
+    - "Do not let labels cross split boundaries without drop/purge/embargo."
+  quant_research:
+    - "Do not begin with ONNX/export/runtime as the main campaign."
+    - "Do not chase PF before trade-density, stability, and cost sensitivity are visible."
+    - "Do not spend repair budget making weak surfaces look valid."
+  model_validation_risk:
+    - "Do not let forward observation boundary become live-readiness language."
+    - "Do not pick top-1 by PF."
+    - "Treat early model scores as rankings unless calibration is separately proven."
+    - "A research candidate is not an operating baseline."
+
+recommended_action:
+  accepted:
+    - "Create active goal source-of-truth before any research run."
+    - "Create terminal eligibility contract from current repo sources of truth."
+    - "Open first wave as US100 M5 closed-bar task/label/decision surface scout."
+    - "Use US100 M5 only for wave0 until auxiliary symbol live-chart evidence exists."
+    - "Keep first wave broad and exploratory with no candidate, baseline, economics, or runtime-authority claim."
+    - "Set next work item to executable scout spec and dataset identity before first research run."
+  rejected: []
+  needs_local_verification:
+    - "Actual MT5 live-chart and terminal eligibility evidence."
+    - "Candidate dataset hash, row count, and row-membership identity."
+    - "Executable recipe skeletons for label, feature, model, decision, split, and eval surfaces."
+
+unresolved_material_objections:
+  - objection: "No current candidate dataset hash or row count exists for the first scout."
+    disposition: next_work_item
+    next_work_item: work_wave0_executable_scout_spec_v0
+  - objection: "No terminal/live-chart eligibility evidence is created by this planning scaffold."
+    disposition: missing_evidence
+    claim_effect: no_terminal_eligibility_claim_no_runtime_authority
+  - objection: "Auxiliary symbols are not eligible yet."
+    disposition: accepted_restriction
+    claim_effect: wave0_us100_only
+
+final_codex_disposition:
+  status: accepted_with_boundaries
+  first_wave: wave_us100_closedbar_surface_cartography_v0
+  next_work_item: work_wave0_executable_scout_spec_v0
+  claim_boundary: planning_scaffold_active_goal_control_plane
+

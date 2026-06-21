@@ -1,0 +1,41 @@
+version: model_recipe_v1
+model_recipe_id: model_wave0_transparent_scout_v0
+status: scout_recipe_skeleton
+created_at_utc: "2026-06-21T15:30:58Z"
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+
+families:
+  linear_or_ridge_rank_scout:
+    family: linear_or_ridge
+    training_mode: cheap_surface_scout
+    score_meaning: rank_or_uncalibrated_score
+    onnx_export_expected: possible_later_not_required_for_wave0_scout
+  logistic_classification_scout:
+    family: logistic_regression
+    training_mode: cheap_surface_scout
+    score_meaning: uncalibrated_class_score_until_calibration_evidence
+    onnx_export_expected: possible_later_not_required_for_wave0_scout
+  onnx_realistic_tree_or_boosted_scout:
+    family: tree_or_boosted_tree
+    training_mode: cheap_surface_scout_only_if_export_path_known
+    score_meaning: rank_or_uncalibrated_score
+    onnx_export_expected: conditional
+
+input_schema_ref: configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml
+output_schema: declared_per_cell_from_label_family
+loss_or_objective: declared_per_cell
+selection_metric: repeated_surface_clue_not_top_pf
+secondary_metrics:
+  - trade_density
+  - drawdown_shape_if_decision_surface_exists
+  - threshold_stability
+  - fold_rank_dispersion
+  - cost_sensitivity
+seed_policy: fixed_seed_plus_repeated_seed_when_surface_clue_appears
+calibration_policy: no_probability_claim_without_calibration_evidence
+threshold_policy_ref: configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml
+onnx_export_expected: false
+runtime_learning_probe_decision_default: not_applicable_until_runtime_question
+claim_boundary: recipe_skeleton_only_no_model_superiority_no_candidate
+

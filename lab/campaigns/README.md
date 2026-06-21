@@ -4,6 +4,8 @@ Campaigns group related sweeps without creating legacy inheritance.
 
 A campaign may define axis tags, budget, stop conditions, and output expectations.
 
+Campaigns are centrally stored here even when a wave funds them. Waves link to campaigns through `lab/waves/<wave_id>/campaign_refs.csv` and `wave_allocation.yaml`; campaign folders are not copied under waves.
+
 Preferred shape:
 
 - `campaign_manifest.yaml`: campaign objective, axis tags, budget, and claim boundary.

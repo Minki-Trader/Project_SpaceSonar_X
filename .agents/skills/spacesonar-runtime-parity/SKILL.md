@@ -19,6 +19,12 @@ Use when work touches ONNX export, model bundles, EA modules, `.mq5/.mqh/.set` f
 - `runtime_path`
 - `shared_contract`
 - `known_differences`
+- `proxy_runtime_parity`
+- `interpretation_drift_risks`
+- `minimum_reconciliation_attempt`
+- `unit_semantics`
+- `divergence_judgment`
+- `prevention_memory`
 - `parity_identity`
 - `runtime_evidence_identity`
 - `runtime_period_profile_id`
@@ -35,6 +41,10 @@ Use when work touches ONNX export, model bundles, EA modules, `.mq5/.mqh/.set` f
 - Samples, previews, and diagnostic rows are runtime learning observations only.
 - Runtime/materialization/handoff/economics claims require the narrow sufficient runtime probe or a lowered claim boundary.
 - Do not skip a runtime learning probe only because proxy results are weak, trade count is low, long/short balance is poor, or cost is high.
+- Do not treat proxy success or proxy failure as final until the campaign records how the proxy semantics map into MT5 runtime semantics.
+- Preserve proxy-vs-runtime surprises as evidence: proxy-bad/runtime-good and proxy-good/runtime-bad are both investigation surfaces.
+- Make at least one explicit reconciliation attempt when proxy and MT5 disagree, but do not force equality if units or execution semantics are genuinely different.
+- Record unit semantics drift, such as point/pip/tick/digits/price-distance/ATR-stop conversion differences, as prevention memory.
 - Do not embed date defaults in this skill. Runtime windows live in the period profile.
 - If no actionable runtime surface exists, require at least one repair attempt before `blocked` or `inconclusive`.
 

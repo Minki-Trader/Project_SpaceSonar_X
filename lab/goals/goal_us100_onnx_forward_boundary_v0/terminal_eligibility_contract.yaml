@@ -1,0 +1,246 @@
+version: terminal_eligibility_contract_v1
+contract_id: terminal_eligibility_contract_us100_forward_boundary_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: preflight_contract_created_not_satisfied
+created_at_utc: "2026-06-21T15:18:51Z"
+claim_boundary: terminal_candidate_eligibility_contract_only_no_live_readiness_no_economics_pass_no_goal_achieve
+
+source_references:
+  active_goal_manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+  lab_profile: docs/workspace/lab_profile.yaml
+  kpi_standard: docs/policies/kpi_measurement_standard.md
+  onnx_lab_contract: docs/contracts/onnx_lab_contract.yaml
+  split_recipe: configs/onnx_lab/split_recipes/split_set_v0.yaml
+  runtime_probe_contract: foundation/config/mt5_runtime_probe_contract.yaml
+  runtime_period_profile: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  tester_execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+
+scope:
+  broker: FPMarkets
+  symbol: US100
+  timeframe: M5
+  base_frame: US100_M5_closed_bar
+  row_key: us100_bar_close_time
+  terminal_mode_required_for_terminal_runtime_contract: portable_required
+  terminal_data_paths: local_context_only_not_durable_identity
+
+terminal_identity_requirements:
+  terminal_name: required_before_terminal_eligibility_claim
+  terminal_company: required_before_terminal_eligibility_claim
+  terminal_build: required_before_terminal_eligibility_claim
+  broker_server: required_before_terminal_eligibility_claim
+  account_currency: required_before_terminal_eligibility_claim
+  account_trade_mode: required_before_terminal_eligibility_claim
+  connected_status: required_before_terminal_eligibility_claim
+  generated_at_utc: required_before_terminal_eligibility_claim
+
+primary_symbol_contract_requirements:
+  exact_broker_symbol: US100
+  symbol_select_success: required
+  required_symbol_fields:
+    - digits
+    - point
+    - tick_size
+    - tick_value
+    - contract_size
+    - min_lot
+    - lot_step
+    - max_lot
+    - trade_mode
+    - filling_modes
+    - stops_level
+  live_chart_or_current_bar_evidence:
+    recent_tick: required
+    recent_m5_bars: required
+    latest_bar_time_and_age: required
+    repeated_update_observed: recommended_when_market_open
+  eligibility_judgments:
+    - eligible_primary
+    - inconclusive_market_closed
+    - blocked_terminal_unavailable
+    - invalid_symbol_contract
+
+auxiliary_symbol_policy:
+  default: disallowed_until_eligible
+  allowed_only_after:
+    - exact_broker_symbol
+    - symbol_select_success
+    - current_tick_or_bar_evidence
+    - live_chart_update_evidence_when_market_open
+    - timestamp_semantics
+    - merge_policy_to_us100_bar_close_time
+    - missing_data_policy
+    - feature_schema_and_order
+    - runtime_input_contract
+    - mt5_runtime_evidence_when_runtime_used
+  forbidden:
+    - stale_feed
+    - delayed_feed
+    - offline_feed
+    - non_updating_chart
+    - unavailable_symbol
+    - proxy_substituted_symbol
+    - externally_stale_symbol_source
+    - vix_like_unavailable_feed
+    - single_stock_without_live_mt5_chart
+
+data_time_requirements:
+  candidate_dataset_manifest: required_before_training_or_candidate_claim
+  row_count: required_before_training_or_candidate_claim
+  data_hash: required_before_training_or_candidate_claim
+  timestamp_policy: MT5_server_datetime_bar_close_key_required
+  utc_conversion_status: not_claimed_unless_separately_evidenced
+  checks_required:
+    - gap_check
+    - duplicate_check
+    - monotonicity_check
+    - exclusion_check
+    - missing_bar_check
+    - partial_bar_check
+  split_recipe_id: split_set_v0
+  primary_split_id: split_base_anchor_v0
+  wfo_split_id: split_block_wfo_v0
+  locked_final_oos_rule: explicit_unlock_after_candidate_freeze_only
+
+kpi_definitions:
+  source_reference: docs/policies/kpi_measurement_standard.md
+  trades_per_active_day: "closed candidate trades divided by active tested trading days; record mean, dispersion, and sparse/burst concentration."
+  profit_factor: "gross_profit / gross_loss after declared costs; gross_loss must be nonzero or result is non-comparable."
+  drawdown_pct: "peak-to-trough max drawdown percent on declared balance/equity curve; record major-window worst values."
+  expectancy: "net_profit / trade_count after declared costs where applicable."
+  exposure: "time-in-market or bar-in-position fraction where applicable."
+  score_meaning: "rank, probability, uncalibrated_score, or diagnostic; probability claim requires calibration evidence."
+  profit_discussion_requires:
+    - risk_shape
+    - execution_shape
+    - cost_profile
+    - period_role
+    - claim_boundary
+  north_star_target:
+    average_trades_per_active_day_min: 5
+    profit_factor_min: 1.5
+    profit_factor_preferred_range:
+      - 1.5
+      - 3.0
+    drawdown_pct_max_across_major_windows: 10
+    role: terminal_candidate_qualification_target_not_early_exploration_gate
+
+selection_and_leakage_controls:
+  random_shuffle_allowed: false
+  fit_scope_train_only:
+    - scalers
+    - imputers
+    - selectors
+    - feature_selection
+    - calibration
+    - thresholds
+    - learned_preprocessing
+  label_crossing_split_boundary_policy: drop_or_explicit_purge_embargo
+  oos_a_policy: research_oos_observation_and_repair_tracking_only
+  oos_b_locked_final_policy: locked_final_observation_only_after_candidate_freeze
+  threshold_controls:
+    threshold_grid_declared_before_selection: required_for_threshold_search
+    threshold_selection_split: required
+    no_trade_zone_policy: required_when_decision_surface_uses_abstain
+    threshold_stability_band: required_before_terminal_candidate
+    knife_edge_rejection_rule: required_before_terminal_candidate
+  anti_selection_ledger:
+    declared_search_space: required
+    run_count_budget: required
+    top_n_retention_policy: required
+    failed_run_retention: required
+    selection_metric_predeclared: required
+    secondary_metric_vetoes: required
+    rejected_configs_recorded: required
+
+stress_requirements:
+  spread_source: declared_before_performance_comparison
+  commission_model: declared_before_performance_comparison
+  swap_policy: declared_when_holding_can_cross_rollover
+  slippage_model_or_skip_policy: declared_before_performance_comparison
+  position_sizing_rule: declared_before_performance_comparison
+  required_stress_surfaces_before_terminal_candidate:
+    - spread_or_cost_perturbation
+    - slippage_or_skip_policy_perturbation
+    - missing_bar_or_gap_stress
+    - volatility_regime_tags
+    - session_or_low_liquidity_stress
+    - threshold_stability_band
+    - worst_major_window_drawdown
+
+onnx_bundle_and_parity_requirements:
+  bundle_source_of_truth: runtime/packages/<bundle_id>/experiment_bundle.json
+  required_identity:
+    - dataset_id
+    - feature_recipe_id
+    - feature_schema_hash
+    - feature_order_hash
+    - label_recipe_id
+    - split_id
+    - task_surface_id
+    - decision_recipe_id
+    - model_framework
+    - model_opset
+    - input_schema
+    - output_schema
+    - onnx_sha256
+    - parser_version
+    - runtime_contract_version
+    - producer_command
+    - environment_summary
+  parity_required_before_terminal_candidate:
+    - python_to_onnx_numeric_parity
+    - onnx_to_ea_and_mt5_numeric_parity
+    - decision_surface_parity
+    - action_parity_where_applicable
+    - representative_fixtures
+    - boundary_fixtures
+    - declared_full_period_runtime_surface_parity_where_applicable
+  fixed_fixture_match_claim_effect: plumbing_evidence_only
+
+mt5_strategy_tester_requirements:
+  runtime_period_profile_id: period_profile_split_set_v0
+  default_runtime_period_set_id: split_base_anchor_v0_research_l4
+  proxy_follow_through_policy:
+    every_valid_proxy_run_requires_l4: true
+    proxy_only_closeout_allowed: false
+    no_actionable_runtime_surface_effect: repair_surface_before_proxy_evidence
+    l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+  required_period_roles:
+    - validation
+    - research_oos
+  required_report_status: completed
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  execution_profile_path: configs/mt5/tester_execution_profile_v0.yaml
+  default_deposit: 500 USD
+  default_leverage: "1:100"
+  model: 4
+  spread_mode: floating_from_tester_or_broker_feed
+  commission_default: 0.00
+  sizing_default: fixed_lot_0.02
+  remote_cloud_agents: off
+  completion_claim_boundary: L4_research_observation_only_not_pass
+  forbidden_completion_sources:
+    - diagnostic_sample
+    - proxy_score_sample
+    - sampled_rows
+    - preview_rows
+
+terminal_state_requirements:
+  complete_state: terminal_research_candidate_forward_market_validation_required
+  required_before_complete:
+    - immutable_candidate_id
+    - linked_bundle_id
+    - clean_declared_commit_and_regeneration_commands
+    - candidate_freeze_before_locked_final_if_locked_final_is_used
+    - all_applicable_non_market_gates_satisfied_with_source_of_truth_evidence
+    - no_required_gate_waived_because_forward_validation_remains
+    - no_unresolved_repair_required_python_onnx_ea_mt5_mismatch
+    - no_unresolved_material_task_force_objection
+    - forward_validation_observation_plan_and_logging_schema_prepared
+  missing_evidence_allowed_at_complete:
+    - explicit_forward_demo_live_chart_market_observation_by_user
+  activation_authority: none
+  live_readiness_claim: forbidden
+  economics_pass_claim: forbidden
+  goal_achieve_claim: forbidden

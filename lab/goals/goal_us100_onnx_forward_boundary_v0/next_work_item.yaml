@@ -1,0 +1,161 @@
+version: onnx_lab_work_item_v1
+work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: '2026-06-21T17:10:54Z'
+status: planned_next
+user_request: Materialize and execute L4 MT5 split-runtime follow-through for every
+  valid Wave0 first-batch proxy/model-bearing run.
+current_truth:
+  axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  policy_clarification: lab/goals/goal_us100_onnx_forward_boundary_v0/user_clarification_proxy_l4_policy_v0.yaml
+  source_run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+  proxy_run_count: 12
+  required_runtime_level: L4_split_runtime_probe
+  l5_rule: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
+  candidate_count: 0
+  wave_campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+work_classification:
+  primary_family: runtime_probe
+  detected_families:
+  - onnx_export_parity
+  - bundle_materialization
+  - runtime_probe
+  - model_training
+  mutation_intent: materialize_runtime_follow_through_for_existing_proxy_runs
+  execution_intent: all_valid_proxy_runs_to_L4_then_L5_if_promising
+skill_routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-parity
+  support_skills:
+  - spacesonar-artifact-lineage
+  - spacesonar-environment-reproducibility
+  - spacesonar-run-evidence-system
+  - spacesonar-model-validation
+  - spacesonar-claim-discipline
+  skills_selected:
+  - spacesonar-runtime-parity
+  - spacesonar-artifact-lineage
+  - spacesonar-environment-reproducibility
+  - spacesonar-run-evidence-system
+  - spacesonar-model-validation
+  - spacesonar-claim-discipline
+  skills_not_used: []
+  critical_skills_not_selected: []
+  not_selected_claim_effect: none
+  required_gates:
+  - onnx_export_or_runtime_materialization_plan
+  - bundle_integrity_hash
+  - python_onnx_parity_where_model_exported
+  - mt5_runtime_probe_contract_audit
+  - proxy_runtime_parity_record
+  - L4_split_runtime_probe_for_all_valid_proxy_runs
+  - result_judgment
+  - final_claim_guard
+acceptance_criteria:
+- For each of the 12 Wave0 first-batch proxy runs, either produce L4 MT5 split-runtime
+  evidence or record a repair/invalid reason before it can count as proxy evidence.
+- For each L4 follow-through attempt, record proxy_runtime_parity with shared contract,
+  known differences, interpretation drift risks, comparison class, divergence judgment,
+  and follow-up action.
+- Make at least one explicit reconciliation attempt for any proxy-vs-MT5 mismatch;
+  then record whether the result was repaired, accepted as an expected difference,
+  or preserved as a surprise clue.
+- Record unit semantics when relevant, including point, pip, tick size, digits, price
+  distance, ATR stop conversion, lot step, and rounding policy.
+- Use runtime_period_set_id split_base_anchor_v0_research_l4 with validation and research_oos
+  roles.
+- Keep OOS-B locked unless a later frozen candidate explicitly unlocks it.
+- Do not stop at proxy-only closeout for any valid proxy/model-bearing run.
+- If an L4 result remains promising, write the next work item toward L5_candidate_runtime_evidence.
+- Do not claim runtime authority, economics pass, selected baseline, live readiness,
+  or Goal Achieve.
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  reason: 'User clarification: every valid proxy/model-bearing run must reach L4_split_runtime_probe.'
+  lowered_claim_if_not_run: invalid_proxy_only_closeout_no_l4_runtime_evidence
+proxy_runtime_parity:
+  required_for_all_campaign_proxy_runs: true
+  shared_contract_required: true
+  known_differences_required: true
+  interpretation_drift_risks_required: true
+  minimum_reconciliation_attempt_required: true
+  forced_equality_required: false
+  unit_semantics_required_when_applicable: true
+  comparison_classes:
+  - proxy_good_runtime_good
+  - proxy_good_runtime_bad
+  - proxy_bad_runtime_bad
+  - proxy_bad_runtime_good
+  - invalid_or_unmaterializable
+  divergence_judgment_required: true
+  prevention_memory_required: true
+  example_unit_drift: atr_SL_TP_point_vs_MT5_point_tick_digits_price_distance
+  proxy_bad_runtime_good_effect: preserve_as_clue_or_open_new_hypothesis_surface
+  proxy_good_runtime_bad_effect: treat_as_interpretation_or_execution_drift_until_explained
+  proxy_bad_runtime_bad_effect: record_negative_evidence_with_boundary
+  claim_boundary: campaign_parity_tracking_only_no_runtime_authority
+runtime_period_profile: period_profile_split_set_v0
+runtime_period_set_id: split_base_anchor_v0_research_l4
+tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+bounded_execution_budget:
+  proxy_runs_requiring_l4: 12
+  runtime_attempts: one_or_more_attempts_per_valid_proxy_run_until_L4_or_repair_record
+  locked_final_oos_use: forbidden
+stop_conditions:
+- proxy_run_cannot_be_materialized_to_ONNX_EA_MT5_without_repair
+- MT5_terminal_or_tester_environment_blocked_after_repair_attempts
+- feature_order_or_decision_surface_mismatch
+- runtime_period_profile_missing
+claim_boundary: l4_follow_through_required_no_runtime_authority_no_candidate
+branch_worktree:
+  current_branch: codex/active-goal-program-bootstrap
+  requested_branch: codex/active-goal-program-bootstrap
+  branch_worktree_fit: fit
+  branch_action: keep_current_branch
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: block_l4_follow_through_until_resolved
+agent_allocation:
+  phase: wave0_first_batch_l4_follow_through
+  selected_agents: []
+  role_modes: []
+  selection_reason: User clarified execution policy; Codex applies record correction
+    before runtime execution.
+  why_not_smaller: Codex alone is the smallest allocation for deterministic policy-record
+    sync.
+  why_not_larger: No formal Task Force protected claim is being made; actual L4 execution
+    can allocate agents in the next work item if needed.
+  max_threads_is_capacity_only: true
+  claim_effect: no_new_advisory_claim
+execution_provenance:
+  git_sha: unknown_dirty_worktree_policy_sync
+  branch: codex/active-goal-program-bootstrap
+  dirty_flag: dirty
+  changed_files:
+  - policy_and_record_sync_by_apply_proxy_l4_policy_clarification
+  command_argv:
+  - python
+  - foundation/pipelines/apply_proxy_l4_policy_clarification.py
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    python: 3.13.9
+    yaml: 6.0.3
+  started_at_utc: '2026-06-21T17:10:54Z'
+  ended_at_utc: '2026-06-21T17:10:54Z'
+  input_hashes:
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+    sha256: 9481f5fd40cbd7876c280b58f4ac7e37fe007f8280603b210c91f35fdf9302a2
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+    sha256: e368d3f13ec5ef4b775b03d6f7aab39d67134a4613400af171905c431b808004
+  output_hashes: []
+  unknown_git_claim_effect: planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

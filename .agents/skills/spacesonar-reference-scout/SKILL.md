@@ -5,33 +5,16 @@ description: Use external/official refs for version-sensitive APIs, MT5/MQL5 beh
 
 # SpaceSonar Reference Scout
 
-Use when outside references can improve correctness, idea quality, or confidence in environment behavior.
+Use only when external facts can change correctness: API syntax, MT5/MQL5/MetaEditor/Strategy Tester behavior, dependency behavior, ONNX/runtime details, or quant-method grounding.
 
-This skill grounds decisions; it does not import external authority over project contracts.
+## Source Order
 
-## When To Use
+1. Official/vendor docs.
+2. Maintained repo, examples, release notes, issues.
+3. Current readable examples.
+4. Forums only as ideas/warnings, not evidence.
 
-- API, syntax, or library behavior is uncertain.
-- MQL5, MT5, MetaEditor, Strategy Tester, file handoff, `.set`, `input/sinput`, `#include`, `OnInit`, `OnTick`, or `OnTester` behavior is involved.
-- LightGBM, pandas, sklearn, numpy, ONNX, or another dependency may be version-sensitive.
-- Maintained examples can inform implementation shape.
-- Quant method choice, validation frame, backtest method, or runtime parity needs grounding.
-- Exploration is stuck and outside examples may suggest new ideas.
-
-## Pairing
-
-For code-writing work, pair with `spacesonar-code-surface-guard` when external behavior affects the implementation.
-
-If lookup is not needed, record `reference_scout: not_required` with the reason in the precheck or completion report.
-
-## Source Priority
-
-1. Official documentation or vendor docs.
-2. Maintained source repository, examples, release notes, or issue discussions.
-3. Well-scoped examples with readable code and recent maintenance.
-4. Forum or community posts only as idea candidates or practical warnings.
-
-## Required Output
+## Output
 
 - `question`
 - `sources_checked`
@@ -42,22 +25,20 @@ If lookup is not needed, record `reference_scout: not_required` with the reason 
 - `recommended_use`
 - `not_required_reason`
 
-## EA Hard Trigger
+## MT5 Hard Trigger
 
-For MT5 EA architecture or Strategy Tester behavior, check official MQL5 documentation first.
+For EA architecture or Strategy Tester behavior, check official MQL5 docs first.
 
-Minimum questions:
+Record:
 
-- Is this behavior defined in official docs?
-- Does it belong in the main `.mq5` entrypoint or a `.mqh` include module?
-- Is the run difference parameter-only or code-changing?
-- Which identity fields must be recorded so tester output can be traced?
+- defined behavior vs inference
+- `.mq5` entrypoint vs `.mqh` module placement
+- parameter-only vs code-changing difference
+- identity fields needed to trace tester output
 
-## Guardrails
+## Do Not
 
-- Prefer official docs for API and syntax questions.
-- Do not copy external code wholesale into this repo.
-- Do not trust forum performance claims as evidence.
-- Do not let external examples override project contracts for time axis, dataset identity, split policy, artifact identity, or runtime authority.
-- If a source is old, version-specific, or unclear, say so.
-- If browsing or source lookup was not performed, do not present the answer as externally verified.
+- copy external code wholesale
+- trust forum performance claims
+- let external examples override project contracts
+- present unbrowsed/unchecked statements as externally verified

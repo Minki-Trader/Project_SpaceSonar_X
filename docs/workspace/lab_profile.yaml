@@ -4,6 +4,9 @@ instrument: FPMarkets US100
 timeframe: M5
 
 identity_hierarchy:
+  - goal_id
+  - wave_id
+  - campaign_id
   - idea_id
   - hypothesis_id
   - surface_id
@@ -70,7 +73,19 @@ no_default_assumptions:
 storage_contract:
   durable_identity: repo_relative_paths_only
   registry_rows_are_proof: false
+  wave_campaign_storage_rule: wave_allocates_central_campaigns_by_reference
+  git_integration_cadence:
+    policy_reference: docs/policies/branch_policy.md
+    durable_boundary_events:
+      - campaign_open
+      - campaign_close
+      - wave_open
+      - wave_close
+    main_push_policy: boundary_only_after_coherent_commit
+    per_run_main_push_default: false
   source_of_truth_paths:
+    wave_allocation: lab/waves/<wave_id>/wave_allocation.yaml
+    wave_campaign_refs: lab/waves/<wave_id>/campaign_refs.csv
     campaign: lab/campaigns/<campaign_id>/campaign_manifest.yaml
     run_manifest: lab/runs/<run_id>/run_manifest.json
     experiment_receipt: lab/runs/<run_id>/experiment_receipt.yaml

@@ -9,9 +9,18 @@ axis_tags: []
 surface_policy: broad_first
 storage_contract:
   source_of_truth: lab/campaigns/<campaign_id>/campaign_manifest.yaml
+  wave_campaign_refs: []
   registry_rows:
     - docs/registers/campaign_registry.csv
   durable_identity_policy: repo_relative_paths_only
+  wave_link_policy: central_campaign_folder_referenced_by_wave_allocation
+git_integration:
+  policy_reference: docs/policies/branch_policy.md
+  open_event: campaign_open
+  close_event: campaign_close
+  main_push_policy: boundary_only_after_coherent_commit
+  per_run_main_push_default: false
+  status: pending
 skill_routing:
   primary_family: experiment_design
   primary_skill: spacesonar-experiment-design
@@ -19,6 +28,33 @@ skill_routing:
 required_gates: []
 claim_boundary: exploration_only
 default_runtime_level_target: L3_mt5_micro_probe
+proxy_runtime_parity:
+  required_for_proxy_model_bearing_runs: true
+  shared_contract: []
+  known_differences: []
+  interpretation_drift_risks: []
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending
+    note: "Try at least one repair, conversion, or interpretation check before closing proxy-vs-MT5 divergence."
+  unit_semantics:
+    point: null
+    pip: null
+    tick_size: null
+    digits: null
+    price_distance: null
+    atr_multiplier: null
+    rounding_policy: null
+  comparison_classes:
+    - proxy_good_runtime_good
+    - proxy_good_runtime_bad
+    - proxy_bad_runtime_bad
+    - proxy_bad_runtime_good
+    - invalid_or_unmaterializable
+  divergence_judgment: pending
+  prevention_memory: []
+  follow_up_action: pending
+  claim_boundary: campaign_parity_tracking_only_no_runtime_authority
 stop_conditions: []
 runtime_learning_probe_decision_default:
   required_when_runtime_question: true

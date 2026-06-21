@@ -1,0 +1,72 @@
+{
+  "summary": {
+    "inventory_version": "SPACESONAR_X_US100_RAW_M5_INVENTORY_V1",
+    "generated_at_utc": "2026-06-21T15:30:28.804039Z",
+    "raw_root": "data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0",
+    "expected_symbol_count": 1,
+    "discovered_symbol_dirs": [
+      "US100"
+    ],
+    "extra_symbol_dirs": [],
+    "usable_symbol_count": 1,
+    "non_usable_symbols": [],
+    "symbols_with_manifest_mismatch": [],
+    "symbols_with_timing_issue": [],
+    "common_first_open_unix": 1644368400,
+    "common_last_open_unix": 1781826900,
+    "common_first_open_utc": "2022-02-09T01:00:00Z",
+    "common_last_open_utc": "2026-06-18T23:55:00Z",
+    "us100_first_open_utc": "2022-02-09T01:00:00Z",
+    "us100_last_open_utc": "2026-06-18T23:55:00Z",
+    "timezone_status_values": [
+      "UNRESOLVED_REQUIRES_MANUAL_BINDING"
+    ],
+    "status": "complete",
+    "boundary": "Raw inventory only. This does not claim feature readiness, model readiness, runtime authority, or operating promotion."
+  },
+  "symbols": [
+    {
+      "contract_symbol": "US100",
+      "expected_broker_symbol": "US100",
+      "symbol_dir": "data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100",
+      "status": "usable_raw_inventory",
+      "csv_status": "ok",
+      "manifest_status": "ok",
+      "csv_path": "data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100/bars_us100_m5_mt5api_raw.csv",
+      "manifest_path": "data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100/bars_us100_m5_mt5api_raw.manifest.json",
+      "csv_sha256": "ab3308da907709beb5cf57895d5935069ee82d97bde7b4cf1aa00f885a0ea160",
+      "manifest_sha256": "a04c62fcb7bad7a943a766a5c549bdb007dd3e550a9a1428170e9b5e5005dd4a",
+      "csv_size_bytes": 44911007,
+      "row_count": 308002,
+      "first_open_unix": 1644368400,
+      "last_open_unix": 1781826900,
+      "first_open_utc": "2022-02-09T01:00:00Z",
+      "last_open_utc": "2026-06-18T23:55:00Z",
+      "contract_symbol_values": [
+        "US100"
+      ],
+      "broker_symbol_values": [
+        "US100"
+      ],
+      "timeframe_values": [
+        "M5"
+      ],
+      "price_basis_values": [
+        "Bid"
+      ],
+      "timezone_status_values": [
+        "UNRESOLVED_REQUIRES_MANUAL_BINDING"
+      ],
+      "missing_columns": [],
+      "unexpected_columns": [],
+      "open_alignment_error_count": 0,
+      "close_span_error_count": 0,
+      "duplicate_open_count": 0,
+      "backwards_step_count": 0,
+      "non_m5_forward_step_count": 1137,
+      "largest_forward_gap_seconds": 349800,
+      "manifest_mismatches": [],
+      "notes": []
+    }
+  ]
+}

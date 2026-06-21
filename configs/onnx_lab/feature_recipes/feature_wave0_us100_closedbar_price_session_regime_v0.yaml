@@ -1,0 +1,69 @@
+version: feature_recipe_v1
+feature_recipe_id: feature_wave0_us100_closedbar_price_session_regime_v0
+status: scout_recipe_skeleton
+created_at_utc: "2026-06-21T15:30:58Z"
+base_frame: fpmarkets_us100_m5_closed_bars
+timestamp_key: us100_bar_close_time
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+
+inputs:
+  source: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  source_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
+  columns:
+    - open
+    - high
+    - low
+    - close
+    - tick_volume
+    - spread_points
+    - real_volume
+    - time_open_unix
+    - time_close_unix
+
+feature_families:
+  price_only_m5_returns_ranges_volatility:
+    examples:
+      - close_to_close_returns
+      - high_low_range
+      - close_location_in_bar
+      - rolling_realized_volatility
+      - rolling_range_expansion
+    boundary: right_aligned_closed_bar_only
+  multiscale_us100_m5_aggregates:
+    examples:
+      - M15_style_aggregates_from_M5_only
+      - H1_style_aggregates_from_M5_only
+      - rolling_trend_reversion_context
+    boundary: derived_from_US100_M5_only_no_external_timeframe_feed
+  session_calendar_state:
+    examples:
+      - MT5_server_time_of_day
+      - America_New_York_cash_session_flags_after_time_binding
+      - early_close_candidate_flag_after_calendar_binding
+    boundary: no_UTC_or_DST_claim_until_time_binding_verified
+  causal_rolling_regime_context:
+    examples:
+      - rolling_volatility_regime
+      - rolling_trend_strength
+      - gap_or_session_state
+    boundary: causal_window_at_or_before_closed_bar_t
+
+compute_ref: foundation.features.wave0_surface_scout:build_feature_frame
+params:
+  exact_feature_columns_status: defined_per_run_cell_after_time_binding
+  first_batch_matrix: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+lookback_bars: per_cell_declared_before_run
+warmup_bars: derived_from_max_lookback_per_cell
+output_features: []
+feature_order: []
+feature_order_hash: null
+external_sources: []
+missing_policy:
+  warmup_rows: drop
+  session_gap_rows: keep_with_gap_features_or_drop_per_cell_before_run
+  forward_fill: forbidden
+runtime_feasibility: not_runtime_facing_in_wave0_scout
+leakage_boundary: uses_data_available_at_or_before_closed_bar_t
+claim_boundary: recipe_skeleton_only_not_feature_set_not_feature_count_not_candidate
+

@@ -1,0 +1,236 @@
+version: campaign_manifest_v1
+campaign_id: campaign_us100_task_surface_scout_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: first_batch_axis_review_closed_l4_follow_through_required_next
+created_at_utc: '2026-06-21T15:18:51Z'
+target_branch: codex/active-goal-program-bootstrap
+wave_ids:
+- wave_us100_closedbar_surface_cartography_v0
+idea_ids:
+- idea_us100_m5_blank_slate_surface_map_v0
+hypothesis_ids:
+- hyp_surface_diversity_before_model_search_v0
+objective: Scout explicit US100 M5 task, target, label, decision, and holding surfaces
+  before model or feature optimization.
+axis_tags:
+- task_surface
+- target_or_label_surface
+- decision_use
+- horizon_or_holding_policy
+- us100_m5_closed_bar_only
+surface_policy: broad_and_extreme_first_no_micro_search_until_repeated_clue
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/campaign_manifest.yaml
+  wave_campaign_refs:
+  - lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+  registry_rows:
+  - docs/registers/campaign_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+  wave_link_policy: central_campaign_folder_referenced_by_wave_allocation
+git_integration:
+  policy_reference: docs/policies/branch_policy.md
+  open_event: campaign_open
+  close_event: campaign_close
+  main_push_policy: boundary_only_after_coherent_commit
+  per_run_main_push_default: false
+  status: open_not_main_integrated_in_current_dirty_worktree
+skill_routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills:
+  - spacesonar-exploration-mandate
+  - spacesonar-data-integrity
+  - spacesonar-model-validation
+  - spacesonar-run-evidence-system
+  - spacesonar-claim-discipline
+required_gates:
+- design_contract_check
+- data_time_axis_preflight
+- split_leakage_preflight
+- broad_extreme_sweep_axes
+- anti_selection_ledger_plan
+- negative_memory_plan
+- final_claim_guard
+claim_boundary: planning_scaffold_scout_surface_only_not_candidate_not_baseline
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+experiment_design:
+  idea_id: idea_us100_m5_blank_slate_surface_map_v0
+  hypothesis_id: hyp_surface_diversity_before_model_search_v0
+  surface_id: surface_us100_task_input_decision_rotation_v0
+  sweep_id: sweep_wave0_broad_surface_scout_v0
+  hypothesis: Diverse explicit target, input, decision, and holding surfaces should
+    be mapped before model-family or threshold optimization.
+  decision_use: scout_tradeability_and_abstain_capable_decision_surfaces
+  comparison_baseline:
+  - no_trade_baseline
+  - random_or_permuted_label_baseline_when_executable
+  - naive_momentum_or_mean_reversion_manual_rule_when_defined
+  control_variables:
+  - US100_M5_closed_bar_base_frame
+  - split_set_v0_research_catalog
+  - no_auxiliary_symbols_until_live_chart_verified
+  - no_locked_final_oos
+  changed_variables:
+  - target_label_surface
+  - horizon_or_event_definition
+  - input_representation
+  - decision_or_abstain_surface
+  - simple_model_family
+  sample_scope: clean_universe_split_set_v0_with_exclusions
+  success_criteria:
+  - repeated_surface_clue_across_neighbor_horizon_fold_regime_or_related_input
+  - trade_density_visible_without_threshold_knife_edge
+  - cost_slippage_sensitivity_recorded
+  - no_feature_label_leakage
+  failure_criteria:
+  - wfo_rank_or_sign_instability
+  - signal_concentrated_in_one_short_regime
+  - pf_or_trade_density_depends_on_tiny_count_or_outlier_day
+  - threshold_knife_edge
+  - invalid_time_axis_or_split_boundary
+  invalid_conditions:
+  - inherited_feature_or_label_or_output_head_detected
+  - random_shuffle_used
+  - oos_or_locked_final_used_for_threshold_selection
+  - auxiliary_symbol_without_live_chart_evidence
+  - missing_dataset_identity_for_model_bearing_run
+  stop_conditions:
+  - broad_extreme_scout_spec_ready
+  - candidate_dataset_identity_missing_blocks_run
+  - repeated_surface_clue_opens_wfo_next_item
+  - no_viable_surface_after_budget_close_as_negative_memory
+  evidence_plan:
+  - wave_allocation
+  - campaign_manifest
+  - surface_manifest
+  - sweep_manifest
+  - dataset_identity_or_missing_reason
+  - recipe_skeletons
+  - run_refs_when_executable
+  - negative_memory_records_for_failed_surfaces
+recipe_refs:
+  feature_recipe_id: feature_wave0_us100_closedbar_price_session_regime_v0
+  label_recipe_id: label_wave0_surface_grid_v0
+  model_recipe_id: model_wave0_transparent_scout_v0
+  decision_recipe_id: decision_wave0_abstain_density_scout_v0
+  eval_recipe_id: eval_wave0_surface_scout_v0
+  surface_contract_id: surface_us100_task_input_decision_rotation_v0
+dataset_identity:
+  dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
+  status: raw_export_row_membership_materialized_first_batch_specs_ready
+row_membership:
+  status: materialized_with_explicit_time_binding_policy
+  manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  counts: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_counts.csv
+  label_horizon_boundary_counts: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/label_horizon_boundary_counts.csv
+executable_spec: lab/campaigns/campaign_us100_task_surface_scout_v0/wave0_executable_scout_spec.yaml
+first_batch_matrix: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+first_batch_run_specs:
+  status: planned_not_executed
+  run_count: 12
+  manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+  anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
+  registry_policy: sweep_local_run_refs_only_until_execution
+runtime_learning_probe_decision_default:
+  required_when_runtime_question: true
+  current_decision: not_applicable_no_runtime_question
+  reason: Initial scout campaign has no ONNX/EA/runtime behavior claim yet.
+  forbidden_standalone_skip_reasons:
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
+default_runtime_level_target: none_until_executable_onnx_ea_surface_exists
+proxy_runtime_parity:
+  required_for_proxy_model_bearing_runs: true
+  status: pending_l4_follow_through
+  shared_contract:
+  - US100_M5_closed_bar_base_frame
+  - us100_bar_close_time_row_key
+  - split_set_v0_research_catalog
+  - declared_task_surface_per_run
+  - tester_execution_profile_us100_m5_fpmarkets_tester_execution_v0
+  known_differences:
+  - proxy_metrics_do_not_include_MT5_fill_spread_swap_slippage_or_execution_timing
+  - first_batch_proxy_scores_were_train_validation_observations_not_tester_reports
+  interpretation_drift_risks:
+  - bar_close_timing
+  - decision_threshold_translation
+  - no_trade_or_abstain_semantics
+  - lot_rounding_and_position_sizing
+  - spread_and_cost_model
+  - tester_execution_model
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending_L4
+    forced_equality_required: false
+    attempts: []
+    note: Attempt repair, conversion, or interpretation check at least once; preserve
+      true MT5 differences instead of forcing equality.
+  unit_semantics:
+    point: pending_L4
+    pip: pending_L4
+    tick_size: pending_L4
+    digits: pending_L4
+    price_distance: pending_L4
+    atr_multiplier: pending_when_ATR_stop_logic_exists
+    lot_step: pending_L4
+    rounding_policy: pending_L4
+  comparison_classes:
+  - proxy_good_runtime_good
+  - proxy_good_runtime_bad
+  - proxy_bad_runtime_bad
+  - proxy_bad_runtime_good
+  - invalid_or_unmaterializable
+  divergence_judgment: pending_L4
+  prevention_memory:
+  - record_unit_conversion_rule_before_reusing_ATR_or_stop_distance_logic
+  - record_MT5_interpretation_drift_before_reusing_proxy_decision_surface
+  follow_up_action: work_wave0_first_batch_l4_follow_through_v0
+  claim_boundary: campaign_parity_tracking_only_no_runtime_authority
+next_action: work_wave0_first_batch_l4_follow_through_v0
+notes: 'Task Force consensus: start with target/decision/holding surface discovery.
+  Row membership and planned first-batch run specs are ready; no model/runtime/candidate
+  claim.'
+first_batch_result:
+  status: executed_proxy_scout
+  run_count: 12
+  result_counts:
+    inconclusive: 8
+    preserved_clue: 4
+  claim_boundary: first_batch_proxy_scout_l4_required_no_candidate_no_baseline_no_runtime_authority
+  candidate_count: 0
+  selected_baseline_count: 0
+  runtime_claim: false
+  next_action: work_wave0_first_batch_l4_follow_through_v0
+axis_review:
+  status: closed
+  path: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  result_counts:
+    inconclusive: 8
+    preserved_clue: 4
+    negative: 0
+    invalid: 0
+  candidate_count: 0
+  preserved_clue_ids:
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  claim_boundary: first_batch_axis_review_l4_required_no_candidate_no_baseline_no_runtime_authority
+  next_action: work_wave0_first_batch_l4_follow_through_v0
+proxy_to_runtime_policy:
+  every_valid_proxy_run_requires_l4: true
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

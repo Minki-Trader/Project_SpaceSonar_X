@@ -1,0 +1,73 @@
+version: surface_manifest_v1
+surface_id: surface_us100_task_input_decision_rotation_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+hypothesis_id: hyp_surface_diversity_before_model_search_v0
+status: first_batch_proxy_scout_executed_no_candidate
+created_at_utc: '2026-06-21T15:18:51Z'
+inheritance_policy: no_prior_feature_label_target_model_or_runtime_defaults
+problem_shape:
+  input_surface: US100_M5_closed_bar_price_session_regime_surfaces_only
+  target_or_label_surface: broad_future_return_barrier_path_quality_tradeability_surfaces_to_be_defined_in_sweep
+  decision_use: abstain_capable_tradeability_scout
+  holding_logic: explicit_per_label_surface_or_not_applicable_with_claim_effect
+  evaluation_method: broad_extreme_scout_then_wfo_after_repeated_clue
+recipe_refs:
+  data_surface_id: US100_M5_closed_bar
+  label_recipe_id: label_wave0_surface_grid_v0
+  feature_recipe_id: feature_wave0_us100_closedbar_price_session_regime_v0
+  feature_recipe_mix_id: not_applicable_no_mix_in_initial_scout
+  model_recipe_id: model_wave0_transparent_scout_v0
+  decision_recipe_id: decision_wave0_abstain_density_scout_v0
+  split_recipe_id: split_set_v0
+  eval_recipe_id: eval_wave0_surface_scout_v0
+data_contract:
+  symbol_contract: FPMarkets_US100_only
+  timeframe: M5
+  row_key: us100_bar_close_time
+  timezone_or_session_policy: split_membership_uses_time_open_unix_rendered_date_as_mt5_date_binding_utc_not_claimed
+  feature_boundary: right_aligned_closed_bar_only
+  label_boundary: future_dependent_rows_drop_when_horizon_crosses_primary_split_role
+  leakage_boundary: random_shuffle_forbidden_train_scope_fit_only
+  missing_gap_policy: use_materialized_row_membership_roles_no_forward_fill
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  label_horizon_boundary_counts: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/label_horizon_boundary_counts.csv
+storage_contract:
+  source_of_truth: lab/surfaces/surface_us100_task_input_decision_rotation_v0/surface_manifest.yaml
+  registry_rows:
+  - docs/registers/experiment_surface_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_level_target: none_until_executable_onnx_ea_surface_exists
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: Planned surface scout has no ONNX/EA/runtime behavior claim yet.
+claim_boundary: scout_surface_planning_only_not_candidate
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+known_differences:
+- Recipes are scout skeletons, not selected feature, label, model, threshold, or holding contracts.
+- Row membership and first batch run specs exist, but no model-bearing run has executed.
+notes: First surface opens broad task/input/decision rotation without legacy inheritance.
+first_batch_result:
+  status: executed_proxy_scout
+  run_count: 12
+  result_counts:
+    inconclusive: 8
+    preserved_clue: 4
+  claim_boundary: first_batch_proxy_scout_l4_required_no_candidate_no_baseline_no_runtime_authority
+  candidate_count: 0
+  selected_baseline_count: 0
+  runtime_claim: false
+  next_action: work_wave0_first_batch_axis_review_v0
+next_action: work_wave0_first_batch_l4_follow_through_v0
+proxy_to_runtime_policy:
+  every_valid_proxy_run_requires_l4: true
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

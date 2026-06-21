@@ -391,7 +391,7 @@ def render_markdown(inventory: dict[str, object]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_outputs(inventory: dict[str, object], output_dir: Path) -> None:
+def write_outputs(inventory: dict[str, object], output_dir: Path, raw_root: Path, repo_root: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "raw_m5_inventory.json").write_text(
         json.dumps(inventory, indent=2), encoding="utf-8"
@@ -426,7 +426,7 @@ def write_outputs(inventory: dict[str, object], output_dir: Path) -> None:
         "work_scope": "raw_m5_inventory",
         "command": (
             "python foundation/collectors/raw_m5_inventory.py "
-            "--raw-root data/raw/mt5_bars/m5 "
+            f"--raw-root {repo_relative(raw_root, repo_root)} "
             f"--output-dir {output_dir.as_posix()}"
         ),
         "outputs": [
@@ -451,8 +451,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     repo_root = Path.cwd()
-    inventory = build_inventory(Path(args.raw_root), repo_root=repo_root)
-    write_outputs(inventory, Path(args.output_dir))
+    raw_root = Path(args.raw_root)
+    inventory = build_inventory(raw_root, repo_root=repo_root)
+    write_outputs(inventory, Path(args.output_dir), raw_root, repo_root)
     print(json.dumps(inventory["summary"], indent=2))
 
 

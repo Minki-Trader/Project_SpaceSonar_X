@@ -1,0 +1,469 @@
+{
+  "version": "run_manifest_v2",
+  "run_id": "onnxlab_wave0_cell_009_surface_scout_v0",
+  "id_chain": {
+    "wave_id": "wave_us100_closedbar_surface_cartography_v0",
+    "campaign_id": "campaign_us100_task_surface_scout_v0",
+    "idea_id": "idea_us100_m5_blank_slate_surface_map_v0",
+    "hypothesis_id": "hyp_surface_diversity_before_model_search_v0",
+    "surface_id": "surface_us100_task_input_decision_rotation_v0",
+    "sweep_id": "sweep_wave0_broad_surface_scout_v0",
+    "artifact_ids": [
+      "artifact_dataset_wave0_us100_m5_row_membership_v0"
+    ],
+    "bundle_id": null,
+    "candidate_id": null
+  },
+  "trigger_source": "wave0_first_batch_matrix",
+  "agent_consult_status": "not_requested_for_codex_only_first_batch_execution",
+  "selected_agents": [],
+  "skill_routing": {
+    "primary_family": "model_training",
+    "primary_skill": "spacesonar-model-validation",
+    "support_skills": [
+      "spacesonar-experiment-design",
+      "spacesonar-data-integrity",
+      "spacesonar-run-evidence-system",
+      "spacesonar-claim-discipline"
+    ],
+    "skills_selected": [
+      "spacesonar-model-validation",
+      "spacesonar-experiment-design",
+      "spacesonar-data-integrity",
+      "spacesonar-run-evidence-system",
+      "spacesonar-claim-discipline"
+    ],
+    "skills_not_used": [
+      "spacesonar-runtime-parity"
+    ],
+    "critical_skills_not_selected": [
+      {
+        "skill": "spacesonar-runtime-parity",
+        "reason": "no ONNX, EA, Strategy Tester, economics, or runtime behavior question in planned proxy scout",
+        "not_selected_claim_effect": "no_runtime_claim"
+      }
+    ],
+    "not_selected_claim_effect": "no_runtime_claim_no_runtime_authority_no_economics_pass",
+    "required_gates": [
+      "branch_worktree_fit",
+      "time_axis_check",
+      "feature_label_boundary_check",
+      "split_boundary_check",
+      "selection_bias_check",
+      "run_manifest",
+      "experiment_receipt",
+      "storage_contract_check",
+      "runtime_learning_probe_decision",
+      "final_claim_guard",
+      "onnx_export_or_runtime_materialization_required",
+      "L4_split_runtime_probe_for_valid_proxy_run"
+    ],
+    "not_applicable_gates": [
+      "locked_final_oos_access"
+    ]
+  },
+  "branch_worktree": {
+    "current_branch": "codex/active-goal-program-bootstrap",
+    "requested_branch": "codex/active-goal-program-bootstrap",
+    "branch_worktree_fit": "fit",
+    "branch_action": "keep_current_branch",
+    "policy_reference": "docs/policies/branch_policy.md",
+    "mismatch_claim_effect": "not_applicable"
+  },
+  "agent_allocation": {
+    "phase": "wave0_first_batch_proxy_execution",
+    "selected_agents": [],
+    "role_modes": [],
+    "selection_reason": "Codex-only execution of planned first-batch proxy specs; no material axis decision or protected claim made.",
+    "why_not_smaller": "Codex alone is the smallest allocation.",
+    "why_not_larger": "Axis rotation or narrowing is deferred to the next work item after result summary.",
+    "max_threads_is_capacity_only": true,
+    "claim_effect": "no_advisory_claim"
+  },
+  "objective": "Planned Wave0 scout cell wave0_cell_009: regime conditioned path diagnostic",
+  "task_surface": {
+    "task_type": "path_quality_mfe_mae_payoff_suitability",
+    "target_or_label": "path_quality_mfe_mae_payoff_suitability",
+    "direction_mapping": "declared_by_cell_decision_family_not_inherited",
+    "horizon_or_holding_policy": "24_bars_planned_label_horizon_not_fixed_holding_baseline",
+    "output_head": "declared_by_model_family_at_execution_no_legacy_output_head",
+    "decision_family": "diagnostic_rank_only",
+    "input_family": "causal_rolling_regime_context",
+    "threshold_policy": "none_diagnostic"
+  },
+  "status": "executed_proxy_scout",
+  "created_at_utc": "2026-06-21T15:54:35Z",
+  "timezone": "UTC",
+  "git_commit": "e6053875b8106a665cff347dac01918f1f3a28c6",
+  "dirty_state": "dirty",
+  "command": "foundation\\pipelines\\run_wave0_first_batch_proxy_scout.py",
+  "entrypoint": "foundation/pipelines/run_wave0_first_batch_proxy_scout.py",
+  "environment_summary": {
+    "python": "3.13.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.3.4",
+    "pandas": "2.3.3",
+    "sklearn": "1.8.0",
+    "yaml": "6.0.3"
+  },
+  "provenance": {
+    "git_sha": "e6053875b8106a665cff347dac01918f1f3a28c6",
+    "branch": "codex/active-goal-program-bootstrap",
+    "dirty_flag": "dirty",
+    "changed_files": [
+      "M docs/registers/artifact_registry.csv",
+      "M docs/registers/campaign_registry.csv",
+      "M docs/registers/experiment_surface_registry.csv",
+      "M docs/registers/hypothesis_registry.csv",
+      "M docs/registers/idea_registry.csv",
+      "M docs/registers/recipe_index.csv",
+      "M docs/registers/sweep_registry.csv",
+      "M docs/registers/wave_registry.csv",
+      "M docs/workspace/workspace_state.yaml",
+      "M foundation/collectors/raw_m5_inventory.py",
+      "?? configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml",
+      "?? configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml",
+      "?? configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml",
+      "?? configs/onnx_lab/label_recipes/label_wave0_surface_grid_v0.yaml",
+      "?? configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml",
+      "?? configs/onnx_lab/surface_contracts/surface_us100_task_input_decision_rotation_v0.yaml",
+      "?? docs/registers/goal_registry.csv",
+      "?? foundation/collectors/build_us100_m5_row_membership.py",
+      "?? foundation/features/wave0_scout_features.py",
+      "?? foundation/labels/wave0_scout_labels.py",
+      "?? foundation/pipelines/materialize_wave0_first_batch_run_specs.py",
+      "?? foundation/pipelines/run_wave0_first_batch_proxy_scout.py",
+      "?? foundation/training/wave0_proxy_models.py",
+      "?? lab/campaigns/campaign_us100_task_surface_scout_v0/",
+      "?? lab/goals/",
+      "?? lab/hypotheses/hyp_surface_diversity_before_model_search_v0.yaml",
+      "?? lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/",
+      "?? lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/",
+      "?? lab/surfaces/surface_us100_task_input_decision_rotation_v0/",
+      "?? lab/waves/wave_us100_closedbar_surface_cartography_v0/"
+    ],
+    "command_argv": [
+      "foundation\\pipelines\\run_wave0_first_batch_proxy_scout.py"
+    ],
+    "python_executable": "${USERPROFILE}\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "python_version": "3.13.9",
+    "key_package_versions": {
+      "python": "3.13.9",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "numpy": "2.3.4",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "yaml": "6.0.3"
+    },
+    "started_at_utc": "2026-06-21T16:14:03.840381Z",
+    "ended_at_utc": "2026-06-21T16:14:07.740309Z",
+    "input_hashes": [
+      {
+        "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+        "sha256": "477239044efd3a6ce17d85dfd2c2d7da35cd450cc34898384aa52e753042f833",
+        "size_bytes": 4964,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv",
+        "sha256": "c7d8b63e108584c82df0522e09531502cd80831d61eb494013f0d2721de0e92d",
+        "size_bytes": 3161,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml",
+        "sha256": "477a7878bed3300de85925b5841a55ed06fd68d20364ee6ccd027af0e6f952ea",
+        "size_bytes": 2390,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "configs/onnx_lab/label_recipes/label_wave0_surface_grid_v0.yaml",
+        "sha256": "aaab5e27ddfef0d3721165ebea15b68faecf0650c3ea9da4fb932288f91acad5",
+        "size_bytes": 1905,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml",
+        "sha256": "64cdd1617a9fecb8b6efc1ad282724915ed4599e66301b7aa36954aa306078e3",
+        "size_bytes": 1759,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml",
+        "sha256": "71fa6f0b3a89b4b1d04b341d1332211606a9fee2c1a16c233e6b4930e1971e24",
+        "size_bytes": 1965,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml",
+        "sha256": "5b80f98aeb83958ec1b149c4c4f3fa5fd5fc9f5934cb17a84e36203796716c66",
+        "size_bytes": 1847,
+        "availability": "present_hash_recorded"
+      }
+    ],
+    "output_hashes": [
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifacts/feature_schema.json",
+        "sha256": "71a34000426c057061f33580fc178ed0658373b6e5d43d0b9023ce399f7ea160",
+        "size_bytes": 3753,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifacts/label_schema.json",
+        "sha256": "e771def0923ee355561779b7823dd3dac1d868ca1e2837d76eb909b3e1b788e4",
+        "size_bytes": 886,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifacts/model_summary.json",
+        "sha256": "ba61ae1a9c8bdf32c23c42fba08ee4aadd2e7b0642ee35f6ae9b991a99282191",
+        "size_bytes": 894,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifacts/split_profile.json",
+        "sha256": "d0b72340e601e5ac25736715feacdb9dfda24d9ea7a3ed2b186a1132fc2e998e",
+        "size_bytes": 648,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifacts/prediction_sample.csv",
+        "sha256": "899f15384723066658feb77c5eca939748559eff781d6dc9c82daf957fd08303",
+        "size_bytes": 50109,
+        "availability": "present_hash_recorded"
+      },
+      {
+        "path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/reports/proxy_scout_report.json",
+        "sha256": "b89ae70a67d96511d49a5da1a63f8a7ef3f84c1fc7324e0e794142e6f8ba5cde",
+        "size_bytes": 2692,
+        "availability": "present_hash_recorded"
+      }
+    ],
+    "unknown_git_claim_effect": "planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve",
+    "dirty_worktree_claim_effect": "proxy_scout_only_no_reproducible_candidate_bundle_runtime_or_goal_achieve_claim"
+  },
+  "storage_contract": {
+    "source_of_truth": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/run_manifest.json",
+    "receipt_path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/experiment_receipt.yaml",
+    "lineage_path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifact_lineage.json",
+    "metrics_path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/metrics.json",
+    "supporting_paths": [
+      "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/logs/",
+      "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/reports/",
+      "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifacts/",
+      "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/mt5/"
+    ],
+    "registry_rows": [
+      "lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv"
+    ],
+    "durable_identity_policy": "repo_relative_paths_only",
+    "duplicate_policy": "single_source_of_truth_copy_requires_reason",
+    "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri"
+  },
+  "data_scope": {
+    "instrument": "FPMarkets US100",
+    "timeframe": "M5",
+    "dataset_id": "dataset_raw_us100_m5_wave0_export_20260621T152827Z",
+    "split_id": "split_set_v0",
+    "primary_split_id": "split_base_anchor_v0",
+    "date_range": "2022.02.09 -> 2026.06.18 clean blocks from split_set_v0",
+    "timezone_or_session_policy": "split membership uses time_open_unix rendered date as mt5_date binding; no UTC/server timezone claim",
+    "row_key": "us100_bar_close_time",
+    "row_membership_manifest": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+    "row_membership_csv": "data/processed/onnx_lab/us100_m5/dataset_raw_us100_m5_wave0_export_20260621T152827Z/row_membership_us100_m5_split_set_v0.csv",
+    "feature_boundary": "closed bars only; features must be causal at or before us100_bar_close_time",
+    "label_boundary": "horizon_bars=24; drop rows whose future horizon crosses primary_split_role",
+    "leakage_boundary": "train-only fit for scalers, imputers, selectors, calibration, and thresholds",
+    "missing_gap_policy": "use materialized row membership roles; session/history gaps are not forward-filled"
+  },
+  "recipe_refs": {
+    "feature_recipe": {
+      "path": "configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml",
+      "sha256": "477a7878bed3300de85925b5841a55ed06fd68d20364ee6ccd027af0e6f952ea",
+      "status": "present"
+    },
+    "label_recipe": {
+      "path": "configs/onnx_lab/label_recipes/label_wave0_surface_grid_v0.yaml",
+      "sha256": "aaab5e27ddfef0d3721165ebea15b68faecf0650c3ea9da4fb932288f91acad5",
+      "status": "present"
+    },
+    "model_recipe": {
+      "path": "configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml",
+      "sha256": "64cdd1617a9fecb8b6efc1ad282724915ed4599e66301b7aa36954aa306078e3",
+      "status": "present"
+    },
+    "decision_recipe": {
+      "path": "configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml",
+      "sha256": "71fa6f0b3a89b4b1d04b341d1332211606a9fee2c1a16c233e6b4930e1971e24",
+      "status": "present"
+    },
+    "eval_recipe": {
+      "path": "configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml",
+      "sha256": "5b80f98aeb83958ec1b149c4c4f3fa5fd5fc9f5934cb17a84e36203796716c66",
+      "status": "present"
+    },
+    "surface_contract": {
+      "path": "configs/onnx_lab/surface_contracts/surface_us100_task_input_decision_rotation_v0.yaml",
+      "sha256": "5fb87328bc98f83dc1640ca16b3f334ac002c045528a77c60bff5eff505f5d9c",
+      "status": "present"
+    }
+  },
+  "planned_cell": {
+    "cell_id": "wave0_cell_009",
+    "target_family": "path_quality_mfe_mae_payoff_suitability",
+    "horizon_bars": "24",
+    "input_family": "causal_rolling_regime_context",
+    "decision_family": "diagnostic_rank_only",
+    "model_family": "linear_or_ridge_rank_scout",
+    "threshold_policy": "none_diagnostic",
+    "split_use": "train_validation_only",
+    "claim_boundary": "scout_surface_only",
+    "notes": "regime conditioned path diagnostic"
+  },
+  "model_export": {
+    "framework": "sklearn_proxy_model_no_onnx_export",
+    "opset": null,
+    "input_schema": {
+      "feature_schema_path": "lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifacts/feature_schema.json",
+      "feature_count": 66
+    },
+    "output_schema": {
+      "score_semantics": "proxy_score_or_rank_not_calibrated_probability"
+    },
+    "onnx_sha256": null
+  },
+  "runtime_learning_probe_decision": {
+    "required": true,
+    "decision": "run_required",
+    "reason": "User clarification: every valid proxy/model-bearing run must reach L4_split_runtime_probe.",
+    "lowered_claim_if_not_run": "invalid_proxy_only_closeout_no_l4_runtime_evidence"
+  },
+  "required_gate_coverage": {
+    "passed": [
+      "branch_worktree_fit",
+      "time_axis_check",
+      "feature_label_boundary_check",
+      "split_boundary_check",
+      "selection_bias_check",
+      "run_manifest",
+      "experiment_receipt",
+      "storage_contract_check",
+      "runtime_learning_probe_decision",
+      "final_claim_guard"
+    ],
+    "not_applicable": [
+      "locked_final_oos_access"
+    ],
+    "missing": [
+      "onnx_export_or_runtime_materialization_required",
+      "L4_split_runtime_probe_for_valid_proxy_run"
+    ]
+  },
+  "result_judgment": "inconclusive",
+  "missing_evidence": [
+    "wfo_not_run_in_first_batch_proxy_scout",
+    "onnx_export_not_applicable_for_proxy_scout",
+    "candidate_selection_not_allowed_from_first_batch",
+    "L4_split_runtime_probe_required_pending_for_all_valid_proxy_runs"
+  ],
+  "claim_scope": "first_batch_proxy_scout_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "claim_boundary": "first_batch_proxy_scout_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "forbidden_claims": [
+    "selected_baseline",
+    "runtime_authority",
+    "economics_pass",
+    "materialization_ready",
+    "handoff_complete",
+    "live_readiness",
+    "reviewed_verified_pass",
+    "goal_achieve"
+  ],
+  "invalid_conditions": [
+    "feature_or_label_implementation_inherits_legacy_target_or_feature_set",
+    "random_shuffle_used",
+    "oos_b_locked_final_used_for_selection_or_repair",
+    "label_horizon_crosses_split_without_drop_or_purge"
+  ],
+  "stop_conditions": [
+    "runner_missing_blocks_execution",
+    "feature_label_boundary_invalid",
+    "row_membership_hash_mismatch",
+    "threshold_knife_edge_after_execution_keeps_as_preserved_clue_not_candidate"
+  ],
+  "next_action": "work_wave0_first_batch_l4_follow_through_v0",
+  "gate_coverage_notes": {
+    "time_axis_check": "data_scope records us100_bar_close_time row key and split_set_v0 research binding",
+    "feature_label_boundary_check": "data_scope records causal closed-bar feature boundary and horizon drop policy"
+  },
+  "runtime_follow_through_policy": {
+    "l4_required": true,
+    "l5_if_l4_promising": true
+  },
+  "proxy_runtime_parity": {
+    "required_for_proxy_model_bearing_run": true,
+    "status": "pending_L4_follow_through",
+    "shared_contract": [
+      "US100_M5_closed_bar_base_frame",
+      "us100_bar_close_time_row_key",
+      "split_set_v0_research_catalog",
+      "declared_task_surface_per_run",
+      "tester_execution_profile_us100_m5_fpmarkets_tester_execution_v0"
+    ],
+    "proxy_assumptions": [
+      "train_validation_proxy_observation",
+      "no_MT5_fill_spread_swap_slippage_or_execution_timing"
+    ],
+    "runtime_assumptions": [
+      "split_base_anchor_v0_research_l4",
+      "us100_m5_fpmarkets_tester_execution_v0",
+      "MT5_Strategy_Tester_report_required"
+    ],
+    "known_differences": [
+      "proxy_metrics_are_not_tester_reports",
+      "proxy_decision_semantics_may_translate_differently_in_EA_MT5"
+    ],
+    "interpretation_drift_risks": [
+      "bar_close_timing",
+      "decision_threshold_translation",
+      "no_trade_or_abstain_semantics",
+      "lot_rounding_and_position_sizing",
+      "spread_and_cost_model",
+      "tester_execution_model"
+    ],
+    "minimum_reconciliation_attempt": {
+      "required": true,
+      "status": "pending_L4",
+      "forced_equality_required": false,
+      "attempts": [],
+      "note": "Attempt repair, conversion, or interpretation check at least once; preserve true MT5 differences instead of forcing equality."
+    },
+    "unit_semantics": {
+      "point": "pending_L4",
+      "pip": "pending_L4",
+      "tick_size": "pending_L4",
+      "digits": "pending_L4",
+      "price_distance": "pending_L4",
+      "atr_multiplier": "pending_when_ATR_stop_logic_exists",
+      "lot_step": "pending_L4",
+      "rounding_policy": "pending_L4"
+    },
+    "comparison_class": "pending_L4",
+    "divergence_judgment": "pending_L4",
+    "prevention_memory": [
+      "record_unit_conversion_rule_before_reusing_ATR_or_stop_distance_logic",
+      "record_MT5_interpretation_drift_before_reusing_proxy_decision_surface"
+    ],
+    "follow_up_action": "work_wave0_first_batch_l4_follow_through_v0",
+    "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority"
+  }
+}

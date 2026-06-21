@@ -63,6 +63,7 @@ cases:
       - spacesonar-claim-discipline
     expected_required_gates:
       - design_contract_check
+      - campaign_proxy_runtime_parity_policy
       - final_claim_guard
     expected_claim_boundary: design_only
 
@@ -82,6 +83,7 @@ cases:
       - experiment_receipt
       - storage_contract_check
       - runtime_learning_probe_decision
+      - proxy_runtime_parity_decision
       - final_claim_guard
     expected_claim_boundary: scout_surface
 
@@ -96,6 +98,7 @@ cases:
     expected_required_gates:
       - onnx_export_smoke
       - python_onnx_parity
+      - proxy_runtime_parity_record
       - bundle_integrity_hash
       - final_claim_guard
     expected_claim_boundary: bundle_preflight
@@ -112,6 +115,7 @@ cases:
     expected_required_gates:
       - runtime_learning_probe_decision
       - mt5_runtime_probe_contract_audit
+      - proxy_runtime_parity_record
       - runtime_surface_contract
       - final_claim_guard
     expected_claim_boundary: runtime_probe
@@ -128,6 +132,7 @@ cases:
     expected_required_gates:
       - runtime_learning_probe_decision
       - mt5_runtime_probe_contract_audit
+      - proxy_runtime_parity_record
       - runtime_surface_contract
       - final_claim_guard
     expected_claim_boundary: runtime_probe

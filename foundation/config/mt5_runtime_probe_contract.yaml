@@ -18,6 +18,11 @@ execution_authority:
 
 runtime_learning_probe_decision:
   required_for_runtime_claim_surfaces: true
+  proxy_follow_through_required: true
+  proxy_follow_through_rule: "Every valid proxy/model-bearing experiment must progress to L4_split_runtime_probe. Proxy-only closeout is not allowed for a valid proxy run."
+  l5_continuation_rule: "If L4_split_runtime_probe remains promising under the declared surface, continue to L5_candidate_runtime_evidence with candidate-specific manifests."
+  campaign_parity_required: true
+  campaign_parity_rule: "Every proxy/model-bearing campaign must record proxy_runtime_parity before closing proxy evidence. This includes matching behavior, expected runtime differences, at least one reconciliation attempt, unit semantics, unexplained divergence, prevention memory, and proxy-bad/runtime-good surprises. Parity reconciliation does not force equality when the true proxy and MT5 semantics differ."
   record_field: runtime_learning_probe_decision
   allowed_decisions:
     - run_required
@@ -31,9 +36,14 @@ runtime_learning_probe_decision:
     - trade_count_is_low
     - candidate_is_ambiguous
     - setup_might_fail
-  rule: "If runtime behavior, economics, EA/ONNX meaning, Strategy Tester output, materialization, handoff, or live-like operation is the question, run the narrow sufficient MT5 probe or lower the claim."
+  rule: "Every valid proxy/model-bearing experiment must reach L4_split_runtime_probe. If runtime behavior, economics, EA/ONNX meaning, Strategy Tester output, materialization, handoff, or live-like operation is the question, run the narrow sufficient MT5 probe or lower the claim. not_applicable_no_runtime_question is allowed only for design/intake/analysis records that do not create a proxy/model-bearing experiment."
 
 completion:
+  proxy_l4_completion_required_for:
+    - proxy_model_run
+    - model_bearing_research_run
+    - trade_decision_surface
+    - diagnostic_score_surface_intended_for_model_follow_through
   required_period_roles:
     - validation
     - research_oos
@@ -52,6 +62,17 @@ completion:
     - score_sample
     - sampled_rows
     - preview_rows
+  l4_good_to_l5_rule: "When L4 validation and research_oos reports remain promising for the declared surface, open L5_candidate_runtime_evidence instead of stopping at proxy or L4 observation."
+  proxy_runtime_parity_completion_requires:
+    - shared_contract
+    - known_differences
+    - interpretation_drift_risks
+    - minimum_reconciliation_attempt
+    - unit_semantics
+    - comparison_class
+    - divergence_judgment
+    - prevention_memory
+    - follow_up_action
 execution:
   profile_ref: configs/mt5/tester_execution_profile_v0.yaml
   terminal_mode: portable_required

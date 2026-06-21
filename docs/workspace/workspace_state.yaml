@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-21T13:20:00Z'
+updated_utc: '2026-06-21T17:25:41Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -14,6 +14,7 @@ active_roots:
   configuration:
   - configs
   lab_work:
+  - lab/waves
   - lab/hypotheses
   - lab/campaigns
   - lab/runs
@@ -40,6 +41,44 @@ legacy_workspace_deleted:
   recovery_rule: Do not recreate from memory. Use only user-restored external backup
     material when explicitly requested.
 current_claims:
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  active_goal_status: active_long_running
+  active_goal_manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+  active_goal_terminal_contract: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
+  active_goal_resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+  active_goal_next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  active_goal_claim_boundary: planning_scaffold_active_goal_control_plane_not_goal_achieve
+  active_goal_terminal_state: terminal_research_candidate_forward_market_validation_required
+  active_goal_terminal_contract_status: preflight_contract_created_not_satisfied
+  active_wave_id: wave_us100_closedbar_surface_cartography_v0
+  active_campaign_id: campaign_us100_task_surface_scout_v0
+  wave_campaign_storage_policy: wave_allocates_central_campaigns_by_reference
+  active_wave_campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+  active_hypothesis_id: hyp_surface_diversity_before_model_search_v0
+  active_surface_id: surface_us100_task_input_decision_rotation_v0
+  active_sweep_id: sweep_wave0_broad_surface_scout_v0
+  active_goal_phase: wave0_first_batch_l4_follow_through_next
+  next_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+  wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
+  wave0_raw_row_count: 308002
+  wave0_raw_csv_sha256: ab3308da907709beb5cf57895d5935069ee82d97bde7b4cf1aa00f885a0ea160
+  wave0_raw_time_binding_status: materialized_with_explicit_research_binding_not_utc_or_server_timezone_claim
+  wave0_row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  wave0_row_membership_csv_sha256: b458b765bab21f725ae7ae2368d953b7f35581b13b1debd3b35b2b33fef4938f
+  wave0_row_membership_row_count: 308002
+  wave0_row_membership_role_counts:
+    train: 143833
+    validation: 53818
+    research_oos_a: 45557
+    locked_final_oos_b: 38635
+    excluded_between_clean_blocks: 21974
+    excluded_internal_gap_date: 4185
+  wave0_executable_scout_spec: lab/campaigns/campaign_us100_task_surface_scout_v0/wave0_executable_scout_spec.yaml
+  wave0_first_batch_matrix: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+  wave0_first_batch_run_specs_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
+  wave0_first_batch_planned_run_count: 12
+  wave0_anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
   lab_structure: planning_scaffold
   routing_preflight: scaffold_with_local_validator
   routing_smoke_eval: prompt_fixture_defined_not_behavior_benchmark
@@ -58,8 +97,8 @@ current_claims:
   clean_universe: 2022.02.09 -> 2026.06.18
   runtime_period_profile: period_profile_split_set_v0
   runtime_period_profile_path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
-  feature_contract: undefined_by_design
-  label_target_contract: undefined_by_design
+  feature_contract: undefined_by_design_axis_review_preserves_no_fixed_feature_count
+  label_target_contract: undefined_by_design_tradeability_mid_horizon_next_design_only
   prediction_target: undefined_by_design
   direction_mapping: undefined_by_design
   holding_period_policy: undefined_by_design
@@ -76,6 +115,22 @@ current_claims:
   first_vertical_slice_attempt_id: attempt_20260621T131542Z_mt5_onnx_fixture_v0
   first_vertical_slice_terminal_mode: portable_attempted_then_main_mode_fallback_used
   first_vertical_slice_debt: none_for_fixed_fixture_micro_probe; no_strategy_tester_economics_or_runtime_authority
+  wave0_first_batch_status: l4_follow_through_required_next
+  wave0_first_batch_result_counts:
+    inconclusive: 8
+    preserved_clue: 4
+    negative: 0
+    invalid: 0
+  wave0_first_batch_claim_boundary: first_batch_axis_review_l4_required_no_candidate_no_baseline_no_runtime_authority
+  wave0_axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  wave0_axis_decision: rotate_plus_mix_tradeability_mid_horizon_repair_v1
+  proxy_to_runtime_policy: all_valid_proxy_runs_require_L4_split_runtime_probe
+  l4_to_l5_policy: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
+  proxy_only_closeout_allowed: false
+  wave0_preserved_clue_ids:
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  wave0_candidate_count: 0
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

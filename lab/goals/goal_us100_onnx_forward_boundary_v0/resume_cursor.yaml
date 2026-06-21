@@ -1,0 +1,38 @@
+version: active_goal_resume_cursor_v1
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+updated_at_utc: '2026-06-21T17:25:41Z'
+cursor_state: active
+active_phase: wave0_first_batch_l4_follow_through_next
+current_truth_sources:
+- lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_first_batch_axis_review_v0_closeout.yaml
+- lab/memory/clues/clue_wave0_tradeability_mid_horizon_v0.yaml
+- lab/memory/clues/clue_wave0_path_quality_h12_side_signal_v0.yaml
+- lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+- docs/registers/clue_registry.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/user_clarification_proxy_l4_policy_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+- lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+active_ids:
+  idea_id: idea_us100_m5_blank_slate_surface_map_v0
+  hypothesis_id: hyp_surface_diversity_before_model_search_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_id: campaign_us100_task_surface_scout_v0
+  surface_id: surface_us100_task_input_decision_rotation_v0
+  sweep_id: sweep_wave0_broad_surface_scout_v0
+latest_completed_work:
+  work_item_id: work_wave0_first_batch_l4_follow_through_v0
+  result_judgment: preserved_clue
+  claim_boundary: first_batch_axis_review_l4_required_no_candidate_no_baseline_no_runtime_authority
+  evidence_paths:
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_first_batch_axis_review_v0_closeout.yaml
+next_work_item:
+  work_item_id: work_wave0_first_batch_l4_follow_through_v0
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+pause_policy:
+  session_or_token_or_tool_limit: pause_only_not_terminal
+  before_pause_required:
+  - resume_cursor
+  - next_work_item

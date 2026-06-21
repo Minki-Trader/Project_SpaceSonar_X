@@ -1,0 +1,12 @@
+{
+  "run_id": "data_inventory",
+  "lane": "evidence",
+  "work_scope": "raw_m5_inventory",
+  "command": "python foundation/collectors/raw_m5_inventory.py --raw-root data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0 --output-dir lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory",
+  "outputs": [
+    "lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/raw_m5_inventory.json",
+    "lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/raw_m5_inventory.md",
+    "lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/symbol_inventory.csv"
+  ],
+  "judgment_boundary": "Evidence run only. No model readiness, runtime authority, or operating promotion."
+}

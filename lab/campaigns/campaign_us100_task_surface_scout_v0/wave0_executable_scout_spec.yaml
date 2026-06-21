@@ -1,0 +1,109 @@
+version: executable_scout_spec_v1
+spec_id: spec_wave0_us100_closedbar_surface_scout_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_closedbar_surface_cartography_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+surface_id: surface_us100_task_input_decision_rotation_v0
+sweep_id: sweep_wave0_broad_surface_scout_v0
+created_at_utc: "2026-06-21T15:30:58Z"
+status: first_batch_run_specs_ready_not_executed
+claim_boundary: executable_scout_spec_and_planned_run_specs_only_no_model_run_no_candidate_no_baseline
+
+data_identity:
+  dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  dataset_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
+  raw_csv_path: data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100/bars_us100_m5_mt5api_raw.csv
+  raw_csv_sha256: ab3308da907709beb5cf57895d5935069ee82d97bde7b4cf1aa00f885a0ea160
+  raw_row_count: 308002
+  row_key: us100_bar_close_time
+  row_key_status: row_membership_materialized_close_time_key_declared
+  availability: not_committed_tracked_by_hash
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  row_membership_csv:
+    path: data/processed/onnx_lab/us100_m5/dataset_raw_us100_m5_wave0_export_20260621T152827Z/row_membership_us100_m5_split_set_v0.csv
+    sha256: b458b765bab21f725ae7ae2368d953b7f35581b13b1debd3b35b2b33fef4938f
+    size_bytes: 93750583
+    availability: not_committed_tracked_by_hash
+
+recipe_refs:
+  feature_recipe_id: feature_wave0_us100_closedbar_price_session_regime_v0
+  feature_recipe_path: configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml
+  label_recipe_id: label_wave0_surface_grid_v0
+  label_recipe_path: configs/onnx_lab/label_recipes/label_wave0_surface_grid_v0.yaml
+  model_recipe_id: model_wave0_transparent_scout_v0
+  model_recipe_path: configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml
+  decision_recipe_id: decision_wave0_abstain_density_scout_v0
+  decision_recipe_path: configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml
+  eval_recipe_id: eval_wave0_surface_scout_v0
+  eval_recipe_path: configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml
+  surface_contract_id: surface_us100_task_input_decision_rotation_v0
+  surface_contract_path: configs/onnx_lab/surface_contracts/surface_us100_task_input_decision_rotation_v0.yaml
+
+first_batch_matrix:
+  path: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+  row_count: 12
+  selection_policy: "Cover at least three target families, price-only and multiscale inputs, abstain-capable and diagnostic decision uses, and simple transparent models before any local fine search."
+  not_claims:
+    - selected_baseline
+    - candidate
+    - model_superiority
+    - runtime_authority
+    - economics_pass
+first_batch_run_specs:
+  status: planned_not_executed
+  run_count: 12
+  manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+  anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
+  claim_boundary: planned_run_specs_only_no_model_run_no_candidate
+  registry_effect: sweep_local_run_refs_only_not_global_run_registry_until_execution
+
+execution_gate_before_first_run:
+  required_next_work_item: work_wave0_execute_first_batch_proxy_scout_v0
+  required_before_any_model_bearing_run:
+    - implement first_batch feature and label runner using row_membership manifest
+    - materialize exact feature and label columns per cell
+    - apply label horizon boundary drops per cell
+    - record anti_selection ledger before looking at results
+
+broad_axes:
+  target_label:
+    - future_return_rank_or_quantile
+    - atr_scaled_barrier_event
+    - path_quality_mfe_mae_payoff_suitability
+    - tradeability_or_no_trade_regime
+  input_feature:
+    - price_only_m5_returns_ranges_volatility
+    - multiscale_us100_m5_aggregates
+    - session_calendar_state
+    - causal_rolling_regime_context
+  decision:
+    - diagnostic_only_no_trade
+    - abstain_capable_long_short
+    - abstain_capable_direction_agnostic_tradeability
+    - coarse_density_bands_not_pf_max
+  model:
+    - linear_or_ridge_rank_scout
+    - logistic_classification_scout
+    - onnx_realistic_tree_or_boosted_scout
+
+selection_controls:
+  random_shuffle_allowed: false
+  scaler_imputer_selector_fit_scope: train_only
+  threshold_fit_scope: train_or_inner_validation_only
+  oos_a_use: research_oos_observation_and_repair_tracking_only
+  oos_b_locked_final_use: forbidden
+  fine_search_gate: repeated_clue_required_across_fold_neighbor_horizon_regime_or_related_surface
+  threshold_knife_edge_rule: "If neighboring threshold bands flip PF/DD/trade-density conclusion, keep as preserved_clue or negative_memory, not candidate."
+  anti_selection_ledger_required: true
+  failed_run_retention_required: true
+
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: "No ONNX/EA/runtime behavior, Strategy Tester output, economics, handoff, or live-like operation claim in this scout spec."
+  lowered_claim_if_not_run: no_runtime_claim
+
+closeout:
+  result_judgment: planning_scaffold
+  next_action: work_wave0_execute_first_batch_proxy_scout_v0

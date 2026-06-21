@@ -1,0 +1,106 @@
+version: dataset_identity_v1
+dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+created_at_utc: "2026-06-21T15:30:58Z"
+status: raw_export_row_membership_materialized_first_batch_specs_ready
+claim_boundary: dataset_identity_and_row_membership_preflight_only_not_feature_ready_not_model_ready_not_candidate
+
+source:
+  producer_command: "python foundation/collectors/export_mt5_m5_bars.py --symbol US100=US100 --output-root data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0 --start-utc 2022-02-09T00:00:00Z --end-utc 2026-06-18T23:55:00Z"
+  regeneration_command: "python foundation/collectors/export_mt5_m5_bars.py --symbol US100=US100 --output-root data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0 --start-utc 2022-02-09T00:00:00Z --end-utc 2026-06-18T23:55:00Z"
+  inventory_command: "python foundation/collectors/raw_m5_inventory.py --raw-root data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0 --output-dir lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory"
+  source_api: MetaTrader5.copy_rates_range
+  source_scope_policy: primary_us100_only_no_auxiliary_symbols
+
+raw_artifacts:
+  csv:
+    path: data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100/bars_us100_m5_mt5api_raw.csv
+    sha256: ab3308da907709beb5cf57895d5935069ee82d97bde7b4cf1aa00f885a0ea160
+    size_bytes: 44911007
+    availability: not_committed_tracked_by_hash
+  manifest:
+    path: data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100/bars_us100_m5_mt5api_raw.manifest.json
+    sha256: a04c62fcb7bad7a943a766a5c549bdb007dd3e550a9a1428170e9b5e5005dd4a
+    size_bytes: 1567
+    availability: not_committed_tracked_by_hash
+  summary:
+    path: data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/raw_export_summary.json
+    sha256: b8427983030f141afdd4fe22d99755e7c4391be54a61ebde3d82997a9cbfac5e
+    size_bytes: 1023
+    availability: not_committed_tracked_by_hash
+
+inventory:
+  summary_path: lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/raw_m5_inventory.json
+  report_path: lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/raw_m5_inventory.md
+  symbol_inventory_path: lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/symbol_inventory.csv
+  run_manifest_path: lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/run_manifest.json
+  status: complete
+  usable_symbol_count: 1
+  non_usable_symbols: []
+  symbols_with_manifest_mismatch: []
+  symbols_with_timing_issue: []
+
+symbol_scope:
+  primary_symbol: US100
+  broker_symbol: US100
+  timeframe: M5
+  price_basis: Bid
+  auxiliary_symbols: none
+
+row_identity:
+  raw_row_count: 308002
+  row_key_open: time_open_unix
+  row_key_close: time_close_unix
+  required_model_row_key: us100_bar_close_time
+  first_open_unix: 1644368400
+  last_open_unix: 1781826900
+  first_open_utc: "2022-02-09T01:00:00Z"
+  last_open_utc: "2026-06-18T23:55:00Z"
+  time_basis: MT5_PY_API_UNIX_SECONDS
+  timezone_status: UNRESOLVED_REQUIRES_MANUAL_BINDING
+  utc_semantics_claim: false
+  bar_close_derivation: time_close_unix_equals_time_open_unix_plus_300_seconds
+
+integrity_observations:
+  missing_columns: []
+  unexpected_columns: []
+  duplicate_open_count: 0
+  backwards_step_count: 0
+  open_alignment_error_count: 0
+  close_span_error_count: 0
+  non_m5_forward_step_count: 1137
+  largest_forward_gap_seconds: 349800
+  gap_interpretation: "Forward gaps may reflect sessions, weekends, holidays, early closes, or history holes; do not treat as feature-ready without row-membership/session audit."
+
+split_relation:
+  split_recipe_id: split_set_v0
+  split_recipe_path: configs/onnx_lab/split_recipes/split_set_v0.yaml
+  clean_universe: "2022.02.09 -> 2026.06.18"
+  source_audit_reference: data/audits/us100_m5_history_audit_20260619_195959/artifact_manifest.yaml
+  row_membership_status: materialized_with_explicit_time_binding_policy
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  row_membership_csv:
+    path: data/processed/onnx_lab/us100_m5/dataset_raw_us100_m5_wave0_export_20260621T152827Z/row_membership_us100_m5_split_set_v0.csv
+    sha256: b458b765bab21f725ae7ae2368d953b7f35581b13b1debd3b35b2b33fef4938f
+    size_bytes: 93750583
+    availability: not_committed_tracked_by_hash
+  row_membership_counts: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_counts.csv
+  label_horizon_boundary_counts: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/label_horizon_boundary_counts.csv
+  row_membership_next_work_item: work_wave0_execute_first_batch_proxy_scout_v0
+
+missing_evidence_before_first_model_run:
+  - feature_recipe_implementation_or_run_manifest_specific_feature_columns
+  - label_recipe_implementation_using_horizon_boundary_policy
+  - first_batch_runner_execution_receipts
+
+judgment:
+  data_source: MT5_exported_US100_M5_raw_bars
+  time_axis: usable_with_explicit_research_binding_not_utc_or_server_timezone_claim
+  sample_scope: raw_export_matches_requested_clean_universe_endpoints_with_start_at_2022_02_09_01_00_UTC
+  missing_or_duplicate_check: duplicate_open_count_zero_gap_events_require_session_interpretation
+  feature_label_boundary: row_membership_and_label_horizon_boundary_counts_materialized_feature_implementation_missing
+  split_boundary: split_set_v0_research_catalog_only_not_canonical_not_pass
+  leakage_risk: runner_must_drop_rows_whose_label_horizon_crosses_primary_split_role
+  data_hash_or_identity: b458b765bab21f725ae7ae2368d953b7f35581b13b1debd3b35b2b33fef4938f
+  integrity_judgment: usable_with_boundary

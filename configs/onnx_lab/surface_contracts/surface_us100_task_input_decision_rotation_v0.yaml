@@ -1,0 +1,42 @@
+version: surface_contract_v1
+surface_id: surface_us100_task_input_decision_rotation_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+status: scout_contract_skeleton
+created_at_utc: "2026-06-21T15:30:58Z"
+
+data_source_ref: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+data_source_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
+label_recipe_ref: configs/onnx_lab/label_recipes/label_wave0_surface_grid_v0.yaml
+feature_recipe_ref: configs/onnx_lab/feature_recipes/feature_wave0_us100_closedbar_price_session_regime_v0.yaml
+feature_recipe_mix_ref: null
+model_recipe_ref: configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml
+decision_recipe_ref: configs/onnx_lab/decision_recipes/decision_wave0_abstain_density_scout_v0.yaml
+split_recipe_ref: configs/onnx_lab/split_recipes/split_set_v0.yaml
+eval_recipe_ref: configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml
+
+task_surface: US100_M5_closedbar_task_label_input_decision_rotation
+decision_use: scout_tradeability_diagnostic_and_abstain_capable_surfaces
+runtime_eligible: false
+runtime_eligibility_reason: no_ONNX_EA_candidate_surface_yet
+
+data_integrity_boundary:
+  base_frame: US100_M5_closed_bar
+  row_key: us100_bar_close_time
+  time_binding_status: unresolved_requires_next_work
+  random_shuffle_allowed: false
+  future_fill_allowed: false
+  auxiliary_symbols_allowed: false
+  feature_boundary: closed_bar_right_aligned_only
+  label_boundary: future_horizon_drop_or_purge_embargo_required
+  split_boundary: split_set_v0_research_catalog_only
+
+claim_boundary: scout_contract_only_not_candidate_not_runtime
+forbidden_claims:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - reviewed_verified_pass
+  - goal_achieve
+

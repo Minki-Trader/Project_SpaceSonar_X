@@ -1,6 +1,8 @@
 version: experiment_receipt_v2
 run_id: onnxlab_YYYYMMDDTHHMMSSZ_short_slug
 id_chain:
+  wave_id: null
+  campaign_id: null
   idea_id: null
   hypothesis_id: null
   surface_id: null
@@ -91,6 +93,30 @@ runtime_learning_probe_decision:
   reason: ""
   forbidden_skip_reasons_checked: []
   lowered_claim_if_not_run: null
+proxy_runtime_parity:
+  required_for_proxy_model_bearing_run: true
+  shared_contract: []
+  proxy_assumptions: []
+  runtime_assumptions: []
+  known_differences: []
+  interpretation_drift_risks: []
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending
+    attempts: []
+  unit_semantics:
+    point: null
+    pip: null
+    tick_size: null
+    digits: null
+    price_distance: null
+    atr_multiplier: null
+    rounding_policy: null
+  comparison_class: pending
+  divergence_judgment: pending
+  prevention_memory: []
+  follow_up_action: pending
+  claim_boundary: proxy_runtime_parity_tracking_only
 result_judgment: not_evaluated
 missing_evidence: []
 claim_boundary: exploration_only

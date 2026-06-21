@@ -1,0 +1,428 @@
+version: axis_review_v1
+axis_review_id: axis_review_wave0_first_batch_v0
+work_item_id: work_wave0_first_batch_l4_follow_through_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: '2026-06-21T16:39:38Z'
+status: closed_next_axis_selected_for_design_only
+claim_boundary: first_batch_axis_review_l4_required_no_candidate_no_baseline_no_runtime_authority
+source_inputs:
+  run_refs: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/run_refs.csv
+  first_batch_closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave0_execute_first_batch_proxy_scout_v0_closeout.yaml
+  anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
+result_counts:
+  inconclusive: 8
+  preserved_clue: 4
+  negative: 0
+  invalid: 0
+candidate_count: 0
+selected_baseline_count: 0
+runtime_claim: false
+summary:
+  primary_preserved_axis: tradeability_mid_horizon_repair_v1
+  axis_decision: rotate_plus_mix_around_tradeability_h6_h12_preserved_clue
+  reason: tradeability/no-trade regime surfaces repeated across h3/h6/h12 and different input/model families;
+    011 and 012 carry action-like abstain tradeability evidence but remain train-validation proxy only
+  not_a_model_win: true
+  not_candidate: true
+preserved_clues:
+- clue_id: clue_wave0_tradeability_mid_horizon_v0
+  run_ids:
+  - onnxlab_wave0_cell_010_surface_scout_v0
+  - onnxlab_wave0_cell_011_surface_scout_v0
+  - onnxlab_wave0_cell_012_surface_scout_v0
+  memory_path: lab/memory/clues/clue_wave0_tradeability_mid_horizon_v0.yaml
+  claim_boundary: preserved_clue_no_candidate_no_baseline_no_runtime
+- clue_id: clue_wave0_path_quality_h12_side_signal_v0
+  run_ids:
+  - onnxlab_wave0_cell_008_surface_scout_v0
+  memory_path: lab/memory/clues/clue_wave0_path_quality_h12_side_signal_v0.yaml
+  claim_boundary: weak_preserved_clue_no_candidate_no_baseline_no_runtime
+run_review:
+- cell_id: wave0_cell_001
+  run_id: onnxlab_wave0_cell_001_surface_scout_v0
+  judgment: inconclusive
+  target_family: future_return_rank_or_quantile
+  horizon_bars: '1'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 13
+  validation_auc: null
+  validation_balanced_accuracy: null
+  validation_spearman: 0.0063182758103279175
+  trade_count: 0
+  trade_density: 0.0
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/artifact_lineage.json
+  reopen_condition: redefine_decision_use_or_pair_with_materially_different_runtime_available_input_surface
+  do_not_repeat_note: do_not_repeat_direct_return_surface_micro_tuning_without_new_label_or_decision_shape
+- cell_id: wave0_cell_002
+  run_id: onnxlab_wave0_cell_002_surface_scout_v0
+  judgment: inconclusive
+  target_family: future_return_rank_or_quantile
+  horizon_bars: '3'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: abstain_capable_long_short
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 13
+  validation_auc: 0.5073144791121075
+  validation_balanced_accuracy: 0.5033929319271944
+  validation_spearman: null
+  trade_count: 32507
+  trade_density: 0.6040509151723498
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/artifact_lineage.json
+  reopen_condition: redefine_decision_use_or_pair_with_materially_different_runtime_available_input_surface
+  do_not_repeat_note: do_not_repeat_direct_return_surface_micro_tuning_without_new_label_or_decision_shape
+- cell_id: wave0_cell_003
+  run_id: onnxlab_wave0_cell_003_surface_scout_v0
+  judgment: inconclusive
+  target_family: future_return_rank_or_quantile
+  horizon_bars: '12'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 43
+  validation_auc: null
+  validation_balanced_accuracy: null
+  validation_spearman: 0.005774521607253828
+  trade_count: 0
+  trade_density: 0.0
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifact_lineage.json
+  reopen_condition: redefine_decision_use_or_pair_with_materially_different_runtime_available_input_surface
+  do_not_repeat_note: do_not_repeat_direct_return_surface_micro_tuning_without_new_label_or_decision_shape
+- cell_id: wave0_cell_004
+  run_id: onnxlab_wave0_cell_004_surface_scout_v0
+  judgment: inconclusive
+  target_family: atr_scaled_barrier_event
+  horizon_bars: '3'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: abstain_capable_long_short
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 13
+  validation_auc: 0.5223663945646286
+  validation_balanced_accuracy: 0.5186832794898995
+  validation_spearman: null
+  trade_count: 25731
+  trade_density: 0.4781380655950943
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/artifact_lineage.json
+  reopen_condition: reopen_only_with_repaired_barrier_definition_cost_context_or_tradeability_gate
+  do_not_repeat_note: do_not_expand_atr_barrier_horizons_without_new_boundary_repair
+- cell_id: wave0_cell_005
+  run_id: onnxlab_wave0_cell_005_surface_scout_v0
+  judgment: inconclusive
+  target_family: atr_scaled_barrier_event
+  horizon_bars: '6'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: abstain_capable_long_short
+  model_family: onnx_realistic_tree_or_boosted_scout
+  task_kind: classification
+  feature_count: 43
+  validation_auc: 0.5084047382617967
+  validation_balanced_accuracy: 0.5069750929500358
+  validation_spearman: null
+  trade_count: 22022
+  trade_density: 0.4092395748160262
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/artifact_lineage.json
+  reopen_condition: reopen_only_with_repaired_barrier_definition_cost_context_or_tradeability_gate
+  do_not_repeat_note: do_not_expand_atr_barrier_horizons_without_new_boundary_repair
+- cell_id: wave0_cell_006
+  run_id: onnxlab_wave0_cell_006_surface_scout_v0
+  judgment: inconclusive
+  target_family: atr_scaled_barrier_event
+  horizon_bars: '24'
+  input_family: causal_rolling_regime_context
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 66
+  validation_auc: null
+  validation_balanced_accuracy: null
+  validation_spearman: 0.027282373116783797
+  trade_count: 0
+  trade_density: 0.0
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifact_lineage.json
+  reopen_condition: reopen_only_with_repaired_barrier_definition_cost_context_or_tradeability_gate
+  do_not_repeat_note: do_not_expand_atr_barrier_horizons_without_new_boundary_repair
+- cell_id: wave0_cell_007
+  run_id: onnxlab_wave0_cell_007_surface_scout_v0
+  judgment: inconclusive
+  target_family: path_quality_mfe_mae_payoff_suitability
+  horizon_bars: '6'
+  input_family: price_only_m5_returns_ranges_volatility
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 13
+  validation_auc: null
+  validation_balanced_accuracy: null
+  validation_spearman: 0.004387961213939819
+  trade_count: 8351
+  trade_density: 0.1551884338065859
+  hit_rate: 0.5583762423661837
+  metrics_path: lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/artifact_lineage.json
+  reopen_condition: reopen_as_side_control_or_label_shape_after_positive_class_and_threshold_mapping_repair
+  do_not_repeat_note: do_not_promote_path_quality_h12_from_single_weak_auc_and_hit_rate_mismatch
+- cell_id: wave0_cell_008
+  run_id: onnxlab_wave0_cell_008_surface_scout_v0
+  judgment: preserved_clue
+  target_family: path_quality_mfe_mae_payoff_suitability
+  horizon_bars: '12'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 43
+  validation_auc: 0.5518168297264012
+  validation_balanced_accuracy: 0.5390101437705497
+  validation_spearman: null
+  trade_count: 12756
+  trade_density: 0.23707393227521095
+  hit_rate: 0.4497491376607087
+  metrics_path: lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifact_lineage.json
+  reopen_condition: continue_to_L4_split_runtime_probe_then_L5_if_promising
+  do_not_repeat_note: do_not_treat_as_candidate_or_baseline_from_train_validation_proxy
+- cell_id: wave0_cell_009
+  run_id: onnxlab_wave0_cell_009_surface_scout_v0
+  judgment: inconclusive
+  target_family: path_quality_mfe_mae_payoff_suitability
+  horizon_bars: '24'
+  input_family: causal_rolling_regime_context
+  decision_family: diagnostic_rank_only
+  model_family: linear_or_ridge_rank_scout
+  task_kind: regression
+  feature_count: 66
+  validation_auc: null
+  validation_balanced_accuracy: null
+  validation_spearman: 0.03771084215166334
+  trade_count: 0
+  trade_density: 0.0
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifact_lineage.json
+  reopen_condition: reopen_as_side_control_or_label_shape_after_positive_class_and_threshold_mapping_repair
+  do_not_repeat_note: do_not_promote_path_quality_h12_from_single_weak_auc_and_hit_rate_mismatch
+- cell_id: wave0_cell_010
+  run_id: onnxlab_wave0_cell_010_surface_scout_v0
+  judgment: preserved_clue
+  target_family: tradeability_or_no_trade_regime
+  horizon_bars: '3'
+  input_family: session_calendar_state
+  decision_family: diagnostic_rank_only
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 9
+  validation_auc: 0.6314208428882874
+  validation_balanced_accuracy: 0.592623616284652
+  validation_spearman: null
+  trade_count: 0
+  trade_density: 0.0
+  hit_rate: null
+  metrics_path: lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/artifact_lineage.json
+  reopen_condition: continue_to_L4_split_runtime_probe_then_L5_if_promising
+  do_not_repeat_note: do_not_treat_as_candidate_or_baseline_from_train_validation_proxy
+- cell_id: wave0_cell_011
+  run_id: onnxlab_wave0_cell_011_surface_scout_v0
+  judgment: preserved_clue
+  target_family: tradeability_or_no_trade_regime
+  horizon_bars: '6'
+  input_family: causal_rolling_regime_context
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: logistic_classification_scout
+  task_kind: classification
+  feature_count: 66
+  validation_auc: 0.67317014834624
+  validation_balanced_accuracy: 0.6176161752862872
+  validation_spearman: null
+  trade_count: 13487
+  trade_density: 0.25063182933174755
+  hit_rate: 0.5936086601912953
+  metrics_path: lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/artifact_lineage.json
+  reopen_condition: continue_to_L4_split_runtime_probe_then_L5_if_promising
+  do_not_repeat_note: do_not_treat_as_candidate_or_baseline_from_train_validation_proxy
+- cell_id: wave0_cell_012
+  run_id: onnxlab_wave0_cell_012_surface_scout_v0
+  judgment: preserved_clue
+  target_family: tradeability_or_no_trade_regime
+  horizon_bars: '12'
+  input_family: multiscale_us100_m5_aggregates
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  model_family: onnx_realistic_tree_or_boosted_scout
+  task_kind: classification
+  feature_count: 43
+  validation_auc: 0.6695074734441506
+  validation_balanced_accuracy: 0.6171400670015499
+  validation_spearman: null
+  trade_count: 11748
+  trade_density: 0.21833996208601272
+  hit_rate: 0.6060606060606061
+  metrics_path: lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/metrics.json
+  run_manifest_path: lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifact_lineage.json
+  reopen_condition: continue_to_L4_split_runtime_probe_then_L5_if_promising
+  do_not_repeat_note: do_not_treat_as_candidate_or_baseline_from_train_validation_proxy
+inconclusive_groups:
+- group_id: future_return_direct_surfaces_v0
+  run_ids:
+  - onnxlab_wave0_cell_001_surface_scout_v0
+  - onnxlab_wave0_cell_002_surface_scout_v0
+  - onnxlab_wave0_cell_003_surface_scout_v0
+  judgment: inconclusive_memory_not_negative_closure
+  salvage_value: direct return target surfaces can reopen after materially different decision use
+  reopen_condition: new label or decision use that is not direct rank/direction micro-tuning
+- group_id: atr_barrier_direct_surfaces_v0
+  run_ids:
+  - onnxlab_wave0_cell_004_surface_scout_v0
+  - onnxlab_wave0_cell_005_surface_scout_v0
+  - onnxlab_wave0_cell_006_surface_scout_v0
+  judgment: inconclusive_memory_not_negative_closure
+  salvage_value: barrier/event ideas can reopen as downstream risk or exit surfaces
+  reopen_condition: new barrier semantics, cost context, or tradeability-gated decision shape
+- group_id: linear_regression_rank_path_surfaces_v0
+  run_ids:
+  - onnxlab_wave0_cell_001_surface_scout_v0
+  - onnxlab_wave0_cell_003_surface_scout_v0
+  - onnxlab_wave0_cell_006_surface_scout_v0
+  - onnxlab_wave0_cell_007_surface_scout_v0
+  - onnxlab_wave0_cell_009_surface_scout_v0
+  judgment: inconclusive_memory_not_negative_closure
+  salvage_value: linear/rank controls remain useful as controls for future scouts
+  reopen_condition: new target surface or use as explicit control in WFO or neighbor sweep
+agent_consultation:
+  selected_agents:
+  - agent_05_data_feature_contract
+  - agent_06_quant_research
+  - agent_07_model_validation_risk
+  - agent_04_evidence_control_plane
+  why_not_smaller: axis rotation after preserved clues is material and opens a new bounded design item
+  why_not_larger: no protected claim, runtime authority, candidate closeout, or policy change
+  claim_effect: advisory_only_no_reviewed_pass
+  dispositions:
+  - agent: agent_05_data_feature_contract
+    role_mode: data_feature_contract_adversarial_check
+    opinion_classification: accepted_with_boundary
+    accepted_points:
+    - preserve tradeability h6/h12 as strongest repeated clue
+    - treat session_calendar h3 as diagnostic/control until repaired
+    - require effective event count and split-boundary purge in next spec
+    unresolved_material_objections: []
+  - agent: agent_06_quant_research
+    role_mode: quant_research_design
+    opinion_classification: accepted
+    accepted_points:
+    - next axis should rotate plus mix, not select or promote
+    - second batch should be tradeability-centered multi-axis surface rotation
+    - weak direct return and ATR surfaces are memory with reopen conditions, not permanent rejection
+    unresolved_material_objections: []
+  - agent: agent_07_model_validation_risk
+    role_mode: model_validation_risk_check
+    opinion_classification: accepted
+    accepted_points:
+    - 011 h6 causal_regime logistic is lower-complexity anchor
+    - 012 h12 multiscale boosted is paired challenger
+    - predeclare threshold bands and adjacent-threshold sensitivity before next evaluation
+    unresolved_material_objections: []
+  - agent: agent_04_evidence_control_plane
+    role_mode: evidence_closeout_check
+    opinion_classification: accepted
+    accepted_points:
+    - write one sweep-level axis review source record
+    - write clue memory records but no candidate records
+    - reconcile stale registry statuses and write exactly one next_work_item
+    unresolved_material_objections: []
+data_integrity:
+  data_source: dataset_raw_us100_m5_wave0_export_20260621T152827Z via row_membership_manifest
+  time_axis: us100_bar_close_time research binding; no UTC/server timezone authority claim
+  sample_scope: train_validation_only; research_oos_a and locked_final_oos_b withheld
+  feature_label_boundary: features causal at or before closed bar; labels use future path only inside
+    declared target
+  split_boundary: split_set_v0 primary split train/validation only for this axis review
+  integrity_judgment: usable_with_boundary_for_axis_design_only
+  next_repair_requirements:
+  - effective_event_count_and_trade_count_definition
+  - class_balance_and_base_rate_per_window
+  - train_only_transform_threshold_and_calibration_scope
+  - session_calendar_control_repair_before_trusting_calendar_signal
+  - horizon_overlap_cooldown_or_holding_assumption_if_trade_count_reported
+model_validation:
+  validation_judgment: exploratory_preserved_clue
+  selection_metric: validation_auc_or_rank_metric_for_scout_only
+  secondary_metrics_needed_next:
+  - PR_AUC_or_average_precision
+  - Brier_or_log_loss_if_probability_language_is_used
+  - base_rate_and_lift
+  - trade_count_per_active_day
+  - threshold_adjacent_band_sensitivity
+  - fold_level_dispersion
+  threshold_policy_next: predeclared_fixed_density_bands_train_only_no_validation_search
+  overfit_risk: top_N_selection_from_12_train_validation_proxy_cells
+  calibration_risk: scores_are_rank_or_decision_scores_not_probabilities
+runtime_learning_probe_decision:
+  required: false
+  decision: not_applicable_no_runtime_question
+  reason: Axis review and second-batch spec design make no ONNX/EA/Strategy Tester/economics/runtime claim.
+  lowered_claim_if_not_run: no_runtime_claim
+missing_evidence:
+- WFO_or_fold_level_stability_not_yet_run
+- OOS_A_not_used_for_this_axis_review
+- OOS_B_locked_final_not_used
+- ONNX_export_not_in_scope
+- MT5_runtime_probe_not_in_scope
+- candidate_selection_not_allowed
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_work_item_id: work_wave0_first_batch_l4_follow_through_v0
+next_work_item_path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+next_action: work_wave0_first_batch_l4_follow_through_v0
+proxy_to_runtime_policy:
+  every_valid_proxy_run_requires_l4: true
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

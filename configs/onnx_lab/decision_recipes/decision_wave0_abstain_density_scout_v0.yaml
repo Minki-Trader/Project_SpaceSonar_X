@@ -1,0 +1,40 @@
+version: decision_recipe_v1
+decision_recipe_id: decision_wave0_abstain_density_scout_v0
+status: scout_recipe_skeleton
+created_at_utc: "2026-06-21T15:30:58Z"
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+
+model_output_ref: configs/onnx_lab/model_recipes/model_wave0_transparent_scout_v0.yaml
+decision_families:
+  diagnostic_rank_only:
+    output_mapping: no_trade_diagnostic_surface
+    direction_policy: not_applicable
+    holding_or_exit_policy: not_applicable
+    claim_effect: cannot_claim_trading_kpi_or_candidate
+  abstain_capable_long_short:
+    output_mapping: score_to_long_short_flat
+    direction_policy: explicit_per_cell_no_legacy_mapping
+    holding_or_exit_policy: horizon_or_exit_rule_declared_per_label_surface
+    claim_effect: scout_decision_surface_only
+  abstain_capable_direction_agnostic_tradeability:
+    output_mapping: score_to_trade_or_no_trade_then_direction_policy_if_defined
+    direction_policy: not_defined_until_cell_declares_direction_or_external_rule
+    holding_or_exit_policy: explicit_per_cell
+    claim_effect: tradeability_scout_only
+
+threshold_policy:
+  default: coarse_density_bands_train_only
+  optimization_target: trade_density_and_stability_not_pf_max
+  threshold_search_scope: train_or_inner_validation_only
+  oos_threshold_tuning_allowed: false
+  locked_final_threshold_tuning_allowed: false
+  knife_edge_rejection_rule: neighboring_threshold_bands_must_not_flip_surface_conclusion
+direction_policy: explicit_per_cell_no_default_long_short_mapping
+holding_or_exit_policy: explicit_per_label_surface_no_fixed_legacy_holding
+cost_policy_ref: configs/onnx_lab/eval_recipes/eval_wave0_surface_scout_v0.yaml
+versioning_rule: version_separately_from_model_recipe
+runtime_representable: unknown_until_candidate_surface
+runtime_learning_probe_decision_default: required_when_decision_is_runtime_facing
+claim_boundary: recipe_skeleton_only_no_runtime_or_economics_claim
+

@@ -1,0 +1,202 @@
+version: active_goal_manifest_v1
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: active_long_running
+created_at_utc: '2026-06-21T15:18:51Z'
+updated_at_utc: '2026-06-21T17:10:54Z'
+claim_boundary: planning_scaffold_active_goal_control_plane
+objective_identity:
+  source_type: codex_goal_objective_attachment
+  content_hash_sha256: 06C9F62796413E14A7240EE29B98BA7FC6E47BBC876A886BC3FD2D31898A668F
+  source_path_local_context_only: C:/Users/awdse/.codex/attachments/f642ff4e-e28a-4379-9942-86e3e87eed69/goal-objective.md
+  summary: Develop a blank-slate FPMarkets US100 M5 ONNX research candidate until only explicit forward/demo/live-chart
+    market observation remains.
+branch_worktree:
+  policy_reference: docs/policies/branch_policy.md
+  branch_worktree_fit: mismatch_resolved
+  branch_action: create_codex_branch
+  current_branch: codex/active-goal-program-bootstrap
+  bootstrap_base_commit: e6053875b8106a665cff347dac01918f1f3a28c6
+  mismatch_claim_effect: Goal bootstrap is a planning/control-plane change only; no reproducible run,
+    bundle, runtime, pass, readiness, or Goal Achieve claim.
+routing:
+  primary_family: policy_skill_governance
+  primary_skill: spacesonar-work-item-router
+  support_skills:
+  - spacesonar-workspace-state-sync
+  - spacesonar-experiment-design
+  - spacesonar-exploration-mandate
+  - spacesonar-data-integrity
+  - spacesonar-model-validation
+  - spacesonar-run-evidence-system
+  - spacesonar-claim-discipline
+  required_gates:
+  - branch_worktree_fit
+  - task_force_initial_consultation
+  - terminal_eligibility_contract_created
+  - active_goal_manifest_created
+  - resume_cursor_created
+  - next_work_item_created
+  - registry_rows_created
+  - final_claim_guard
+storage_contract:
+  source_of_truth: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+  terminal_eligibility_contract: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
+  resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+  next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  consultation_record: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial.yaml
+  registry_rows:
+  - docs/registers/goal_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+  absolute_paths_policy: local_context_only
+active_phase: wave0_first_batch_l4_follow_through_next
+active_ids:
+  idea_id: idea_us100_m5_blank_slate_surface_map_v0
+  hypothesis_id: hyp_surface_diversity_before_model_search_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_id: campaign_us100_task_surface_scout_v0
+  surface_id: surface_us100_task_input_decision_rotation_v0
+  sweep_id: sweep_wave0_broad_surface_scout_v0
+blank_slate_contract:
+  inherited_feature_set_allowed: false
+  inherited_feature_count_allowed: false
+  inherited_historical_58_feature_surface_allowed: false
+  inherited_label_allowed: false
+  inherited_prediction_target_allowed: false
+  inherited_direction_mapping_allowed: false
+  inherited_holding_period_allowed: false
+  inherited_model_io_allowed: false
+  inherited_output_head_allowed: false
+  inherited_threshold_or_calibration_allowed: false
+  inherited_risk_logic_allowed: false
+  inherited_winner_or_promotion_allowed: false
+base_data_contract:
+  primary_broker: FPMarkets
+  primary_symbol: US100
+  timeframe: M5
+  base_frame: US100_M5_closed_bar
+  row_key: us100_bar_close_time
+  timestamp_source: MT5_server_datetime
+  utc_conversion_status: not_claimed
+  bar_open_to_close_derivation: explicit_required_per_dataset
+  partial_bar_allowed: false
+  source_references:
+  - docs/contracts/onnx_lab_contract.yaml
+  - configs/onnx_lab/split_recipes/split_set_v0.yaml
+project_valid_inputs:
+  primary: FPMarkets_US100_M5_closed_bars
+  auxiliary_symbols_default: disallowed_until_live_chart_verified
+  auxiliary_requirements:
+  - exact_broker_symbol
+  - live_chart_or_current_tick_bar_evidence
+  - timestamp_semantics
+  - merge_policy
+  - missing_data_policy
+  - feature_order
+  - runtime_input_contract
+  - mt5_runtime_evidence_when_runtime_used
+  forbidden_sources:
+  - stale_feeds
+  - delayed_feeds
+  - offline_feeds
+  - non_updating_symbols
+  - unavailable_symbols
+  - proxy_substituted_symbols
+  - external_stale_symbol_sources
+split_runtime_references:
+  split_recipe_id: split_set_v0
+  split_recipe_path: configs/onnx_lab/split_recipes/split_set_v0.yaml
+  primary_split_id: split_base_anchor_v0
+  wfo_split_id: split_block_wfo_v0
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_profile_path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  default_runtime_period_set_id: split_base_anchor_v0_research_l4
+  locked_final_period_set_id: split_base_anchor_v0_locked_final
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  tester_execution_profile_path: configs/mt5/tester_execution_profile_v0.yaml
+  locked_final_rule: explicit_unlock_required_after_candidate_freeze_only
+terminal_eligibility:
+  contract_id: terminal_eligibility_contract_us100_forward_boundary_v0
+  source_of_truth: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
+  status: preflight_contract_created_not_satisfied
+  claim_boundary: terminal_eligibility_contract_only_no_runtime_authority_no_economics_pass
+north_star_reference:
+  source: docs/workspace/lab_profile.yaml
+  role: terminal_candidate_qualification_target_not_early_exploration_gate
+  target:
+    average_trades_per_active_day_min: 5
+    profit_factor_min: 1.5
+    profit_factor_preferred_range:
+    - 1.5
+    - 3.0
+    drawdown_pct_max_across_major_windows: 10
+    concentration_risk_rule: avoid_short_period_profit_concentration
+program_budgets:
+  goal_budget: unbounded_until_terminal_or_non_complete_stop
+  initial_wave:
+    max_runs: 48
+    initial_batch_size: 12
+    max_repairs_per_surface: 1
+    max_total_repairs_fraction: 0.15
+    formal_mt5_strategy_tester_runs: mandatory_for_all_valid_proxy_runs_at_L4
+    runtime_probe_budget: all_valid_proxy_or_model_bearing_runs_must_reach_L4_split_runtime_probe_after_materialization
+    locked_final_oos_use: forbidden_by_default
+    proxy_to_runtime_policy:
+      every_valid_proxy_run_requires_l4: true
+      proxy_only_closeout_allowed: false
+      no_actionable_runtime_surface_effect: repair_or_invalidate_before_proxy_evidence
+      l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+  current_wave0_spec:
+    dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+    executable_spec: lab/campaigns/campaign_us100_task_surface_scout_v0/wave0_executable_scout_spec.yaml
+    first_batch_matrix: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_matrix.csv
+    raw_inventory: lab/campaigns/campaign_us100_task_surface_scout_v0/data_inventory/raw_m5_inventory.json
+    row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+    first_batch_run_specs_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
+    anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
+    status: l4_follow_through_required_next
+    result_counts:
+      inconclusive: 8
+      preserved_clue: 4
+    axis_review: lab/campaigns/campaign_us100_task_surface_scout_v0/sweeps/sweep_wave0_broad_surface_scout_v0/axis_review_wave0_first_batch_v0.yaml
+    preserved_clue_ids:
+    - clue_wave0_tradeability_mid_horizon_v0
+    - clue_wave0_path_quality_h12_side_signal_v0
+    proxy_to_runtime_policy: all_valid_proxy_runs_require_L4_split_runtime_probe
+terminal_state:
+  complete_state: terminal_research_candidate_forward_market_validation_required
+  requires:
+  - immutable_terminal_candidate_id
+  - linked_bundle_id
+  - terminal_eligibility_contract_satisfied
+  - all_candidate_triggered_project_valid_offline_historical_parity_bundle_ea_mt5_tester_gates_completed
+  - no_required_gate_deferred_or_waived_because_forward_validation_remains
+  - no_repair_required_python_onnx_ea_mt5_mismatch
+  - no_unresolved_material_task_force_objection
+  - missing_evidence_limited_to_forward_demo_live_chart_market_observation
+  - forward_validation_observation_plan_and_logging_schema_prepared
+  - no_capital_execution_deployment_or_activation_authority
+non_complete_stop_states:
+- stopped_no_viable_candidate
+- blocked_missing_local_evidence
+- blocked_required_environment
+- invalid_setup
+- budget_exhausted_no_terminal_candidate
+- safety_stop
+- user_stop
+forbidden_claims:
+- guaranteed_live_profitability
+- expected_live_profitability
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- business_or_project_goal_achieve
+next_work_item:
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  work_item_id: work_wave0_first_batch_l4_follow_through_v0
+  summary: Drive every valid Wave0 first-batch proxy/model-bearing run to L4 MT5 split-runtime evidence.

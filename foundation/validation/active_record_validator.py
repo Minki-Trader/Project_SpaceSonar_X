@@ -261,6 +261,115 @@ def validate_workspace_active_ids(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_wave_campaign_graph(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    wave_registry_path = repo_root / "docs" / "registers" / "wave_registry.csv"
+    if not wave_registry_path.exists():
+        return ["wave/campaign graph: missing docs/registers/wave_registry.csv"]
+    artifact_registry_paths = {
+        row.get("path_or_uri", "")
+        for row in read_csv_rows(repo_root / "docs" / "registers" / "artifact_registry.csv")
+        if row.get("path_or_uri")
+    }
+    for row in read_csv_rows(wave_registry_path):
+        wave_id = row.get("wave_id", "")
+        wave_path_text = row.get("wave_path", "")
+        if not wave_id or not wave_path_text:
+            continue
+        wave_path = repo_root / wave_path_text
+        if not wave_path.exists():
+            errors.append(f"wave_registry.csv {wave_id}: missing {wave_path_text}")
+            continue
+        wave = load_yaml(wave_path)
+        if wave.get("wave_id") != wave_id:
+            errors.append(f"wave_registry.csv {wave_id}: wave_allocation wave_id mismatch")
+        storage = wave.get("storage_contract") or {}
+        campaign_refs_text = storage.get("campaign_refs")
+        if not campaign_refs_text:
+            errors.append(f"{rel(wave_path, repo_root)}: missing storage_contract.campaign_refs")
+            continue
+        campaign_refs_path = repo_root / str(campaign_refs_text)
+        if not campaign_refs_path.exists():
+            errors.append(f"{rel(wave_path, repo_root)}: missing campaign_refs {campaign_refs_text}")
+            continue
+        if str(campaign_refs_text) not in artifact_registry_paths:
+            errors.append(f"{rel(campaign_refs_path, repo_root)}: missing artifact_registry row")
+        ref_rows = read_csv_rows(campaign_refs_path)
+        refs_by_campaign = {ref_row.get("campaign_id", ""): ref_row for ref_row in ref_rows}
+        for allocation in wave.get("campaign_allocations") or []:
+            campaign_id = allocation.get("campaign_id")
+            if not campaign_id:
+                errors.append(f"{rel(wave_path, repo_root)}: campaign allocation missing campaign_id")
+                continue
+            ref_row = refs_by_campaign.get(campaign_id)
+            if not ref_row:
+                errors.append(f"{rel(campaign_refs_path, repo_root)}: missing campaign ref for {campaign_id}")
+                continue
+            campaign_path_text = ref_row.get("campaign_path", "")
+            campaign_path = repo_root / campaign_path_text
+            if not campaign_path.exists():
+                errors.append(f"{rel(campaign_refs_path, repo_root)} {campaign_id}: missing {campaign_path_text}")
+                continue
+            campaign = load_yaml(campaign_path)
+            if campaign.get("campaign_id") != campaign_id:
+                errors.append(f"{rel(campaign_path, repo_root)}: campaign_id mismatch for {campaign_id}")
+            if wave_id not in set(campaign.get("wave_ids") or []):
+                errors.append(f"{rel(campaign_path, repo_root)}: wave_ids missing {wave_id}")
+            campaign_storage = campaign.get("storage_contract") or {}
+            linked_refs = set(campaign_storage.get("wave_campaign_refs") or [])
+            if str(campaign_refs_text) not in linked_refs:
+                errors.append(f"{rel(campaign_path, repo_root)}: storage_contract.wave_campaign_refs missing {campaign_refs_text}")
+    return errors
+
+
+def validate_run_campaign_chain(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    sweep_registry_path = repo_root / "docs" / "registers" / "sweep_registry.csv"
+    run_registry_path = repo_root / "docs" / "registers" / "run_registry.csv"
+    if not sweep_registry_path.exists() or not run_registry_path.exists():
+        return errors
+    sweeps = {row.get("sweep_id", ""): row for row in read_csv_rows(sweep_registry_path)}
+    campaigns: dict[str, dict[str, Any]] = {}
+    for row in read_csv_rows(repo_root / "docs" / "registers" / "campaign_registry.csv"):
+        campaign_id = row.get("campaign_id", "")
+        campaign_path = repo_root / row.get("campaign_path", "")
+        if campaign_id and campaign_path.exists():
+            campaigns[campaign_id] = load_yaml(campaign_path)
+    for row in read_csv_rows(run_registry_path):
+        sweep_id = row.get("sweep_id", "")
+        if not sweep_id or sweep_id.startswith("sweep_not_applicable"):
+            continue
+        sweep = sweeps.get(sweep_id)
+        if not sweep:
+            errors.append(f"run_registry.csv {row.get('run_id')}: unknown sweep_id {sweep_id}")
+            continue
+        campaign_id = sweep.get("campaign_id", "")
+        campaign = campaigns.get(campaign_id)
+        manifest_path = repo_root / row.get("manifest_path", "")
+        receipt_path = repo_root / row.get("receipt_path", "")
+        if not manifest_path.exists() or not receipt_path.exists():
+            continue
+        manifest = load_json(manifest_path)
+        receipt = load_yaml(receipt_path)
+        for label, payload in [("manifest", manifest), ("receipt", receipt)]:
+            id_chain = payload.get("id_chain") or {}
+            if id_chain.get("campaign_id") != campaign_id:
+                errors.append(
+                    f"run_registry.csv {row.get('run_id')}: {label} id_chain.campaign_id "
+                    f"expected={campaign_id} observed={id_chain.get('campaign_id')}"
+                )
+            wave_id = id_chain.get("wave_id")
+            campaign_wave_ids = set((campaign or {}).get("wave_ids") or [])
+            if not wave_id:
+                errors.append(f"run_registry.csv {row.get('run_id')}: {label} id_chain.wave_id missing")
+            elif campaign_wave_ids and wave_id not in campaign_wave_ids:
+                errors.append(
+                    f"run_registry.csv {row.get('run_id')}: {label} id_chain.wave_id "
+                    f"{wave_id} not in campaign.wave_ids {sorted(campaign_wave_ids)}"
+                )
+    return errors
+
+
 def validate_active_manifests(repo_root: Path) -> list[str]:
     paths = [
         *sorted((repo_root / "lab" / "runs").glob("*/run_manifest.json")),
@@ -455,6 +564,8 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
 def validate(repo_root: Path) -> list[str]:
     errors: list[str] = []
     errors.extend(validate_workspace_active_ids(repo_root))
+    errors.extend(validate_wave_campaign_graph(repo_root))
+    errors.extend(validate_run_campaign_chain(repo_root))
     errors.extend(validate_run_registry(repo_root))
     errors.extend(validate_artifact_registry(repo_root))
     errors.extend(validate_active_manifests(repo_root))

@@ -1,0 +1,149 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave0_cell_006_surface_scout_v0",
+  "status": "executed_proxy_scout",
+  "task_surface_id": "surface_us100_task_input_decision_rotation_v0",
+  "planned_cell": {
+    "cell_id": "wave0_cell_006",
+    "target_family": "atr_scaled_barrier_event",
+    "horizon_bars": "24",
+    "input_family": "causal_rolling_regime_context",
+    "decision_family": "diagnostic_rank_only",
+    "model_family": "linear_or_ridge_rank_scout",
+    "threshold_policy": "none_diagnostic",
+    "split_use": "train_validation_only",
+    "claim_boundary": "scout_surface_only",
+    "notes": "longer horizon barrier diagnostic"
+  },
+  "sample_counts": {
+    "raw_rows": 308002,
+    "train_label_eligible_rows": 143750,
+    "validation_label_eligible_rows": 53794,
+    "research_oos_a_withheld_rows": 45533,
+    "locked_final_oos_b_withheld_rows": 38611
+  },
+  "task_surface_metrics": {
+    "target_name": "target_continuous",
+    "task_kind": "regression",
+    "target_threshold": null,
+    "feature_count": 66
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 143750,
+      "score_mean": -0.0886469319871961,
+      "score_std": 0.3245068915817724,
+      "mae": 3.529813220967432,
+      "rmse": 5.0892686969437655,
+      "pearson_corr": 0.06385201291647194,
+      "spearman_corr": 0.04784462405537924,
+      "target_mean": -0.08864693198719609,
+      "target_std": 5.0996928206969345
+    },
+    "validation": {
+      "row_count": 53794,
+      "score_mean": -0.11942096530110283,
+      "score_std": 0.2942428753493025,
+      "mae": 3.5293645710842583,
+      "rmse": 5.30940376209506,
+      "pearson_corr": 0.03250284463057024,
+      "spearman_corr": 0.027282373116783797,
+      "target_mean": -0.33365747318575123,
+      "target_std": 5.306535142993684
+    }
+  },
+  "trading_proxy_metrics": {
+    "decision_family": "diagnostic_rank_only",
+    "threshold_policy": "none_diagnostic",
+    "threshold_fit_scope": "not_applicable",
+    "trade_count": 0,
+    "trade_density": 0.0,
+    "proxy_boundary": "diagnostic_only_no_trade_proxy"
+  },
+  "runtime_metrics": {},
+  "north_star_context": {
+    "role": "final_objective_not_exploration_gate",
+    "average_trades_per_active_day_min": 5,
+    "profit_factor_preferred_range": [
+      1.5,
+      3.0
+    ],
+    "major_window_drawdown_pct_max": 10
+  },
+  "measurement_scope": "first_batch_proxy_scout_train_validation_only_no_oos_b_l4_required_no_runtime_authority",
+  "judgment_label": "inconclusive",
+  "result_judgment": "inconclusive",
+  "judgment_reasons": [
+    "valid_proxy_run_no_repeated_or_strong_surface_clue_yet"
+  ],
+  "claim_boundary": "first_batch_proxy_scout_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "wfo_not_run_in_first_batch_proxy_scout",
+    "onnx_export_not_applicable_for_proxy_scout",
+    "candidate_selection_not_allowed_from_first_batch",
+    "L4_split_runtime_probe_required_pending_for_all_valid_proxy_runs"
+  ],
+  "runtime_learning_probe_decision": {
+    "required": true,
+    "decision": "run_required",
+    "reason": "User clarification: every valid proxy/model-bearing run must reach L4_split_runtime_probe.",
+    "lowered_claim_if_not_run": "invalid_proxy_only_closeout_no_l4_runtime_evidence"
+  },
+  "proxy_runtime_parity": {
+    "required_for_proxy_model_bearing_run": true,
+    "status": "pending_L4_follow_through",
+    "shared_contract": [
+      "US100_M5_closed_bar_base_frame",
+      "us100_bar_close_time_row_key",
+      "split_set_v0_research_catalog",
+      "declared_task_surface_per_run",
+      "tester_execution_profile_us100_m5_fpmarkets_tester_execution_v0"
+    ],
+    "proxy_assumptions": [
+      "train_validation_proxy_observation",
+      "no_MT5_fill_spread_swap_slippage_or_execution_timing"
+    ],
+    "runtime_assumptions": [
+      "split_base_anchor_v0_research_l4",
+      "us100_m5_fpmarkets_tester_execution_v0",
+      "MT5_Strategy_Tester_report_required"
+    ],
+    "known_differences": [
+      "proxy_metrics_are_not_tester_reports",
+      "proxy_decision_semantics_may_translate_differently_in_EA_MT5"
+    ],
+    "interpretation_drift_risks": [
+      "bar_close_timing",
+      "decision_threshold_translation",
+      "no_trade_or_abstain_semantics",
+      "lot_rounding_and_position_sizing",
+      "spread_and_cost_model",
+      "tester_execution_model"
+    ],
+    "minimum_reconciliation_attempt": {
+      "required": true,
+      "status": "pending_L4",
+      "forced_equality_required": false,
+      "attempts": [],
+      "note": "Attempt repair, conversion, or interpretation check at least once; preserve true MT5 differences instead of forcing equality."
+    },
+    "unit_semantics": {
+      "point": "pending_L4",
+      "pip": "pending_L4",
+      "tick_size": "pending_L4",
+      "digits": "pending_L4",
+      "price_distance": "pending_L4",
+      "atr_multiplier": "pending_when_ATR_stop_logic_exists",
+      "lot_step": "pending_L4",
+      "rounding_policy": "pending_L4"
+    },
+    "comparison_class": "pending_L4",
+    "divergence_judgment": "pending_L4",
+    "prevention_memory": [
+      "record_unit_conversion_rule_before_reusing_ATR_or_stop_distance_logic",
+      "record_MT5_interpretation_drift_before_reusing_proxy_decision_surface"
+    ],
+    "follow_up_action": "work_wave0_first_batch_l4_follow_through_v0",
+    "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority"
+  }
+}

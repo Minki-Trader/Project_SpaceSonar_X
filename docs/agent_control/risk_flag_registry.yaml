@@ -27,7 +27,20 @@ risk_flags:
       - proxy result used for runtime claim
       - compile used as runtime evidence
       - parity preflight used as economics pass
+      - proxy failure used to avoid mandatory L4 follow-through
+      - proxy-vs-runtime divergence closed without explanation
+      - proxy-vs-runtime mismatch closed without reconciliation attempt
+      - unit semantics drift not recorded
     required_response: "Lower claim or require MT5 runtime evidence."
+
+  proxy_runtime_divergence_risk:
+    triggers:
+      - proxy_good_runtime_bad
+      - proxy_bad_runtime_good
+      - MT5 interpretation differs from proxy settings
+      - runtime result changes after EA, tester, cost, timing, or fill semantics
+      - point, pip, tick, digits, price distance, ATR stop, or lot rounding changes the meaning
+    required_response: "Record proxy_runtime_parity, make at least one reconciliation attempt, preserve surprise as evidence, and route repair or follow-up hypothesis before closure."
 
   heavy_artifact_risk:
     triggers:

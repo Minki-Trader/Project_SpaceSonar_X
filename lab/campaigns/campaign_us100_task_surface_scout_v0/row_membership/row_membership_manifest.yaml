@@ -1,0 +1,107 @@
+version: row_membership_manifest_v1
+artifact_id: artifact_dataset_wave0_us100_m5_row_membership_v0
+dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+split_recipe_id: split_set_v0
+created_at_utc: '2026-06-21T15:54:27.031308Z'
+status: materialized_with_explicit_time_binding_policy
+claim_boundary: row_membership_preflight_only_not_feature_ready_not_model_ready_not_candidate
+producer:
+  command_argv:
+  - foundation\collectors\build_us100_m5_row_membership.py
+  - --raw-csv
+  - data\raw\mt5_bars\m5\wave0_us100_closedbar_surface_cartography_v0\US100\bars_us100_m5_mt5api_raw.csv
+  - --split-recipe
+  - configs\onnx_lab\split_recipes\split_set_v0.yaml
+  - --output-dir
+  - lab\campaigns\campaign_us100_task_surface_scout_v0\row_membership
+  - --processed-output-dir
+  - data\processed\onnx_lab\us100_m5\dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  - --dataset-id
+  - dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+inputs:
+  raw_csv:
+    path: data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100/bars_us100_m5_mt5api_raw.csv
+    sha256: ab3308da907709beb5cf57895d5935069ee82d97bde7b4cf1aa00f885a0ea160
+    size_bytes: 44911007
+  split_recipe:
+    path: configs/onnx_lab/split_recipes/split_set_v0.yaml
+    sha256: e15acc7ac245216e0cfec67e7248aa9ccf6c38ff17f51c81210af9b956124db8
+    size_bytes: 5371
+time_axis:
+  raw_time_basis: MT5_PY_API_UNIX_SECONDS
+  raw_timezone_status: UNRESOLVED_REQUIRES_MANUAL_BINDING
+  split_recipe_date_key: mt5_date
+  split_recipe_timestamp_convention: bar_open_timestamp
+  split_membership_date_binding: date component of time_open_unix rendered from the
+    MT5 Python API UNIX seconds field; used as the explicit split_set_v0 mt5_date
+    binding for Wave0 research row membership
+  model_row_key: us100_bar_close_time
+  model_row_key_derivation: us100_bar_close_time_utc_rendered from time_close_unix
+  utc_semantics_claim: false
+  server_timezone_claim: false
+row_membership:
+  row_count: 308002
+  role_counts:
+    excluded_between_clean_blocks: 21974
+    excluded_internal_gap_date: 4185
+    locked_final_oos_b: 38635
+    research_oos_a: 45557
+    train: 143833
+    validation: 53818
+  full_csv:
+    path: data/processed/onnx_lab/us100_m5/dataset_raw_us100_m5_wave0_export_20260621T152827Z/row_membership_us100_m5_split_set_v0.csv
+    sha256: b458b765bab21f725ae7ae2368d953b7f35581b13b1debd3b35b2b33fef4938f
+    size_bytes: 93750583
+    availability: not_committed_tracked_by_hash
+  counts_csv:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_counts.csv
+    sha256: e3a04e41f562e60b4ca1d5a002fcd0eb3b9070f4a2e5b2f37fdda9f5ee89304c
+    size_bytes: 780
+    availability: present_hash_recorded
+  samples_csv:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_samples.csv
+    sha256: 18635d657ccb02f570bc07c0c0fe73429805979329b77e8ed262098fcc4cb56b
+    size_bytes: 3774
+    availability: present_hash_recorded
+label_horizon_boundary:
+  horizons_bars:
+  - 1
+  - 3
+  - 6
+  - 12
+  - 24
+  policy: For labels with horizon_bars=h, a row is eligible only when row_index+h
+    remains in the same primary_split_role; otherwise drop before label construction.
+  counts_csv:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/label_horizon_boundary_counts.csv
+    sha256: c3b39923cd8ef4ae8dbf71085de4419f6afbb85c2b789d59ea89b5045a9b3740
+    size_bytes: 948
+    availability: present_hash_recorded
+integrity_judgment:
+  data_source: MT5_exported_US100_M5_raw_bars
+  time_axis: usable_with_explicit_research_binding_not_utc_or_server_timezone_claim
+  sample_scope: split_set_v0_clean_blocks_and_exclusions_materialized
+  missing_or_duplicate_check: raw_inventory_duplicate_open_count_zero_gap_events_preserved_as_session_or_history_boundaries
+  feature_label_boundary: label_horizon_boundary_counts_materialized_feature_implementation_still_missing
+  split_boundary: primary_split_roles_and_wfo_roles_materialized_no_locked_final_access_for_selection
+  leakage_risk: future label horizon crossing split role if runner ignores horizon
+    boundary counts
+  data_hash_or_identity: b458b765bab21f725ae7ae2368d953b7f35581b13b1debd3b35b2b33fef4938f
+  integrity_judgment: usable_with_boundary
+missing_evidence_before_first_model_execution:
+- feature_recipe_implementation_or_run_specific_feature_columns
+- label_recipe_implementation_using_horizon_boundary_policy
+- runner_receipts_for_first_batch_cells
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

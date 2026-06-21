@@ -1,0 +1,30 @@
+version: hypothesis_manifest_v1
+hypothesis_id: hyp_surface_diversity_before_model_search_v0
+idea_id: idea_us100_m5_blank_slate_surface_map_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: planned
+created_at_utc: "2026-06-21T15:18:51Z"
+claim_boundary: scout_hypothesis_only_not_candidate_not_baseline
+hypothesis: "Before model optimization, SpaceSonar should map multiple explicit US100 M5 target, input, decision, and holding surfaces to find repeated tradability clues."
+legacy_relation: none
+axis_tags:
+  - task_surface
+  - target_or_label_surface
+  - feature_input_surface
+  - decision_use
+  - holding_policy
+decision_use: scout_tradeability_and_abstain_capable_decision_surfaces
+comparison_baseline:
+  - no_trade_baseline
+  - random_or_permuted_label_baseline_when_executable
+  - naive_manual_rule_when_defined
+broad_sweep: sweep_wave0_broad_surface_scout_v0
+extreme_sweep: included_in_wave0_axis_plan
+micro_search_gate: repeated_clue_required_across_fold_regime_or_related_surface
+wfo_plan: split_block_wfo_v0_only_after_repeated_surface_clue
+failure_memory:
+  required: true
+  record_reason_salvage_reopen_and_do_not_repeat_note: true
+evidence_boundary: planning_scaffold_scout_surface_only
+next_action: work_wave0_executable_scout_spec_v0
+

@@ -20,6 +20,8 @@ Absolute terminal paths are allowed only as local context or raw log content.
 
 Source-of-truth locations:
 
+- `lab/waves/<wave_id>/wave_allocation.yaml`
+- `lab/waves/<wave_id>/campaign_refs.csv`
 - `lab/campaigns/<campaign_id>/campaign_manifest.yaml`
 - `lab/hypotheses/<idea_id>.yaml` or `lab/hypotheses/<hypothesis_id>.yaml`
 - `lab/surfaces/<surface_id>/surface_manifest.yaml`
@@ -44,6 +46,21 @@ Heavy artifacts are not committed by default. Track them with repo-relative path
 
 Do not duplicate a source-of-truth artifact across locations. If a copy is necessary, record `source_of_truth` and `copy_reason`.
 
+Wave/campaign ownership rule:
+
+- A wave owns allocation, budget, sequencing, and campaign references.
+- A campaign owns the experiment charter, surfaces, sweeps, and campaign-local parity policy.
+- Campaign source-of-truth folders stay in central `lab/campaigns/<campaign_id>/`.
+- Do not create `lab/waves/<wave_id>/campaigns/<campaign_id>/` as a second source of truth.
+- Use `campaign_refs.csv` and `campaign.wave_ids` to bind central campaigns to waves.
+
+Git integration cadence:
+
+- Durable commit/main-push boundaries are `campaign_open`, `campaign_close`, `wave_open`, and `wave_close`.
+- Do not push every run to `main` by default.
+- A boundary commit should include the matching source-of-truth manifest updates, registry/index updates, claim-boundary updates, and hash records for ignored heavy artifacts.
+- Intermediate run work may stay branch-local or branch-committed, but it is not main-integrated evidence until the boundary commit/push is complete.
+
 ## Realtime Symbol Rule
 
 - The primary research instrument remains `US100` closed `M5` bars.
@@ -64,8 +81,33 @@ Do not duplicate a source-of-truth artifact across locations. If a copy is neces
 
 - Prefer runnable experiments over advisory loops once a hypothesis and executable surface exist.
 - MT5 runtime probes are normal verification for runtime questions, not extraordinary spend.
-- Cost, heaviness, weak proxy results, low trade count, or imbalance are not standalone reasons to skip a narrow sufficient runtime probe when runtime evidence is required.
+- Cost, heaviness, weak proxy results, low trade count, or imbalance are not standalone reasons to skip a narrow sufficient runtime probe.
+- Every valid proxy/model-bearing run must be driven to `L4_split_runtime_probe`; proxy-only closure is not an allowed endpoint.
+- If L4 still looks usable under the declared surface and execution profile, continue to `L5_candidate_runtime_evidence`.
+- A planned proxy surface must include an executable ONNX/EA/MT5 follow-through path. If it cannot be made executable, repair the surface before treating it as proxy evidence.
+- Parity is tracked per campaign from the first proxy-bearing run. Do not wait for a selected candidate before checking whether Python/proxy semantics, ONNX semantics, EA semantics, and MT5 tester semantics are still the same experiment.
+- Parity is not forced equality. When proxy and MT5 disagree, make at least one explicit reconciliation attempt, then either repair the contract or record the accepted difference with a prevention rule.
 - Failed hypotheses become `negative_memory`, `invalid_setup`, `blocked_retry`, or `inconclusive` records with salvage value and reopen conditions.
+
+## Campaign Parity Rule
+
+Each campaign that creates proxy/model-bearing evidence must maintain a `proxy_runtime_parity` record or field.
+
+Required contents:
+
+- shared contract: dataset, row key, split, feature order, label, decision surface, threshold policy, holding/exit logic, cost assumptions, and tester profile
+- known differences: proxy-only assumptions versus MT5 behavior
+- interpretation drift risks: bar close timing, spread, commission, swap, slippage, fill rules, execution timing, no-trade behavior, rounding, lot sizing, symbol contract, and session handling
+- minimum reconciliation attempt: at least one explicit repair, conversion, or interpretation check before closing the discrepancy
+- unit semantics: point, pip, tick size, digits, price distance, ATR multiplier, lot step, volume, and rounding rules when they can change meaning
+- comparison classes: proxy_good_runtime_good, proxy_good_runtime_bad, proxy_bad_runtime_bad, proxy_bad_runtime_good, invalid_or_unmaterializable
+- divergence judgment: matched, expected_difference, unexplained_difference, mt5_surprise_positive, mt5_surprise_negative, invalid_setup, or blocked
+- prevention memory: the reusable rule that prevents the same proxy-vs-MT5 mistake in later campaigns
+- follow-up action: preserve clue, repair surface, invalidate setup, continue L5, or open a divergence campaign
+
+Proxy failure does not remove the L4 obligation for a valid proxy/model-bearing run. If MT5 also fails, that is negative evidence. If MT5 unexpectedly works, that discrepancy becomes a preserved clue or new hypothesis surface. If proxy works but MT5 fails, treat it as an interpretation or execution drift until explained.
+
+Example: if proxy ATR SL/TP uses `120/180` as point-like distances but MT5 interprets the same values through symbol `point`, `digits`, `tick_size`, or price-distance conversion differently, record the mismatch as unit semantics drift. The follow-up is not to claim parity failed and move on; the follow-up is to define the conversion rule for future ATR stop logic.
 
 ## Sweep Order
 
@@ -75,10 +117,12 @@ Default research flow:
 2. Input/target/decision definition
 3. Broad sweep
 4. Extreme sweep
-5. WFO narrowing when a repeated clue exists
-6. ONNX export and parity preflight
+5. WFO or split-aware narrowing when a repeated clue exists
+6. ONNX export and parity preflight for every valid proxy/model-bearing surface
 7. Bundle materialization
-8. MT5 runtime probe when the question or claim requires runtime evidence
+8. Proxy-vs-runtime parity and divergence record
+9. Mandatory L4 MT5 split runtime probe for every valid proxy/model-bearing surface
+10. L5 candidate runtime evidence when L4 remains promising
 
 Fine search starts only after broad/extreme sweeps show a repeated surface clue.
 
@@ -128,6 +172,7 @@ Run-local manifests or receipts must record:
 - `claim_boundary`
 - `forbidden_claims`
 - `runtime_learning_probe_decision`
+- `proxy_runtime_parity`
 - `result_judgment`
 - `missing_evidence`
 - `next_action`

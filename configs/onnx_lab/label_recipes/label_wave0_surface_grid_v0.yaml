@@ -1,0 +1,59 @@
+version: label_recipe_v1
+label_recipe_id: label_wave0_surface_grid_v0
+status: scout_recipe_skeleton
+created_at_utc: "2026-06-21T15:30:58Z"
+base_frame: fpmarkets_us100_m5_closed_bars
+timestamp_key: us100_bar_close_time
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+
+label_start: after_feature_bar_t
+target_families:
+  future_return_rank_or_quantile:
+    horizons_bars:
+      - 1
+      - 3
+      - 6
+      - 12
+      - 24
+    target_definition: future_close_return_or_rank_over_declared_horizon
+    class_or_value_schema: rank_or_quantile_or_signed_class_declared_per_cell
+  atr_scaled_barrier_event:
+    horizons_bars:
+      - 3
+      - 6
+      - 12
+      - 24
+    target_definition: first_touch_up_down_or_no_touch_with_ATR_scaled_barriers
+    class_or_value_schema: up_touch_down_touch_no_touch_or_time_expired
+  path_quality_mfe_mae_payoff_suitability:
+    horizons_bars:
+      - 6
+      - 12
+      - 24
+    target_definition: MFE_MAE_or_payoff_suitability_over_declared_path
+    class_or_value_schema: scalar_rank_or_tradeability_class
+  tradeability_or_no_trade_regime:
+    horizons_bars:
+      - 3
+      - 6
+      - 12
+    target_definition: whether_subsequent_path_is_tradeable_after_cost_and_risk_filters
+    class_or_value_schema: tradeable_not_tradeable_or_rank
+
+horizon_policy:
+  allowed_horizons_bars:
+    - 1
+    - 3
+    - 6
+    - 12
+    - 24
+  tail_drop: drop_rows_without_full_future_horizon
+  split_boundary_policy: drop_or_explicit_purge_embargo_for_label_windows_crossing_split
+neutral_or_invalid_policy: explicit_per_cell_before_run
+cost_assumptions: reference_eval_recipe_cost_policy
+output_labels: []
+leakage_boundary: label_may_use_future_bars_features_may_not
+runtime_observability: not_applicable_training_label_only_in_wave0_scout
+claim_boundary: recipe_skeleton_only_no_default_target_no_direction_mapping_no_holding_claim
+
