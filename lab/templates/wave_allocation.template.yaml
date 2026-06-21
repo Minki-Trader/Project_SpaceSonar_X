@@ -24,6 +24,8 @@ budget:
   max_repairs_per_surface: 1
   max_total_repairs_fraction: 0.15
   repair_budget_policy: bounded_surface_or_parity_repair_only_not_single_candidate_extension
+  repair_carryover_policy: forbidden_without_prior_new_surface_or_divergence_record
+  neighborhood_perturbation_policy: meaningful_adjacent_variables_only
 fixed_controls:
   base_symbol: US100
   timeframe: M5
@@ -36,6 +38,8 @@ sampling_plan:
 campaign_allocations: []
 rotation_conditions:
   - rotate_if_candidate_local_repairs_repeat_without_reusable_surface_clue
+  - reject_next_wave_or_campaign_relabeling_if_repair_has_no_recorded_new_surface_or_divergence
   - open_divergence_campaign_if_repair_reveals_proxy_runtime_semantics_gap
-stop_conditions: []
+stop_conditions:
+  - neighborhood_perturbation_becomes_generic_micro_tuning_or_candidate_laundering
 notes: ""

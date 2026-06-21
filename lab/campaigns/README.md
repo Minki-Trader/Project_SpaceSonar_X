@@ -16,3 +16,7 @@ Preferred shape:
 Campaigns allocate and organize experiments. They do not contain durable proof by themselves.
 
 A campaign is not a parking place for one candidate's endless repairs. Candidate-local fixes must stay bounded to a run or sweep. If the fix does not generalize into a surface clue, parity rule, prevention memory, or divergence hypothesis, close it and rotate.
+
+Do not move unfinished repair into a later campaign as if it were a new hypothesis. A later campaign can continue only a recorded new surface, divergence, or prevention-memory question.
+
+Neighborhood perturbation is bounded to meaningful adjacent variables. Once it becomes generic micro-tuning around one candidate, close or reclassify it.

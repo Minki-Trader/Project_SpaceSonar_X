@@ -24,6 +24,9 @@ candidate_repair_policy:
   max_repeated_candidate_repairs_without_new_surface_clue: 1
   repeated_repair_action: close_or_open_new_surface_or_divergence_campaign
   forbidden_use: long_candidate_extension_inside_wave_or_campaign
+  carryover_policy: forbidden_to_relabel_repair_as_new_hypothesis_without_recorded_new_surface_or_divergence
+  neighborhood_perturbation_scope: meaningful_adjacent_variables_only
+  neighborhood_stop_condition: stop_when_micro_tuning_candidate_laundering_or_no_new_prevention_memory
 storage_contract:
   source_of_truth: lab/campaigns/campaign_us100_task_surface_scout_v0/campaign_manifest.yaml
   wave_campaign_refs:

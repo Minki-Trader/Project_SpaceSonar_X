@@ -44,6 +44,8 @@ run_id_format: "onnxlab_<YYYYMMDDTHHMMSSZ>_<short_slug>"
 bundle_id_format: "bundle_<YYYYMMDDTHHMMSSZ>_<short_slug>"
 claim_default: exploration_only
 concept_start_state: blank_slate
+repair_carryover_policy: forbidden_without_recorded_new_surface_divergence_or_prevention_memory
+neighborhood_perturbation_policy: meaningful_adjacent_variables_only
 north_star_objective:
   role: final_objective_not_exploration_gate
   timeframe_fixed: false

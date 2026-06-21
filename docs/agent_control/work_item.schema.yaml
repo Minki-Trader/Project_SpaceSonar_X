@@ -115,7 +115,10 @@ fields:
       - mutation_policy
       - evidence_layers
       - reduction_policy
+      - repair_carryover_check
+      - neighborhood_perturbation_scope
       - claim_boundary
+    rule: "Repair carryover must not be relabeled as a fresh hypothesis without a recorded new surface, divergence, or prevention-memory question. Neighborhood perturbation must stay within meaningful adjacent variables."
 
   verification_profile:
     required_fields:

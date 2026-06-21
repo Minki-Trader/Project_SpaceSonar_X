@@ -11,6 +11,7 @@ global_rules:
   high_cost_implicit_invocation_policy: "High-cost review/forensics/attribution skills default to explicit invocation; behavior smoke may tune this later without treating smoke as reviewed/pass evidence."
   subagent_advice_policy: "Sub-agent output is advisory only. Parent Codex must source-check it against repo source-of-truth files, selected skills, workspace state, and user constraints before adoption."
   subagent_conflict_policy: "If agent advice conflicts with project definitions, reject or rewrite the advice; do not follow it verbatim."
+  repair_carryover_policy: "Do not relabel unfinished repair or candidate-local perturbation as a fresh hypothesis in the next campaign/wave without a recorded new surface, divergence, or prevention-memory question."
   agent_role_modes:
     - scout
     - design

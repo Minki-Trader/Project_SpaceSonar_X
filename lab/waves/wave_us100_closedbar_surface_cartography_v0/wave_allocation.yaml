@@ -28,6 +28,8 @@ budget:
   max_repairs_per_surface: 1
   max_total_repairs_fraction: 0.15
   repair_budget_policy: bounded_surface_or_parity_repair_only_not_single_candidate_extension
+  repair_carryover_policy: forbidden_without_prior_new_surface_or_divergence_record
+  neighborhood_perturbation_policy: meaningful_adjacent_variables_only
   formal_mt5_strategy_tester_runs: 0
   runtime_probe_budget: 0 until executable ONNX/EA surface exists; at most 2 narrow probes for actionable
     runtime/plumbing questions
@@ -80,6 +82,7 @@ rotation_conditions:
 - keep_at_least_3_distinct_target_families_alive_through_wave_closeout
 - rotate_axis_if_two_consecutive_steps_are_micro_tuning_without_repeated_clue
 - rotate_if_candidate_local_repairs_repeat_without_reusable_surface_clue
+- reject_next_wave_or_campaign_relabeling_if_repair_has_no_recorded_new_surface_or_divergence
 - move_to_wfo_only_after_repeated_surface_clue
 - preserve_negative_or_invalid_surfaces_with_reopen_condition
 stop_conditions:
@@ -90,6 +93,7 @@ stop_conditions:
 - threshold_knife_edge_blocks_narrowing
 - wfo_rank_instability_blocks_candidate_claim
 - locked_final_oos_requested_for_adaptive_repair_stop
+- neighborhood_perturbation_becomes_generic_micro_tuning_or_candidate_laundering
 next_action: work_wave0_first_batch_l4_follow_through_v0
 notes: Opened by active goal bootstrap after mandatory Task Force consultation. Row membership and first
   12 planned run specs are ready; no execution result yet.
