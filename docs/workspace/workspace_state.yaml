@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-22T04:37:38Z'
+updated_utc: '2026-06-22T04:56:57Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -42,13 +42,13 @@ legacy_workspace_deleted:
     material when explicitly requested.
 current_claims:
   active_goal_id: goal_us100_onnx_forward_boundary_v0
-  active_goal_status: active_long_running
+  active_goal_status: complete_wave01_operating_proof_window
   active_goal_manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
   active_goal_objective_revision: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
   active_goal_terminal_contract: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
   active_goal_resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
   active_goal_next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  active_goal_claim_boundary: active_goal_wave01_three_campaigns_closed_not_goal_achieve
+  active_goal_claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
   active_goal_primary_objective: durable_codex_operation
   active_goal_proof_window: Wave01_closeout
   active_goal_proof_window_role: first_bounded_proof_window_not_final_purpose
@@ -63,8 +63,10 @@ current_claims:
   active_hypothesis_id: hyp_us100_session_transition_regime_surface_v0
   active_surface_id: surface_us100_session_transition_regime_surface_v0
   active_sweep_id: sweep_us100_session_transition_broad_v0
-  active_goal_phase: wave01_session_transition_campaign_closed_preserved_clues_no_candidate
-  next_work_item_id: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
+  active_goal_phase: wave01_operating_closeout_complete
+  next_work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
+  wave01_operating_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+  wave01_operating_closeout_status: wave01_operating_proof_window_closed
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
   wave0_raw_row_count: 308002
@@ -617,6 +619,14 @@ current_claims:
     l5_candidate_count: 0
     tester_report_pair_observed_count: 0
     runtime_execution_indexed_count: 2
+  wave01_closeout_handoff:
+    status: wave01_operating_proof_window_closed
+    closeout_path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+    negative_memory_count: 3
+    preserved_clue_count: 3
+    candidate_count: 0
+    l5_candidate_count: 0
+    next_action: await_user_instruction
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

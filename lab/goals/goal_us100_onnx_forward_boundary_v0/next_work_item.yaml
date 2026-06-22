@@ -1,61 +1,39 @@
 version: onnx_lab_work_item_v1
-work_item_id: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
+work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-created_at_utc: '2026-06-22T04:37:38Z'
-status: planned_wave01_closeout_review_or_next_surface_after_session_transition_closeout
+created_at_utc: '2026-06-22T04:56:57Z'
+status: awaiting_user_direction_after_wave01_operating_closeout
 current_truth:
-  claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
-  latest_closed_campaign_id: campaign_us100_session_transition_regime_surface_v0
-  latest_closed_campaign_status: wave01_session_transition_closed_preserved_clues_no_candidate
-  campaign_closeout: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
-  negative_memory_ids:
-  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
-  preserved_clue_ids:
-  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  active_goal_status: complete_wave01_operating_proof_window
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  wave_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+  campaign_count_closed: 3
   candidate_count: 0
   l5_candidate_count: 0
-  next_allowed_shapes:
-  - Wave01_closeout_review
-  - new_multi_axis_surface
-  - bounded_synthesis_previous_material_only
-  - new_decision_surface_for_preserved_clues
-  forbidden_carryover:
-  - inverse_score_band_replay_candidate_repair
-  - force_non_directional_event_score_into_side_orders
-  - force_diagnostic_no_trade_score_into_order_execution
-  - feature_only_campaign
-  - label_only_campaign
-  - model_only_campaign
-  - threshold_only_campaign
-  - repair_only_campaign
-work_classification:
-  primary_family: experiment_design
-  detected_families:
-  - experiment_design
-  - workspace_state_sync
-  - run_evidence_system
-  mutation_intent: decide_wave01_closeout_or_next_surface
-skill_routing:
-  primary_family: experiment_design
-  primary_skill: spacesonar-experiment-design
-  support_skills:
-  - spacesonar-exploration-mandate
-  - spacesonar-run-evidence-system
-  - spacesonar-claim-discipline
-  required_gates:
-  - design_contract_check
-  - exploration_coverage_check
-  - campaign_proxy_runtime_parity_policy
-  - final_claim_guard
-acceptance_criteria:
-- If Wave01 closeout is attempted, verify manifests, registries, evidence, validators,
-  and handoff records.
-- If another campaign is opened, it must be new multi-axis work or bounded synthesis
-  under policy.
-- Remaining preserved clues require a newly declared decision surface before trade
-  replay.
-- Valid proxy/model-bearing runs remain L4 mandatory, with L5 only if L4 remains promising.
-claim_boundary: planning_wave01_closeout_or_next_surface_no_candidate_no_runtime_authority_no_goal_achieve
+  negative_memory_ids:
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  preserved_clue_ids:
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+next_allowed_shapes:
+- user_directed_wave02_open
+- new_unexplored_multi_axis_surface
+- previous_material_only_bounded_synthesis_mix2_then_mix3
+- post_closeout_review
+forbidden_carryover:
+- replay_Wave01_score_band_side_as_candidate_repair
+- replay_Wave01_inverse_score_band_as_candidate_repair
+- force_non_directional_or_diagnostic_scores_into_orders_without_new_decision_surface
+- feature_only_campaign
+- label_only_campaign
+- model_only_campaign
+- threshold_only_campaign
+- repair_only_campaign
+claim_boundary: post_wave01_handoff_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -66,67 +44,7 @@ forbidden_claims:
 - handoff_complete
 - live_readiness
 - reviewed_verified_pass
-- goal_achieve
-next_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
-next_action_detail: Prepare Wave01 closeout review or open a genuinely new multi-axis
-  surface. Do not continue session-transition inverse score-band replay as candidate
-  repair. Remaining non-directional/diagnostic clues require a newly declared decision
-  surface before any trade replay.
-execution_provenance:
-  git_sha: 216b0d4eac4550fae77d485b89c113ee1b9fc613
-  branch: codex/l4-pair-judgment-closeout
-  dirty_flag: true
-  changed_files:
-  - M docs/registers/campaign_registry.csv
-  - ' M docs/registers/experiment_surface_registry.csv'
-  - ' M docs/registers/goal_registry.csv'
-  - ' M docs/registers/hypothesis_registry.csv'
-  - ' M docs/registers/idea_registry.csv'
-  - ' M docs/registers/sweep_registry.csv'
-  - ' M docs/registers/wave_registry.csv'
-  - ' M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml'
-  - ' M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml'
-  - ' M lab/hypotheses/hyp_us100_session_transition_regime_surface_v0.yaml'
-  - ' M lab/hypotheses/idea_us100_m5_session_transition_regime_surface_v0.yaml'
-  - ' M lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml'
-  - ' M lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv'
-  - ' M lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml'
-  - ?? foundation/pipelines/close_wave01_session_transition_campaign.py
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.csv
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
-  - ?? lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
-  - ?? tests/test_wave01_session_transition_campaign_closeout.py
-  command_argv:
-  - python
-  - foundation/pipelines/close_wave01_session_transition_campaign.py
-  - --write-control-records
-  started_at_utc: '2026-06-22T04:37:38Z'
-  ended_at_utc: '2026-06-22T04:37:38Z'
-  input_hashes:
-  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
-    sha256: f9cca869d8b92f2bec8cad39c6b6f39bc22ab1c969237a8477864225b68bd28b
-    size_bytes: 4951
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
-    sha256: e25d83dc7b761af356acc8655ae962197c14d68d91ea5be767a4aaecd9a723f0
-    size_bytes: 1061
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
-    sha256: d9141c68d35a07d389e2d9718d7fdf7b24aeda1bedf5807b9e8739c737918203
-    size_bytes: 2651
-    availability: present_hash_recorded
-  output_hashes:
-  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
-    sha256: 7f61c6abb32aa1272e8837388e71f3783fb9c1cb1b6b85323e423f902e65f863
-    size_bytes: 7771
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
-    sha256: 07e43e0256e6f416c04dc7f38c671283ab81096eeeaa092362b5fb4b6148e012
-    size_bytes: 3551
-    availability: present_hash_recorded
-  - path: lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
-    sha256: e39578ae2e5196ce511a95a0aa6d24ac4bae5e8c7339433547292b34cc99dd95
-    size_bytes: 1750
-    availability: present_hash_recorded
-  unknown_git_claim_effect: not_applicable_git_state_recorded_claim_still_lowered_no_goal_achieve
+next_action: await_user_instruction
+next_action_detail: Wave01 operating goal is closed. Continue only with user-directed
+  Wave02, a new unexplored multi-axis surface, previous-material-only bounded synthesis,
+  or review.

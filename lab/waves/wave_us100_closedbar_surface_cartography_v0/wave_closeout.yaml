@@ -1,0 +1,219 @@
+version: wave_closeout_v1
+closeout_id: wave01_operating_closeout_v0
+created_at_utc: '2026-06-22T04:56:57Z'
+status: wave01_operating_proof_window_closed
+result_judgment: positive_operating_closeout
+claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_closedbar_surface_cartography_v0
+source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+source_inputs:
+- lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+- lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+- lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+- docs/registers/run_registry.csv
+- docs/registers/campaign_registry.csv
+- docs/registers/wave_registry.csv
+- docs/registers/clue_registry.csv
+- docs/registers/negative_memory_registry.csv
+- docs/registers/candidate_registry.csv
+wave_summary:
+  campaign_count: 3
+  campaign_status: three_campaigns_closed
+  valid_proxy_model_bearing_run_count: 34
+  l4_score_pair_count: 34
+  l4_terminal_attempt_count: 68
+  decision_replay_pair_count: 9
+  candidate_count: 0
+  l5_candidate_count: 0
+  locked_final_oos_used: false
+  selected_baseline_count: 0
+  runtime_authority: false
+  economics_pass: false
+campaign_summaries:
+- campaign_id: campaign_us100_task_surface_scout_v0
+  status: decision_replay_judgment_closed_no_candidate
+  role: primary_initial_surface_scout
+  valid_proxy_model_bearing_run_count: 12
+  l4_score_pair_count: 12
+  l4_terminal_attempt_count: 24
+  decision_replay_pair_count: 3
+  result_judgment: negative
+  negative_memory_ids:
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  preserved_clue_ids:
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  candidate_count: 0
+  l5_candidate_count: 0
+  evidence_paths:
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+- campaign_id: campaign_us100_event_barrier_decision_surface_v0
+  status: wave01_event_barrier_decision_replay_closed_no_candidate
+  role: second_unexplored_event_barrier_decision_surface
+  valid_proxy_model_bearing_run_count: 12
+  l4_score_pair_count: 12
+  l4_terminal_attempt_count: 24
+  decision_replay_pair_count: 5
+  result_judgment: negative
+  negative_memory_ids:
+  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+  preserved_clue_ids: []
+  candidate_count: 0
+  l5_candidate_count: 0
+  evidence_paths:
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+- campaign_id: campaign_us100_session_transition_regime_surface_v0
+  status: wave01_session_transition_closed_preserved_clues_no_candidate
+  role: third_unexplored_session_transition_regime_surface
+  valid_proxy_model_bearing_run_count: 10
+  l4_score_pair_count: 10
+  l4_terminal_attempt_count: 20
+  decision_replay_pair_count: 1
+  result_judgment: preserved_clue
+  negative_memory_ids:
+  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  preserved_clue_ids:
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  candidate_count: 0
+  l5_candidate_count: 0
+  evidence_paths:
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+requirement_audit:
+- requirement: coherent_wave_campaign_run_source_of_truth_manifests
+  status: passed
+  evidence_paths:
+  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  - lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+  - docs/registers/run_registry.csv
+  validation: active_record_validator_passed
+- requirement: coherent_registry_indexes_without_using_registries_as_proof
+  status: passed
+  evidence_paths:
+  - docs/registers/campaign_registry.csv
+  - docs/registers/wave_registry.csv
+  - docs/registers/clue_registry.csv
+  - docs/registers/negative_memory_registry.csv
+  validation: registry_rows_index_source_manifests_not_proof_replacements
+- requirement: meaningful_runs_have_evidence_paths_claim_boundary_result_judgment_next_action
+  status: passed
+  evidence_paths:
+  - docs/registers/run_registry.csv
+  validation: active_record_validator_passed
+- requirement: research_campaigns_remain_multi_axis_unexplored_surface_oriented
+  status: passed
+  evidence_paths:
+  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/campaign_manifest.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
+  validation: campaign_exploration_coverage_validator_passed
+- requirement: all_valid_proxy_model_bearing_runs_reach_L4_or_record_invalid_repair_reason
+  status: passed
+  evidence_paths:
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  validation: 34_valid_proxy_model_bearing_runs_reached_L4_score_pair_judgment
+- requirement: L4_promising_results_have_L5_next_action
+  status: passed
+  evidence_paths:
+  - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+  validation: no_L5_candidate_remained; preserved_clues_have_new_decision_surface_next_action
+- requirement: parity_differences_recorded_as_prevention_memory
+  status: passed
+  evidence_paths:
+  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+  validation: proxy_runtime_parity_and_decision_surface_differences_closed_as_prevention_memory
+- requirement: negative_invalid_inconclusive_preserved_clue_outcomes_recorded_as_assets
+  status: passed
+  evidence_paths:
+  - docs/registers/negative_memory_registry.csv
+  - docs/registers/clue_registry.csv
+  - lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  - lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
+  - lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+  - lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
+  validation: memory_registry_links_validated
+- requirement: recurring_operational_or_system_failures_repaired_at_appropriate_weight
+  status: passed
+  evidence_paths:
+  - .agents/skills/spacesonar-reentry-read/SKILL.md
+  - foundation/validation/active_record_validator.py
+  validation: broad_first_action_and_wave_memory_registry_drift_now_have_small_guards
+- requirement: validators_and_tests_useful_and_passing
+  status: passed
+  evidence_paths:
+  - foundation/validation/active_record_validator.py
+  - foundation/validation/control_plane_validator.py
+  - tests/test_active_record_validator_graph.py
+  - tests/test_wave01_operating_closeout.py
+  validation: post_closeout_commands_passed
+- requirement: Wave01_closeout_handoff_records_clues_negative_memory_unresolved_risks_next_wave_candidates
+  status: passed
+  evidence_paths:
+  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+  validation: handoff_section_present
+handoff:
+  negative_memory_ids:
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  preserved_clue_ids:
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  unresolved_risks:
+  - tester_reports_missing_for_score_and_decision_replay_attempts
+  - no_strategy_tester_economics_pass_claim
+  - no_runtime_authority_claim
+  - no_L5_candidate
+  - event_barrier_open_failed_count_requires_audit_before_any_future_L5_or_economics_claim
+  - locked_final_oos_b_unused_and_still_locked
+  - remaining_session_transition_clues_require_new_decision_surface_before_trade_replay
+  next_wave_candidates:
+  - open_new_unexplored_multi_axis_surface_with_declared_label_input_model_decision_eval_axes
+  - optional_previous_material_only_bounded_synthesis_mix2_then_mix3
+  - new_decision_or_tradeability_surface_for_non_directional_and_diagnostic_preserved_clues
+  - report_or_equity_parser_improvement_before_any_economics_claim
+  forbidden_carryover:
+  - do_not_replay_score_band_side_as_candidate_repair
+  - do_not_replay_inverse_score_band_as_candidate_repair
+  - do_not_force_non_directional_or_diagnostic_scores_into_orders_without_new_decision_surface
+  - do_not_open_feature_only_label_only_model_only_threshold_only_or_repair_only_campaign
+post_closeout_validation:
+  status: passed
+  commands:
+  - command: pytest tests\test_wave01_operating_closeout.py -q
+    status: passed
+  - command: pytest tests\test_active_record_validator_graph.py::test_active_validator_rejects_campaign_registry_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_wave_campaign_ref_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_surface_registry_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_sweep_registry_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_wave_referenced_memory_missing_from_registries -q
+    status: passed
+  - command: python foundation\validation\active_record_validator.py --repo-root .
+    status: passed
+  - command: python foundation\validation\control_plane_validator.py --repo-root .
+    status: passed
+  - command: git diff --check
+    status: passed_with_crlf_warning_only
+not_claimed:
+- live_readiness
+- final_profitability
+- selected_baseline
+- runtime_authority
+- economics_pass
+- reviewed_or_verified_pass
+- production_deployment
+goal_effect: active_thread_goal_can_be_marked_complete_after_current_commit_and_validation
+next_action: work_post_wave01_user_directed_wave02_or_review_v0
