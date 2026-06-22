@@ -1,39 +1,19 @@
 version: wave01_event_barrier_l4_decision_replay_runtime_compile_summary_v1
 summary_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
-created_at_utc: '2026-06-22T00:02:55Z'
+created_at_utc: '2026-06-22T15:42:02Z'
 status: ea_binary_available
-compile_attempted: true
-compile_process:
-  command_argv_redacted:
-  - ${PROGRAMFILES}\MetaTrader 5\MetaEditor64.exe
-  - /portable
-  - /compile:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
-  - /log:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\lab\campaigns\campaign_us100_event_barrier_decision_surface_v0\l4_follow_through\decision_replay\runtime_compile.log
-  cwd: .
-  started_at_utc: '2026-06-22T00:02:56.134828Z'
-  ended_at_utc: '2026-06-22T00:02:58.663570Z'
-  exit_code: 1
-  timed_out: false
-  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-  stdout_tail: ''
-  stderr_tail: ''
-compile_log:
-  path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_compile.log
-  exists: true
-  sha256: b18be1dd54bec8d19f8e642814aba5baf022259f0cc9fb0143c372f69defa2c6
-  size_bytes: 7192
-  compile_errors: 0
-  compile_warnings: 0
+compile_attempted: false
+compile_process: null
+compile_log: null
 ea_source:
   path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
-  sha256: bf581be01427668605619ef9f010e5d82a015d0501f4db3186ddec354f9da4cc
-  size_bytes: 11542
+  sha256: 3854f36f33ac2cbf8d8b724c82c0720d333a591b798b123920e494f241a90aaa
+  size_bytes: 11993
   availability: present_hash_recorded
 ea_binary:
   path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
-  sha256: b2205b5471aae0db8dac693a49f2864ec3d3bbea7016340982b92576508d65f8
-  size_bytes: 41242
+  sha256: a3c55ed8dd158a9de9c872e6b4c9b313bb316129041c57f3d35369986305f8ca
+  size_bytes: 41072
   availability: local_binary_hash_recorded_ignored_by_git
 claim_boundary: ea_compile_or_binary_preflight_only_not_strategy_tester_output
 summary_id: wave01_event_barrier_l4_decision_replay_runtime_compile_summary_v0

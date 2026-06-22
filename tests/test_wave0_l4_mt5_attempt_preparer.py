@@ -110,20 +110,29 @@ def test_generated_attempt_records_match_index_when_present() -> None:
         assert manifest["attempt_id"] == row["attempt_id"]
         assert manifest["period_identity"]["period_role"] == row["period_role"]
         assert manifest["period_identity"]["locked_final_oos_b"] == "excluded_forbidden_by_default"
-        assert manifest["required_gate_coverage"]["missing"]
-        if str(manifest.get("status", "")).startswith("completed_"):
-            assert "Strategy_Tester_terminal_execution" not in manifest["required_gate_coverage"]["missing"]
-            assert "score_telemetry_csv" not in manifest["required_gate_coverage"]["missing"]
+        execution_state = manifest.get("execution_state") or {}
+        missing_gates = manifest["required_gate_coverage"]["missing"]
+        passed_gates = manifest["required_gate_coverage"]["passed"]
+        if execution_state.get("runtime_probe_complete"):
+            assert missing_gates == []
+            assert "Strategy_Tester_terminal_execution" in passed_gates
+            assert "score_telemetry_csv" in passed_gates
+            assert "L4_period_role_completed_report" in passed_gates
+            assert "tester_report_hash" in passed_gates
         else:
-            execution_state = manifest.get("execution_state") or {}
+            assert missing_gates
+        if str(manifest.get("status", "")).startswith("completed_"):
+            assert "Strategy_Tester_terminal_execution" not in missing_gates
+            assert "score_telemetry_csv" not in missing_gates
+        else:
             if execution_state.get("terminal_launched"):
-                assert "Strategy_Tester_terminal_execution" not in manifest["required_gate_coverage"]["missing"]
+                assert "Strategy_Tester_terminal_execution" not in missing_gates
                 assert any(
-                    item in manifest["required_gate_coverage"]["missing"]
+                    item in missing_gates
                     for item in ["L4_period_role_completed_report", "tester_report_hash"]
-                )
+                ) or execution_state.get("runtime_probe_complete")
             else:
-                assert "Strategy_Tester_terminal_execution" in manifest["required_gate_coverage"]["missing"]
+                assert "Strategy_Tester_terminal_execution" in missing_gates
         assert f"FromDate={row['from_date']}" in config_text
         assert f"ToDate={row['to_date']}" in config_text
         assert "InpFeatureColumnsPath=SpaceSonar\\l4_score_probe" in config_text

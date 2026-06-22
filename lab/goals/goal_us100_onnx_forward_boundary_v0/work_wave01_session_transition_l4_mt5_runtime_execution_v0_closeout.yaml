@@ -2,7 +2,7 @@ version: work_closeout_v1
 work_item_id: work_wave01_session_transition_l4_mt5_runtime_execution_v0
 parent_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-closed_at_utc: '2026-06-22T04:04:37Z'
+closed_at_utc: '2026-06-22T14:26:03Z'
 result_judgment: runtime_probe
 status: l4_terminal_execution_attempted_for_all_prepared_attempts
 claim_boundary: wave01_session_transition_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
@@ -12,19 +12,26 @@ evidence_paths:
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
 counts:
   prepared_attempt_count: 20
-  selected_attempt_count: 6
+  selected_attempt_count: 7
   indexed_execution_count: 20
   executed_attempt_count: 20
   completed_manifest_count: 20
+  touched_manifest_count: 20
   telemetry_observed_count: 20
   telemetry_missing_count: 0
-  tester_report_observed_count: 0
-  tester_report_missing_count: 20
+  tester_report_observed_count: 20
+  tester_report_missing_count: 0
+  terminal_execution_count: 20
+  telemetry_observation_count: 20
+  tester_report_observation_count: 20
+  portable_contract_count: 20
+  runtime_probe_complete_count: 20
+  runtime_probe_incomplete_count: 0
   period_role_counts:
     research_oos: 10
     validation: 10
   status_counts:
-    completed_l4_score_telemetry_observed: 20
+    runtime_probe_completed: 20
   result_judgment_counts:
     runtime_probe: 20
 required_gate_coverage:

@@ -9,24 +9,24 @@ input_hashes:
   sha256: 4a75dec8f64a57a161f1be6149fb8bcae738b8ecca57c7647689ad70f8535839
   size_bytes: 5293
 - path: docs/workspace/workspace_state.yaml
-  sha256: 671583dbd951119614b3841bfbefe41583f5bc00f199e6d41f782013449a928e
-  size_bytes: 1566
+  sha256: 9a39716b133205f802046044a34afd9e277692cc6b7c2840bd762156ea4c299e
+  size_bytes: 7995
 - path: docs/agent_control/policy_contract.yaml
   sha256: 34e11b2e31583b92c1d59e42b807fc80dd80c325ecf24cc3aadaa691ff30d5d8
   size_bytes: 2932
 status: passed
 metrics:
   cold_reentry_truth_files: 4
-  cold_reentry_context_bytes: 22161
+  cold_reentry_context_bytes: 28590
   transaction_receipt_count: 0
   partial_unclassified_transactions: 0
   routing_golden_accuracy: 1.0
   protected_claim_guard_recall: 1.0
   runtime_completion_contract_violations: 0
-  runtime_contract_integrity: failed
+  runtime_contract_integrity: passed
   solo_work_share: 0.8
   duplicate_agent_advice_ratio: 0.0
   tracked_ignored_artifact_count: 0
 findings: []
 claim_effect: operating_slo_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: c9e18aae8fa10c711f1a6abf35d5c5a2e2473077ec2ab92033eda2ffcf39c6e3
+output_sha256: 0e9c7c4313e436c1c2aadc7b7c6a7d2b2b1d281a02bdab52af74ed41d7e62111

@@ -62,7 +62,7 @@ def test_wave01_closeout_result_separates_operating_proof_from_runtime_contract(
 
     assert result["control_plane_operating_proof"] == "passed"
     assert result["research_cycle_closeout"] == "passed"
-    assert result["runtime_contract_integrity"] == "failed"
+    assert result["runtime_contract_integrity"] == "passed"
     assert result["runtime_authority"] == "not_claimed"
     assert result["economics_pass"] == "not_claimed"
     assert result["candidate_count"] == 0
@@ -72,6 +72,7 @@ def test_wave01_closeout_result_separates_operating_proof_from_runtime_contract(
     assert summary["runtime_authority"] is False
     assert summary["economics_pass"] is False
     assert summary["locked_final_oos_used"] is False
+    assert summary["runtime_contract_integrity"] == "passed"
 
 
 def test_wave01_closeout_handoff_ids_are_registered() -> None:

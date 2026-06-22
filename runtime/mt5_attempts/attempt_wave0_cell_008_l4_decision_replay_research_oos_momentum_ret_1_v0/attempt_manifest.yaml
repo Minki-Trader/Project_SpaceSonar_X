@@ -9,7 +9,7 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_task_surface_scout_v0
 sweep_id: sweep_wave0_broad_surface_scout_v0
 created_at_utc: '2026-06-21T20:44:04Z'
-status: decision_replay_execution_telemetry_adapter_observed_runtime_contract_incomplete
+status: runtime_probe_completed
 claim_boundary: score_replay_decision_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
 source_of_truth: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
@@ -83,8 +83,8 @@ proxy_runtime_parity:
   - Do not hide direction policy injection for direction-agnostic tradeability surfaces.
   - If score replay trades differ from score-probe decisions, record bar-close lookup
     and threshold semantics before judging the surface.
-  follow_up_action: continue/repair decision replay terminal execution before L5 or
-    economics claim
+  follow_up_action: parse tester report and judge sparse decision surface with lowered
+    claim boundary
   claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
 artifact_identity:
   ea_entrypoint:
@@ -99,8 +99,8 @@ artifact_identity:
     availability: local_binary_hash_recorded_ignored_by_git
   tester_config:
     path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_config.ini
-    sha256: c20e4a43290db50a304746c5d6a4a20d72023522e46460e84a84a4475caf5e97
-    size_bytes: 1199
+    sha256: d2bbe9968bb6fac34bb8d9c385ede3ba30aac5690f944d774701fdb4a1829d6e
+    size_bytes: 1176
     availability: present_hash_recorded
   bundle:
     path: runtime/packages/bundle_wave0_cell_008_l4_onnx_export_v0/experiment_bundle.json
@@ -112,8 +112,8 @@ artifact_identity:
     availability: present_hash_recorded
   terminal_run_summary:
     path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
-    sha256: 2f109f2e220ca8d95057ce78e0bbd97ed2576ac23eee6f65a68874faba320873
-    size_bytes: 4262
+    sha256: 4c4549e14127c9e0b7011b646cb7ac6a59e6e5dfde56e246129e5ccec59dab92
+    size_bytes: 8593
     availability: present_hash_recorded
   execution_telemetry_summary:
     path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
@@ -122,8 +122,8 @@ artifact_identity:
     availability: present_hash_recorded
   tester_log_summary:
     path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
-    sha256: ededc7232fcaebbae80e3c0edc019447c162b19825d4bcbd5b4cb4624cac8041
-    size_bytes: 4863
+    sha256: a04bba0e343d4ac440d3fdd4859dd26826353ec6945b5647f33483c493c6fb33
+    size_bytes: 4766
     availability: present_hash_recorded
   telemetry:
     repo_execution_copy:
@@ -132,10 +132,15 @@ artifact_identity:
       size_bytes: 6442335
       availability: local_telemetry_hash_recorded_ignored_by_git
   tester_reports:
-  - observed: false
-    status: tester_report_missing_after_terminal_execution
-    path: null
-    claim_boundary: missing_report_no_economics_or_completion_claim
+  - observed: true
+    status: tester_report_archived_local_hash_recorded
+    origin: portable_terminal_root
+    source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\tester_report.htm
+    path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/reports/tester_report.htm
+    sha256: f522c1c1d360badc805103d0edb81df3a844032c4072b60dc5df15bf7db515a9
+    size_bytes: 11746366
+    availability: local_report_hash_recorded_ignored_by_git
+    claim_boundary: tester_report_local_evidence_only_no_economics_pass
 required_gate_coverage:
   passed:
   - source_score_telemetry_observed
@@ -146,19 +151,14 @@ required_gate_coverage:
   - Strategy_Tester_terminal_execution
   - execution_telemetry_csv
   - result_judgment_from_score_replay_decision_probe
-  missing:
   - tester_report_hash
+  missing:
   - economics_metrics
   not_applicable:
   - locked_final_oos_b_access
-missing_evidence:
-- tester_report_missing_or_not_archived
-- tester_report_missing_but_tester_log_summary_observed
-- runtime_completion_missing:tester_report_observed
-- runtime_completion_missing:tester_report_completed
-- runtime_completion_missing:portable_terminal_contract
-next_action: rerun or repair portable tester-report-backed L4 before standard completion
-  or L5 claim
+missing_evidence: []
+next_action: parse tester report and judge sparse decision surface with lowered claim
+  boundary
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -184,29 +184,30 @@ runtime_probe_routing:
   claim_boundary: score_replay_decision_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
 terminal_run_summary:
   command_argv_redacted:
-  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+  - /portable
   - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\tester_config.ini
   cwd: .
-  started_at_utc: '2026-06-21T21:00:06.560152Z'
-  ended_at_utc: '2026-06-21T21:00:38.581832Z'
+  started_at_utc: '2026-06-22T14:47:41.830240Z'
+  ended_at_utc: '2026-06-22T14:48:16.788696Z'
   exit_code: 0
   timed_out: false
   stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
   stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
   stdout_tail: ''
   stderr_tail: ''
-  mode: main_mode_config_fallback
-  attempt_claim_boundary: local_decision_replay_main_mode_fallback_only_no_runtime_authority
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
   telemetry_exists_after_attempt: true
   terminal_attempts:
   - command_argv_redacted:
-    - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+    - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
     - /portable
     - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\tester_config.ini
     cwd: .
-    started_at_utc: '2026-06-21T21:00:01.743971Z'
-    ended_at_utc: '2026-06-21T21:00:06.558914Z'
-    exit_code: 3294954941
+    started_at_utc: '2026-06-22T14:47:41.830240Z'
+    ended_at_utc: '2026-06-22T14:48:16.788696Z'
+    exit_code: 0
     timed_out: false
     stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -214,21 +215,6 @@ terminal_run_summary:
     stderr_tail: ''
     mode: portable_contract_attempt
     attempt_claim_boundary: standard_contract_attempt_only
-    telemetry_exists_after_attempt: false
-  - command_argv_redacted:
-    - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
-    - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\tester_config.ini
-    cwd: .
-    started_at_utc: '2026-06-21T21:00:06.560152Z'
-    ended_at_utc: '2026-06-21T21:00:38.581832Z'
-    exit_code: 0
-    timed_out: false
-    stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-    stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-    stdout_tail: ''
-    stderr_tail: ''
-    mode: main_mode_config_fallback
-    attempt_claim_boundary: local_decision_replay_main_mode_fallback_only_no_runtime_authority
     telemetry_exists_after_attempt: true
   terminal_cleanup_actions: []
   terminal_cleanup_policy:
@@ -239,11 +225,11 @@ terminal_run_summary:
   terminal_mode_policy:
     standard_contract_terminal_mode: portable_required
     portable_attempted: true
-    main_mode_fallback_allowed: true
-    main_mode_fallback_used: true
-    fallback_reason: portable_attempt_did_not_produce_decision_replay_execution_telemetry
-    claim_effect: decision_replay_local_main_mode_fallback_observation_only_no_standard_portable_completion_claim
-  selected_attempt_index: 1
+    main_mode_fallback_allowed: false
+    main_mode_fallback_used: false
+    fallback_reason: null
+    claim_effect: decision_replay_standard_portable_attempt_observation
+  selected_attempt_index: 0
   telemetry_observed: true
   version: decision_replay_terminal_run_summary_v1
   summary_path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
@@ -253,9 +239,58 @@ terminal_run_summary:
   bundle_id: bundle_wave0_cell_008_l4_onnx_export_v0
   tester_config:
     path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_config.ini
-    sha256: c20e4a43290db50a304746c5d6a4a20d72023522e46460e84a84a4475caf5e97
-    size_bytes: 1199
+    sha256: d2bbe9968bb6fac34bb8d9c385ede3ba30aac5690f944d774701fdb4a1829d6e
+    size_bytes: 1176
     availability: present_hash_recorded
+  tester_report_config:
+    status: tester_report_config_normalized
+    changed: true
+    report_value: reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\tester_report
+    report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
+  tester_report_resolution_prelaunch:
+    status: tester_report_directories_partially_prepared
+    report_value: reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\tester_report
+    prepared:
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+    skipped:
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+      reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+        \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\\
+        AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0'"
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+      reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+        \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\\
+        AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0'"
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+      reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+        \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\\
+        AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0'"
   source_score_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave0_cell_008_l4_research_oos_v0\score_telemetry.csv
   execution_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_decision_replay\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\execution_telemetry.csv
   claim_boundary: decision_replay_terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
@@ -326,8 +361,8 @@ tester_log_summary:
   status: tester_log_observed
   tester_log:
     redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\Tester\logs\20260622.log
-    sha256: 781f206cba8711694dade36c6e6f12e11bfc36477de492615996ed2ebcd8cf99
-    size_bytes: 30438990
+    sha256: 1636e1c17c428e0a1fd483a791e95e977d83265b7ff35162abb9c103141d42a1
+    size_bytes: 615956592
     availability: local_tester_log_hash_recorded_not_committed
   final_balance: 389.87
   final_balance_currency: USD
@@ -339,88 +374,88 @@ tester_log_summary:
   terminal_finished_duration: null
   agent_log_redacted_path: ${APPDATA}\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000\logs\20260622.log
   context_tail:
-  - "PG\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   order performed buy 0.02\
-    \ at 24266.84 [#11931 buy 0.02 US100 at 24266.84]"
-  - "JG\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   CTrade::OrderSend: market\
-    \ buy 0.02 position #11930 US100 [done at 24266.84]"
-  - "IJ\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   market buy 0.02 US100 (24265.64\
-    \ / 24266.84)"
-  - "JG\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   deal #11932 buy 0.02 US100\
-    \ at 24266.84 done (based on order #11932)"
-  - "RO\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   deal performed [#11932 buy\
-    \ 0.02 US100 at 24266.84]"
-  - "GR\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   order performed buy 0.02\
-    \ at 24266.84 [#11932 buy 0.02 US100 at 24266.84]"
-  - "PP\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   CTrade::OrderSend: market\
-    \ buy 0.02 US100 [done at 24266.84]"
-  - "DM\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   market sell 0.02 US100, close\
-    \ #11932 (24322.77 / 24323.97)"
-  - "CF\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   deal #11933 sell 0.02 US100\
-    \ at 24322.77 done (based on order #11933)"
-  - "RK\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   deal performed [#11933 sell\
-    \ 0.02 US100 at 24322.77]"
-  - "FH\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   order performed sell 0.02\
-    \ at 24322.77 [#11933 sell 0.02 US100 at 24322.77]"
-  - "CE\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   CTrade::OrderSend: market\
-    \ sell 0.02 position #11932 US100 [done at 24322.77]"
-  - "DF\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   market buy 0.02 US100 (24368.89\
-    \ / 24370.09)"
-  - "JS\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   deal #11934 buy 0.02 US100\
-    \ at 24370.09 done (based on order #11934)"
-  - "LR\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   deal performed [#11934 buy\
-    \ 0.02 US100 at 24370.09]"
-  - "DF\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   order performed buy 0.02\
-    \ at 24370.09 [#11934 buy 0.02 US100 at 24370.09]"
-  - "HD\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   CTrade::OrderSend: market\
-    \ buy 0.02 US100 [done at 24370.09]"
-  - "PI\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   market sell 0.02 US100, close\
-    \ #11934 (24439.39 / 24440.59)"
-  - "MI\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   deal #11935 sell 0.02 US100\
-    \ at 24439.39 done (based on order #11935)"
-  - "NG\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   deal performed [#11935 sell\
-    \ 0.02 US100 at 24439.39]"
-  - "CL\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   order performed sell 0.02\
-    \ at 24439.39 [#11935 sell 0.02 US100 at 24439.39]"
-  - "GQ\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   CTrade::OrderSend: market\
-    \ sell 0.02 position #11934 US100 [done at 24439.39]"
-  - "KS\t0\t06:00:35.293\tCore 01\tfinal balance 389.87 USD"
-  - "IF\t0\t06:00:35.293\tCore 01\t2025.11.20 23:59:58   SpaceSonar score replay deinit\
-    \ reason=1 rows_loaded=45281 rows_observed=45281 orders_attempted=5967"
-  - "HK\t0\t06:00:35.293\tCore 01\tUS100,M5: 54636569 ticks, 45281 bars generated.\
-    \ Environment synchronized in 0:00:00.017. Test passed in 0:00:20.659 (including\
-    \ ticks preprocessing 0:00:03.204)."
-  - "NO\t0\t06:00:35.293\tCore 01\tUS100,M5: total time from login to stop testing\
-    \ 0:00:20.676 (including 0:00:00.017 for history data synchronization)"
-  - "KL\t0\t06:00:35.293\tCore 01\t1326 Mb memory used including 7 Mb of history data,\
-    \ 1152 Mb of tick data"
-  - "MP\t0\t06:00:35.293\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\\
+  - "LF\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer SkipLayerNormFusion\
+    \ modified: 0 with status: OK"
+  - "QI\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer FastGeluFusion\
+    \ modified: 0 with status: OK"
+  - "DQ\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer QuickGeluFusion\
+    \ modified: 0 with status: OK"
+  - "GQ\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer BiasSoftmaxFusion\
+    \ modified: 0 with status: OK"
+  - "HR\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer BiasDropoutFusion\
+    \ modified: 0 with status: OK"
+  - "NO\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MatMulScaleFusion\
+    \ modified: 0 with status: OK"
+  - "NP\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MatMulActivationFusion\
+    \ modified: 0 with status: OK"
+  - "FN\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MatMulNBitsFusion\
+    \ modified: 0 with status: OK"
+  - "MR\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer QDQFinalCleanupTransformer\
+    \ modified: 0 with status: OK"
+  - "DS\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer NchwcTransformer\
+    \ modified: 0 with status: OK"
+  - "KK\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer NhwcTransformer\
+    \ modified: 0 with status: OK"
+  - "CH\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer ConvAddActivationFusion\
+    \ modified: 0 with status: OK"
+  - "QG\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer RemoveDuplicateCastTransformer\
+    \ modified: 0 with status: OK"
+  - "ED\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer CastFloat16Transformer\
+    \ modified: 0 with status: OK"
+  - "OD\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer FuseFp16InitializerToFp32NodeTransformer\
+    \ modified: 0 with status: OK"
+  - "RJ\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MemcpyTransformer\
+    \ modified: 0 with status: OK"
+  - "MF\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Use DeviceBasedPartition\
+    \ as default"
+  - "LH\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Saving initialized\
+    \ tensors."
+  - "PR\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Done saving initialized\
+    \ tensors"
+  - "GD\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Session successfully\
+    \ initialized."
+  - "KF\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: CPU selected"
+  - "RS\t0\t20:56:43.971\tCore 01\tUS100 : real ticks begin from 2019.04.01 00:00:00"
+  - "RE\t0\t20:56:44.284\tCore 01\tfinal balance 500.00 USD"
+  - "MP\t0\t20:56:44.284\tCore 01\t2025.03.07 23:54:59   SpaceSonar L4 ONNX release\
+    \ released=true last_error=0 rows=53554"
+  - "LI\t0\t20:56:44.284\tCore 01\tUS100,M5: 63218445 ticks, 53554 bars generated.\
+    \ Environment synchronized in 0:00:00.017. Test passed in 0:00:12.571 (including\
+    \ ticks preprocessing 0:00:04.281)."
+  - "PM\t0\t20:56:44.284\tCore 01\tUS100,M5: total time from login to stop testing\
+    \ 0:00:12.588 (including 0:00:00.017 for history data synchronization)"
+  - "RJ\t0\t20:56:44.284\tCore 01\t1447 Mb memory used including 9 Mb of history data,\
+    \ 1280 Mb of tick data"
+  - "RN\t0\t20:56:44.284\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\\
     MetaQuotes\\Tester\\D0E8209F77C8CF37AD8BF550E51FF075\\Agent-127.0.0.1-3000\\logs\\\
     20260622.log\" written"
-  - "QJ\t0\t06:00:35.587\tTester\tautomatical testing finished"
-  - "KE\t0\t06:00:35.588\tCore 01\tconnection closed"
+  - "OH\t0\t20:56:44.362\tTester\tautomatical testing finished"
+  - "KS\t0\t20:56:44.363\tCore 01\tconnection closed"
   claim_boundary: tester_log_summary_observation_only_no_economics_pass
 tester_report:
-  observed: false
-  status: tester_report_missing_after_terminal_execution
-  path: null
-  claim_boundary: missing_report_no_economics_or_completion_claim
+  observed: true
+  status: tester_report_archived_local_hash_recorded
+  origin: portable_terminal_root
+  source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\tester_report.htm
+  path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/reports/tester_report.htm
+  sha256: f522c1c1d360badc805103d0edb81df3a844032c4072b60dc5df15bf7db515a9
+  size_bytes: 11746366
+  availability: local_report_hash_recorded_ignored_by_git
+  claim_boundary: tester_report_local_evidence_only_no_economics_pass
 execution_state:
   terminal_launched: true
   telemetry_file_observed: true
   telemetry_rows_observed: true
-  tester_report_observed: false
-  tester_report_completed: false
-  terminal_mode: main_mode_config_fallback
-  portable_contract_satisfied: false
-  report_contract_satisfied: false
+  tester_report_observed: true
+  tester_report_completed: true
+  terminal_mode: portable_contract_attempt
+  portable_contract_satisfied: true
+  report_contract_satisfied: true
   period_contract_satisfied: true
   surface_contract_satisfied: true
-  runtime_probe_complete: false
-  missing_requirements:
-  - tester_report_observed
-  - tester_report_completed
-  - portable_terminal_contract
-  completion_claim_boundary: telemetry_adapter_observed_runtime_contract_incomplete
+  runtime_probe_complete: true
+  missing_requirements: []
+  completion_claim_boundary: standard_l4_runtime_probe_complete_no_runtime_authority_no_economics_pass
 migration_history:
 - migration_id: reclassify_wave01_runtime_completion_v1
   previous_sha256: 09f5d14aab5447ce30e0e2761f864395f91b0636979afc8ca1628b63462dbf87

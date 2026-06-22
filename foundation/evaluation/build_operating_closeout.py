@@ -23,9 +23,13 @@ from foundation.evaluation.runtime_contract_evaluator import evaluate_runtime_co
 
 WAVE_CLOSEOUT_PATH = Path("lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml")
 EVALUATION_DIR = Path("lab/evaluations/control_plane_stabilization_v2")
-CLAIM_BOUNDARY = (
+INCOMPLETE_CLAIM_BOUNDARY = (
     "control_plane_stabilization_validated_runtime_contract_incomplete_no_runtime_authority_"
     "no_economics_pass_no_live_readiness_no_selected_baseline"
+)
+COMPLETE_CLAIM_BOUNDARY = (
+    "control_plane_stabilization_validated_standard_l4_runtime_contract_complete_"
+    "no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline"
 )
 
 
@@ -162,19 +166,44 @@ def evaluate_operating_closeout(repo_root: Path, *, write: bool = False) -> Clos
             "runtime_contract_integrity": runtime["status"],
         }
     )
+    runtime_passed = runtime["status"] == "passed"
+    claim_boundary = COMPLETE_CLAIM_BOUNDARY if runtime_passed else INCOMPLETE_CLAIM_BOUNDARY
+    closeout_status = (
+        "wave01_control_plane_proof_closed_runtime_contract_complete"
+        if runtime_passed
+        else "wave01_control_plane_proof_closed_runtime_contract_incomplete"
+    )
+    runtime_contract_judgment = "complete" if runtime_passed else "incomplete"
+    runtime_reason = (
+        "all recorded Wave0/Wave01 L4 attempts have portable terminal execution, telemetry rows, and archived tester reports"
+        if runtime_passed
+        else "standard tester reports and portable contract completion are not present for all L4 attempts"
+    )
+    handoff = existing.get("handoff", {})
+    if runtime_passed:
+        handoff = dict(handoff)
+        handoff["unresolved_risks"] = [
+            risk
+            for risk in handoff.get("unresolved_risks", [])
+            if risk not in {
+                "tester_reports_missing_for_score_and_decision_replay_attempts",
+                "report_or_equity_parser_improvement_before_any_economics_claim",
+            }
+        ]
+
     closeout = {
         "version": "wave_closeout_v2",
         "closeout_id": existing.get("closeout_id", "wave01_operating_closeout_v0"),
         "generated_by": "foundation.evaluation.build_operating_closeout",
         "generated_at_utc": EVALUATION_TIME_UTC,
-        "status": "wave01_control_plane_proof_closed_runtime_contract_incomplete",
+        "status": closeout_status,
         "result": _summary_status(runtime["status"]),
         "result_judgment": {
             "control_plane": "positive",
-            "runtime_contract": "incomplete",
+            "runtime_contract": runtime_contract_judgment,
             "research_outcome": "no_candidate_with_negative_memory_and_preserved_clues",
         },
-        "claim_boundary": CLAIM_BOUNDARY,
+        "claim_boundary": claim_boundary,
         "active_goal_id": existing.get("active_goal_id", "goal_us100_onnx_forward_boundary_v0"),
         "wave_id": existing.get("wave_id", "wave_us100_closedbar_surface_cartography_v0"),
         "source_of_truth": WAVE_CLOSEOUT_PATH.as_posix(),
@@ -183,10 +212,10 @@ def evaluate_operating_closeout(repo_root: Path, *, write: bool = False) -> Clos
         "campaign_summaries": existing.get("campaign_summaries", []),
         "requirement_audit": audit,
         "evaluation_results": list(result_refs.values()),
-        "handoff": existing.get("handoff", {}),
+        "handoff": handoff,
         "runtime_contract_integrity": {
             "status": runtime["status"],
-            "reason": "standard tester reports and portable contract completion are not present for all L4 attempts",
+            "reason": runtime_reason,
             "runtime_authority": False,
             "economics_pass": False,
             "evaluator_id": RUNTIME_EVALUATOR_ID,

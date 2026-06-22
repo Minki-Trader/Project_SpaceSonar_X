@@ -2,20 +2,20 @@ version: wave_closeout_v2
 closeout_id: wave01_operating_closeout_v0
 generated_by: foundation.evaluation.build_operating_closeout
 generated_at_utc: '2026-06-22T14:00:00Z'
-status: wave01_control_plane_proof_closed_runtime_contract_incomplete
+status: wave01_control_plane_proof_closed_runtime_contract_complete
 result:
   control_plane_operating_proof: passed
   research_cycle_closeout: passed
-  runtime_contract_integrity: failed
+  runtime_contract_integrity: passed
   runtime_authority: not_claimed
   economics_pass: not_claimed
   candidate_count: 0
   l5_candidate_count: 0
 result_judgment:
   control_plane: positive
-  runtime_contract: incomplete
+  runtime_contract: complete
   research_outcome: no_candidate_with_negative_memory_and_preserved_clues
-claim_boundary: control_plane_stabilization_validated_runtime_contract_incomplete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+claim_boundary: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 wave_id: wave_us100_closedbar_surface_cartography_v0
 source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
@@ -45,7 +45,7 @@ wave_summary:
   selected_baseline_count: 0
   runtime_authority: false
   economics_pass: false
-  runtime_contract_integrity: failed
+  runtime_contract_integrity: passed
 campaign_summaries:
 - campaign_id: campaign_us100_task_surface_scout_v0
   status: decision_replay_judgment_closed_no_candidate
@@ -105,18 +105,18 @@ requirement_audit:
 - requirement: control_plane_operating_proof
   evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_result_sha256: c9e18aae8fa10c711f1a6abf35d5c5a2e2473077ec2ab92033eda2ffcf39c6e3
+  evaluator_result_sha256: 0e9c7c4313e436c1c2aadc7b7c6a7d2b2b1d281a02bdab52af74ed41d7e62111
   status: passed
 - requirement: research_cycle_closeout
   evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_result_sha256: c9e18aae8fa10c711f1a6abf35d5c5a2e2473077ec2ab92033eda2ffcf39c6e3
+  evaluator_result_sha256: 0e9c7c4313e436c1c2aadc7b7c6a7d2b2b1d281a02bdab52af74ed41d7e62111
   status: passed
 - requirement: runtime_contract_integrity
   evaluator_id: runtime_contract_evaluator_v2
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
-  evaluator_result_sha256: 6ed97b4b944ee75f28d74aec2f1b2df14b22c19105173c8e39f5a5f76a433e3b
-  status: failed
+  evaluator_result_sha256: fee9c125d1406fd29f99f9628cb9ff84a0d1a3f3b3d336881c8b5bdf597d470e
+  status: passed
 - requirement: routing_behavior_quality
   evaluator_id: routing_quality_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
@@ -130,8 +130,8 @@ requirement_audit:
 evaluation_results:
 - evaluator_id: runtime_contract_evaluator_v2
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
-  evaluator_result_sha256: 6ed97b4b944ee75f28d74aec2f1b2df14b22c19105173c8e39f5a5f76a433e3b
-  status: failed
+  evaluator_result_sha256: fee9c125d1406fd29f99f9628cb9ff84a0d1a3f3b3d336881c8b5bdf597d470e
+  status: passed
 - evaluator_id: routing_quality_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
   evaluator_result_sha256: e88fb62cddfde4a4a8d5cd3b8b28fab62ddd4912b576bf397d55944270162702
@@ -142,7 +142,7 @@ evaluation_results:
   status: passed
 - evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_result_sha256: c9e18aae8fa10c711f1a6abf35d5c5a2e2473077ec2ab92033eda2ffcf39c6e3
+  evaluator_result_sha256: 0e9c7c4313e436c1c2aadc7b7c6a7d2b2b1d281a02bdab52af74ed41d7e62111
   status: passed
 handoff:
   negative_memory_ids:
@@ -154,7 +154,6 @@ handoff:
   - clue_wave0_path_quality_h12_side_signal_v0
   - clue_wave01_session_transition_remaining_decision_surface_needed_v0
   unresolved_risks:
-  - tester_reports_missing_for_score_and_decision_replay_attempts
   - no_strategy_tester_economics_pass_claim
   - no_runtime_authority_claim
   - no_L5_candidate
@@ -172,14 +171,14 @@ handoff:
   - do_not_force_non_directional_or_diagnostic_scores_into_orders_without_new_decision_surface
   - do_not_open_feature_only_label_only_model_only_threshold_only_or_repair_only_campaign
 runtime_contract_integrity:
-  status: failed
-  reason: standard tester reports and portable contract completion are not present
-    for all L4 attempts
+  status: passed
+  reason: all recorded Wave0/Wave01 L4 attempts have portable terminal execution,
+    telemetry rows, and archived tester reports
   runtime_authority: false
   economics_pass: false
   evaluator_id: runtime_contract_evaluator_v2
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
-  evaluator_result_sha256: 6ed97b4b944ee75f28d74aec2f1b2df14b22c19105173c8e39f5a5f76a433e3b
+  evaluator_result_sha256: fee9c125d1406fd29f99f9628cb9ff84a0d1a3f3b3d336881c8b5bdf597d470e
 not_claimed:
 - runtime_authority
 - economics_pass
@@ -194,4 +193,4 @@ migration_history:
   reason: separate_control_plane_closeout_from_standard_l4_runtime_completion
   executed_at_utc: '2026-06-22T11:52:40Z'
 next_action: work_post_wave01_user_directed_wave02_or_review_v0
-evaluation_digest: 7349711307a2bcaf8974b8c6935a3a2320b8cc22c7b846900a582e038671461a
+evaluation_digest: 3dfed6bf4f16a4d9d2a02c77812239ce41e57e024eb4c746db583f0003e2ff4e

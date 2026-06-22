@@ -2,7 +2,7 @@ version: work_closeout_v1
 work_item_id: work_wave01_event_barrier_l4_decision_replay_runtime_execution_v0
 parent_work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-closed_at_utc: '2026-06-22T00:29:59Z'
+closed_at_utc: '2026-06-22T15:42:02Z'
 result_judgment: runtime_probe
 status: wave01_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
 claim_boundary: wave01_event_barrier_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
@@ -12,16 +12,23 @@ evidence_paths:
 - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
 counts:
   prepared_attempt_count: 10
-  selected_attempt_count: 10
+  selected_attempt_count: 0
   indexed_execution_count: 10
   executed_attempt_count: 10
   completed_manifest_count: 10
+  touched_manifest_count: 10
   source_score_telemetry_observed_count: 10
   execution_telemetry_observed_count: 10
   execution_telemetry_missing_count: 0
-  tester_report_observed_count: 0
-  tester_report_missing_count: 10
+  tester_report_observed_count: 10
+  tester_report_missing_count: 0
   tester_log_observed_count: 10
+  terminal_execution_count: 10
+  telemetry_observation_count: 10
+  tester_report_observation_count: 10
+  portable_contract_count: 10
+  runtime_probe_complete_count: 10
+  runtime_probe_incomplete_count: 0
   open_action_count: 48439
   close_action_count: 48347
   open_failed_count: 174
@@ -31,7 +38,7 @@ counts:
   direction_policy_counts:
     score_band_side: 10
   status_counts:
-    completed_decision_replay_execution_telemetry_observed: 10
+    runtime_probe_completed: 10
   result_judgment_counts:
     runtime_probe: 10
 required_gate_coverage:
@@ -44,7 +51,6 @@ required_gate_coverage:
   - final_claim_guard
   missing:
   - paired_wave01_decision_replay_judgment_pending
-  - tester_report_hash_or_report_export_adapter_for_economics_claim
   not_applicable:
   - runtime_authority
   - economics_pass

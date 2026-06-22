@@ -4,8 +4,8 @@ attempt_id: attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_
 status: tester_log_observed
 tester_log:
   redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\Tester\logs\20260622.log
-  sha256: 781f206cba8711694dade36c6e6f12e11bfc36477de492615996ed2ebcd8cf99
-  size_bytes: 30438990
+  sha256: 1636e1c17c428e0a1fd483a791e95e977d83265b7ff35162abb9c103141d42a1
+  size_bytes: 615956592
   availability: local_tester_log_hash_recorded_not_committed
 final_balance: 389.87
 final_balance_currency: USD
@@ -17,63 +17,60 @@ terminal_finished_result: null
 terminal_finished_duration: null
 agent_log_redacted_path: ${APPDATA}\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000\logs\20260622.log
 context_tail:
-- "PG\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   order performed buy 0.02 at\
-  \ 24266.84 [#11931 buy 0.02 US100 at 24266.84]"
-- "JG\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   CTrade::OrderSend: market buy\
-  \ 0.02 position #11930 US100 [done at 24266.84]"
-- "IJ\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   market buy 0.02 US100 (24265.64\
-  \ / 24266.84)"
-- "JG\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   deal #11932 buy 0.02 US100\
-  \ at 24266.84 done (based on order #11932)"
-- "RO\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   deal performed [#11932 buy\
-  \ 0.02 US100 at 24266.84]"
-- "GR\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   order performed buy 0.02 at\
-  \ 24266.84 [#11932 buy 0.02 US100 at 24266.84]"
-- "PP\t0\t06:00:35.293\tCore 01\t2025.11.20 19:55:00   CTrade::OrderSend: market buy\
-  \ 0.02 US100 [done at 24266.84]"
-- "DM\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   market sell 0.02 US100, close\
-  \ #11932 (24322.77 / 24323.97)"
-- "CF\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   deal #11933 sell 0.02 US100\
-  \ at 24322.77 done (based on order #11933)"
-- "RK\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   deal performed [#11933 sell\
-  \ 0.02 US100 at 24322.77]"
-- "FH\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   order performed sell 0.02 at\
-  \ 24322.77 [#11933 sell 0.02 US100 at 24322.77]"
-- "CE\t0\t06:00:35.293\tCore 01\t2025.11.20 20:00:00   CTrade::OrderSend: market sell\
-  \ 0.02 position #11932 US100 [done at 24322.77]"
-- "DF\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   market buy 0.02 US100 (24368.89\
-  \ / 24370.09)"
-- "JS\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   deal #11934 buy 0.02 US100\
-  \ at 24370.09 done (based on order #11934)"
-- "LR\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   deal performed [#11934 buy\
-  \ 0.02 US100 at 24370.09]"
-- "DF\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   order performed buy 0.02 at\
-  \ 24370.09 [#11934 buy 0.02 US100 at 24370.09]"
-- "HD\t0\t06:00:35.293\tCore 01\t2025.11.20 20:05:00   CTrade::OrderSend: market buy\
-  \ 0.02 US100 [done at 24370.09]"
-- "PI\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   market sell 0.02 US100, close\
-  \ #11934 (24439.39 / 24440.59)"
-- "MI\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   deal #11935 sell 0.02 US100\
-  \ at 24439.39 done (based on order #11935)"
-- "NG\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   deal performed [#11935 sell\
-  \ 0.02 US100 at 24439.39]"
-- "CL\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   order performed sell 0.02 at\
-  \ 24439.39 [#11935 sell 0.02 US100 at 24439.39]"
-- "GQ\t0\t06:00:35.293\tCore 01\t2025.11.20 20:10:00   CTrade::OrderSend: market sell\
-  \ 0.02 position #11934 US100 [done at 24439.39]"
-- "KS\t0\t06:00:35.293\tCore 01\tfinal balance 389.87 USD"
-- "IF\t0\t06:00:35.293\tCore 01\t2025.11.20 23:59:58   SpaceSonar score replay deinit\
-  \ reason=1 rows_loaded=45281 rows_observed=45281 orders_attempted=5967"
-- "HK\t0\t06:00:35.293\tCore 01\tUS100,M5: 54636569 ticks, 45281 bars generated. Environment\
-  \ synchronized in 0:00:00.017. Test passed in 0:00:20.659 (including ticks preprocessing\
-  \ 0:00:03.204)."
-- "NO\t0\t06:00:35.293\tCore 01\tUS100,M5: total time from login to stop testing 0:00:20.676\
+- "LF\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer SkipLayerNormFusion\
+  \ modified: 0 with status: OK"
+- "QI\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer FastGeluFusion\
+  \ modified: 0 with status: OK"
+- "DQ\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer QuickGeluFusion\
+  \ modified: 0 with status: OK"
+- "GQ\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer BiasSoftmaxFusion\
+  \ modified: 0 with status: OK"
+- "HR\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer BiasDropoutFusion\
+  \ modified: 0 with status: OK"
+- "NO\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MatMulScaleFusion\
+  \ modified: 0 with status: OK"
+- "NP\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MatMulActivationFusion\
+  \ modified: 0 with status: OK"
+- "FN\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MatMulNBitsFusion\
+  \ modified: 0 with status: OK"
+- "MR\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer QDQFinalCleanupTransformer\
+  \ modified: 0 with status: OK"
+- "DS\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer NchwcTransformer\
+  \ modified: 0 with status: OK"
+- "KK\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer NhwcTransformer\
+  \ modified: 0 with status: OK"
+- "CH\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer ConvAddActivationFusion\
+  \ modified: 0 with status: OK"
+- "QG\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer RemoveDuplicateCastTransformer\
+  \ modified: 0 with status: OK"
+- "ED\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer CastFloat16Transformer\
+  \ modified: 0 with status: OK"
+- "OD\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer FuseFp16InitializerToFp32NodeTransformer\
+  \ modified: 0 with status: OK"
+- "RJ\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: GraphTransformer MemcpyTransformer\
+  \ modified: 0 with status: OK"
+- "MF\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Use DeviceBasedPartition\
+  \ as default"
+- "LH\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Saving initialized tensors."
+- "PR\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Done saving initialized\
+  \ tensors"
+- "GD\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: Session successfully\
+  \ initialized."
+- "KF\t0\t20:56:37.867\tCore 01\t2024.06.05 00:00:00   ONNX: CPU selected"
+- "RS\t0\t20:56:43.971\tCore 01\tUS100 : real ticks begin from 2019.04.01 00:00:00"
+- "RE\t0\t20:56:44.284\tCore 01\tfinal balance 500.00 USD"
+- "MP\t0\t20:56:44.284\tCore 01\t2025.03.07 23:54:59   SpaceSonar L4 ONNX release\
+  \ released=true last_error=0 rows=53554"
+- "LI\t0\t20:56:44.284\tCore 01\tUS100,M5: 63218445 ticks, 53554 bars generated. Environment\
+  \ synchronized in 0:00:00.017. Test passed in 0:00:12.571 (including ticks preprocessing\
+  \ 0:00:04.281)."
+- "PM\t0\t20:56:44.284\tCore 01\tUS100,M5: total time from login to stop testing 0:00:12.588\
   \ (including 0:00:00.017 for history data synchronization)"
-- "KL\t0\t06:00:35.293\tCore 01\t1326 Mb memory used including 7 Mb of history data,\
-  \ 1152 Mb of tick data"
-- "MP\t0\t06:00:35.293\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\\
+- "RJ\t0\t20:56:44.284\tCore 01\t1447 Mb memory used including 9 Mb of history data,\
+  \ 1280 Mb of tick data"
+- "RN\t0\t20:56:44.284\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\\
   Tester\\D0E8209F77C8CF37AD8BF550E51FF075\\Agent-127.0.0.1-3000\\logs\\20260622.log\"\
   \ written"
-- "QJ\t0\t06:00:35.587\tTester\tautomatical testing finished"
-- "KE\t0\t06:00:35.588\tCore 01\tconnection closed"
+- "OH\t0\t20:56:44.362\tTester\tautomatical testing finished"
+- "KS\t0\t20:56:44.363\tCore 01\tconnection closed"
 claim_boundary: tester_log_summary_observation_only_no_economics_pass

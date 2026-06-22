@@ -1,39 +1,18 @@
 version: wave0_l4_runtime_execution_compile_summary_v1
 summary_path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
-created_at_utc: '2026-06-21T20:00:24Z'
+created_at_utc: '2026-06-22T14:38:13Z'
 ea_source:
   path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
-  sha256: 7d5ff6c99cb4f6e0808839c427620a9d339a91562296ed9b3957459fdbcad03d
-  size_bytes: 18341
+  sha256: 57dd733be827b760d51d341aae80b40c9ea9352e4f310cb2fcd92b2790b9dc69
+  size_bytes: 26559
   availability: present_hash_recorded
 ea_binary:
   path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
-  sha256: 078ebec65a238bcaeeeb33904f82869c6121e742427406ec4923aed4c7762ae7
-  size_bytes: 29328
+  sha256: 638da23cc53bbb6886756969aa51dc318e9706ba1fcfc7b1a888d3b692b2cf14
+  size_bytes: 33564
   availability: local_binary_hash_recorded_ignored_by_git
-compile_attempted: true
-compile_process:
-  command_argv_redacted:
-  - ${PROGRAMFILES}\MetaTrader 5\MetaEditor64.exe
-  - /portable
-  - /compile:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.mq5
-  - /log:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\lab\campaigns\campaign_us100_task_surface_scout_v0\l4_follow_through\l4_runtime_execution_compile.log
-  cwd: .
-  started_at_utc: '2026-06-21T20:00:25.494691Z'
-  ended_at_utc: '2026-06-21T20:00:27.642373Z'
-  exit_code: 1
-  timed_out: false
-  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-  stdout_tail: ''
-  stderr_tail: ''
-compile_log:
-  path: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_compile.log
-  exists: true
-  sha256: c571470fadaec38288bf637a0647e0dbbb3e255ebba712e348b917b99a57aa02
-  size_bytes: 3460
-  compile_errors: 0
-  compile_warnings: 0
-status: ea_compiled_for_runtime_execution
+compile_attempted: false
+compile_process: null
+compile_log: null
+status: ea_binary_available
 claim_boundary: ea_compile_or_binary_preflight_only_not_strategy_tester_output
-compile_success_derived_from_log_and_binary: true

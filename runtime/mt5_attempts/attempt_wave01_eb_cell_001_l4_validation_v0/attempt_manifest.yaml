@@ -8,7 +8,7 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_event_barrier_decision_surface_v0
 sweep_id: sweep_us100_event_barrier_broad_v0
 created_at_utc: '2026-06-21T22:34:04Z'
-status: telemetry_adapter_observed_runtime_contract_incomplete
+status: runtime_probe_completed
 claim_boundary: wave01_event_barrier_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
 source_of_truth: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/attempt_manifest.yaml
 work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
@@ -157,8 +157,8 @@ proxy_runtime_parity:
 artifact_identity:
   ea_entrypoint:
     path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
-    sha256: 400c0a58883ac29a537f3abdf41df4a1932f2970f445f5716dc9ce70dce3ee56
-    size_bytes: 25789
+    sha256: 57dd733be827b760d51d341aae80b40c9ea9352e4f310cb2fcd92b2790b9dc69
+    size_bytes: 26559
     availability: present_hash_recorded
   ea_binary:
     path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
@@ -203,8 +203,8 @@ artifact_identity:
   tester_reports:
   - observed: true
     status: tester_report_archived_local_hash_recorded
-    origin: main_terminal_data_root
-    source_redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report.htm
+    origin: portable_terminal_root
+    source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report.htm
     path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/reports/tester_report.htm
     sha256: 9c074580465fadcbd00991275681950b7946427101f10344035bc7ef288b56db
     size_bytes: 27294
@@ -221,8 +221,8 @@ artifact_identity:
       availability: local_telemetry_hash_recorded_ignored_by_git
   terminal_run_summary:
     path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/terminal_run_summary.yaml
-    sha256: b2e815c86ef1359ccd90f92b43a6d68fd71f4056934e9d9aa83cf7ada2d62903
-    size_bytes: 7706
+    sha256: 3fa9c77facee09df48f61984e5ffaf6ea5b3f0cfe6d4b92f9d71f64966103b81
+    size_bytes: 6535
     availability: present_hash_recorded
   score_telemetry_summary:
     path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/score_telemetry_summary.yaml
@@ -411,19 +411,17 @@ required_gate_coverage:
   - ea_compile_smoke
   - final_claim_guard
   - Strategy_Tester_terminal_execution
-  - score_telemetry_csv
-  - result_judgment_from_L4
   - L4_period_role_completed_report
   - tester_report_hash
+  - score_telemetry_csv
+  - result_judgment_from_L4
   missing: []
   not_applicable:
   - locked_final_oos_b_access
   - economics_pass
   - runtime_authority
-missing_evidence:
-- runtime_completion_missing:portable_terminal_contract
-next_action: rerun or repair portable tester-report-backed L4 before standard completion
-  or L5 claim
+missing_evidence: []
+next_action: aggregate this period role with its paired L4 attempt before L5 decision
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -449,29 +447,30 @@ runtime_probe_routing:
   claim_boundary: wave01_event_barrier_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
 terminal_run_summary:
   command_argv_redacted:
-  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+  - /portable
   - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\tester_config.ini
   cwd: .
-  started_at_utc: '2026-06-22T11:56:20.103024Z'
-  ended_at_utc: '2026-06-22T11:56:46.086306Z'
+  started_at_utc: '2026-06-22T14:04:09.492785Z'
+  ended_at_utc: '2026-06-22T14:04:35.052140Z'
   exit_code: 0
   timed_out: false
   stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
   stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
   stdout_tail: ''
   stderr_tail: ''
-  mode: main_mode_config_fallback
-  attempt_claim_boundary: local_l4_main_mode_fallback_only_no_runtime_authority
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
   telemetry_exists_after_attempt: true
   terminal_attempts:
   - command_argv_redacted:
-    - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+    - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
     - /portable
     - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\tester_config.ini
     cwd: .
-    started_at_utc: '2026-06-22T11:56:15.647965Z'
-    ended_at_utc: '2026-06-22T11:56:20.102011Z'
-    exit_code: 3294954941
+    started_at_utc: '2026-06-22T14:04:09.492785Z'
+    ended_at_utc: '2026-06-22T14:04:35.052140Z'
+    exit_code: 0
     timed_out: false
     stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -479,21 +478,6 @@ terminal_run_summary:
     stderr_tail: ''
     mode: portable_contract_attempt
     attempt_claim_boundary: standard_contract_attempt_only
-    telemetry_exists_after_attempt: false
-  - command_argv_redacted:
-    - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
-    - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\tester_config.ini
-    cwd: .
-    started_at_utc: '2026-06-22T11:56:20.103024Z'
-    ended_at_utc: '2026-06-22T11:56:46.086306Z'
-    exit_code: 0
-    timed_out: false
-    stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-    stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-    stdout_tail: ''
-    stderr_tail: ''
-    mode: main_mode_config_fallback
-    attempt_claim_boundary: local_l4_main_mode_fallback_only_no_runtime_authority
     telemetry_exists_after_attempt: true
   terminal_cleanup_actions: []
   terminal_cleanup_policy:
@@ -504,11 +488,11 @@ terminal_run_summary:
   terminal_mode_policy:
     standard_contract_terminal_mode: portable_required
     portable_attempted: true
-    main_mode_fallback_allowed: true
-    main_mode_fallback_used: true
-    fallback_reason: portable_attempt_did_not_produce_l4_score_telemetry
-    claim_effect: l4_local_main_mode_fallback_observation_only_no_standard_portable_completion_claim
-  selected_attempt_index: 1
+    main_mode_fallback_allowed: false
+    main_mode_fallback_used: false
+    fallback_reason: null
+    claim_effect: l4_standard_portable_attempt_observation
+  selected_attempt_index: 0
   telemetry_observed: true
   version: wave0_l4_terminal_run_summary_v1
   summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/terminal_run_summary.yaml
@@ -526,7 +510,7 @@ terminal_run_summary:
     report_value: reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report
     report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
   tester_report_resolution_prelaunch:
-    status: tester_report_directories_partially_prepared
+    status: tester_report_directories_prepared
     report_value: reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report
     prepared:
     - origin: repository_path
@@ -535,6 +519,12 @@ terminal_run_summary:
       redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
     - origin: repository_path
       redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
     - origin: main_terminal_data_root
       redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
     - origin: main_terminal_data_root
@@ -547,19 +537,7 @@ terminal_run_summary:
       redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
     - origin: attempt_archive_path
       redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
-    skipped:
-    - origin: portable_terminal_root
-      redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
-      reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\
-        \uB418\uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
-    - origin: portable_terminal_root
-      redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
-      reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\
-        \uB418\uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
-    - origin: portable_terminal_root
-      redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
-      reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\
-        \uB418\uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
+    skipped: []
   common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave01_eb_cell_001_l4_validation_v0\score_telemetry.csv
   claim_boundary: terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
   telemetry_file_observed_after_attempt: true
@@ -606,8 +584,8 @@ score_telemetry_summary:
 tester_report:
   observed: true
   status: tester_report_archived_local_hash_recorded
-  origin: main_terminal_data_root
-  source_redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report.htm
+  origin: portable_terminal_root
+  source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report.htm
   path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/reports/tester_report.htm
   sha256: 9c074580465fadcbd00991275681950b7946427101f10344035bc7ef288b56db
   size_bytes: 27294
@@ -620,15 +598,14 @@ execution_state:
   telemetry_rows_observed: true
   tester_report_observed: true
   tester_report_completed: true
-  terminal_mode: main_mode_config_fallback
-  portable_contract_satisfied: false
+  terminal_mode: portable_contract_attempt
+  portable_contract_satisfied: true
   report_contract_satisfied: true
   period_contract_satisfied: true
   surface_contract_satisfied: true
-  runtime_probe_complete: false
-  missing_requirements:
-  - portable_terminal_contract
-  completion_claim_boundary: telemetry_adapter_observed_runtime_contract_incomplete
+  runtime_probe_complete: true
+  missing_requirements: []
+  completion_claim_boundary: standard_l4_runtime_probe_complete_no_runtime_authority_no_economics_pass
 migration_history:
 - migration_id: reclassify_wave01_runtime_completion_v1
   previous_sha256: b6110139d4c561319747bbef9346b0b7f62914d79a34a259df23c0611ce53e57

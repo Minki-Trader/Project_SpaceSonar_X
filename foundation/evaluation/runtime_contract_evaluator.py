@@ -60,6 +60,11 @@ def evaluate_runtime_contract(repo_root: Path) -> dict[str, Any]:
         findings.append({"id": "status_prefix_completion_violations", "count": status_prefix_violations})
 
     status = "failed" if incomplete_count else "passed"
+    claim_effect = (
+        "runtime_contract_integrity_passed_no_runtime_authority_no_economics_pass"
+        if status == "passed"
+        else "runtime_contract_integrity_failed_no_runtime_authority_no_economics_pass"
+    )
     result = {
         "version": "evaluator_result_v1",
         "evaluator_id": EVALUATOR_ID,
@@ -77,7 +82,7 @@ def evaluate_runtime_contract(repo_root: Path) -> dict[str, Any]:
             "status_prefix_completion_violations": status_prefix_violations,
         },
         "findings": findings,
-        "claim_effect": "runtime_contract_integrity_failed_no_runtime_authority_no_economics_pass",
+        "claim_effect": claim_effect,
     }
     return finalize_result(result)
 
