@@ -46,6 +46,13 @@ FIXTURE_GATE = "mt5_native_onnx_fixed_fixture_probe"
 TRY_FIRST_JUDGMENTS = {"blocked", "deferred", "invalid", "discarded"}
 
 
+def is_try_first_disposition_token(value: str) -> bool:
+    normalized = value.lower().strip()
+    if normalized in TRY_FIRST_JUDGMENTS:
+        return True
+    return any(normalized.startswith(f"{judgment}_") for judgment in TRY_FIRST_JUDGMENTS)
+
+
 def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8-sig")
 
@@ -203,13 +210,16 @@ def validate_try_first_disposition(repo_root: Path, path: Path, data: dict[str, 
     errors: list[str] = []
     judgment = str(data.get("result_judgment") or "").lower()
     status = str(data.get("status") or "").lower()
-    if judgment not in TRY_FIRST_JUDGMENTS and status not in TRY_FIRST_JUDGMENTS:
+    judgment_requires_gate = is_try_first_disposition_token(judgment)
+    status_requires_gate = is_try_first_disposition_token(status)
+    if not judgment_requires_gate and not status_requires_gate:
         return errors
 
     label = rel(path, repo_root)
+    trigger = judgment if judgment_requires_gate else status
     disposition = data.get("failure_disposition")
     if not isinstance(disposition, dict):
-        return [f"{label}: {judgment or status} requires failure_disposition record"]
+        return [f"{label}: {trigger} requires failure_disposition record"]
 
     required_fields = [
         "exact_failing_layer",
@@ -218,24 +228,24 @@ def validate_try_first_disposition(repo_root: Path, path: Path, data: dict[str, 
     ]
     for field in required_fields:
         if not disposition.get(field):
-            errors.append(f"{label}: {judgment or status} missing failure_disposition.{field}")
+            errors.append(f"{label}: {trigger} missing failure_disposition.{field}")
 
     reproduction = disposition.get("failure_reproduction")
     attempt_blocker = disposition.get("attempt_blocker_if_no_repair")
     if not reproduction and not attempt_blocker:
         errors.append(
-            f"{label}: {judgment or status} requires failure reproduction or narrow repair-attempt blocker"
+            f"{label}: {trigger} requires failure reproduction or narrow repair-attempt blocker"
         )
 
     attempts = disposition.get("repair_or_fallback_attempts") or []
     if not attempts and not attempt_blocker:
         errors.append(
-            f"{label}: {judgment or status} requires bounded repair/fallback attempt or narrow attempt blocker"
+            f"{label}: {trigger} requires bounded repair/fallback attempt or narrow attempt blocker"
         )
 
     evidence_paths = disposition.get("evidence_paths") or []
     if not evidence_paths:
-        errors.append(f"{label}: {judgment or status} requires failure_disposition.evidence_paths")
+        errors.append(f"{label}: {trigger} requires failure_disposition.evidence_paths")
 
     return errors
 

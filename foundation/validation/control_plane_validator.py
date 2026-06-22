@@ -175,6 +175,23 @@ def validate_work_item_schema(repo_root: Path) -> list[str]:
         observed=skill_routing,
         required=REQUIRED_SKILL_ROUTING_FIELDS,
     )
+    failure_disposition = set((fields.get("failure_disposition") or {}).get("required_fields", []))
+    add_missing(
+        errors,
+        label="work_item.schema.yaml fields.failure_disposition",
+        observed=failure_disposition,
+        required={
+            "status",
+            "attempt_before_disposition",
+            "failure_reproduction",
+            "exact_failing_layer",
+            "bounded_repair_or_fallback_attempt_or_attempt_blocker",
+            "evidence_path",
+            "remaining_blocker",
+            "reopen_condition",
+            "claim_effect",
+        },
+    )
     role_modes = set(data.get("agent_role_modes_allowed", []))
     add_missing(
         errors,
@@ -229,6 +246,7 @@ def validate_skill_receipt_schema(repo_root: Path) -> list[str]:
         label="skill_receipt_schema.yaml failure_disposition.required_fields",
         observed=failure_fields,
         required={
+            "attempt_before_disposition",
             "failure_reproduction_or_attempt_blocker",
             "exact_failing_layer",
             "bounded_repair_or_fallback_attempt_or_attempt_blocker",

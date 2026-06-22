@@ -273,7 +273,7 @@ def test_active_validator_rejects_goal_objective_hash_mismatch(tmp_path: Path) -
 
 
 def test_active_validator_rejects_try_first_dispositions_without_try_first_record(tmp_path: Path) -> None:
-    for judgment in ["blocked", "deferred", "invalid", "discarded"]:
+    for judgment in ["blocked", "deferred", "invalid", "discarded", "blocked_retry"]:
         repo = copy_evidence_repo(tmp_path / judgment)
         run_id, _bundle_id, _attempt_id = active_ids(repo)
         receipt_path = repo / "lab" / "runs" / run_id / "experiment_receipt.yaml"
@@ -295,3 +295,27 @@ def test_active_validator_rejects_try_first_dispositions_without_try_first_recor
 
         assert any(f"{judgment} requires failure reproduction" in error for error in errors)
         assert any(f"{judgment} requires bounded repair/fallback attempt" in error for error in errors)
+
+
+def test_active_validator_rejects_try_first_status_prefix_without_record(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    run_id, _bundle_id, _attempt_id = active_ids(repo)
+    manifest_path = repo / "lab" / "runs" / run_id / "run_manifest.json"
+    manifest = load_json(manifest_path)
+    manifest["status"] = "deferred_missing_conversion_adapter"
+    manifest["failure_disposition"] = {
+        "status": "missing_conversion_adapter",
+        "failure_reproduction": None,
+        "exact_failing_layer": None,
+        "repair_or_fallback_attempts": [],
+        "attempt_blocker_if_no_repair": None,
+        "evidence_paths": [],
+        "remaining_blocker": None,
+        "reopen_condition": None,
+    }
+    write_json(manifest_path, manifest)
+
+    errors = validate(repo)
+
+    assert any("deferred_missing_conversion_adapter requires failure reproduction" in error for error in errors)
+    assert any("deferred_missing_conversion_adapter requires bounded repair/fallback attempt" in error for error in errors)
