@@ -1,7 +1,7 @@
 version: surface_manifest_v1
 surface_id: surface_us100_session_transition_regime_surface_v0
 hypothesis_id: hyp_us100_session_transition_regime_surface_v0
-status: first_batch_specs_materialized_not_executed
+status: wave01_session_transition_closed_preserved_clues_no_candidate
 created_at_utc: '2026-06-22T01:44:27Z'
 inheritance_policy: no_prior_feature_label_target_model_or_runtime_defaults
 problem_shape:
@@ -39,7 +39,7 @@ runtime_learning_probe_decision:
   decision: required_after_valid_proxy_model_run
   reason: Every valid proxy/model-bearing surface must reach L4 or record failure
     disposition.
-claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -54,7 +54,7 @@ known_differences:
 - timeout_or_no_trade_logic_must_translate_into_EA_semantics_before_L4
 notes: Surface open only; feature count, label thresholds, model family, and output
   head are not fixed.
-updated_at_utc: '2026-06-22T02:29:41Z'
+updated_at_utc: '2026-06-22T04:37:38Z'
 first_batch_specs:
   status: first_batch_specs_materialized_not_executed
   spec_count: 10
@@ -66,4 +66,14 @@ first_batch_specs:
   runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
   claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
-next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+next_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
+evidence_path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+next_action_detail: Prepare Wave01 closeout review or open a genuinely new multi-axis
+  surface. Do not continue session-transition inverse score-band replay as candidate
+  repair. Remaining non-directional/diagnostic clues require a newly declared decision
+  surface before any trade replay.
+closeout:
+  campaign_closeout: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+  result_judgment: preserved_clue
+  candidate_count: 0
+  l5_candidate_count: 0

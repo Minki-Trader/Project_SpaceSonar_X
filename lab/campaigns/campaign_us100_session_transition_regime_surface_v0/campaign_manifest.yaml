@@ -2,9 +2,9 @@ version: campaign_manifest_v1
 campaign_id: campaign_us100_session_transition_regime_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: executed_proxy_observation_l4_required
+status: wave01_session_transition_closed_preserved_clues_no_candidate
 created_at_utc: '2026-06-22T01:44:27Z'
-updated_at_utc: '2026-06-22T03:12:35.950048Z'
+updated_at_utc: '2026-06-22T04:37:38Z'
 target_branch: codex/l4-pair-judgment-closeout
 wave_ids:
 - wave_us100_closedbar_surface_cartography_v0
@@ -96,7 +96,7 @@ git_integration:
   close_event: campaign_close
   main_push_policy: boundary_only_after_coherent_commit
   per_run_main_push_default: false
-  status: branch_open_pending_main_boundary
+  status: campaign_close_branch_committed_pending_main_boundary
 skill_routing:
   primary_family: experiment_design
   primary_skill: spacesonar-experiment-design
@@ -112,7 +112,7 @@ required_gates:
 - campaign_proxy_runtime_parity_policy
 - first_batch_spec_before_execution
 - final_claim_guard
-claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -203,7 +203,7 @@ runtime_learning_probe_decision_default:
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
 proxy_runtime_parity:
   required_for_proxy_model_bearing_runs: true
-  status: planned_before_first_batch
+  status: campaign_closed_with_negative_memory_and_preserved_decision_surface_clues
   shared_contract:
   - FPMarkets_US100_M5_closed_bar_base_frame
   - us100_bar_close_time_row_key
@@ -244,15 +244,21 @@ proxy_runtime_parity:
   - proxy_bad_runtime_bad
   - proxy_bad_runtime_good
   - invalid_or_unmaterializable
-  divergence_judgment: pending
+  divergence_judgment: one_inverse_score_band_replay_negative_remaining_clues_need_new_decision_surface
   prevention_memory:
   - Do not carry score_band_side or momentum_ret_1 replay forward as session transition
     evidence.
   - Session boundary semantics must be checked against the active MT5 time binding
     before L4.
-  follow_up_action: work_wave01_session_transition_first_batch_spec_v0
+  - Failed-breakout inverse score-band replay lost in validation and research_oos;
+    no L5.
+  - Non-directional event/tradeability clues need a declared side surface before trade
+    replay.
+  - Diagnostic/no-trade clues need a declared trade or no-trade surface before replay.
+  - Do not force remaining preserved clues into orders as a campaign repair.
+  follow_up_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
   claim_boundary: campaign_parity_tracking_only_no_runtime_authority
-next_action: work_wave01_session_transition_l4_materialization_preflight_v0
+next_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
 notes: Campaign opened as a new multi-axis surface, not bounded synthesis and not
   a repair continuation.
 first_batch_specs:
@@ -271,3 +277,20 @@ result_counts:
   negative: 2
   preserved_clue: 5
 candidate_count: 0
+evidence_path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+next_action_detail: Prepare Wave01 closeout review or open a genuinely new multi-axis
+  surface. Do not continue session-transition inverse score-band replay as candidate
+  repair. Remaining non-directional/diagnostic clues require a newly declared decision
+  surface before any trade replay.
+campaign_closeout:
+  path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+  status: wave01_session_transition_closed_preserved_clues_no_candidate
+  result_judgment: preserved_clue
+  candidate_count: 0
+  l5_candidate_count: 0
+  negative_memory_ids:
+  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  preserved_clue_ids:
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+  next_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0

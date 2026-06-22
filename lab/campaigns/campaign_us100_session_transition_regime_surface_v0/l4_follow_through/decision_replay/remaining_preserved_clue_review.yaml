@@ -1,0 +1,64 @@
+version: wave01_session_transition_remaining_preserved_clue_review_v1
+review_id: wave01_session_transition_remaining_preserved_clue_review_v0
+created_at_utc: '2026-06-22T04:37:38Z'
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+status: remaining_preserved_clues_reviewed_requires_new_decision_surface
+claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+source_records:
+  adapter_eligibility_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  decision_replay_judgment_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+  decision_replay_judgment_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+artifact_paths:
+  review_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+  review_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.csv
+  clue_memory: lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
+counts:
+  source_preserved_clue_count: 5
+  negative_memory_recorded_count: 1
+  remaining_preserved_clue_count: 4
+  remaining_non_directional_event_count: 2
+  remaining_diagnostic_or_no_trade_count: 2
+  candidate_count: 0
+  l5_candidate_count: 0
+  closeout_judgment_counts:
+    negative_memory_recorded: 1
+    preserved_clue: 4
+  l5_routing_status_counts:
+    no_l5_decision_replay_log_balance_loss_observed: 1
+    no_l5_preserved_clue_requires_declared_side_surface: 2
+    no_l5_preserved_clue_requires_trade_surface: 2
+judgment:
+  result_subject: Wave01 session-transition remaining preserved clues after decision
+    replay
+  metric_identity: adapter eligibility plus one MT5 decision replay judgment; no tester
+    report economics
+  comparison_baseline: declared decision execution kind per preserved clue
+  judgment_label: preserved_clue
+  claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+  missing_evidence:
+  - declared_side_surface_missing_for_non_directional_event_clues
+  - declared_trade_surface_missing_for_diagnostic_no_trade_clues
+  - tester_reports_missing_for_decision_replay_pairs
+  - economics_pass_forbidden
+  next_action: Prepare Wave01 closeout review or open a genuinely new multi-axis surface.
+    Do not continue session-transition inverse score-band replay as candidate repair.
+    Remaining non-directional/diagnostic clues require a newly declared decision surface
+    before any trade replay.
+prevention_memory:
+- Non-directional event/tradeability scores must not be forced into long/short orders.
+- Diagnostic/no-trade scores require an explicit trade or no-trade decision surface
+  before replay.
+- Remaining preserved clues are not L5 candidates and are not selected baseline evidence.
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

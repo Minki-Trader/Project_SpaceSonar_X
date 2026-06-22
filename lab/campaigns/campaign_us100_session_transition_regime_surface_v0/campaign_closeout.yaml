@@ -1,0 +1,149 @@
+version: campaign_closeout_v1
+closeout_id: work_wave01_session_transition_campaign_closeout_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_closedbar_surface_cartography_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+surface_id: surface_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+closed_at_utc: '2026-06-22T04:37:38Z'
+status: wave01_session_transition_closed_preserved_clues_no_candidate
+result_judgment: preserved_clue
+claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.csv
+- lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+- lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
+campaign_result:
+  proxy_first_batch:
+    status: executed_proxy_observation_l4_required
+    result_counts:
+      inconclusive: 3
+      negative: 2
+      preserved_clue: 5
+    candidate_count: 0
+    claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  l4_score_pair_judgment:
+    status: wave01_session_transition_l4_pair_judgment_completed_no_l5_candidates
+    counts:
+      cell_pair_count: 10
+      expected_cell_pair_count: 10
+      remaining_cell_pair_count: 0
+      both_period_roles_observed_count: 10
+      nonempty_telemetry_pair_count: 10
+      tester_report_pair_observed_count: 0
+      standard_l4_incomplete_count: 10
+      decision_unknown_pair_count: 10
+      proxy_judgment_counts:
+        inconclusive: 3
+        negative: 2
+        preserved_clue: 5
+      l5_status_counts:
+        no_l5_score_probe_only: 5
+        no_l5_yet_preserved_clue_requires_decision_execution_adapter: 5
+      comparison_class_counts:
+        proxy_inconclusive_runtime_score_observed: 3
+        proxy_negative_runtime_score_observed: 2
+        proxy_preserved_clue_runtime_score_observed: 5
+    claim_boundary: wave01_session_transition_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+  decision_replay_judgment:
+    status: wave01_session_transition_decision_replay_judgment_completed_no_l5_candidates
+    counts:
+      cell_pair_count: 1
+      negative_count: 1
+      preserved_clue_count: 0
+      inconclusive_count: 0
+      result_judgment_counts:
+        negative: 1
+      l5_status_counts:
+        no_l5_decision_replay_log_balance_loss_observed: 1
+    claim_boundary: wave01_session_transition_decision_replay_log_balance_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+  remaining_preserved_clue_review:
+    status: remaining_preserved_clues_reviewed_requires_new_decision_surface
+    counts:
+      source_preserved_clue_count: 5
+      negative_memory_recorded_count: 1
+      remaining_preserved_clue_count: 4
+      remaining_non_directional_event_count: 2
+      remaining_diagnostic_or_no_trade_count: 2
+      candidate_count: 0
+      l5_candidate_count: 0
+      closeout_judgment_counts:
+        negative_memory_recorded: 1
+        preserved_clue: 4
+      l5_routing_status_counts:
+        no_l5_decision_replay_log_balance_loss_observed: 1
+        no_l5_preserved_clue_requires_declared_side_surface: 2
+        no_l5_preserved_clue_requires_trade_surface: 2
+    claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+counts:
+  valid_proxy_model_bearing_run_count: 10
+  l4_score_pair_count: 10
+  direct_trade_adapter_eligible_cell_count: 1
+  not_direct_trade_adapter_eligible_cell_count: 4
+  decision_replay_pair_count: 1
+  decision_replay_negative_count: 1
+  remaining_preserved_clue_count: 4
+  remaining_non_directional_event_count: 2
+  remaining_diagnostic_or_no_trade_count: 2
+  candidate_count: 0
+  l5_candidate_count: 0
+  tester_report_pair_observed_count: 0
+  runtime_execution_indexed_count: 2
+negative_memory_ids:
+- neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+preserved_clue_ids:
+- clue_wave01_session_transition_remaining_decision_surface_needed_v0
+prevention_memory:
+- Failed-breakout inverse score-band replay lost in validation and research_oos; no
+  L5.
+- Non-directional event/tradeability clues need a declared side surface before trade
+  replay.
+- Diagnostic/no-trade clues need a declared trade or no-trade surface before replay.
+- Do not force remaining preserved clues into orders as a campaign repair.
+salvage:
+  negative_memory: neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  preserved_clue_memory: clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  mt5_runner_clue: decision replay runner and telemetry path executed end-to-end for
+    one eligible inverse-side clue
+  reopen_condition: Open a genuinely new decision/tradeability surface with side or
+    trade/no-trade semantics, then run MT5 L4 before any candidate or L5 claim.
+missing_evidence:
+- declared_side_surface_missing_for_non_directional_event_clues
+- declared_trade_surface_missing_for_diagnostic_no_trade_clues
+- economics_pass_forbidden
+- locked_final_oos_b_not_used
+- standard_portable_contract_completion_missing_main_mode_fallback_used
+- tester_reports_missing_for_decision_replay_pairs
+next_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
+next_action_detail: Prepare Wave01 closeout review or open a genuinely new multi-axis
+  surface. Do not continue session-transition inverse score-band replay as candidate
+  repair. Remaining non-directional/diagnostic clues require a newly declared decision
+  surface before any trade replay.
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true
+source_truth_effect:
+  campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
+  wave_campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+  campaign_registry: docs/registers/campaign_registry.csv
+  surface_registry: docs/registers/experiment_surface_registry.csv
+  sweep_registry: docs/registers/sweep_registry.csv
+  workspace_state: docs/workspace/workspace_state.yaml
+runtime_claim_effect: no_runtime_authority_no_economics_pass_no_L5_candidate

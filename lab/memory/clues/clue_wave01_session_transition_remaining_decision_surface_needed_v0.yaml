@@ -1,0 +1,28 @@
+version: clue_memory_v1
+clue_id: clue_wave01_session_transition_remaining_decision_surface_needed_v0
+created_at_utc: '2026-06-22T04:37:38Z'
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+subject: Remaining Wave01 session-transition preserved clues require new decision-surface
+  semantics
+clue_type: preserved_decision_surface_requirement
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+observed_cells:
+- wave01_st_cell_002
+- wave01_st_cell_006
+- wave01_st_cell_009
+- wave01_st_cell_010
+required_future_surfaces:
+- new_declared_side_surface_required_before_trade_replay
+- new_declared_trade_or_no_trade_surface_required_before_trade_replay
+do_not_repeat:
+- do_not_force_diagnostic_or_no_trade_score_into_order_execution
+- do_not_force_event_or_tradeability_score_into_long_short_orders
+candidate_effect: no_candidate_no_l5_until_new_decision_surface_and_MT5_L4
+reopen_condition: Open a genuinely new decision/tradeability surface with side or
+  trade/no-trade semantics, then run MT5 L4 before any candidate or L5 claim.

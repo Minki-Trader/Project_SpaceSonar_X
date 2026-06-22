@@ -2,9 +2,9 @@ version: wave_allocation_v1
 wave_id: wave_us100_closedbar_surface_cartography_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 role: initial_blank_slate_surface_cartography
-status: wave01_campaign_003_proxy_executed_l4_required
+status: wave01_three_campaigns_closed_no_candidate
 created_at_utc: '2026-06-21T15:18:51Z'
-claim_boundary: wave01_campaign_003_proxy_executed_l4_required_no_candidate_no_runtime_authority
+claim_boundary: wave01_three_campaigns_closed_no_candidate_not_goal_achieve
 allocation_goal: Map US100 M5 closed-bar task, label, input, decision, and holding
   surfaces before feature-count, model-family, threshold, ONNX, or runtime optimization.
 exploration_coverage_policy:
@@ -123,17 +123,28 @@ campaign_allocations:
   allocation_role: third_unexplored_session_transition_regime_surface
   max_runs: 24
   initial_batch_size: 10
-  status: executed_proxy_observation_l4_required
+  status: wave01_session_transition_closed_preserved_clues_no_candidate
   campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
   run_refs: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
-  claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
-  next_action: work_wave01_session_transition_l4_materialization_preflight_v0
+  claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+  next_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
   first_batch_matrix: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
   first_batch_run_specs_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
   run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
   anti_selection_ledger: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/anti_selection_ledger.yaml
+  campaign_closeout: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+  decision_replay_judgment_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  remaining_preserved_clue_review: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+  negative_memory_ids:
+  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  preserved_clue_ids:
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  next_action_detail: Prepare Wave01 closeout review or open a genuinely new multi-axis
+    surface. Do not continue session-transition inverse score-band replay as candidate
+    repair. Remaining non-directional/diagnostic clues require a newly declared decision
+    surface before any trade replay.
 rotation_conditions:
 - keep_at_least_3_distinct_target_families_alive_through_wave_closeout
 - rotate_axis_if_two_consecutive_steps_are_micro_tuning_without_repeated_clue
@@ -150,9 +161,10 @@ stop_conditions:
 - wfo_rank_instability_blocks_candidate_claim
 - locked_final_oos_requested_for_adaptive_repair_stop
 - neighborhood_perturbation_becomes_generic_micro_tuning_or_candidate_laundering
-next_action: work_wave01_session_transition_l4_materialization_preflight_v0
-notes: Campaign 001 and Campaign 002 closed with no candidate. Event/barrier direct
-  score-band decision replay became negative memory; rotate to a genuinely new surface.
+next_action: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
+notes: Three Wave01 campaigns closed with no candidate. Session-transition replay
+  produced one negative memory and preserved decision-surface clues; prepare Wave01
+  closeout review or rotate to a genuinely new surface.
 first_batch_result:
   status: executed_proxy_scout
   run_count: 12
@@ -182,6 +194,8 @@ proxy_to_runtime_policy:
   every_valid_proxy_run_requires_l4: true
   proxy_only_closeout_allowed: false
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
-updated_at_utc: '2026-06-22T03:12:36.028366Z'
-next_action_detail: Execute first broad proxy batch for the session-transition regime
-  campaign, then force L4 follow-through.
+updated_at_utc: '2026-06-22T04:37:38Z'
+next_action_detail: Prepare Wave01 closeout review or open a genuinely new multi-axis
+  surface. Do not continue session-transition inverse score-band replay as candidate
+  repair. Remaining non-directional/diagnostic clues require a newly declared decision
+  surface before any trade replay.

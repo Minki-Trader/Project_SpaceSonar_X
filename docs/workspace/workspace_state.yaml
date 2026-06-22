@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-22T04:27:32Z'
+updated_utc: '2026-06-22T04:37:38Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -48,7 +48,7 @@ current_claims:
   active_goal_terminal_contract: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
   active_goal_resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
   active_goal_next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  active_goal_claim_boundary: active_goal_session_transition_proxy_executed_L4_required_not_goal_achieve
+  active_goal_claim_boundary: active_goal_wave01_three_campaigns_closed_not_goal_achieve
   active_goal_primary_objective: durable_codex_operation
   active_goal_proof_window: Wave01_closeout
   active_goal_proof_window_role: first_bounded_proof_window_not_final_purpose
@@ -63,8 +63,8 @@ current_claims:
   active_hypothesis_id: hyp_us100_session_transition_regime_surface_v0
   active_surface_id: surface_us100_session_transition_regime_surface_v0
   active_sweep_id: sweep_us100_session_transition_broad_v0
-  active_goal_phase: wave01_session_transition_decision_replay_negative_memory_recorded
-  next_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+  active_goal_phase: wave01_session_transition_campaign_closed_preserved_clues_no_candidate
+  next_work_item_id: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
   wave0_raw_row_count: 308002
@@ -498,12 +498,12 @@ current_claims:
     l5_candidate_count: 0
     tester_report_pair_observed_count: 0
     open_failed_count: 174
-  wave0_third_campaign_status: executed_proxy_observation_l4_required
+  wave0_third_campaign_status: wave01_session_transition_closed_preserved_clues_no_candidate
   wave0_third_campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
   wave0_third_campaign_surface: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
   wave0_third_campaign_sweep: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
-  wave0_third_campaign_next_work_item: work_wave01_session_transition_l4_materialization_preflight_v0
-  wave0_third_campaign_claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  wave0_third_campaign_next_work_item: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
+  wave0_third_campaign_claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
   wave0_third_campaign_first_batch_matrix: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
   wave0_third_campaign_run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
   wave0_third_campaign_first_batch_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
@@ -595,6 +595,28 @@ current_claims:
     l5_status_counts:
       no_l5_decision_replay_log_balance_loss_observed: 1
   wave01_session_transition_inverse_score_band_negative_memory: lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+  wave01_session_transition_campaign_closeout: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+  wave01_session_transition_campaign_status: wave01_session_transition_closed_preserved_clues_no_candidate
+  wave01_session_transition_campaign_claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+  wave01_session_transition_candidate_count: 0
+  wave01_session_transition_l5_candidate_count: 0
+  wave01_session_transition_remaining_preserved_clue_review: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+  wave01_session_transition_preserved_clue_ids:
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  wave01_session_transition_campaign_closeout_counts:
+    valid_proxy_model_bearing_run_count: 10
+    l4_score_pair_count: 10
+    direct_trade_adapter_eligible_cell_count: 1
+    not_direct_trade_adapter_eligible_cell_count: 4
+    decision_replay_pair_count: 1
+    decision_replay_negative_count: 1
+    remaining_preserved_clue_count: 4
+    remaining_non_directional_event_count: 2
+    remaining_diagnostic_or_no_trade_count: 2
+    candidate_count: 0
+    l5_candidate_count: 0
+    tester_report_pair_observed_count: 0
+    runtime_execution_indexed_count: 2
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml
