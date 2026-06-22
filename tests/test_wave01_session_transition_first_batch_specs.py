@@ -6,7 +6,6 @@ from pathlib import Path
 import yaml
 
 from foundation.pipelines.materialize_wave01_session_transition_first_batch_specs import (
-    CLAIM_BOUNDARY,
     first_batch_rows,
     validate_rows,
 )
@@ -14,6 +13,7 @@ from foundation.pipelines.materialize_wave01_session_transition_first_batch_spec
 
 ROOT = Path(__file__).resolve().parents[1]
 CAMPAIGN = ROOT / "lab/campaigns/campaign_us100_session_transition_regime_surface_v0"
+PROXY_CLAIM_BOUNDARY = "wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority"
 
 
 def read_yaml(path: Path) -> dict:
@@ -44,8 +44,8 @@ def test_session_transition_first_batch_rows_are_broad_and_l4_bound() -> None:
 def test_session_transition_materialized_manifest_matches_policy() -> None:
     manifest = read_yaml(CAMPAIGN / "first_batch_run_specs_manifest.yaml")
 
-    assert manifest["status"] == "first_batch_specs_materialized_not_executed"
-    assert manifest["claim_boundary"] == CLAIM_BOUNDARY
+    assert manifest["status"] == "executed_proxy_observation_l4_required"
+    assert manifest["claim_boundary"] == PROXY_CLAIM_BOUNDARY
     assert manifest["spec_count"] == 10
     assert manifest["coverage_summary"]["multi_axis_discovery"] is True
     assert manifest["coverage_summary"]["feature_only_or_label_only_or_model_only"] is False
@@ -59,23 +59,25 @@ def test_session_transition_materialized_manifest_matches_policy() -> None:
     assert manifest["spec_source_policy"]["per_run_manifest_creation"] == "defer_until_proxy_execution"
     assert "runtime_authority" in manifest["forbidden_claims"]
     assert "MT5_L4_not_run" in manifest["missing_evidence"]
+    assert sum(manifest["result_counts"].values()) == 10
 
 
-def test_session_transition_run_specs_index_and_refs_are_matrix_backed_planned_only() -> None:
+def test_session_transition_run_specs_index_and_refs_are_matrix_backed_executed_proxy() -> None:
     index_rows = read_csv(CAMPAIGN / "run_specs_index.csv")
     ref_rows = read_csv(CAMPAIGN / "sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv")
 
     assert len(index_rows) == 10
     assert len(ref_rows) == 10
-    assert all(row["status"] == "planned_not_executed" for row in index_rows)
-    assert all(row["claim_boundary"] == CLAIM_BOUNDARY for row in index_rows)
+    assert all(row["status"] == "executed_proxy_observation_l4_required" for row in index_rows)
+    assert all(row["claim_boundary"] == PROXY_CLAIM_BOUNDARY for row in index_rows)
     assert all(row["runtime_level_required"] == "L4_split_runtime_probe" for row in index_rows)
     assert all(row["spec_source"] == "first_batch_matrix_row" for row in index_rows)
     assert all(row["matrix_path"].endswith("first_batch_matrix.csv") for row in index_rows)
-    assert all(row["result_judgment"] == "not_evaluated" for row in ref_rows)
+    assert {row["result_judgment"] for row in ref_rows} <= {"preserved_clue", "inconclusive", "negative"}
+    assert all(row["run_manifest_path"].startswith("lab/runs/") for row in ref_rows)
     assert all(row["spec_source"] == "first_batch_matrix_row" for row in ref_rows)
     assert all(row["matrix_path"].endswith("first_batch_matrix.csv") for row in ref_rows)
-    assert all(row["next_action"] == "work_wave01_session_transition_execute_first_batch_proxy_v0" for row in ref_rows)
+    assert all(row["next_action"] == "work_wave01_session_transition_l4_materialization_preflight_v0" for row in ref_rows)
 
 
 def test_session_transition_first_batch_does_not_precreate_run_local_specs() -> None:

@@ -43,6 +43,7 @@ from foundation.training.wave01_event_barrier_models import (  # noqa: E402
     judge_proxy_result,
     score_model,
 )
+from foundation.validation.refresh_artifact_registry_hashes import refresh_registry  # noqa: E402
 
 
 UTC = timezone.utc
@@ -519,6 +520,42 @@ def update_state(results: list[dict[str, str]]) -> None:
     ]:
         update_registry_row(REPO_ROOT / "docs/registers" / registry, key, CAMPAIGN_ID if key == "campaign_id" else SWEEP_ID, updates)
 
+    update_registry_row(
+        REPO_ROOT / "docs/registers/goal_registry.csv",
+        "goal_id",
+        "goal_us100_onnx_forward_boundary_v0",
+        {
+            "active_phase": "wave01_campaign_003_proxy_executed_l4_required",
+            "claim_boundary": "active_goal_session_transition_proxy_executed_L4_required_not_goal_achieve",
+            "next_work_item": NEXT_WORK_ITEM_ID,
+            "notes": "Wave01 session-transition proxy batch executed; L4 materialization preflight required next",
+        },
+    )
+
+    wave_path = REPO_ROOT / "lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml"
+    wave = read_yaml(wave_path)
+    wave["status"] = "wave01_campaign_003_proxy_executed_l4_required"
+    wave["claim_boundary"] = "wave01_campaign_003_proxy_executed_l4_required_no_candidate_no_runtime_authority"
+    wave["next_action"] = NEXT_WORK_ITEM_ID
+    wave["updated_at_utc"] = iso_z(utc_now())
+    for allocation in wave.get("campaign_allocations") or []:
+        if allocation.get("campaign_id") == CAMPAIGN_ID:
+            allocation["status"] = "executed_proxy_observation_l4_required"
+            allocation["claim_boundary"] = CLAIM_BOUNDARY
+            allocation["next_action"] = NEXT_WORK_ITEM_ID
+    write_yaml(wave_path, wave)
+
+    campaign_refs_path = REPO_ROOT / "lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv"
+    ref_rows = []
+    for row in read_csv_rows(campaign_refs_path):
+        if row.get("campaign_id") == CAMPAIGN_ID:
+            row["status"] = "executed_proxy_observation_l4_required"
+            row["claim_boundary"] = CLAIM_BOUNDARY
+            row["next_action"] = NEXT_WORK_ITEM_ID
+            row["notes"] = "first broad session-transition proxy batch executed; L4 materialization preflight required next"
+        ref_rows.append(row)
+    write_csv(campaign_refs_path, ref_rows, list(ref_rows[0].keys()))
+
     goal = read_yaml(REPO_ROOT / "lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml")
     goal["updated_at_utc"] = iso_z(utc_now())
     goal["active_phase"] = "wave01_campaign_003_proxy_executed_l4_required"
@@ -543,6 +580,7 @@ def update_state(results: list[dict[str, str]]) -> None:
     claims["wave0_third_campaign_L4_status"] = "L4_materialization_preflight_required_next"
     state["updated_utc"] = iso_z(utc_now())
     write_yaml(REPO_ROOT / "docs/workspace/workspace_state.yaml", state)
+    refresh_registry(REPO_ROOT, REPO_ROOT / "docs/registers/artifact_registry.csv", write=True)
 
 
 def parse_args() -> argparse.Namespace:
