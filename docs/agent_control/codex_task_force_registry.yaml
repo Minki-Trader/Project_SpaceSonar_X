@@ -29,6 +29,27 @@ custom_agent_config:
 
 review_policy:
   default_mode: micro_consult
+  max_depth: 1
+  allocation_profiles:
+    solo:
+      min_agents: 0
+      max_agents: 0
+    micro_specialist:
+      min_agents: 1
+      max_agents: 1
+    micro_adversarial:
+      min_agents: 2
+      max_agents: 2
+    formal_protected_review:
+      min_agents: 3
+      max_agents: 4
+    full_roster:
+      min_agents: 5
+      max_agents: 8
+      default_allowed: false
+      allowed_only_when:
+        - explicit_user_request
+        - protected_system_governance_incident
   micro_consult_default_agent_count: 1
   micro_consult_default_max_agents: 2
   max_threads_capacity_rule: "Configured max_threads is an upper capacity only; actual agent use must be phase-driven and justified."
@@ -65,6 +86,7 @@ review_policy:
   advice_classification:
     - accepted
     - rejected
+    - rewritten
     - needs_local_verification
   final_authority: "Parent Codex owns final direction after local verification."
   source_of_truth_precedence_rule: "Repo source-of-truth files, selected skills, active workspace state, and user constraints override sub-agent advice."
@@ -109,6 +131,32 @@ micro_consult_receipt_schema:
     - selected_skill_rules_checked
     - user_constraints_checked
     - owner_accept_reject_or_rewrite_decision
+
+consult_receipt_v2_schema:
+  version: agent_consult_receipt_v2
+  required_fields:
+    - consult_id
+    - profile
+    - question_digest
+    - selected_agent_ids
+    - source_refs
+    - opinions
+    - owner_decision
+    - verification_refs
+    - claim_effect
+    - metrics
+  allowed_profiles:
+    - solo
+    - micro_specialist
+    - micro_adversarial
+    - formal_protected_review
+    - full_roster
+  allowed_opinion_classifications:
+    - accepted
+    - rejected
+    - rewritten
+    - needs_local_verification
+  claim_effect: advisory_only_no_reviewed_pass
 
 roster:
   - id: agent_01_system_governor

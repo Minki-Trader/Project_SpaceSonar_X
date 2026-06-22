@@ -6,22 +6,15 @@ Purpose: minimal cold-start rules for an ID-based ONNX development lab. Internal
 
 - Build, test, export, package, and probe ONNX-driven FPMarkets `US100` `M5` research systems.
 - Operate as a developer lab with IDs, not numbered legacy pipelines.
-- Primary instrument: `US100` `M5`.
 - Final north star, not an exploration gate: 5+ trades/day, PF about 1.5-3.0, <=10% DD across major windows.
 - Active split catalog: `configs/onnx_lab/split_recipes/split_set_v0.yaml`; research split set only, not baseline/pass/review.
-- Research campaigns are not progressive single-axis optimization tracks. They must explore untried or underexplored surfaces and keep label/target, feature/input, model/training, decision, and holding/eval meaning in view.
+- Campaigns must explore meaningful surfaces, not become single-axis repair rooms.
 
 ## Non-Inheritance
 
-- Blank slate: no default feature set/count, label, target, direction class, holding period, model family, IO shape, output head, threshold, or risk logic.
+- Blank slate: no default feature set, label, target, direction class, holding period, model family, IO shape, output head, threshold, or risk logic.
 - Do not inherit legacy winners, selected baselines, promotion history, live readiness, runtime authority, economics pass, or Goal Achieve.
-- Removed legacy material is unavailable as evidence. Do not recreate it unless the user explicitly restores backup material.
-
-## Symbol Rules
-
-- Live-chart auxiliary symbols are allowed only after local FPMarkets MT5 proves real-time bars/ticks for the exact symbol.
-- Eligible examples only after proof: `BTCUSD`, gold symbols.
-- Forbidden as inputs/features/runtime contracts when stale, delayed, unavailable, offline, or non-updating: `VIX`, single stocks such as `NVDA`, or any non-updating feed.
+- Removed legacy material is unavailable as evidence unless the user explicitly restores it.
 
 ## Default Reads
 
@@ -29,10 +22,11 @@ Read this file first, then stop. Load more only when task-relevant:
 
 - current lab truth: `docs/workspace/workspace_state.yaml`
 - non-trivial routing: `docs/agent_control/work_family_registry.yaml`
+- canonical policy: `docs/agent_control/policy_contract.yaml`
 - ONNX bundle/schema/export: `docs/contracts/onnx_lab_contract.yaml`
 - split/eval: `configs/onnx_lab/split_recipes/split_set_v0.yaml`
 - MT5/runtime: `foundation/config/mt5_runtime_probe_contract.yaml`
-- MT5 runtime date windows: `configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml`
+- MT5 runtime windows: `configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml`
 - selected skill only after routing: `.agents/skills/<skill>/SKILL.md`
 
 Do not read broad archives, legacy routing/review records, or generated run trees by default.
@@ -59,137 +53,42 @@ Every non-trivial work item chooses exactly one `primary_family` and one `primar
 - MT5 attempt: `runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml`
 - indexes only: `docs/registers/`
 
-Wave owns allocation and refs only. Campaign folders stay central under `lab/campaigns/`; do not duplicate them under waves.
-Waves and research campaigns must not be feature-only, label-only, model-only, threshold-only, or repair-only programs. A campaign can emphasize one primary unknown, but it must declare companion axes so the lab still learns how feature/input, label/target, model/training, decision, and evaluation/runtime meanings interact.
-Wave/campaign scope must not become a long repair room for one candidate. Small repair attempts are bounded run/sweep work; if a repair does not reveal a reusable surface clue, close it as negative, invalid, inconclusive, or preserved clue and rotate.
-Do not carry repair work into the next campaign or wave disguised as a new hypothesis. Carryover is allowed only when the prior record names a genuinely new surface, divergence, or prevention-memory question.
-Bounded synthesis campaign: campaign-level previous-material-only mixing. It may combine closed campaign clues, negative memory, and divergence records, but it cannot set or bias the next wave/campaign direction. Default depth is `mix-2 -> mix-3`; `mix-4` requires an explicit reason; `mix-5+` is forbidden unless the project policy is changed first.
+Wave owns allocation and refs only. Campaign folders stay central under `lab/campaigns/`.
 
 ## Code Layout
 
 - reusable package: `src/spacesonar/`
-- collectors: `foundation/collectors/`
-- features: `foundation/features/`
-- labels: `foundation/labels/`
-- training: `foundation/training/`
-- ONNX helpers: `foundation/onnx/`
-- parity: `foundation/parity/`
-- MT5/EA/set templates: `foundation/mt5/`
+- collectors/features/labels/training/ONNX/parity/MT5 helpers: `foundation/`
 - orchestration: `foundation/pipelines/`
 
 Do not put reusable feature, label, ONNX, parity, or MT5 logic only inside one-off run scripts.
 
-## Evidence Rules
+## Critical Guards
 
-- Durable identity uses repo-relative paths plus IDs/hashes.
-- Absolute terminal paths are local context/logs only.
-- Registry rows are indexes, not proof.
-- Heavy artifacts are not committed by default; record path/URI, sha256, size, producer command, regeneration command, or source of truth.
-- Do not duplicate a source-of-truth artifact. If copied, record `source_of_truth` and `copy_reason`.
+Policy meaning lives in `docs/agent_control/policy_contract.yaml`; manifests bind guard IDs instead of copying policy text.
 
-Non-trivial run records must include:
-
-- `primary_family`, `primary_skill`, `required_gates`
-- `claim_boundary`, `forbidden_claims`
-- `runtime_learning_probe_decision`
-- `proxy_runtime_parity`
-- `failure_disposition` when anything is blocked, deferred, invalid, or discarded
-- `missing_evidence`, `result_judgment`, `next_action`
-- `branch_worktree_fit`, `branch_action`
-- provenance: git state, command/runtime identity, timing, input/output hashes
-
-Unknown git/env identity is planning scaffold only; it lowers reproducible-run, bundle, runtime, handoff, pass, readiness, and Goal Achieve claims.
-
-## Attempt Before Disposition
-
-- This rule is global: it applies to code, data, feature, label, model, ONNX, EA, MT5, parser, validator, routing, artifact, and policy-support failures.
-- A nonworking result is `investigation_in_progress` until Codex has identified why it failed, reproduced or bounded the failing layer, and attempted the smallest repo-controlled repair, adapter, fixture, parser, command, compile, runtime probe, or fallback that can test the hypothesis.
-- The first response to "it does not work" is not to abandon it. Determine why, make the smallest credible attempt, then judge. Only a failed attempt or a narrow recorded attempt blocker can justify `blocked`, `deferred`, `invalid`, or `discarded`.
-- Diagnosis text, agent advice, "unsupported", "not available", "cannot", or "no helper/adapter exists" is not enough to block, defer, invalidate, or discard.
-- If missing support is inside repo control, create or patch the smallest explicit support layer needed to test the hypothesis before lowering the claim.
-- Only narrow exceptions can stop the repair attempt: user secrets, unavailable external state, destructive or unsafe action, or project-policy violation. Record the exception, evidence path, remaining blocker, and reopen condition.
-- Only after the failed layer, attempted repair/fallback or narrow blocker, evidence path, remaining blocker, and reopen condition are recorded may a work item become `blocked`, `deferred`, `invalid`, or `discarded`.
-
-## Execution Weight
-
-- Attempt-first does not mean heavy-first. Default to the thinnest execution that can answer the current question.
-- Separate `attempt_depth` from `verification_depth`: a repair/adapter attempt can be small even when later claims require stronger validation.
-- On session start/resume, do not begin with broad materialization, full registry sync, full validators, or full pytest unless the current task is already a boundary closeout or protected claim. First confirm the current truth and run one narrow path.
-- First pass for new or repaired plumbing should prefer one narrow fixture, one representative run, or one smoke path before expanding to the full run matrix.
-- Escalate to full validators, full pytest, full registry sync, or broad hash regeneration only when changing shared contracts/helpers, closing a campaign/wave boundary, making runtime/economics/handoff claims, or when a narrow check exposes state drift that affects source-of-truth indexes.
-- Do not turn every micro attempt into a project-wide reconciliation. Update the run-local or campaign-local record first; update global indexes at boundary or when the index is the source of truth for the current claim.
-- Missing adapter/support remains a repair trigger. The first adapter should be the smallest explicit translation layer that proves the path, then expand only after the path is real.
-- L4 follow-through remains mandatory for valid proxy/model-bearing runs, but it can proceed as bounded materialization/probe batches. Do not require every final registry and closeout artifact in the first plumbing attempt.
+- `GUARD_001_ATTEMPT_BEFORE_DISPOSITION`: diagnose, reproduce, attempt the smallest repo-controlled repair/fallback, then record disposition.
+- `GUARD_002_RUNTIME_COMPLETION_TRUTH`: L4 completion requires portable terminal mode, telemetry rows, completed tester report, correct period/execution IDs, and eligible surface scope.
+- `GUARD_003_CLAIM_BOUNDARY`: no selected baseline, runtime authority, economics pass, materialization-ready, handoff complete, live readiness, Goal Achieve, reviewed/verified/pass without matching evidence.
+- `GUARD_004_ARTIFACT_IDENTITY`: durable identity uses repo-relative paths plus IDs/hashes; registries are indexes, not proof.
+- `GUARD_005_LOCKED_OOS`: locked final OOS is excluded unless an explicit unlock contract exists.
+- `GUARD_006_BRANCH_WORKTREE`: check branch/worktree fit before mutation; never revert user changes unless explicitly asked.
 
 ## Runtime And Parity
 
 - Every valid proxy/model-bearing experiment must be designed for ONNX/EA/MT5 follow-through.
 - Proxy-only closure is not allowed for valid proxy/model-bearing runs.
-- Required follow-through: reach `L4_split_runtime_probe` under active period/execution profiles.
-- If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
-- Failure handling order is mandatory: diagnose -> reproduce -> attempt the smallest repo-controlled repair/adapter/fallback -> record evidence -> only then block, defer, invalidate, or discard.
-- Try-first disposition rule: when something does not work, first identify why, reproduce the failing layer, try the smallest credible fix/fallback under repo control, and record the evidence. Only then may it become blocked, deferred, invalid, or discarded.
-- A conclusion that something "cannot be done" is not durable until the attempt record shows what was tried, what failed, why the remaining gap is outside the current bounded repair, and what would reopen it.
-- Diagnosis text, agent advice, or "helper/adapter does not exist" is not a repair attempt. If the missing piece is repo-controlled, make the smallest concrete implementation, fixture, compile, parser, runner, or runtime attempt needed to test the hypothesis before lowering the claim.
-- "Cannot", "unsupported", "not available", or "missing adapter/glue" is a diagnosis state, not a final disposition.
-- Before any valid surface is marked blocked, deferred, invalid, or discarded because something does not work, record the failure reproduction, the exact failing layer, at least one bounded repair or fallback attempt, the evidence path, the remaining blocker, and the reopen condition.
-- If a repair attempt is impossible because it needs user secrets, unavailable external state, destructive action, or policy violation, record that as the repair attempt blocker instead of silently deferring.
-- Do not answer or record "blocked/deferred/discarded" for a repo-controlled support gap until the failure disposition record proves the diagnosis and the repair/fallback attempt.
-- If a surface cannot be made MT5-executable, repair it before treating proxy output as evidence.
-- Missing converters, conversion adapters, export adapters, EA adapters, parser support, or runtime glue must trigger a minimal adapter/fallback build-and-test attempt when the missing piece is under repo/control. "No adapter exists" is never a sufficient blocker by itself.
-- If a conversion adapter does not exist, create the smallest explicit adapter or translation layer needed to test the hypothesis unless a narrow feasibility exception applies.
-- Feasibility exceptions are narrow: user secrets, unavailable external state, destructive or unsafe action, or project-policy violation. If one applies, record the exception as the attempt blocker with evidence and reopen condition.
-- Only after the root cause is reproduced, the minimal repair/fallback attempt is tried or explicitly blocked, and the evidence is recorded can the surface be blocked, deferred, invalid, or discarded for missing support.
-- Do not stretch a wave or campaign around repeated tiny repairs for one candidate. One bounded repair can create prevention memory; repeated repair needs a new surface question, divergence campaign, or closeout.
-- Repair and neighborhood perturbation stay inside the meaningful adjacent scope: unit conversion, parity semantics, execution interpretation, or directly neighboring surface variables. Stop when it becomes micro-tuning, candidate laundering, or a new-hypothesis label without new evidence.
-- Campaigns must maintain `proxy_runtime_parity`: shared contract, known differences, MT5 risks, one reconciliation attempt, unit semantics, comparison class, divergence judgment, prevention memory, follow-up.
-- Parity does not mean forced equality. Record genuine MT5 unit/execution differences as prevention memory.
-- Samples/previews/diagnostic rows support learning only; they cannot create runtime authority, economics pass, materialization-ready, or handoff-complete claims.
-
-ONNX bundle source of truth: `experiment_bundle.json`.
-Minimum identity: dataset/hash, feature schema/order hash, label/split, task surface, framework/opset/input/output schema, ONNX hash, parser/runtime contract, decision surface, producer command/env.
-
-## Claim Rules
-
-Exploration has no gate. Operating meaning has gates.
-
-Allowed without heavy proof: idea exploration, broad/extreme sweep design, proxy observation, negative memory, invalid setup, blocked retry, planning scaffold.
-
-Forbidden without matching evidence:
-
-- selected baseline
-- operating reference or promotion
-- runtime authority
-- economics pass
-- materialization-ready
-- handoff complete
-- live readiness
-- Goal Achieve
-- reviewed/verified/pass
-
-## Task Force
-
-- Codex owns final judgment.
-- Micro-consult is advisory only.
-- Never adopt sub-agent advice verbatim. Before using it, compare it against repo source-of-truth files, project rules, selected skills, current workspace state, and user constraints.
-- If agent advice conflicts with source-of-truth files or active project definitions, reject or revise the advice and record the conflict boundary.
-- When a delegated agent lacks forked context or did not read the relevant source files, treat its output as hypothesis/advice only, not project truth.
-- Agent roles are proactive modes: `scout`, `design`, `preflight`, `adversarial_check`, `evidence_check`, `runtime_check`, `closeout_check`.
-- `.codex/config.toml` `max_threads` is capacity only; actual agent count is phase-driven.
-- Formal Task Force review only for policy change, runtime authority, operating promotion, cross-system handoff, or protected reviewed/verified/pass claims.
-- If formal review is required but custom agents are unavailable, mark blocked for that review.
-- No legacy external-review path exists.
+- Required follow-through reaches `L4_split_runtime_probe`; if promising, continue to `L5_candidate_runtime_evidence`.
+- Main-mode MT5 fallback is diagnostic only and cannot satisfy standard runtime completion.
+- Samples/previews/diagnostic rows support learning only; they cannot create runtime authority, economics pass, handoff, or live readiness.
 
 ## Git
 
 - Use `codex/` branches unless user asks otherwise.
-- Commit/main-push cadence: `campaign_open`, `campaign_close`, `wave_open`, `wave_close`.
-- Do not push every run to `main` by default.
-- Check branch/worktree fit before mutation.
+- Main integration is boundary-level and squash-only by policy: campaign open/close, wave open/close, or explicit control-plane stabilization.
 - Current git root may be this project or a parent `MQL5` tree; avoid unrelated MetaTrader folders in status/commits.
 - Never revert user changes unless explicitly requested.
 
-## Internal Style
+## User-Facing Style
 
-- Internal records: English-friendly, ID-oriented, compact, field-based, evidence-path explicit, claim-boundary explicit, stop-condition explicit.
-- User-facing answers: Korean when user writes Korean; report action/effect briefly; do not make the user read files.
+Answer in Korean when the user writes Korean. Report action/effect briefly, name the current claim boundary, and do not make the user read internal manifests.

@@ -1,0 +1,1196 @@
+diff --git a/docs/agent_control/codex_task_force_registry.yaml b/docs/agent_control/codex_task_force_registry.yaml
+index cccf900..13b8b6a 100644
+--- a/docs/agent_control/codex_task_force_registry.yaml
++++ b/docs/agent_control/codex_task_force_registry.yaml
+@@ -29,6 +29,27 @@ custom_agent_config:
+ 
+ review_policy:
+   default_mode: micro_consult
++  max_depth: 1
++  allocation_profiles:
++    solo:
++      min_agents: 0
++      max_agents: 0
++    micro_specialist:
++      min_agents: 1
++      max_agents: 1
++    micro_adversarial:
++      min_agents: 2
++      max_agents: 2
++    formal_protected_review:
++      min_agents: 3
++      max_agents: 4
++    full_roster:
++      min_agents: 5
++      max_agents: 8
++      default_allowed: false
++      allowed_only_when:
++        - explicit_user_request
++        - protected_system_governance_incident
+   micro_consult_default_agent_count: 1
+   micro_consult_default_max_agents: 2
+   max_threads_capacity_rule: "Configured max_threads is an upper capacity only; actual agent use must be phase-driven and justified."
+@@ -65,6 +86,7 @@ review_policy:
+   advice_classification:
+     - accepted
+     - rejected
++    - rewritten
+     - needs_local_verification
+   final_authority: "Parent Codex owns final direction after local verification."
+   source_of_truth_precedence_rule: "Repo source-of-truth files, selected skills, active workspace state, and user constraints override sub-agent advice."
+@@ -110,6 +132,32 @@ micro_consult_receipt_schema:
+     - user_constraints_checked
+     - owner_accept_reject_or_rewrite_decision
+ 
++consult_receipt_v2_schema:
++  version: agent_consult_receipt_v2
++  required_fields:
++    - consult_id
++    - profile
++    - question_digest
++    - selected_agent_ids
++    - source_refs
++    - opinions
++    - owner_decision
++    - verification_refs
++    - claim_effect
++    - metrics
++  allowed_profiles:
++    - solo
++    - micro_specialist
++    - micro_adversarial
++    - formal_protected_review
++    - full_roster
++  allowed_opinion_classifications:
++    - accepted
++    - rejected
++    - rewritten
++    - needs_local_verification
++  claim_effect: advisory_only_no_reviewed_pass
++
+ roster:
+   - id: agent_01_system_governor
+     display_name: System Governor
+diff --git a/docs/policies/branch_policy.md b/docs/policies/branch_policy.md
+index 9bcb1cf..9e20967 100644
+--- a/docs/policies/branch_policy.md
++++ b/docs/policies/branch_policy.md
+@@ -4,6 +4,25 @@ Agent work uses `codex/` branches unless the user requests a different branch na
+ 
+ Do not merge into `main` unless the user explicitly asks.
+ 
++## Machine-Readable Boundary Policy
++
++```yaml
++codex_branch_policy:
++  detailed_progress_commits_allowed: true
++
++main_integration_policy:
++  allowed_boundary_events:
++    - campaign_open
++    - campaign_close
++    - wave_open
++    - wave_close
++    - control_plane_stabilization
++  merge_mode: squash_only
++  direct_push: forbidden
++```
++
++This stabilization patch uses the boundary event `control_plane_stabilization`.
++
+ ## Worktree Fit Rule
+ 
+ Before file edits, check that the current branch/worktree matches the requested work item.
+diff --git a/foundation/config/mt5_runtime_probe_contract.yaml b/foundation/config/mt5_runtime_probe_contract.yaml
+index b127c12..609b018 100644
+--- a/foundation/config/mt5_runtime_probe_contract.yaml
++++ b/foundation/config/mt5_runtime_probe_contract.yaml
+@@ -42,6 +42,17 @@ runtime_learning_probe_decision:
+   rule: "Every valid proxy/model-bearing experiment must reach L4_split_runtime_probe. If runtime behavior, economics, EA/ONNX meaning, Strategy Tester output, materialization, handoff, or live-like operation is the question, run the narrow sufficient MT5 probe or lower the claim. not_applicable_no_runtime_question is allowed only for design/intake/analysis records that do not create a proxy/model-bearing experiment."
+ 
+ completion:
++  completion_predicate:
++    terminal_launched: required
++    telemetry_rows_observed: required
++    tester_report_observed: required
++    tester_report_completed: required
++    terminal_mode: portable_contract_attempt
++    required_period_roles_complete: required
++    period_profile_id_match: required
++    runtime_period_set_id_match: required
++    execution_profile_id_match: required
++    completion_eligible_surface_scope: required
+   proxy_l4_completion_required_for:
+     - proxy_model_run
+     - model_bearing_research_run
+diff --git a/foundation/pipelines/run_wave0_l4_decision_replay_attempts.py b/foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+index 27e285e..f06190f 100644
+--- a/foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
++++ b/foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+@@ -32,12 +32,22 @@ from foundation.pipelines.run_wave0_l4_mt5_attempts import (
+     common_relative_to_path,
+     current_git_identity,
+     dependency_summary,
++    normalize_tester_report_config,
++    prepare_tester_report_directories,
+     read_csv_rows,
+     repo_relative,
+     selected_attempt_rows,
+     sha256,
+     write_csv,
+ )
++from foundation.mt5.runtime_completion import (
++    EXPECTED_EXECUTION_PROFILE_ID,
++    EXPECTED_PERIOD_PROFILE_ID,
++    EXPECTED_RUNTIME_PERIOD_SET_ID,
++    RuntimeAttemptState,
++    evaluate_runtime_attempt,
++    runtime_status,
++)
+ from foundation.pipelines.prepare_wave0_l4_decision_replay_attempts import (
+     EA_BINARY,
+     EA_SOURCE,
+@@ -109,6 +119,7 @@ def execution_index_fieldnames() -> list[str]:
+         "close_action_count",
+         "open_failed_count",
+         "tester_report_observed",
++        "runtime_probe_complete",
+         "tester_log_observed",
+         "tester_final_balance",
+         "terminal_mode",
+@@ -399,11 +410,23 @@ def run_one_attempt(
+     manifest_path = repo_root / row["attempt_manifest_path"]
+     tester_config = repo_root / row["tester_config_path"]
+     manifest = load_yaml(manifest_path)
++    report_config_summary = normalize_tester_report_config(tester_config, attempt_id)
++    manifest.setdefault("artifact_identity", {})["tester_config"] = artifact_ref(tester_config, repo_root)
++    write_yaml(manifest_path, manifest)
+     source_common = common_relative_to_path(row["source_score_telemetry_common_path"])
+     execution_common = common_relative_to_path(row["execution_telemetry_common_path"])
+     execution_common.parent.mkdir(parents=True, exist_ok=True)
+     if execution_common.exists():
+         execution_common.unlink()
++    portable_terminal_root = terminal.parent if terminal else DEFAULT_TERMINAL.parent
++    main_data_root = terminal_data_root(repo_root)
++    report_directory_summary = prepare_tester_report_directories(
++        repo_root=repo_root,
++        attempt_root=root,
++        tester_config=tester_config,
++        portable_terminal_root=portable_terminal_root,
++        main_terminal_data_root=main_data_root,
++    )
+ 
+     source_observed = source_common.exists()
+     if not source_observed:
+@@ -437,6 +460,8 @@ def run_one_attempt(
+             "run_id": row["run_id"],
+             "bundle_id": row["bundle_id"],
+             "tester_config": artifact_ref(tester_config, repo_root),
++            "tester_report_config": report_config_summary,
++            "tester_report_resolution_prelaunch": report_directory_summary,
+             "source_score_telemetry_redacted": redact_path(str(source_common)),
+             "execution_telemetry_redacted": redact_path(str(execution_common)),
+             "claim_boundary": "decision_replay_terminal_execution_evidence_only_no_runtime_authority_no_economics_pass",
+@@ -512,13 +537,20 @@ def run_one_attempt(
+         }
+     write_yaml(root / "execution_telemetry_summary.yaml", telemetry_summary)
+ 
+-    report = archive_tester_report(repo_root, root, tester_config) if source_observed else {
++    report = archive_tester_report(
++        repo_root,
++        root,
++        tester_config,
++        portable_terminal_root=portable_terminal_root,
++        main_terminal_data_root=main_data_root,
++    ) if source_observed else {
+         "observed": False,
+         "status": "tester_report_not_requested_source_score_telemetry_missing",
+         "path": None,
+         "claim_boundary": "missing_source_no_tester_report_claim",
+     }
+     report_observed = bool(report.get("observed"))
++    report_completed = report.get("status") == "tester_report_archived_local_hash_recorded"
+     tester_log_summary = build_tester_log_summary(repo_root, root, tester_config, attempt_id) if source_observed else {
+         "version": "decision_replay_tester_log_summary_v1",
+         "summary_path": f"runtime/mt5_attempts/{attempt_id}/tester_log_summary.yaml",
+@@ -531,17 +563,48 @@ def run_one_attempt(
+     stats = telemetry_summary.get("stats") or {}
+     trade_counts = stats.get("trade_action_counts") or {}
+     result_judgment = "runtime_probe" if telemetry_observed else "inconclusive"
+-    if telemetry_observed and report_observed:
+-        status = "completed_decision_replay_tester_report_observed"
+-    elif telemetry_observed:
+-        status = "completed_decision_replay_execution_telemetry_observed"
+-    elif source_observed:
+-        status = "terminal_executed_decision_replay_telemetry_missing"
+-    else:
+-        status = "decision_replay_source_score_telemetry_missing"
++    terminal_mode = (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used")
++    terminal_mode_label = "main_mode_config_fallback" if terminal_mode else "portable_contract_attempt"
++    completion = evaluate_runtime_attempt(
++        RuntimeAttemptState(
++            terminal_launched=source_observed,
++            telemetry_file_observed=telemetry_observed,
++            telemetry_rows_observed=telemetry_observed and int(stats.get("row_count") or 0) > 0,
++            tester_report_observed=report_observed,
++            tester_report_completed=report_completed,
++            terminal_mode=terminal_mode_label,
++            period_role=row["period_role"],
++            period_profile_id=EXPECTED_PERIOD_PROFILE_ID,
++            runtime_period_set_id=row.get("runtime_period_set_id") or EXPECTED_RUNTIME_PERIOD_SET_ID,
++            execution_profile_id=row.get("tester_execution_profile_id") or EXPECTED_EXECUTION_PROFILE_ID,
++            surface_scope="full_period_sparse_decision_surface",
++        ),
++        required_period_roles=["validation", "research_oos"],
++        completion_eligible_surface_scopes=["full_period_deterministic", "full_period_sparse_decision_surface"],
++    )
++    status = (
++        runtime_status(completion, telemetry_kind="decision_replay_execution_telemetry")
++        if source_observed
++        else "decision_replay_source_score_telemetry_missing"
++    )
+     manifest["status"] = status
+     manifest["claim_boundary"] = CLAIM_BOUNDARY if telemetry_observed else telemetry_summary["claim_boundary"]
+     manifest["result_judgment"] = result_judgment
++    manifest["execution_state"] = {
++        "terminal_launched": source_observed,
++        "telemetry_file_observed": telemetry_observed,
++        "telemetry_rows_observed": telemetry_observed and int(stats.get("row_count") or 0) > 0,
++        "tester_report_observed": report_observed,
++        "tester_report_completed": report_completed,
++        "terminal_mode": terminal_mode_label,
++        "portable_contract_satisfied": completion.portable_contract_satisfied,
++        "report_contract_satisfied": completion.report_contract_satisfied,
++        "period_contract_satisfied": completion.period_contract_satisfied,
++        "surface_contract_satisfied": completion.surface_contract_satisfied,
++        "runtime_probe_complete": completion.runtime_probe_complete,
++        "missing_requirements": list(completion.missing_requirements),
++        "completion_claim_boundary": completion.claim_boundary,
++    }
+     manifest["runtime_probe_routing"] = {
+         "primary_family": "runtime_probe",
+         "primary_skill": "spacesonar-runtime-parity",
+@@ -602,8 +665,6 @@ def run_one_attempt(
+     update_coverage(manifest, telemetry_observed=telemetry_observed, report_observed=report_observed)
+     write_yaml(manifest_path, manifest)
+ 
+-    terminal_mode = (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used")
+-    terminal_mode_label = "main_mode_config_fallback" if terminal_mode else "portable_contract_attempt"
+     return {
+         "attempt_id": attempt_id,
+         "source_attempt_id": row["source_attempt_id"],
+@@ -623,6 +684,7 @@ def run_one_attempt(
+         "close_action_count": trade_counts.get("close_action_count", 0),
+         "open_failed_count": trade_counts.get("open_failed_count", 0),
+         "tester_report_observed": report_observed,
++        "runtime_probe_complete": completion.runtime_probe_complete,
+         "tester_log_observed": tester_log_observed,
+         "tester_final_balance": tester_log_summary.get("final_balance"),
+         "terminal_mode": terminal_mode_label,
+@@ -679,16 +741,26 @@ def build_summary(
+     command_argv: list[str],
+ ) -> dict[str, Any]:
+     prepared_rows = read_csv_rows(repo_root / PREP_INDEX)
+-    completed_manifest_count = 0
++    touched_manifest_count = 0
++    runtime_complete_count = 0
++    missing_requirements_by_count: Counter[str] = Counter()
+     for row in prepared_rows:
+         manifest_path = repo_root / row["attempt_manifest_path"]
+-        if manifest_path.exists() and str(load_yaml(manifest_path).get("status", "")).startswith("completed_"):
+-            completed_manifest_count += 1
+-    all_attempts_touched = completed_manifest_count >= len(prepared_rows)
++        if manifest_path.exists():
++            manifest = load_yaml(manifest_path)
++            state = manifest.get("execution_state") or {}
++            if state:
++                touched_manifest_count += 1
++                if state.get("runtime_probe_complete"):
++                    runtime_complete_count += 1
++                for requirement in state.get("missing_requirements", []):
++                    missing_requirements_by_count[str(requirement)] += 1
++    all_attempts_touched = touched_manifest_count >= len(prepared_rows)
++    all_attempts_runtime_complete = all_attempts_touched and runtime_complete_count == len(prepared_rows)
+     execution_telemetry_count = bool_count(execution_rows, "execution_telemetry_observed")
+     tester_report_count = bool_count(execution_rows, "tester_report_observed")
+     tester_log_count = bool_count(execution_rows, "tester_log_observed")
+-    if all_attempts_touched and tester_report_count > 0:
++    if all_attempts_runtime_complete and tester_report_count > 0:
+         next_action = "parse tester reports and decide whether any sparse decision surface deserves L5"
+     elif all_attempts_touched and execution_telemetry_count == len(prepared_rows) and tester_log_count == len(prepared_rows):
+         next_action = "judge sparse decision surfaces from execution telemetry and tester log summaries; no economics pass until report/equity parser evidence exists"
+@@ -722,13 +794,20 @@ def build_summary(
+             "selected_attempt_count": len(selected_rows),
+             "indexed_execution_count": len(execution_rows),
+             "executed_attempt_count": len(execution_rows),
+-            "completed_manifest_count": completed_manifest_count,
++            "completed_manifest_count": runtime_complete_count,
++            "touched_manifest_count": touched_manifest_count,
+             "source_score_telemetry_observed_count": bool_count(execution_rows, "source_score_telemetry_observed"),
+             "execution_telemetry_observed_count": execution_telemetry_count,
+             "execution_telemetry_missing_count": len(execution_rows) - execution_telemetry_count,
+             "tester_report_observed_count": tester_report_count,
+             "tester_report_missing_count": len(execution_rows) - tester_report_count,
+             "tester_log_observed_count": tester_log_count,
++            "terminal_execution_count": len(execution_rows),
++            "telemetry_observation_count": execution_telemetry_count,
++            "tester_report_observation_count": tester_report_count,
++            "portable_contract_count": sum(str(row.get("terminal_mode")) == "portable_contract_attempt" for row in execution_rows),
++            "runtime_probe_complete_count": runtime_complete_count,
++            "runtime_probe_incomplete_count": len(execution_rows) - runtime_complete_count,
+             "open_action_count": int_sum(execution_rows, "open_action_count"),
+             "close_action_count": int_sum(execution_rows, "close_action_count"),
+             "open_failed_count": int_sum(execution_rows, "open_failed_count"),
+@@ -737,6 +816,12 @@ def build_summary(
+             "status_counts": dict(sorted(Counter(row["status"] for row in execution_rows).items())),
+             "result_judgment_counts": dict(sorted(Counter(row["result_judgment"] for row in execution_rows).items())),
+         },
++        "runtime_completion": {
++            "all_prepared_attempts_executed": all_attempts_touched,
++            "all_prepared_attempts_runtime_complete": all_attempts_runtime_complete,
++            "runtime_probe_complete": all_attempts_runtime_complete,
++            "missing_requirements_by_count": dict(sorted(missing_requirements_by_count.items())),
++        },
+         "compile_summary": {
+             "path": compile_summary["summary_path"],
+             "status": compile_summary["status"],
+@@ -762,7 +847,9 @@ def build_summary(
+         },
+         "judgment": {
+             "judgment_class": "runtime_probe_progress",
+-            "standard_l4_completed": False,
++            "standard_l4_completed": all_attempts_runtime_complete,
++            "runtime_probe_completed_for_all_prepared_attempts": all_attempts_runtime_complete,
++            "all_prepared_attempts_executed": all_attempts_touched,
+             "score_replay_decision_probe_observed": bool_count(execution_rows, "execution_telemetry_observed") > 0,
+             "runtime_authority": False,
+             "economics_pass": False,
+@@ -785,6 +872,8 @@ def build_summary(
+ 
+ def build_closeout(summary: dict[str, Any]) -> dict[str, Any]:
+     missing = ["remaining_decision_replay_attempts"] if summary["status"] == PARTIAL_STATUS else []
++    if not (summary.get("runtime_completion") or {}).get("runtime_probe_complete"):
++        missing.append("standard_l4_runtime_completion_contract")
+     if summary["counts"].get("tester_report_observed_count") == 0:
+         missing.append("tester_report_hash_or_report_export_adapter_for_economics_claim")
+     return {
+diff --git a/foundation/pipelines/run_wave0_l4_mt5_attempts.py b/foundation/pipelines/run_wave0_l4_mt5_attempts.py
+index 444d121..7b283a3 100644
+--- a/foundation/pipelines/run_wave0_l4_mt5_attempts.py
++++ b/foundation/pipelines/run_wave0_l4_mt5_attempts.py
+@@ -29,6 +29,15 @@ from foundation.pipelines.run_mt5_fixed_fixture_probe import (
+     run_process,
+     run_terminal_sequence,
+ )
++from foundation.mt5.runtime_completion import (
++    EXPECTED_EXECUTION_PROFILE_ID,
++    EXPECTED_PERIOD_PROFILE_ID,
++    EXPECTED_RUNTIME_PERIOD_SET_ID,
++    RuntimeAttemptState,
++    evaluate_runtime_attempt,
++    resolve_tester_report_candidates,
++    runtime_status,
++)
+ 
+ 
+ GOAL_ID = "goal_us100_onnx_forward_boundary_v0"
+@@ -53,6 +62,7 @@ CLAIM_BOUNDARY = "l4_score_runtime_observation_only_no_runtime_authority_no_econ
+ PARTIAL_STATUS = "partial_l4_terminal_execution_started"
+ ALL_ATTEMPTS_STATUS = "l4_terminal_execution_attempted_for_all_prepared_attempts"
+ COMMON_REL_ROOT = "SpaceSonar\\l4_score_probe"
++TESTER_REPORT_REL_ROOT = "reports\\spacesonar"
+ 
+ 
+ class NoAliasDumper(yaml.SafeDumper):
+@@ -176,9 +186,12 @@ def selected_attempt_rows(
+             continue
+         manifest_path = repo_root / row["attempt_manifest_path"]
+         manifest_status = row.get("status", "")
++        manifest_complete = False
+         if manifest_path.exists():
+-            manifest_status = str(load_yaml(manifest_path).get("status", manifest_status))
+-        if not include_completed and manifest_status.startswith("completed_"):
++            manifest = load_yaml(manifest_path)
++            manifest_status = str(manifest.get("status", manifest_status))
++            manifest_complete = bool((manifest.get("execution_state") or {}).get("runtime_probe_complete"))
++        if not include_completed and manifest_complete:
+             continue
+         item = dict(row)
+         item["manifest_status"] = manifest_status
+@@ -202,6 +215,7 @@ def execution_index_fieldnames() -> list[str]:
+         "telemetry_observed",
+         "telemetry_row_count",
+         "tester_report_observed",
++        "runtime_probe_complete",
+         "terminal_mode",
+         "terminal_exit_code",
+         "terminal_timed_out",
+@@ -280,6 +294,13 @@ def parse_tester_config_report_stem(path: Path) -> str | None:
+     return None
+ 
+ 
++def terminal_data_root(repo_root: Path) -> Path:
++    for parent in [repo_root, *repo_root.parents]:
++        if parent.name.lower() == "mql5":
++            return parent.parent
++    return repo_root
++
++
+ def upsert_ini_line(text: str, key: str, value: str, *, after_key: str | None = None) -> str:
+     lines = text.splitlines()
+     prefix = f"{key}="
+@@ -298,6 +319,27 @@ def upsert_ini_line(text: str, key: str, value: str, *, after_key: str | None =
+     return "\n".join(lines) + "\n"
+ 
+ 
++def tester_report_relative_stem(attempt_id: str) -> str:
++    return f"{TESTER_REPORT_REL_ROOT}\\{attempt_id}\\tester_report"
++
++
++def normalize_tester_report_config(tester_config: Path, attempt_id: str) -> dict[str, Any]:
++    report_stem = tester_report_relative_stem(attempt_id)
++    original = tester_config.read_text(encoding="utf-8-sig")
++    updated = upsert_ini_line(original, "Report", report_stem, after_key="ReplaceReport")
++    updated = upsert_ini_line(updated, "ReplaceReport", "1", after_key="Leverage")
++    updated = upsert_ini_line(updated, "ShutdownTerminal", "1", after_key="Report")
++    changed = updated != original
++    if changed:
++        tester_config.write_text(updated, encoding="utf-8")
++    return {
++        "status": "tester_report_config_normalized",
++        "changed": changed,
++        "report_value": report_stem,
++        "report_value_policy": "terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive",
++    }
++
++
+ def feature_columns_common_relative(bundle_id: str) -> str:
+     return f"{COMMON_REL_ROOT}\\{bundle_id}\\feature_columns.txt"
+ 
+@@ -362,24 +404,91 @@ def ensure_feature_columns_transport(
+     return manifest
+ 
+ 
+-def candidate_report_paths(repo_root: Path, attempt_root: Path, tester_config: Path) -> list[Path]:
+-    candidates: list[Path] = []
++def candidate_report_paths(
++    repo_root: Path,
++    attempt_root: Path,
++    tester_config: Path,
++    *,
++    portable_terminal_root: Path | None = None,
++    main_terminal_data_root: Path | None = None,
++) -> list[tuple[Path, str]]:
++    candidates: list[tuple[Path, str]] = []
+     stem = parse_tester_config_report_stem(tester_config)
+     if stem:
+-        normalized = stem.replace("\\", "/")
+-        stem_path = Path(normalized)
+-        parts = list(stem_path.parts)
+-        if parts and parts[0] == repo_root.name:
+-            base = repo_root.joinpath(*parts[1:])
+-        else:
+-            base = repo_root / stem_path
+-        candidates.extend([base.with_suffix(suffix) for suffix in [".htm", ".html", ".xml"]])
+-    candidates.extend(attempt_root.glob("tester_report*"))
+-    return list(dict.fromkeys(path for path in candidates if path.exists()))
+-
+-
+-def archive_tester_report(repo_root: Path, attempt_root: Path, tester_config: Path) -> dict[str, Any]:
+-    candidates = candidate_report_paths(repo_root, attempt_root, tester_config)
++        for candidate in resolve_tester_report_candidates(
++            report_value=stem,
++            repo_root=repo_root,
++            portable_terminal_root=portable_terminal_root,
++            main_terminal_data_root=main_terminal_data_root,
++            attempt_root=attempt_root,
++        ):
++            if candidate.path.exists():
++                candidates.append((candidate.path, candidate.origin))
++    candidates.extend((path, "attempt_archive_path") for path in attempt_root.glob("tester_report*") if path.exists())
++    seen: set[Path] = set()
++    unique: list[tuple[Path, str]] = []
++    for path, origin in candidates:
++        resolved = path.resolve()
++        if resolved not in seen:
++            unique.append((path, origin))
++            seen.add(resolved)
++    return unique
++
++
++def prepare_tester_report_directories(
++    *,
++    repo_root: Path,
++    attempt_root: Path,
++    tester_config: Path,
++    portable_terminal_root: Path | None,
++    main_terminal_data_root: Path | None,
++) -> dict[str, Any]:
++    stem = parse_tester_config_report_stem(tester_config)
++    if not stem:
++        return {"status": "no_report_value_configured", "prepared": [], "skipped": []}
++    prepared: list[dict[str, str]] = []
++    skipped: list[dict[str, str]] = []
++    for candidate in resolve_tester_report_candidates(
++        report_value=stem,
++        repo_root=repo_root,
++        portable_terminal_root=portable_terminal_root,
++        main_terminal_data_root=main_terminal_data_root,
++        attempt_root=attempt_root,
++    ):
++        try:
++            candidate.path.parent.mkdir(parents=True, exist_ok=True)
++            prepared.append({"origin": candidate.origin, "redacted_parent": redact_path(str(candidate.path.parent))})
++        except OSError as exc:
++            skipped.append(
++                {
++                    "origin": candidate.origin,
++                    "redacted_parent": redact_path(str(candidate.path.parent)),
++                    "reason": f"{exc.__class__.__name__}: {exc}",
++                }
++            )
++    status = "tester_report_directories_prepared"
++    if skipped:
++        status = "tester_report_directories_partially_prepared"
++    if not prepared and skipped:
++        status = "tester_report_directories_not_prepared"
++    return {"status": status, "report_value": stem, "prepared": prepared, "skipped": skipped}
++
++
++def archive_tester_report(
++    repo_root: Path,
++    attempt_root: Path,
++    tester_config: Path,
++    *,
++    portable_terminal_root: Path | None = None,
++    main_terminal_data_root: Path | None = None,
++) -> dict[str, Any]:
++    candidates = candidate_report_paths(
++        repo_root,
++        attempt_root,
++        tester_config,
++        portable_terminal_root=portable_terminal_root,
++        main_terminal_data_root=main_terminal_data_root,
++    )
+     if not candidates:
+         return {
+             "observed": False,
+@@ -387,14 +496,21 @@ def archive_tester_report(repo_root: Path, attempt_root: Path, tester_config: Pa
+             "path": None,
+             "claim_boundary": "missing_report_no_economics_or_completion_claim",
+         }
+-    report = candidates[0].resolve()
++    report, origin = candidates[0]
++    report = report.resolve()
+     attempt_resolved = attempt_root.resolve()
+     if not report.is_relative_to(attempt_resolved):
++        reports_dir = attempt_root / "reports"
++        reports_dir.mkdir(parents=True, exist_ok=True)
++        archived = reports_dir / report.name
++        shutil.copy2(report, archived)
+         return {
+             "observed": True,
+-            "status": "tester_report_observed_outside_attempt_root",
+-            "redacted_path": redact_path(str(report)),
+-            "claim_boundary": "local_context_only_report_not_archived",
++            "status": "tester_report_archived_local_hash_recorded",
++            "origin": origin,
++            "source_redacted_path": redact_path(str(report)),
++            **artifact_ref(archived, repo_root, availability="local_report_hash_recorded_ignored_by_git"),
++            "claim_boundary": "tester_report_local_evidence_only_no_economics_pass",
+         }
+     reports_dir = attempt_root / "reports"
+     reports_dir.mkdir(parents=True, exist_ok=True)
+@@ -404,6 +520,7 @@ def archive_tester_report(repo_root: Path, attempt_root: Path, tester_config: Pa
+     return {
+         "observed": True,
+         "status": "tester_report_archived_local_hash_recorded",
++        "origin": origin,
+         **artifact_ref(archived, repo_root, availability="local_report_hash_recorded_ignored_by_git"),
+         "claim_boundary": "tester_report_local_evidence_only_no_economics_pass",
+     }
+@@ -542,11 +659,22 @@ def run_one_attempt(
+         manifest=manifest,
+         tester_config=tester_config,
+     )
++    report_config_summary = normalize_tester_report_config(tester_config, attempt_id)
++    manifest.setdefault("artifact_identity", {})["tester_config"] = artifact_ref(tester_config, repo_root)
+     write_yaml(manifest_path, manifest)
+     telemetry_rel = manifest["artifact_identity"]["telemetry"]["common_relative_path"]
+     common_telemetry = common_relative_to_path(telemetry_rel)
+     if common_telemetry.exists():
+         common_telemetry.unlink()
++    portable_terminal_root = terminal.parent if terminal else DEFAULT_TERMINAL.parent
++    main_data_root = terminal_data_root(repo_root)
++    report_directory_summary = prepare_tester_report_directories(
++        repo_root=repo_root,
++        attempt_root=root,
++        tester_config=tester_config,
++        portable_terminal_root=portable_terminal_root,
++        main_terminal_data_root=main_data_root,
++    )
+ 
+     terminal_summary = run_terminal_sequence(
+         terminal=terminal,
+@@ -565,6 +693,8 @@ def run_one_attempt(
+         "run_id": row["run_id"],
+         "bundle_id": row["bundle_id"],
+         "tester_config": artifact_ref(tester_config, repo_root),
++        "tester_report_config": report_config_summary,
++        "tester_report_resolution_prelaunch": report_directory_summary,
+         "common_telemetry_redacted": redact_path(str(common_telemetry)),
+         "claim_boundary": "terminal_execution_evidence_only_no_runtime_authority_no_economics_pass",
+     }
+@@ -637,21 +767,56 @@ def run_one_attempt(
+         terminal_summary["empty_telemetry_claim_effect"] = "csv_header_only_no_l4_score_observation"
+     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
+ 
+-    report = archive_tester_report(repo_root, root, tester_config)
++    report = archive_tester_report(
++        repo_root,
++        root,
++        tester_config,
++        portable_terminal_root=portable_terminal_root,
++        main_terminal_data_root=main_data_root,
++    )
+     report_observed = bool(report.get("observed"))
++    report_completed = report.get("status") == "tester_report_archived_local_hash_recorded"
+ 
+     result_judgment = "runtime_probe" if telemetry_observed else "inconclusive"
+-    status = (
+-        "completed_l4_score_telemetry_observed"
+-        if telemetry_observed
+-        else ("terminal_executed_empty_score_telemetry" if telemetry_file_observed else "terminal_executed_telemetry_missing")
+-    )
+     terminal_mode = (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used")
+     terminal_mode_label = "main_mode_config_fallback" if terminal_mode else "portable_contract_attempt"
++    completion = evaluate_runtime_attempt(
++        RuntimeAttemptState(
++            terminal_launched=True,
++            telemetry_file_observed=telemetry_file_observed,
++            telemetry_rows_observed=telemetry_observed,
++            tester_report_observed=report_observed,
++            tester_report_completed=report_completed,
++            terminal_mode=terminal_mode_label,
++            period_role=row["period_role"],
++            period_profile_id=EXPECTED_PERIOD_PROFILE_ID,
++            runtime_period_set_id=row.get("runtime_period_set_id") or EXPECTED_RUNTIME_PERIOD_SET_ID,
++            execution_profile_id=row.get("tester_execution_profile_id") or EXPECTED_EXECUTION_PROFILE_ID,
++            surface_scope="full_period_deterministic",
++        ),
++        required_period_roles=["validation", "research_oos"],
++        completion_eligible_surface_scopes=["full_period_deterministic", "full_period_sparse_decision_surface"],
++    )
++    status = runtime_status(completion, telemetry_kind="telemetry")
+ 
+     manifest["status"] = status
+     manifest["claim_boundary"] = CLAIM_BOUNDARY if telemetry_observed else str(telemetry_summary["claim_boundary"])
+     manifest["result_judgment"] = result_judgment
++    manifest["execution_state"] = {
++        "terminal_launched": True,
++        "telemetry_file_observed": telemetry_file_observed,
++        "telemetry_rows_observed": telemetry_observed,
++        "tester_report_observed": report_observed,
++        "tester_report_completed": report_completed,
++        "terminal_mode": terminal_mode_label,
++        "portable_contract_satisfied": completion.portable_contract_satisfied,
++        "report_contract_satisfied": completion.report_contract_satisfied,
++        "period_contract_satisfied": completion.period_contract_satisfied,
++        "surface_contract_satisfied": completion.surface_contract_satisfied,
++        "runtime_probe_complete": completion.runtime_probe_complete,
++        "missing_requirements": list(completion.missing_requirements),
++        "completion_claim_boundary": completion.claim_boundary,
++    }
+     manifest["runtime_probe_routing"] = {
+         "primary_family": "runtime_probe",
+         "primary_skill": "spacesonar-runtime-parity",
+@@ -719,6 +884,7 @@ def run_one_attempt(
+         "telemetry_observed": telemetry_observed,
+         "telemetry_row_count": row_count,
+         "tester_report_observed": report_observed,
++        "runtime_probe_complete": completion.runtime_probe_complete,
+         "terminal_mode": terminal_mode_label,
+         "terminal_exit_code": terminal_summary.get("exit_code"),
+         "terminal_timed_out": terminal_summary.get("timed_out"),
+@@ -744,14 +910,21 @@ def build_summary(
+ ) -> dict[str, Any]:
+     telemetry_count = sum(str(row.get("telemetry_observed")).lower() == "true" for row in execution_rows)
+     report_count = sum(str(row.get("tester_report_observed")).lower() == "true" for row in execution_rows)
++    runtime_complete_count = sum(str(row.get("runtime_probe_complete")).lower() == "true" for row in execution_rows)
+     prepared_rows = read_csv_rows(repo_root / PREP_INDEX)
+     executed_attempt_ids = {row["attempt_id"] for row in execution_rows}
+-    completed_manifest_count = 0
++    touched_manifest_count = 0
++    missing_requirements_by_count: Counter[str] = Counter()
+     for row in prepared_rows:
+         manifest_path = repo_root / row["attempt_manifest_path"]
+-        if manifest_path.exists() and str(load_yaml(manifest_path).get("status", "")).startswith("completed_"):
+-            completed_manifest_count += 1
+-    all_attempts_touched = completed_manifest_count >= len(prepared_rows)
++        if manifest_path.exists():
++            manifest = load_yaml(manifest_path)
++            if manifest.get("execution_state"):
++                touched_manifest_count += 1
++                for requirement in manifest.get("execution_state", {}).get("missing_requirements", []):
++                    missing_requirements_by_count[str(requirement)] += 1
++    all_attempts_touched = touched_manifest_count >= len(prepared_rows)
++    all_attempts_runtime_complete = all_attempts_touched and runtime_complete_count == len(prepared_rows)
+     return {
+         "version": "wave0_l4_runtime_execution_summary_v1",
+         "summary_id": "wave0_l4_runtime_execution_summary_v0",
+@@ -777,15 +950,28 @@ def build_summary(
+             "selected_attempt_count": len(selected_rows),
+             "indexed_execution_count": len(execution_rows),
+             "executed_attempt_count": len(execution_rows),
+-            "completed_manifest_count": completed_manifest_count,
++            "completed_manifest_count": runtime_complete_count,
++            "touched_manifest_count": touched_manifest_count,
+             "telemetry_observed_count": telemetry_count,
+             "telemetry_missing_count": len(execution_rows) - telemetry_count,
+             "tester_report_observed_count": report_count,
+             "tester_report_missing_count": len(execution_rows) - report_count,
++            "terminal_execution_count": len(execution_rows),
++            "telemetry_observation_count": telemetry_count,
++            "tester_report_observation_count": report_count,
++            "portable_contract_count": sum(str(row.get("terminal_mode")) == "portable_contract_attempt" for row in execution_rows),
++            "runtime_probe_complete_count": runtime_complete_count,
++            "runtime_probe_incomplete_count": len(execution_rows) - runtime_complete_count,
+             "period_role_counts": dict(sorted(Counter(row["period_role"] for row in execution_rows).items())),
+             "status_counts": dict(sorted(Counter(row["status"] for row in execution_rows).items())),
+             "result_judgment_counts": dict(sorted(Counter(row["result_judgment"] for row in execution_rows).items())),
+         },
++        "runtime_completion": {
++            "all_prepared_attempts_executed": all_attempts_touched,
++            "all_prepared_attempts_runtime_complete": all_attempts_runtime_complete,
++            "runtime_probe_complete": all_attempts_runtime_complete,
++            "missing_requirements_by_count": dict(sorted(missing_requirements_by_count.items())),
++        },
+         "compile_summary": {
+             "path": compile_summary["summary_path"],
+             "status": compile_summary["status"],
+@@ -810,13 +996,16 @@ def build_summary(
+         },
+         "judgment": {
+             "judgment_class": "runtime_probe_progress",
+-            "runtime_probe_completed_for_all_prepared_attempts": all_attempts_touched,
++            "runtime_probe_completed_for_all_prepared_attempts": all_attempts_runtime_complete,
++            "all_prepared_attempts_executed": all_attempts_touched,
+             "runtime_authority": False,
+             "economics_pass": False,
+             "selected_baseline": False,
+             "goal_achieve": False,
+             "next_action": (
+                 "aggregate paired validation/research_oos L4 telemetry and decide L5 routing"
++                if all_attempts_runtime_complete
++                else "repair or rerun MT5 report-backed portable L4 contract before L5 routing"
+                 if all_attempts_touched
+                 else "continue running remaining prepared L4 Strategy Tester attempts"
+             ),
+@@ -854,6 +1043,11 @@ def merge_execution_rows(repo_root: Path, new_rows: list[dict[str, Any]]) -> lis
+ 
+ 
+ def build_closeout(summary: dict[str, Any]) -> dict[str, Any]:
++    missing = ["remaining_prepared_L4_attempts"] if summary["status"] == PARTIAL_STATUS else []
++    if not (summary.get("runtime_completion") or {}).get("runtime_probe_complete"):
++        missing.append("standard_l4_runtime_completion_contract")
++    if summary["counts"].get("tester_report_observed_count") == 0:
++        missing.append("tester_report_hash_or_report_export_adapter_for_economics_claim")
+     return {
+         "version": "work_closeout_v1",
+         "work_item_id": SUBWORK_ID,
+@@ -875,7 +1069,7 @@ def build_closeout(summary: dict[str, Any]) -> dict[str, Any]:
+                 "result_judgment",
+                 "final_claim_guard",
+             ],
+-            "missing": ["remaining_prepared_L4_attempts"] if summary["status"] == PARTIAL_STATUS else [],
++            "missing": missing,
+             "not_applicable": [
+                 "runtime_authority",
+                 "economics_pass",
+diff --git a/foundation/validation/active_record_validator.py b/foundation/validation/active_record_validator.py
+index c4a44c4..a7ff49b 100644
+--- a/foundation/validation/active_record_validator.py
++++ b/foundation/validation/active_record_validator.py
+@@ -12,6 +12,10 @@ from typing import Any
+ import yaml
+ 
+ 
++REPO_ROOT = Path(__file__).resolve().parents[2]
++if str(REPO_ROOT) not in sys.path:
++    sys.path.insert(0, str(REPO_ROOT))
++
+ LOCAL_USER_PATH_RE = re.compile(r"C:\\Users\\[^\\\s,\"']+", re.IGNORECASE)
+ CLAIM_BLOCKING_WORDS = {
+     "reviewed",
+@@ -314,6 +318,20 @@ def validate_run_registry(repo_root: Path) -> list[str]:
+ def validate_workspace_active_ids(repo_root: Path) -> list[str]:
+     state = load_yaml(repo_root / "docs" / "workspace" / "workspace_state.yaml")
+     claims = state.get("current_claims") or {}
++    if not claims and state.get("version") == "workspace_state_projection_v2":
++        active_goal = state.get("active_goal") or {}
++        active_wave = state.get("active_wave") or {}
++        active_work_item = state.get("active_work_item") or {}
++        errors: list[str] = []
++        for label, rel_path_text in [
++            ("active goal", active_goal.get("manifest")),
++            ("active wave allocation", active_wave.get("allocation")),
++            ("active wave closeout", active_wave.get("closeout")),
++            ("active work item", active_work_item.get("path")),
++        ]:
++            if rel_path_text and not (repo_root / str(rel_path_text)).exists():
++                errors.append(f"workspace_state.yaml: {label} path missing {rel_path_text}")
++        return errors
+     errors: list[str] = []
+     ids = {
+         "first_vertical_slice_run_id": ("lab/runs/{value}/run_manifest.json", "run"),
+@@ -333,6 +351,32 @@ def validate_workspace_active_ids(repo_root: Path) -> list[str]:
+ def validate_active_goal_records(repo_root: Path) -> list[str]:
+     state = load_yaml(repo_root / "docs" / "workspace" / "workspace_state.yaml")
+     claims = state.get("current_claims") or {}
++    if not claims and state.get("version") == "workspace_state_projection_v2":
++        active_goal = state.get("active_goal") or {}
++        goal_id = active_goal.get("goal_id")
++        goal_manifest_text = active_goal.get("manifest")
++        if not goal_id or not goal_manifest_text:
++            return []
++        manifest = load_yaml(repo_root / str(goal_manifest_text))
++        errors: list[str] = []
++        if manifest.get("active_goal_id") != goal_id:
++            errors.append(
++                f"workspace_state.yaml: active_goal.goal_id {goal_id} does not match goal manifest {manifest.get('active_goal_id')}"
++            )
++        revision = manifest.get("objective_revision") or {}
++        identity = manifest.get("objective_identity") or {}
++        revision_path_text = identity.get("source_path") or revision.get("source_of_truth")
++        if not revision_path_text:
++            errors.append(f"{rel(repo_root / str(goal_manifest_text), repo_root)}: missing active goal objective revision path")
++        else:
++            revision_path = repo_root / str(revision_path_text)
++            if not revision_path.exists():
++                errors.append(f"{rel(repo_root / str(goal_manifest_text), repo_root)}: missing objective revision {revision_path_text}")
++            elif identity.get("content_hash_sha256"):
++                observed = sha256(revision_path)
++                if observed != identity.get("content_hash_sha256"):
++                    errors.append(f"{rel(repo_root / str(goal_manifest_text), repo_root)}: objective revision sha256 mismatch")
++        return errors
+     goal_id = claims.get("active_goal_id")
+     goal_manifest_text = claims.get("active_goal_manifest")
+     if not goal_id or not goal_manifest_text:
+@@ -817,6 +861,26 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
+     bundle_id = claims.get("first_vertical_slice_bundle_id")
+     attempt_id = claims.get("first_vertical_slice_attempt_id")
+     campaign_id = claims.get("first_vertical_slice_entry")
++    if not run_id and state.get("version") == "workspace_state_projection_v2":
++        for row in read_csv_rows(repo_root / "docs" / "registers" / "run_registry.csv"):
++            if (
++                row.get("campaign_id") == "campaign_minimal_onnx_mt5_vertical_slice_v0"
++                and row.get("status") == "mt5_native_onnx_fixed_fixture_probe_matched"
++            ):
++                run_id = row.get("run_id")
++                break
++        if run_id:
++            candidate_run_path = repo_root / "lab" / "runs" / run_id / "run_manifest.json"
++            if candidate_run_path.exists():
++                candidate_run = load_json(candidate_run_path)
++                id_chain = candidate_run.get("id_chain") or {}
++                bundle_id = id_chain.get("bundle_id")
++                campaign_id = id_chain.get("campaign_id")
++            for path in sorted((repo_root / "runtime" / "mt5_attempts").glob("*/attempt_manifest.yaml")):
++                attempt = load_yaml(path) or {}
++                if attempt.get("run_id") == run_id:
++                    attempt_id = attempt.get("attempt_id") or path.parent.name
++                    break
+     if not run_id or not bundle_id or not attempt_id:
+         return []
+ 
+@@ -960,6 +1024,67 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
+     return errors
+ 
+ 
++def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
++    errors: list[str] = []
++    attempt_root = repo_root / "runtime" / "mt5_attempts"
++    if not attempt_root.exists():
++        return errors
++
++    for path in sorted(attempt_root.glob("*/attempt_manifest.yaml")):
++        attempt = load_yaml(path) or {}
++        label = rel(path, repo_root)
++        status = str(attempt.get("status") or "")
++        attempt_id = str(attempt.get("attempt_id") or path.parent.name)
++        is_l4_runtime_attempt = (
++            "l4" in attempt_id
++            and (attempt_id.startswith("attempt_wave0") or attempt_id.startswith("attempt_wave01"))
++        )
++        execution_state = attempt.get("execution_state") or {}
++        runtime_complete = bool(execution_state.get("runtime_probe_complete"))
++        tester_report_observed = bool(execution_state.get("tester_report_observed"))
++        tester_report_completed = bool(execution_state.get("tester_report_completed"))
++        terminal_mode = str(execution_state.get("terminal_mode") or "")
++
++        if runtime_complete and not tester_report_observed:
++            errors.append(f"{label}: runtime_probe_complete true without tester_report_observed")
++        if runtime_complete and not tester_report_completed:
++            errors.append(f"{label}: runtime_probe_complete true without tester_report_completed")
++        if runtime_complete and terminal_mode == "main_mode_config_fallback":
++            errors.append(f"{label}: runtime_probe_complete true with main-mode fallback")
++        if status.startswith("runtime_probe_completed") and not runtime_complete:
++            errors.append(f"{label}: runtime_probe_completed status without explicit runtime_probe_complete")
++        if is_l4_runtime_attempt and status.startswith("completed_") and not runtime_complete:
++            errors.append(f"{label}: completed_* status without runtime_probe_complete")
++        if is_l4_runtime_attempt and status.startswith("completed_") and not tester_report_observed:
++            errors.append(f"{label}: completed_* status without tester report")
++
++    for path in sorted((repo_root / "lab" / "campaigns").glob("**/*runtime_execution_summary.yaml")):
++        summary = load_yaml(path) or {}
++        label = rel(path, repo_root)
++        counts = summary.get("counts") or {}
++        runtime_completion = summary.get("runtime_completion") or {}
++        if counts.get("runtime_probe_complete_count", 0) and runtime_completion.get("runtime_probe_complete") is False:
++            errors.append(f"{label}: runtime_probe_complete_count conflicts with batch runtime_completion=false")
++        if runtime_completion.get("runtime_probe_complete") and counts.get("runtime_probe_incomplete_count", 0):
++            errors.append(f"{label}: batch runtime completion true with incomplete attempts")
++        for status in (counts.get("status_counts") or {}):
++            if str(status).startswith("completed_"):
++                errors.append(f"{label}: status_counts retains legacy completed_* runtime status {status}")
++
++    closeout_path = repo_root / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_closeout.yaml"
++    if closeout_path.exists():
++        closeout = load_yaml(closeout_path) or {}
++        runtime_integrity = closeout.get("runtime_contract_integrity") or {}
++        if runtime_integrity.get("status") == "passed":
++            errors.append(f"{rel(closeout_path, repo_root)}: runtime_contract_integrity cannot pass while Wave01 L4 reports are incomplete")
++        if closeout.get("version") == "wave_closeout_v2" and (repo_root / ".git").exists() and (repo_root / "AGENTS.md").exists():
++            from foundation.evaluation.build_operating_closeout import validate_committed_closeout
++
++            errors.extend(validate_committed_closeout(repo_root))
++
++    return errors
++
++
+ def validate(repo_root: Path) -> list[str]:
+     errors: list[str] = []
+     errors.extend(validate_workspace_active_ids(repo_root))
+@@ -976,16 +1101,34 @@ def validate(repo_root: Path) -> list[str]:
+     errors.extend(validate_active_manifests(repo_root))
+     errors.extend(validate_bundle_attempt_relation(repo_root))
+     errors.extend(validate_active_evidence_graph(repo_root))
++    errors.extend(validate_runtime_completion_truth(repo_root))
+     return errors
+ 
+ 
++def validate_changed_paths(repo_root: Path, changed_paths_file: Path) -> list[str]:
++    # Safe default: changed-path mode may narrow in the future, but for shared
++    # evidence contracts it must never miss graph neighbors. Current behavior
++    # intentionally falls back to full validation.
++    _changed_paths = [
++        line.strip()
++        for line in changed_paths_file.read_text(encoding="utf-8-sig").splitlines()
++        if line.strip()
++    ]
++    return validate(repo_root)
++
++
+ def main() -> int:
+     parser = argparse.ArgumentParser()
+     parser.add_argument("--repo-root", default=".")
++    parser.add_argument("--changed-paths-file")
+     args = parser.parse_args()
+ 
+     repo_root = Path(args.repo_root).resolve()
+-    errors = validate(repo_root)
++    errors = (
++        validate_changed_paths(repo_root, Path(args.changed_paths_file).resolve())
++        if args.changed_paths_file
++        else validate(repo_root)
++    )
+     if errors:
+         for error in errors:
+             print(f"ERROR: {error}")
+diff --git a/foundation/validation/control_plane_validator.py b/foundation/validation/control_plane_validator.py
+index 6733d50..0886766 100644
+--- a/foundation/validation/control_plane_validator.py
++++ b/foundation/validation/control_plane_validator.py
+@@ -202,6 +202,46 @@ def validate_work_item_schema(repo_root: Path) -> list[str]:
+     return errors
+ 
+ 
++def validate_policy_contract_and_context_slo(repo_root: Path) -> list[str]:
++    errors: list[str] = []
++    policy_path = repo_root / "docs" / "agent_control" / "policy_contract.yaml"
++    if not policy_path.exists():
++        return ["missing required path: docs/agent_control/policy_contract.yaml"]
++    policy = load_yaml(policy_path)
++    guards = policy.get("guards") or {}
++    for guard_id in [
++        "GUARD_001_ATTEMPT_BEFORE_DISPOSITION",
++        "GUARD_002_RUNTIME_COMPLETION_TRUTH",
++        "GUARD_003_CLAIM_BOUNDARY",
++        "GUARD_004_ARTIFACT_IDENTITY",
++        "GUARD_005_LOCKED_OOS",
++        "GUARD_006_BRANCH_WORKTREE",
++    ]:
++        if guard_id not in guards:
++            errors.append(f"policy_contract.yaml missing {guard_id}")
++
++    agents_path = repo_root / "AGENTS.md"
++    if agents_path.exists():
++        text = read_text(agents_path)
++        if len(text.splitlines()) > 140:
++            errors.append("AGENTS.md exceeds 140 line boot-kernel limit")
++        if len(text.encode("utf-8")) > 18000:
++            errors.append("AGENTS.md exceeds 18000 byte boot-kernel limit")
++
++    workspace_path = repo_root / "docs" / "workspace" / "workspace_state.yaml"
++    if workspace_path.exists() and len(read_text(workspace_path).splitlines()) > 100:
++        errors.append("workspace_state.yaml exceeds 100 line compact projection limit")
++
++    lite_path = repo_root / "docs" / "agent_control" / "work_item_lite.schema.yaml"
++    if lite_path.exists():
++        lite = load_yaml(lite_path)
++        if len(lite.get("required_top_level") or []) > 12:
++            errors.append("work_item_lite.schema.yaml has more than 12 required top-level fields")
++    else:
++        errors.append("missing required path: docs/agent_control/work_item_lite.schema.yaml")
++    return errors
++
++
+ def validate_skill_receipt_schema(repo_root: Path) -> list[str]:
+     path = repo_root / "docs" / "agent_control" / "skill_receipt_schema.yaml"
+     data = load_yaml(path)
+@@ -400,6 +440,12 @@ def validate_task_force_registry(repo_root: Path) -> list[str]:
+     )
+     if not review_policy.get("allocation_shapes"):
+         errors.append("codex_task_force_registry.yaml: missing allocation_shapes")
++    profiles = review_policy.get("allocation_profiles") or {}
++    for profile in ["solo", "micro_specialist", "micro_adversarial", "formal_protected_review", "full_roster"]:
++        if profile not in profiles:
++            errors.append(f"codex_task_force_registry.yaml: missing allocation profile {profile}")
++    if review_policy.get("max_depth") != 1:
++        errors.append("codex_task_force_registry.yaml: max_depth must be 1")
+     receipt_fields = set((data.get("micro_consult_receipt_schema") or {}).get("required_fields", []))
+     add_missing(
+         errors,
+@@ -407,6 +453,80 @@ def validate_task_force_registry(repo_root: Path) -> list[str]:
+         observed=receipt_fields,
+         required=REQUIRED_TASK_FORCE_RECEIPT_FIELDS,
+     )
++    v2_fields = set((data.get("consult_receipt_v2_schema") or {}).get("required_fields", []))
++    add_missing(
++        errors,
++        label="codex_task_force_registry.yaml consult_receipt_v2_schema",
++        observed=v2_fields,
++        required={
++            "consult_id",
++            "profile",
++            "question_digest",
++            "selected_agent_ids",
++            "source_refs",
++            "opinions",
++            "owner_decision",
++            "verification_refs",
++            "claim_effect",
++            "metrics",
++        },
++    )
++    return errors
++
++
++def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
++    registry = load_yaml(repo_root / "docs" / "agent_control" / "codex_task_force_registry.yaml")
++    agents = {item.get("id") for item in registry.get("roster", [])}
++    review_policy = registry.get("review_policy") or {}
++    profiles = review_policy.get("allocation_profiles") or {}
++    role_modes_allowed = set(review_policy.get("role_modes") or {})
++    classifications_allowed = set((registry.get("consult_receipt_v2_schema") or {}).get("allowed_opinion_classifications") or [])
++    errors: list[str] = []
++    for path in sorted(repo_root.glob("lab/**/*consult*.yaml")):
++        data = load_yaml(path)
++        if data.get("version") != "agent_consult_receipt_v2":
++            continue
++        label = rel(path, repo_root)
++        selected = data.get("selected_agent_ids") or []
++        profile = data.get("profile")
++        if profile not in profiles:
++            errors.append(f"{label}: unknown consult profile {profile}")
++            continue
++        if len(selected) < int(profiles[profile].get("min_agents", 0)) or len(selected) > int(profiles[profile].get("max_agents", 0)):
++            errors.append(f"{label}: selected_agent_ids count does not fit profile {profile}")
++        unknown = sorted(set(selected) - agents)
++        if unknown:
++            errors.append(f"{label}: unknown registry agent ids {unknown}")
++        role_modes = data.get("role_modes") or {}
++        if isinstance(role_modes, dict):
++            role_values = set(role_modes.values())
++            role_agent_ids = set(role_modes)
++            unknown_role_agents = sorted(role_agent_ids - set(selected))
++            if unknown_role_agents:
++                errors.append(f"{label}: role_modes include agents not selected {unknown_role_agents}")
++        else:
++            role_values = set(role_modes)
++        unknown_modes = sorted(role_values - role_modes_allowed)
++        if unknown_modes:
++            errors.append(f"{label}: unknown role modes {unknown_modes}")
++        if len(selected) >= 3 and not data.get("escalation_reason"):
++            errors.append(f"{label}: 3 or more agents require escalation_reason")
++        if len(selected) >= 5:
++            if not data.get("why_not_smaller"):
++                errors.append(f"{label}: 5 or more agents require why_not_smaller")
++            trigger = data.get("full_roster_trigger")
++            allowed = set(profiles["full_roster"].get("allowed_only_when") or [])
++            if trigger not in allowed:
++                errors.append(f"{label}: full roster trigger is not allowed")
++        for opinion in data.get("opinions") or []:
++            classification = opinion.get("classification")
++            refs = opinion.get("evidence_refs") or []
++            if classification not in classifications_allowed:
++                errors.append(f"{label}: unknown opinion classification {classification}")
++            if classification in {"accepted", "rewritten"} and not refs:
++                errors.append(f"{label}: accepted/rewritten advice requires evidence_refs")
++        if data.get("claim_effect") != "advisory_only_no_reviewed_pass":
++            errors.append(f"{label}: consult claim_effect cannot satisfy reviewed/pass gates")
+     return errors
+ 
+ 
+@@ -461,7 +581,7 @@ def validate_import_smoke(repo_root: Path) -> list[str]:
+     return errors
+ 
+ 
+-def validate(repo_root: Path) -> list[str]:
++def validate(repo_root: Path, *, include_active_records: bool = False) -> list[str]:
+     errors: list[str] = []
+     errors.extend(
+         ensure_paths(
+@@ -481,24 +601,29 @@ def validate(repo_root: Path) -> list[str]:
+     )
+     errors.extend(validate_yaml_json_csv_parse(repo_root))
+     errors.extend(validate_work_item_schema(repo_root))
++    errors.extend(validate_policy_contract_and_context_slo(repo_root))
+     errors.extend(validate_skill_receipt_schema(repo_root))
+     errors.extend(validate_templates(repo_root))
+     errors.extend(validate_task_force_registry(repo_root))
++    errors.extend(validate_agent_consult_receipts(repo_root))
+     errors.extend(validate_routing_smoke_prompts(repo_root))
+     errors.extend(validate_import_smoke(repo_root))
+-    from foundation.validation.active_record_validator import validate as validate_active_records
+ 
+-    errors.extend(validate_active_records(repo_root))
++    if include_active_records:
++        from foundation.validation.active_record_validator import validate as validate_active_records
++
++        errors.extend(validate_active_records(repo_root))
+     return errors
+ 
+ 
+ def main() -> int:
+     parser = argparse.ArgumentParser()
+     parser.add_argument("--repo-root", default=".")
++    parser.add_argument("--include-active-records", action="store_true")
+     args = parser.parse_args()
+ 
+     repo_root = Path(args.repo_root).resolve()
+-    errors = validate(repo_root)
++    errors = validate(repo_root, include_active_records=args.include_active_records)
+     if errors:
+         for error in errors:
+             print(f"ERROR: {error}")

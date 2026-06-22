@@ -87,43 +87,50 @@
       "path": "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/feature_schema.json",
       "sha256": "0a5a57a9d11e02aa8534f935b664a40c2d674e4983c116c41465f8a108d4a7a4",
       "size_bytes": 1467,
-      "availability": "present_hash_recorded"
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history"
     },
     {
       "path": "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/label_schema.json",
       "sha256": "19f158e43a120243dd18a08cd17cc494e60b9ee169cc95392058146d2000bd7d",
       "size_bytes": 1607,
-      "availability": "present_hash_recorded"
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history"
     },
     {
       "path": "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/model_summary.json",
       "sha256": "ed0959777a7c6fc999c8749b01fef9084f9b1beb37012114d14c33f7b524f48a",
       "size_bytes": 994,
-      "availability": "present_hash_recorded"
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history"
     },
     {
       "path": "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/split_profile.json",
       "sha256": "bcb7e30ab7b451691073583cc07a2cfc748efcf60d35327a5f6ccc92cb9944e1",
       "size_bytes": 651,
-      "availability": "present_hash_recorded"
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history"
     },
     {
       "path": "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
       "sha256": "a14531b21968f09e7ef377e06e8775ff9fa5853c1796f6d4fe7b3a1160963338",
       "size_bytes": 52544,
-      "availability": "present_hash_recorded"
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history"
     },
     {
       "path": "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
       "sha256": "e52ac8dfe2a9059cadde2659c7608a8444797892f3f37775b8334b460127dbb2",
       "size_bytes": 54427,
-      "availability": "present_hash_recorded"
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history"
     },
     {
       "path": "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
       "sha256": "fbbe60b46c2b5a7a71ad30494bcf2bb316708633ca9b5307e7dd2887d52ee59d",
       "size_bytes": 5053,
-      "availability": "present_hash_recorded"
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history"
     }
   ],
   "artifact_hashes": [
@@ -180,5 +187,98 @@
   ],
   "availability": "present_hash_recorded",
   "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
-  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing"
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing",
+  "artifact_hygiene_migration": [
+    {
+      "migration_id": "artifact_hygiene_untrack_wave01_proxy_artifacts_v1",
+      "availability": "local_hash_recorded_not_in_current_git_tree",
+      "historical_git_availability": "retained_in_prior_git_history",
+      "artifact_paths": [
+        "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/reports/proxy_event_barrier_report.json",
+        "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/feature_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/label_schema.json",
+        "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/model_summary.json",
+        "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_research_oos_a.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/prediction_sample_validation.csv",
+        "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/artifacts/split_profile.json",
+        "lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/reports/proxy_event_barrier_report.json"
+      ]
+    }
+  ]
 }

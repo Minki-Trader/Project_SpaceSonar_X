@@ -8,28 +8,41 @@ on:
       - "codex/**"
 
 jobs:
-  validate:
+  control-plane-fast:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - run: uv sync --locked --extra dev --extra onnxlab
+      - run: uv run python foundation/validation/policy_duplicate_lint.py --repo-root .
+      - run: uv run python foundation/validation/routing_contract_lint.py --repo-root .
+      - run: uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+      - run: uv run python -m spacesonar.cli registry project --check
+      - run: git diff --check
 
-      - name: Install dev and ONNX lab dependencies
-        run: python -m pip install -e ".[dev,onnxlab]"
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: uv sync --locked --extra dev --extra onnxlab
+      - run: uv run pytest tests/test_runtime_completion_contract.py tests/test_wave01_runtime_truth_migration.py tests/control_plane tests/test_routing_behavior.py -q
 
-      - name: Run tests
-        run: python -m pytest
-
-      - name: Validate control plane
-        run: python foundation/validation/control_plane_validator.py --repo-root .
-
-      - name: Validate active records
-        run: python foundation/validation/active_record_validator.py --repo-root .
-
-      - name: Run routing smoke eval
-        run: python foundation/validation/routing_smoke_eval.py --repo-root .
+  evidence-graph-full:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: uv sync --locked --extra dev --extra onnxlab
+      - run: uv run python foundation/validation/control_plane_validator.py --repo-root .
+      - run: uv run python foundation/validation/active_record_validator.py --repo-root .
+      - run: uv run python -m spacesonar.cli project validate

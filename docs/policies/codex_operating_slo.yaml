@@ -1,0 +1,24 @@
+version: codex_operating_slo_v1
+
+gates:
+  cold_reentry_truth_files_max: 4
+  cold_reentry_context_bytes_max: 50000
+  routing_golden_accuracy_min: 0.95
+  protected_claim_guard_recall_min: 1.0
+  transaction_idempotency_required: 1.0
+  partial_unclassified_transactions_max: 0
+  durable_runs_with_dirty_source_max: 0
+  runtime_completion_contract_violations_max: 0
+  self_attested_closeout_requirements_max: 0
+  routine_solo_or_single_agent_share_min: 0.80
+  duplicate_agent_advice_ratio_max: 0.20
+
+observations:
+  - validator_duration_p50_seconds
+  - validator_duration_p95_seconds
+  - route_correction_count
+  - human_intervention_count
+  - retry_count_by_failure_layer
+  - context_bytes_by_session
+  - transaction_abort_count
+  - migration_count

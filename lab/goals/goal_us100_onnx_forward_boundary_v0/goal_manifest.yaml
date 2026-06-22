@@ -2,7 +2,7 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: complete_wave01_operating_proof_window
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-22T04:56:57Z'
+updated_at_utc: '2026-06-22T11:56:46Z'
 claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -54,11 +54,12 @@ storage_contract:
   resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
   next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
   consultation_record: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial.yaml
+  consultation_record_v2: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
   registry_rows:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_operating_closeout_complete
+active_phase: wave01_event_barrier_l4_pair_judgment_required_next
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
@@ -411,7 +412,7 @@ event_barrier_campaign:
   spec_count: 12
   runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
   claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass
-  next_work_item: work_wave01_open_next_multi_axis_surface_v0
+  next_work_item: work_wave01_event_barrier_l4_materialization_preflight_v0
   result_counts:
     inconclusive: 4
     preserved_clue: 8
@@ -447,19 +448,27 @@ event_barrier_campaign:
   l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
   l4_runtime_execution_counts:
     prepared_attempt_count: 24
-    selected_attempt_count: 24
+    selected_attempt_count: 1
     indexed_execution_count: 24
     executed_attempt_count: 24
-    completed_manifest_count: 24
+    completed_manifest_count: 0
+    touched_manifest_count: 24
     telemetry_observed_count: 24
     telemetry_missing_count: 0
-    tester_report_observed_count: 0
-    tester_report_missing_count: 24
+    tester_report_observed_count: 1
+    tester_report_missing_count: 23
+    terminal_execution_count: 24
+    telemetry_observation_count: 24
+    tester_report_observation_count: 1
+    portable_contract_count: 0
+    runtime_probe_complete_count: 0
+    runtime_probe_incomplete_count: 24
     period_role_counts:
       research_oos: 12
       validation: 12
     status_counts:
-      completed_l4_score_telemetry_observed: 24
+      completed_l4_score_telemetry_observed: 23
+      telemetry_adapter_observed_runtime_contract_incomplete: 1
     result_judgment_counts:
       runtime_probe: 24
   l4_pair_judgment_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml

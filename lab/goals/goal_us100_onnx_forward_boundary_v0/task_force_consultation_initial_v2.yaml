@@ -1,0 +1,72 @@
+version: agent_consult_receipt_v2
+consult_id: tf_goal_us100_onnx_forward_boundary_initial_v2
+profile: formal_protected_review
+question_digest: sha256:01fae3deea2a104b77c37cd16ae052ebbbb77d48fbd165b340d3b1323fb45d02
+created_at_utc: "2026-06-22T13:40:00Z"
+source_refs:
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial.yaml
+    sha256: 01fae3deea2a104b77c37cd16ae052ebbbb77d48fbd165b340d3b1323fb45d02
+    role: preserved_v1_consult_source
+  - path: docs/agent_control/codex_task_force_registry.yaml
+    role: canonical_agent_identity_registry
+  - path: docs/agent_control/policy_contract.yaml
+    role: policy_guard_reference
+  - path: docs/workspace/workspace_state.yaml
+    role: compact_current_truth_projection
+selected_agent_ids:
+  - agent_01_system_governor
+  - agent_05_data_feature_contract
+  - agent_06_quant_research
+  - agent_07_model_validation_risk
+role_modes:
+  agent_01_system_governor: design
+  agent_05_data_feature_contract: evidence_check
+  agent_06_quant_research: scout
+  agent_07_model_validation_risk: adversarial_check
+escalation_reason: initial_goal_framing_record_migrated_without_deleting_original_opinions
+opinions:
+  - opinion_id: initial_system_governor_boundary_v2
+    agent_id: agent_01_system_governor
+    legacy_mode_label: design
+    classification: accepted
+    evidence_refs:
+      - AGENTS.md
+      - docs/agent_control/policy_contract.yaml
+    summary: "Preserve the original boundary that planning and runtime observations do not create selected baseline, runtime authority, economics pass, live readiness, or reviewed/pass claims."
+  - opinion_id: initial_data_feature_contract_v2
+    agent_id: agent_05_data_feature_contract
+    legacy_mode_label: data_contract_check
+    classification: accepted
+    evidence_refs:
+      - docs/contracts/onnx_lab_contract.yaml
+      - configs/onnx_lab/split_recipes/split_set_v0.yaml
+    summary: "Preserve the US100 M5 closed-bar data identity and auxiliary-symbol restriction until broker-local live-chart evidence exists."
+  - opinion_id: initial_quant_research_scope_v2
+    agent_id: agent_06_quant_research
+    legacy_mode_label: scout_axis_design
+    classification: rewritten
+    evidence_refs:
+      - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+      - docs/agent_control/policy_contract.yaml
+    summary: "Original exploration-scout advice remains historical; current stabilization work may close Wave01 operating evidence but still cannot launder runtime-contract completion or candidate claims."
+  - opinion_id: initial_model_validation_risk_v2
+    agent_id: agent_07_model_validation_risk
+    legacy_mode_label: adversarial_check
+    classification: accepted
+    evidence_refs:
+      - docs/agent_control/policy_contract.yaml
+      - foundation/config/mt5_runtime_probe_contract.yaml
+    summary: "Preserve the anti-selection and anti-authority boundary: early scores and L4 observations are not operating baselines or reviewed/verified passes."
+owner_decision: Preserve the original v1 consultation as historical evidence, add this v2 receipt for durable registry IDs and local verification refs, and keep the claim effect advisory-only.
+verification_refs:
+  - docs/agent_control/codex_task_force_registry.yaml
+  - docs/agent_control/policy_contract.yaml
+  - foundation/validation/control_plane_validator.py
+claim_effect: advisory_only_no_reviewed_pass
+metrics:
+  total_advice_items: 18
+  duplicate_advice_items: 0
+  unsupported_assertions: 0
+  accepted_after_verification: 3
+  rejected_after_verification: 0
+  rewritten_after_verification: 1

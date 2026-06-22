@@ -1,0 +1,19 @@
+version: agent_operating_metrics_v1
+updated_utc: "2026-06-22T13:40:00Z"
+source_refs:
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
+  - docs/agent_control/codex_task_force_registry.yaml
+measurement_boundary: control_plane_stabilization_local_records_only
+agent_operating_metrics:
+  consult_count: 1
+  solo_work_share: 0.80
+  one_agent_share: 0.0
+  two_agent_share: 0.0
+  three_plus_agent_share: 0.20
+  duplicate_advice_ratio: 0.0
+  unsupported_assertion_count: 0
+  accepted_after_verification_ratio: 0.75
+compact_work_default:
+  agent_mode: solo
+  allocation_block_required: false
+  claim_effect: local_codex_execution_only_no_reviewed_pass

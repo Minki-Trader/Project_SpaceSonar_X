@@ -42,6 +42,17 @@ runtime_learning_probe_decision:
   rule: "Every valid proxy/model-bearing experiment must reach L4_split_runtime_probe. If runtime behavior, economics, EA/ONNX meaning, Strategy Tester output, materialization, handoff, or live-like operation is the question, run the narrow sufficient MT5 probe or lower the claim. not_applicable_no_runtime_question is allowed only for design/intake/analysis records that do not create a proxy/model-bearing experiment."
 
 completion:
+  completion_predicate:
+    terminal_launched: required
+    telemetry_rows_observed: required
+    tester_report_observed: required
+    tester_report_completed: required
+    terminal_mode: portable_contract_attempt
+    required_period_roles_complete: required
+    period_profile_id_match: required
+    runtime_period_set_id_match: required
+    execution_profile_id_match: required
+    completion_eligible_surface_scope: required
   proxy_l4_completion_required_for:
     - proxy_model_run
     - model_bearing_research_run

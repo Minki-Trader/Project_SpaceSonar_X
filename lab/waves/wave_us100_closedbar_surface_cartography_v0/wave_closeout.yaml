@@ -1,9 +1,21 @@
-version: wave_closeout_v1
+version: wave_closeout_v2
 closeout_id: wave01_operating_closeout_v0
-created_at_utc: '2026-06-22T04:56:57Z'
-status: wave01_operating_proof_window_closed
-result_judgment: positive_operating_closeout
-claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+generated_by: foundation.evaluation.build_operating_closeout
+generated_at_utc: '2026-06-22T14:00:00Z'
+status: wave01_control_plane_proof_closed_runtime_contract_incomplete
+result:
+  control_plane_operating_proof: passed
+  research_cycle_closeout: passed
+  runtime_contract_integrity: failed
+  runtime_authority: not_claimed
+  economics_pass: not_claimed
+  candidate_count: 0
+  l5_candidate_count: 0
+result_judgment:
+  control_plane: positive
+  runtime_contract: incomplete
+  research_outcome: no_candidate_with_negative_memory_and_preserved_clues
+claim_boundary: control_plane_stabilization_validated_runtime_contract_incomplete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 wave_id: wave_us100_closedbar_surface_cartography_v0
 source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
@@ -33,6 +45,7 @@ wave_summary:
   selected_baseline_count: 0
   runtime_authority: false
   economics_pass: false
+  runtime_contract_integrity: failed
 campaign_summaries:
 - campaign_id: campaign_us100_task_surface_scout_v0
   status: decision_replay_judgment_closed_no_candidate
@@ -89,84 +102,48 @@ campaign_summaries:
   - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
   - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
 requirement_audit:
-- requirement: coherent_wave_campaign_run_source_of_truth_manifests
+- requirement: control_plane_operating_proof
+  evaluator_id: operating_slo_evaluator_v1
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
+  evaluator_result_sha256: c9e18aae8fa10c711f1a6abf35d5c5a2e2473077ec2ab92033eda2ffcf39c6e3
   status: passed
-  evidence_paths:
-  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  - lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
-  - docs/registers/run_registry.csv
-  validation: active_record_validator_passed
-- requirement: coherent_registry_indexes_without_using_registries_as_proof
+- requirement: research_cycle_closeout
+  evaluator_id: operating_slo_evaluator_v1
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
+  evaluator_result_sha256: c9e18aae8fa10c711f1a6abf35d5c5a2e2473077ec2ab92033eda2ffcf39c6e3
   status: passed
-  evidence_paths:
-  - docs/registers/campaign_registry.csv
-  - docs/registers/wave_registry.csv
-  - docs/registers/clue_registry.csv
-  - docs/registers/negative_memory_registry.csv
-  validation: registry_rows_index_source_manifests_not_proof_replacements
-- requirement: meaningful_runs_have_evidence_paths_claim_boundary_result_judgment_next_action
+- requirement: runtime_contract_integrity
+  evaluator_id: runtime_contract_evaluator_v2
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
+  evaluator_result_sha256: 6ed97b4b944ee75f28d74aec2f1b2df14b22c19105173c8e39f5a5f76a433e3b
+  status: failed
+- requirement: routing_behavior_quality
+  evaluator_id: routing_quality_evaluator_v1
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
+  evaluator_result_sha256: e88fb62cddfde4a4a8d5cd3b8b28fab62ddd4912b576bf397d55944270162702
   status: passed
-  evidence_paths:
-  - docs/registers/run_registry.csv
-  validation: active_record_validator_passed
-- requirement: research_campaigns_remain_multi_axis_unexplored_surface_oriented
+- requirement: agent_value_metrics
+  evaluator_id: agent_value_evaluator_v1
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
+  evaluator_result_sha256: ec96562fb1f6bc1dfe6f0214a2e49ecec0093d450f4e474687d569b3f99d245d
   status: passed
-  evidence_paths:
-  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  - lab/campaigns/campaign_us100_task_surface_scout_v0/campaign_manifest.yaml
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_manifest.yaml
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
-  validation: campaign_exploration_coverage_validator_passed
-- requirement: all_valid_proxy_model_bearing_runs_reach_L4_or_record_invalid_repair_reason
+evaluation_results:
+- evaluator_id: runtime_contract_evaluator_v2
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
+  evaluator_result_sha256: 6ed97b4b944ee75f28d74aec2f1b2df14b22c19105173c8e39f5a5f76a433e3b
+  status: failed
+- evaluator_id: routing_quality_evaluator_v1
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
+  evaluator_result_sha256: e88fb62cddfde4a4a8d5cd3b8b28fab62ddd4912b576bf397d55944270162702
   status: passed
-  evidence_paths:
-  - lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  validation: 34_valid_proxy_model_bearing_runs_reached_L4_score_pair_judgment
-- requirement: L4_promising_results_have_L5_next_action
+- evaluator_id: agent_value_evaluator_v1
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
+  evaluator_result_sha256: ec96562fb1f6bc1dfe6f0214a2e49ecec0093d450f4e474687d569b3f99d245d
   status: passed
-  evidence_paths:
-  - lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
-  validation: no_L5_candidate_remained; preserved_clues_have_new_decision_surface_next_action
-- requirement: parity_differences_recorded_as_prevention_memory
+- evaluator_id: operating_slo_evaluator_v1
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
+  evaluator_result_sha256: c9e18aae8fa10c711f1a6abf35d5c5a2e2473077ec2ab92033eda2ffcf39c6e3
   status: passed
-  evidence_paths:
-  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
-  validation: proxy_runtime_parity_and_decision_surface_differences_closed_as_prevention_memory
-- requirement: negative_invalid_inconclusive_preserved_clue_outcomes_recorded_as_assets
-  status: passed
-  evidence_paths:
-  - docs/registers/negative_memory_registry.csv
-  - docs/registers/clue_registry.csv
-  - lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
-  - lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
-  - lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
-  - lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
-  validation: memory_registry_links_validated
-- requirement: recurring_operational_or_system_failures_repaired_at_appropriate_weight
-  status: passed
-  evidence_paths:
-  - .agents/skills/spacesonar-reentry-read/SKILL.md
-  - foundation/validation/active_record_validator.py
-  validation: broad_first_action_and_wave_memory_registry_drift_now_have_small_guards
-- requirement: validators_and_tests_useful_and_passing
-  status: passed
-  evidence_paths:
-  - foundation/validation/active_record_validator.py
-  - foundation/validation/control_plane_validator.py
-  - tests/test_active_record_validator_graph.py
-  - tests/test_wave01_operating_closeout.py
-  validation: post_closeout_commands_passed
-- requirement: Wave01_closeout_handoff_records_clues_negative_memory_unresolved_risks_next_wave_candidates
-  status: passed
-  evidence_paths:
-  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
-  validation: handoff_section_present
 handoff:
   negative_memory_ids:
   - neg_wave0_decision_replay_momentum_ret_1_loss_v0
@@ -194,26 +171,27 @@ handoff:
   - do_not_replay_inverse_score_band_as_candidate_repair
   - do_not_force_non_directional_or_diagnostic_scores_into_orders_without_new_decision_surface
   - do_not_open_feature_only_label_only_model_only_threshold_only_or_repair_only_campaign
-post_closeout_validation:
-  status: passed
-  commands:
-  - command: pytest tests\test_wave01_operating_closeout.py -q
-    status: passed
-  - command: pytest tests\test_active_record_validator_graph.py::test_active_validator_rejects_campaign_registry_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_wave_campaign_ref_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_surface_registry_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_sweep_registry_status_drift tests\test_active_record_validator_graph.py::test_active_validator_rejects_wave_referenced_memory_missing_from_registries -q
-    status: passed
-  - command: python foundation\validation\active_record_validator.py --repo-root .
-    status: passed
-  - command: python foundation\validation\control_plane_validator.py --repo-root .
-    status: passed
-  - command: git diff --check
-    status: passed_with_crlf_warning_only
+runtime_contract_integrity:
+  status: failed
+  reason: standard tester reports and portable contract completion are not present
+    for all L4 attempts
+  runtime_authority: false
+  economics_pass: false
+  evaluator_id: runtime_contract_evaluator_v2
+  evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
+  evaluator_result_sha256: 6ed97b4b944ee75f28d74aec2f1b2df14b22c19105173c8e39f5a5f76a433e3b
 not_claimed:
-- live_readiness
-- final_profitability
-- selected_baseline
 - runtime_authority
 - economics_pass
+- live_readiness
+- selected_baseline
 - reviewed_or_verified_pass
 - production_deployment
-goal_effect: active_thread_goal_can_be_marked_complete_after_current_commit_and_validation
+migration_history:
+- migration_id: reclassify_wave01_runtime_completion_v1
+  previous_sha256: 07356780e21daa4eaaad74f5df33755869f2a586eea692ade29a4ef487345ea7
+  previous_status: wave01_operating_proof_window_closed
+  reason: separate_control_plane_closeout_from_standard_l4_runtime_completion
+  executed_at_utc: '2026-06-22T11:52:40Z'
 next_action: work_post_wave01_user_directed_wave02_or_review_v0
+evaluation_digest: 7349711307a2bcaf8974b8c6935a3a2320b8cc22c7b846900a582e038671461a

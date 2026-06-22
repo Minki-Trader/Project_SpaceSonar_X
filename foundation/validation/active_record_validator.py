@@ -12,6 +12,10 @@ from typing import Any
 import yaml
 
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 LOCAL_USER_PATH_RE = re.compile(r"C:\\Users\\[^\\\s,\"']+", re.IGNORECASE)
 CLAIM_BLOCKING_WORDS = {
     "reviewed",
@@ -82,6 +86,49 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def text_checkout_sha256_variants(path: Path) -> set[str]:
+    data = path.read_bytes()
+    variants = {sha256_bytes(data)}
+    if b"\0" in data:
+        return variants
+    normalized_lf = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    variants.add(sha256_bytes(normalized_lf))
+    variants.add(sha256_bytes(normalized_lf.replace(b"\n", b"\r\n")))
+    return variants
+
+
+def text_checkout_size_variants(path: Path) -> set[int]:
+    data = path.read_bytes()
+    variants = {len(data)}
+    if b"\0" in data:
+        return variants
+    normalized_lf = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    variants.add(len(normalized_lf))
+    variants.add(len(normalized_lf.replace(b"\n", b"\r\n")))
+    return variants
+
+
+def sha256_matches_text_checkout(expected_hash: str | None, path: Path) -> bool:
+    if not expected_hash:
+        return True
+    return expected_hash in text_checkout_sha256_variants(path)
+
+
+def size_matches_text_checkout(expected_size: str | int | None, path: Path) -> bool:
+    if expected_size in {None, ""}:
+        return True
+    return int(expected_size) in text_checkout_size_variants(path)
+
+
+def is_local_mt5_telemetry_blob(path_value: str) -> bool:
+    normalized = path_value.replace("\\", "/")
+    return normalized.startswith("runtime/mt5_attempts/") and "/telemetry/" in normalized
 
 
 def rel(path: Path, repo_root: Path) -> str:
@@ -267,12 +314,12 @@ def validate_artifact_registry(repo_root: Path) -> list[str]:
             continue
         observed_hash = sha256(artifact_path)
         observed_size = artifact_path.stat().st_size
-        if row.get("sha256") and row["sha256"] != observed_hash:
+        if row.get("sha256") and not sha256_matches_text_checkout(row["sha256"], artifact_path):
             errors.append(
                 f"artifact_registry.csv {row.get('artifact_id')}: sha256 mismatch "
                 f"{rel_path} expected={row['sha256']} observed={observed_hash}"
             )
-        if row.get("size_bytes") and int(row["size_bytes"]) != observed_size:
+        if row.get("size_bytes") and not size_matches_text_checkout(row["size_bytes"], artifact_path):
             errors.append(
                 f"artifact_registry.csv {row.get('artifact_id')}: size mismatch "
                 f"{rel_path} expected={row['size_bytes']} observed={observed_size}"
@@ -314,6 +361,20 @@ def validate_run_registry(repo_root: Path) -> list[str]:
 def validate_workspace_active_ids(repo_root: Path) -> list[str]:
     state = load_yaml(repo_root / "docs" / "workspace" / "workspace_state.yaml")
     claims = state.get("current_claims") or {}
+    if not claims and state.get("version") == "workspace_state_projection_v2":
+        active_goal = state.get("active_goal") or {}
+        active_wave = state.get("active_wave") or {}
+        active_work_item = state.get("active_work_item") or {}
+        errors: list[str] = []
+        for label, rel_path_text in [
+            ("active goal", active_goal.get("manifest")),
+            ("active wave allocation", active_wave.get("allocation")),
+            ("active wave closeout", active_wave.get("closeout")),
+            ("active work item", active_work_item.get("path")),
+        ]:
+            if rel_path_text and not (repo_root / str(rel_path_text)).exists():
+                errors.append(f"workspace_state.yaml: {label} path missing {rel_path_text}")
+        return errors
     errors: list[str] = []
     ids = {
         "first_vertical_slice_run_id": ("lab/runs/{value}/run_manifest.json", "run"),
@@ -333,6 +394,32 @@ def validate_workspace_active_ids(repo_root: Path) -> list[str]:
 def validate_active_goal_records(repo_root: Path) -> list[str]:
     state = load_yaml(repo_root / "docs" / "workspace" / "workspace_state.yaml")
     claims = state.get("current_claims") or {}
+    if not claims and state.get("version") == "workspace_state_projection_v2":
+        active_goal = state.get("active_goal") or {}
+        goal_id = active_goal.get("goal_id")
+        goal_manifest_text = active_goal.get("manifest")
+        if not goal_id or not goal_manifest_text:
+            return []
+        manifest = load_yaml(repo_root / str(goal_manifest_text))
+        errors: list[str] = []
+        if manifest.get("active_goal_id") != goal_id:
+            errors.append(
+                f"workspace_state.yaml: active_goal.goal_id {goal_id} does not match goal manifest {manifest.get('active_goal_id')}"
+            )
+        revision = manifest.get("objective_revision") or {}
+        identity = manifest.get("objective_identity") or {}
+        revision_path_text = identity.get("source_path") or revision.get("source_of_truth")
+        if not revision_path_text:
+            errors.append(f"{rel(repo_root / str(goal_manifest_text), repo_root)}: missing active goal objective revision path")
+        else:
+            revision_path = repo_root / str(revision_path_text)
+            if not revision_path.exists():
+                errors.append(f"{rel(repo_root / str(goal_manifest_text), repo_root)}: missing objective revision {revision_path_text}")
+            elif identity.get("content_hash_sha256"):
+                expected_hash = str(identity.get("content_hash_sha256") or "").lower()
+                if expected_hash and not sha256_matches_text_checkout(expected_hash, revision_path):
+                    errors.append(f"{rel(repo_root / str(goal_manifest_text), repo_root)}: objective revision sha256 mismatch")
+        return errors
     goal_id = claims.get("active_goal_id")
     goal_manifest_text = claims.get("active_goal_manifest")
     if not goal_id or not goal_manifest_text:
@@ -362,7 +449,7 @@ def validate_active_goal_records(repo_root: Path) -> list[str]:
         else:
             identity = manifest.get("objective_identity") or {}
             expected_hash = str(identity.get("content_hash_sha256") or "").lower()
-            if expected_hash and expected_hash != sha256(revision_path):
+            if expected_hash and not sha256_matches_text_checkout(expected_hash, revision_path):
                 errors.append(f"{rel(goal_manifest_path, repo_root)}: objective revision sha256 mismatch")
             if identity.get("source_path") and identity.get("source_path") != str(revision_path_text):
                 errors.append(f"{rel(goal_manifest_path, repo_root)}: objective_identity.source_path mismatch")
@@ -802,7 +889,7 @@ def validate_bundle_attempt_relation(repo_root: Path) -> list[str]:
             errors.append(f"{rel(attempt_path, repo_root)}: missing bundle path {bundle_path}")
             continue
         observed_hash = sha256(full_bundle_path)
-        if expected_hash and expected_hash != observed_hash:
+        if expected_hash and not sha256_matches_text_checkout(expected_hash, full_bundle_path):
             errors.append(
                 f"{rel(attempt_path, repo_root)}: bundle sha256 mismatch "
                 f"expected={expected_hash} observed={observed_hash}"
@@ -817,6 +904,26 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
     bundle_id = claims.get("first_vertical_slice_bundle_id")
     attempt_id = claims.get("first_vertical_slice_attempt_id")
     campaign_id = claims.get("first_vertical_slice_entry")
+    if not run_id and state.get("version") == "workspace_state_projection_v2":
+        for row in read_csv_rows(repo_root / "docs" / "registers" / "run_registry.csv"):
+            if (
+                row.get("campaign_id") == "campaign_minimal_onnx_mt5_vertical_slice_v0"
+                and row.get("status") == "mt5_native_onnx_fixed_fixture_probe_matched"
+            ):
+                run_id = row.get("run_id")
+                break
+        if run_id:
+            candidate_run_path = repo_root / "lab" / "runs" / run_id / "run_manifest.json"
+            if candidate_run_path.exists():
+                candidate_run = load_json(candidate_run_path)
+                id_chain = candidate_run.get("id_chain") or {}
+                bundle_id = id_chain.get("bundle_id")
+                campaign_id = id_chain.get("campaign_id")
+            for path in sorted((repo_root / "runtime" / "mt5_attempts").glob("*/attempt_manifest.yaml")):
+                attempt = load_yaml(path) or {}
+                if attempt.get("run_id") == run_id:
+                    attempt_id = attempt.get("attempt_id") or path.parent.name
+                    break
     if not run_id or not bundle_id or not attempt_id:
         return []
 
@@ -898,14 +1005,15 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
     if matched and telemetry_path:
         full_telemetry_path = repo_root / telemetry_path
         if not full_telemetry_path.exists():
-            errors.append(f"active evidence graph: missing telemetry {telemetry_path}")
+            if not is_local_mt5_telemetry_blob(str(telemetry_path)):
+                errors.append(f"active evidence graph: missing telemetry {telemetry_path}")
         else:
             observed_hash = sha256(full_telemetry_path)
             for label, expected_hash in [
                 ("attempt telemetry", telemetry.get("sha256")),
                 ("bundle telemetry", (bundle.get("mt5_fixed_fixture_probe") or {}).get("telemetry_sha256")),
             ]:
-                if expected_hash and expected_hash != observed_hash:
+                if expected_hash and not sha256_matches_text_checkout(expected_hash, full_telemetry_path):
                     errors.append(f"active evidence graph: {label} sha256 mismatch")
             if metrics.get("mt5_native_onnx_output_path") != telemetry_path:
                 errors.append("active evidence graph: metrics telemetry path mismatch")
@@ -928,7 +1036,7 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
         elif ea_source.get("sha256") and ea_entrypoint.get("sha256") != ea_source.get("sha256"):
             errors.append("active evidence graph: attempt ea_entrypoint sha256 does not match compile provenance")
         if ea_entrypoint.get("path") and (repo_root / ea_entrypoint["path"]).exists():
-            if ea_entrypoint.get("sha256") != sha256(repo_root / ea_entrypoint["path"]):
+            if not sha256_matches_text_checkout(ea_entrypoint.get("sha256"), repo_root / ea_entrypoint["path"]):
                 errors.append("active evidence graph: attempt ea_entrypoint sha256 does not match file")
 
     artifact_paths, source_paths, excluded_paths = lineage_path_sets(lineage)
@@ -948,7 +1056,7 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
         if not isinstance(item, dict) or not item.get("path") or not item.get("sha256"):
             continue
         path = repo_root / item["path"]
-        if path.exists() and item["sha256"] != sha256(path):
+        if path.exists() and not sha256_matches_text_checkout(item["sha256"], path):
             errors.append(f"active evidence graph: lineage sha256 mismatch {item['path']}")
 
     entry_contract = campaign.get("vertical_slice_entry_contract") or {}
@@ -956,6 +1064,67 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
         for key, value in walk_values(entry_contract):
             if key.endswith(".status") and isinstance(value, str) and value.startswith("to_"):
                 errors.append(f"active evidence graph: completed campaign retains planning status {key}={value}")
+
+    return errors
+
+
+def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    attempt_root = repo_root / "runtime" / "mt5_attempts"
+    if not attempt_root.exists():
+        return errors
+
+    for path in sorted(attempt_root.glob("*/attempt_manifest.yaml")):
+        attempt = load_yaml(path) or {}
+        label = rel(path, repo_root)
+        status = str(attempt.get("status") or "")
+        attempt_id = str(attempt.get("attempt_id") or path.parent.name)
+        is_l4_runtime_attempt = (
+            "l4" in attempt_id
+            and (attempt_id.startswith("attempt_wave0") or attempt_id.startswith("attempt_wave01"))
+        )
+        execution_state = attempt.get("execution_state") or {}
+        runtime_complete = bool(execution_state.get("runtime_probe_complete"))
+        tester_report_observed = bool(execution_state.get("tester_report_observed"))
+        tester_report_completed = bool(execution_state.get("tester_report_completed"))
+        terminal_mode = str(execution_state.get("terminal_mode") or "")
+
+        if runtime_complete and not tester_report_observed:
+            errors.append(f"{label}: runtime_probe_complete true without tester_report_observed")
+        if runtime_complete and not tester_report_completed:
+            errors.append(f"{label}: runtime_probe_complete true without tester_report_completed")
+        if runtime_complete and terminal_mode == "main_mode_config_fallback":
+            errors.append(f"{label}: runtime_probe_complete true with main-mode fallback")
+        if status.startswith("runtime_probe_completed") and not runtime_complete:
+            errors.append(f"{label}: runtime_probe_completed status without explicit runtime_probe_complete")
+        if is_l4_runtime_attempt and status.startswith("completed_") and not runtime_complete:
+            errors.append(f"{label}: completed_* status without runtime_probe_complete")
+        if is_l4_runtime_attempt and status.startswith("completed_") and not tester_report_observed:
+            errors.append(f"{label}: completed_* status without tester report")
+
+    for path in sorted((repo_root / "lab" / "campaigns").glob("**/*runtime_execution_summary.yaml")):
+        summary = load_yaml(path) or {}
+        label = rel(path, repo_root)
+        counts = summary.get("counts") or {}
+        runtime_completion = summary.get("runtime_completion") or {}
+        if counts.get("runtime_probe_complete_count", 0) and runtime_completion.get("runtime_probe_complete") is False:
+            errors.append(f"{label}: runtime_probe_complete_count conflicts with batch runtime_completion=false")
+        if runtime_completion.get("runtime_probe_complete") and counts.get("runtime_probe_incomplete_count", 0):
+            errors.append(f"{label}: batch runtime completion true with incomplete attempts")
+        for status in (counts.get("status_counts") or {}):
+            if str(status).startswith("completed_"):
+                errors.append(f"{label}: status_counts retains legacy completed_* runtime status {status}")
+
+    closeout_path = repo_root / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_closeout.yaml"
+    if closeout_path.exists():
+        closeout = load_yaml(closeout_path) or {}
+        runtime_integrity = closeout.get("runtime_contract_integrity") or {}
+        if runtime_integrity.get("status") == "passed":
+            errors.append(f"{rel(closeout_path, repo_root)}: runtime_contract_integrity cannot pass while Wave01 L4 reports are incomplete")
+        if closeout.get("version") == "wave_closeout_v2" and (repo_root / ".git").exists() and (repo_root / "AGENTS.md").exists():
+            from foundation.evaluation.build_operating_closeout import validate_committed_closeout
+
+            errors.extend(validate_committed_closeout(repo_root))
 
     return errors
 
@@ -976,16 +1145,34 @@ def validate(repo_root: Path) -> list[str]:
     errors.extend(validate_active_manifests(repo_root))
     errors.extend(validate_bundle_attempt_relation(repo_root))
     errors.extend(validate_active_evidence_graph(repo_root))
+    errors.extend(validate_runtime_completion_truth(repo_root))
     return errors
+
+
+def validate_changed_paths(repo_root: Path, changed_paths_file: Path) -> list[str]:
+    # Safe default: changed-path mode may narrow in the future, but for shared
+    # evidence contracts it must never miss graph neighbors. Current behavior
+    # intentionally falls back to full validation.
+    _changed_paths = [
+        line.strip()
+        for line in changed_paths_file.read_text(encoding="utf-8-sig").splitlines()
+        if line.strip()
+    ]
+    return validate(repo_root)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--changed-paths-file")
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
-    errors = validate(repo_root)
+    errors = (
+        validate_changed_paths(repo_root, Path(args.changed_paths_file).resolve())
+        if args.changed_paths_file
+        else validate(repo_root)
+    )
     if errors:
         for error in errors:
             print(f"ERROR: {error}")

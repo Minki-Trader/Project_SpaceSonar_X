@@ -8,7 +8,7 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_task_surface_scout_v0
 sweep_id: sweep_wave0_broad_surface_scout_v0
 created_at_utc: '2026-06-21T19:30:24Z'
-status: completed_l4_score_telemetry_observed
+status: telemetry_adapter_observed_runtime_contract_incomplete
 claim_boundary: l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
 source_of_truth: runtime/mt5_attempts/attempt_wave0_cell_001_l4_validation_v0/attempt_manifest.yaml
 work_item_id: work_wave0_first_batch_l4_follow_through_v0
@@ -360,7 +360,11 @@ required_gate_coverage:
   - runtime_authority
 missing_evidence:
 - tester_report_missing_or_not_archived
-next_action: aggregate this period role with its paired L4 attempt before L5 decision
+- runtime_completion_missing:tester_report_observed
+- runtime_completion_missing:tester_report_completed
+- runtime_completion_missing:portable_terminal_contract
+next_action: rerun or repair portable tester-report-backed L4 before standard completion
+  or L5 claim
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -502,3 +506,26 @@ tester_report:
   status: tester_report_missing_after_terminal_execution
   path: null
   claim_boundary: missing_report_no_economics_or_completion_claim
+execution_state:
+  terminal_launched: true
+  telemetry_file_observed: true
+  telemetry_rows_observed: true
+  tester_report_observed: false
+  tester_report_completed: false
+  terminal_mode: main_mode_config_fallback
+  portable_contract_satisfied: false
+  report_contract_satisfied: false
+  period_contract_satisfied: true
+  surface_contract_satisfied: true
+  runtime_probe_complete: false
+  missing_requirements:
+  - tester_report_observed
+  - tester_report_completed
+  - portable_terminal_contract
+  completion_claim_boundary: telemetry_adapter_observed_runtime_contract_incomplete
+migration_history:
+- migration_id: reclassify_wave01_runtime_completion_v1
+  previous_sha256: 829ee74a675782a3983eeb2dc25bae69686b783f80059242462b957584d71cad
+  previous_status: completed_l4_score_telemetry_observed
+  reason: runtime_completion_previously_inferred_from_telemetry_or_status_prefix
+  executed_at_utc: '2026-06-22T11:52:40Z'

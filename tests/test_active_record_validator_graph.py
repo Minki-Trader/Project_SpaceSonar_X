@@ -43,11 +43,17 @@ def copy_evidence_repo(tmp_path: Path) -> Path:
 
 def active_ids(repo: Path) -> tuple[str, str, str]:
     state = load_yaml(repo / "docs" / "workspace" / "workspace_state.yaml")
-    claims = state["current_claims"]
+    claims = state.get("current_claims")
+    if claims:
+        return (
+            claims["first_vertical_slice_run_id"],
+            claims["first_vertical_slice_bundle_id"],
+            claims["first_vertical_slice_attempt_id"],
+        )
     return (
-        claims["first_vertical_slice_run_id"],
-        claims["first_vertical_slice_bundle_id"],
-        claims["first_vertical_slice_attempt_id"],
+        "onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing",
+        "bundle_20260621T131542Z_fixture_plumbing_v0",
+        "attempt_20260621T131542Z_mt5_onnx_fixture_v0",
     )
 
 
@@ -109,6 +115,48 @@ def test_active_validator_rejects_missing_ea_entrypoint_hash(tmp_path: Path) -> 
     errors = validate(repo)
 
     assert any("ea_entrypoint sha256 is missing" in error for error in errors)
+
+
+def test_active_validator_rejects_runtime_complete_without_report(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    attempt_path = repo / "runtime" / "mt5_attempts" / "attempt_wave01_eb_cell_001_l4_validation_v0" / "attempt_manifest.yaml"
+    attempt = load_yaml(attempt_path)
+    attempt["status"] = "runtime_probe_completed"
+    attempt["execution_state"] = {
+        "terminal_launched": True,
+        "telemetry_file_observed": True,
+        "telemetry_rows_observed": True,
+        "tester_report_observed": False,
+        "tester_report_completed": False,
+        "terminal_mode": "portable_contract_attempt",
+        "runtime_probe_complete": True,
+    }
+    write_yaml(attempt_path, attempt)
+
+    errors = validate(repo)
+
+    assert any("runtime_probe_complete true without tester_report_observed" in error for error in errors)
+
+
+def test_active_validator_rejects_legacy_completed_runtime_status(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    attempt_path = repo / "runtime" / "mt5_attempts" / "attempt_wave01_eb_cell_001_l4_validation_v0" / "attempt_manifest.yaml"
+    attempt = load_yaml(attempt_path)
+    attempt["status"] = "completed_l4_score_telemetry_observed"
+    attempt["execution_state"] = {
+        "terminal_launched": True,
+        "telemetry_file_observed": True,
+        "telemetry_rows_observed": True,
+        "tester_report_observed": False,
+        "tester_report_completed": False,
+        "terminal_mode": "main_mode_config_fallback",
+        "runtime_probe_complete": False,
+    }
+    write_yaml(attempt_path, attempt)
+
+    errors = validate(repo)
+
+    assert any("completed_* status without runtime_probe_complete" in error for error in errors)
 
 
 def test_active_validator_rejects_bad_bounded_synthesis_mix_depth(tmp_path: Path) -> None:
@@ -315,12 +363,12 @@ def test_active_validator_rejects_wave_referenced_memory_missing_from_registries
 
 def test_active_validator_rejects_missing_goal_objective_revision(tmp_path: Path) -> None:
     repo = copy_evidence_repo(tmp_path)
-    state_path = repo / "docs" / "workspace" / "workspace_state.yaml"
-    state = load_yaml(state_path)
-    state["current_claims"]["active_goal_objective_revision"] = (
+    goal_path = repo / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml"
+    goal = load_yaml(goal_path)
+    goal["objective_identity"]["source_path"] = (
         "lab/goals/goal_us100_onnx_forward_boundary_v0/missing_goal_revision.yaml"
     )
-    write_yaml(state_path, state)
+    write_yaml(goal_path, goal)
 
     errors = validate(repo)
 

@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-22T04:56:57Z'
-status: awaiting_user_direction_after_wave01_operating_closeout
+status: l4_strategy_tester_execution_completed_for_prepared_attempts
 current_truth:
   active_goal_status: complete_wave01_operating_proof_window
   wave_id: wave_us100_closedbar_surface_cartography_v0
@@ -19,6 +19,33 @@ current_truth:
   - clue_wave0_path_quality_h12_side_signal_v0
   - clue_wave01_session_transition_remaining_decision_surface_needed_v0
   claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+  wave01_event_barrier_l4_runtime_execution_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  wave01_event_barrier_l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
+  wave01_event_barrier_l4_runtime_execution_counts:
+    prepared_attempt_count: 24
+    selected_attempt_count: 1
+    indexed_execution_count: 24
+    executed_attempt_count: 24
+    completed_manifest_count: 0
+    touched_manifest_count: 24
+    telemetry_observed_count: 24
+    telemetry_missing_count: 0
+    tester_report_observed_count: 1
+    tester_report_missing_count: 23
+    terminal_execution_count: 24
+    telemetry_observation_count: 24
+    tester_report_observation_count: 1
+    portable_contract_count: 0
+    runtime_probe_complete_count: 0
+    runtime_probe_incomplete_count: 24
+    period_role_counts:
+      research_oos: 12
+      validation: 12
+    status_counts:
+      completed_l4_score_telemetry_observed: 23
+      telemetry_adapter_observed_runtime_contract_incomplete: 1
+    result_judgment_counts:
+      runtime_probe: 24
 next_allowed_shapes:
 - user_directed_wave02_open
 - new_unexplored_multi_axis_surface
@@ -44,7 +71,9 @@ forbidden_claims:
 - handoff_complete
 - live_readiness
 - reviewed_verified_pass
-next_action: await_user_instruction
+next_action: continue running remaining prepared Wave01 L4 Strategy Tester attempts
 next_action_detail: Wave01 operating goal is closed. Continue only with user-directed
   Wave02, a new unexplored multi-axis surface, previous-material-only bounded synthesis,
   or review.
+missing_material_if_relevant:
+- paired_L4_period_aggregation_pending
