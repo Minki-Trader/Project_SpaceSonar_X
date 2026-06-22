@@ -20,6 +20,14 @@ Read only:
 
 Do not recreate legacy archives, legacy routing records, old review records, or generated run trees by default.
 
+## First Action Weight
+
+- Re-entry is a truth check, not a project-wide reconciliation.
+- After the current truth is identified, choose one narrow next path: one file family, one fixture, one representative run, one parser smoke, or one MT5 micro-path.
+- Do not start a resumed session with broad materialization, full registry sync, full validators, or full pytest unless the task is already a campaign/wave boundary, protected runtime/economics/handoff claim, shared-contract mutation, or known source-of-truth drift repair.
+- If a broad check is needed, record the trigger first: `boundary_closeout`, `protected_claim`, `shared_contract_change`, or `source_of_truth_drift`.
+- Attempt-first still applies, but the first repair/adapter/probe should be the smallest repo-controlled action that can answer the current question.
+
 ## Current Workspace Assumptions
 
 - This is an ID-based ONNX development lab.
