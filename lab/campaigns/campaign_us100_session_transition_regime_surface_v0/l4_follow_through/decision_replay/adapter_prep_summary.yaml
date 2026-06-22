@@ -1,0 +1,94 @@
+version: wave01_session_transition_l4_decision_replay_adapter_preparation_summary_v1
+summary_id: wave01_session_transition_l4_decision_replay_adapter_preparation_v0
+work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_session_transition_l4_decision_replay_adapter_preparation_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+created_at_utc: '2026-06-22T04:19:06Z'
+status: thin_session_transition_decision_replay_adapter_attempts_prepared_terminal_execution_next
+execution_weight: thin_first_pass
+adapter_id: score_replay_sparse_decision_adapter_v0
+claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+counts:
+  preserved_clue_count: 5
+  direct_trade_adapter_eligible_cell_count: 1
+  not_direct_trade_adapter_eligible_cell_count: 4
+  prepared_attempt_count: 2
+  prepared_cell_count: 1
+  period_role_counts:
+    research_oos: 1
+    validation: 1
+  decision_family_counts:
+    failed_breakout_reversion_abstain_exit: 2
+  eligibility_reason_counts:
+    diagnostic_or_no_trade_requires_new_decision_surface: 2
+    eligible_failed_breakout_reversion_inverse_score_band_adapter: 1
+    non_directional_event_score_requires_declared_side_surface: 2
+source_records:
+  pair_judgment_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  score_attempt_preparation_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+  execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+artifact_paths:
+  summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  attempt_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  eligibility_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  ea_source: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+judgment:
+  result_subject: Wave01 session-transition preserved-clue decision replay adapter
+    preparation
+  judgment_label: runtime_probe
+  metric_identity: no performance metric; adapter/config preparation only
+  comparison_baseline: Wave01 session-transition paired L4 score telemetry preserved
+    clues
+  claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+  missing_evidence:
+  - decision_replay_terminal_execution_not_run
+  - tester_reports_missing_until_execution
+  - economics_metrics_missing_until_tester_report
+  - non_directional_or_diagnostic_preserved_clues_require_declared_side_surface_before_trade_replay
+  next_action: execute one prepared session-transition decision replay attempt before
+    any batch expansion or L5 claim
+prevention_memory:
+- 'Attempt-first is not heavy-first: prepare the smallest directional session-transition
+  adapter path before broad replay.'
+- Do not force compression-release, range-acceptance, diagnostic, or no-trade clues
+  into long/short orders without a declared side surface.
+- 'Failed-breakout reversion uses inverse score-band polarity: high score -> short,
+  low score -> long.'
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+  - --cell-id
+  - wave01_st_cell_003
+  - --write-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: f69b2fa06b9f9af730fb38cc180d19e2d627d2ca
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M .agents/skills/spacesonar-work-item-router/SKILL.md
+  - ' M AGENTS.md'
+  - ' M docs/workspace/lab_profile.yaml'
+  - ' M foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5'
+  - ' M foundation/mt5/score_replay_decision_adapter.py'
+  - ' M tests/test_score_replay_decision_adapter.py'
+  - ?? foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+  - ?? tests/test_wave01_session_transition_l4_decision_replay_preparer.py
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+cell_id_filter: wave01_st_cell_003

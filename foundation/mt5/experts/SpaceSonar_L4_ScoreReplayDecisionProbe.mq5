@@ -3,7 +3,7 @@
 //| Replays MT5 score telemetry into sparse tester trades.            |
 //+------------------------------------------------------------------+
 #property strict
-#property version   "1.01"
+#property version   "1.02"
 #property description "Score-telemetry replay EA for sparse decision-execution probing."
 
 #include <Trade/Trade.mqh>
@@ -123,6 +123,8 @@ string DirectionFromPolicy()
       return (ret1 >= 0.0 ? "short" : "long");
    if(InpDirectionPolicy == "score_band_side")
       return "flat";
+   if(InpDirectionPolicy == "score_band_inverse_side")
+      return "flat";
    return "flat";
 }
 
@@ -143,6 +145,8 @@ bool IsScoreBandDirectionalFamily()
    if(InpDecisionFamily == "session_gated_abstain_barrier_exit")
       return true;
    if(InpDecisionFamily == "range_edge_abstain_timeout_exit")
+      return true;
+   if(InpDecisionFamily == "failed_breakout_reversion_abstain_exit")
       return true;
    return false;
 }
@@ -166,9 +170,17 @@ string ExecutionSignal(const string source_decision, const double score)
    if(IsScoreBandDirectionalFamily())
    {
       if(score >= InpScoreHigh)
+      {
+         if(InpDirectionPolicy == "score_band_inverse_side")
+            return "short";
          return "long";
+      }
       if(score <= InpScoreLow)
+      {
+         if(InpDirectionPolicy == "score_band_inverse_side")
+            return "long";
          return "short";
+      }
       return "flat";
    }
    if(IsDiagnosticOrNoTradeFamily())

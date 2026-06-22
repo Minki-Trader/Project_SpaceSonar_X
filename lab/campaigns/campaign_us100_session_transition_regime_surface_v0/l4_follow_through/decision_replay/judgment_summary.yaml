@@ -1,0 +1,88 @@
+version: wave01_session_transition_l4_decision_replay_judgment_summary_v1
+summary_id: wave01_session_transition_l4_decision_replay_judgment_summary_v0
+work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_session_transition_l4_decision_replay_judgment_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+created_at_utc: '2026-06-22T04:27:32Z'
+status: wave01_session_transition_decision_replay_judgment_completed_no_l5_candidates
+claim_boundary: wave01_session_transition_decision_replay_log_balance_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+counts:
+  cell_pair_count: 1
+  negative_count: 1
+  preserved_clue_count: 0
+  inconclusive_count: 0
+  result_judgment_counts:
+    negative: 1
+  l5_status_counts:
+    no_l5_decision_replay_log_balance_loss_observed: 1
+source_records:
+  runtime_execution_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+artifact_paths:
+  judgment_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  judgment_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+  negative_memory: lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+  closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_decision_replay_judgment_v0_closeout.yaml
+judgment:
+  result_subject: Wave01 session-transition inverse score-band decision replay
+  judgment_label: negative
+  metric_identity: tester_log_final_balance_only_no_tester_report_hash
+  initial_deposit: 500.0
+  claim_boundary: wave01_session_transition_decision_replay_log_balance_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+  missing_evidence:
+  - tester_reports_missing_for_decision_replay_pairs
+  - standard_portable_contract_completion_missing_main_mode_fallback_used
+  - economics_pass_forbidden
+  next_action: record negative memory; do not continue this inverse score-band replay
+    to L5
+prevention_memory:
+- Validation and research_oos both fell below initial deposit under inverse score-band
+  replay.
+- Main-mode fallback observation is useful runtime learning but not standard portable
+  runtime authority.
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/judge_wave01_session_transition_l4_decision_replay_results.py
+  - --write-records
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: f69b2fa06b9f9af730fb38cc180d19e2d627d2ca
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M .agents/skills/spacesonar-work-item-router/SKILL.md
+  - ' M AGENTS.md'
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/workspace/lab_profile.yaml'
+  - ' M foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5'
+  - ' M foundation/mt5/score_replay_decision_adapter.py'
+  - ' M tests/test_score_replay_decision_adapter.py'
+  - ?? foundation/pipelines/judge_wave01_session_transition_l4_decision_replay_results.py
+  - ?? foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+  - ?? foundation/pipelines/run_wave01_session_transition_l4_decision_replay_attempts.py
+  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_decision_replay_judgment_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_decision_replay_runtime_execution_v0_closeout.yaml
+  - ?? lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_research_oos_score_band_inverse_side_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_validation_score_band_inverse_side_v0/
+  - ?? tests/test_wave01_session_transition_l4_decision_replay_judgment.py
+  - ?? tests/test_wave01_session_transition_l4_decision_replay_preparer.py
+  - ?? tests/test_wave01_session_transition_l4_decision_replay_runner.py
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

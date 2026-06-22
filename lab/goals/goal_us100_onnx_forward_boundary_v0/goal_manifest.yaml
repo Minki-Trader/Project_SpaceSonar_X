@@ -2,7 +2,7 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-22T04:04:45Z'
+updated_at_utc: '2026-06-22T04:27:32Z'
 claim_boundary: active_goal_session_transition_proxy_executed_L4_required_not_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -58,7 +58,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_session_transition_l4_pair_judgment_completed_decision_adapter_required
+active_phase: wave01_session_transition_decision_replay_negative_memory_recorded
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
@@ -636,3 +636,15 @@ session_transition_campaign:
       proxy_inconclusive_runtime_score_observed: 3
       proxy_negative_runtime_score_observed: 2
       proxy_preserved_clue_runtime_score_observed: 5
+  l4_decision_replay_judgment_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  l4_decision_replay_judgment_status: wave01_session_transition_decision_replay_judgment_completed_no_l5_candidates
+  l4_decision_replay_judgment_counts:
+    cell_pair_count: 1
+    negative_count: 1
+    preserved_clue_count: 0
+    inconclusive_count: 0
+    result_judgment_counts:
+      negative: 1
+    l5_status_counts:
+      no_l5_decision_replay_log_balance_loss_observed: 1
+  negative_memory: lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml

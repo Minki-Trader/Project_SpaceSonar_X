@@ -1,0 +1,43 @@
+version: work_closeout_v1
+work_item_id: work_wave01_session_transition_l4_decision_replay_adapter_preparation_v0
+parent_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-22T04:19:06Z'
+result_judgment: runtime_probe
+status: thin_session_transition_decision_replay_adapter_attempts_prepared_terminal_execution_next
+claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+counts:
+  preserved_clue_count: 5
+  direct_trade_adapter_eligible_cell_count: 1
+  not_direct_trade_adapter_eligible_cell_count: 4
+  prepared_attempt_count: 2
+  prepared_cell_count: 1
+  period_role_counts:
+    research_oos: 1
+    validation: 1
+  decision_family_counts:
+    failed_breakout_reversion_abstain_exit: 2
+  eligibility_reason_counts:
+    diagnostic_or_no_trade_requires_new_decision_surface: 2
+    eligible_failed_breakout_reversion_inverse_score_band_adapter: 1
+    non_directional_event_score_requires_declared_side_surface: 2
+missing_evidence:
+- decision_replay_terminal_execution_not_run
+- tester_reports_missing_until_execution
+- economics_metrics_missing_until_tester_report
+- non_directional_or_diagnostic_preserved_clues_require_declared_side_surface_before_trade_replay
+next_action: execute one prepared session-transition decision replay attempt before
+  any batch expansion or L5 claim
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

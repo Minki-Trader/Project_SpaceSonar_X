@@ -12,6 +12,7 @@ SUPPORTED_DIRECTION_POLICIES = (
     "momentum_ret_1",
     "contrarian_ret_1",
     "score_band_side",
+    "score_band_inverse_side",
 )
 SCORE_BAND_DIRECTIONAL_FAMILIES = frozenset(
     {
@@ -23,6 +24,7 @@ SCORE_BAND_DIRECTIONAL_FAMILIES = frozenset(
         "fast_event_abstain_timeout_exit",
         "session_gated_abstain_barrier_exit",
         "range_edge_abstain_timeout_exit",
+        "failed_breakout_reversion_abstain_exit",
     }
 )
 NON_TRADE_DIAGNOSTIC_FAMILIES = frozenset(
@@ -54,7 +56,7 @@ def direction_from_policy(policy: str, ret_1: float | None = None) -> ExecutionS
         return ExecutionSignal("long", "direction_policy_long_only")
     if policy == "short_only":
         return ExecutionSignal("short", "direction_policy_short_only")
-    if policy == "score_band_side":
+    if policy in {"score_band_side", "score_band_inverse_side"}:
         return ExecutionSignal("flat", "score_band_side_requires_score_thresholds")
     if ret_1 is None:
         return ExecutionSignal("flat", "ret_1_required_for_direction_policy")
@@ -103,9 +105,14 @@ def score_to_execution_signal(
     if kind == "score_band_directional":
         if score_low_threshold is None:
             return ExecutionSignal("flat", "score_low_threshold_required_for_score_band_side")
+        policy = normalize_policy(direction_policy)
         if score >= score_high_threshold:
+            if policy == "score_band_inverse_side":
+                return ExecutionSignal("short", "score_at_or_above_high_threshold_inverse_side")
             return ExecutionSignal("long", "score_at_or_above_high_threshold")
         if score <= score_low_threshold:
+            if policy == "score_band_inverse_side":
+                return ExecutionSignal("long", "score_at_or_below_low_threshold_inverse_side")
             return ExecutionSignal("short", "score_at_or_below_low_threshold")
         return ExecutionSignal("flat", "score_inside_abstain_band")
 

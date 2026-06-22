@@ -1,0 +1,22 @@
+version: negative_memory_v1
+negative_memory_id: neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+created_at_utc: '2026-06-22T04:27:32Z'
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+subject: Wave01 session-transition failed-breakout reversion inverse score-band decision
+  replay
+failed_boundary: validation_and_research_oos_log_balance_below_initial_deposit
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+claim_boundary: wave01_session_transition_decision_replay_log_balance_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+do_not_repeat:
+- Do not carry failed_breakout_reversion_abstain_exit inverse score-band replay forward
+  as an L5 candidate.
+- Do not relabel this replay as a fresh campaign repair without a new decision-surface
+  question.
+reopen_condition: A new decision surface changes side mapping, trade frequency, or
+  exit semantics and is tested through MT5 L4 again.
+observed_cells:
+- wave01_st_cell_003

@@ -73,6 +73,12 @@ failure_disposition_policy:
 execution_weight_policy:
   posture: attempt_first_not_heavy_first
   default_first_pass: thinnest_execution_that_answers_current_question
+  session_start_resume_default: current_truth_then_one_narrow_path_before_broad_reconciliation
+  broad_reconciliation_requires:
+    - campaign_or_wave_boundary_closeout
+    - protected_runtime_economics_handoff_or_readiness_claim
+    - shared_contract_or_helper_changed
+    - source_of_truth_index_drift_detected_by_narrow_check
   separate_fields:
     - attempt_depth
     - verification_depth

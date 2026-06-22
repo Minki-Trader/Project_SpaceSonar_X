@@ -98,6 +98,30 @@ def test_wave01_score_band_directional_surface_maps_high_low_to_side() -> None:
     assert is_direct_trade_adapter_eligible("breakout_entry_abstain_timeout_exit") is True
 
 
+def test_session_transition_failed_breakout_reversion_uses_inverse_score_band_side() -> None:
+    short_signal = score_to_execution_signal(
+        decision_family="failed_breakout_reversion_abstain_exit",
+        source_decision="unknown",
+        score=0.90,
+        score_low_threshold=0.45,
+        score_high_threshold=0.55,
+        direction_policy="score_band_inverse_side",
+    )
+    long_signal = score_to_execution_signal(
+        decision_family="failed_breakout_reversion_abstain_exit",
+        source_decision="unknown",
+        score=0.40,
+        score_low_threshold=0.45,
+        score_high_threshold=0.55,
+        direction_policy="score_band_inverse_side",
+    )
+
+    assert short_signal.signal == "short"
+    assert short_signal.reason == "score_at_or_above_high_threshold_inverse_side"
+    assert long_signal.signal == "long"
+    assert long_signal.reason == "score_at_or_below_low_threshold_inverse_side"
+
+
 def test_wave01_no_trade_preserved_clue_requires_new_decision_surface() -> None:
     signal = score_to_execution_signal(
         decision_family="no_trade_regime_filter",
@@ -171,6 +195,8 @@ def test_score_replay_ea_source_is_trade_adapter_not_onnx_probe() -> None:
     assert "InpDirectionPolicy" in source
     assert "InpScoreLow" in source
     assert "breakout_entry_abstain_timeout_exit" in source
+    assert "failed_breakout_reversion_abstain_exit" in source
+    assert "score_band_inverse_side" in source
     assert "score <= InpScoreLow" in source
     assert "ExtTrade.Buy" in source
     assert "ExtTrade.Sell" in source

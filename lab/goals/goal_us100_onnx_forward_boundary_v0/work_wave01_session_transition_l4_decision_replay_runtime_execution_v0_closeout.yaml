@@ -1,0 +1,66 @@
+version: work_closeout_v1
+work_item_id: work_wave01_session_transition_l4_decision_replay_runtime_execution_v0
+parent_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-22T04:23:18Z'
+result_judgment: runtime_probe
+status: wave01_session_transition_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+claim_boundary: wave01_session_transition_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
+counts:
+  prepared_attempt_count: 2
+  selected_attempt_count: 1
+  indexed_execution_count: 2
+  executed_attempt_count: 2
+  completed_manifest_count: 2
+  source_score_telemetry_observed_count: 2
+  execution_telemetry_observed_count: 2
+  execution_telemetry_missing_count: 0
+  tester_report_observed_count: 0
+  tester_report_missing_count: 2
+  tester_log_observed_count: 2
+  open_action_count: 10000
+  close_action_count: 10003
+  open_failed_count: 35
+  period_role_counts:
+    research_oos: 1
+    validation: 1
+  direction_policy_counts:
+    score_band_inverse_side: 2
+  status_counts:
+    completed_decision_replay_execution_telemetry_observed: 2
+  result_judgment_counts:
+    runtime_probe: 2
+required_gate_coverage:
+  passed:
+  - mt5_runtime_probe_contract_audit
+  - runtime_surface_contract
+  - terminal_execution_attempt_record
+  - result_judgment
+  - final_claim_guard
+  missing:
+  - paired_session_transition_decision_replay_judgment_pending
+  - tester_report_hash_or_report_export_adapter_for_economics_claim
+  not_applicable:
+  - runtime_authority
+  - economics_pass
+  - selected_baseline
+  - goal_achieve
+try_first_disposition:
+  policy_applied: missing session-transition decision runner support was repaired
+    by a thin wrapper before any blocked/deferred/discarded disposition
+next_action: judge paired Wave01 session-transition decision replay validation/research_oos
+  results before any L5 claim
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true

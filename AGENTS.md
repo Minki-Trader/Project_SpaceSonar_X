@@ -114,6 +114,7 @@ Unknown git/env identity is planning scaffold only; it lowers reproducible-run, 
 
 - Attempt-first does not mean heavy-first. Default to the thinnest execution that can answer the current question.
 - Separate `attempt_depth` from `verification_depth`: a repair/adapter attempt can be small even when later claims require stronger validation.
+- On session start/resume, do not begin with broad materialization, full registry sync, full validators, or full pytest unless the current task is already a boundary closeout or protected claim. First confirm the current truth and run one narrow path.
 - First pass for new or repaired plumbing should prefer one narrow fixture, one representative run, or one smoke path before expanding to the full run matrix.
 - Escalate to full validators, full pytest, full registry sync, or broad hash regeneration only when changing shared contracts/helpers, closing a campaign/wave boundary, making runtime/economics/handoff claims, or when a narrow check exposes state drift that affects source-of-truth indexes.
 - Do not turn every micro attempt into a project-wide reconciliation. Update the run-local or campaign-local record first; update global indexes at boundary or when the index is the source of truth for the current claim.

@@ -1,0 +1,35 @@
+version: work_closeout_v1
+work_item_id: work_wave01_session_transition_l4_decision_replay_judgment_v0
+parent_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-22T04:27:32Z'
+result_judgment: negative
+status: wave01_session_transition_decision_replay_judgment_completed_no_l5_candidates
+claim_boundary: wave01_session_transition_decision_replay_log_balance_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+counts:
+  cell_pair_count: 1
+  negative_count: 1
+  preserved_clue_count: 0
+  inconclusive_count: 0
+  result_judgment_counts:
+    negative: 1
+  l5_status_counts:
+    no_l5_decision_replay_log_balance_loss_observed: 1
+missing_evidence:
+- tester_reports_missing_for_decision_replay_pairs
+- standard_portable_contract_completion_missing_main_mode_fallback_used
+- economics_pass_forbidden
+next_action: record negative memory; do not continue this inverse score-band replay
+  to L5
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

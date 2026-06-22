@@ -1,6 +1,6 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-22T04:04:45Z'
+updated_at_utc: '2026-06-22T04:27:32Z'
 cursor_state: active
 active_phase: wave01_campaign_003_first_batch_specs_materialized
 current_truth_sources:
@@ -58,6 +58,10 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_pair_judgment_v0_closeout.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+- lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_decision_replay_judgment_v0_closeout.yaml
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
@@ -66,12 +70,12 @@ active_ids:
   surface_id: surface_us100_session_transition_regime_surface_v0
   sweep_id: sweep_us100_session_transition_broad_v0
 latest_completed_work:
-  work_item_id: work_wave01_session_transition_l4_pair_judgment_v0
-  result_judgment: runtime_probe
-  claim_boundary: wave01_session_transition_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
+  work_item_id: work_wave01_session_transition_l4_decision_replay_judgment_v0
+  result_judgment: negative
+  claim_boundary: wave01_session_transition_decision_replay_log_balance_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_pair_judgment_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_decision_replay_judgment_v0_closeout.yaml
 next_work_item:
   work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
