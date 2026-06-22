@@ -9,6 +9,8 @@ from foundation.pipelines import materialize_wave01_session_transition_first_bat
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PROXY_CLAIM_BOUNDARY = "wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority"
+PROXY_STATUS = "executed_proxy_observation_l4_required"
 
 
 def load_yaml(rel_path: Path) -> dict:
@@ -21,7 +23,7 @@ def test_session_transition_campaign_is_multi_axis_not_repair() -> None:
     assert campaign["campaign_id"] == opener.NEW_CAMPAIGN_ID
     assert campaign["campaign_type"] == "standard_experiment"
     assert campaign["bounded_synthesis"]["enabled"] is False
-    assert campaign["claim_boundary"] in {opener.CLAIM_BOUNDARY, materializer.CLAIM_BOUNDARY}
+    assert campaign["claim_boundary"] in {opener.CLAIM_BOUNDARY, materializer.CLAIM_BOUNDARY, PROXY_CLAIM_BOUNDARY}
     assert "runtime_authority" in campaign["forbidden_claims"]
 
     coverage = campaign["exploration_coverage"]
@@ -57,11 +59,16 @@ def test_session_transition_sweep_starts_empty_with_l4_follow_through() -> None:
     sweep = load_yaml(opener.NEW_SWEEP_PATH)
     run_refs = (ROOT / opener.NEW_RUN_REFS_PATH).read_text(encoding="utf-8-sig").splitlines()
 
-    assert sweep["status"] in {"planned_not_executed", materializer.STATUS}
+    assert sweep["status"] in {"planned_not_executed", materializer.STATUS, PROXY_STATUS}
     assert sweep["runtime_learning_probe_decision"]["decision"] == "L4_required_for_each_valid_proxy_model_bearing_run"
     assert run_refs[0].split(",")[:4] == ["run_id", "campaign_id", "surface_id", "sweep_id"]
     if sweep["status"] == "planned_not_executed":
         assert len(run_refs) == 1
+    elif sweep["status"] == materializer.STATUS:
+        assert len(run_refs) == 11
+        assert "run_spec_id" in run_refs[0]
+        assert "not_evaluated" in "\n".join(run_refs)
     else:
         assert len(run_refs) == 11
         assert "run_spec_id" in run_refs[0]
+        assert "executed_proxy_observation_l4_required" in "\n".join(run_refs)

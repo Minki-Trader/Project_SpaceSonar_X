@@ -272,7 +272,9 @@ def test_active_validator_rejects_sweep_registry_status_drift(tmp_path: Path) ->
     registry_path = repo / "docs" / "registers" / "sweep_registry.csv"
     rows = registry_path.read_text(encoding="utf-8").splitlines()
     rows = [
-        line.replace("first_batch_specs_materialized_not_executed", "stale_status", 1)
+        line.replace("executed_proxy_observation_l4_required", "stale_status", 1).replace(
+            "first_batch_specs_materialized_not_executed", "stale_status", 1
+        )
         if line.startswith("sweep_us100_session_transition_broad_v0,")
         else line
         for line in rows
