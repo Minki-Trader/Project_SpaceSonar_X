@@ -495,13 +495,26 @@ def update_coverage(manifest: dict[str, Any], *, telemetry_observed: bool, repor
         if gate not in passed:
             passed.append(gate)
 
+    def mark_missing(gate: str) -> None:
+        if gate in passed:
+            passed.remove(gate)
+        if gate not in missing:
+            missing.append(gate)
+
     if telemetry_observed:
         mark_passed("Strategy_Tester_terminal_execution")
         mark_passed("score_telemetry_csv")
         mark_passed("result_judgment_from_L4")
+    else:
+        mark_passed("Strategy_Tester_terminal_execution")
+        mark_missing("score_telemetry_csv")
+        mark_missing("result_judgment_from_L4")
     if report_observed:
         mark_passed("L4_period_role_completed_report")
         mark_passed("tester_report_hash")
+    else:
+        mark_missing("L4_period_role_completed_report")
+        mark_missing("tester_report_hash")
 
 
 def attempt_root(repo_root: Path, attempt_id: str) -> Path:
@@ -557,14 +570,16 @@ def run_one_attempt(
     }
     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
 
-    telemetry_observed = common_telemetry.exists()
+    telemetry_file_observed = common_telemetry.exists()
+    telemetry_observed = False
     telemetry_artifact: dict[str, Any] | None = None
     telemetry_summary: dict[str, Any]
-    if telemetry_observed:
+    if telemetry_file_observed:
         repo_telemetry = root / "telemetry" / "score_telemetry.csv"
         repo_telemetry.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(common_telemetry, repo_telemetry)
         telemetry_stats = parse_score_telemetry(repo_telemetry)
+        telemetry_observed = int(telemetry_stats.get("row_count") or 0) > 0
         telemetry_artifact = artifact_ref(repo_telemetry, repo_root, availability="local_telemetry_hash_recorded_ignored_by_git")
         telemetry_summary = {
             "version": "wave0_l4_score_telemetry_summary_v1",
@@ -578,6 +593,16 @@ def run_one_attempt(
             "stats": telemetry_stats,
             "claim_boundary": CLAIM_BOUNDARY,
         }
+        if not telemetry_observed:
+            telemetry_summary["failure_disposition"] = {
+                "reproduction": "MT5 terminal produced a score telemetry CSV with only headers or zero data rows",
+                "exact_failing_layer": "mt5_strategy_tester_score_probe_row_generation",
+                "bounded_repair_or_fallback_attempt": "thin-first single attempt captured terminal summary and empty CSV for diagnosis before expanding the batch",
+                "evidence_path": f"runtime/mt5_attempts/{attempt_id}/score_telemetry_summary.yaml",
+                "remaining_blocker": "score telemetry CSV exists but contains no score rows",
+                "reopen_condition": "inspect EA journal/report availability, tester date/tick availability, and feature reconstruction before rerun",
+            }
+            telemetry_summary["claim_boundary"] = "terminal_attempt_empty_score_telemetry_no_l4_completion"
     else:
         telemetry_summary = {
             "version": "wave0_l4_score_telemetry_summary_v1",
@@ -603,18 +628,29 @@ def run_one_attempt(
             "claim_boundary": "terminal_attempt_no_score_telemetry_no_l4_completion",
         }
     write_yaml(root / "score_telemetry_summary.yaml", telemetry_summary)
+    row_count = ((telemetry_summary.get("stats") or {}).get("row_count")) or 0
+    terminal_summary["telemetry_observed"] = telemetry_observed
+    terminal_summary["telemetry_file_observed_after_attempt"] = telemetry_file_observed
+    terminal_summary["telemetry_rows_observed_after_attempt"] = telemetry_observed
+    terminal_summary["telemetry_row_count"] = row_count
+    if telemetry_file_observed and not telemetry_observed:
+        terminal_summary["empty_telemetry_claim_effect"] = "csv_header_only_no_l4_score_observation"
+    write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
 
     report = archive_tester_report(repo_root, root, tester_config)
     report_observed = bool(report.get("observed"))
 
     result_judgment = "runtime_probe" if telemetry_observed else "inconclusive"
-    status = "completed_l4_score_telemetry_observed" if telemetry_observed else "terminal_executed_telemetry_missing"
-    row_count = ((telemetry_summary.get("stats") or {}).get("row_count")) or 0
+    status = (
+        "completed_l4_score_telemetry_observed"
+        if telemetry_observed
+        else ("terminal_executed_empty_score_telemetry" if telemetry_file_observed else "terminal_executed_telemetry_missing")
+    )
     terminal_mode = (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used")
     terminal_mode_label = "main_mode_config_fallback" if terminal_mode else "portable_contract_attempt"
 
     manifest["status"] = status
-    manifest["claim_boundary"] = CLAIM_BOUNDARY if telemetry_observed else "terminal_attempt_no_score_telemetry_no_l4_completion"
+    manifest["claim_boundary"] = CLAIM_BOUNDARY if telemetry_observed else str(telemetry_summary["claim_boundary"])
     manifest["result_judgment"] = result_judgment
     manifest["runtime_probe_routing"] = {
         "primary_family": "runtime_probe",
@@ -641,7 +677,11 @@ def run_one_attempt(
     manifest["artifact_identity"]["tester_reports"] = [report]
     manifest["missing_evidence"] = []
     if not telemetry_observed:
-        manifest["missing_evidence"].append("score_telemetry_csv_missing_after_terminal_execution")
+        manifest["missing_evidence"].append(
+            "score_telemetry_rows_missing_after_terminal_execution"
+            if telemetry_file_observed
+            else "score_telemetry_csv_missing_after_terminal_execution"
+        )
     if not report_observed:
         manifest["missing_evidence"].append("tester_report_missing_or_not_archived")
     manifest["next_action"] = (

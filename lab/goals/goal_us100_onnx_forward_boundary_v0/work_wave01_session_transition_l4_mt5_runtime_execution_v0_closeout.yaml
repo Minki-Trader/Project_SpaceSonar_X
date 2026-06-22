@@ -1,0 +1,55 @@
+version: work_closeout_v1
+work_item_id: work_wave01_session_transition_l4_mt5_runtime_execution_v0
+parent_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-22T04:04:37Z'
+result_judgment: runtime_probe
+status: l4_terminal_execution_attempted_for_all_prepared_attempts
+claim_boundary: wave01_session_transition_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
+counts:
+  prepared_attempt_count: 20
+  selected_attempt_count: 6
+  indexed_execution_count: 20
+  executed_attempt_count: 20
+  completed_manifest_count: 20
+  telemetry_observed_count: 20
+  telemetry_missing_count: 0
+  tester_report_observed_count: 0
+  tester_report_missing_count: 20
+  period_role_counts:
+    research_oos: 10
+    validation: 10
+  status_counts:
+    completed_l4_score_telemetry_observed: 20
+  result_judgment_counts:
+    runtime_probe: 20
+required_gate_coverage:
+  passed:
+  - mt5_runtime_probe_contract_audit
+  - runtime_surface_contract
+  - terminal_execution_attempt_record
+  - result_judgment
+  - final_claim_guard
+  missing:
+  - paired_L4_period_aggregation_pending
+  not_applicable:
+  - runtime_authority
+  - economics_pass
+  - selected_baseline
+  - goal_achieve
+next_action: aggregate paired Wave01 validation/research_oos L4 telemetry and decide
+  L5 routing
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true

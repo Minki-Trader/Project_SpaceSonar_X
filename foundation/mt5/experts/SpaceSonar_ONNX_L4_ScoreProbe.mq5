@@ -3,7 +3,7 @@
 //| Non-trading EA: full-period feature -> ONNX score -> decision log.|
 //+------------------------------------------------------------------+
 #property strict
-#property version   "1.01"
+#property version   "1.02"
 #property description "Non-trading full-period ONNX score probe for SpaceSonar X L4."
 
 input string InpOnnxPath       = "SpaceSonar\\l4_score_probe\\bundle\\model.onnx";
@@ -20,6 +20,7 @@ input int    InpHistoryBars    = 600;
 input int    InpMaxRows        = 0;
 input bool   InpUseCommonFiles = true;
 input double InpFixedLot       = 0.02;
+input int    InpBarTimeToUtcOffsetHours = 0;
 
 #define SPACESONAR_PI 3.14159265358979323846
 
@@ -158,6 +159,21 @@ bool MeanStdRet(const MqlRates &rates[], const int index, const int window, cons
    return true;
 }
 
+bool MeanAbsRet(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean)
+{
+   double sum = 0.0;
+   int count = 0;
+   for(int i = MathMax(1, index - window + 1); i <= index; i++)
+   {
+      sum += MathAbs(RetAt(rates, i, 1));
+      count++;
+   }
+   if(count < min_count)
+      return false;
+   mean = sum / (double)count;
+   return true;
+}
+
 bool StdClose(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean, double &std_value)
 {
    if(!MeanClose(rates, index, window, min_count, mean))
@@ -253,6 +269,134 @@ double RenderedClockFeature(const string column, const datetime close_time)
    if(column == "rendered_is_friday")
       return (dt.day_of_week == 5 ? 1.0 : 0.0);
    return 0.0;
+}
+
+datetime MakeUtcLikeDateTime(const int year, const int mon, const int day, const int hour, const int minute)
+{
+   MqlDateTime dt = {};
+   dt.year = year;
+   dt.mon = mon;
+   dt.day = day;
+   dt.hour = hour;
+   dt.min = minute;
+   dt.sec = 0;
+   return StructToTime(dt);
+}
+
+int DayOfWeekForDate(const int year, const int mon, const int day)
+{
+   MqlDateTime dt;
+   TimeToStruct(MakeUtcLikeDateTime(year, mon, day, 0, 0), dt);
+   return dt.day_of_week;
+}
+
+int NthSundayDay(const int year, const int mon, const int nth)
+{
+   const int first_dow = DayOfWeekForDate(year, mon, 1);
+   const int first_sunday = (first_dow == 0 ? 1 : 8 - first_dow);
+   return first_sunday + (nth - 1) * 7;
+}
+
+bool IsNewYorkDstUtcLike(const datetime utc_like_time)
+{
+   MqlDateTime dt;
+   TimeToStruct(utc_like_time, dt);
+   const int year = dt.year;
+   const int march_second_sunday = NthSundayDay(year, 3, 2);
+   const int november_first_sunday = NthSundayDay(year, 11, 1);
+   const datetime dst_start_utc = MakeUtcLikeDateTime(year, 3, march_second_sunday, 7, 0);
+   const datetime dst_end_utc = MakeUtcLikeDateTime(year, 11, november_first_sunday, 6, 0);
+   return (utc_like_time >= dst_start_utc && utc_like_time < dst_end_utc);
+}
+
+datetime ToNewYorkRenderedTime(const datetime close_time)
+{
+   const datetime utc_like_time = close_time + InpBarTimeToUtcOffsetHours * 3600;
+   const int ny_offset_hours = (IsNewYorkDstUtcLike(utc_like_time) ? -4 : -5);
+   return utc_like_time + ny_offset_hours * 3600;
+}
+
+bool SessionTransitionFeature(const string column, const datetime close_time, double &value)
+{
+   MqlDateTime dt;
+   TimeToStruct(ToNewYorkRenderedTime(close_time), dt);
+
+   const double minute = (double)dt.hour * 60.0 + (double)dt.min;
+   const int python_dow = (dt.day_of_week + 6) % 7;
+   const double dow = (double)python_dow;
+   const double cash_open = 9.5 * 60.0;
+   const double cash_close = 16.0 * 60.0;
+   const double midday = 12.5 * 60.0;
+
+   if(column == "ny_minute_sin") { value = MathSin(2.0 * SPACESONAR_PI * minute / 1440.0); return true; }
+   if(column == "ny_minute_cos") { value = MathCos(2.0 * SPACESONAR_PI * minute / 1440.0); return true; }
+   if(column == "ny_dow_sin") { value = MathSin(2.0 * SPACESONAR_PI * dow / 7.0); return true; }
+   if(column == "ny_dow_cos") { value = MathCos(2.0 * SPACESONAR_PI * dow / 7.0); return true; }
+   if(column == "minutes_from_cash_open_scaled") { value = (minute - cash_open) / 390.0; return true; }
+   if(column == "minutes_to_cash_close_scaled") { value = (cash_close - minute) / 390.0; return true; }
+   if(column == "minutes_from_midday_scaled") { value = (minute - midday) / 390.0; return true; }
+   if(column == "is_pre_cash") { value = (minute >= 4.0 * 60.0 && minute < cash_open ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_session") { value = (minute >= cash_open && minute <= cash_close ? 1.0 : 0.0); return true; }
+   if(column == "is_after_cash") { value = (minute > cash_close && minute <= 20.0 * 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_open_transition") { value = (MathAbs(minute - cash_open) <= 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_close_transition") { value = (MathAbs(minute - cash_close) <= 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_midday_block") { value = (MathAbs(minute - midday) <= 90.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_monday") { value = (python_dow == 0 ? 1.0 : 0.0); return true; }
+   if(column == "is_friday") { value = (python_dow == 4 ? 1.0 : 0.0); return true; }
+   return false;
+}
+
+bool LocalContextFeature(const string column, const MqlRates &rates[], const int index, double &value)
+{
+   int window = 0;
+   double mean = 0.0;
+
+   if(ParseWindowSuffix(column, "local_ret_", window))
+   {
+      value = RetAt(rates, index, window);
+      return true;
+   }
+   if(column == "local_range_pct")
+   {
+      value = RangePctAt(rates, index);
+      return true;
+   }
+   if(ParseWindowSuffix(column, "local_range_mean_", window))
+   {
+      if(!MeanRange(rates, index, window, MinPeriodsForWindow(window, false), mean)) return false;
+      value = mean;
+      return true;
+   }
+   if(column == "local_range_ratio_12_48")
+   {
+      double mean12 = 0.0, mean48 = 0.0;
+      if(!MeanRange(rates, index, 12, 6, mean12)) return false;
+      if(!MeanRange(rates, index, 48, 12, mean48)) return false;
+      value = SafeDiv(mean12, mean48);
+      return true;
+   }
+   if(ParseWindowSuffix(column, "local_ret_abs_mean_", window))
+   {
+      if(!MeanAbsRet(rates, index, window, MinPeriodsForWindow(window, false), mean)) return false;
+      value = mean;
+      return true;
+   }
+   if(column == "local_ret_abs_ratio_12_48")
+   {
+      double mean12 = 0.0, mean48 = 0.0;
+      if(!MeanAbsRet(rates, index, 12, 6, mean12)) return false;
+      if(!MeanAbsRet(rates, index, 48, 12, mean48)) return false;
+      value = SafeDiv(mean12, mean48);
+      return true;
+   }
+   if(ParseWindowSuffix(column, "local_tick_volume_z_", window))
+      return TickVolumeZ(rates, index, window, MinPeriodsForWindow(window, false), value);
+   if(column == "local_spread_scaled")
+   {
+      value = ((double)rates[index].spread) / 1000.0;
+      return true;
+   }
+   return false;
 }
 
 bool FeatureValue(const string column, const MqlRates &rates[], const int index, double &value)
@@ -417,6 +561,10 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = RenderedClockFeature(column, rates[index].time + PeriodSeconds(PERIOD_M5));
       return true;
    }
+   if(SessionTransitionFeature(column, rates[index].time + PeriodSeconds(PERIOD_M5), value))
+      return true;
+   if(LocalContextFeature(column, rates, index, value))
+      return true;
 
    return false;
 }

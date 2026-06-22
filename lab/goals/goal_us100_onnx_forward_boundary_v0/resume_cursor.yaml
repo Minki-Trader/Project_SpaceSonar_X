@@ -1,6 +1,6 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-22T03:31:37Z'
+updated_at_utc: '2026-06-22T04:04:45Z'
 cursor_state: active
 active_phase: wave01_campaign_003_first_batch_specs_materialized
 current_truth_sources:
@@ -52,6 +52,12 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_index.csv
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_mt5_runtime_execution_v0_closeout.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_pair_judgment_v0_closeout.yaml
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
@@ -60,12 +66,12 @@ active_ids:
   surface_id: surface_us100_session_transition_regime_surface_v0
   sweep_id: sweep_us100_session_transition_broad_v0
 latest_completed_work:
-  work_item_id: work_wave01_session_transition_l4_mt5_attempt_preparation_v0
-  result_judgment: inconclusive
-  claim_boundary: wave01_session_transition_l4_strategy_tester_attempt_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+  work_item_id: work_wave01_session_transition_l4_pair_judgment_v0
+  result_judgment: runtime_probe
+  claim_boundary: wave01_session_transition_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_mt5_attempt_preparation_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_pair_judgment_v0_closeout.yaml
 next_work_item:
   work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

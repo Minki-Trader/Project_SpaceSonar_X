@@ -87,6 +87,18 @@ def test_parse_score_telemetry_summarizes_rows(tmp_path: Path) -> None:
     assert parsed["tick_volume_nonzero_count"] == 1
 
 
+def test_parse_score_telemetry_empty_csv_is_not_observed(tmp_path: Path) -> None:
+    telemetry = tmp_path / "score_telemetry.csv"
+    telemetry.write_text(
+        "bar_close_time,symbol,period,input_family,decision_family,feature_count,score,decision,spread_points,tick_volume\n",
+        encoding="utf-8",
+    )
+
+    parsed = parse_score_telemetry(telemetry)
+
+    assert parsed == {"row_count": 0, "status": "empty_telemetry"}
+
+
 def test_l4_terminal_summary_normalization_removes_fixed_fixture_claim_text() -> None:
     summary = {
         "mode": "main_mode_config_fallback",
