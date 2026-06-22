@@ -284,6 +284,35 @@ def test_active_validator_rejects_sweep_registry_status_drift(tmp_path: Path) ->
     assert any("sweep_registry.csv sweep_us100_session_transition_broad_v0: status mismatch" in error for error in errors)
 
 
+def test_active_validator_rejects_wave_referenced_memory_missing_from_registries(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    clue_registry = repo / "docs" / "registers" / "clue_registry.csv"
+    negative_registry = repo / "docs" / "registers" / "negative_memory_registry.csv"
+    clue_registry.write_text(
+        "\n".join(
+            line
+            for line in clue_registry.read_text(encoding="utf-8").splitlines()
+            if not line.startswith("clue_wave01_session_transition_remaining_decision_surface_needed_v0,")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    negative_registry.write_text(
+        "\n".join(
+            line
+            for line in negative_registry.read_text(encoding="utf-8").splitlines()
+            if not line.startswith("neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0,")
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    errors = validate(repo)
+
+    assert any("negative_memory_id missing registry row" in error for error in errors)
+    assert any("preserved_clue_id missing registry row" in error for error in errors)
+
+
 def test_active_validator_rejects_missing_goal_objective_revision(tmp_path: Path) -> None:
     repo = copy_evidence_repo(tmp_path)
     state_path = repo / "docs" / "workspace" / "workspace_state.yaml"

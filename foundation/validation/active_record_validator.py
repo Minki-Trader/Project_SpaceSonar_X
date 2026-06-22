@@ -479,6 +479,47 @@ def validate_wave_campaign_graph(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_wave_memory_registry_links(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    wave_registry_path = repo_root / "docs" / "registers" / "wave_registry.csv"
+    negative_registry_path = repo_root / "docs" / "registers" / "negative_memory_registry.csv"
+    clue_registry_path = repo_root / "docs" / "registers" / "clue_registry.csv"
+    if not wave_registry_path.exists():
+        return []
+    negative_ids = {
+        row.get("memory_id", "") or row.get("negative_memory_id", "")
+        for row in read_csv_rows(negative_registry_path)
+    } if negative_registry_path.exists() else set()
+    clue_ids = {
+        row.get("clue_id", "")
+        for row in read_csv_rows(clue_registry_path)
+    } if clue_registry_path.exists() else set()
+
+    for row in read_csv_rows(wave_registry_path):
+        wave_path_text = row.get("wave_path", "")
+        if not wave_path_text:
+            continue
+        wave_path = repo_root / wave_path_text
+        if not wave_path.exists():
+            continue
+        wave = load_yaml(wave_path)
+        for allocation in wave.get("campaign_allocations") or []:
+            campaign_id = allocation.get("campaign_id") or "unknown_campaign"
+            for memory_id in allocation.get("negative_memory_ids") or []:
+                if str(memory_id) not in negative_ids:
+                    errors.append(
+                        f"{rel(wave_path, repo_root)} allocation {campaign_id}: "
+                        f"negative_memory_id missing registry row {memory_id}"
+                    )
+            for clue_id in allocation.get("preserved_clue_ids") or []:
+                if str(clue_id) not in clue_ids:
+                    errors.append(
+                        f"{rel(wave_path, repo_root)} allocation {campaign_id}: "
+                        f"preserved_clue_id missing registry row {clue_id}"
+                    )
+    return errors
+
+
 def validate_campaign_registry(repo_root: Path) -> list[str]:
     registry_path = repo_root / "docs" / "registers" / "campaign_registry.csv"
     if not registry_path.exists():
@@ -926,6 +967,7 @@ def validate(repo_root: Path) -> list[str]:
     errors.extend(validate_idea_hypothesis_surface_sweep_registries(repo_root))
     errors.extend(validate_campaign_registry(repo_root))
     errors.extend(validate_wave_campaign_graph(repo_root))
+    errors.extend(validate_wave_memory_registry_links(repo_root))
     errors.extend(validate_run_campaign_chain(repo_root))
     errors.extend(validate_campaign_exploration_coverage(repo_root))
     errors.extend(validate_bounded_synthesis_campaigns(repo_root))
