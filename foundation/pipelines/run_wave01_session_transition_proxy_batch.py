@@ -23,6 +23,8 @@ from foundation.pipelines.run_wave01_event_barrier_proxy_batch import (  # noqa:
     branch_worktree,
     durable_arg,
     failure_disposition_not_applicable,
+    git_status_lines,
+    git_value,
     load_row_membership,
     provenance,
     read_csv_rows,
@@ -209,7 +211,15 @@ def row_id_chain() -> dict[str, str]:
     }
 
 
-def run_one(row: dict[str, str], run_ref: dict[str, str], frame: pd.DataFrame, row_manifest_path: Path, command_argv: list[str], branch: dict[str, str]) -> dict[str, str]:
+def run_one(
+    row: dict[str, str],
+    run_ref: dict[str, str],
+    frame: pd.DataFrame,
+    row_manifest_path: Path,
+    command_argv: list[str],
+    branch: dict[str, str],
+    batch_git_state: dict[str, Any],
+) -> dict[str, str]:
     run_id = run_ref["run_id"]
     root = REPO_ROOT / "lab" / "runs" / run_id
     artifacts = root / "artifacts"
@@ -319,6 +329,8 @@ def run_one(row: dict[str, str], run_ref: dict[str, str], frame: pd.DataFrame, r
 
     output_refs = [artifact_ref(path) for path in outputs]
     prov = provenance(command_argv, [REPO_ROOT / item for item in INPUT_REFS], outputs, started)
+    prov.update(batch_git_state)
+    prov["git_state_capture_policy"] = "batch_start_before_generated_outputs"
     coverage = {
         "passed": REQUIRED_GATES[:-1],
         "missing": ["L4_split_runtime_probe_for_valid_proxy_run"],
@@ -597,6 +609,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     branch = branch_worktree(args.expected_branch)
+    status = git_status_lines()
+    batch_git_state = {
+        "git_sha": git_value(["rev-parse", "HEAD"]),
+        "branch": git_value(["branch", "--show-current"]),
+        "dirty_flag": "dirty" if status else "clean",
+        "changed_files": status,
+    }
     row_manifest_path = REPO_ROOT / args.row_membership_manifest
     frame = load_row_membership(read_yaml(row_manifest_path))
     matrix_rows = read_matrix(REPO_ROOT / args.matrix)
@@ -604,7 +623,7 @@ def main() -> int:
     if args.limit is not None:
         run_refs = run_refs[: args.limit]
     results = [
-        run_one(matrix_rows[row["run_spec_id"]], row, frame, row_manifest_path, sys.argv[:], branch)
+        run_one(matrix_rows[row["run_spec_id"]], row, frame, row_manifest_path, sys.argv[:], branch, batch_git_state)
         for row in run_refs
     ]
     update_refs(REPO_ROOT / args.run_refs, results)
