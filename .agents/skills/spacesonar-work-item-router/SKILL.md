@@ -34,6 +34,8 @@ Emit compact internal fields:
 - `storage_contract`
 - `runtime_learning_probe_decision`
 - `failure_disposition_policy`
+- `execution_weight`
+- `validation_depth`
 - `phase_plan`
 - `stop_conditions`
 - `claim_boundary`
@@ -52,6 +54,11 @@ Internal receipts are not user reports.
 - bundle packaging: `bundle_materialization`
 - MT5/economics/handoff/runtime claims: `runtime_probe`
 - final user answer: apply `spacesonar-answer-clarity` and `spacesonar-claim-discipline`
+
+## Execution Weight
+
+- Default `execution_weight=thin_first_pass` unless the work is already at a campaign/wave boundary, protected runtime/economics/handoff claim, shared-contract mutation, or known source-of-truth drift repair.
+- Do not route a first plumbing attempt as full-project reconciliation. Add broader validation only after the thin path is real or the claim requires it.
 
 ## Do Not
 

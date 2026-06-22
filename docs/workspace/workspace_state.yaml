@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-22T03:12:36.149525Z'
+updated_utc: '2026-06-22T03:22:38.328385Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -91,6 +91,7 @@ current_claims:
   agent_allocation_policy: phase_driven_capacity_not_thread_count
   recurring_failure_fix_policy: weigh_recurrence_risk_impact_and_operating_importance_then_apply_appropriate_weight_guard
   bureaucracy_guard: add_durable_structure_only_for_likely_recurrence_evidence_quality_drift_MT5_follow_through_or_long_session_reliability
+  execution_weight_policy: attempt_first_not_heavy_first_thin_first_pass_then_claim_scaled_validation
   try_first_disposition_policy: diagnose_reproduce_attempt_smallest_repo_controlled_fix_before_blocked_deferred_invalid_or_discarded
   adapter_gap_policy: missing_repo_controlled_adapter_or_glue_is_repair_trigger_not_blocker
   failure_handling_order:

@@ -70,6 +70,27 @@ failure_disposition_policy:
   discard_or_defer_requires_failed_attempt_or_narrow_attempt_blocker: true
   attempt_exception_policy: record_attempt_blocker_and_lower_claim_boundary
   not_yet_attempted_claim_effect: investigation_in_progress_no_disposition
+execution_weight_policy:
+  posture: attempt_first_not_heavy_first
+  default_first_pass: thinnest_execution_that_answers_current_question
+  separate_fields:
+    - attempt_depth
+    - verification_depth
+  thin_first_pass_examples:
+    - one_fixture
+    - one_representative_run
+    - one_export_smoke
+    - one_parser_smoke
+    - one_mt5_micro_path
+  expand_when:
+    - shared_contract_or_helper_changed
+    - source_of_truth_index_drift_detected
+    - campaign_or_wave_boundary_closeout
+    - runtime_economics_handoff_or_protected_claim
+    - thin_path_succeeds_and_surface_remains_useful
+  global_sync_default: boundary_or_source_of_truth_only
+  missing_adapter_first_action: smallest_explicit_translation_layer_to_test_path
+  l4_policy_effect: valid_proxy_model_bearing_runs_still_require_L4_but_may_progress_in_bounded_batches
 campaign_exploration_policy:
   mode: unexplored_surface_discovery_not_single_axis_progression
   forbidden_research_shapes:

@@ -105,6 +105,18 @@ Git integration cadence:
 - Parity is not forced equality. When proxy and MT5 disagree, make at least one explicit reconciliation attempt, then either repair the contract or record the accepted difference with a prevention rule.
 - Failed hypotheses become `negative_memory`, `invalid_setup`, `blocked_retry`, or `inconclusive` records with salvage value and reopen conditions.
 
+## Execution Weight
+
+The lab is attempt-first, not bureaucracy-first.
+
+- Start each new surface, repair, adapter, or runtime glue path with the smallest execution that can answer the immediate question.
+- Use a thin first pass: one fixture, one representative run, one export smoke, one parser smoke, or one MT5 micro-path when that is enough to prove or falsify the path.
+- Scale to broader execution only after the thin path is real, the surface remains useful, or the claim boundary requires it.
+- Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are for shared-contract edits, source-of-truth drift, campaign/wave boundary closeout, or protected runtime/economics/handoff claims.
+- For ordinary run-local learning, update the local manifest, receipt, lineage, metrics, or campaign-local summary first. Global indexes can wait until the boundary unless the index is the current source of truth.
+- The mandatory L4 rule still stands for every valid proxy/model-bearing run. It may be executed in bounded materialization and probe batches rather than folded into the first proxy or adapter attempt.
+- A minimal adapter is not a shortcut to claim success. It only proves that the path can be tested; stronger claims still need the matching evidence.
+
 ## Attempt Before Disposition
 
 This is a global operating rule, not only a runtime rule.
