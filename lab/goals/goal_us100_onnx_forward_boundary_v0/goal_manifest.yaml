@@ -2,8 +2,8 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: active_long_running
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-22T01:44:27Z'
-claim_boundary: active_goal_wave01_campaign_003_open_not_goal_achieve
+updated_at_utc: '2026-06-22T02:14:24Z'
+claim_boundary: active_goal_session_transition_first_batch_specs_not_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -58,7 +58,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_campaign_003_session_transition_opened
+active_phase: wave01_campaign_003_first_batch_specs_materialized
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
@@ -174,7 +174,7 @@ program_budgets:
     row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
     first_batch_run_specs_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/first_batch_run_specs_manifest.yaml
     anti_selection_ledger: lab/campaigns/campaign_us100_task_surface_scout_v0/anti_selection_ledger.yaml
-    status: campaign_001_closed_campaign_002_closed_campaign_003_opened
+    status: wave01_campaign_003_first_batch_specs_materialized
     result_counts:
       inconclusive: 8
       preserved_clue: 4
@@ -336,7 +336,9 @@ program_budgets:
     - neg_wave0_decision_replay_momentum_ret_1_loss_v0
     next_campaign_id: campaign_us100_session_transition_regime_surface_v0
     next_campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
-    next_work_item: work_wave01_session_transition_first_batch_spec_v0
+    next_work_item: work_wave01_session_transition_execute_first_batch_proxy_v0
+    session_transition_first_batch_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
+    session_transition_run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
 goal_achieve_state:
   complete_state: codex_operating_system_stable_through_Wave01_closeout
   requires:
@@ -382,8 +384,8 @@ forbidden_claims:
 - business_or_project_goal_achieve
 next_work_item:
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  work_item_id: work_wave01_session_transition_first_batch_spec_v0
-  summary: Materialize first broad batch specs for the Wave01 session-transition regime
+  work_item_id: work_wave01_session_transition_execute_first_batch_proxy_v0
+  summary: Execute first broad proxy batch for the Wave01 session-transition regime
     campaign.
 event_barrier_campaign:
   campaign_id: campaign_us100_event_barrier_decision_surface_v0
@@ -554,9 +556,13 @@ event_barrier_campaign:
     replay as a candidate repair.
 session_transition_campaign:
   campaign_id: campaign_us100_session_transition_regime_surface_v0
-  status: opened_planned_not_executed
+  status: first_batch_specs_materialized_not_executed
   campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
-  claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
-  next_work_item: work_wave01_session_transition_first_batch_spec_v0
+  first_batch_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
+  run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
+  spec_count: 10
+  runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
+  claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+  next_work_item: work_wave01_session_transition_execute_first_batch_proxy_v0

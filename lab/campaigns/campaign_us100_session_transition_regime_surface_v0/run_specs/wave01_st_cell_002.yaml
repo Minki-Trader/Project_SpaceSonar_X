@@ -1,0 +1,171 @@
+version: planned_run_spec_v1
+run_spec_id: wave01_st_cell_002
+planned_run_id: onnxlab_wave01_st_cell_002_session_transition_surface_v0
+status: planned_not_executed
+created_at_utc: '2026-06-22T02:14:24Z'
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_id: campaign_us100_session_transition_regime_surface_v0
+  idea_id: idea_us100_m5_session_transition_regime_surface_v0
+  hypothesis_id: hyp_us100_session_transition_regime_surface_v0
+  surface_id: surface_us100_session_transition_regime_surface_v0
+  sweep_id: sweep_us100_session_transition_broad_v0
+  run_id: onnxlab_wave01_st_cell_002_session_transition_surface_v0
+experiment_design:
+  hypothesis: probe whether compression before cash open changes event tradeability
+  decision_use: compression_release_abstain_barrier_exit
+  comparison_baseline:
+  - no_trade_baseline
+  - session_blind_control_same_horizon
+  control_variables:
+  - FPMarkets_US100_M5_closed_bar_base_frame
+  - us100_bar_close_time
+  - split_set_v0_research_catalog
+  - locked_final_oos_b_forbidden
+  - no_auxiliary_symbols
+  changed_variables:
+  - session_anchor
+  - transition_window_bars
+  - regime_label
+  - label_surface
+  - feature_family
+  - model_family
+  - decision_family
+  - holding_policy
+  sample_scope: train_validation_research_oos_a_no_locked_final
+  success_criteria:
+  - repeated_surface_clue_across_session_or_regime_neighbors
+  - trade_or_no_trade_density_visible_without_threshold_knife_edge
+  - proxy_runtime_parity_difference_recorded_before_closeout
+  failure_criteria:
+  - no_repeated_clue_after_validation_and_research_oos_L4
+  - threshold_knife_edge
+  - session_boundary_semantics_unusable_after_try_first_repair_attempt
+  invalid_conditions:
+  - feature_or_label_leakage
+  - locked_final_oos_b_used
+  - auxiliary_symbol_input_used_without_live_chart_evidence
+  - missing_MT5_executable_path_after_try_first_repair_attempt
+  stop_conditions:
+  - proxy_run_executed_then_L4_follow_through_created
+  - invalid_setup_recorded_with_try_first_failure_disposition
+  - candidate_claim_attempted_without_L4_or_L5_evidence
+data_contract:
+  dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  row_key: us100_bar_close_time
+  split_recipe_id: split_set_v0
+  split_use: train_validation_research_oos_a_no_locked_final
+  locked_final_oos_b_used: false
+  auxiliary_symbols: none
+  base_frame: US100_M5_closed_bar
+  tail_drop_policy: declared_per_label_before_execution
+label_contract:
+  label_surface: pre_cash_compression_release
+  horizon_bars: 12
+  session_anchor: pre_to_cash_transition
+  transition_window_bars: pre_24_to_post_24
+  regime_label: compression_to_expansion
+  target_direction_mapping: declared_per_run_no_default_inheritance
+  holding_period_default: not_fixed_declared_per_run
+feature_contract:
+  feature_family: compression_expansion_causal_context
+  feature_scope: rolling_range_contraction_expansion_and_break_location
+  feature_count_policy: variable_declared_per_run_no_fixed_count
+  causality_policy: closed_bar_history_only
+  forbidden_defaults:
+  - fixed_feature_count
+  - inherited_feature_list
+  - inherited_fixed_feature_set
+  - legacy_direction_mapping
+model_contract:
+  model_family: tree_or_boosted_onnx_feasible_scout
+  model_task: release_or_no_release_event
+  output_head: declared_per_run_no_default_inheritance
+  onnx_feasibility: must_materialize_or_try_first_failure_disposition_before_L4_blocker
+  hyperparameter_policy: no_micro_search_before_repeated_clue
+decision_contract:
+  decision_family: compression_release_abstain_barrier_exit
+  holding_policy: event_or_timeout_12
+  risk_policy: atr_distance_conversion_required_before_L4
+  threshold_policy: train_only_min_density_guard
+  sizing_profile: 0.02_lot_default_when_MT5_strategy_tester_runs_execute
+  commission_policy: tester_execution_profile_commission_zero_observed_boundary
+runtime_learning_probe_decision:
+  required: true
+  target_level: L4_split_runtime_probe
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  proxy_only_closeout_allowed: false
+  l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+proxy_runtime_parity:
+  shared_contract:
+  - FPMarkets_US100_M5_closed_bar_base_frame
+  - us100_bar_close_time
+  - split_set_v0_research_catalog
+  - declared_session_transition_label
+  - declared_feature_order
+  - declared_decision_and_holding_policy
+  - us100_m5_fpmarkets_tester_execution_v0
+  known_differences:
+  - proxy_session_windows_may_not_equal_MT5_server_session_rendering_until_binding_is_checked
+  - timeout_close_timing_may_differ_between_proxy_and_EA
+  - tester_report_parser_required_before_economics_claim
+  interpretation_drift_risks:
+  - bar_close_timing
+  - session_boundary_rendering
+  - DST_or_calendar_boundary_interpretation
+  - spread_and_fill_timing
+  - lot_step_rounding
+  - timeout_close_timing
+  - no_trade_or_abstain_semantics
+  minimum_reconciliation_attempt:
+    required: true
+    forced_equality_required: false
+    status: pending_proxy_runtime_difference
+  unit_semantics:
+    point: must_record_before_MT5_L4_if_price_distance_used
+    pip: not_assumed
+    tick_size: must_record_before_MT5_L4_if_price_distance_used
+    digits: must_record_before_MT5_L4_if_price_distance_used
+    price_distance_conversion: explicit_conversion_required_if_used
+    atr_multiplier: allowed_only_with_conversion_rule
+    rounding_policy: explicit_per_run_before_MT5_L4
+  comparison_classes:
+  - proxy_good_runtime_good
+  - proxy_good_runtime_bad
+  - proxy_bad_runtime_bad
+  - proxy_bad_runtime_good
+  - invalid_or_unmaterializable
+  divergence_judgment: pending
+  prevention_memory:
+  - Session boundary semantics must be checked against active MT5 time binding before
+    L4.
+  - Proxy and MT5 parity does not force equality; real unit and execution differences
+    are recorded.
+  follow_up_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+result_judgment: not_evaluated
+missing_evidence:
+- features_not_materialized
+- labels_not_materialized
+- models_not_trained
+- proxy_metrics_not_computed
+- ONNX_exports_not_materialized
+- MT5_L4_not_run
+next_action: work_wave01_session_transition_execute_first_batch_proxy_v0

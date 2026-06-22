@@ -1,0 +1,40 @@
+version: anti_selection_ledger_v1
+ledger_id: anti_selection_wave01_session_transition_first_batch_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+created_at_utc: '2026-06-22T02:14:24Z'
+status: first_batch_specs_materialized_not_executed
+claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+selection_policy:
+  selected_before_proxy_scores: true
+  locked_final_oos_b_used: false
+  feature_count_fixed: false
+  model_head_fixed: false
+  holding_duration_fixed: false
+  threshold_optimized_for_pf: false
+  auxiliary_symbols_used: false
+  spec_count: 10
+coverage_summary:
+  label_surface_count: 10
+  feature_family_count: 8
+  model_family_count: 3
+  decision_family_count: 10
+  session_anchor_count: 9
+  regime_label_count: 10
+  multi_axis_discovery: true
+  feature_only_or_label_only_or_model_only: false
+anti_selection_rules:
+- Do not drop weak-looking proxy specs before L4 unless invalid setup is recorded
+  with try-first disposition.
+- Do not add threshold micro-search before repeated surface clue exists.
+- Do not use OOS-B for selection or adaptive repair.
+- Do not convert a repair of score_band_side or momentum_ret_1 into a session-transition
+  hypothesis.
+- Proxy-bad/runtime-good and proxy-good/runtime-bad are parity evidence, not embarrassment
+  to hide.
+evidence_paths:
+  matrix: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
+  run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
+  run_refs: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
+next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
