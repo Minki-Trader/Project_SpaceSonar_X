@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-22T01:09:35Z'
+updated_utc: '2026-06-22T01:44:27Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -48,7 +48,7 @@ current_claims:
   active_goal_terminal_contract: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
   active_goal_resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
   active_goal_next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  active_goal_claim_boundary: active_goal_wave01_campaign_closeout_not_goal_achieve
+  active_goal_claim_boundary: active_goal_wave01_campaign_003_open_not_goal_achieve
   active_goal_primary_objective: durable_codex_operation
   active_goal_proof_window: Wave01_closeout
   active_goal_proof_window_role: first_bounded_proof_window_not_final_purpose
@@ -57,14 +57,14 @@ current_claims:
   active_goal_terminal_state: codex_operating_system_stable_through_Wave01_closeout
   active_goal_terminal_contract_status: retained_candidate_contract_not_current_goal_achieve_gate
   active_wave_id: wave_us100_closedbar_surface_cartography_v0
-  active_campaign_id: campaign_us100_event_barrier_decision_surface_v0
+  active_campaign_id: campaign_us100_session_transition_regime_surface_v0
   wave_campaign_storage_policy: wave_allocates_central_campaigns_by_reference
   active_wave_campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
-  active_hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
-  active_surface_id: surface_us100_event_barrier_decision_surface_v0
-  active_sweep_id: sweep_us100_event_barrier_broad_v0
-  active_goal_phase: wave01_event_barrier_campaign_closed_rotate_next_surface
-  next_work_item_id: work_wave01_open_next_multi_axis_surface_v0
+  active_hypothesis_id: hyp_us100_session_transition_regime_surface_v0
+  active_surface_id: surface_us100_session_transition_regime_surface_v0
+  active_sweep_id: sweep_us100_session_transition_broad_v0
+  active_goal_phase: wave01_campaign_003_session_transition_opened
+  next_work_item_id: work_wave01_session_transition_first_batch_spec_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
   wave0_raw_row_count: 308002
@@ -497,6 +497,12 @@ current_claims:
     l5_candidate_count: 0
     tester_report_pair_observed_count: 0
     open_failed_count: 174
+  wave0_third_campaign_status: opened_planned_not_executed
+  wave0_third_campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
+  wave0_third_campaign_surface: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
+  wave0_third_campaign_sweep: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
+  wave0_third_campaign_next_work_item: work_wave01_session_transition_first_batch_spec_v0
+  wave0_third_campaign_claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

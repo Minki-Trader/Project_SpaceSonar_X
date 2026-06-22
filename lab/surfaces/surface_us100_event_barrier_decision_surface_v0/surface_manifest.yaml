@@ -1,7 +1,7 @@
 version: surface_manifest_v1
 surface_id: surface_us100_event_barrier_decision_surface_v0
 hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
-status: opened_planned_not_executed
+status: wave01_event_barrier_decision_replay_closed_no_candidate
 created_at_utc: '2026-06-21T21:30:10Z'
 inheritance_policy: no_prior_feature_label_target_model_or_runtime_defaults
 problem_shape:
@@ -39,7 +39,7 @@ runtime_learning_probe_decision:
   decision: required_after_valid_proxy_model_run
   reason: Every valid proxy/model-bearing surface must reach L4 or record failure
     disposition.
-claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
+claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -54,3 +54,10 @@ known_differences:
 - price_distance_units_require_MT5_symbol_contract_conversion
 notes: Surface open only; feature count, label thresholds, model family, and output
   head are not fixed.
+next_action: work_wave01_open_next_multi_axis_surface_v0
+closed_surface_evidence:
+  status: wave01_event_barrier_decision_replay_closed_no_candidate
+  evidence_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+  negative_memory_ids:
+  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+  claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass

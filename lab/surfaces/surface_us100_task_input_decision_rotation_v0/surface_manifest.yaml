@@ -2,7 +2,7 @@ version: surface_manifest_v1
 surface_id: surface_us100_task_input_decision_rotation_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 hypothesis_id: hyp_surface_diversity_before_model_search_v0
-status: first_batch_proxy_scout_executed_no_candidate
+status: decision_replay_judgment_closed_no_candidate
 created_at_utc: '2026-06-21T15:18:51Z'
 inheritance_policy: no_prior_feature_label_target_model_or_runtime_defaults
 problem_shape:
@@ -41,7 +41,7 @@ runtime_learning_probe_decision:
   required: false
   decision: not_applicable_no_runtime_question
   reason: Planned surface scout has no ONNX/EA/runtime behavior claim yet.
-claim_boundary: scout_surface_planning_only_not_candidate
+claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -52,7 +52,8 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 known_differences:
-- Recipes are scout skeletons, not selected feature, label, model, threshold, or holding contracts.
+- Recipes are scout skeletons, not selected feature, label, model, threshold, or holding
+  contracts.
 - Row membership and first batch run specs exist, but no model-bearing run has executed.
 notes: First surface opens broad task/input/decision rotation without legacy inheritance.
 first_batch_result:
@@ -66,8 +67,14 @@ first_batch_result:
   selected_baseline_count: 0
   runtime_claim: false
   next_action: work_wave0_first_batch_axis_review_v0
-next_action: work_wave0_first_batch_l4_follow_through_v0
+next_action: work_wave01_event_barrier_first_batch_spec_v0
 proxy_to_runtime_policy:
   every_valid_proxy_run_requires_l4: true
   proxy_only_closeout_allowed: false
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+closed_surface_evidence:
+  status: decision_replay_judgment_closed_no_candidate
+  evidence_path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  negative_memory_ids:
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate

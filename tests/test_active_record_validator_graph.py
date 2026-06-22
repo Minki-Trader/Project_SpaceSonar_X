@@ -246,6 +246,44 @@ def test_active_validator_rejects_wave_campaign_ref_status_drift(tmp_path: Path)
     assert any("campaign_refs.csv campaign_us100_task_surface_scout_v0: status mismatch" in error for error in errors)
 
 
+def test_active_validator_rejects_surface_registry_status_drift(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    registry_path = repo / "docs" / "registers" / "experiment_surface_registry.csv"
+    rows = registry_path.read_text(encoding="utf-8").splitlines()
+    rows = [
+        line.replace("opened_planned_not_executed", "stale_status", 1)
+        if line.startswith("surface_us100_session_transition_regime_surface_v0,")
+        else line
+        for line in rows
+    ]
+    registry_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+    errors = validate(repo)
+
+    assert any(
+        "experiment_surface_registry.csv surface_us100_session_transition_regime_surface_v0: status mismatch"
+        in error
+        for error in errors
+    )
+
+
+def test_active_validator_rejects_sweep_registry_status_drift(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    registry_path = repo / "docs" / "registers" / "sweep_registry.csv"
+    rows = registry_path.read_text(encoding="utf-8").splitlines()
+    rows = [
+        line.replace("planned_not_executed", "stale_status", 1)
+        if line.startswith("sweep_us100_session_transition_broad_v0,")
+        else line
+        for line in rows
+    ]
+    registry_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+    errors = validate(repo)
+
+    assert any("sweep_registry.csv sweep_us100_session_transition_broad_v0: status mismatch" in error for error in errors)
+
+
 def test_active_validator_rejects_missing_goal_objective_revision(tmp_path: Path) -> None:
     repo = copy_evidence_repo(tmp_path)
     state_path = repo / "docs" / "workspace" / "workspace_state.yaml"

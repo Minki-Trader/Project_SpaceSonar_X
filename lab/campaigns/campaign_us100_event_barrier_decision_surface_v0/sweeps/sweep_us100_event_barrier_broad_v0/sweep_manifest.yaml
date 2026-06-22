@@ -2,7 +2,7 @@ version: sweep_manifest_v1
 sweep_id: sweep_us100_event_barrier_broad_v0
 campaign_id: campaign_us100_event_barrier_decision_surface_v0
 surface_id: surface_us100_event_barrier_decision_surface_v0
-status: executed_proxy_observation_l4_required
+status: wave01_event_barrier_decision_replay_closed_no_candidate
 created_at_utc: '2026-06-21T21:30:10Z'
 sweep_type: broad_event_barrier_surface_scout
 axes:
@@ -58,7 +58,7 @@ failure_disposition:
   remaining_blocker: null
   reopen_condition: null
   claim_effect: lower_to_investigation_in_progress_until_recorded
-evidence_boundary: first_batch_specs_only_no_run_evidence
+evidence_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass
 required_gates:
 - first_batch_spec_created_before_execution
 - proxy_runtime_parity_policy_declared
@@ -80,8 +80,8 @@ first_batch_specs:
   anti_selection_ledger: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/anti_selection_ledger.yaml
   runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
   claim_boundary: first_batch_specs_only_no_run_no_candidate_no_runtime_authority
-next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
-claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+next_action: work_wave01_open_next_multi_axis_surface_v0
+claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass
 first_batch_proxy_result:
   status: executed_proxy_observation_l4_required
   run_count: 12
@@ -92,3 +92,8 @@ first_batch_proxy_result:
   runtime_claim: false
   claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
   next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+evidence_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+closed_sweep_evidence:
+  status: wave01_event_barrier_decision_replay_closed_no_candidate
+  evidence_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+  claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass

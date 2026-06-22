@@ -3,7 +3,7 @@ sweep_id: sweep_wave0_broad_surface_scout_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_task_surface_scout_v0
 surface_id: surface_us100_task_input_decision_rotation_v0
-status: first_batch_axis_review_closed_l4_follow_through_required_next
+status: decision_replay_judgment_closed_no_candidate
 created_at_utc: '2026-06-21T15:18:51Z'
 sweep_type: broad_extreme_surface_scout
 axes:
@@ -60,9 +60,9 @@ storage_contract:
 runtime_learning_probe_decision:
   required: false
   decision: not_applicable_no_runtime_question
-  reason: No runtime behavior, economics, EA/ONNX meaning, handoff, or live-like operation claim in planned
-    scout.
-evidence_boundary: learning_observation_planning_only
+  reason: No runtime behavior, economics, EA/ONNX meaning, handoff, or live-like operation
+    claim in planned scout.
+evidence_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
 required_gates:
 - dataset_identity_or_missing_reason_before_first_run
 - label_feature_boundary_plan
@@ -77,9 +77,9 @@ stop_conditions:
 - threshold_knife_edge_blocks_narrowing
 - wfo_instability_blocks_candidate_claim
 - no_repeated_clue_after_budget_close_as_negative_or_inconclusive
-next_action: work_wave0_first_batch_l4_follow_through_v0
-notes: First 12 planned run specs are materialized and not executed. Global run registry is deferred until
-  execution.
+next_action: work_wave01_event_barrier_first_batch_spec_v0
+notes: First 12 planned run specs are materialized and not executed. Global run registry
+  is deferred until execution.
 first_batch_result:
   status: executed_proxy_scout
   run_count: 12
@@ -109,3 +109,9 @@ proxy_to_runtime_policy:
   every_valid_proxy_run_requires_l4: true
   proxy_only_closeout_allowed: false
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+closed_sweep_evidence:
+  status: decision_replay_judgment_closed_no_candidate
+  evidence_path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  claim_boundary: decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate

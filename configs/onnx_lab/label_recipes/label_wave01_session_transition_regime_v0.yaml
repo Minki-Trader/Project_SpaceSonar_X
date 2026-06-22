@@ -1,0 +1,19 @@
+version: label_recipe_v1
+recipe_id: label_wave01_session_transition_regime_v0
+status: skeleton_open_no_candidate
+created_at_utc: '2026-06-22T01:44:27Z'
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+surface_id: surface_us100_session_transition_regime_surface_v0
+claim_boundary: recipe_skeleton_only_no_candidate_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- goal_achieve
+next_action: work_wave01_session_transition_first_batch_spec_v0
+label_family: session_transition_regime_tradeability_or_no_trade
+horizon_policy: variable_declared_per_run_with_tail_drop
+forbidden_defaults:
+- fixed_horizon
+- legacy_direction_mapping
+- locked_final_oos_selection

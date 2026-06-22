@@ -1,0 +1,17 @@
+version: eval_recipe_v1
+recipe_id: eval_wave01_session_transition_runtime_v0
+status: skeleton_open_no_candidate
+created_at_utc: '2026-06-22T01:44:27Z'
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+surface_id: surface_us100_session_transition_regime_surface_v0
+claim_boundary: recipe_skeleton_only_no_candidate_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- goal_achieve
+next_action: work_wave01_session_transition_first_batch_spec_v0
+split_recipe_id: split_set_v0
+locked_final_oos_b_policy: forbidden_until_candidate_freeze
+runtime_follow_through: L4_required_for_valid_proxy_model_bearing_runs
+l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

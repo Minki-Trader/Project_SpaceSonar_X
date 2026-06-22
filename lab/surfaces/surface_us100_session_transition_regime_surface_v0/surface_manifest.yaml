@@ -1,0 +1,56 @@
+version: surface_manifest_v1
+surface_id: surface_us100_session_transition_regime_surface_v0
+hypothesis_id: hyp_us100_session_transition_regime_surface_v0
+status: opened_planned_not_executed
+created_at_utc: '2026-06-22T01:44:27Z'
+inheritance_policy: no_prior_feature_label_target_model_or_runtime_defaults
+problem_shape:
+  input_surface: US100_M5_closed_bar_session_regime_transition_features
+  target_or_label_surface: session_transition_regime_tradeability_or_no_trade_surface
+  decision_use: abstain_capable_session_regime_entry_exit_decision
+  holding_logic: timeout_or_session_window_exit_declared_per_run
+  evaluation_method: split_set_v0_validation_research_oos_then_L4_for_valid_proxy_model_runs
+recipe_refs:
+  data_surface_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
+  label_recipe_id: label_wave01_session_transition_regime_v0
+  feature_recipe_id: feature_wave01_us100_session_transition_regime_v0
+  feature_recipe_mix_id: not_applicable_no_mix_in_standard_campaign_open
+  model_recipe_id: model_wave01_session_transition_onnx_scout_v0
+  decision_recipe_id: decision_wave01_session_transition_abstain_v0
+  split_recipe_id: split_set_v0
+  eval_recipe_id: eval_wave01_session_transition_runtime_v0
+data_contract:
+  symbol_contract: FPMarkets_US100_M5_closed_bar_only
+  timeframe: M5
+  row_key: us100_bar_close_time
+  timezone_or_session_policy: inherit_split_set_v0_research_binding_no_utc_claim
+  feature_boundary: causal_history_only_declared_per_run
+  label_boundary: future_session_transition_or_regime_outcome_with_tail_drop_and_split_boundary_check
+  leakage_boundary: same_role_future_rows_only_no_locked_final_for_selection
+  missing_gap_policy: use_existing_row_membership_exclusions
+storage_contract:
+  source_of_truth: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
+  registry_rows:
+  - docs/registers/experiment_surface_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_level_target: L4_split_runtime_probe_for_valid_proxy_model_runs
+runtime_learning_probe_decision:
+  required: true
+  decision: required_after_valid_proxy_model_run
+  reason: Every valid proxy/model-bearing surface must reach L4 or record failure
+    disposition.
+claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+known_differences:
+- session_transition_proxy_windows_may_differ_from_MT5_server_time_rendering
+- timeout_or_no_trade_logic_must_translate_into_EA_semantics_before_L4
+notes: Surface open only; feature count, label thresholds, model family, and output
+  head are not fixed.

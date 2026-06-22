@@ -1,0 +1,82 @@
+version: sweep_manifest_v1
+sweep_id: sweep_us100_session_transition_broad_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+surface_id: surface_us100_session_transition_regime_surface_v0
+status: planned_not_executed
+created_at_utc: '2026-06-22T01:44:27Z'
+sweep_type: broad_session_transition_regime_surface_scout
+axes:
+- session_transition_label
+- compression_expansion_or_regime_label
+- feature_input_family
+- onnx_feasible_model_family
+- decision_abstain_or_no_trade_policy
+- holding_or_timeout_policy
+- runtime_parity_session_semantics
+fixed_controls:
+- US100_M5_closed_bar
+- split_set_v0
+- locked_final_oos_b_forbidden
+- no_auxiliary_symbols
+- 0.02_lot_default_when_MT5_strategy_tester_runs_execute
+parameter_space:
+  label_surface:
+  - pre_cash_or_cash_open_transition_outcome
+  - compression_to_expansion_follow_through
+  - session_blind_control_label
+  - no_trade_regime_detection
+  feature_surface:
+  - price_return_range_volatility_context
+  - session_state_context
+  - compression_expansion_context
+  - causal_regime_context
+  model_surface:
+  - logistic_or_linear_rank_scout
+  - tree_or_boosted_onnx_feasible_scout
+  - small_mlp_secondary_only_if_first_batch_needs_it
+  decision_surface:
+  - abstain_band
+  - session_window_timeout_exit
+  - no_trade_gate
+  - coarse_density_target_not_pf_max
+run_ref_path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
+  registry_rows:
+  - docs/registers/sweep_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_learning_probe_decision:
+  required: true
+  decision: L4_required_for_each_valid_proxy_model_bearing_run
+  reason: Proxy-only closure is forbidden for valid proxy/model-bearing runs.
+failure_disposition:
+  required_before_blocked_deferred_invalid_or_discarded: true
+  status: not_applicable_at_campaign_open
+  attempt_before_disposition:
+    required: true
+    policy_reference: docs/agent_control/self_correction_policy.yaml
+    scope: global_all_repo_controlled_failures
+    not_yet_attempted_claim_effect: investigation_in_progress_no_blocked_deferred_invalid_or_discarded
+    missing_repo_controlled_support_action: build_or_patch_smallest_adapter_or_fallback
+  failure_reproduction: null
+  exact_failing_layer: null
+  root_cause_hypothesis: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: lower_to_investigation_in_progress_until_recorded
+evidence_boundary: planned_sweep_only_no_run_evidence
+required_gates:
+- first_batch_spec_created_before_execution
+- proxy_runtime_parity_policy_declared
+- final_claim_guard
+stop_conditions:
+- first_batch_spec_ready
+- valid_proxy_model_run_without_L4_is_invalid_closeout
+- candidate_claim_attempted_without_L4_or_L5_evidence
+claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
+next_action: work_wave01_session_transition_first_batch_spec_v0
+notes: The sweep is open with zero executed runs; run_refs.csv is an empty index until
+  specs are materialized.

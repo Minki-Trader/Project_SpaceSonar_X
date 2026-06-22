@@ -80,6 +80,7 @@ def test_new_sweep_has_planned_run_refs_after_specs_materialize() -> None:
         "planned_not_executed",
         "first_batch_specs_materialized_not_executed",
         "executed_proxy_observation_l4_required",
+        closer.FINAL_STATUS,
     }
     assert sweep["runtime_learning_probe_decision"]["decision"] == "L4_required_for_each_valid_proxy_model_bearing_run"
     assert len(run_refs) in {1, 13}

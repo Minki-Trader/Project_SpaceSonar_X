@@ -1,8 +1,8 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-22T01:09:35Z'
+updated_at_utc: '2026-06-22T01:44:27Z'
 cursor_state: active
-active_phase: wave01_event_barrier_campaign_closed_rotate_next_surface
+active_phase: wave01_campaign_003_session_transition_opened
 current_truth_sources:
 - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
@@ -36,18 +36,28 @@ current_truth_sources:
 - docs/registers/campaign_registry.csv
 - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
 - docs/registers/wave_registry.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
+- lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
+- lab/hypotheses/idea_us100_m5_session_transition_regime_surface_v0.yaml
+- lab/hypotheses/hyp_us100_session_transition_regime_surface_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_open_session_transition_regime_campaign_v0_closeout.yaml
 active_ids:
+  idea_id: idea_us100_m5_session_transition_regime_surface_v0
+  hypothesis_id: hyp_us100_session_transition_regime_surface_v0
   wave_id: wave_us100_closedbar_surface_cartography_v0
-  campaign_id: campaign_us100_event_barrier_decision_surface_v0
-  surface_id: surface_us100_event_barrier_decision_surface_v0
-  sweep_id: sweep_us100_event_barrier_broad_v0
+  campaign_id: campaign_us100_session_transition_regime_surface_v0
+  surface_id: surface_us100_session_transition_regime_surface_v0
+  sweep_id: sweep_us100_session_transition_broad_v0
 latest_completed_work:
-  work_item_id: work_wave01_event_barrier_campaign_closeout_v0
-  result_judgment: negative
-  claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+  work_item_id: work_wave01_open_session_transition_regime_campaign_v0
+  result_judgment: planning_scaffold
+  claim_boundary: campaign_open_planning_scaffold_no_model_run_no_candidate_no_runtime_authority
   evidence_paths:
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
-  - lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
+  - lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_open_session_transition_regime_campaign_v0_closeout.yaml
 next_work_item:
-  work_item_id: work_wave01_open_next_multi_axis_surface_v0
+  work_item_id: work_wave01_session_transition_first_batch_spec_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

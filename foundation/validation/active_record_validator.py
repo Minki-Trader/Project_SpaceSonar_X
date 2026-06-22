@@ -507,6 +507,90 @@ def validate_campaign_registry(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_manifest_backed_registry(
+    repo_root: Path,
+    *,
+    registry_name: str,
+    key_field: str,
+    path_field: str,
+    manifest_id_field: str,
+) -> list[str]:
+    registry_path = repo_root / "docs" / "registers" / registry_name
+    if not registry_path.exists():
+        return [f"{registry_name}: missing docs/registers/{registry_name}"]
+    errors: list[str] = []
+    for row in read_csv_rows(registry_path):
+        record_id = row.get(key_field, "")
+        manifest_path_text = row.get(path_field, "")
+        if not record_id or not manifest_path_text:
+            continue
+        manifest_path = repo_root / manifest_path_text
+        if not manifest_path.exists():
+            errors.append(f"{registry_name} {record_id}: missing {manifest_path_text}")
+            continue
+        manifest = load_yaml(manifest_path)
+        if manifest.get(manifest_id_field) != record_id:
+            errors.append(f"{registry_name} {record_id}: {manifest_id_field} mismatch")
+        for field in ["status", "claim_boundary", "next_action"]:
+            observed = row.get(field)
+            expected = manifest.get(field)
+            if observed and expected and observed != expected:
+                errors.append(f"{registry_name} {record_id}: {field} mismatch")
+        evidence_path = row.get("evidence_path")
+        if evidence_path and not (repo_root / evidence_path).exists():
+            errors.append(f"{registry_name} {record_id}: missing evidence_path {evidence_path}")
+    return errors
+
+
+def validate_idea_hypothesis_surface_sweep_registries(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    for registry_name, key_field, manifest_id_field in [
+        ("idea_registry.csv", "idea_id", "idea_id"),
+        ("hypothesis_registry.csv", "hypothesis_id", "hypothesis_id"),
+    ]:
+        registry_path = repo_root / "docs" / "registers" / registry_name
+        if not registry_path.exists():
+            errors.append(f"{registry_name}: missing docs/registers/{registry_name}")
+            continue
+        for row in read_csv_rows(registry_path):
+            record_id = row.get(key_field, "")
+            if not record_id:
+                continue
+            manifest_path = repo_root / "lab" / "hypotheses" / f"{record_id}.yaml"
+            if manifest_path.exists():
+                manifest = load_yaml(manifest_path)
+                if manifest.get(manifest_id_field) != record_id:
+                    errors.append(f"{registry_name} {record_id}: {manifest_id_field} mismatch")
+                for field in ["status", "claim_boundary", "next_action"]:
+                    observed = row.get(field)
+                    expected = manifest.get(field)
+                    if observed and expected and observed != expected:
+                        errors.append(f"{registry_name} {record_id}: {field} mismatch")
+            evidence_path = row.get("evidence_path")
+            if evidence_path and not (repo_root / evidence_path).exists():
+                errors.append(f"{registry_name} {record_id}: missing evidence_path {evidence_path}")
+
+    errors.extend(
+        validate_manifest_backed_registry(
+            repo_root,
+            registry_name="experiment_surface_registry.csv",
+            key_field="surface_id",
+            path_field="surface_path",
+            manifest_id_field="surface_id",
+        )
+    )
+    errors.extend(
+        validate_manifest_backed_registry(
+            repo_root,
+            registry_name="sweep_registry.csv",
+            key_field="sweep_id",
+            path_field="sweep_path",
+            manifest_id_field="sweep_id",
+        )
+    )
+    return errors
+
+
 def validate_run_campaign_chain(repo_root: Path) -> list[str]:
     errors: list[str] = []
     sweep_registry_path = repo_root / "docs" / "registers" / "sweep_registry.csv"
@@ -839,6 +923,7 @@ def validate(repo_root: Path) -> list[str]:
     errors: list[str] = []
     errors.extend(validate_workspace_active_ids(repo_root))
     errors.extend(validate_active_goal_records(repo_root))
+    errors.extend(validate_idea_hypothesis_surface_sweep_registries(repo_root))
     errors.extend(validate_campaign_registry(repo_root))
     errors.extend(validate_wave_campaign_graph(repo_root))
     errors.extend(validate_run_campaign_chain(repo_root))
