@@ -1088,6 +1088,7 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
         tester_report_observed = bool(execution_state.get("tester_report_observed"))
         tester_report_completed = bool(execution_state.get("tester_report_completed"))
         terminal_mode = str(execution_state.get("terminal_mode") or "")
+        terminal_policy = (attempt.get("terminal_run_summary") or {}).get("terminal_mode_policy") or {}
 
         if runtime_complete and not tester_report_observed:
             errors.append(f"{label}: runtime_probe_complete true without tester_report_observed")
@@ -1095,6 +1096,10 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
             errors.append(f"{label}: runtime_probe_complete true without tester_report_completed")
         if runtime_complete and terminal_mode == "main_mode_config_fallback":
             errors.append(f"{label}: runtime_probe_complete true with main-mode fallback")
+        if runtime_complete and terminal_policy.get("main_mode_fallback_allowed"):
+            errors.append(f"{label}: runtime_probe_complete true while main-mode fallback was allowed")
+        if runtime_complete and terminal_policy.get("main_mode_fallback_used"):
+            errors.append(f"{label}: runtime_probe_complete true after main-mode fallback was used")
         if status.startswith("runtime_probe_completed") and not runtime_complete:
             errors.append(f"{label}: runtime_probe_completed status without explicit runtime_probe_complete")
         if is_l4_runtime_attempt and status.startswith("completed_") and not runtime_complete:
@@ -1120,7 +1125,11 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
         closeout = load_yaml(closeout_path) or {}
         runtime_integrity = closeout.get("runtime_contract_integrity") or {}
         if runtime_integrity.get("status") == "passed":
-            errors.append(f"{rel(closeout_path, repo_root)}: runtime_contract_integrity cannot pass while Wave01 L4 reports are incomplete")
+            from foundation.evaluation.runtime_contract_evaluator import evaluate_runtime_contract
+
+            runtime_result = evaluate_runtime_contract(repo_root)
+            if runtime_result.get("status") != "passed":
+                errors.append(f"{rel(closeout_path, repo_root)}: runtime_contract_integrity passed but runtime evaluator did not pass")
         if closeout.get("version") == "wave_closeout_v2" and (repo_root / ".git").exists() and (repo_root / "AGENTS.md").exists():
             from foundation.evaluation.build_operating_closeout import validate_committed_closeout
 

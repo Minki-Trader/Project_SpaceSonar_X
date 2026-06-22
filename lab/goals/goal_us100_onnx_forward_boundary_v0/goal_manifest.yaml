@@ -2,7 +2,7 @@ version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: complete_wave01_operating_proof_window
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-22T11:56:46Z'
+updated_at_utc: '2026-06-22T15:42:02Z'
 claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -59,7 +59,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_event_barrier_l4_pair_judgment_required_next
+active_phase: wave01_event_barrier_decision_replay_pair_judgment_required_next
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
@@ -243,15 +243,22 @@ program_budgets:
       indexed_execution_count: 24
       executed_attempt_count: 24
       completed_manifest_count: 24
+      touched_manifest_count: 24
       telemetry_observed_count: 24
       telemetry_missing_count: 0
-      tester_report_observed_count: 0
-      tester_report_missing_count: 24
+      tester_report_observed_count: 24
+      tester_report_missing_count: 0
+      terminal_execution_count: 24
+      telemetry_observation_count: 24
+      tester_report_observation_count: 24
+      portable_contract_count: 24
+      runtime_probe_complete_count: 24
+      runtime_probe_incomplete_count: 0
       period_role_counts:
         research_oos: 12
         validation: 12
       status_counts:
-        completed_l4_score_telemetry_observed: 24
+        runtime_probe_completed: 24
       result_judgment_counts:
         runtime_probe: 24
     l4_pair_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_pair_judgment_summary.yaml
@@ -293,16 +300,23 @@ program_budgets:
     l4_decision_replay_runtime_execution_status: decision_replay_terminal_execution_attempted_for_all_prepared_attempts
     l4_decision_replay_runtime_execution_counts:
       prepared_attempt_count: 6
-      selected_attempt_count: 0
+      selected_attempt_count: 6
       indexed_execution_count: 6
       executed_attempt_count: 6
       completed_manifest_count: 6
+      touched_manifest_count: 6
       source_score_telemetry_observed_count: 6
       execution_telemetry_observed_count: 6
       execution_telemetry_missing_count: 0
-      tester_report_observed_count: 0
-      tester_report_missing_count: 6
+      tester_report_observed_count: 6
+      tester_report_missing_count: 0
       tester_log_observed_count: 6
+      terminal_execution_count: 6
+      telemetry_observation_count: 6
+      tester_report_observation_count: 6
+      portable_contract_count: 6
+      runtime_probe_complete_count: 6
+      runtime_probe_incomplete_count: 0
       open_action_count: 39598
       close_action_count: 11727
       open_failed_count: 0
@@ -312,7 +326,7 @@ program_budgets:
       direction_policy_counts:
         momentum_ret_1: 6
       status_counts:
-        completed_decision_replay_execution_telemetry_observed: 6
+        runtime_probe_completed: 6
       result_judgment_counts:
         runtime_probe: 6
     l4_decision_replay_judgment_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
@@ -448,27 +462,26 @@ event_barrier_campaign:
   l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
   l4_runtime_execution_counts:
     prepared_attempt_count: 24
-    selected_attempt_count: 1
+    selected_attempt_count: 0
     indexed_execution_count: 24
     executed_attempt_count: 24
-    completed_manifest_count: 0
+    completed_manifest_count: 24
     touched_manifest_count: 24
     telemetry_observed_count: 24
     telemetry_missing_count: 0
-    tester_report_observed_count: 1
-    tester_report_missing_count: 23
+    tester_report_observed_count: 24
+    tester_report_missing_count: 0
     terminal_execution_count: 24
     telemetry_observation_count: 24
-    tester_report_observation_count: 1
-    portable_contract_count: 0
-    runtime_probe_complete_count: 0
-    runtime_probe_incomplete_count: 24
+    tester_report_observation_count: 24
+    portable_contract_count: 24
+    runtime_probe_complete_count: 24
+    runtime_probe_incomplete_count: 0
     period_role_counts:
       research_oos: 12
       validation: 12
     status_counts:
-      completed_l4_score_telemetry_observed: 23
-      telemetry_adapter_observed_runtime_contract_incomplete: 1
+      runtime_probe_completed: 24
     result_judgment_counts:
       runtime_probe: 24
   l4_pair_judgment_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
@@ -512,16 +525,23 @@ event_barrier_campaign:
   l4_decision_replay_runtime_execution_status: wave01_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
   l4_decision_replay_runtime_execution_counts:
     prepared_attempt_count: 10
-    selected_attempt_count: 10
+    selected_attempt_count: 0
     indexed_execution_count: 10
     executed_attempt_count: 10
     completed_manifest_count: 10
+    touched_manifest_count: 10
     source_score_telemetry_observed_count: 10
     execution_telemetry_observed_count: 10
     execution_telemetry_missing_count: 0
-    tester_report_observed_count: 0
-    tester_report_missing_count: 10
+    tester_report_observed_count: 10
+    tester_report_missing_count: 0
     tester_log_observed_count: 10
+    terminal_execution_count: 10
+    telemetry_observation_count: 10
+    tester_report_observation_count: 10
+    portable_contract_count: 10
+    runtime_probe_complete_count: 10
+    runtime_probe_incomplete_count: 0
     open_action_count: 48439
     close_action_count: 48347
     open_failed_count: 174
@@ -531,7 +551,7 @@ event_barrier_campaign:
     direction_policy_counts:
       score_band_side: 10
     status_counts:
-      completed_decision_replay_execution_telemetry_observed: 10
+      runtime_probe_completed: 10
     result_judgment_counts:
       runtime_probe: 10
   l4_decision_replay_judgment_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
@@ -590,7 +610,7 @@ session_transition_campaign:
   spec_count: 10
   runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
   claim_boundary: wave01_session_transition_campaign_closed_preserved_clues_no_candidate_no_l5_no_runtime_authority_no_economics_pass
-  next_work_item: work_wave01_wave_closeout_or_next_multi_axis_surface_v0
+  next_work_item: work_wave01_session_transition_l4_materialization_preflight_v0
   result_counts:
     inconclusive: 3
     negative: 2
@@ -626,19 +646,26 @@ session_transition_campaign:
   l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
   l4_runtime_execution_counts:
     prepared_attempt_count: 20
-    selected_attempt_count: 6
+    selected_attempt_count: 7
     indexed_execution_count: 20
     executed_attempt_count: 20
     completed_manifest_count: 20
+    touched_manifest_count: 20
     telemetry_observed_count: 20
     telemetry_missing_count: 0
-    tester_report_observed_count: 0
-    tester_report_missing_count: 20
+    tester_report_observed_count: 20
+    tester_report_missing_count: 0
+    terminal_execution_count: 20
+    telemetry_observation_count: 20
+    tester_report_observation_count: 20
+    portable_contract_count: 20
+    runtime_probe_complete_count: 20
+    runtime_probe_incomplete_count: 0
     period_role_counts:
       research_oos: 10
       validation: 10
     status_counts:
-      completed_l4_score_telemetry_observed: 20
+      runtime_probe_completed: 20
     result_judgment_counts:
       runtime_probe: 20
   l4_pair_judgment_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml

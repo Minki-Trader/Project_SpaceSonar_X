@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import yaml
+
 from foundation.mt5.runtime_completion import (
     EXPECTED_EXECUTION_PROFILE_ID,
     EXPECTED_PERIOD_PROFILE_ID,
@@ -12,6 +14,7 @@ from foundation.mt5.runtime_completion import (
     resolve_tester_report_candidates,
     runtime_status,
 )
+from foundation.validation.active_record_validator import validate_runtime_completion_truth
 
 
 def state(**overrides: object) -> RuntimeAttemptState:
@@ -107,3 +110,33 @@ def test_report_resolver_distinguishes_roots(tmp_path: Path) -> None:
         "attempt_archive_path",
     }.issubset(origins)
     assert all(candidate.path.suffix in {".htm", ".html", ".xml"} for candidate in candidates)
+
+
+def test_validator_rejects_complete_attempt_when_fallback_was_allowed(tmp_path: Path) -> None:
+    attempt_dir = tmp_path / "runtime" / "mt5_attempts" / "attempt_wave01_fixture_l4_validation_v0"
+    attempt_dir.mkdir(parents=True)
+    manifest = {
+        "attempt_id": "attempt_wave01_fixture_l4_validation_v0",
+        "status": "runtime_probe_completed",
+        "execution_state": {
+            "terminal_launched": True,
+            "telemetry_file_observed": True,
+            "telemetry_rows_observed": True,
+            "tester_report_observed": True,
+            "tester_report_completed": True,
+            "terminal_mode": "portable_contract_attempt",
+            "runtime_probe_complete": True,
+            "missing_requirements": [],
+        },
+        "terminal_run_summary": {
+            "terminal_mode_policy": {
+                "main_mode_fallback_allowed": True,
+                "main_mode_fallback_used": False,
+            }
+        },
+    }
+    (attempt_dir / "attempt_manifest.yaml").write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
+
+    errors = validate_runtime_completion_truth(tmp_path)
+
+    assert any("main-mode fallback was allowed" in error for error in errors)

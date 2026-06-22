@@ -5,8 +5,8 @@ subwork_item_id: work_wave01_session_transition_l4_mt5_runtime_execution_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_session_transition_regime_surface_v0
 sweep_id: sweep_us100_session_transition_broad_v0
-created_at_utc: '2026-06-22T04:01:40Z'
-ended_at_utc: '2026-06-22T04:04:37Z'
+created_at_utc: '2026-06-22T14:23:30Z'
+ended_at_utc: '2026-06-22T14:26:03Z'
 status: l4_terminal_execution_attempted_for_all_prepared_attempts
 claim_boundary: wave01_session_transition_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
 runtime_contract_binding:
@@ -20,24 +20,33 @@ runtime_contract_binding:
   locked_final_oos_b: excluded_forbidden_by_default
 counts:
   prepared_attempt_count: 20
-  selected_attempt_count: 6
+  selected_attempt_count: 7
   indexed_execution_count: 20
   executed_attempt_count: 20
-  completed_manifest_count: 0
+  completed_manifest_count: 20
+  touched_manifest_count: 20
   telemetry_observed_count: 20
   telemetry_missing_count: 0
-  tester_report_observed_count: 0
-  tester_report_missing_count: 20
+  tester_report_observed_count: 20
+  tester_report_missing_count: 0
+  terminal_execution_count: 20
+  telemetry_observation_count: 20
+  tester_report_observation_count: 20
+  portable_contract_count: 20
+  runtime_probe_complete_count: 20
+  runtime_probe_incomplete_count: 0
   period_role_counts:
     research_oos: 10
     validation: 10
   status_counts:
-    telemetry_adapter_observed_runtime_contract_incomplete: 20
+    runtime_probe_completed: 20
   result_judgment_counts:
     runtime_probe: 20
-  runtime_probe_complete_count: 0
-  runtime_probe_incomplete_count: 20
-  tester_report_observation_count: 0
+runtime_completion:
+  all_prepared_attempts_executed: true
+  all_prepared_attempts_runtime_complete: true
+  runtime_probe_complete: true
+  missing_requirements_by_count: {}
 compile_summary:
   path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
   status: ea_binary_available
@@ -96,10 +105,9 @@ environment:
   command_argv:
   - python
   - foundation/pipelines/run_wave01_session_transition_l4_mt5_attempts.py
-  - --expected-branch
-  - codex/l4-pair-judgment-closeout
   - --limit
-  - '0'
+  - '10'
+  - --no-main-mode-fallback
   - --write-control-records
   cwd: .
   python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
@@ -108,96 +116,206 @@ environment:
     python: 3.13.9
     yaml: 6.0.3
     platform: win32
-  started_at_utc: '2026-06-22T04:01:40Z'
-  ended_at_utc: '2026-06-22T04:04:37Z'
-  git_sha: 8410e39f912b0f67b3996a4fb157c7c7058cb0c8
-  branch: codex/l4-pair-judgment-closeout
+  started_at_utc: '2026-06-22T14:23:30Z'
+  ended_at_utc: '2026-06-22T14:26:03Z'
+  git_sha: 24627b98499958fbc22f229d9c845dcc4fe8d0e2
+  branch: codex/wave01-runtime-contract-completion
   dirty_flag: true
   changed_files:
   - M docs/registers/artifact_registry.csv
   - ' M docs/registers/goal_registry.csv'
   - ' M docs/workspace/workspace_state.yaml'
-  - ' M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5'
-  - ' M foundation/pipelines/run_wave0_l4_mt5_attempts.py'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv'
+  - ' M lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml'
+  - ' M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml'
+  - ' M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_index.csv'
+  - ' M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
   - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_mt5_runtime_execution_v0_closeout.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_mt5_runtime_execution_v0_closeout.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/tester_config.ini'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/attempt_manifest.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/tester_config.ini'
   - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/attempt_manifest.yaml'
-  - ' M tests/test_wave0_l4_mt5_attempt_runner.py'
-  - ?? foundation/pipelines/aggregate_wave01_session_transition_l4_pair_judgments.py
-  - ?? foundation/pipelines/run_wave01_session_transition_l4_mt5_attempts.py
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_mt5_runtime_execution_v0_closeout.yaml
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_pair_judgment_v0_closeout.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/terminal_run_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/score_telemetry_summary.yaml
-  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/terminal_run_summary.yaml
-  - ?? tests/test_wave01_session_transition_l4_mt5_runner.py
-  - ?? tests/test_wave01_session_transition_l4_pair_judgment.py
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/score_telemetry_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/terminal_run_summary.yaml'
+  - ' M runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/tester_config.ini'
   dirty_claim_effect: runtime_execution_records_may_be_partial
 judgment:
   judgment_class: runtime_probe_progress
-  runtime_probe_completed_for_all_prepared_attempts: false
+  runtime_probe_completed_for_all_prepared_attempts: true
+  all_prepared_attempts_executed: true
   runtime_authority: false
   economics_pass: false
   selected_baseline: false
@@ -216,11 +334,3 @@ forbidden_claims:
 prevention_memory:
 - Wave01 runtime execution uses Wave01-specific control records; reused Wave0 helper
   output is normalized before closeout.
-runtime_completion:
-  all_prepared_attempts_executed: true
-  all_prepared_attempts_runtime_complete: false
-  runtime_probe_complete: false
-  missing_requirements_by_count:
-    portable_terminal_contract: 20
-    tester_report_completed: 20
-    tester_report_observed: 20

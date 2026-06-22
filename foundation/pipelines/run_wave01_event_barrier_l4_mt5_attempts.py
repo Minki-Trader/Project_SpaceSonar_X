@@ -495,6 +495,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--force-compile-ea", action="store_true")
     parser.add_argument("--skip-compile-ea-if-missing", action="store_true")
     parser.add_argument("--terminate-existing-terminal", action="store_true")
+    parser.add_argument("--allow-main-mode-fallback", action="store_true")
     parser.add_argument("--no-main-mode-fallback", action="store_true")
     parser.add_argument("--write-control-records", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -518,6 +519,8 @@ def build_command_argv(args: argparse.Namespace) -> list[str]:
         command.append("--skip-compile-ea-if-missing")
     if args.terminate_existing_terminal:
         command.append("--terminate-existing-terminal")
+    if args.allow_main_mode_fallback:
+        command.append("--allow-main-mode-fallback")
     if args.no_main_mode_fallback:
         command.append("--no-main-mode-fallback")
     if args.write_control_records:
@@ -596,7 +599,7 @@ def main(argv: list[str] | None = None) -> int:
             terminal=Path(args.terminal),
             timeout_seconds=args.terminal_timeout_seconds,
             terminate_existing=args.terminate_existing_terminal,
-            allow_main_mode_fallback=not args.no_main_mode_fallback,
+            allow_main_mode_fallback=args.allow_main_mode_fallback and not args.no_main_mode_fallback,
             started_at_utc=started_at,
         )
         execution_rows.append(normalize_attempt_outputs(repo_root, row, execution_row))

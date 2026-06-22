@@ -10,7 +10,7 @@ active_goal:
   manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
 active_wave:
   wave_id: wave_us100_closedbar_surface_cartography_v0
-  status: wave01_control_plane_proof_closed_runtime_contract_incomplete
+  status: wave01_control_plane_proof_closed_runtime_contract_complete
   allocation: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
   closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
 active_campaign:
@@ -18,7 +18,7 @@ active_campaign:
 active_work_item:
   work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: control_plane_stabilization_validated_runtime_contract_incomplete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 next_action: Wave01 operating closeout complete; await user-directed Wave02, new surface,
   bounded synthesis, or review.
 unresolved_blockers: []
@@ -29,4 +29,4 @@ source_of_truth_pointers:
 summary_counts:
   candidate_count: 0
   l5_candidate_count: 0
-  runtime_contract_integrity: failed
+  runtime_contract_integrity: passed

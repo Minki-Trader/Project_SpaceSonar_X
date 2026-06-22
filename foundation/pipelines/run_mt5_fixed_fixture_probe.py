@@ -631,6 +631,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--skip-terminal-run", action="store_true")
     parser.add_argument("--terminate-existing-terminal", action="store_true")
     parser.add_argument("--keep-existing-terminal", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--allow-main-mode-fallback", action="store_true")
     parser.add_argument("--no-main-mode-fallback", action="store_true")
     return parser.parse_args(argv)
 
@@ -707,7 +708,7 @@ def main() -> int:
         common_telemetry=common_telemetry,
         timeout_seconds=args.terminal_timeout_seconds,
         terminate_existing=args.terminate_existing_terminal,
-        allow_main_mode_fallback=not args.no_main_mode_fallback,
+        allow_main_mode_fallback=args.allow_main_mode_fallback and not args.no_main_mode_fallback,
     )
     terminal_summary = {
         **terminal_process,

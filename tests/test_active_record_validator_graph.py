@@ -31,8 +31,13 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def copy_evidence_repo(tmp_path: Path) -> Path:
     repo = tmp_path / "repo"
-    for name in ["docs", "lab", "runtime"]:
+    for name in ["docs", "lab"]:
         shutil.copytree(ROOT / name, repo / name, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    shutil.copytree(
+        ROOT / "runtime",
+        repo / "runtime",
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "telemetry", "reports"),
+    )
     shutil.copytree(
         ROOT / "foundation" / "mt5",
         repo / "foundation" / "mt5",

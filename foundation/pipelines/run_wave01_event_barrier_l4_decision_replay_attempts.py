@@ -428,19 +428,24 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                 "execution_telemetry_csv",
                 "execution_telemetry_csv",
                 row.get("repo_execution_telemetry_path", ""),
-                "present_hash_recorded",
-                "repo-local copy of execution telemetry emitted by MT5 EA",
+                "local_telemetry_hash_recorded_ignored_by_git",
+                "raw execution telemetry is local/generated and ignored; committed summary is source-of-truth",
             ),
             (
                 "tester_report",
                 "tester_report",
                 row.get("tester_report_path", ""),
-                "present_hash_recorded",
-                "archived tester report if terminal produced one",
+                "local_report_hash_recorded_ignored_by_git",
+                "raw tester report is local/generated; committed manifest preserves report observation and hash",
             ),
         ]:
             if not path:
                 continue
+            source_of_truth = path
+            if suffix == "execution_telemetry_csv":
+                source_of_truth = row.get("execution_telemetry_summary_path", "") or manifest_path
+            elif suffix == "tester_report":
+                source_of_truth = manifest_path
             put(
                 {
                     "artifact_id": f"artifact_wave01_decision_replay_{attempt_id}_{suffix}_v0",
@@ -452,7 +457,7 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                     "availability": availability,
                     "producer_command": producer,
                     "regeneration_command": producer,
-                    "source_of_truth": path,
+                    "source_of_truth": source_of_truth,
                     "consumer": WORK_ITEM_ID,
                     "claim_boundary": row.get("claim_boundary", CLAIM_BOUNDARY),
                     "notes": notes,
@@ -561,6 +566,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--force-compile-ea", action="store_true")
     parser.add_argument("--skip-compile-ea-if-missing", action="store_true")
     parser.add_argument("--terminate-existing-terminal", action="store_true")
+    parser.add_argument("--allow-main-mode-fallback", action="store_true")
     parser.add_argument("--no-main-mode-fallback", action="store_true")
     parser.add_argument("--write-control-records", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -584,6 +590,8 @@ def build_command_argv(args: argparse.Namespace) -> list[str]:
         command.append("--skip-compile-ea-if-missing")
     if args.terminate_existing_terminal:
         command.append("--terminate-existing-terminal")
+    if args.allow_main_mode_fallback:
+        command.append("--allow-main-mode-fallback")
     if args.no_main_mode_fallback:
         command.append("--no-main-mode-fallback")
     if args.write_control_records:
@@ -685,7 +693,7 @@ def main(argv: list[str] | None = None) -> int:
             terminal=Path(args.terminal),
             timeout_seconds=args.terminal_timeout_seconds,
             terminate_existing=args.terminate_existing_terminal,
-            allow_main_mode_fallback=not args.no_main_mode_fallback,
+            allow_main_mode_fallback=args.allow_main_mode_fallback and not args.no_main_mode_fallback,
         )
         execution_rows.append(normalize_attempt_outputs(repo_root, row, execution_row))
 

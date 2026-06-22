@@ -98,6 +98,26 @@ execution:
   terminal_mode: portable_required
   required_terminal_args:
     - /portable
+  portable_environment_preflight:
+    formal_l4_closeout_requires_no_main_mode_fallback: true
+    main_mode_fallback_default: forbidden
+    main_mode_fallback_cli: --allow-main-mode-fallback
+    portable_root_must_be_writable: true
+    program_files_portable_root_allowed_only_if_report_dirs_writable: true
+    required_before_terminal_launch:
+      - account_and_server_config_available_in_portable_root
+      - required_ex5_staged_under_portable_mql5_experts_path
+      - tester_report_value_normalized_before_launch
+      - tester_report_candidate_directories_prepared_before_launch
+      - validation_and_research_oos_dates_loaded_from_period_profile
+      - locked_final_oos_b_not_selected
+    completion_blockers:
+      - main_mode_config_fallback
+      - missing_tester_report
+      - missing_or_unwritable_portable_report_root
+      - missing_account_in_portable_root
+      - missing_required_ex5_in_portable_root
+    rule: "Formal L4 runtime closeout must use a writable portable terminal root and must not silently fall back to main-mode. If portable account/config/report/EX5 preflight fails, repair the environment or record a blocked runtime repair; do not close the wave as runtime complete."
 exception_profiles:
   materialization_smoke:
     completion_claim_allowed: false

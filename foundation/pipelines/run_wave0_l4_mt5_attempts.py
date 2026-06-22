@@ -228,6 +228,64 @@ def execution_index_fieldnames() -> list[str]:
     ]
 
 
+def bool_text(value: Any) -> bool:
+    return str(value).lower() == "true"
+
+
+def execution_row_from_manifest(
+    repo_root: Path,
+    prep_row: dict[str, str],
+    existing_row: dict[str, Any] | None = None,
+) -> dict[str, Any] | None:
+    manifest_path = repo_root / prep_row["attempt_manifest_path"]
+    if not manifest_path.exists():
+        return existing_row
+    manifest = load_yaml(manifest_path) or {}
+    execution_state = manifest.get("execution_state") or {}
+    if not execution_state:
+        return existing_row
+
+    attempt_id = prep_row["attempt_id"]
+    attempt_root = repo_root / "runtime" / "mt5_attempts" / attempt_id
+    terminal_path = attempt_root / "terminal_run_summary.yaml"
+    telemetry_summary_path = attempt_root / "score_telemetry_summary.yaml"
+    terminal_summary = load_yaml(terminal_path) if terminal_path.exists() else {}
+    telemetry_summary = load_yaml(telemetry_summary_path) if telemetry_summary_path.exists() else {}
+    telemetry_artifact = telemetry_summary.get("telemetry") or {}
+    telemetry_stats = telemetry_summary.get("stats") or {}
+    tester_report = manifest.get("tester_report") or {}
+    row = dict(existing_row or {})
+    row.update(
+        {
+            "attempt_id": attempt_id,
+            "run_id": prep_row.get("run_id") or manifest.get("run_id") or row.get("run_id", ""),
+            "bundle_id": prep_row.get("bundle_id") or manifest.get("bundle_id") or row.get("bundle_id", ""),
+            "cell_id": prep_row.get("cell_id") or manifest.get("cell_id") or row.get("cell_id", ""),
+            "period_role": prep_row.get("period_role") or manifest.get("period_role") or row.get("period_role", ""),
+            "from_date": prep_row.get("from_date") or manifest.get("from_date") or row.get("from_date", ""),
+            "to_date": prep_row.get("to_date") or manifest.get("to_date") or row.get("to_date", ""),
+            "status": manifest.get("status", row.get("status", "")),
+            "result_judgment": manifest.get("result_judgment", row.get("result_judgment", "")),
+            "telemetry_observed": bool(execution_state.get("telemetry_rows_observed")),
+            "telemetry_row_count": telemetry_stats.get("row_count")
+            or terminal_summary.get("telemetry_row_count")
+            or row.get("telemetry_row_count", ""),
+            "tester_report_observed": bool(execution_state.get("tester_report_observed")),
+            "runtime_probe_complete": bool(execution_state.get("runtime_probe_complete")),
+            "terminal_mode": execution_state.get("terminal_mode", row.get("terminal_mode", "")),
+            "terminal_exit_code": terminal_summary.get("exit_code", row.get("terminal_exit_code", "")),
+            "terminal_timed_out": terminal_summary.get("timed_out", row.get("terminal_timed_out", "")),
+            "terminal_run_summary_path": repo_relative(terminal_path, repo_root),
+            "score_telemetry_summary_path": repo_relative(telemetry_summary_path, repo_root),
+            "repo_telemetry_path": telemetry_artifact.get("path") or row.get("repo_telemetry_path", ""),
+            "tester_report_path": tester_report.get("path") or row.get("tester_report_path", ""),
+            "claim_boundary": manifest.get("claim_boundary", row.get("claim_boundary", "")),
+            "next_action": manifest.get("next_action", row.get("next_action", "")),
+        }
+    )
+    return row
+
+
 def ensure_ea_binary(
     *,
     repo_root: Path,
@@ -908,9 +966,9 @@ def build_summary(
     ended_at_utc: str,
     command_argv: list[str],
 ) -> dict[str, Any]:
-    telemetry_count = sum(str(row.get("telemetry_observed")).lower() == "true" for row in execution_rows)
-    report_count = sum(str(row.get("tester_report_observed")).lower() == "true" for row in execution_rows)
-    runtime_complete_count = sum(str(row.get("runtime_probe_complete")).lower() == "true" for row in execution_rows)
+    telemetry_count = sum(bool_text(row.get("telemetry_observed")) for row in execution_rows)
+    report_count = sum(bool_text(row.get("tester_report_observed")) for row in execution_rows)
+    runtime_complete_count = sum(bool_text(row.get("runtime_probe_complete")) for row in execution_rows)
     prepared_rows = read_csv_rows(repo_root / PREP_INDEX)
     executed_attempt_ids = {row["attempt_id"] for row in execution_rows}
     touched_manifest_count = 0
@@ -1037,7 +1095,12 @@ def merge_execution_rows(repo_root: Path, new_rows: list[dict[str, Any]]) -> lis
     for prep in prep_rows:
         attempt_id = prep["attempt_id"]
         if attempt_id in by_attempt:
-            ordered.append(by_attempt[attempt_id])
+            projected = execution_row_from_manifest(repo_root, prep, by_attempt[attempt_id])
+            ordered.append(projected or by_attempt[attempt_id])
+        else:
+            projected = execution_row_from_manifest(repo_root, prep)
+            if projected:
+                ordered.append(projected)
     extras = [row for attempt_id, row in sorted(by_attempt.items()) if attempt_id not in {prep["attempt_id"] for prep in prep_rows}]
     return [*ordered, *extras]
 
@@ -1372,6 +1435,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--force-compile-ea", action="store_true")
     parser.add_argument("--skip-compile-ea-if-missing", action="store_true")
     parser.add_argument("--terminate-existing-terminal", action="store_true")
+    parser.add_argument("--allow-main-mode-fallback", action="store_true")
     parser.add_argument("--no-main-mode-fallback", action="store_true")
     parser.add_argument("--write-control-records", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -1396,6 +1460,8 @@ def main(argv: list[str] | None = None) -> int:
         command_argv.append("--skip-compile-ea-if-missing")
     if args.terminate_existing_terminal:
         command_argv.append("--terminate-existing-terminal")
+    if args.allow_main_mode_fallback:
+        command_argv.append("--allow-main-mode-fallback")
     if args.no_main_mode_fallback:
         command_argv.append("--no-main-mode-fallback")
     if args.write_control_records:
@@ -1449,7 +1515,7 @@ def main(argv: list[str] | None = None) -> int:
                 terminal=Path(args.terminal),
                 timeout_seconds=args.terminal_timeout_seconds,
                 terminate_existing=args.terminate_existing_terminal,
-                allow_main_mode_fallback=not args.no_main_mode_fallback,
+                allow_main_mode_fallback=args.allow_main_mode_fallback and not args.no_main_mode_fallback,
                 started_at_utc=started_at,
             )
         )
