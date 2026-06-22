@@ -74,6 +74,9 @@ def _parse_pre_post_window(window: str) -> tuple[int, int] | None:
     match = re.match(r"post_(\d+)_to_post_(\d+)$", window)
     if match:
         return int(match.group(1)), int(match.group(2))
+    match = re.match(r"post_expansion_(\d+)_to_(\d+)$", window)
+    if match:
+        return int(match.group(1)), int(match.group(2))
     match = re.match(r"pre_close_(\d+)_to_close$", window)
     if match:
         return -int(match.group(1)), 0
