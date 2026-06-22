@@ -1,0 +1,21 @@
+version: github_branch_protection_required_v1
+repository: Minki-Trader/Project_SpaceSonar_X
+source_refs:
+  - docs/policies/branch_policy.md
+  - https://docs.github.com/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+  - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets
+settings_authority: github_repository_settings_not_mutated_by_local_patch
+target_branch: main
+required_settings:
+  pull_request_required: true
+  required_checks:
+    - control-plane-fast
+    - unit
+    - evidence-graph-full
+  squash_merge_only: true
+  direct_push: forbidden
+  force_push: disabled
+  stale_approvals_dismissed: true
+  administrator_bypass: emergency_only
+validator_effect: local_validator_warns_when_document_absent_or_incomplete
+claim_boundary: repository_policy_documented_local_patch_cannot_attest_remote_github_settings

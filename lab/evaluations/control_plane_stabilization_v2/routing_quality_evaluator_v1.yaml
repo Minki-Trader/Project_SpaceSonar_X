@@ -1,0 +1,17 @@
+version: evaluator_result_v1
+evaluator_id: routing_quality_evaluator_v1
+executed_at_utc: '2026-06-22T14:00:00Z'
+input_hashes:
+- path: docs/agent_control/routing_behavior_cases.yaml
+  sha256: 7a28f939114f38096ee0acc9c396b811b44fe7494b7707e895079ae41fe01b06
+  size_bytes: 6554
+- path: docs/agent_control/work_family_registry.yaml
+  sha256: 778cac921b711cdf32551252acf9a2a42696c5c907edd37b829dd3fe6b5d77d5
+  size_bytes: 12370
+status: passed
+metrics:
+  accuracy: 1.0
+  protected_claim_guard_recall: 1.0
+findings: []
+claim_effect: routing_behavior_evaluated_no_runtime_or_economics_claim
+output_sha256: e88fb62cddfde4a4a8d5cd3b8b28fab62ddd4912b576bf397d55944270162702

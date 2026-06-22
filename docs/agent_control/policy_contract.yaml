@@ -1,0 +1,74 @@
+version: policy_contract_v2
+revision: 2026_06_control_plane_stabilization
+
+guard_sets:
+  runtime_research:
+    - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+    - GUARD_002_RUNTIME_COMPLETION_TRUTH
+    - GUARD_003_CLAIM_BOUNDARY
+    - GUARD_004_ARTIFACT_IDENTITY
+    - GUARD_005_LOCKED_OOS
+    - GUARD_006_BRANCH_WORKTREE
+  governance:
+    - GUARD_003_CLAIM_BOUNDARY
+    - GUARD_004_ARTIFACT_IDENTITY
+    - GUARD_006_BRANCH_WORKTREE
+
+guards:
+  GUARD_001_ATTEMPT_BEFORE_DISPOSITION:
+    applies_to:
+      - code
+      - data
+      - runtime
+      - artifact
+      - policy
+    rule: Diagnose, reproduce, attempt the smallest repo-controlled repair or fallback, and record evidence before blocked, deferred, invalid, or discarded disposition.
+    validator: foundation.validation.active_record_validator.validate_try_first_disposition
+
+  GUARD_002_RUNTIME_COMPLETION_TRUTH:
+    applies_to:
+      - runtime/mt5_attempts
+      - lab/campaigns/*/l4_follow_through
+    rule: Runtime completion requires terminal launch, telemetry rows, observed completed tester report, portable terminal contract, expected period/runtime/execution IDs, required period roles, and eligible surface scope.
+    validator: foundation.validation.active_record_validator.validate_runtime_completion_truth
+
+  GUARD_003_CLAIM_BOUNDARY:
+    applies_to:
+      - manifests
+      - closeouts
+      - user_reports
+    rule: Protected claims require matching evaluator or evidence gates; selected baseline, runtime authority, economics pass, live readiness, production deployment, reviewed/verified/pass, and Goal Achieve are forbidden unless explicitly proven.
+    validator: foundation.validation.active_record_validator.validate_claim_boundary
+
+  GUARD_004_ARTIFACT_IDENTITY:
+    applies_to:
+      - artifacts
+      - registries
+      - manifests
+    rule: Canonical manifests are proof-bearing records; registries are generated projections; durable artifact identity uses repo-relative paths plus IDs and hashes.
+    validator: foundation.validation.active_record_validator.validate_artifact_registry
+
+  GUARD_005_LOCKED_OOS:
+    applies_to:
+      - split_records
+      - runtime_periods
+      - evaluation_records
+    rule: locked_final_oos_b remains excluded unless an explicit unlock contract exists.
+    validator: foundation.validation.active_record_validator.validate_active_manifests
+
+  GUARD_006_BRANCH_WORKTREE:
+    applies_to:
+      - work_items
+      - transactions
+      - migration_records
+    rule: Check branch and worktree fit before mutation, preserve user changes, and keep main integration to approved boundary events.
+    validator: foundation.validation.control_plane_validator.validate_work_item_schema
+
+policy_binding_template:
+  revision: policy_contract_v2
+  guard_set: runtime_research
+  guards:
+    - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+    - GUARD_002_RUNTIME_COMPLETION_TRUTH
+    - GUARD_003_CLAIM_BOUNDARY
+    - GUARD_004_ARTIFACT_IDENTITY

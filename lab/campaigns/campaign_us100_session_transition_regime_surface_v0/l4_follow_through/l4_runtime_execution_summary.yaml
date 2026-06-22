@@ -23,7 +23,7 @@ counts:
   selected_attempt_count: 6
   indexed_execution_count: 20
   executed_attempt_count: 20
-  completed_manifest_count: 20
+  completed_manifest_count: 0
   telemetry_observed_count: 20
   telemetry_missing_count: 0
   tester_report_observed_count: 0
@@ -32,9 +32,12 @@ counts:
     research_oos: 10
     validation: 10
   status_counts:
-    completed_l4_score_telemetry_observed: 20
+    telemetry_adapter_observed_runtime_contract_incomplete: 20
   result_judgment_counts:
     runtime_probe: 20
+  runtime_probe_complete_count: 0
+  runtime_probe_incomplete_count: 20
+  tester_report_observation_count: 0
 compile_summary:
   path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
   status: ea_binary_available
@@ -194,7 +197,7 @@ environment:
   dirty_claim_effect: runtime_execution_records_may_be_partial
 judgment:
   judgment_class: runtime_probe_progress
-  runtime_probe_completed_for_all_prepared_attempts: true
+  runtime_probe_completed_for_all_prepared_attempts: false
   runtime_authority: false
   economics_pass: false
   selected_baseline: false
@@ -213,3 +216,11 @@ forbidden_claims:
 prevention_memory:
 - Wave01 runtime execution uses Wave01-specific control records; reused Wave0 helper
   output is normalized before closeout.
+runtime_completion:
+  all_prepared_attempts_executed: true
+  all_prepared_attempts_runtime_complete: false
+  runtime_probe_complete: false
+  missing_requirements_by_count:
+    portable_terminal_contract: 20
+    tester_report_completed: 20
+    tester_report_observed: 20

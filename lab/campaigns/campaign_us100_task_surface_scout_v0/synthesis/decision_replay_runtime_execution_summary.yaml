@@ -25,7 +25,7 @@ counts:
   selected_attempt_count: 0
   indexed_execution_count: 6
   executed_attempt_count: 6
-  completed_manifest_count: 6
+  completed_manifest_count: 0
   source_score_telemetry_observed_count: 6
   execution_telemetry_observed_count: 6
   execution_telemetry_missing_count: 0
@@ -41,9 +41,12 @@ counts:
   direction_policy_counts:
     momentum_ret_1: 6
   status_counts:
-    completed_decision_replay_execution_telemetry_observed: 6
+    decision_replay_execution_telemetry_adapter_observed_runtime_contract_incomplete: 6
   result_judgment_counts:
     runtime_probe: 6
+  runtime_probe_complete_count: 0
+  runtime_probe_incomplete_count: 6
+  tester_report_observation_count: 0
 compile_summary:
   path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_compile_summary.yaml
   status: ea_binary_available
@@ -153,3 +156,13 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
+runtime_completion:
+  all_prepared_attempts_executed: true
+  all_prepared_attempts_runtime_complete: false
+  runtime_probe_complete: false
+  missing_requirements_by_count:
+    portable_terminal_contract: 6
+    telemetry_file_observed: 6
+    telemetry_rows_observed: 6
+    tester_report_completed: 6
+    tester_report_observed: 6

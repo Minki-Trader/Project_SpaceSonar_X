@@ -2,8 +2,8 @@ command_argv_redacted:
 - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
 - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\tester_config.ini
 cwd: .
-started_at_utc: '2026-06-21T22:58:06.553321Z'
-ended_at_utc: '2026-06-21T22:58:28.280868Z'
+started_at_utc: '2026-06-22T11:56:20.103024Z'
+ended_at_utc: '2026-06-22T11:56:46.086306Z'
 exit_code: 0
 timed_out: false
 stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -19,8 +19,8 @@ terminal_attempts:
   - /portable
   - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\tester_config.ini
   cwd: .
-  started_at_utc: '2026-06-21T22:58:02.152847Z'
-  ended_at_utc: '2026-06-21T22:58:06.551920Z'
+  started_at_utc: '2026-06-22T11:56:15.647965Z'
+  ended_at_utc: '2026-06-22T11:56:20.102011Z'
   exit_code: 3294954941
   timed_out: false
   stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -34,8 +34,8 @@ terminal_attempts:
   - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
   - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\tester_config.ini
   cwd: .
-  started_at_utc: '2026-06-21T22:58:06.553321Z'
-  ended_at_utc: '2026-06-21T22:58:28.280868Z'
+  started_at_utc: '2026-06-22T11:56:20.103024Z'
+  ended_at_utc: '2026-06-22T11:56:46.086306Z'
   exit_code: 0
   timed_out: false
   stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -67,11 +67,54 @@ run_id: onnxlab_wave01_eb_cell_001_event_barrier_surface_v0
 bundle_id: bundle_wave01_eb_cell_001_l4_onnx_export_v0
 tester_config:
   path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/tester_config.ini
-  sha256: 5ce0f690b246246a90437f9dfc6a09dd410ece2fbc95a4eed3bf1e7320bd6b41
-  size_bytes: 1453
+  sha256: a1ae32d89b5425843390b1d8c01b7c288cb212e7a37820cf5db93a59bc13185d
+  size_bytes: 1430
   availability: present_hash_recorded
+tester_report_config:
+  status: tester_report_config_normalized
+  changed: false
+  report_value: reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report
+  report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
+tester_report_resolution_prelaunch:
+  status: tester_report_directories_partially_prepared
+  report_value: reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0\tester_report
+  prepared:
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+  skipped:
+  - origin: portable_terminal_root
+    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
+      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
+  - origin: portable_terminal_root
+    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
+      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
+  - origin: portable_terminal_root
+    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave01_eb_cell_001_l4_validation_v0
+    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
+      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
 common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave01_eb_cell_001_l4_validation_v0\score_telemetry.csv
 claim_boundary: terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
+telemetry_file_observed_after_attempt: true
+telemetry_rows_observed_after_attempt: true
+telemetry_row_count: 53554
 work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 subwork_item_id: work_wave01_event_barrier_l4_mt5_runtime_execution_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0

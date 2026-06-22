@@ -1,6 +1,6 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-22T04:56:57Z'
+updated_at_utc: '2026-06-22T11:56:46Z'
 cursor_state: complete_wave01_operating_proof_window
 active_phase: wave01_operating_closeout_complete
 current_truth_sources:
@@ -77,12 +77,12 @@ active_ids:
   surface_id: surface_us100_session_transition_regime_surface_v0
   sweep_id: sweep_us100_session_transition_broad_v0
 latest_completed_work:
-  work_item_id: wave01_operating_closeout_v0
-  result_judgment: positive_operating_closeout
-  claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+  work_item_id: work_wave01_event_barrier_l4_mt5_runtime_execution_v0
+  result_judgment: runtime_probe
+  claim_boundary: wave01_event_barrier_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
-  - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_mt5_runtime_execution_v0_closeout.yaml
 next_work_item:
-  work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
+  work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

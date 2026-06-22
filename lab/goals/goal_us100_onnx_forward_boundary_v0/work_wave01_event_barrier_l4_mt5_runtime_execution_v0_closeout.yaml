@@ -2,7 +2,7 @@ version: work_closeout_v1
 work_item_id: work_wave01_event_barrier_l4_mt5_runtime_execution_v0
 parent_work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-closed_at_utc: '2026-06-21T23:09:31Z'
+closed_at_utc: '2026-06-22T11:56:46Z'
 result_judgment: runtime_probe
 status: l4_terminal_execution_attempted_for_all_prepared_attempts
 claim_boundary: wave01_event_barrier_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
@@ -12,19 +12,27 @@ evidence_paths:
 - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
 counts:
   prepared_attempt_count: 24
-  selected_attempt_count: 24
+  selected_attempt_count: 1
   indexed_execution_count: 24
   executed_attempt_count: 24
-  completed_manifest_count: 24
+  completed_manifest_count: 0
+  touched_manifest_count: 24
   telemetry_observed_count: 24
   telemetry_missing_count: 0
-  tester_report_observed_count: 0
-  tester_report_missing_count: 24
+  tester_report_observed_count: 1
+  tester_report_missing_count: 23
+  terminal_execution_count: 24
+  telemetry_observation_count: 24
+  tester_report_observation_count: 1
+  portable_contract_count: 0
+  runtime_probe_complete_count: 0
+  runtime_probe_incomplete_count: 24
   period_role_counts:
     research_oos: 12
     validation: 12
   status_counts:
-    completed_l4_score_telemetry_observed: 24
+    completed_l4_score_telemetry_observed: 23
+    telemetry_adapter_observed_runtime_contract_incomplete: 1
   result_judgment_counts:
     runtime_probe: 24
 required_gate_coverage:
@@ -41,8 +49,7 @@ required_gate_coverage:
   - economics_pass
   - selected_baseline
   - goal_achieve
-next_action: aggregate paired Wave01 validation/research_oos L4 telemetry and decide
-  L5 routing
+next_action: continue running remaining prepared Wave01 L4 Strategy Tester attempts
 forbidden_claims:
 - selected_baseline
 - runtime_authority

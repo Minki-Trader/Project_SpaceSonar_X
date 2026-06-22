@@ -1,0 +1,75 @@
+version: migration_ledger_v1
+migration_id: control_plane_stabilization_v2
+baseline_commit: cade1d36b10799325f276fd3c1e1d3ec3631714c
+work_item_id: work_codex_operating_stabilization_v2
+executed_at_utc: "2026-06-22T14:00:00Z"
+migrations:
+  - runtime_completion_reclassification
+  - workspace_state_projection
+  - registry_projection
+  - provenance_batch_receipts
+  - policy_skill_compaction
+  - routing_behavior_evaluation
+  - ci_dependency_lock
+  - agent_receipt_v2
+  - artifact_hygiene
+  - evaluator_backed_closeout
+preserved_ids:
+  - goal_us100_onnx_forward_boundary_v0
+  - wave_us100_closedbar_surface_cartography_v0
+  - campaign_us100_task_surface_scout_v0
+  - campaign_us100_event_barrier_decision_surface_v0
+  - campaign_us100_session_transition_regime_surface_v0
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+changed_schema_versions:
+  - runtime_attempt_execution_state_v2
+  - control_plane_transaction_receipt_v1
+  - execution_batch_receipt_v1
+  - policy_contract_v2
+  - agent_consult_receipt_v2
+  - wave_closeout_v2
+validation_results:
+  - command: uv sync --locked --extra dev --extra onnxlab
+    status: passed
+  - command: uv run pytest tests/test_runtime_completion_contract.py tests/test_wave01_runtime_truth_migration.py tests/control_plane tests/test_routing_behavior.py tests/test_active_record_validator_graph.py tests/test_wave01_operating_closeout.py tests/test_agent_consult_receipts.py tests/test_repository_hygiene_validator.py tests/test_policy_duplicate_lint.py -q
+    status: passed
+    observed: 58 passed
+  - command: uv run pytest -q
+    status: passed
+    observed: 197 passed
+  - command: uv run python foundation/validation/policy_duplicate_lint.py --repo-root .
+    status: passed
+  - command: uv run python foundation/validation/repository_hygiene_validator.py --repo-root .
+    status: passed
+  - command: uv run python foundation/validation/routing_contract_lint.py --repo-root .
+    status: passed
+  - command: uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+    status: passed
+    observed: accuracy 1.0; protected_claim_guard_recall 1.0
+  - command: uv run python foundation/validation/control_plane_validator.py --repo-root .
+    status: passed
+  - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+    status: passed
+  - command: uv run python -m spacesonar.cli registry project --check
+    status: passed
+  - command: uv run python -m spacesonar.cli project validate
+    status: passed
+  - command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root . --check
+    status: passed
+  - command: git diff --check
+    status: passed_with_line_ending_warnings_only
+  - command: git ls-files -ci --exclude-standard
+    status: passed_empty_output
+runtime_revalidation:
+  standard_portable_contract:
+    status: runtime_revalidation_required
+    reason: local portable MT5 execution did not produce standard report-backed completion; main-mode fallback is diagnostic only
+  diagnostic_main_mode_observation:
+    status: observed
+    claim_effect: local_main_mode_observation_only_no_standard_runtime_completion
+claim_boundary: control_plane_migration_only_no_runtime_authority_no_economics_pass

@@ -1,0 +1,8 @@
+version: work_item_runtime_schema_v1
+extends: docs/agent_control/work_item_lite.schema.yaml
+additional_required:
+  - runtime_period_set_id
+  - tester_execution_profile_id
+  - terminal_mode_policy
+  - execution_state
+  - runtime_completion

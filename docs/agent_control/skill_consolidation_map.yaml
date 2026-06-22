@@ -1,0 +1,34 @@
+version: skill_consolidation_map_v1
+revision: 2026_06_control_plane_stabilization
+canonical_skills:
+  spacesonar-session-bootstrap:
+    replaces:
+      - spacesonar-session-intake
+      - spacesonar-reentry-read
+  spacesonar-evidence-provenance:
+    replaces:
+      - spacesonar-run-evidence-system
+      - spacesonar-artifact-lineage
+      - spacesonar-environment-reproducibility
+  spacesonar-runtime-evidence:
+    replaces:
+      - spacesonar-runtime-parity
+      - spacesonar-backtest-forensics
+  spacesonar-experiment-design:
+    replaces:
+      - spacesonar-experiment-design
+      - spacesonar-exploration-mandate
+  spacesonar-code-change-quality:
+    replaces:
+      - spacesonar-code-surface-guard
+      - spacesonar-code-quality
+global_guards:
+  - spacesonar-claim-discipline
+  - spacesonar-answer-clarity
+explicit_skill_limits:
+  information_only: 1
+  code_change: 2
+  experiment: 3
+  runtime: 3
+  governance: 3
+  exceeding_three_requires: why_not_smaller

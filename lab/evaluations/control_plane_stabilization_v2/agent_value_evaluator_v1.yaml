@@ -1,0 +1,20 @@
+version: evaluator_result_v1
+evaluator_id: agent_value_evaluator_v1
+executed_at_utc: '2026-06-22T14:00:00Z'
+input_hashes:
+- path: docs/workspace/agent_operating_metrics.yaml
+  sha256: 1c5faa316cf1ec57b9126f910d34c88292efdd92b2d5e3614a7f7ca8aada298a
+  size_bytes: 684
+status: passed
+metrics:
+  consult_count: 1
+  solo_work_share: 0.8
+  one_agent_share: 0.0
+  two_agent_share: 0.0
+  three_plus_agent_share: 0.2
+  duplicate_advice_ratio: 0.0
+  unsupported_assertion_count: 0
+  accepted_after_verification_ratio: 0.75
+findings: []
+claim_effect: agent_metrics_are_operating_telemetry_only_no_reviewed_pass
+output_sha256: ec96562fb1f6bc1dfe6f0214a2e49ecec0093d450f4e474687d569b3f99d245d

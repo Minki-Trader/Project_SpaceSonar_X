@@ -25,7 +25,7 @@ counts:
   selected_attempt_count: 10
   indexed_execution_count: 10
   executed_attempt_count: 10
-  completed_manifest_count: 10
+  completed_manifest_count: 0
   source_score_telemetry_observed_count: 10
   execution_telemetry_observed_count: 10
   execution_telemetry_missing_count: 0
@@ -41,9 +41,12 @@ counts:
   direction_policy_counts:
     score_band_side: 10
   status_counts:
-    completed_decision_replay_execution_telemetry_observed: 10
+    decision_replay_execution_telemetry_adapter_observed_runtime_contract_incomplete: 10
   result_judgment_counts:
     runtime_probe: 10
+  runtime_probe_complete_count: 0
+  runtime_probe_incomplete_count: 10
+  tester_report_observation_count: 0
 compile_summary:
   path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
   status: ea_binary_available
@@ -196,3 +199,13 @@ prevention_memory:
 try_first_disposition:
   policy_applied: missing Wave01 runner support was repaired by this adapter before
     any blocked/deferred/discarded disposition
+runtime_completion:
+  all_prepared_attempts_executed: true
+  all_prepared_attempts_runtime_complete: false
+  runtime_probe_complete: false
+  missing_requirements_by_count:
+    portable_terminal_contract: 10
+    telemetry_file_observed: 10
+    telemetry_rows_observed: 10
+    tester_report_completed: 10
+    tester_report_observed: 10

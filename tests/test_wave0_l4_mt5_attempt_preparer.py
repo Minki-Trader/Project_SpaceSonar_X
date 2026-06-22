@@ -115,7 +115,15 @@ def test_generated_attempt_records_match_index_when_present() -> None:
             assert "Strategy_Tester_terminal_execution" not in manifest["required_gate_coverage"]["missing"]
             assert "score_telemetry_csv" not in manifest["required_gate_coverage"]["missing"]
         else:
-            assert "Strategy_Tester_terminal_execution" in manifest["required_gate_coverage"]["missing"]
+            execution_state = manifest.get("execution_state") or {}
+            if execution_state.get("terminal_launched"):
+                assert "Strategy_Tester_terminal_execution" not in manifest["required_gate_coverage"]["missing"]
+                assert any(
+                    item in manifest["required_gate_coverage"]["missing"]
+                    for item in ["L4_period_role_completed_report", "tester_report_hash"]
+                )
+            else:
+                assert "Strategy_Tester_terminal_execution" in manifest["required_gate_coverage"]["missing"]
         assert f"FromDate={row['from_date']}" in config_text
         assert f"ToDate={row['to_date']}" in config_text
         assert "InpFeatureColumnsPath=SpaceSonar\\l4_score_probe" in config_text

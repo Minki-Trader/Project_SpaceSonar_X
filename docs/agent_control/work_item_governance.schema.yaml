@@ -1,0 +1,7 @@
+version: work_item_governance_schema_v1
+extends: docs/agent_control/work_item_lite.schema.yaml
+additional_required:
+  - policy_binding
+  - validator_refs
+  - migration_plan
+  - projection_effects

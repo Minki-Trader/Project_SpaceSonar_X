@@ -202,6 +202,46 @@ def validate_work_item_schema(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_policy_contract_and_context_slo(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    policy_path = repo_root / "docs" / "agent_control" / "policy_contract.yaml"
+    if not policy_path.exists():
+        return ["missing required path: docs/agent_control/policy_contract.yaml"]
+    policy = load_yaml(policy_path)
+    guards = policy.get("guards") or {}
+    for guard_id in [
+        "GUARD_001_ATTEMPT_BEFORE_DISPOSITION",
+        "GUARD_002_RUNTIME_COMPLETION_TRUTH",
+        "GUARD_003_CLAIM_BOUNDARY",
+        "GUARD_004_ARTIFACT_IDENTITY",
+        "GUARD_005_LOCKED_OOS",
+        "GUARD_006_BRANCH_WORKTREE",
+    ]:
+        if guard_id not in guards:
+            errors.append(f"policy_contract.yaml missing {guard_id}")
+
+    agents_path = repo_root / "AGENTS.md"
+    if agents_path.exists():
+        text = read_text(agents_path)
+        if len(text.splitlines()) > 140:
+            errors.append("AGENTS.md exceeds 140 line boot-kernel limit")
+        if len(text.encode("utf-8")) > 18000:
+            errors.append("AGENTS.md exceeds 18000 byte boot-kernel limit")
+
+    workspace_path = repo_root / "docs" / "workspace" / "workspace_state.yaml"
+    if workspace_path.exists() and len(read_text(workspace_path).splitlines()) > 100:
+        errors.append("workspace_state.yaml exceeds 100 line compact projection limit")
+
+    lite_path = repo_root / "docs" / "agent_control" / "work_item_lite.schema.yaml"
+    if lite_path.exists():
+        lite = load_yaml(lite_path)
+        if len(lite.get("required_top_level") or []) > 12:
+            errors.append("work_item_lite.schema.yaml has more than 12 required top-level fields")
+    else:
+        errors.append("missing required path: docs/agent_control/work_item_lite.schema.yaml")
+    return errors
+
+
 def validate_skill_receipt_schema(repo_root: Path) -> list[str]:
     path = repo_root / "docs" / "agent_control" / "skill_receipt_schema.yaml"
     data = load_yaml(path)
@@ -400,6 +440,12 @@ def validate_task_force_registry(repo_root: Path) -> list[str]:
     )
     if not review_policy.get("allocation_shapes"):
         errors.append("codex_task_force_registry.yaml: missing allocation_shapes")
+    profiles = review_policy.get("allocation_profiles") or {}
+    for profile in ["solo", "micro_specialist", "micro_adversarial", "formal_protected_review", "full_roster"]:
+        if profile not in profiles:
+            errors.append(f"codex_task_force_registry.yaml: missing allocation profile {profile}")
+    if review_policy.get("max_depth") != 1:
+        errors.append("codex_task_force_registry.yaml: max_depth must be 1")
     receipt_fields = set((data.get("micro_consult_receipt_schema") or {}).get("required_fields", []))
     add_missing(
         errors,
@@ -407,6 +453,80 @@ def validate_task_force_registry(repo_root: Path) -> list[str]:
         observed=receipt_fields,
         required=REQUIRED_TASK_FORCE_RECEIPT_FIELDS,
     )
+    v2_fields = set((data.get("consult_receipt_v2_schema") or {}).get("required_fields", []))
+    add_missing(
+        errors,
+        label="codex_task_force_registry.yaml consult_receipt_v2_schema",
+        observed=v2_fields,
+        required={
+            "consult_id",
+            "profile",
+            "question_digest",
+            "selected_agent_ids",
+            "source_refs",
+            "opinions",
+            "owner_decision",
+            "verification_refs",
+            "claim_effect",
+            "metrics",
+        },
+    )
+    return errors
+
+
+def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
+    registry = load_yaml(repo_root / "docs" / "agent_control" / "codex_task_force_registry.yaml")
+    agents = {item.get("id") for item in registry.get("roster", [])}
+    review_policy = registry.get("review_policy") or {}
+    profiles = review_policy.get("allocation_profiles") or {}
+    role_modes_allowed = set(review_policy.get("role_modes") or {})
+    classifications_allowed = set((registry.get("consult_receipt_v2_schema") or {}).get("allowed_opinion_classifications") or [])
+    errors: list[str] = []
+    for path in sorted(repo_root.glob("lab/**/*consult*.yaml")):
+        data = load_yaml(path)
+        if data.get("version") != "agent_consult_receipt_v2":
+            continue
+        label = rel(path, repo_root)
+        selected = data.get("selected_agent_ids") or []
+        profile = data.get("profile")
+        if profile not in profiles:
+            errors.append(f"{label}: unknown consult profile {profile}")
+            continue
+        if len(selected) < int(profiles[profile].get("min_agents", 0)) or len(selected) > int(profiles[profile].get("max_agents", 0)):
+            errors.append(f"{label}: selected_agent_ids count does not fit profile {profile}")
+        unknown = sorted(set(selected) - agents)
+        if unknown:
+            errors.append(f"{label}: unknown registry agent ids {unknown}")
+        role_modes = data.get("role_modes") or {}
+        if isinstance(role_modes, dict):
+            role_values = set(role_modes.values())
+            role_agent_ids = set(role_modes)
+            unknown_role_agents = sorted(role_agent_ids - set(selected))
+            if unknown_role_agents:
+                errors.append(f"{label}: role_modes include agents not selected {unknown_role_agents}")
+        else:
+            role_values = set(role_modes)
+        unknown_modes = sorted(role_values - role_modes_allowed)
+        if unknown_modes:
+            errors.append(f"{label}: unknown role modes {unknown_modes}")
+        if len(selected) >= 3 and not data.get("escalation_reason"):
+            errors.append(f"{label}: 3 or more agents require escalation_reason")
+        if len(selected) >= 5:
+            if not data.get("why_not_smaller"):
+                errors.append(f"{label}: 5 or more agents require why_not_smaller")
+            trigger = data.get("full_roster_trigger")
+            allowed = set(profiles["full_roster"].get("allowed_only_when") or [])
+            if trigger not in allowed:
+                errors.append(f"{label}: full roster trigger is not allowed")
+        for opinion in data.get("opinions") or []:
+            classification = opinion.get("classification")
+            refs = opinion.get("evidence_refs") or []
+            if classification not in classifications_allowed:
+                errors.append(f"{label}: unknown opinion classification {classification}")
+            if classification in {"accepted", "rewritten"} and not refs:
+                errors.append(f"{label}: accepted/rewritten advice requires evidence_refs")
+        if data.get("claim_effect") != "advisory_only_no_reviewed_pass":
+            errors.append(f"{label}: consult claim_effect cannot satisfy reviewed/pass gates")
     return errors
 
 
@@ -461,7 +581,7 @@ def validate_import_smoke(repo_root: Path) -> list[str]:
     return errors
 
 
-def validate(repo_root: Path) -> list[str]:
+def validate(repo_root: Path, *, include_active_records: bool = False) -> list[str]:
     errors: list[str] = []
     errors.extend(
         ensure_paths(
@@ -481,24 +601,29 @@ def validate(repo_root: Path) -> list[str]:
     )
     errors.extend(validate_yaml_json_csv_parse(repo_root))
     errors.extend(validate_work_item_schema(repo_root))
+    errors.extend(validate_policy_contract_and_context_slo(repo_root))
     errors.extend(validate_skill_receipt_schema(repo_root))
     errors.extend(validate_templates(repo_root))
     errors.extend(validate_task_force_registry(repo_root))
+    errors.extend(validate_agent_consult_receipts(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))
-    from foundation.validation.active_record_validator import validate as validate_active_records
 
-    errors.extend(validate_active_records(repo_root))
+    if include_active_records:
+        from foundation.validation.active_record_validator import validate as validate_active_records
+
+        errors.extend(validate_active_records(repo_root))
     return errors
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--include-active-records", action="store_true")
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
-    errors = validate(repo_root)
+    errors = validate(repo_root, include_active_records=args.include_active_records)
     if errors:
         for error in errors:
             print(f"ERROR: {error}")

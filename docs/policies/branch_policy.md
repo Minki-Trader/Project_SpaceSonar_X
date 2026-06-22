@@ -4,6 +4,25 @@ Agent work uses `codex/` branches unless the user requests a different branch na
 
 Do not merge into `main` unless the user explicitly asks.
 
+## Machine-Readable Boundary Policy
+
+```yaml
+codex_branch_policy:
+  detailed_progress_commits_allowed: true
+
+main_integration_policy:
+  allowed_boundary_events:
+    - campaign_open
+    - campaign_close
+    - wave_open
+    - wave_close
+    - control_plane_stabilization
+  merge_mode: squash_only
+  direct_push: forbidden
+```
+
+This stabilization patch uses the boundary event `control_plane_stabilization`.
+
 ## Worktree Fit Rule
 
 Before file edits, check that the current branch/worktree matches the requested work item.

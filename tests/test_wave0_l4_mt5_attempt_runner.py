@@ -28,7 +28,12 @@ def test_selected_attempt_rows_filters_period_role_and_limit(tmp_path: Path) -> 
     attempt_a.parent.mkdir(parents=True)
     attempt_b.parent.mkdir(parents=True)
     attempt_a.write_text("status: prepared_pending_terminal_execution\n", encoding="utf-8")
-    attempt_b.write_text("status: completed_l4_score_telemetry_observed\n", encoding="utf-8")
+    attempt_b.write_text(
+        "status: runtime_probe_completed\n"
+        "execution_state:\n"
+        "  runtime_probe_complete: true\n",
+        encoding="utf-8",
+    )
     rows = [
         {
             "attempt_id": "attempt_a",
