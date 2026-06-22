@@ -56,7 +56,6 @@ PATHS = {
     "sweep_manifest": Path(f"lab/campaigns/{CAMPAIGN_ID}/sweeps/{SWEEP_ID}/sweep_manifest.yaml"),
     "run_refs": Path(f"lab/campaigns/{CAMPAIGN_ID}/sweeps/{SWEEP_ID}/run_refs.csv"),
     "campaign_dir": Path(f"lab/campaigns/{CAMPAIGN_ID}"),
-    "run_specs_dir": Path(f"lab/campaigns/{CAMPAIGN_ID}/run_specs"),
     "matrix": Path(f"lab/campaigns/{CAMPAIGN_ID}/first_batch_matrix.csv"),
     "run_specs_index": Path(f"lab/campaigns/{CAMPAIGN_ID}/run_specs_index.csv"),
     "first_batch_manifest": Path(f"lab/campaigns/{CAMPAIGN_ID}/first_batch_run_specs_manifest.yaml"),
@@ -473,220 +472,21 @@ def write_matrix(repo_root: Path, rows: list[dict[str, Any]]) -> Path:
     return path
 
 
-def build_run_spec(row: dict[str, Any], created_at: str) -> dict[str, Any]:
-    spec_id = str(row["spec_id"])
-    planned_run_id = f"onnxlab_{spec_id}_session_transition_surface_v0"
-    return {
-        "version": "planned_run_spec_v1",
-        "run_spec_id": spec_id,
-        "planned_run_id": planned_run_id,
-        "status": "planned_not_executed",
-        "created_at_utc": created_at,
-        "id_chain": {
-            "goal_id": GOAL_ID,
-            "wave_id": WAVE_ID,
-            "campaign_id": CAMPAIGN_ID,
-            "idea_id": IDEA_ID,
-            "hypothesis_id": HYPOTHESIS_ID,
-            "surface_id": SURFACE_ID,
-            "sweep_id": SWEEP_ID,
-            "run_id": planned_run_id,
-        },
-        "experiment_design": {
-            "hypothesis": row["purpose"],
-            "decision_use": row["decision_family"],
-            "comparison_baseline": ["no_trade_baseline", "session_blind_control_same_horizon"],
-            "control_variables": [
-                "FPMarkets_US100_M5_closed_bar_base_frame",
-                ROW_KEY,
-                "split_set_v0_research_catalog",
-                "locked_final_oos_b_forbidden",
-                "no_auxiliary_symbols",
-            ],
-            "changed_variables": [
-                "session_anchor",
-                "transition_window_bars",
-                "regime_label",
-                "label_surface",
-                "feature_family",
-                "model_family",
-                "decision_family",
-                "holding_policy",
-            ],
-            "sample_scope": "train_validation_research_oos_a_no_locked_final",
-            "success_criteria": [
-                "repeated_surface_clue_across_session_or_regime_neighbors",
-                "trade_or_no_trade_density_visible_without_threshold_knife_edge",
-                "proxy_runtime_parity_difference_recorded_before_closeout",
-            ],
-            "failure_criteria": [
-                "no_repeated_clue_after_validation_and_research_oos_L4",
-                "threshold_knife_edge",
-                "session_boundary_semantics_unusable_after_try_first_repair_attempt",
-            ],
-            "invalid_conditions": [
-                "feature_or_label_leakage",
-                "locked_final_oos_b_used",
-                "auxiliary_symbol_input_used_without_live_chart_evidence",
-                "missing_MT5_executable_path_after_try_first_repair_attempt",
-            ],
-            "stop_conditions": [
-                "proxy_run_executed_then_L4_follow_through_created",
-                "invalid_setup_recorded_with_try_first_failure_disposition",
-                "candidate_claim_attempted_without_L4_or_L5_evidence",
-            ],
-        },
-        "data_contract": {
-            "dataset_id": DATASET_ID,
-            "row_key": ROW_KEY,
-            "split_recipe_id": "split_set_v0",
-            "split_use": row["split_use"],
-            "locked_final_oos_b_used": False,
-            "auxiliary_symbols": "none",
-            "base_frame": "US100_M5_closed_bar",
-            "tail_drop_policy": "declared_per_label_before_execution",
-        },
-        "label_contract": {
-            "label_surface": row["label_surface"],
-            "horizon_bars": row["horizon_bars"],
-            "session_anchor": row["session_anchor"],
-            "transition_window_bars": row["transition_window_bars"],
-            "regime_label": row["regime_label"],
-            "target_direction_mapping": "declared_per_run_no_default_inheritance",
-            "holding_period_default": "not_fixed_declared_per_run",
-        },
-        "feature_contract": {
-            "feature_family": row["feature_family"],
-            "feature_scope": row["feature_scope"],
-            "feature_count_policy": "variable_declared_per_run_no_fixed_count",
-            "causality_policy": "closed_bar_history_only",
-            "forbidden_defaults": [
-                "fixed_feature_count",
-                "inherited_feature_list",
-                "inherited_fixed_feature_set",
-                "legacy_direction_mapping",
-            ],
-        },
-        "model_contract": {
-            "model_family": row["model_family"],
-            "model_task": row["model_task"],
-            "output_head": "declared_per_run_no_default_inheritance",
-            "onnx_feasibility": "must_materialize_or_try_first_failure_disposition_before_L4_blocker",
-            "hyperparameter_policy": "no_micro_search_before_repeated_clue",
-        },
-        "decision_contract": {
-            "decision_family": row["decision_family"],
-            "holding_policy": row["holding_policy"],
-            "risk_policy": row["risk_policy"],
-            "threshold_policy": row["threshold_policy"],
-            "sizing_profile": "0.02_lot_default_when_MT5_strategy_tester_runs_execute",
-            "commission_policy": "tester_execution_profile_commission_zero_observed_boundary",
-        },
-        "runtime_learning_probe_decision": {
-            "required": True,
-            "target_level": "L4_split_runtime_probe",
-            "runtime_period_profile_id": RUNTIME_PERIOD_PROFILE_ID,
-            "runtime_period_set_id": RUNTIME_PERIOD_SET_ID,
-            "required_period_roles": ["validation", "research_oos"],
-            "tester_execution_profile_id": TESTER_EXECUTION_PROFILE_ID,
-            "proxy_only_closeout_allowed": False,
-            "l4_promising_result_effect": "continue_to_L5_candidate_runtime_evidence",
-        },
-        "proxy_runtime_parity": {
-            "shared_contract": [
-                "FPMarkets_US100_M5_closed_bar_base_frame",
-                ROW_KEY,
-                "split_set_v0_research_catalog",
-                "declared_session_transition_label",
-                "declared_feature_order",
-                "declared_decision_and_holding_policy",
-                TESTER_EXECUTION_PROFILE_ID,
-            ],
-            "known_differences": [
-                "proxy_session_windows_may_not_equal_MT5_server_session_rendering_until_binding_is_checked",
-                "timeout_close_timing_may_differ_between_proxy_and_EA",
-                "tester_report_parser_required_before_economics_claim",
-            ],
-            "interpretation_drift_risks": [
-                "bar_close_timing",
-                "session_boundary_rendering",
-                "DST_or_calendar_boundary_interpretation",
-                "spread_and_fill_timing",
-                "lot_step_rounding",
-                "timeout_close_timing",
-                "no_trade_or_abstain_semantics",
-            ],
-            "minimum_reconciliation_attempt": {
-                "required": True,
-                "forced_equality_required": False,
-                "status": "pending_proxy_runtime_difference",
-            },
-            "unit_semantics": {
-                "point": "must_record_before_MT5_L4_if_price_distance_used",
-                "pip": "not_assumed",
-                "tick_size": "must_record_before_MT5_L4_if_price_distance_used",
-                "digits": "must_record_before_MT5_L4_if_price_distance_used",
-                "price_distance_conversion": "explicit_conversion_required_if_used",
-                "atr_multiplier": "allowed_only_with_conversion_rule",
-                "rounding_policy": "explicit_per_run_before_MT5_L4",
-            },
-            "comparison_classes": [
-                "proxy_good_runtime_good",
-                "proxy_good_runtime_bad",
-                "proxy_bad_runtime_bad",
-                "proxy_bad_runtime_good",
-                "invalid_or_unmaterializable",
-            ],
-            "divergence_judgment": "pending",
-            "prevention_memory": [
-                "Session boundary semantics must be checked against active MT5 time binding before L4.",
-                "Proxy and MT5 parity does not force equality; real unit and execution differences are recorded.",
-            ],
-            "follow_up_action": NEXT_WORK_ITEM_ID,
-        },
-        "claim_boundary": CLAIM_BOUNDARY,
-        "forbidden_claims": FORBIDDEN_CLAIMS,
-        "result_judgment": "not_evaluated",
-        "missing_evidence": [
-            "features_not_materialized",
-            "labels_not_materialized",
-            "models_not_trained",
-            "proxy_metrics_not_computed",
-            "ONNX_exports_not_materialized",
-            "MT5_L4_not_run",
-        ],
-        "next_action": NEXT_WORK_ITEM_ID,
-    }
+def planned_run_id(row: dict[str, Any]) -> str:
+    return f"onnxlab_{row['spec_id']}_session_transition_surface_v0"
 
 
-def materialize_run_specs(
-    repo_root: Path, rows: list[dict[str, Any]], created_at: str
-) -> tuple[Path, Path, list[dict[str, Any]]]:
-    spec_dir = repo_path(repo_root, PATHS["run_specs_dir"])
-    spec_dir.mkdir(parents=True, exist_ok=True)
-    spec_refs: list[dict[str, Any]] = []
+def write_run_specs_index(repo_root: Path, rows: list[dict[str, Any]]) -> tuple[Path, list[dict[str, Any]]]:
     index_rows: list[dict[str, Any]] = []
     for row in rows:
-        spec = build_run_spec(row, created_at)
-        path = spec_dir / f"{row['spec_id']}.yaml"
-        write_yaml(path, spec)
-        identity = artifact_identity(path, repo_root)
-        spec_refs.append(
-            {
-                "spec_id": row["spec_id"],
-                "planned_run_id": spec["planned_run_id"],
-                "path": identity["path"],
-                "sha256": identity["sha256"],
-                "size_bytes": identity["size_bytes"],
-            }
-        )
+        run_id = planned_run_id(row)
         index_rows.append(
             {
                 "spec_id": row["spec_id"],
-                "planned_run_id": spec["planned_run_id"],
+                "planned_run_id": run_id,
                 "status": "planned_not_executed",
-                "run_spec_path": identity["path"],
-                "sha256": identity["sha256"],
+                "spec_source": "first_batch_matrix_row",
+                "matrix_path": PATHS["matrix"].as_posix(),
                 "valid_proxy_model_bearing": "true",
                 "runtime_level_required": "L4_split_runtime_probe",
                 "claim_boundary": CLAIM_BOUNDARY,
@@ -700,8 +500,8 @@ def materialize_run_specs(
             "spec_id",
             "planned_run_id",
             "status",
-            "run_spec_path",
-            "sha256",
+            "spec_source",
+            "matrix_path",
             "valid_proxy_model_bearing",
             "runtime_level_required",
             "claim_boundary",
@@ -709,10 +509,10 @@ def materialize_run_specs(
         ],
         index_rows,
     )
-    return spec_dir, index_path, spec_refs
+    return index_path, index_rows
 
 
-def write_run_refs(repo_root: Path, spec_refs: list[dict[str, Any]], created_at: str) -> Path:
+def write_run_refs(repo_root: Path, spec_rows: list[dict[str, Any]], created_at: str) -> Path:
     rows = [
         {
             "run_id": ref["planned_run_id"],
@@ -721,7 +521,8 @@ def write_run_refs(repo_root: Path, spec_refs: list[dict[str, Any]], created_at:
             "sweep_id": SWEEP_ID,
             "run_spec_id": ref["spec_id"],
             "status": "planned_not_executed",
-            "run_spec_path": ref["path"],
+            "spec_source": "first_batch_matrix_row",
+            "matrix_path": PATHS["matrix"].as_posix(),
             "run_manifest_path": "",
             "receipt_path": "",
             "claim_boundary": CLAIM_BOUNDARY,
@@ -730,7 +531,7 @@ def write_run_refs(repo_root: Path, spec_refs: list[dict[str, Any]], created_at:
             "created_at_utc": created_at,
             "notes": "planned session-transition run spec; no proxy execution yet",
         }
-        for ref in spec_refs
+        for ref in spec_rows
     ]
     path = repo_path(repo_root, PATHS["run_refs"])
     write_csv_rows(
@@ -742,7 +543,8 @@ def write_run_refs(repo_root: Path, spec_refs: list[dict[str, Any]], created_at:
             "sweep_id",
             "run_spec_id",
             "status",
-            "run_spec_path",
+            "spec_source",
+            "matrix_path",
             "run_manifest_path",
             "receipt_path",
             "claim_boundary",
@@ -805,7 +607,6 @@ def write_first_batch_manifest(
     repo_root: Path,
     rows: list[dict[str, Any]],
     outputs: dict[str, Path],
-    spec_refs: list[dict[str, Any]],
     created_at: str,
 ) -> Path:
     payload = {
@@ -846,7 +647,12 @@ def write_first_batch_manifest(
             "run_specs_index": artifact_identity(outputs["run_specs_index"], repo_root),
             "run_refs": artifact_identity(outputs["run_refs"], repo_root),
             "anti_selection_ledger": artifact_identity(outputs["anti_selection_ledger"], repo_root),
-            "run_specs": spec_refs,
+        },
+        "spec_source_policy": {
+            "source_of_truth": "first_batch_matrix_row",
+            "run_specs_index_role": "compact_index_only",
+            "per_run_manifest_creation": "defer_until_proxy_execution",
+            "reason": "Avoid heavy pre-run generated YAML; execution creates run-local evidence when it becomes meaningful.",
         },
         "runtime_learning_probe_decision": {
             "required_for_valid_proxy_model_bearing_specs": True,
@@ -1435,12 +1241,12 @@ def main(argv: list[str] | None = None) -> int:
     input_hashes = collect_input_hashes(repo_root)
 
     matrix = write_matrix(repo_root, rows)
-    _spec_dir, run_specs_index, spec_refs = materialize_run_specs(repo_root, rows, created_at)
-    run_refs = write_run_refs(repo_root, spec_refs, created_at)
+    run_specs_index, spec_rows = write_run_specs_index(repo_root, rows)
+    run_refs = write_run_refs(repo_root, spec_rows, created_at)
     outputs = {"matrix": matrix, "run_specs_index": run_specs_index, "run_refs": run_refs}
     anti_selection_ledger = write_anti_selection_ledger(repo_root, rows, outputs, created_at)
     outputs["anti_selection_ledger"] = anti_selection_ledger
-    first_batch_manifest = write_first_batch_manifest(repo_root, rows, outputs, spec_refs, created_at)
+    first_batch_manifest = write_first_batch_manifest(repo_root, rows, outputs, created_at)
     outputs["first_batch_manifest"] = first_batch_manifest
 
     if args.write_control_records:

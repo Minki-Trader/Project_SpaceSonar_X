@@ -55,11 +55,13 @@ def test_session_transition_materialized_manifest_matches_policy() -> None:
     assert manifest["runtime_learning_probe_decision"]["target_level"] == "L4_split_runtime_probe"
     assert manifest["runtime_learning_probe_decision"]["required_period_roles"] == ["validation", "research_oos"]
     assert manifest["runtime_learning_probe_decision"]["proxy_only_closeout_allowed"] is False
+    assert manifest["spec_source_policy"]["source_of_truth"] == "first_batch_matrix_row"
+    assert manifest["spec_source_policy"]["per_run_manifest_creation"] == "defer_until_proxy_execution"
     assert "runtime_authority" in manifest["forbidden_claims"]
     assert "MT5_L4_not_run" in manifest["missing_evidence"]
 
 
-def test_session_transition_run_specs_index_and_refs_are_planned_only() -> None:
+def test_session_transition_run_specs_index_and_refs_are_matrix_backed_planned_only() -> None:
     index_rows = read_csv(CAMPAIGN / "run_specs_index.csv")
     ref_rows = read_csv(CAMPAIGN / "sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv")
 
@@ -68,27 +70,13 @@ def test_session_transition_run_specs_index_and_refs_are_planned_only() -> None:
     assert all(row["status"] == "planned_not_executed" for row in index_rows)
     assert all(row["claim_boundary"] == CLAIM_BOUNDARY for row in index_rows)
     assert all(row["runtime_level_required"] == "L4_split_runtime_probe" for row in index_rows)
+    assert all(row["spec_source"] == "first_batch_matrix_row" for row in index_rows)
+    assert all(row["matrix_path"].endswith("first_batch_matrix.csv") for row in index_rows)
     assert all(row["result_judgment"] == "not_evaluated" for row in ref_rows)
-    assert all(row["run_spec_path"].startswith("lab/campaigns/") for row in ref_rows)
+    assert all(row["spec_source"] == "first_batch_matrix_row" for row in ref_rows)
+    assert all(row["matrix_path"].endswith("first_batch_matrix.csv") for row in ref_rows)
     assert all(row["next_action"] == "work_wave01_session_transition_execute_first_batch_proxy_v0" for row in ref_rows)
 
 
-def test_session_transition_each_run_spec_preserves_blank_slate_and_parity_contract() -> None:
-    spec_paths = sorted((CAMPAIGN / "run_specs").glob("wave01_st_cell_*.yaml"))
-    assert len(spec_paths) == 10
-
-    for path in spec_paths:
-        spec = read_yaml(path)
-        assert spec["status"] == "planned_not_executed"
-        assert spec["claim_boundary"] == CLAIM_BOUNDARY
-        assert spec["data_contract"]["locked_final_oos_b_used"] is False
-        assert spec["data_contract"]["auxiliary_symbols"] == "none"
-        assert spec["feature_contract"]["feature_count_policy"] == "variable_declared_per_run_no_fixed_count"
-        assert "fixed_feature_count" in spec["feature_contract"]["forbidden_defaults"]
-        assert "inherited_fixed_feature_set" in spec["feature_contract"]["forbidden_defaults"]
-        assert spec["model_contract"]["output_head"] == "declared_per_run_no_default_inheritance"
-        assert spec["runtime_learning_probe_decision"]["target_level"] == "L4_split_runtime_probe"
-        assert spec["runtime_learning_probe_decision"]["proxy_only_closeout_allowed"] is False
-        assert spec["proxy_runtime_parity"]["minimum_reconciliation_attempt"]["required"] is True
-        assert "price_distance_conversion" in spec["proxy_runtime_parity"]["unit_semantics"]
-        assert spec["result_judgment"] == "not_evaluated"
+def test_session_transition_first_batch_does_not_precreate_run_local_specs() -> None:
+    assert not list((CAMPAIGN / "run_specs").glob("wave01_st_cell_*.yaml"))

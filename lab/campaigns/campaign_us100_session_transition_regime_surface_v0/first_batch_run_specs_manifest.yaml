@@ -5,7 +5,7 @@ wave_id: wave_us100_closedbar_surface_cartography_v0
 campaign_id: campaign_us100_session_transition_regime_surface_v0
 surface_id: surface_us100_session_transition_regime_surface_v0
 sweep_id: sweep_us100_session_transition_broad_v0
-created_at_utc: '2026-06-22T02:14:24Z'
+created_at_utc: '2026-06-22T02:29:41Z'
 status: first_batch_specs_materialized_not_executed
 claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
 spec_count: 10
@@ -26,15 +26,15 @@ coverage_summary:
 source_inputs:
   campaign_manifest:
     path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
-    sha256: 83602aa5e82812ebce14e3fc166d54331662ff12109c0f004152ead629cfeaaa
+    sha256: b37e2b77ba5846c35025fedc132942f38ac2b0066fa0330e3663ffee4b0e063d
     size_bytes: 12766
   surface_manifest:
     path: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
-    sha256: 6b7c03f6412664c038436212ea30565fc81c873ef92e60c7231bfe9d57eeafaa
+    sha256: 1ba058518ed185c1bdaec9042b335563079ef05cf6871f3436f2abef6ebb7482
     size_bytes: 3814
   sweep_manifest:
     path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
-    sha256: 2d4901a683899227146d91ce1cff24be61c3c5ca27e30b34cc533c8fac66dc5e
+    sha256: 9b3c3a331e6a1574b704efa265b3b87f2af242fb7343427000670213541fcecf
     size_bytes: 4296
   recipes:
     feature_recipe:
@@ -84,67 +84,22 @@ outputs:
     size_bytes: 6501
   run_specs_index:
     path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
-    sha256: 746ec021f4d6cd015129e401a9fcc48e861d09523100e9c08271d791cdcb6c0d
-    size_bytes: 4457
+    sha256: c7f1a03f7fae4356b99c93f7430ee5d61b6e1bf18e03d5d113c4a973970ea332
+    size_bytes: 3930
   run_refs:
     path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
-    sha256: 729d3fdce6a50b7042c792d22bb7d281b313d983db230dd94ba1363bec35de2a
-    size_bytes: 5967
+    sha256: b77fba6b0ded38045ed760df9c8a335e979b8be6e506b4d1ac68ecad53f83ebf
+    size_bytes: 6097
   anti_selection_ledger:
     path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/anti_selection_ledger.yaml
-    sha256: 793c1f7ebab526c153a2850fa7dec3310da34c0410f6815a51d688620783d735
+    sha256: 775b181dbad74c1a8a9a2fa59ffa1b7d88ac261924e157fb33752c8dd54bdaac
     size_bytes: 1866
-  run_specs:
-  - spec_id: wave01_st_cell_001
-    planned_run_id: onnxlab_wave01_st_cell_001_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_001.yaml
-    sha256: 0c5aecc11da77797a5dde9e5ab52cb835ca870411e609429d5081699700a6ae7
-    size_bytes: 6745
-  - spec_id: wave01_st_cell_002
-    planned_run_id: onnxlab_wave01_st_cell_002_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_002.yaml
-    sha256: 20ed3e58455f6dfe1b6750917823e7dd17efd2d207bd00ae52118b47846fff19
-    size_bytes: 6711
-  - spec_id: wave01_st_cell_003
-    planned_run_id: onnxlab_wave01_st_cell_003_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_003.yaml
-    sha256: 48522ba546132c21a3a96627319036465a79e4aad2316d3966625eb0f38f6fe3
-    size_bytes: 6688
-  - spec_id: wave01_st_cell_004
-    planned_run_id: onnxlab_wave01_st_cell_004_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_004.yaml
-    sha256: 614d90d377c12b16653b723170753acbc5089a0455153bf9a310e70efbdafec8
-    size_bytes: 6689
-  - spec_id: wave01_st_cell_005
-    planned_run_id: onnxlab_wave01_st_cell_005_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_005.yaml
-    sha256: 7cb751ce995d373a6159688e1f65f201e4d0ec5d12e160a04388b1d06caf8391
-    size_bytes: 6717
-  - spec_id: wave01_st_cell_006
-    planned_run_id: onnxlab_wave01_st_cell_006_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_006.yaml
-    sha256: ea4a24eb77955ceae93733d50d8d436e1af40bb18be4487526ab27314dc47ab0
-    size_bytes: 6756
-  - spec_id: wave01_st_cell_007
-    planned_run_id: onnxlab_wave01_st_cell_007_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_007.yaml
-    sha256: f4d168d211309340bb214141b68bde75d69f50953a3df0e89581d834cc502f5e
-    size_bytes: 6694
-  - spec_id: wave01_st_cell_008
-    planned_run_id: onnxlab_wave01_st_cell_008_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_008.yaml
-    sha256: 8b04cc1902522ea3c8a42f30c3eb9a95cc6026bddcde80f64d9a596ca3ff5dad
-    size_bytes: 6716
-  - spec_id: wave01_st_cell_009
-    planned_run_id: onnxlab_wave01_st_cell_009_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_009.yaml
-    sha256: 240bcc31eb2d33aaa28b179b8216601909ce17eac1d4b4fc152bb018da35c344
-    size_bytes: 6709
-  - spec_id: wave01_st_cell_010
-    planned_run_id: onnxlab_wave01_st_cell_010_session_transition_surface_v0
-    path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_010.yaml
-    sha256: cc5e33804230d6ffea02ec40ede36dcd0b45e5137acc1af595c3d8982cbafb7c
-    size_bytes: 6763
+spec_source_policy:
+  source_of_truth: first_batch_matrix_row
+  run_specs_index_role: compact_index_only
+  per_run_manifest_creation: defer_until_proxy_execution
+  reason: Avoid heavy pre-run generated YAML; execution creates run-local evidence
+    when it becomes meaningful.
 runtime_learning_probe_decision:
   required_for_valid_proxy_model_bearing_specs: true
   target_level: L4_split_runtime_probe

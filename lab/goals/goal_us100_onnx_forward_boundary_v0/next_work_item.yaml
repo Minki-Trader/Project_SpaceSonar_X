@@ -1,7 +1,7 @@
 version: onnx_lab_work_item_v1
 work_item_id: work_wave01_session_transition_execute_first_batch_proxy_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-created_at_utc: '2026-06-22T02:14:24Z'
+created_at_utc: '2026-06-22T02:29:41Z'
 status: planned_not_started
 user_request: Execute the first broad proxy batch for the session-transition regime
   campaign and keep all valid proxy/model-bearing specs on the L4 path.
@@ -105,34 +105,34 @@ forbidden_claims:
 - goal_achieve
 next_action: build_or_run_session_transition_proxy_executor_then_L4_follow_through
 execution_provenance:
-  git_sha: 26ad6b7a58c263c4c7182750c082ae63cabe7f0d
+  git_sha: 5deef29a447858676757ecbf36a86bff1a91af9c
   branch: codex/l4-pair-judgment-closeout
   dirty_flag: true
   changed_files:
-  - M docs/registers/artifact_registry.csv
-  - M docs/registers/campaign_registry.csv
-  - M docs/registers/experiment_surface_registry.csv
-  - M docs/registers/goal_registry.csv
-  - M docs/registers/sweep_registry.csv
-  - M docs/registers/wave_registry.csv
   - M docs/workspace/workspace_state.yaml
+  - M foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py
+  - M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/anti_selection_ledger.yaml
   - M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
+  - M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_001.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_002.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_003.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_004.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_005.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_006.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_007.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_008.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_009.yaml
+  - D lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/wave01_st_cell_010.yaml
+  - M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
   - M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
   - M lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
   - M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
-  - M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
   - M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_first_batch_spec_v0_closeout.yaml
   - M lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
-  - M lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
   - M lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  - ?? foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/anti_selection_ledger.yaml
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs/
-  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_first_batch_spec_v0_closeout.yaml
-  - ?? tests/test_wave01_session_transition_first_batch_specs.py
+  - M tests/test_wave01_session_transition_first_batch_specs.py
   command_argv:
   - python
   - foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py
@@ -141,12 +141,12 @@ execution_provenance:
   python_version: 3.13.9
   key_package_versions:
     yaml: 6.0.3
-  started_at_utc: '2026-06-22T02:14:24Z'
-  ended_at_utc: '2026-06-22T02:14:24Z'
+  started_at_utc: '2026-06-22T02:29:41Z'
+  ended_at_utc: '2026-06-22T02:29:41Z'
   input_hashes:
-    campaign_manifest: 83602aa5e82812ebce14e3fc166d54331662ff12109c0f004152ead629cfeaaa
-    surface_manifest: 6b7c03f6412664c038436212ea30565fc81c873ef92e60c7231bfe9d57eeafaa
-    sweep_manifest: 2d4901a683899227146d91ce1cff24be61c3c5ca27e30b34cc533c8fac66dc5e
+    campaign_manifest: b37e2b77ba5846c35025fedc132942f38ac2b0066fa0330e3663ffee4b0e063d
+    surface_manifest: 1ba058518ed185c1bdaec9042b335563079ef05cf6871f3436f2abef6ebb7482
+    sweep_manifest: 9b3c3a331e6a1574b704efa265b3b87f2af242fb7343427000670213541fcecf
     feature_recipe: ac74bcc9f49ee0bd4d03e92e8c0aa713e229f708c351349a9776024237638891
     label_recipe: 88390ae1dd870f5a5ab12d21e19ad2e785f1ba282ef506a4e56619dc859fe2c8
     model_recipe: c5492ff1ccfe44cb47f5d80c3f96e7017df9d923f8a8ae4cea8cb52e86b54d85
@@ -157,9 +157,9 @@ execution_provenance:
     runtime_period_profile: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
     tester_execution_profile: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
   output_hashes:
-    first_batch_manifest: 9b324e8de0785f5a8a50060895c9b30bebac0f336ac3daaa2351f8018e84abd0
+    first_batch_manifest: 07ae72ea95eea0c221d628a44ab10c65cbea340e7a0230db984e028509c67394
     first_batch_matrix: b43173120b1aaeb3ec42712214a72d5f8176de13a7cafd9f821a06dcbfdd0356
-    run_specs_index: 746ec021f4d6cd015129e401a9fcc48e861d09523100e9c08271d791cdcb6c0d
-    run_refs: 729d3fdce6a50b7042c792d22bb7d281b313d983db230dd94ba1363bec35de2a
-    anti_selection_ledger: 793c1f7ebab526c153a2850fa7dec3310da34c0410f6815a51d688620783d735
+    run_specs_index: c7f1a03f7fae4356b99c93f7430ee5d61b6e1bf18e03d5d113c4a973970ea332
+    run_refs: b77fba6b0ded38045ed760df9c8a335e979b8be6e506b4d1ac68ecad53f83ebf
+    anti_selection_ledger: 775b181dbad74c1a8a9a2fa59ffa1b7d88ac261924e157fb33752c8dd54bdaac
   unknown_git_claim_effect: planning_scaffold_only_no_reproducible_run_or_goal_achieve_claim
