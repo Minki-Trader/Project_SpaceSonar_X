@@ -417,8 +417,9 @@ def update_refs(path: Path, results: list[dict[str, str]]) -> None:
     by_spec = {item["run_spec_id"]: item for item in results}
     rows = []
     for row in read_csv_rows(path):
-        if row["run_spec_id"] in by_spec:
-            row.update(by_spec[row["run_spec_id"]])
+        key = "run_spec_id" if "run_spec_id" in row else "spec_id"
+        if row[key] in by_spec:
+            row.update(by_spec[row[key]])
         rows.append(row)
     write_csv(path, rows, list(rows[0].keys()))
 
