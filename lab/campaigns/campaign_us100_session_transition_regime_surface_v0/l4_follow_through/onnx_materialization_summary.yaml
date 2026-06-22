@@ -1,0 +1,382 @@
+version: wave01_session_transition_l4_onnx_materialization_summary_v1
+summary_id: wave01_session_transition_l4_onnx_materialization_summary_v0
+work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_session_transition_l4_onnx_materialization_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+created_at_utc: '2026-06-22T03:29:47Z'
+status: completed_exportable_bundles_l4_attempt_preparation_required
+attempt_depth: bounded_full_l4_materialization_batch
+verification_depth: python_onnxruntime_parity_plus_bundle_hashes_not_MT5
+claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+source_inputs:
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  first_batch_matrix: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
+  run_refs: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
+input_hashes:
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  sha256: 915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c
+  size_bytes: 4857
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
+  sha256: b43173120b1aaeb3ec42712214a72d5f8176de13a7cafd9f821a06dcbfdd0356
+  size_bytes: 6501
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
+  sha256: 3280c01003bb6bf364769fc3d50acacbf900ab316929848c4f20deb448db7e66
+  size_bytes: 9929
+  availability: present_hash_recorded
+counts:
+  valid_proxy_runs_requiring_l4: 10
+  exportable_bundle_count: 10
+  failed_materialization_count: 0
+  status_counts:
+    onnx_exported_python_onnxruntime_parity_passed: 10
+  parity_status_counts:
+    passed: 10
+  model_family_counts:
+    logistic_or_linear_rank_scout: 6
+    small_mlp_secondary_only: 1
+    tree_or_boosted_onnx_feasible_scout: 3
+  task_kind_counts:
+    classification: 10
+runtime_contract_binding:
+  required_runtime_level: L4_split_runtime_probe
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  locked_final_oos_b: excluded_forbidden_by_default
+  l5_rule: if_L4_remains_promising_continue_to_L5_candidate_runtime_evidence
+artifact_outputs:
+  index_csv: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_index.csv
+  bundle_manifest_paths:
+  - runtime/packages/bundle_wave01_st_cell_001_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_002_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_003_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_004_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_005_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_006_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_007_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_008_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_009_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/experiment_bundle.json
+  onnx_artifact_paths:
+  - runtime/packages/bundle_wave01_st_cell_001_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_002_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_003_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_004_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_005_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_006_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_007_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_008_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_009_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/artifacts/model.onnx
+errors: []
+exported_runs:
+- run_id: onnxlab_wave01_st_cell_001_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_001
+  cell_id: wave01_st_cell_001
+  bundle_id: bundle_wave01_st_cell_001_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: inconclusive
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: cash_open_abstain_timeout_exit
+  session_anchor: ny_cash_open
+  feature_count: 43
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_001_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 941bc8317e964090926d31863a3ca2e1737937e4b15a9b4932caf3d4b5f16545
+  onnx_path: runtime/packages/bundle_wave01_st_cell_001_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 317cb60bc59a2b103ed03d9bfbdd832f0f55f29846d49203170eddd84c5e8625
+  onnx_size_bytes: 1744
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 4.440780176917514e-08
+  parity_mean_abs_error: 1.26332553673867e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_002_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_002
+  cell_id: wave01_st_cell_002
+  bundle_id: bundle_wave01_st_cell_002_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: tree_or_boosted_onnx_feasible_scout
+  task_kind: classification
+  decision_family: compression_release_abstain_barrier_exit
+  session_anchor: pre_to_cash_transition
+  feature_count: 74
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_002_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: fd73d7e4da27c8391ad6e4fbc5ab6220432e519e86b2eda14731565b63949281
+  onnx_path: runtime/packages/bundle_wave01_st_cell_002_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 50fdf9af824adb3a8cf9a1699e051102a4c8e1cde1840f483ff3ff19e3a3abce
+  onnx_size_bytes: 75499
+  onnx_adapter_ids: skl2onnx_hgb_numpy_scalar_cast_v0|onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 8.677440632709477e-08
+  parity_mean_abs_error: 3.3869533884326244e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_003_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_003
+  cell_id: wave01_st_cell_003
+  bundle_id: bundle_wave01_st_cell_003_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: failed_breakout_reversion_abstain_exit
+  session_anchor: ny_cash_open
+  feature_count: 97
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_003_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 06167c41e4de5d43c1c2fd1a6b0e1a08ef1cc55b895ab41131e7cd6ffa80c9be
+  onnx_path: runtime/packages/bundle_wave01_st_cell_003_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 895c84bbae65f6353fd46cc8e9bf9c348e832ab262dd20d928b63b5566ac6bdc
+  onnx_size_bytes: 3094
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.0425395946533911e-07
+  parity_mean_abs_error: 2.543364142177599e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_004_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_004
+  cell_id: wave01_st_cell_004
+  bundle_id: bundle_wave01_st_cell_004_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: negative
+  model_family: tree_or_boosted_onnx_feasible_scout
+  task_kind: classification
+  decision_family: explicit_no_trade_gate
+  session_anchor: ny_mid_session
+  feature_count: 43
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_004_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 097fecf74c814cccb90f7d9fed88a804abc941db0c8b5b13a2d049565b8ae3d0
+  onnx_path: runtime/packages/bundle_wave01_st_cell_004_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 9546a6d7d51a665203715f22bdaf8cb02101ba629cb1b830bfaf280fade76038
+  onnx_size_bytes: 12129
+  onnx_adapter_ids: skl2onnx_hgb_numpy_scalar_cast_v0|onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 7.269131258686931e-08
+  parity_mean_abs_error: 4.951592885159674e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_005_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_005
+  cell_id: wave01_st_cell_005
+  bundle_id: bundle_wave01_st_cell_005_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: inconclusive
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: cash_close_abstain_timeout_exit
+  session_anchor: ny_cash_close
+  feature_count: 43
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_005_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 88ac081027195dc2484b89a08763a15d02d3d908abb7fc45864b840ef2d641f5
+  onnx_path: runtime/packages/bundle_wave01_st_cell_005_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: de9f4c069c49701b5c72acb97f54f75ccd5b65808e72c6e03d3e00c7bb227a1d
+  onnx_size_bytes: 1744
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 7.422444892046798e-08
+  parity_mean_abs_error: 1.5948096018488303e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_006_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_006
+  cell_id: wave01_st_cell_006
+  bundle_id: bundle_wave01_st_cell_006_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: small_mlp_secondary_only
+  task_kind: classification
+  decision_family: diagnostic_tradeability_abstain
+  session_anchor: overnight_to_pre_cash
+  feature_count: 97
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_006_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 3200b0a5b0f2752fcee4e3374bf76c1b5061d51f5db8866cbc245a3f2d2f7421
+  onnx_path: runtime/packages/bundle_wave01_st_cell_006_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 3f3c625d5f0f81b2ecc4f1cb9e8a94a3aa808ed7baf4d19b31d88a6bc0fa7197
+  onnx_size_bytes: 9268
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.7881393432617188e-07
+  parity_mean_abs_error: 3.818422555923462e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_007_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_007
+  cell_id: wave01_st_cell_007
+  bundle_id: bundle_wave01_st_cell_007_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: inconclusive
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: session_blind_abstain_timeout_exit
+  session_anchor: none_session_blind_control
+  feature_count: 44
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_007_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: cd0991226ffa749ee92492f61a7f4e9b6d024a97550ee6f9b345fd14e8037f84
+  onnx_path: runtime/packages/bundle_wave01_st_cell_007_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: f929f189ab0ac66de277e62c8f39480aaddc776068efe474a9464c5f723cbdd9
+  onnx_size_bytes: 1769
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 8.233757742281966e-08
+  parity_mean_abs_error: 2.0999444099952837e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_008_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_008
+  cell_id: wave01_st_cell_008
+  bundle_id: bundle_wave01_st_cell_008_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: negative
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: fast_event_abstain_timeout_exit
+  session_anchor: active_cash_transition
+  feature_count: 43
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_008_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: aafb6f12372efe838a8126ad448dc370dfea4ed3f15d9488328938a5a5533678
+  onnx_path: runtime/packages/bundle_wave01_st_cell_008_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 3c69c670150d6b14405ac870935aa67aa41594cc8953bb37a17326aaf834e166
+  onnx_size_bytes: 1744
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.365285124954596e-07
+  parity_mean_abs_error: 2.1303718997548425e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_009_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_009
+  cell_id: wave01_st_cell_009
+  bundle_id: bundle_wave01_st_cell_009_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: tree_or_boosted_onnx_feasible_scout
+  task_kind: classification
+  decision_family: range_acceptance_abstain_timeout_exit
+  session_anchor: post_cash_open
+  feature_count: 97
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_009_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: 31d77c794b47f74bf3d4da3d2116352892d5d5a7f6ebae97222ad1ba30d6ec35
+  onnx_path: runtime/packages/bundle_wave01_st_cell_009_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: e5560efe3bfd4008e2ef13de7a690cf82b1670b29caeb0198a4d579f128ffad2
+  onnx_size_bytes: 75614
+  onnx_adapter_ids: skl2onnx_hgb_numpy_scalar_cast_v0|onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 8.99827902189898e-08
+  parity_mean_abs_error: 2.5026987308398273e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+- run_id: onnxlab_wave01_st_cell_010_session_transition_surface_v0
+  run_spec_id: wave01_st_cell_010
+  cell_id: wave01_st_cell_010
+  bundle_id: bundle_wave01_st_cell_010_l4_onnx_export_v0
+  status: onnx_exported_python_onnxruntime_parity_passed
+  result_judgment: preserved_clue
+  model_family: logistic_or_linear_rank_scout
+  task_kind: classification
+  decision_family: volatility_decay_no_trade_or_tradeability_gate
+  session_anchor: any_major_transition
+  feature_count: 74
+  bundle_manifest_path: runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/experiment_bundle.json
+  bundle_manifest_sha256: c079c8abea910038001a487ccdd3424a57f92bacf91cf6d29c9a5435b0f35628
+  onnx_path: runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/artifacts/model.onnx
+  onnx_sha256: 00917b08ace4aa0365a069654ee29a771db77ddcb831489e9accc6c6a47e3673
+  onnx_size_bytes: 2519
+  onnx_adapter_ids: onnx_single_score_output_v0
+  parity_status: passed
+  parity_max_abs_error: 1.6492919975297227e-06
+  parity_mean_abs_error: 2.3943559937602608e-08
+  parity_sample_rows: 512
+  l4_status: pending_strategy_tester_attempt_preparation
+  claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+judgment:
+  judgment_class: bundle_preflight
+  materialization_ready: false
+  runtime_probe_completed: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: Prepare L4 MT5 validation and research_oos attempts for every exported
+    session-transition bundle.
+try_first_evidence:
+  status: adapter_probe_attempted
+  reproduction: session-transition model families retrained and converted through
+    current skl2onnx adapter path
+  blocked_or_deferred_runs: []
+  claim_effect: no_missing_adapter_blocker_for_session_transition_onnx_materialization
+prevention_memory:
+- Do not close session-transition proxy runs proxy-only; every valid model-bearing
+  run remains L4-bound.
+- Session boundary runtime semantics remain pending until MT5 L4 observation and reconciliation.
+- Python ONNXRuntime parity is bundle preflight only, not runtime authority or economics
+  evidence.
+environment:
+  command: python foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
+    --write-control-records
+  command_argv:
+  - python
+  - foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    onnx: 1.20.1
+    onnxruntime: 1.24.3
+    skl2onnx: 1.20.0
+    yaml: 6.0.3
+  started_at_utc: '2026-06-22T03:28:57Z'
+  ended_at_utc: '2026-06-22T03:29:47Z'
+  git_sha: 3082a45423da9ff01cdb45421550e8daf0e721e0
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - ?? foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
+  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_onnx_materialization_v0_closeout.yaml
+  - ?? runtime/packages/bundle_wave01_st_cell_001_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_002_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_003_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_004_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_005_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_006_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_007_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_008_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_009_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/
+  - ?? tests/test_wave01_session_transition_l4_onnx_materializer.py
+  unknown_git_claim_effect: bundle_preflight_only_lower_reproducibility_claim
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

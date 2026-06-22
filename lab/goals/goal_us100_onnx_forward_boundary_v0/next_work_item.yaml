@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-22T03:12:36.010185Z'
-status: planned_next
+status: planned_next_l4_strategy_tester_execution_after_attempt_preparation
 current_truth:
   claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
   result_counts:
@@ -10,6 +10,33 @@ current_truth:
     negative: 2
     preserved_clue: 5
   valid_proxy_model_bearing_run_count: 10
+  wave01_session_transition_onnx_materialization_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  wave01_session_transition_onnx_materialization_status: completed_exportable_bundles_l4_attempt_preparation_required
+  wave01_session_transition_onnx_materialization_counts:
+    valid_proxy_runs_requiring_l4: 10
+    exportable_bundle_count: 10
+    failed_materialization_count: 0
+    status_counts:
+      onnx_exported_python_onnxruntime_parity_passed: 10
+    parity_status_counts:
+      passed: 10
+    model_family_counts:
+      logistic_or_linear_rank_scout: 6
+      small_mlp_secondary_only: 1
+      tree_or_boosted_onnx_feasible_scout: 3
+    task_kind_counts:
+      classification: 10
+  wave01_session_transition_l4_attempt_preparation_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  wave01_session_transition_l4_attempt_preparation_status: prepared_attempts_pending_terminal_execution
+  wave01_session_transition_l4_attempt_preparation_counts:
+    exported_bundle_count: 10
+    required_period_role_count: 2
+    prepared_attempt_count: 20
+    period_role_counts:
+      research_oos: 10
+      validation: 10
+    common_copy_status_counts:
+      copied_to_mt5_common_files: 20
 work_classification:
   primary_family: onnx_export_parity
   detected_families:
@@ -47,4 +74,9 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
-next_action: build_wave01_session_transition_onnx_materialization_and_L4_attempt_preparation
+next_action: Run the prepared Wave01 session-transition L4 Strategy Tester attempts
+  for validation and research_oos, then close each pair with parity judgment.
+missing_material_if_relevant:
+- L4_strategy_tester_terminal_execution_absent_for_wave01_session_transition_prepared_attempts
+- L4_validation_and_research_oos_reports_absent
+- score_telemetry_csv_absent_until_terminal_run

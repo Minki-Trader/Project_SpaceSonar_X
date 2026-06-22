@@ -1,0 +1,61 @@
+version: work_closeout_v1
+work_item_id: work_wave01_session_transition_l4_onnx_materialization_v0
+parent_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: '2026-06-22T03:29:47Z'
+status: completed_wave01_session_transition_onnx_bundle_preflight_l4_attempt_preparation_pending
+result_judgment: inconclusive
+claim_boundary: wave01_session_transition_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_candidate_no_baseline
+source_of_truth: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+evidence_paths:
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_index.csv
+summary_counts:
+  valid_proxy_runs_requiring_l4: 10
+  exportable_bundle_count: 10
+  failed_materialization_count: 0
+  status_counts:
+    onnx_exported_python_onnxruntime_parity_passed: 10
+  parity_status_counts:
+    passed: 10
+  model_family_counts:
+    logistic_or_linear_rank_scout: 6
+    small_mlp_secondary_only: 1
+    tree_or_boosted_onnx_feasible_scout: 3
+  task_kind_counts:
+    classification: 10
+claim_effect:
+  judgment_class: bundle_preflight
+  materialization_ready: false
+  runtime_probe_completed: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: Prepare L4 MT5 validation and research_oos attempts for every exported
+    session-transition bundle.
+next_work_item:
+  work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  required_next_action: Prepare L4 MT5 validation and research_oos attempts for every
+    exported session-transition bundle.
+output_hashes:
+- path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  sha256: 79d4b4014b8f5e05f816d4d365f654179373c4de4b11bbdc3be989c4f6a97140
+  size_bytes: 20718
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_index.csv
+  sha256: a98b1375a75f7fb2c8854891ba850ff914892a1163ed91f171749cfc924752eb
+  size_bytes: 8871
+  availability: present_hash_recorded
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

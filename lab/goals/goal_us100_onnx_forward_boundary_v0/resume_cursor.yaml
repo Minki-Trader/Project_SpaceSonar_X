@@ -1,6 +1,6 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-22T02:29:41Z'
+updated_at_utc: '2026-06-22T03:31:37Z'
 cursor_state: active
 active_phase: wave01_campaign_003_first_batch_specs_materialized
 current_truth_sources:
@@ -48,6 +48,10 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
 - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/anti_selection_ledger.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_first_batch_spec_v0_closeout.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_index.csv
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+- lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
@@ -56,14 +60,12 @@ active_ids:
   surface_id: surface_us100_session_transition_regime_surface_v0
   sweep_id: sweep_us100_session_transition_broad_v0
 latest_completed_work:
-  work_item_id: work_wave01_session_transition_first_batch_spec_v0
-  result_judgment: planning_scaffold
-  claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+  work_item_id: work_wave01_session_transition_l4_mt5_attempt_preparation_v0
+  result_judgment: inconclusive
+  claim_boundary: wave01_session_transition_l4_strategy_tester_attempt_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
-  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/anti_selection_ledger.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_mt5_attempt_preparation_v0_closeout.yaml
 next_work_item:
-  work_item_id: work_wave01_session_transition_execute_first_batch_proxy_v0
+  work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

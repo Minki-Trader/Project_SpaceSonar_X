@@ -1,0 +1,335 @@
+version: mt5_attempt_manifest_v1
+attempt_id: attempt_wave01_st_cell_010_l4_validation_v0
+run_id: onnxlab_wave01_st_cell_010_session_transition_surface_v0
+cell_id: wave01_st_cell_010
+surface_id: surface_us100_session_transition_regime_surface_v0
+bundle_id: bundle_wave01_st_cell_010_l4_onnx_export_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_session_transition_regime_surface_v0
+sweep_id: sweep_us100_session_transition_broad_v0
+created_at_utc: '2026-06-22T03:31:37Z'
+status: prepared_pending_terminal_execution
+claim_boundary: wave01_session_transition_l4_strategy_tester_attempt_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+source_of_truth: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/attempt_manifest.yaml
+work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_session_transition_l4_mt5_attempt_preparation_v0
+routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-parity
+  support_skills:
+  - spacesonar-artifact-lineage
+  - spacesonar-environment-reproducibility
+  - spacesonar-run-evidence-system
+  - spacesonar-result-judgment
+  - spacesonar-claim-discipline
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  required_runtime_level: L4_split_runtime_probe
+  reason: Every valid Wave01 first-batch proxy/model-bearing run requires L4 MT5 follow-through.
+  forbidden_skip_reasons_checked:
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
+  lowered_claim_if_not_run: attempt_preparation_only_no_L4_runtime_evidence
+period_identity:
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: validation
+  split_role: validation
+  from_date: 2024.06.05
+  to_date: 2025.03.10
+  locked_final_oos_b: excluded_forbidden_by_default
+execution_identity:
+  execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  broker_server: FPMarketsSC-Live
+  symbol: US100
+  timeframe: M5
+  tester_model: 4
+  deposit:
+    value: 500
+    currency: USD
+    rationale: Small-account stress baseline and current local tester convention;
+      not an optimization result.
+  leverage: 1:100
+  spread:
+    mode: floating_from_tester_or_broker_feed
+    fixed_spread_points: null
+    note: Do not hard-code the probe spread as a permanent cost.
+  commission_policy:
+    default_value: 0.0
+    currency: USD
+    source: BROKER_COST_NOTE.md observed US100 report history
+    boundary: Re-check specific Strategy Tester report before economics claims.
+  swap_policy:
+    default_mode: tester_report_when_available
+    estimated_long: -3.94
+    estimated_short: 1.34
+    swap_mode: 2
+    rollover_3_days: 5
+    boundary: Only relevant when holding can cross rollover.
+  slippage_policy:
+    default_points: null
+    rule: EA or experiment must declare slippage/skip policy before performance comparison.
+  sizing_policy:
+    default_lot: 0.02
+    default_sizing_mode: fixed_lot
+    risk_per_trade: null
+    rationale: Initial US100 M5 exploration default for 500 USD tester balance; less
+      noisy than 0.01 lot and less aggressive than 0.10 lot.
+    stress_lot: 0.1
+    rule: Compare primary MT5 results with fixed_lot 0.02 unless a run explicitly
+      declares another sizing profile.
+  non_trading_probe: true
+runtime_surface_contract:
+  base_frame: US100_M5_closed_bar
+  row_key: us100_bar_close_time
+  input_name: features
+  input_dtype: float32
+  input_shape:
+  - 1
+  - 74
+  feature_count: 74
+  feature_order_hash: c60aed1802703e0565e8e28d9c9ff4a369f8a89d0d1b9e8dc928c5c3ad315521
+  feature_columns_delimiter: semicolon
+  feature_columns_transport: common_file_with_inline_fallback
+  feature_columns_common_relative_path: SpaceSonar\l4_score_probe\bundle_wave01_st_cell_010_l4_onnx_export_v0\feature_columns.txt
+  output_name: score
+  output_contract: single_float_score
+  decision_family: volatility_decay_no_trade_or_tradeability_gate
+  score_low_threshold: 5.6940220795771434e-18
+  score_high_threshold: 2.7475188031029034e-08
+  has_low_high_threshold: true
+  decision_output: telemetry_only_no_trades
+  ea_feature_reconstruction: closed_bar_CopyRates_shift_1_feature_columns_in_bundle_order
+proxy_runtime_parity:
+  status: attempt_prepared_runtime_execution_pending
+  shared_contract:
+  - US100_M5_closed_bar_base_frame
+  - feature_order_hash
+  - single_score_output
+  - period_profile_split_set_v0
+  - us100_m5_fpmarkets_tester_execution_v0
+  known_differences:
+  - Python proxy row membership uses exported MT5 history; EA reconstructs features
+    from Strategy Tester closed bars.
+  - Strategy Tester spread/tick availability can differ from exported proxy data.
+  - This score probe writes telemetry and does not place trades; economics report
+    remains pending until a trading EA exists.
+  interpretation_drift_risks:
+  - bar_close_timing
+  - CopyRates_history_window_availability
+  - spread_field_semantics
+  - score_threshold_translation
+  - non_trading_decision_observation_vs_trading_execution
+  minimum_reconciliation_attempt:
+    status: prepared
+    attempt: single_score_output_ONNX_contract_plus_feature_order_hash_plus_EA_feature_reconstruction
+    forced_equality_required: false
+  unit_semantics:
+    features: float32 closed-bar values in bundle feature order
+    price_units: MT5 price values from MqlRates
+    spread: MqlRates.spread raw points scaled only where feature contract says spread_scaled
+    lot: fixed_lot_profile_recorded_but_EA_non_trading
+    point_tick_digits: recorded in tester report when trading/runtime EA is introduced
+  comparison_class: pending_L4_terminal_execution
+  divergence_judgment: pending_L4_terminal_execution
+  prevention_memory:
+  - Use semicolon feature-column delimiter in tester config to avoid MT5 optimization
+    pipe syntax ambiguity.
+  - Do not treat prepared tester configs as completed L4 evidence.
+  - If EA feature reconstruction diverges from Python proxy, preserve the difference
+    as parity evidence before judging the proxy.
+  follow_up_action: run Strategy Tester for this attempt and compare telemetry scope
+    before result judgment
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+artifact_identity:
+  ea_entrypoint:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+    sha256: 6015eba74ed746755d8f6c939428ed898bf1ba708fa9584df3e6d78b86e9b260
+    size_bytes: 19975
+    availability: present_hash_recorded
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+    sha256: 3ff73f625b09501ab8b07dd116c44afac4f8e329af3f5d859e9670c2e7248e92
+    size_bytes: 30656
+    availability: local_binary_hash_recorded_ignored_by_git
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/tester_config.ini
+    sha256: 1be90618d848a45731aa277d0613f3f159c1dab3ece33ddb2d12d81dbf84b6c9
+    size_bytes: 2359
+    availability: present_hash_recorded
+  bundle:
+    path: runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/experiment_bundle.json
+    sha256: c079c8abea910038001a487ccdd3424a57f92bacf91cf6d29c9a5435b0f35628
+    size_bytes: 17472
+    availability: present_hash_recorded
+  onnx_model:
+    path: runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/artifacts/model.onnx
+    sha256: 00917b08ace4aa0365a069654ee29a771db77ddcb831489e9accc6c6a47e3673
+    size_bytes: 2519
+    availability: local_artifact_hash_recorded
+  common_files:
+    model.onnx:
+      common_relative_path: SpaceSonar\l4_score_probe\bundle_wave01_st_cell_010_l4_onnx_export_v0\model.onnx
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\bundle_wave01_st_cell_010_l4_onnx_export_v0\model.onnx
+      sha256: 00917b08ace4aa0365a069654ee29a771db77ddcb831489e9accc6c6a47e3673
+      size_bytes: 2519
+      durable_identity: common_relative_path_plus_sha256
+      path_boundary: redacted_local_context_only
+      copy_status: copied_to_mt5_common_files
+      copied_sha256: 00917b08ace4aa0365a069654ee29a771db77ddcb831489e9accc6c6a47e3673
+    feature_columns.txt:
+      common_relative_path: SpaceSonar\l4_score_probe\bundle_wave01_st_cell_010_l4_onnx_export_v0\feature_columns.txt
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\bundle_wave01_st_cell_010_l4_onnx_export_v0\feature_columns.txt
+      sha256: 4df10fc9ed439c61af4c8b5c92f33e9885e7f876e6d00e3411c6a20e9a877957
+      size_bytes: 1102
+      feature_count: 74
+      durable_identity: common_relative_path_plus_sha256
+      path_boundary: redacted_local_context_only
+      copy_status: copied_to_mt5_common_files
+      copied_sha256: 4df10fc9ed439c61af4c8b5c92f33e9885e7f876e6d00e3411c6a20e9a877957
+  tester_reports:
+  - path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/tester_report.htm
+    status: pending_terminal_execution
+    claim_boundary: not_evidence_until_file_exists_and_hash_recorded
+  telemetry:
+    common_relative_path: SpaceSonar\l4_score_probe\attempt_wave01_st_cell_010_l4_validation_v0\score_telemetry.csv
+    redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\attempt_wave01_st_cell_010_l4_validation_v0\score_telemetry.csv
+    status: pending_terminal_execution
+provenance:
+  command_argv:
+  - python
+  - foundation/pipelines/prepare_wave01_session_transition_l4_mt5_attempts.py
+  - --write-control-records
+  - --copy-common-files
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    python: 3.13.9
+    yaml: 6.0.3
+    platform: Windows-11-10.0.26200-SP0
+  started_at_utc: '2026-06-22T03:31:37Z'
+  ended_at_utc: '2026-06-22T03:31:47Z'
+  input_hashes:
+  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+    sha256: 79d4b4014b8f5e05f816d4d365f654179373c4de4b11bbdc3be989c4f6a97140
+    size_bytes: 20718
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/onnx_materialization_index.csv
+    sha256: a98b1375a75f7fb2c8854891ba850ff914892a1163ed91f171749cfc924752eb
+    size_bytes: 8871
+    availability: present_hash_recorded
+  - path: foundation/config/mt5_runtime_probe_contract.yaml
+    sha256: 60b815ec2124ae8802d3f7637ab302d119cfe1a31d45f5e5cba37ccd0f037a3c
+    size_bytes: 5937
+    availability: present_hash_recorded
+  - path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+    sha256: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
+    size_bytes: 2691
+    availability: present_hash_recorded
+  - path: configs/mt5/tester_execution_profile_v0.yaml
+    sha256: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
+    size_bytes: 3036
+    availability: present_hash_recorded
+  - path: runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/experiment_bundle.json
+    sha256: c079c8abea910038001a487ccdd3424a57f92bacf91cf6d29c9a5435b0f35628
+    size_bytes: 17472
+    availability: present_hash_recorded
+  output_hashes:
+  - path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/tester_config.ini
+    sha256: 1be90618d848a45731aa277d0613f3f159c1dab3ece33ddb2d12d81dbf84b6c9
+    size_bytes: 2359
+    availability: present_hash_recorded
+  - path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/attempt_manifest.yaml
+    sha256: 74c0c27bc01da9a4196152efa9974b61da3c4c36e7a9be97329451ca954113bb
+    size_bytes: 16357
+    availability: present_hash_recorded
+  git_sha: 3082a45423da9ff01cdb45421550e8daf0e721e0
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: true
+  changed_files:
+  - M docs/registers/artifact_registry.csv
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ?? foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
+  - ?? foundation/pipelines/prepare_wave01_session_transition_l4_mt5_attempts.py
+  - ?? lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_mt5_attempt_preparation_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_session_transition_l4_onnx_materialization_v0_closeout.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_001_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_002_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_003_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_004_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_005_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_006_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_007_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_008_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_009_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave01_st_cell_010_l4_onnx_export_v0/
+  - ?? tests/test_wave01_session_transition_l4_mt5_attempt_preparer.py
+  - ?? tests/test_wave01_session_transition_l4_onnx_materializer.py
+  unknown_git_claim_effect: attempt_preparation_only_lower_reproducibility_claim
+required_gate_coverage:
+  passed:
+  - attempt_manifest
+  - period_profile_binding
+  - tester_execution_profile_binding
+  - feature_schema_contract
+  - bundle_integrity_hash
+  - runtime_surface_contract
+  - proxy_runtime_parity_record
+  - ea_compile_smoke
+  - final_claim_guard
+  missing:
+  - Strategy_Tester_terminal_execution
+  - L4_period_role_completed_report
+  - score_telemetry_csv
+  - tester_report_hash
+  - result_judgment_from_L4
+  not_applicable:
+  - locked_final_oos_b_access
+  - economics_pass
+  - runtime_authority
+missing_evidence:
+- Strategy_Tester_terminal_execution_not_run
+- L4_validation_or_research_oos_report_pending
+- score_telemetry_pending
+next_action: execute this tester_config.ini with MT5 terminal, collect telemetry and
+  tester report, then judge L4 result with proxy-runtime parity boundary
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
