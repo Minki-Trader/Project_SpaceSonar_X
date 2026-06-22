@@ -1,8 +1,8 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-22T00:29:59Z'
+updated_at_utc: '2026-06-22T00:37:54Z'
 cursor_state: active
-active_phase: wave01_campaign_002_proxy_executed_l4_required
+active_phase: wave01_event_barrier_decision_replay_judgment_completed
 current_truth_sources:
 - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
@@ -25,18 +25,24 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
 - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_runtime_execution_v0_closeout.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+- lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_judgment_v0_closeout.yaml
+- docs/registers/negative_memory_registry.csv
 active_ids:
   wave_id: wave_us100_closedbar_surface_cartography_v0
   campaign_id: campaign_us100_event_barrier_decision_surface_v0
   surface_id: surface_us100_event_barrier_decision_surface_v0
   sweep_id: sweep_us100_event_barrier_broad_v0
 latest_completed_work:
-  work_item_id: work_wave01_event_barrier_l4_decision_replay_runtime_execution_v0
-  result_judgment: runtime_probe
-  claim_boundary: wave01_event_barrier_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate
+  work_item_id: work_wave01_event_barrier_l4_decision_replay_judgment_v0
+  result_judgment: negative
+  claim_boundary: wave01_event_barrier_decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
   evidence_paths:
-  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_runtime_execution_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave01_event_barrier_l4_decision_replay_judgment_v0_closeout.yaml
+  - lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
 next_work_item:
   work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

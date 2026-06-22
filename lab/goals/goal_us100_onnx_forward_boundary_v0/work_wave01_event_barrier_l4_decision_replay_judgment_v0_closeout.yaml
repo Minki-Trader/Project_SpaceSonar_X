@@ -1,0 +1,57 @@
+version: work_closeout_v1
+work_item_id: work_wave01_event_barrier_l4_decision_replay_judgment_v0
+parent_work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-22T00:37:54Z'
+result_judgment: negative
+status: wave01_decision_replay_judgment_completed_no_l5_candidates
+claim_boundary: wave01_event_barrier_decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
+evidence_paths:
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
+- lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+counts:
+  cell_pair_count: 5
+  negative_count: 5
+  candidate_count: 0
+  l5_candidate_count: 0
+  tester_log_pair_observed_count: 5
+  tester_report_pair_observed_count: 0
+  loss_in_both_periods_count: 5
+  open_action_count: 48439
+  close_action_count: 48347
+  open_failed_count: 174
+  terminal_timeout_pair_count: 1
+  decision_family_counts:
+    breakout_entry_abstain_timeout_exit: 1
+    fast_event_abstain_timeout_exit: 1
+    range_edge_abstain_timeout_exit: 1
+    session_gated_abstain_barrier_exit: 1
+    sparse_event_abstain_barrier_exit: 1
+  result_judgment_counts:
+    negative: 5
+  l5_routing_status_counts:
+    no_l5_decision_replay_loss_observed: 5
+  final_balance_pair_class_counts:
+    loss_in_validation_and_research_oos: 5
+missing_evidence:
+- tester_reports_missing_for_all_decision_replay_pairs
+- equity_curve_missing
+- pf_dd_trade_list_metrics_missing
+- locked_final_oos_b_not_used
+- open_failed_actions_observed_requires_execution_audit_before_L5
+next_action: Record negative memory, keep candidate count at zero, and rotate to a
+  new multi-axis surface or a genuinely new decision-policy question. Do not continue
+  score_band_side replay to L5.
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true

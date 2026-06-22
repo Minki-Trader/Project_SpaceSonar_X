@@ -1,0 +1,31 @@
+version: negative_memory_v1
+memory_id: neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+hypothesis_id: hyp_us100_event_barrier_decision_surface_v0
+surface_id: surface_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0
+run_id: onnxlab_wave01_eb_cell_002_event_barrier_surface_v0;onnxlab_wave01_eb_cell_006_event_barrier_surface_v0;onnxlab_wave01_eb_cell_007_event_barrier_surface_v0;onnxlab_wave01_eb_cell_008_event_barrier_surface_v0;onnxlab_wave01_eb_cell_011_event_barrier_surface_v0
+failed_boundary: wave01_score_band_side_decision_replay_validation_and_research_oos
+decision_families:
+- breakout_entry_abstain_timeout_exit
+- fast_event_abstain_timeout_exit
+- range_edge_abstain_timeout_exit
+- session_gated_abstain_barrier_exit
+- sparse_event_abstain_barrier_exit
+why_failed: All five direct-trade eligible Wave01 preserved-clue score-band decision
+  replay pairs ended below the 500 USD tester deposit in both validation and research_oos
+  tester-log final balances.
+salvage_value: Confirms the MT5 score-band decision replay path can run and records
+  that direct score-band replay is not automatically tradeable even when the proxy
+  score observation was preserved as a clue.
+reopen_condition: Reopen only with a genuinely new decision/risk/holding policy, report/equity
+  parser evidence, or a new surface question; do not relabel the same score_band_side
+  replay as a new candidate.
+do_not_repeat_note: Do not promote Wave01 score_band_side decision replay to L5/candidate/economics
+  without new decision-policy evidence, tester report/equity metrics, and open-failed
+  execution audit.
+evidence_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+storage_contract:
+  source_of_truth: lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
+  registry_rows:
+  - docs/registers/negative_memory_registry.csv
+claim_boundary: negative_memory_no_candidate_no_economics_pass_no_runtime_authority
