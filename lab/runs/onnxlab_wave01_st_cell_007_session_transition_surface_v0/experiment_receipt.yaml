@@ -1,0 +1,260 @@
+version: experiment_receipt_v2
+run_id: onnxlab_wave01_st_cell_007_session_transition_surface_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_id: campaign_us100_session_transition_regime_surface_v0
+  idea_id: idea_us100_m5_session_transition_regime_surface_v0
+  hypothesis_id: hyp_us100_session_transition_regime_surface_v0
+  surface_id: surface_us100_session_transition_regime_surface_v0
+  sweep_id: sweep_us100_session_transition_broad_v0
+  artifact_ids: []
+  bundle_id: null
+  candidate_id: null
+skill_routing:
+  primary_family: model_training
+  primary_skill: spacesonar-model-validation
+  support_skills:
+  - spacesonar-experiment-design
+  - spacesonar-data-integrity
+  - spacesonar-run-evidence-system
+  - spacesonar-runtime-parity
+  - spacesonar-claim-discipline
+  skills_selected:
+  - spacesonar-model-validation
+  - spacesonar-experiment-design
+  - spacesonar-data-integrity
+  - spacesonar-run-evidence-system
+  - spacesonar-runtime-parity
+  - spacesonar-claim-discipline
+  skills_not_used: []
+  critical_skills_not_selected: []
+  not_selected_claim_effect: all critical execution/evidence skills selected
+  required_gates:
+  - branch_worktree_fit
+  - time_axis_check
+  - feature_label_boundary_check
+  - split_boundary_check
+  - selection_bias_check
+  - run_manifest
+  - experiment_receipt
+  - storage_contract_check
+  - runtime_learning_probe_decision
+  - proxy_runtime_parity_decision
+  - final_claim_guard
+  - L4_split_runtime_probe_for_valid_proxy_run
+branch_worktree:
+  current_branch: codex/l4-pair-judgment-closeout
+  requested_branch: codex/l4-pair-judgment-closeout
+  branch_worktree_fit: fit
+  branch_action: keep_current_branch
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: not_applicable
+provenance:
+  git_sha: d6cc2ff0b4da8368b77991c7c68c569cf25e86ff
+  branch: codex/l4-pair-judgment-closeout
+  dirty_flag: clean
+  changed_files: []
+  command_argv:
+  - foundation\pipelines\run_wave01_session_transition_proxy_batch.py
+  - --expected-branch
+  - codex/l4-pair-judgment-closeout
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    python: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    yaml: 6.0.3
+  started_at_utc: '2026-06-22T03:12:14.999913Z'
+  ended_at_utc: '2026-06-22T03:12:20.805324Z'
+  input_hashes:
+  - path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
+    sha256: b43173120b1aaeb3ec42712214a72d5f8176de13a7cafd9f821a06dcbfdd0356
+    size_bytes: 6501
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+    sha256: 915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c
+    size_bytes: 4857
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/feature_recipes/feature_wave01_us100_session_transition_regime_v0.yaml
+    sha256: ac74bcc9f49ee0bd4d03e92e8c0aa713e229f708c351349a9776024237638891
+    size_bytes: 827
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/label_recipes/label_wave01_session_transition_regime_v0.yaml
+    sha256: 88390ae1dd870f5a5ab12d21e19ad2e785f1ba282ef506a4e56619dc859fe2c8
+    size_bytes: 719
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/model_recipes/model_wave01_session_transition_onnx_scout_v0.yaml
+    sha256: c5492ff1ccfe44cb47f5d80c3f96e7017df9d923f8a8ae4cea8cb52e86b54d85
+    size_bytes: 795
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/decision_recipes/decision_wave01_session_transition_abstain_v0.yaml
+    sha256: 4cd86951d63463a3438f864ca0e051826625b29f16ae342cad2f0178de484f55
+    size_bytes: 748
+    availability: present_hash_recorded
+  - path: configs/onnx_lab/eval_recipes/eval_wave01_session_transition_runtime_v0.yaml
+    sha256: e41abd5c9f9df32b67cdcb23c1bfe039da619acc400201720fa290adaa914e20
+    size_bytes: 735
+    availability: present_hash_recorded
+  - path: foundation/config/mt5_runtime_probe_contract.yaml
+    sha256: 60b815ec2124ae8802d3f7637ab302d119cfe1a31d45f5e5cba37ccd0f037a3c
+    size_bytes: 5937
+    availability: present_hash_recorded
+  - path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+    sha256: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
+    size_bytes: 2691
+    availability: present_hash_recorded
+  - path: configs/mt5/tester_execution_profile_v0.yaml
+    sha256: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
+    size_bytes: 3036
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifacts/feature_schema.json
+    sha256: e0a7e0bc1613660992f40a3f1a29e99b9a9a9b8078d6423f75ee4f6dfe69087a
+    size_bytes: 2818
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifacts/label_schema.json
+    sha256: d87390fa9c0bbc03e4942d956eca414814b9d8b2120348ad5d6572e6bdea6ec0
+    size_bytes: 1206
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifacts/model_summary.json
+    sha256: 1ed0d10ab07ae2a5238ffefd8fb1c2692a589fa90f0c5536da1e768c9829fc22
+    size_bytes: 827
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifacts/split_profile.json
+    sha256: dc392b9f7c46fc229aaab32fb78f9e8f03f8efdd7a5e0e509369c05d2ac0e25a
+    size_bytes: 301
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifacts/prediction_sample_validation.csv
+    sha256: 37fba93fe0b3ecfbd3734bf26e7698cd3eb2960a7270017f6ac946527e0e593a
+    size_bytes: 54035
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifacts/prediction_sample_research_oos_a.csv
+    sha256: aef4ba01640612ee8db0d08c355f92672fe3f2559b68ea0f04152c28550f20d1
+    size_bytes: 55776
+    availability: present_hash_recorded
+  - path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/reports/proxy_session_transition_report.json
+    sha256: 15d31a3576e6ebe5001c7099869dfc3b6545d88ea52e2807e543c059997f54a8
+    size_bytes: 4978
+    availability: present_hash_recorded
+  unknown_git_claim_effect: planning_scaffold_only_no_reproducible_bundle_runtime_handoff_pass_readiness_or_goal_achieve
+  dirty_worktree_claim_effect: proxy_observation_only_no_reproducible_candidate_bundle_runtime_or_goal_achieve_claim
+  git_state_capture_policy: batch_start_before_generated_outputs
+storage_contract:
+  source_of_truth: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/metrics.json
+  registry_rows: &id001
+  - docs/registers/run_registry.csv
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  target_level: L4_split_runtime_probe
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  required_period_roles:
+  - validation
+  - research_oos
+  lowered_claim_if_not_run: proxy_observation_only_no_runtime_authority_no_economics_pass_no_candidate
+proxy_runtime_parity:
+  shared_contract: US100_M5_closed_bar_row_membership_feature_order_label_surface_score_output
+  known_differences:
+  - proxy is vectorized closed-bar research; MT5 must implement session boundary,
+    timeout, abstain, and lot semantics
+  - proxy metrics have no spread/fill/slippage/swap/execution timing claim
+  interpretation_drift_risks:
+  - control_surface_still_requires_L4_if_valid_proxy_model_bearing
+  - America/New_York session derivation vs MT5 tester execution clock
+  - score threshold and timeout conversion in EA adapter
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending_L4_materialization
+    forced_equality_required: false
+  unit_semantics: price_distance_timeout_bar_count_session_boundary_and_lot_semantics_declared_before_L4
+  comparison_class: pending_L4
+  divergence_judgment: pending_L4
+  prevention_memory:
+  - Record MT5 session/timeout/unit drift as prevention memory instead of forcing
+    equality.
+  follow_up_action: work_wave01_session_transition_l4_materialization_preflight_v0
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+failure_disposition:
+  required_before_judgments:
+  - blocked
+  - deferred
+  - invalid
+  - discarded
+  status: not_applicable
+  diagnosis_state_only_tokens:
+  - cannot
+  - unsupported
+  - not_available
+  - missing_adapter
+  - missing_glue
+  failure_reproduction: null
+  exact_failing_layer: null
+  root_cause_hypothesis: null
+  repo_controlled_support_gap: null
+  repair_or_fallback_attempts: []
+  attempt_blocker_if_no_repair: null
+  evidence_paths: []
+  remaining_blocker: null
+  reopen_condition: null
+  claim_effect: not_applicable_successful_proxy_execution_not_final_disposition
+required_gate_coverage:
+  passed:
+  - branch_worktree_fit
+  - time_axis_check
+  - feature_label_boundary_check
+  - split_boundary_check
+  - selection_bias_check
+  - run_manifest
+  - experiment_receipt
+  - storage_contract_check
+  - runtime_learning_probe_decision
+  - proxy_runtime_parity_decision
+  - final_claim_guard
+  missing:
+  - L4_split_runtime_probe_for_valid_proxy_run
+  not_applicable:
+  - locked_final_oos_access
+result_judgment: inconclusive
+missing_evidence:
+- ONNX_export_not_materialized_for_L4_yet
+- MT5_L4_split_runtime_probe_not_run_yet
+- candidate_selection_forbidden_before_L4
+claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave01_session_transition_l4_materialization_preflight_v0
+hypothesis: Session-transition state may expose reusable US100 M5 target/feature/model/decision
+  interactions.
+decision_use: session_blind_abstain_timeout_exit
+sample_scope:
+  raw_rows: 308002
+  same_role_session_horizon_rows: 307726
+  train_label_eligible_rows: 143797
+  validation_label_eligible_rows: 53806
+  research_oos_a_label_eligible_rows: 45545
+  locked_final_oos_b_withheld_rows: 38623
+  locked_final_oos_b_use: withheld_not_used
+evidence_plan:
+- lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/experiment_receipt.yaml
+- lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/metrics.json
+- *id001

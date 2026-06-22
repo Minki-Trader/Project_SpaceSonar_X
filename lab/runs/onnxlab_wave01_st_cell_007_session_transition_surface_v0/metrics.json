@@ -1,0 +1,91 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave01_st_cell_007_session_transition_surface_v0",
+  "status": "executed_proxy_observation_l4_required",
+  "sample_counts": {
+    "raw_rows": 308002,
+    "same_role_session_horizon_rows": 307726,
+    "train_label_eligible_rows": 143797,
+    "validation_label_eligible_rows": 53806,
+    "research_oos_a_label_eligible_rows": 45545,
+    "locked_final_oos_b_withheld_rows": 38623,
+    "locked_final_oos_b_use": "withheld_not_used"
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 143797,
+      "score_mean": 0.5000259349356543,
+      "score_std": 0.021471577272169723,
+      "accuracy": 0.518279240874288,
+      "balanced_accuracy": 0.5183959457953888,
+      "roc_auc": 0.524654356745792,
+      "average_precision": 0.5344538697447627,
+      "log_loss": 0.6921976682198364,
+      "positive_rate": 0.5140371495928288
+    },
+    "validation": {
+      "row_count": 53806,
+      "score_mean": 0.5058169351442774,
+      "score_std": 0.020173080509930934,
+      "accuracy": 0.5127123369140988,
+      "balanced_accuracy": 0.505392758600604,
+      "roc_auc": 0.5037120290233289,
+      "average_precision": 0.5337819965818484,
+      "log_loss": 0.6929506597780399,
+      "positive_rate": 0.5314277218154109
+    },
+    "research_oos_a": {
+      "row_count": 45545,
+      "score_mean": 0.5042507674073589,
+      "score_std": 0.023901240531492306,
+      "accuracy": 0.5177077615545065,
+      "balanced_accuracy": 0.512513809767251,
+      "roc_auc": 0.5135137863178084,
+      "average_precision": 0.5410318553384735,
+      "log_loss": 0.6932137444886092,
+      "positive_rate": 0.5334943462509606
+    }
+  },
+  "trading_proxy_metrics": {
+    "validation": {
+      "decision_family": "session_blind_abstain_timeout_exit",
+      "threshold_policy": "train_only_control_density_bands",
+      "threshold_fit_scope": "train_only",
+      "long_count": 16421,
+      "short_count": 6697,
+      "directional_accuracy": 0.5139717968682412,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 23118,
+      "trade_density": 0.4296546853510761,
+      "gross_proxy_mean_return": -2.3613865658795198e-05,
+      "gross_proxy_profit_factor": 0.9722865004925191,
+      "score_low_threshold": 0.4827213111507201,
+      "score_high_threshold": 0.5169883130577716,
+      "declared_decision_family": "session_blind_abstain_timeout_exit"
+    },
+    "research_oos_a": {
+      "decision_family": "session_blind_abstain_timeout_exit",
+      "threshold_policy": "train_only_control_density_bands",
+      "threshold_fit_scope": "train_only",
+      "long_count": 13774,
+      "short_count": 6825,
+      "directional_accuracy": 0.5264333220059226,
+      "proxy_boundary": "gross_future_return_direction_proxy_no_cost_no_execution",
+      "trade_count": 20599,
+      "trade_density": 0.4522779668459765,
+      "gross_proxy_mean_return": 2.7182747725990427e-06,
+      "gross_proxy_profit_factor": 1.0028982632385264,
+      "score_low_threshold": 0.4827213111507201,
+      "score_high_threshold": 0.5169883130577716,
+      "declared_decision_family": "session_blind_abstain_timeout_exit"
+    }
+  },
+  "runtime_metrics": {},
+  "judgment_label": "inconclusive",
+  "claim_boundary": "wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "ONNX_export_not_materialized_for_L4_yet",
+    "MT5_L4_split_runtime_probe_not_run_yet",
+    "candidate_selection_forbidden_before_L4"
+  ]
+}

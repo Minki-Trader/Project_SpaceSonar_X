@@ -1,0 +1,77 @@
+{
+  "version": "metrics_v2",
+  "run_id": "onnxlab_wave01_st_cell_006_session_transition_surface_v0",
+  "status": "executed_proxy_observation_l4_required",
+  "sample_counts": {
+    "raw_rows": 308002,
+    "same_role_session_horizon_rows": 74157,
+    "train_label_eligible_rows": 34650,
+    "validation_label_eligible_rows": 13002,
+    "research_oos_a_label_eligible_rows": 10956,
+    "locked_final_oos_b_withheld_rows": 9306,
+    "locked_final_oos_b_use": "withheld_not_used"
+  },
+  "model_metrics": {
+    "train": {
+      "row_count": 34650,
+      "score_mean": 0.8250749826611895,
+      "score_std": 0.08081615225905027,
+      "accuracy": 0.8357864357864357,
+      "balanced_accuracy": 0.5008837966641579,
+      "roc_auc": 0.5978726301091366,
+      "average_precision": 0.8741684885409594,
+      "log_loss": 0.442719537159068,
+      "positive_rate": 0.8358441558441558
+    },
+    "validation": {
+      "row_count": 13002,
+      "score_mean": 0.8192071050630132,
+      "score_std": 0.0774498858936496,
+      "accuracy": 0.8264113213351792,
+      "balanced_accuracy": 0.4996483163518949,
+      "roc_auc": 0.5631320093888574,
+      "average_precision": 0.8596597915609516,
+      "log_loss": 0.46309666397800403,
+      "positive_rate": 0.8278726349792339
+    },
+    "research_oos_a": {
+      "row_count": 10956,
+      "score_mean": 0.8308199804117097,
+      "score_std": 0.07729648428601549,
+      "accuracy": 0.8238408178167215,
+      "balanced_accuracy": 0.49954150255634827,
+      "roc_auc": 0.5613192738988042,
+      "average_precision": 0.8519343836756696,
+      "log_loss": 0.4705391810415262,
+      "positive_rate": 0.8249361080686382
+    }
+  },
+  "trading_proxy_metrics": {
+    "validation": {
+      "decision_family": "diagnostic_path_quality_no_trade",
+      "threshold_policy": "rank_only_no_probability_claim",
+      "threshold_fit_scope": "train_only",
+      "trade_count": 0,
+      "trade_density": 0.0,
+      "proxy_boundary": "diagnostic_only_no_trade_proxy",
+      "declared_decision_family": "diagnostic_tradeability_abstain"
+    },
+    "research_oos_a": {
+      "decision_family": "diagnostic_path_quality_no_trade",
+      "threshold_policy": "rank_only_no_probability_claim",
+      "threshold_fit_scope": "train_only",
+      "trade_count": 0,
+      "trade_density": 0.0,
+      "proxy_boundary": "diagnostic_only_no_trade_proxy",
+      "declared_decision_family": "diagnostic_tradeability_abstain"
+    }
+  },
+  "runtime_metrics": {},
+  "judgment_label": "preserved_clue",
+  "claim_boundary": "wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority",
+  "missing_evidence": [
+    "ONNX_export_not_materialized_for_L4_yet",
+    "MT5_L4_split_runtime_probe_not_run_yet",
+    "candidate_selection_forbidden_before_L4"
+  ]
+}

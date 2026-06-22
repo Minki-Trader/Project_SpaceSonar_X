@@ -4,8 +4,8 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_session_transition_regime_surface_v0
 sweep_id: sweep_us100_session_transition_broad_v0
 created_at_utc: '2026-06-22T02:29:41Z'
-status: first_batch_specs_materialized_not_executed
-claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+status: executed_proxy_observation_l4_required
+claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
 selection_policy:
   selected_before_proxy_scores: true
   locked_final_oos_b_used: false
@@ -37,4 +37,10 @@ evidence_paths:
   matrix: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
   run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
   run_refs: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
-next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+next_action: work_wave01_session_transition_l4_materialization_preflight_v0
+updated_at_utc: '2026-06-22T03:12:35.994145Z'
+result_counts:
+  inconclusive: 3
+  negative: 2
+  preserved_clue: 5
+candidate_count: 0

@@ -1,6 +1,6 @@
 version: workspace_state_v1
 workspace_mode: id_based_onnx_lab
-updated_utc: '2026-06-22T02:29:41Z'
+updated_utc: '2026-06-22T03:12:36.149525Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -48,7 +48,7 @@ current_claims:
   active_goal_terminal_contract: lab/goals/goal_us100_onnx_forward_boundary_v0/terminal_eligibility_contract.yaml
   active_goal_resume_cursor: lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
   active_goal_next_work_item: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  active_goal_claim_boundary: active_goal_session_transition_first_batch_specs_not_goal_achieve
+  active_goal_claim_boundary: active_goal_session_transition_proxy_executed_L4_required_not_goal_achieve
   active_goal_primary_objective: durable_codex_operation
   active_goal_proof_window: Wave01_closeout
   active_goal_proof_window_role: first_bounded_proof_window_not_final_purpose
@@ -63,8 +63,8 @@ current_claims:
   active_hypothesis_id: hyp_us100_session_transition_regime_surface_v0
   active_surface_id: surface_us100_session_transition_regime_surface_v0
   active_sweep_id: sweep_us100_session_transition_broad_v0
-  active_goal_phase: wave01_campaign_003_first_batch_specs_materialized
-  next_work_item_id: work_wave01_session_transition_execute_first_batch_proxy_v0
+  active_goal_phase: wave01_campaign_003_proxy_executed_l4_required
+  next_work_item_id: work_wave01_session_transition_l4_materialization_preflight_v0
   wave0_dataset_id: dataset_raw_us100_m5_wave0_export_20260621T152827Z
   wave0_dataset_identity: lab/campaigns/campaign_us100_task_surface_scout_v0/dataset_identity.yaml
   wave0_raw_row_count: 308002
@@ -497,17 +497,23 @@ current_claims:
     l5_candidate_count: 0
     tester_report_pair_observed_count: 0
     open_failed_count: 174
-  wave0_third_campaign_status: first_batch_specs_materialized_not_executed
+  wave0_third_campaign_status: executed_proxy_observation_l4_required
   wave0_third_campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
   wave0_third_campaign_surface: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
   wave0_third_campaign_sweep: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
-  wave0_third_campaign_next_work_item: work_wave01_session_transition_execute_first_batch_proxy_v0
-  wave0_third_campaign_claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+  wave0_third_campaign_next_work_item: work_wave01_session_transition_l4_materialization_preflight_v0
+  wave0_third_campaign_claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
   wave0_third_campaign_first_batch_matrix: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
   wave0_third_campaign_run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
   wave0_third_campaign_first_batch_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
   wave0_third_campaign_anti_selection_ledger: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/anti_selection_ledger.yaml
   wave0_third_campaign_planned_spec_count: 10
+  wave0_third_campaign_proxy_result_counts:
+    inconclusive: 3
+    negative: 2
+    preserved_clue: 5
+  wave0_third_campaign_executed_proxy_run_count: 10
+  wave0_third_campaign_L4_status: L4_materialization_preflight_required_next
 next_default_route:
   non_trivial_work_registry: docs/agent_control/work_family_registry.yaml
   onnx_contract: docs/contracts/onnx_lab_contract.yaml

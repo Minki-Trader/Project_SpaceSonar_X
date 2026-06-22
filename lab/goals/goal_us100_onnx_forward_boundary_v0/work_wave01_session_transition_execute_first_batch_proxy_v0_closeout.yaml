@@ -1,0 +1,31 @@
+version: work_closeout_v1
+work_item_id: work_wave01_session_transition_execute_first_batch_proxy_v0
+status: proxy_execution_completed_L4_required_next
+closed_at_utc: '2026-06-22T03:12:36.007224Z'
+result_judgment: proxy_observation
+claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+result_counts:
+  inconclusive: 3
+  negative: 2
+  preserved_clue: 5
+candidate_count: 0
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required_next
+  target_level: L4_split_runtime_probe
+  next_work_item: work_wave01_session_transition_l4_materialization_preflight_v0
+evidence_paths:
+  run_refs: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
+  run_registry: docs/registers/run_registry.csv
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_work_item: work_wave01_session_transition_l4_materialization_preflight_v0

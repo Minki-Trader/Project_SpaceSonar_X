@@ -2,9 +2,9 @@ version: wave_allocation_v1
 wave_id: wave_us100_closedbar_surface_cartography_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 role: initial_blank_slate_surface_cartography
-status: wave01_campaign_003_first_batch_specs_materialized
+status: wave01_campaign_003_proxy_executed_l4_required
 created_at_utc: '2026-06-21T15:18:51Z'
-claim_boundary: wave01_campaign_003_first_batch_specs_no_candidate_no_runtime_authority_not_goal_achieve
+claim_boundary: wave01_campaign_003_proxy_executed_l4_required_no_candidate_no_runtime_authority
 allocation_goal: Map US100 M5 closed-bar task, label, input, decision, and holding
   surfaces before feature-count, model-family, threshold, ONNX, or runtime optimization.
 exploration_coverage_policy:
@@ -123,13 +123,13 @@ campaign_allocations:
   allocation_role: third_unexplored_session_transition_regime_surface
   max_runs: 24
   initial_batch_size: 10
-  status: first_batch_specs_materialized_not_executed
+  status: executed_proxy_observation_l4_required
   campaign_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_session_transition_regime_surface_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/sweep_manifest.yaml
   run_refs: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/sweeps/sweep_us100_session_transition_broad_v0/run_refs.csv
-  claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
-  next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+  claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+  next_action: work_wave01_session_transition_l4_materialization_preflight_v0
   first_batch_matrix: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_matrix.csv
   first_batch_run_specs_manifest: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/first_batch_run_specs_manifest.yaml
   run_specs_index: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/run_specs_index.csv
@@ -150,7 +150,7 @@ stop_conditions:
 - wfo_rank_instability_blocks_candidate_claim
 - locked_final_oos_requested_for_adaptive_repair_stop
 - neighborhood_perturbation_becomes_generic_micro_tuning_or_candidate_laundering
-next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+next_action: work_wave01_session_transition_l4_materialization_preflight_v0
 notes: Campaign 001 and Campaign 002 closed with no candidate. Event/barrier direct
   score-band decision replay became negative memory; rotate to a genuinely new surface.
 first_batch_result:
@@ -182,6 +182,6 @@ proxy_to_runtime_policy:
   every_valid_proxy_run_requires_l4: true
   proxy_only_closeout_allowed: false
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
-updated_at_utc: '2026-06-22T02:29:41Z'
+updated_at_utc: '2026-06-22T03:12:36.028366Z'
 next_action_detail: Execute first broad proxy batch for the session-transition regime
   campaign, then force L4 follow-through.

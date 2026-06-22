@@ -2,9 +2,9 @@ version: campaign_manifest_v1
 campaign_id: campaign_us100_session_transition_regime_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: first_batch_specs_materialized_not_executed
+status: executed_proxy_observation_l4_required
 created_at_utc: '2026-06-22T01:44:27Z'
-updated_at_utc: '2026-06-22T02:29:41Z'
+updated_at_utc: '2026-06-22T03:12:35.950048Z'
 target_branch: codex/l4-pair-judgment-closeout
 wave_ids:
 - wave_us100_closedbar_surface_cartography_v0
@@ -112,7 +112,7 @@ required_gates:
 - campaign_proxy_runtime_parity_policy
 - first_batch_spec_before_execution
 - final_claim_guard
-claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -252,7 +252,7 @@ proxy_runtime_parity:
     before L4.
   follow_up_action: work_wave01_session_transition_first_batch_spec_v0
   claim_boundary: campaign_parity_tracking_only_no_runtime_authority
-next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+next_action: work_wave01_session_transition_l4_materialization_preflight_v0
 notes: Campaign opened as a new multi-axis surface, not bounded synthesis and not
   a repair continuation.
 first_batch_specs:
@@ -266,3 +266,8 @@ first_batch_specs:
   runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
   claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+result_counts:
+  inconclusive: 3
+  negative: 2
+  preserved_clue: 5
+candidate_count: 0

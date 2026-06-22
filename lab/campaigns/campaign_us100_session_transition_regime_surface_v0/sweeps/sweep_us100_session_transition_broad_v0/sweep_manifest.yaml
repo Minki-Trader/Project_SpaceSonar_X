@@ -2,7 +2,7 @@ version: sweep_manifest_v1
 sweep_id: sweep_us100_session_transition_broad_v0
 campaign_id: campaign_us100_session_transition_regime_surface_v0
 surface_id: surface_us100_session_transition_regime_surface_v0
-status: first_batch_specs_materialized_not_executed
+status: executed_proxy_observation_l4_required
 created_at_utc: '2026-06-22T01:44:27Z'
 sweep_type: broad_session_transition_regime_surface_scout
 axes:
@@ -76,11 +76,11 @@ stop_conditions:
 - first_batch_spec_ready
 - valid_proxy_model_run_without_L4_is_invalid_closeout
 - candidate_claim_attempted_without_L4_or_L5_evidence
-claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
-next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+next_action: work_wave01_session_transition_l4_materialization_preflight_v0
 notes: The sweep is open with zero executed runs; run_refs.csv is an empty index until
   specs are materialized.
-updated_at_utc: '2026-06-22T02:29:41Z'
+updated_at_utc: '2026-06-22T03:12:36.002205Z'
 first_batch_specs:
   status: first_batch_specs_materialized_not_executed
   spec_count: 10
@@ -92,3 +92,8 @@ first_batch_specs:
   runtime_follow_through: L4_required_for_all_valid_proxy_model_bearing_specs
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
   claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+result_counts:
+  inconclusive: 3
+  negative: 2
+  preserved_clue: 5
+candidate_count: 0

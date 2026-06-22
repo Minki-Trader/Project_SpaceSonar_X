@@ -6,8 +6,8 @@ campaign_id: campaign_us100_session_transition_regime_surface_v0
 surface_id: surface_us100_session_transition_regime_surface_v0
 sweep_id: sweep_us100_session_transition_broad_v0
 created_at_utc: '2026-06-22T02:29:41Z'
-status: first_batch_specs_materialized_not_executed
-claim_boundary: session_transition_first_batch_specs_only_no_run_no_candidate_no_runtime_authority
+status: executed_proxy_observation_l4_required
+claim_boundary: wave01_session_transition_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
 spec_count: 10
 coverage_summary:
   label_surface_count: 10
@@ -138,4 +138,10 @@ missing_evidence:
 - ONNX_exports_not_materialized
 - MT5_L4_not_run
 - L5_not_applicable_until_L4_promising_result
-next_action: work_wave01_session_transition_execute_first_batch_proxy_v0
+next_action: work_wave01_session_transition_l4_materialization_preflight_v0
+updated_at_utc: '2026-06-22T03:12:35.977882Z'
+result_counts:
+  inconclusive: 3
+  negative: 2
+  preserved_clue: 5
+candidate_count: 0
