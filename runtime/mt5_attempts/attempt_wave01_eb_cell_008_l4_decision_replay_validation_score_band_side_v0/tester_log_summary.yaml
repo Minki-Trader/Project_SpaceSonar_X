@@ -1,0 +1,84 @@
+version: wave01_event_barrier_l4_decision_replay_tester_log_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/tester_log_summary.yaml
+attempt_id: attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0
+status: tester_log_observed
+tester_log:
+  redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\Tester\logs\20260622.log
+  sha256: 492f0b747e8850b0ca7586faafc7a63dd22ffa4aa07c9be3a858c98f1a62e91c
+  size_bytes: 523800980
+  availability: local_tester_log_hash_recorded_not_committed
+final_balance: 405.89
+final_balance_currency: USD
+orders_attempted: 3326
+rows_loaded: 53554
+rows_observed: 53554
+test_passed_duration: 0:00:30.363 (including ticks preprocessing 0:00:04.203).
+terminal_finished_result: null
+terminal_finished_duration: null
+agent_log_redacted_path: ${APPDATA}\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000\logs\20260622.log
+context_tail:
+- "JD\t0\t09:08:20.584\tCore 01\t2025.03.07 22:40:00   order performed buy 0.02 at\
+  \ 20098.43 [#6627 buy 0.02 US100 at 20098.43]"
+- "JD\t0\t09:08:20.584\tCore 01\t2025.03.07 22:40:00   CTrade::OrderSend: market buy\
+  \ 0.02 position #6626 US100 [done at 20098.43]"
+- "JD\t0\t09:08:20.584\tCore 01\t2025.03.07 22:50:00   market sell 0.02 US100 (20175.23\
+  \ / 20176.43)"
+- "GI\t0\t09:08:20.584\tCore 01\t2025.03.07 22:50:00   deal #6628 sell 0.02 US100\
+  \ at 20175.23 done (based on order #6628)"
+- "OS\t0\t09:08:20.584\tCore 01\t2025.03.07 22:50:00   deal performed [#6628 sell\
+  \ 0.02 US100 at 20175.23]"
+- "JN\t0\t09:08:20.584\tCore 01\t2025.03.07 22:50:00   order performed sell 0.02 at\
+  \ 20175.23 [#6628 sell 0.02 US100 at 20175.23]"
+- "EN\t0\t09:08:20.584\tCore 01\t2025.03.07 22:50:00   CTrade::OrderSend: market sell\
+  \ 0.02 US100 [done at 20175.23]"
+- "RP\t0\t09:08:20.584\tCore 01\t2025.03.07 23:05:00   market buy 0.02 US100, close\
+  \ #6628 (20138.88 / 20140.28)"
+- "MI\t0\t09:08:20.584\tCore 01\t2025.03.07 23:05:00   deal #6629 buy 0.02 US100 at\
+  \ 20140.28 done (based on order #6629)"
+- "PG\t0\t09:08:20.584\tCore 01\t2025.03.07 23:05:00   deal performed [#6629 buy 0.02\
+  \ US100 at 20140.28]"
+- "DK\t0\t09:08:20.584\tCore 01\t2025.03.07 23:05:00   order performed buy 0.02 at\
+  \ 20140.28 [#6629 buy 0.02 US100 at 20140.28]"
+- "KI\t0\t09:08:20.584\tCore 01\t2025.03.07 23:05:00   CTrade::OrderSend: market buy\
+  \ 0.02 position #6628 US100 [done at 20140.28]"
+- "FN\t0\t09:08:20.584\tCore 01\t2025.03.07 23:10:00   market sell 0.02 US100 (20169.00\
+  \ / 20170.40)"
+- "HS\t0\t09:08:20.584\tCore 01\t2025.03.07 23:10:00   deal #6630 sell 0.02 US100\
+  \ at 20169.00 done (based on order #6630)"
+- "GN\t0\t09:08:20.584\tCore 01\t2025.03.07 23:10:00   deal performed [#6630 sell\
+  \ 0.02 US100 at 20169.00]"
+- "FD\t0\t09:08:20.584\tCore 01\t2025.03.07 23:10:00   order performed sell 0.02 at\
+  \ 20169.00 [#6630 sell 0.02 US100 at 20169.00]"
+- "FK\t0\t09:08:20.584\tCore 01\t2025.03.07 23:10:00   CTrade::OrderSend: market sell\
+  \ 0.02 US100 [done at 20169.00]"
+- "NK\t0\t09:08:20.584\tCore 01\t2025.03.07 23:54:59   position closed due end of\
+  \ test at 20163.53 [#6630 sell 0.02 US100 20169.00]"
+- "RD\t0\t09:08:20.584\tCore 01\t2025.03.07 23:54:59   deal #6631 buy 0.02 US100 at\
+  \ 20163.53 done (based on order #6631)"
+- "DJ\t0\t09:08:20.584\tCore 01\t2025.03.07 23:54:59   deal performed [#6631 buy 0.02\
+  \ US100 at 20163.53]"
+- "CL\t0\t09:08:20.584\tCore 01\t2025.03.07 23:54:59   order performed buy 0.02 at\
+  \ 20163.53 [#6631 buy 0.02 US100 at 20163.53]"
+- "JR\t0\t09:08:20.584\tCore 01\tfinal balance 405.89 USD"
+- "JG\t0\t09:08:20.584\tCore 01\t2025.03.07 23:54:59   SpaceSonar score replay deinit\
+  \ reason=1 rows_loaded=53554 rows_observed=53554 orders_attempted=3326"
+- "DH\t0\t09:08:20.584\tCore 01\tUS100,M5: 63218445 ticks, 53554 bars generated. Environment\
+  \ synchronized in 0:00:00.017. Test passed in 0:00:30.363 (including ticks preprocessing\
+  \ 0:00:04.203)."
+- "GL\t0\t09:08:20.584\tCore 01\tUS100,M5: total time from login to stop testing 0:00:30.380\
+  \ (including 0:00:00.017 for history data synchronization)"
+- "NK\t0\t09:08:20.584\tCore 01\t1477 Mb memory used including 9 Mb of history data,\
+  \ 1280 Mb of tick data"
+- "KO\t0\t09:08:20.584\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\\
+  Tester\\D0E8209F77C8CF37AD8BF550E51FF075\\Agent-127.0.0.1-3000\\logs\\20260622.log\"\
+  \ written"
+- "LG\t0\t09:08:20.734\tCore 01\ttest Experts\\Project_SpaceSonar_X\\foundation\\\
+  mt5\\experts\\SpaceSonar_L4_ScoreReplayDecisionProbe.ex5 on US100,M5 thread finished"
+- "EF\t0\t09:08:20.852\tTester\tautomatical testing finished"
+- "QQ\t0\t09:08:20.853\tCore 01\tconnection closed"
+claim_boundary: tester_log_summary_observation_only_no_economics_pass
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_decision_replay_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0

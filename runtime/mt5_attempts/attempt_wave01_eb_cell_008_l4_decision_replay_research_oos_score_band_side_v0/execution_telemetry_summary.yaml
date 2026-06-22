@@ -1,0 +1,64 @@
+version: wave01_event_barrier_l4_decision_replay_execution_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
+attempt_id: attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0
+source_attempt_id: attempt_wave01_eb_cell_008_l4_research_oos_v0
+run_id: onnxlab_wave01_eb_cell_008_event_barrier_surface_v0
+bundle_id: bundle_wave01_eb_cell_008_l4_onnx_export_v0
+period_role: research_oos
+direction_policy: score_band_side
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/telemetry/execution_telemetry.csv
+  sha256: 67a5bd22459b5d518e804e38318d5c50fde21d5d6b3f336a2a2995c7c9971108
+  size_bytes: 6069335
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave01_event_barrier_l4_decision_replay\attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0\execution_telemetry.csv
+stats:
+  status: execution_telemetry_observed
+  row_count: 45281
+  first_bar_close_time: 2025.04.03 00:00:00
+  last_bar_close_time: 2025.11.20 23:55:00
+  symbol_counts:
+    US100: 45281
+  period_counts:
+    PERIOD_M5: 45281
+  decision_family_counts:
+    session_gated_abstain_barrier_exit: 45281
+  direction_policy_counts:
+    score_band_side: 45281
+  source_decision_counts:
+    unknown: 45281
+  execution_signal_counts:
+    flat: 25462
+    long: 14063
+    short: 5756
+  action_counts:
+    close_flat: 1661
+    close_hold_elapsed: 1161
+    hold_same_direction: 15954
+    no_trade_flat: 23717
+    open_failed: 3
+    open_long: 1846
+    open_short: 939
+  trade_action_counts:
+    open_action_count: 2785
+    close_action_count: 2822
+    open_failed_count: 3
+    skip_spread_count: 0
+    no_trade_flat_count: 23717
+    hold_same_direction_count: 15954
+  score_stats:
+    finite_count: 45281
+    min: 4.7088e-06
+    max: 0.9999997616
+    mean: 0.7628729737515493
+  spread_points_stats:
+    finite_count: 45281
+    min: 120.0
+    max: 1275.0
+    mean: 135.15823413793865
+claim_boundary: wave01_event_barrier_score_band_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
+work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
+subwork_item_id: work_wave01_event_barrier_l4_decision_replay_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_event_barrier_decision_surface_v0
+sweep_id: sweep_us100_event_barrier_broad_v0

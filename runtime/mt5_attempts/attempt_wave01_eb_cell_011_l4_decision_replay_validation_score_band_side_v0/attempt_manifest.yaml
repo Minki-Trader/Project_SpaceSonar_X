@@ -9,8 +9,8 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_event_barrier_decision_surface_v0
 sweep_id: sweep_us100_event_barrier_broad_v0
 created_at_utc: '2026-06-21T23:37:02Z'
-status: prepared_pending_terminal_execution
-claim_boundary: score_replay_decision_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+status: completed_decision_replay_execution_telemetry_observed
+claim_boundary: wave01_event_barrier_score_band_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
 source_of_truth: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
 work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 subwork_item_id: work_wave01_event_barrier_l4_decision_replay_adapter_preparation_v0
@@ -68,10 +68,11 @@ proxy_runtime_parity:
   - hold_bars_exit_semantics
   - tester_fill_cost_spread_lot_rounding
   minimum_reconciliation_attempt:
-    status: prepared
-    attempt: score telemetry bar_close_time will be replayed into score-band sparse
-      orders in MT5 terminal
+    status: decision_replay_execution_telemetry_observed
+    attempt: MT5 Strategy Tester replayed Wave01 score telemetry through score-band
+      decision EA
     forced_equality_required: false
+    evidence_path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   unit_semantics:
     score: single_float_score_from_prior_MT5_score_probe
     high_threshold: 0.9928132653236389
@@ -80,16 +81,19 @@ proxy_runtime_parity:
     lot: fixed_lot_0.02
     hold: 6_M5_closed_bars
     point_tick_digits: to_be_recorded_from_tester_report
-  comparison_class: pending_terminal_execution
-  divergence_judgment: pending_terminal_execution
+  comparison_class: wave01_proxy_score_to_mt5_decision_replay_observation
+  divergence_judgment: runtime_decision_execution_observed_pending_tester_report_or_economics_parse
   prevention_memory:
   - Do not treat score telemetry as economics evidence.
   - Do not convert diagnostic/no-trade clues into trades without a newly declared
     decision surface.
   - If score replay behavior differs from proxy score-band expectation, record threshold
     and bar-close semantics before judging the surface.
-  follow_up_action: execute prepared Wave01 score-band decision replay attempts before
-    any L5/economics claim
+  - Wave01 decision replay runner normalizes reused Wave0 helper outputs into Wave01
+    campaign identity; score-band replay is L4 follow-through evidence, not runtime
+    authority or economics pass.
+  follow_up_action: continue/repair decision replay terminal execution before L5 or
+    economics claim
   claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
 artifact_identity:
   ea_entrypoint:
@@ -115,24 +119,51 @@ artifact_identity:
     sha256: ef20e0d513a677150abdd6f32c609eb68cbac615d8e9ce88064e3772e06ff3d2
     size_bytes: 1256
     availability: present_hash_recorded
+  terminal_run_summary:
+    path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/terminal_run_summary.yaml
+    sha256: 66220ff2c88fa8422d2a42dbf29733e066b32becce320437a7f45e39e733bb13
+    size_bytes: 4667
+    availability: present_hash_recorded
+  execution_telemetry_summary:
+    path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
+    sha256: df86501bafb62f55dfb08fdea21c66fbceecf5ff9fbb2a628e001c24a5ba0fd3
+    size_bytes: 2656
+    availability: present_hash_recorded
+  tester_log_summary:
+    path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/tester_log_summary.yaml
+    sha256: 3609b2e937539b7fe6d0d7d5fc9b635e6a6d26f0cb63792428d444ba7d463b50
+    size_bytes: 5267
+    availability: present_hash_recorded
+  telemetry:
+    repo_execution_copy:
+      path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/telemetry/execution_telemetry.csv
+      sha256: 1253cbd49f1f4c5be92c3de6832ecaa7cd27552def1ffae849bfd490282703ab
+      size_bytes: 6968375
+      availability: local_telemetry_hash_recorded_ignored_by_git
+  tester_reports:
+  - observed: false
+    status: tester_report_missing_after_terminal_execution
+    path: null
+    claim_boundary: missing_report_no_economics_or_completion_claim
 required_gate_coverage:
   passed:
   - source_score_telemetry_observed
   - decision_replay_adapter_source_created
   - tester_config_prepared
   - locked_final_excluded
-  missing:
   - Strategy_Tester_terminal_execution
+  - execution_telemetry_csv
+  - result_judgment_from_score_replay_decision_probe
+  missing:
   - tester_report_hash
   - economics_metrics
   not_applicable:
   - locked_final_oos_b_access
 missing_evidence:
-- decision_replay_terminal_execution_not_run
-- tester_report_missing_until_terminal_execution
-- economics_metrics_missing_until_tester_report
-next_action: execute Wave01 score-band decision replay attempts; keep L5/economics
-  claims forbidden until reports and judgment exist
+- tester_report_missing_or_not_archived
+- tester_report_missing_but_tester_log_summary_observed
+next_action: continue/repair decision replay terminal execution before L5 or economics
+  claim
 forbidden_claims:
 - selected_baseline
 - runtime_authority
@@ -142,3 +173,242 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
+result_judgment: runtime_probe
+runtime_probe_routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-parity
+  support_skills:
+  - spacesonar-run-evidence-system
+  - spacesonar-artifact-lineage
+  - spacesonar-result-judgment
+  - spacesonar-claim-discipline
+  routing_scope: wave01_event_barrier_score_band_decision_replay_runtime_execution
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: validation
+  claim_boundary: wave01_event_barrier_score_band_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
+  try_first_disposition: missing runner or adapter support is repair work first; this
+    Wave01 wrapper records the concrete attempt
+terminal_run_summary:
+  command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-22T00:28:32.390522Z'
+  ended_at_utc: '2026-06-22T00:29:13.738616Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: main_mode_config_fallback
+  attempt_claim_boundary: local_decision_replay_main_mode_fallback_only_no_runtime_authority
+  telemetry_exists_after_attempt: true
+  terminal_attempts:
+  - command_argv_redacted:
+    - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+    - /portable
+    - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0\tester_config.ini
+    cwd: .
+    started_at_utc: '2026-06-22T00:28:28.369843Z'
+    ended_at_utc: '2026-06-22T00:28:32.389761Z'
+    exit_code: 3294954941
+    timed_out: false
+    stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stdout_tail: ''
+    stderr_tail: ''
+    mode: portable_contract_attempt
+    attempt_claim_boundary: standard_contract_attempt_only
+    telemetry_exists_after_attempt: false
+  - command_argv_redacted:
+    - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+    - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0\tester_config.ini
+    cwd: .
+    started_at_utc: '2026-06-22T00:28:32.390522Z'
+    ended_at_utc: '2026-06-22T00:29:13.738616Z'
+    exit_code: 0
+    timed_out: false
+    stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stdout_tail: ''
+    stderr_tail: ''
+    mode: main_mode_config_fallback
+    attempt_claim_boundary: local_decision_replay_main_mode_fallback_only_no_runtime_authority
+    telemetry_exists_after_attempt: true
+  terminal_cleanup_actions: []
+  terminal_cleanup_policy:
+    default_terminate_existing: false
+    explicit_termination_requested: false
+    allowed_scope: explicit_user_requested_only
+    formal_runtime_claim_effect: no_global_cleanup_used
+  terminal_mode_policy:
+    standard_contract_terminal_mode: portable_required
+    portable_attempted: true
+    main_mode_fallback_allowed: true
+    main_mode_fallback_used: true
+    fallback_reason: portable_attempt_did_not_produce_decision_replay_execution_telemetry
+    claim_effect: decision_replay_local_main_mode_fallback_observation_only_no_standard_portable_completion_claim
+  selected_attempt_index: 1
+  telemetry_observed: true
+  version: decision_replay_terminal_run_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/terminal_run_summary.yaml
+  attempt_id: attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0
+  source_attempt_id: attempt_wave01_eb_cell_011_l4_validation_v0
+  run_id: onnxlab_wave01_eb_cell_011_event_barrier_surface_v0
+  bundle_id: bundle_wave01_eb_cell_011_l4_onnx_export_v0
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/tester_config.ini
+    sha256: ef20e0d513a677150abdd6f32c609eb68cbac615d8e9ce88064e3772e06ff3d2
+    size_bytes: 1256
+    availability: present_hash_recorded
+  source_score_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave01_eb_cell_011_l4_validation_v0\score_telemetry.csv
+  execution_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave01_event_barrier_l4_decision_replay\attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0\execution_telemetry.csv
+  claim_boundary: decision_replay_terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
+execution_telemetry_summary:
+  version: decision_replay_execution_telemetry_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
+  attempt_id: attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0
+  source_attempt_id: attempt_wave01_eb_cell_011_l4_validation_v0
+  run_id: onnxlab_wave01_eb_cell_011_event_barrier_surface_v0
+  bundle_id: bundle_wave01_eb_cell_011_l4_onnx_export_v0
+  period_role: validation
+  direction_policy: score_band_side
+  telemetry:
+    path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/telemetry/execution_telemetry.csv
+    sha256: 1253cbd49f1f4c5be92c3de6832ecaa7cd27552def1ffae849bfd490282703ab
+    size_bytes: 6968375
+    availability: local_telemetry_hash_recorded_ignored_by_git
+  common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave01_event_barrier_l4_decision_replay\attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0\execution_telemetry.csv
+  stats:
+    status: execution_telemetry_observed
+    row_count: 53554
+    first_bar_close_time: 2024.06.05 00:00:00
+    last_bar_close_time: 2025.03.07 23:50:00
+    symbol_counts:
+      US100: 53554
+    period_counts:
+      PERIOD_M5: 53554
+    decision_family_counts:
+      range_edge_abstain_timeout_exit: 53554
+    direction_policy_counts:
+      score_band_side: 53554
+    source_decision_counts:
+      unknown: 53554
+    execution_signal_counts:
+      flat: 34158
+      long: 13136
+      short: 6260
+    action_counts:
+      close_flat: 3343
+      close_hold_elapsed: 1977
+      hold_same_direction: 12206
+      no_trade_flat: 30652
+      open_failed: 52
+      open_long: 3490
+      open_short: 1834
+    trade_action_counts:
+      open_action_count: 5324
+      close_action_count: 5320
+      open_failed_count: 52
+      skip_spread_count: 0
+      no_trade_flat_count: 30652
+      hold_same_direction_count: 12206
+    score_stats:
+      finite_count: 53554
+      min: 0.0424275994
+      max: 1.0
+      mean: 0.9496690129018412
+    spread_points_stats:
+      finite_count: 53554
+      min: 120.0
+      max: 700.0
+      mean: 130.75045748216752
+  claim_boundary: wave01_event_barrier_score_band_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate
+tester_log_summary:
+  version: decision_replay_tester_log_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/tester_log_summary.yaml
+  attempt_id: attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0
+  status: tester_log_observed
+  tester_log:
+    redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\Tester\logs\20260622.log
+    sha256: 8831c5171b5dfa5386162a1598807b9f14a0b9ab6a1516430396a17412e129fd
+    size_bytes: 541850318
+    availability: local_tester_log_hash_recorded_not_committed
+  final_balance: 276.63
+  final_balance_currency: USD
+  orders_attempted: 5376
+  rows_loaded: 53554
+  rows_observed: 53554
+  test_passed_duration: 0:00:30.345 (including ticks preprocessing 0:00:04.187).
+  terminal_finished_result: null
+  terminal_finished_duration: null
+  agent_log_redacted_path: ${APPDATA}\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000\logs\20260622.log
+  context_tail:
+  - "HF\t0\t09:29:10.318\tCore 01\t2025.03.07 22:35:00   order performed buy 0.02\
+    \ at 20186.80 [#10645 buy 0.02 US100 at 20186.80]"
+  - "ME\t0\t09:29:10.318\tCore 01\t2025.03.07 22:35:00   CTrade::OrderSend: market\
+    \ buy 0.02 position #10644 US100 [done at 20186.80]"
+  - "GG\t0\t09:29:10.318\tCore 01\t2025.03.07 23:10:00   market sell 0.02 US100 (20169.00\
+    \ / 20170.40)"
+  - "MJ\t0\t09:29:10.318\tCore 01\t2025.03.07 23:10:00   deal #10646 sell 0.02 US100\
+    \ at 20169.00 done (based on order #10646)"
+  - "DF\t0\t09:29:10.318\tCore 01\t2025.03.07 23:10:00   deal performed [#10646 sell\
+    \ 0.02 US100 at 20169.00]"
+  - "CL\t0\t09:29:10.318\tCore 01\t2025.03.07 23:10:00   order performed sell 0.02\
+    \ at 20169.00 [#10646 sell 0.02 US100 at 20169.00]"
+  - "GP\t0\t09:29:10.318\tCore 01\t2025.03.07 23:10:00   CTrade::OrderSend: market\
+    \ sell 0.02 US100 [done at 20169.00]"
+  - "HQ\t0\t09:29:10.318\tCore 01\t2025.03.07 23:40:00   market buy 0.02 US100, close\
+    \ #10646 (20159.50 / 20160.90)"
+  - "JO\t0\t09:29:10.318\tCore 01\t2025.03.07 23:40:00   deal #10647 buy 0.02 US100\
+    \ at 20160.90 done (based on order #10647)"
+  - "RG\t0\t09:29:10.318\tCore 01\t2025.03.07 23:40:00   deal performed [#10647 buy\
+    \ 0.02 US100 at 20160.90]"
+  - "CJ\t0\t09:29:10.318\tCore 01\t2025.03.07 23:40:00   order performed buy 0.02\
+    \ at 20160.90 [#10647 buy 0.02 US100 at 20160.90]"
+  - "QH\t0\t09:29:10.318\tCore 01\t2025.03.07 23:40:00   CTrade::OrderSend: market\
+    \ buy 0.02 position #10646 US100 [done at 20160.90]"
+  - "OK\t0\t09:29:10.318\tCore 01\t2025.03.07 23:45:00   market sell 0.02 US100 (20154.88\
+    \ / 20156.28)"
+  - "CN\t0\t09:29:10.318\tCore 01\t2025.03.07 23:45:00   deal #10648 sell 0.02 US100\
+    \ at 20154.88 done (based on order #10648)"
+  - "PS\t0\t09:29:10.318\tCore 01\t2025.03.07 23:45:00   deal performed [#10648 sell\
+    \ 0.02 US100 at 20154.88]"
+  - "MP\t0\t09:29:10.318\tCore 01\t2025.03.07 23:45:00   order performed sell 0.02\
+    \ at 20154.88 [#10648 sell 0.02 US100 at 20154.88]"
+  - "QL\t0\t09:29:10.318\tCore 01\t2025.03.07 23:45:00   CTrade::OrderSend: market\
+    \ sell 0.02 US100 [done at 20154.88]"
+  - "QE\t0\t09:29:10.318\tCore 01\t2025.03.07 23:54:59   position closed due end of\
+    \ test at 20163.53 [#10648 sell 0.02 US100 20154.88]"
+  - "QI\t0\t09:29:10.318\tCore 01\t2025.03.07 23:54:59   deal #10649 buy 0.02 US100\
+    \ at 20163.53 done (based on order #10649)"
+  - "CE\t0\t09:29:10.318\tCore 01\t2025.03.07 23:54:59   deal performed [#10649 buy\
+    \ 0.02 US100 at 20163.53]"
+  - "FH\t0\t09:29:10.318\tCore 01\t2025.03.07 23:54:59   order performed buy 0.02\
+    \ at 20163.53 [#10649 buy 0.02 US100 at 20163.53]"
+  - "GF\t0\t09:29:10.318\tCore 01\tfinal balance 276.63 USD"
+  - "DK\t0\t09:29:10.318\tCore 01\t2025.03.07 23:54:59   SpaceSonar score replay deinit\
+    \ reason=1 rows_loaded=53554 rows_observed=53554 orders_attempted=5376"
+  - "FL\t0\t09:29:10.318\tCore 01\tUS100,M5: 63218445 ticks, 53554 bars generated.\
+    \ Environment synchronized in 0:00:00.017. Test passed in 0:00:30.345 (including\
+    \ ticks preprocessing 0:00:04.187)."
+  - "DK\t0\t09:29:10.318\tCore 01\tUS100,M5: total time from login to stop testing\
+    \ 0:00:30.362 (including 0:00:00.017 for history data synchronization)"
+  - "OH\t0\t09:29:10.318\tCore 01\t1497 Mb memory used including 9 Mb of history data,\
+    \ 1280 Mb of tick data"
+  - "DK\t0\t09:29:10.318\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\\
+    MetaQuotes\\Tester\\D0E8209F77C8CF37AD8BF550E51FF075\\Agent-127.0.0.1-3000\\logs\\\
+    20260622.log\" written"
+  - "HK\t0\t09:29:10.486\tCore 01\ttest Experts\\Project_SpaceSonar_X\\foundation\\\
+    mt5\\experts\\SpaceSonar_L4_ScoreReplayDecisionProbe.ex5 on US100,M5 thread finished"
+  - "GR\t0\t09:29:10.663\tTester\tautomatical testing finished"
+  - "PM\t0\t09:29:10.663\tCore 01\tconnection closed"
+  claim_boundary: tester_log_summary_observation_only_no_economics_pass
+tester_report:
+  observed: false
+  status: tester_report_missing_after_terminal_execution
+  path: null
+  claim_boundary: missing_report_no_economics_or_completion_claim
+terminal_execution_subwork_item_id: work_wave01_event_barrier_l4_decision_replay_runtime_execution_v0

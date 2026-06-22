@@ -92,6 +92,7 @@ Git integration cadence:
 - If L4 still looks usable under the declared surface and execution profile, continue to `L5_candidate_runtime_evidence`.
 - A planned proxy surface must include an executable ONNX/EA/MT5 follow-through path. If it cannot be made executable, repair the surface before treating it as proxy evidence.
 - Try-first disposition rule: do not close a surface as blocked, deferred, invalid, or discarded until the failure reason is identified, the failing layer is reproduced, a smallest credible repair/fallback under repo control is attempted, and the evidence/reopen condition is recorded.
+- The operating posture is attempt-first: when something does not work, Codex must find out why and make the smallest credible repo-controlled attempt before deciding it is not usable.
 - Explanation-only closeout is forbidden. A diagnosis, advisory note, missing-helper observation, or agent consensus does not count as an attempt. Use the smallest concrete fixture, parser run, conversion shim, EA/ONNX glue patch, compile, command, or MT5 micro-probe that can test the failure before lowering the claim.
 - Missing converter, conversion adapter, export adapter, EA adapter, parser support, or runtime glue is not by itself a valid closeout reason. First reproduce the failure and capture the root cause.
 - If the missing piece is under repo/control, build and test the smallest credible repair or fallback adapter. "Adapter absent" is not a blocker.
@@ -110,6 +111,7 @@ This is a global operating rule, not only a runtime rule.
 
 - A failed, unsupported, missing, or nonworking path starts as `investigation_in_progress`.
 - Before `blocked`, `deferred`, `invalid`, or `discarded`, Codex must identify the failure reason, reproduce or bound the failing layer, try the smallest repo-controlled repair/adapter/fallback, and record the evidence.
+- `deferred` or `discarded` means the attempt record has shown why continuing is not justified inside the current bounded scope; it is not a shortcut for untried work.
 - "Cannot", "unsupported", "not available", missing helper, missing adapter, missing parser, missing runner, missing converter, missing EA glue, or agent consensus is diagnosis only.
 - When the missing layer is repo-controlled, the next action is to create or patch the smallest concrete translation/support layer needed to test the hypothesis.
 - The repair attempt may be skipped only for user secrets, unavailable external state, destructive or unsafe action, or project-policy violation. The exception must be recorded as the attempt blocker with evidence and reopen condition.

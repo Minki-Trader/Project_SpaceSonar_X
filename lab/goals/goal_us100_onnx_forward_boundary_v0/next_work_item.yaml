@@ -2,7 +2,7 @@ version: onnx_lab_work_item_v1
 work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-21T22:30:12.353032Z'
-status: wave01_event_barrier_l4_decision_replay_adapter_prepared_terminal_execution_next
+status: wave01_decision_replay_terminal_execution_attempted_pair_judgment_required
 user_request: Materialize ONNX/EA/MT5 L4 path for every valid Wave01 event/barrier
   proxy run before any proxy-only closeout.
 current_truth:
@@ -97,6 +97,32 @@ current_truth:
     eligibility_reason_counts:
       eligible_score_band_directional_adapter: 5
       requires_new_decision_surface_not_direct_trade_adapter: 3
+  wave01_event_barrier_l4_decision_replay_runtime_execution_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+  wave01_event_barrier_l4_decision_replay_runtime_execution_status: wave01_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+  wave01_event_barrier_l4_decision_replay_runtime_execution_counts:
+    prepared_attempt_count: 10
+    selected_attempt_count: 10
+    indexed_execution_count: 10
+    executed_attempt_count: 10
+    completed_manifest_count: 10
+    source_score_telemetry_observed_count: 10
+    execution_telemetry_observed_count: 10
+    execution_telemetry_missing_count: 0
+    tester_report_observed_count: 0
+    tester_report_missing_count: 10
+    tester_log_observed_count: 10
+    open_action_count: 48439
+    close_action_count: 48347
+    open_failed_count: 174
+    period_role_counts:
+      research_oos: 5
+      validation: 5
+    direction_policy_counts:
+      score_band_side: 10
+    status_counts:
+      completed_decision_replay_execution_telemetry_observed: 10
+    result_judgment_counts:
+      runtime_probe: 10
 work_classification:
   primary_family: onnx_export_parity
   detected_families:
@@ -140,13 +166,10 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
-next_action: execute prepared Wave01 score-band decision replay attempts, then judge
-  validation/research_oos pairs before any L5 claim
+next_action: judge paired Wave01 score-band decision replay validation/research_oos
+  results before any L5 claim
 missing_material_if_relevant:
-- decision_replay_terminal_execution_not_run
-- tester_reports_missing_until_execution
-- economics_metrics_missing_until_tester_report
-- diagnostic_or_no_trade_preserved_clues_require_new_decision_surface_before_trade_replay
+- paired_wave01_decision_replay_judgment_pending
 execution_provenance:
   git_sha: ada242f58af6db5ca0e9cbddec8b8aa08ebc6991
   branch: codex/l4-pair-judgment-closeout

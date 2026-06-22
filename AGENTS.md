@@ -104,6 +104,7 @@ Unknown git/env identity is planning scaffold only; it lowers reproducible-run, 
 
 - This rule is global: it applies to code, data, feature, label, model, ONNX, EA, MT5, parser, validator, routing, artifact, and policy-support failures.
 - A nonworking result is `investigation_in_progress` until Codex has identified why it failed, reproduced or bounded the failing layer, and attempted the smallest repo-controlled repair, adapter, fixture, parser, command, compile, runtime probe, or fallback that can test the hypothesis.
+- The first response to "it does not work" is not to abandon it. Determine why, make the smallest credible attempt, then judge. Only a failed attempt or a narrow recorded attempt blocker can justify `blocked`, `deferred`, `invalid`, or `discarded`.
 - Diagnosis text, agent advice, "unsupported", "not available", "cannot", or "no helper/adapter exists" is not enough to block, defer, invalidate, or discard.
 - If missing support is inside repo control, create or patch the smallest explicit support layer needed to test the hypothesis before lowering the claim.
 - Only narrow exceptions can stop the repair attempt: user secrets, unavailable external state, destructive or unsafe action, or project-policy violation. Record the exception, evidence path, remaining blocker, and reopen condition.
@@ -117,6 +118,7 @@ Unknown git/env identity is planning scaffold only; it lowers reproducible-run, 
 - If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
 - Failure handling order is mandatory: diagnose -> reproduce -> attempt the smallest repo-controlled repair/adapter/fallback -> record evidence -> only then block, defer, invalidate, or discard.
 - Try-first disposition rule: when something does not work, first identify why, reproduce the failing layer, try the smallest credible fix/fallback under repo control, and record the evidence. Only then may it become blocked, deferred, invalid, or discarded.
+- A conclusion that something "cannot be done" is not durable until the attempt record shows what was tried, what failed, why the remaining gap is outside the current bounded repair, and what would reopen it.
 - Diagnosis text, agent advice, or "helper/adapter does not exist" is not a repair attempt. If the missing piece is repo-controlled, make the smallest concrete implementation, fixture, compile, parser, runner, or runtime attempt needed to test the hypothesis before lowering the claim.
 - "Cannot", "unsupported", "not available", or "missing adapter/glue" is a diagnosis state, not a final disposition.
 - Before any valid surface is marked blocked, deferred, invalid, or discarded because something does not work, record the failure reproduction, the exact failing layer, at least one bounded repair or fallback attempt, the evidence path, the remaining blocker, and the reopen condition.
