@@ -5,6 +5,7 @@ from pathlib import Path
 import yaml
 
 from foundation.pipelines import materialize_wave01_event_barrier_first_batch_specs as materializer
+from foundation.pipelines import close_wave01_event_barrier_campaign as closer
 from foundation.pipelines import open_wave01_event_barrier_decision_campaign as opener
 from foundation.pipelines import run_wave01_event_barrier_proxy_batch as proxy_runner
 
@@ -22,7 +23,12 @@ def test_event_barrier_campaign_is_multi_axis_and_not_synthesis() -> None:
     assert campaign["campaign_id"] == opener.NEW_CAMPAIGN_ID
     assert campaign["campaign_type"] == "standard_experiment"
     assert campaign["bounded_synthesis"]["enabled"] is False
-    assert campaign["claim_boundary"] in {opener.CLAIM_BOUNDARY, materializer.CLAIM_BOUNDARY, proxy_runner.CLAIM_BOUNDARY}
+    assert campaign["claim_boundary"] in {
+        opener.CLAIM_BOUNDARY,
+        materializer.CLAIM_BOUNDARY,
+        proxy_runner.CLAIM_BOUNDARY,
+        closer.CLAIM_BOUNDARY,
+    }
     assert "runtime_authority" in campaign["forbidden_claims"]
 
     coverage = campaign["exploration_coverage"]
@@ -49,7 +55,12 @@ def test_event_barrier_campaign_does_not_relabel_prior_repair() -> None:
         "neg_wave0_decision_replay_momentum_ret_1_loss_v0"
     ]
     assert "do_not_relabel_momentum_ret_1_score_replay_as_new_candidate" in boundary["forbidden_carryover"]
-    assert campaign["next_action"] in {opener.NEXT_WORK_ID, materializer.NEXT_WORK_ITEM_ID, proxy_runner.NEXT_WORK_ITEM_ID}
+    assert campaign["next_action"] in {
+        opener.NEXT_WORK_ID,
+        materializer.NEXT_WORK_ITEM_ID,
+        proxy_runner.NEXT_WORK_ITEM_ID,
+        closer.NEXT_ACTION,
+    }
 
 
 def test_feature_recipe_keeps_feature_count_variable() -> None:

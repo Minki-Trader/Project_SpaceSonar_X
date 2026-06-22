@@ -435,12 +435,65 @@ def validate_wave_campaign_graph(repo_root: Path) -> list[str]:
             campaign = load_yaml(campaign_path)
             if campaign.get("campaign_id") != campaign_id:
                 errors.append(f"{rel(campaign_path, repo_root)}: campaign_id mismatch for {campaign_id}")
+            campaign_status = str(campaign.get("status") or "")
+            campaign_claim = str(campaign.get("claim_boundary") or "")
+            campaign_next = str(campaign.get("next_action") or "")
+            if ref_row.get("status") and ref_row.get("status") != campaign_status:
+                errors.append(
+                    f"{rel(campaign_refs_path, repo_root)} {campaign_id}: status mismatch "
+                    f"expected={campaign_status} observed={ref_row.get('status')}"
+                )
+            if ref_row.get("claim_boundary") and campaign_claim and ref_row.get("claim_boundary") != campaign_claim:
+                errors.append(
+                    f"{rel(campaign_refs_path, repo_root)} {campaign_id}: claim_boundary mismatch"
+                )
+            if ref_row.get("next_action") and campaign_next and ref_row.get("next_action") != campaign_next:
+                errors.append(
+                    f"{rel(campaign_refs_path, repo_root)} {campaign_id}: next_action mismatch"
+                )
+            if allocation.get("status") and allocation.get("status") != campaign_status:
+                errors.append(
+                    f"{rel(wave_path, repo_root)} allocation {campaign_id}: status mismatch "
+                    f"expected={campaign_status} observed={allocation.get('status')}"
+                )
+            if allocation.get("claim_boundary") and campaign_claim and allocation.get("claim_boundary") != campaign_claim:
+                errors.append(f"{rel(wave_path, repo_root)} allocation {campaign_id}: claim_boundary mismatch")
+            if allocation.get("next_action") and campaign_next and allocation.get("next_action") != campaign_next:
+                errors.append(f"{rel(wave_path, repo_root)} allocation {campaign_id}: next_action mismatch")
             if wave_id not in set(campaign.get("wave_ids") or []):
                 errors.append(f"{rel(campaign_path, repo_root)}: wave_ids missing {wave_id}")
             campaign_storage = campaign.get("storage_contract") or {}
             linked_refs = set(campaign_storage.get("wave_campaign_refs") or [])
             if str(campaign_refs_text) not in linked_refs:
                 errors.append(f"{rel(campaign_path, repo_root)}: storage_contract.wave_campaign_refs missing {campaign_refs_text}")
+    return errors
+
+
+def validate_campaign_registry(repo_root: Path) -> list[str]:
+    registry_path = repo_root / "docs" / "registers" / "campaign_registry.csv"
+    if not registry_path.exists():
+        return ["campaign_registry.csv: missing docs/registers/campaign_registry.csv"]
+    errors: list[str] = []
+    for row in read_csv_rows(registry_path):
+        campaign_id = row.get("campaign_id", "")
+        campaign_path_text = row.get("campaign_path", "")
+        if not campaign_id or not campaign_path_text:
+            continue
+        campaign_path = repo_root / campaign_path_text
+        if not campaign_path.exists():
+            errors.append(f"campaign_registry.csv {campaign_id}: missing {campaign_path_text}")
+            continue
+        campaign = load_yaml(campaign_path)
+        if campaign.get("campaign_id") != campaign_id:
+            errors.append(f"campaign_registry.csv {campaign_id}: campaign_manifest campaign_id mismatch")
+        for field in ["status", "claim_boundary", "next_action"]:
+            observed = row.get(field)
+            expected = campaign.get(field)
+            if observed and expected and observed != expected:
+                errors.append(f"campaign_registry.csv {campaign_id}: {field} mismatch")
+        evidence_path = row.get("evidence_path")
+        if evidence_path and not (repo_root / evidence_path).exists():
+            errors.append(f"campaign_registry.csv {campaign_id}: missing evidence_path {evidence_path}")
     return errors
 
 
@@ -776,6 +829,7 @@ def validate(repo_root: Path) -> list[str]:
     errors: list[str] = []
     errors.extend(validate_workspace_active_ids(repo_root))
     errors.extend(validate_active_goal_records(repo_root))
+    errors.extend(validate_campaign_registry(repo_root))
     errors.extend(validate_wave_campaign_graph(repo_root))
     errors.extend(validate_run_campaign_chain(repo_root))
     errors.extend(validate_campaign_exploration_coverage(repo_root))

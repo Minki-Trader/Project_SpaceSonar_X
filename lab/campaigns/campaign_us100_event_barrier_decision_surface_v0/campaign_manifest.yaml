@@ -2,9 +2,9 @@ version: campaign_manifest_v1
 campaign_id: campaign_us100_event_barrier_decision_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: executed_proxy_observation_l4_required
+status: wave01_event_barrier_decision_replay_closed_no_candidate
 created_at_utc: '2026-06-21T21:30:10Z'
-updated_at_utc: '2026-06-21T22:30:12.292820Z'
+updated_at_utc: '2026-06-22T01:09:35Z'
 target_branch: codex/l4-pair-judgment-closeout
 wave_ids:
 - wave_us100_closedbar_surface_cartography_v0
@@ -93,7 +93,7 @@ git_integration:
   close_event: campaign_close
   main_push_policy: boundary_only_after_coherent_commit
   per_run_main_push_default: false
-  status: branch_open_pending_main_boundary
+  status: campaign_close_branch_committed_pending_main_boundary
 skill_routing:
   primary_family: experiment_design
   primary_skill: spacesonar-experiment-design
@@ -109,7 +109,7 @@ required_gates:
 - campaign_proxy_runtime_parity_policy
 - first_batch_spec_before_execution
 - final_claim_guard
-claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
+claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -200,7 +200,7 @@ runtime_learning_probe_decision_default:
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
 proxy_runtime_parity:
   required_for_proxy_model_bearing_runs: true
-  status: planned_before_first_batch
+  status: campaign_closed_with_l4_decision_replay_negative_memory
   shared_contract:
   - FPMarkets_US100_M5_closed_bar_base_frame
   - us100_bar_close_time_row_key
@@ -241,13 +241,19 @@ proxy_runtime_parity:
   - proxy_bad_runtime_bad
   - proxy_bad_runtime_good
   - invalid_or_unmaterializable
-  divergence_judgment: pending_first_L4
+  divergence_judgment: proxy_preserved_clue_runtime_decision_replay_negative
   prevention_memory:
   - do_not_reuse_momentum_ret_1_score_replay_negative_memory_as_candidate
   - record_price_distance_unit_conversion_before_reusing_barrier_or_ATR_stop_logic
-  follow_up_action: work_wave01_event_barrier_first_batch_spec_v0
+  - Preserved score-band proxy clues did not become tradeable under direct score_band_side
+    replay.
+  - Do not carry score_band_side replay forward as a new candidate or campaign repair.
+  - Future ATR/barrier/risk distance logic must keep unit conversion and MT5 execution
+    semantics explicit.
+  - Open-failed actions require execution audit before any future L5 claim.
+  follow_up_action: work_wave01_open_next_multi_axis_surface_v0
   claim_boundary: campaign_parity_tracking_only_no_runtime_authority
-next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+next_action: work_wave01_open_next_multi_axis_surface_v0
 notes: Campaign opened as a new multi-axis surface, not bounded synthesis and not
   a repair continuation. No runs, models, candidates, economics, runtime authority,
   or Goal Achieve claim.
@@ -271,3 +277,13 @@ first_batch_proxy_result:
   runtime_claim: false
   claim_boundary: wave01_event_barrier_proxy_batch_l4_required_no_candidate_no_baseline_no_runtime_authority
   next_action: work_wave01_event_barrier_l4_materialization_preflight_v0
+campaign_closeout:
+  path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+  status: wave01_event_barrier_decision_replay_closed_no_candidate
+  result_judgment: negative
+  candidate_count: 0
+  l5_candidate_count: 0
+  negative_memory_ids:
+  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+  claim_boundary: wave01_event_barrier_campaign_closed_negative_memory_no_candidate_no_l5_no_runtime_authority_no_economics_pass
+  next_action: work_wave01_open_next_multi_axis_surface_v0
