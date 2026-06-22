@@ -209,6 +209,35 @@ def validate_skill_receipt_schema(repo_root: Path) -> list[str]:
         observed=task_force,
         required={"role_modes"},
     )
+    failure_disposition = data.get("conditional_required_fields", {}).get("failure_disposition") or {}
+    failure_required_when = set(failure_disposition.get("required_when", []))
+    add_missing(
+        errors,
+        label="skill_receipt_schema.yaml failure_disposition.required_when",
+        observed=failure_required_when,
+        required={
+            "result_judgment_is_blocked",
+            "result_judgment_is_deferred",
+            "result_judgment_is_invalid",
+            "result_judgment_is_discarded",
+            "tool_adapter_converter_parser_runtime_or_data_support_gap_blocks_progress",
+        },
+    )
+    failure_fields = set(failure_disposition.get("required_fields", []))
+    add_missing(
+        errors,
+        label="skill_receipt_schema.yaml failure_disposition.required_fields",
+        observed=failure_fields,
+        required={
+            "failure_reproduction_or_attempt_blocker",
+            "exact_failing_layer",
+            "bounded_repair_or_fallback_attempt_or_attempt_blocker",
+            "evidence_paths",
+            "remaining_blocker",
+            "reopen_condition",
+            "claim_effect",
+        },
+    )
     return errors
 
 

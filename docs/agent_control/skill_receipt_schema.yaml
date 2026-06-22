@@ -18,6 +18,25 @@ required_common_fields:
   - claim_boundary
   - forbidden_claims
 
+conditional_required_fields:
+  failure_disposition:
+    required_when:
+      - result_judgment_is_blocked
+      - result_judgment_is_deferred
+      - result_judgment_is_invalid
+      - result_judgment_is_discarded
+      - tool_adapter_converter_parser_runtime_or_data_support_gap_blocks_progress
+    required_fields:
+      - status
+      - failure_reproduction_or_attempt_blocker
+      - exact_failing_layer
+      - bounded_repair_or_fallback_attempt_or_attempt_blocker
+      - evidence_paths
+      - remaining_blocker
+      - reopen_condition
+      - claim_effect
+    rule: "A nonworking path remains investigation_in_progress until Codex identifies why it failed, reproduces or bounds the failing layer, tries the smallest credible repo-controlled repair/adapter/fallback, and records evidence plus reopen condition. Missing repo-controlled adapter/glue is implementation work before blocked, deferred, invalid, or discarded."
+
 skill_specific:
   spacesonar-workspace-state-sync:
     required_fields:
