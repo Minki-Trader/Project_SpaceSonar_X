@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
 from pathlib import Path
 
@@ -19,6 +20,9 @@ from spacesonar.control_plane.state_projection import workspace_projection_diff,
 
 
 DEFAULT_CLAIM_BOUNDARY = "control_plane_operation_only_no_runtime_authority_no_economics_pass"
+CORRECTIVE_BRANCH = "codex/control-plane-corrective-v3"
+CORRECTIVE_WORK_ITEM_ID = "work_codex_control_plane_corrective_v3"
+CORRECTIVE_LEDGER_VERSION = "corrective_workflow_progress_v1"
 CORRECTIVE_PROGRESS_PATH = Path("docs/migrations/control_plane_corrective_v3_progress.yaml")
 CORRECTIVE_LIFECYCLE_GUARD_EXIT = 3
 CORRECTIVE_LIFECYCLE_GUARD_MESSAGE = (
@@ -51,16 +55,40 @@ def print_result(result) -> None:
     )
 
 
-def corrective_lifecycle_guard_reason(repo_root: Path) -> str | None:
-    """Block incomplete corrective lifecycle commands in the canonical repository only."""
+def current_git_branch(repo_root: Path) -> str | None:
+    result = subprocess.run(
+        ["git", "branch", "--show-current"],
+        cwd=repo_root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip() or None
 
+
+def corrective_lifecycle_guard_reason(repo_root: Path) -> str | None:
+    """Fail closed for corrective lifecycle commands until the corrective patch activates them."""
+
+    branch = current_git_branch(repo_root)
+    if branch != CORRECTIVE_BRANCH:
+        return None
     progress_path = repo_root / CORRECTIVE_PROGRESS_PATH
     if not progress_path.exists():
-        return None
+        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger is missing"
     try:
-        progress = yaml.safe_load(progress_path.read_text(encoding="utf-8-sig")) or {}
-    except yaml.YAMLError:
-        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger is not parseable"
+        progress = yaml.safe_load(progress_path.read_text(encoding="utf-8-sig"))
+    except (OSError, UnicodeError, yaml.YAMLError):
+        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger is unreadable"
+    if not isinstance(progress, dict):
+        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger root is not a mapping"
+    if progress.get("version") != CORRECTIVE_LEDGER_VERSION:
+        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger version mismatch"
+    if progress.get("work_item_id") != CORRECTIVE_WORK_ITEM_ID:
+        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger work_item_id mismatch"
+    if progress.get("branch") != CORRECTIVE_BRANCH:
+        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger branch mismatch"
     work_units = progress.get("work_units") or {}
     wp02_done = (work_units.get("WP02") or {}).get("status") == "completed"
     wp04_done = (work_units.get("WP04") or {}).get("status") == "completed"

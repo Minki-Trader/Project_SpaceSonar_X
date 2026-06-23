@@ -28,8 +28,11 @@ baseline_facts:
   current_wave01_runtime_contract_status: passed
   active_wave_status: wave01_control_plane_proof_closed_runtime_contract_complete
   workspace_claim_boundary_at_entry: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
-  runtime_attempt_directory_count: 88
-  runtime_attempt_manifest_count: 88
+  runtime_attempt_directory_count_total: 88
+  runtime_attempt_manifest_count_total: 88
+  runtime_target_attempt_manifest_count: 86
+  runtime_target_definition:
+    wave0_or_wave01_l4_attempt_with_execution_state: true
 work_units:
   WP00:
     status: completed
@@ -40,13 +43,19 @@ work_units:
     validation:
       - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
         status: passed
-        result: 7 passed
+        result: WP00 guard tests passed before fail-closed amendment; amended test count recorded below.
+      - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
+        status: passed
+        result: 14 passed
       - command: python -m spacesonar.cli campaign materialize --campaign-id campaign_wp00_guard_probe_v0
         status: passed
         result: canonical lifecycle CLI rejected with exit code 3 before mutation
-      - command: python -m spacesonar.cli project validate
+      - command: uv run python -m spacesonar.cli project validate
         status: passed
         result: project validation remained available while lifecycle mutation is blocked
+      - command: git diff --check
+        status: passed
+        result: no whitespace errors
       - command: yaml parse docs/migrations/control_plane_corrective_v3_progress.yaml
         status: passed
         result: progress ledger parsed by WP00 test
@@ -57,6 +66,12 @@ work_units:
       - id: wp00_lifecycle_cli_guard_required
         status: passed
         detail: Canonical campaign and wave lifecycle CLI commands are blocked until WP02 and WP04 complete.
+      - id: wp00_fail_closed_lifecycle_guard_amendment
+        status: passed
+        detail: Corrective branch lifecycle guard must fail closed for missing or invalid progress ledger and release only after WP02 and WP04 are completed.
+      - id: wp00_runtime_target_count_clarified
+        status: passed
+        detail: Runtime manifests are recorded as 88 total, with 86 Wave0/Wave01 L4 attempts targeted for hardened runtime migration.
       - id: wp00_no_wave01_evidence_changed
         status: passed
         detail: WP00 changed only the progress ledger, CLI guard, and focused guard tests.
@@ -68,8 +83,22 @@ work_units:
       - Get-FileHash -Algorithm SHA256 -LiteralPath uv.lock
       - uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
       - python -m spacesonar.cli campaign materialize --campaign-id campaign_wp00_guard_probe_v0
-      - python -m spacesonar.cli project validate
+      - uv run python -m spacesonar.cli project validate
+      - git diff --check
     baseline_facts_ref: baseline_facts
+    amendment:
+      id: wp00_fail_closed_corrective_lifecycle_guard
+      status: completed
+      commit_subject: WP00 fail-closed corrective lifecycle guard
+      commit_sha: pending_until_commit_created
+      requested_at_utc: '2026-06-23T00:00:00Z'
+      requirements:
+        - corrective branch missing progress ledger blocks with exit code 3
+        - malformed or non-mapping progress ledger blocks with exit code 3
+        - wrong ledger version, work_item_id, or branch blocks with exit code 3
+        - WP02 or WP04 incomplete blocks with exit code 3
+        - WP02 and WP04 completed releases lifecycle command dispatch
+        - blocked lifecycle commands create zero campaign, wave, or transaction artifacts
     handoff:
       next_packet: WP01
       required_entry_condition: WP00.status completed
