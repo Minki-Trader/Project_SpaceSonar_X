@@ -34,6 +34,8 @@ from foundation.mt5.runtime_completion import (
     evaluate_runtime_attempt,
     resolve_tester_report_candidates,
     runtime_status,
+    terminal_launched_from_summary,
+    terminal_mode_from_summary,
 )
 from foundation.mt5.tester_report_receipt import (
     build_tester_report_receipt,
@@ -660,7 +662,13 @@ def runtime_contract_value(
 ) -> str | None:
     runtime_contract = manifest.get("runtime_surface_contract") or {}
     routing = manifest.get("runtime_probe_routing") or {}
+    period_identity = manifest.get("period_identity") or {}
+    execution_identity = manifest.get("execution_identity") or {}
     for value in [
+        period_identity.get(key),
+        *(period_identity.get(item) for item in contract_keys),
+        execution_identity.get(key),
+        *(execution_identity.get(item) for item in contract_keys),
         row.get(key),
         manifest.get(key),
         *(runtime_contract.get(item) for item in contract_keys),
@@ -670,6 +678,11 @@ def runtime_contract_value(
         if value not in (None, ""):
             return str(value)
     return None
+
+
+def ensure_completion_surface_scope(manifest: dict[str, Any], completion_surface_scope: str) -> None:
+    runtime_contract = manifest.setdefault("runtime_surface_contract", {})
+    runtime_contract["completion_surface_scope"] = completion_surface_scope
 
 
 def parse_score_telemetry(path: Path) -> dict[str, Any]:
@@ -747,7 +760,13 @@ def normalize_l4_terminal_summary(terminal_summary: dict[str, Any]) -> dict[str,
     return summary
 
 
-def update_coverage(manifest: dict[str, Any], *, telemetry_observed: bool, report_observed: bool) -> None:
+def update_coverage(
+    manifest: dict[str, Any],
+    *,
+    telemetry_observed: bool,
+    report_observed: bool,
+    report_completed: bool,
+) -> None:
     coverage = manifest.setdefault("required_gate_coverage", {})
     passed = coverage.setdefault("passed", [])
     missing = coverage.setdefault("missing", [])
@@ -772,12 +791,27 @@ def update_coverage(manifest: dict[str, Any], *, telemetry_observed: bool, repor
         mark_passed("Strategy_Tester_terminal_execution")
         mark_missing("score_telemetry_csv")
         mark_missing("result_judgment_from_L4")
-    if report_observed:
+    if report_completed:
         mark_passed("L4_period_role_completed_report")
-        mark_passed("tester_report_hash")
     else:
         mark_missing("L4_period_role_completed_report")
+    if report_observed:
+        mark_passed("tester_report_hash")
+    else:
         mark_missing("tester_report_hash")
+
+
+def append_missing_evidence(manifest: dict[str, Any], values: list[str]) -> None:
+    missing = manifest.setdefault("missing_evidence", [])
+    for value in values:
+        if value and value not in missing:
+            missing.append(value)
+
+
+def score_attempt_next_action(runtime_probe_complete: bool) -> str:
+    if runtime_probe_complete:
+        return "aggregate this period role with its paired L4 attempt before L5 decision"
+    return "inspect terminal/EA/report evidence and rerun or repair this attempt before L4 completion claim"
 
 
 def attempt_root(repo_root: Path, attempt_id: str) -> Path:
@@ -805,6 +839,7 @@ def run_one_attempt(
         manifest=manifest,
         tester_config=tester_config,
     )
+    ensure_completion_surface_scope(manifest, "full_period_deterministic")
     report_config_summary = normalize_tester_report_config(tester_config, attempt_id)
     manifest.setdefault("artifact_identity", {})["tester_config"] = artifact_ref(tester_config, repo_root)
     write_yaml(manifest_path, manifest)
@@ -930,15 +965,16 @@ def run_one_attempt(
         portable_terminal_root=portable_terminal_root,
         main_terminal_data_root=main_data_root,
     )
-    report_observed = bool(report.get("observed"))
+    report_observed = bool(report_receipt.get("source_report_sha256"))
     report_completed = tester_report_completed(report_receipt)
 
     result_judgment = "runtime_probe" if telemetry_observed else "inconclusive"
-    terminal_mode = (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used")
-    terminal_mode_label = "main_mode_config_fallback" if terminal_mode else "portable_contract_attempt"
+    terminal_mode_policy = terminal_summary.get("terminal_mode_policy") or {}
+    terminal_launched = terminal_launched_from_summary(terminal_summary)
+    terminal_mode_label = terminal_mode_from_summary(terminal_summary)
     completion = evaluate_runtime_attempt(
         RuntimeAttemptState(
-            terminal_launched=True,
+            terminal_launched=terminal_launched,
             telemetry_file_observed=telemetry_file_observed,
             telemetry_rows_observed=telemetry_observed,
             tester_report_observed=report_observed,
@@ -950,7 +986,10 @@ def run_one_attempt(
             execution_profile_id=runtime_contract_value(
                 manifest, row, "tester_execution_profile_id", "execution_profile_id"
             ),
-            surface_scope=runtime_contract_value(manifest, row, "surface_scope"),
+            surface_scope=runtime_contract_value(manifest, row, "completion_surface_scope"),
+            portable_attempted=terminal_mode_policy.get("portable_attempted"),
+            main_mode_fallback_allowed=terminal_mode_policy.get("main_mode_fallback_allowed"),
+            main_mode_fallback_used=terminal_mode_policy.get("main_mode_fallback_used"),
         ),
         required_period_roles=["validation", "research_oos"],
         completion_eligible_surface_scopes=["full_period_deterministic", "full_period_sparse_decision_surface"],
@@ -961,7 +1000,7 @@ def run_one_attempt(
     manifest["claim_boundary"] = CLAIM_BOUNDARY if telemetry_observed else str(telemetry_summary["claim_boundary"])
     manifest["result_judgment"] = result_judgment
     manifest["execution_state"] = {
-        "terminal_launched": True,
+        "terminal_launched": terminal_launched,
         "telemetry_file_observed": telemetry_file_observed,
         "telemetry_rows_observed": telemetry_observed,
         "tester_report_observed": report_observed,
@@ -1015,11 +1054,8 @@ def run_one_attempt(
         )
     if not report_observed:
         manifest["missing_evidence"].append("tester_report_missing_or_not_archived")
-    manifest["next_action"] = (
-        "aggregate this period role with its paired L4 attempt before L5 decision"
-        if telemetry_observed
-        else "inspect terminal/EA logs and rerun this attempt before L4 completion claim"
-    )
+    append_missing_evidence(manifest, list(report_receipt.get("missing_requirements") or []))
+    manifest["next_action"] = score_attempt_next_action(completion.runtime_probe_complete)
     parity = manifest.setdefault("proxy_runtime_parity", {})
     parity["minimum_reconciliation_attempt"] = {
         "status": "terminal_score_probe_observed" if telemetry_observed else "terminal_attempted_score_probe_missing",
@@ -1034,7 +1070,12 @@ def run_one_attempt(
     )
     parity["comparison_class"] = "pending_pair_aggregation_after_L4_period_roles"
     parity["follow_up_action"] = manifest["next_action"]
-    update_coverage(manifest, telemetry_observed=telemetry_observed, report_observed=report_observed)
+    update_coverage(
+        manifest,
+        telemetry_observed=telemetry_observed,
+        report_observed=report_observed,
+        report_completed=report_completed,
+    )
     write_yaml(manifest_path, manifest)
 
     execution_row = {

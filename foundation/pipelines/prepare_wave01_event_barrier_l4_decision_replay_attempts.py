@@ -242,6 +242,7 @@ def build_attempt_manifest(
             "score_replay_not_onnx_execution": True,
         },
         "runtime_surface_contract": {
+            "completion_surface_scope": "full_period_sparse_decision_surface",
             "surface_scope": "full_period_sparse_decision_surface_from_mt5_score_telemetry",
             "source_score_telemetry_common_path": row["source_score_telemetry_common_path"],
             "source_score_attempt_manifest": source_attempt["attempt_manifest_path"],

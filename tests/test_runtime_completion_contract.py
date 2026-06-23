@@ -30,6 +30,9 @@ def state(**overrides: object) -> RuntimeAttemptState:
         "runtime_period_set_id": EXPECTED_RUNTIME_PERIOD_SET_ID,
         "execution_profile_id": EXPECTED_EXECUTION_PROFILE_ID,
         "surface_scope": "full_period_deterministic",
+        "portable_attempted": True,
+        "main_mode_fallback_allowed": False,
+        "main_mode_fallback_used": False,
     }
     defaults.update(overrides)
     return RuntimeAttemptState(**defaults)  # type: ignore[arg-type]

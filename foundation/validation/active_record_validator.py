@@ -1114,7 +1114,18 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
             path.parent / "execution_telemetry_summary.yaml",
         ]
         telemetry_path = next((candidate for candidate in telemetry_candidates if candidate.exists()), None)
-        if receipt_path.exists() and terminal_path.exists() and telemetry_path is not None:
+        has_new_receipt_projection = bool(attempt.get("tester_report_receipt"))
+        has_new_evidence = receipt_path.exists() or has_new_receipt_projection
+        if has_new_evidence:
+            if not receipt_path.exists():
+                errors.append(f"{label}: tester_report_receipt.yaml missing from receipt-bearing runtime evidence set")
+            if not terminal_path.exists():
+                errors.append(f"{label}: terminal_run_summary.yaml missing from receipt-bearing runtime evidence set")
+            if telemetry_path is None:
+                errors.append(f"{label}: telemetry summary missing from receipt-bearing runtime evidence set")
+            if not (receipt_path.exists() and terminal_path.exists() and telemetry_path is not None):
+                continue
+
             from foundation.mt5.runtime_completion import (
                 RuntimeEvidencePaths,
                 evaluate_runtime_attempt,
@@ -1141,6 +1152,33 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
             if runtime_complete != reconstructed_result.runtime_probe_complete:
                 errors.append(
                     f"{label}: stored runtime_probe_complete projection conflicts with reconstructed runtime evidence"
+                )
+            projected = {
+                "terminal_launched": bool(execution_state.get("terminal_launched")),
+                "telemetry_file_observed": bool(execution_state.get("telemetry_file_observed")),
+                "telemetry_rows_observed": bool(execution_state.get("telemetry_rows_observed")),
+                "tester_report_observed": bool(execution_state.get("tester_report_observed")),
+                "tester_report_completed": bool(execution_state.get("tester_report_completed")),
+                "terminal_mode": str(execution_state.get("terminal_mode") or ""),
+                "runtime_probe_complete": runtime_complete,
+            }
+            reconstructed_projection = {
+                "terminal_launched": reconstructed.terminal_launched,
+                "telemetry_file_observed": reconstructed.telemetry_file_observed,
+                "telemetry_rows_observed": reconstructed.telemetry_rows_observed,
+                "tester_report_observed": reconstructed.tester_report_observed,
+                "tester_report_completed": reconstructed.tester_report_completed,
+                "terminal_mode": reconstructed.terminal_mode,
+                "runtime_probe_complete": reconstructed_result.runtime_probe_complete,
+            }
+            for key, value in projected.items():
+                if value != reconstructed_projection[key]:
+                    errors.append(f"{label}: stored {key} projection conflicts with reconstructed runtime evidence")
+            stored_missing = tuple(str(item) for item in execution_state.get("missing_requirements", []))
+            reconstructed_missing = tuple(str(item) for item in reconstructed_result.missing_requirements)
+            if stored_missing != reconstructed_missing:
+                errors.append(
+                    f"{label}: stored missing_requirements projection conflicts with reconstructed runtime evidence"
                 )
 
     for path in sorted((repo_root / "lab" / "campaigns").glob("**/*runtime_execution_summary.yaml")):

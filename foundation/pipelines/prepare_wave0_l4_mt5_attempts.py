@@ -356,6 +356,7 @@ def attempt_manifest(
             "non_trading_probe": True,
         },
         "runtime_surface_contract": {
+            "completion_surface_scope": "full_period_deterministic",
             "base_frame": bundle["data_source"]["base_frame"],
             "row_key": bundle["data_source"]["row_key"],
             "input_name": bundle["input_schema"]["input_name"],

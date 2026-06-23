@@ -28,6 +28,9 @@ class RuntimeAttemptState:
     runtime_period_set_id: str | None
     execution_profile_id: str | None
     surface_scope: str | None
+    portable_attempted: bool | None = None
+    main_mode_fallback_allowed: bool | None = None
+    main_mode_fallback_used: bool | None = None
 
 
 @dataclass(frozen=True)
@@ -82,9 +85,22 @@ def evaluate_runtime_attempt(
     if not attempt.tester_report_completed:
         missing.append("tester_report_completed")
 
-    portable_contract_satisfied = attempt.terminal_mode == PORTABLE_CONTRACT_MODE
+    portable_contract_satisfied = all(
+        [
+            attempt.terminal_mode == PORTABLE_CONTRACT_MODE,
+            attempt.portable_attempted is True,
+            attempt.main_mode_fallback_allowed is False,
+            attempt.main_mode_fallback_used is False,
+        ]
+    )
     if not portable_contract_satisfied:
         missing.append("portable_terminal_contract")
+    if attempt.portable_attempted is not True:
+        missing.append("portable_attempted")
+    if attempt.main_mode_fallback_allowed is not False:
+        missing.append("main_mode_fallback_not_allowed")
+    if attempt.main_mode_fallback_used is not False:
+        missing.append("main_mode_fallback_not_used")
 
     period_contract_satisfied = True
     if attempt.period_role not in required_roles:
@@ -183,6 +199,8 @@ def reconstruct_runtime_attempt(repo_root: Path, paths: RuntimeEvidencePaths) ->
 
     surface_contract = _mapping(attempt_manifest.get("runtime_surface_contract"))
     routing = _mapping(attempt_manifest.get("runtime_probe_routing"))
+    period_identity = _mapping(attempt_manifest.get("period_identity"))
+    execution_identity = _mapping(attempt_manifest.get("execution_identity"))
     telemetry_stats = _mapping(telemetry_summary.get("stats"))
     telemetry_artifact = _mapping(telemetry_summary.get("telemetry"))
     terminal_policy = _mapping(terminal_summary.get("terminal_mode_policy"))
@@ -207,6 +225,7 @@ def reconstruct_runtime_attempt(repo_root: Path, paths: RuntimeEvidencePaths) ->
         terminal_mode=terminal_mode,
         period_role=str(
             _first_present(
+                period_identity.get("period_role"),
                 attempt_manifest.get("period_role"),
                 routing.get("period_role"),
                 surface_contract.get("period_role"),
@@ -214,17 +233,20 @@ def reconstruct_runtime_attempt(repo_root: Path, paths: RuntimeEvidencePaths) ->
             or ""
         ),
         period_profile_id=_first_present(
+            period_identity.get("period_profile_id"),
             attempt_manifest.get("period_profile_id"),
             routing.get("runtime_period_profile_id"),
             surface_contract.get("period_profile_id"),
             surface_contract.get("runtime_period_profile_id"),
         ),
         runtime_period_set_id=_first_present(
+            period_identity.get("runtime_period_set_id"),
             attempt_manifest.get("runtime_period_set_id"),
             routing.get("runtime_period_set_id"),
             surface_contract.get("runtime_period_set_id"),
         ),
         execution_profile_id=_first_present(
+            execution_identity.get("execution_profile_id"),
             attempt_manifest.get("execution_profile_id"),
             attempt_manifest.get("tester_execution_profile_id"),
             routing.get("execution_profile_id"),
@@ -233,10 +255,13 @@ def reconstruct_runtime_attempt(repo_root: Path, paths: RuntimeEvidencePaths) ->
             surface_contract.get("tester_execution_profile_id"),
         ),
         surface_scope=_first_present(
-            attempt_manifest.get("surface_scope"),
-            routing.get("surface_scope"),
-            surface_contract.get("surface_scope"),
+            surface_contract.get("completion_surface_scope"),
+            attempt_manifest.get("completion_surface_scope"),
+            routing.get("completion_surface_scope"),
         ),
+        portable_attempted=_bool_or_none(terminal_policy.get("portable_attempted")),
+        main_mode_fallback_allowed=_bool_or_none(terminal_policy.get("main_mode_fallback_allowed")),
+        main_mode_fallback_used=_bool_or_none(terminal_policy.get("main_mode_fallback_used")),
     )
 
 
@@ -270,6 +295,19 @@ def _int_or_zero(value: Any) -> int:
         return 0
 
 
+def _bool_or_none(value: Any) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return None
+    text = str(value).strip().lower()
+    if text in {"true", "1", "yes"}:
+        return True
+    if text in {"false", "0", "no"}:
+        return False
+    return None
+
+
 def _terminal_launched(summary: dict[str, Any]) -> bool:
     if "terminal_launched" in summary:
         return bool(summary.get("terminal_launched"))
@@ -278,15 +316,33 @@ def _terminal_launched(summary: dict[str, Any]) -> bool:
     return any(key in summary for key in ("exit_code", "timed_out", "process_status", "telemetry_observed"))
 
 
+def terminal_launched_from_summary(summary: dict[str, Any]) -> bool:
+    return _terminal_launched(summary)
+
+
+def terminal_mode_from_summary(summary: dict[str, Any]) -> str:
+    return _terminal_mode(summary, _mapping(summary.get("terminal_mode_policy")), _terminal_launched(summary))
+
+
 def _terminal_mode(summary: dict[str, Any], policy: dict[str, Any], terminal_launched: bool) -> str:
-    explicit = _first_present(summary.get("terminal_mode"), summary.get("terminal_mode_label"))
+    del policy, terminal_launched
+    explicit = _first_present(summary.get("mode"), summary.get("terminal_mode"), summary.get("terminal_mode_label"))
     if explicit:
         return explicit
-    if policy.get("main_mode_fallback_used"):
-        return "main_mode_config_fallback"
-    if terminal_launched:
-        return PORTABLE_CONTRACT_MODE
+    attempts = summary.get("terminal_attempts")
+    selected_index = _int_or_none(summary.get("selected_attempt_index"))
+    if isinstance(attempts, list) and selected_index is not None and 0 <= selected_index < len(attempts):
+        selected = attempts[selected_index]
+        if isinstance(selected, dict):
+            return _first_present(selected.get("mode")) or ""
     return ""
+
+
+def _int_or_none(value: Any) -> int | None:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
 
 
 def _with_report_suffixes(path: Path) -> list[Path]:

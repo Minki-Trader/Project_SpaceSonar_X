@@ -112,15 +112,21 @@ work_units:
       guard_state: canonical lifecycle CLI mutation remains blocked until WP02 and WP04 complete.
   WP01:
     status: completed
-    completed_at_utc: '2026-06-23T00:39:48Z'
+    completed_at_utc: '2026-06-23T01:10:00Z'
     objective: Build independent runtime-evidence truth primitives without migrating historical Wave0/Wave01 attempts.
     changed_files:
       - docs/migrations/control_plane_corrective_v3_progress.yaml
       - foundation/mt5/runtime_completion.py
       - foundation/mt5/tester_report_receipt.py
+      - foundation/config/mt5_runtime_probe_contract.yaml
+      - foundation/pipelines/prepare_wave0_l4_mt5_attempts.py
+      - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+      - foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+      - foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
       - foundation/pipelines/run_wave0_l4_mt5_attempts.py
       - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
       - foundation/validation/active_record_validator.py
+      - tests/fixtures/mt5_strategy_tester_report_minimal.html
       - tests/test_runtime_evidence_truth_kernel.py
     truth_primitives:
       - tester_report_receipt_v1 records report hash, size, origin, extension, freshness, parse status, completion marker, tester identity fields, fatal error count, and claim boundary.
@@ -128,6 +134,9 @@ work_units:
       - RuntimeEvidencePaths binds attempt manifest, terminal summary, telemetry summary, and tester report receipt for reconstruction.
       - reconstruct_runtime_attempt rebuilds RuntimeAttemptState from durable files and does not read stored execution_state.runtime_probe_complete.
       - active_record_validator compares stored runtime_probe_complete projections against reconstructed evidence when tester_report_receipt.yaml exists.
+      - terminal mode is explicit-only and portable completion requires portable_attempted true with no fallback allowed or used.
+      - canonical identity is read from period_identity and execution_identity before compatibility fields.
+      - completion surface is read from runtime_surface_contract.completion_surface_scope; descriptive surface_scope is not completion-eligible by default.
     wp03_migration_api_handoff:
       receipt_builder: foundation.mt5.tester_report_receipt.build_tester_report_receipt
       receipt_completion_predicate: foundation.mt5.tester_report_receipt.tester_report_completed
@@ -135,21 +144,37 @@ work_units:
       runtime_evidence_paths: foundation.mt5.runtime_completion.RuntimeEvidencePaths
       runtime_reconstructor: foundation.mt5.runtime_completion.reconstruct_runtime_attempt
       runtime_evaluator: foundation.mt5.runtime_completion.evaluate_runtime_attempt
+      terminal_mode_reconstructor: foundation.mt5.runtime_completion.terminal_mode_from_summary
+      terminal_launch_reconstructor: foundation.mt5.runtime_completion.terminal_launched_from_summary
       validator_hook: foundation.validation.active_record_validator.validate_runtime_completion_truth
       receipt_path_template: runtime/mt5_attempts/<attempt_id>/tester_report_receipt.yaml
+      completion_surface_field: runtime_surface_contract.completion_surface_scope
+      required_terminal_policy_fields:
+        - portable_attempted
+        - main_mode_fallback_allowed
+        - main_mode_fallback_used
     validation:
       - command: uv run pytest tests/test_runtime_evidence_truth_kernel.py -q
         status: passed
-        result: 19 passed
+        result: 35 passed
       - command: uv run pytest tests/test_runtime_completion_contract.py -q
         status: passed
         result: 8 passed
-      - command: python -m compileall foundation/mt5/runtime_completion.py foundation/mt5/tester_report_receipt.py foundation/pipelines/run_wave0_l4_mt5_attempts.py foundation/pipelines/run_wave0_l4_decision_replay_attempts.py foundation/validation/active_record_validator.py
+      - command: uv run pytest tests/test_wave0_l4_mt5_attempt_runner.py -q
         status: passed
-        result: changed Python files compiled successfully
+        result: 8 passed
+      - command: uv run pytest tests/test_wave01_event_barrier_l4_mt5_runner.py -q
+        status: passed
+        result: 5 passed
+      - command: uv run pytest tests/test_wave01_session_transition_l4_mt5_runner.py -q
+        status: passed
+        result: 7 passed
       - command: uv run python -m spacesonar.cli project validate
         status: passed
         result: project validation passed
+      - command: python -m compileall foundation/mt5 foundation/pipelines foundation/validation
+        status: passed
+        result: changed Python files compiled successfully
       - command: git diff --check
         status: passed
         result: no whitespace errors
@@ -162,10 +187,37 @@ work_units:
       - report_without_completion_marker_not_completed
       - table_like_report_label_value_lines_can_complete
       - wrong_symbol_timeframe_dates_or_model_not_completed
-      - missing_period_profile_runtime_period_execution_profile_or_surface_scope_fails_completion
+      - launched_terminal_without_explicit_mode_is_not_portable
+      - terminal_summary_mode_is_read_correctly
+      - portable_attempted_false_fails_completion
+      - fallback_allowed_true_fails_completion
+      - nested_period_identity_is_read
+      - nested_execution_identity_is_read
+      - missing_period_profile_runtime_period_execution_profile_or_completion_surface_scope_fails_completion
+      - descriptive_decision_replay_surface_scope_not_completion_eligible
+      - explicit_completion_surface_scope_succeeds
+      - report_mtime_before_launch_is_stale
+      - missing_expected_identity_field_fails
+      - malformed_fatal_error_count_fails_closed
+      - sanitized_real_format_mt5_report_fixture_parses
+      - generic_history_quality_token_alone_does_not_complete
+      - partial_evidence_set_is_rejected
+      - stale_report_does_not_pass_completed_report_gate
+      - runner_next_action_remains_repair_when_report_contract_fails
       - stored_completion_boolean_true_cannot_override_reconstructed_truth
       - valid_portable_report_backed_score_attempt_completes
       - valid_portable_report_backed_decision_replay_attempt_completes
+    amendment:
+      id: wp01_runtime_truth_kernel_real_record_alignment
+      status: completed
+      commit_subject: WP01 amendment align truth kernel with real records
+      commit_sha: pending_recorded_after_commit
+      requirements:
+        - explicit terminal mode only; no portable inference from terminal launch
+        - canonical nested period_identity and execution_identity precedence
+        - explicit completion_surface_scope for future attempts
+        - tester report receipts fail closed on version, timestamps, mtime, identity, fatal errors, parse and completion markers
+        - new receipt-bearing records require a complete evidence set and matching projections
     historical_mutation:
       status: not_started
       reason: WP01 adds truth primitives only; WP03 will migrate the 86 historical target attempts.
