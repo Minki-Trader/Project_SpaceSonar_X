@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import re
+import unicodedata
 from dataclasses import dataclass
-from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,7 @@ import yaml
 
 
 REGISTRY_PATH = Path("docs/agent_control/work_family_registry.yaml")
+CLAIM_VOCABULARY_PATH = Path("docs/agent_control/claim_vocabulary.yaml")
 
 
 @dataclass(frozen=True)
@@ -26,20 +28,64 @@ def _repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
-@lru_cache(maxsize=1)
-def _active_registry() -> dict[str, Any]:
-    path = _repo_root() / REGISTRY_PATH
+def _load_yaml(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8-sig") as handle:
         data = yaml.safe_load(handle) or {}
+    if not isinstance(data, dict):
+        raise ValueError(f"{path.as_posix()} must contain a YAML mapping")
     return data
+
+
+def load_routing_registry(repo_root: Path | None = None) -> dict[str, Any]:
+    root = (repo_root or _repo_root()).resolve()
+    return _load_yaml(root / REGISTRY_PATH)
+
+
+def load_claim_vocabulary(repo_root: Path | None = None) -> dict[str, Any]:
+    root = (repo_root or _repo_root()).resolve()
+    return _load_yaml(root / CLAIM_VOCABULARY_PATH)
+
+
+def _normalize_text(value: str) -> str:
+    normalized = unicodedata.normalize("NFKC", str(value)).casefold()
+    normalized = re.sub(r"[-_]+", " ", normalized)
+    normalized = re.sub(r"\s+", " ", normalized)
+    return normalized.strip()
 
 
 def _contains_any(text: str, tokens: tuple[str, ...]) -> bool:
     return any(token in text for token in tokens)
 
 
-def _family_skill(family: str) -> str:
-    families = (_active_registry().get("work_families") or {})
+def _claim_alias_hits(text: str, requested_claims: tuple[str, ...], claim_vocabulary: dict[str, Any]) -> set[str]:
+    haystacks = [_normalize_text(text), *[_normalize_text(item) for item in requested_claims]]
+    hits: set[str] = set()
+    for claim_id, aliases in (claim_vocabulary.get("protected_claim_aliases") or {}).items():
+        alias_values = aliases if isinstance(aliases, list) else []
+        for alias in alias_values:
+            needle = _normalize_text(str(alias))
+            if needle and any(needle in haystack for haystack in haystacks):
+                hits.add(str(claim_id))
+                break
+    if requested_claims:
+        for item in requested_claims:
+            normalized = _normalize_text(item)
+            matched_known = any(normalized in _normalize_text(str(alias)) for aliases in (claim_vocabulary.get("protected_claim_aliases") or {}).values() for alias in (aliases or []))
+            if not matched_known:
+                hits.add("generic_requested_claim")
+    return hits
+
+
+def _has_assertion_intent(text: str, execution_layers: tuple[str, ...], requested_claims: tuple[str, ...], claim_vocabulary: dict[str, Any]) -> bool:
+    if requested_claims:
+        return True
+    haystack = _normalize_text(" ".join([text, *execution_layers]))
+    aliases = tuple(_normalize_text(str(item)) for item in (claim_vocabulary.get("protected_claim_assertion_intent_aliases") or []))
+    return _contains_any(haystack, aliases)
+
+
+def _family_skill(family: str, registry: dict[str, Any]) -> str:
+    families = registry.get("work_families") or {}
     if family not in families:
         raise KeyError(f"routing family {family!r} is absent from {REGISTRY_PATH.as_posix()}")
     skill = families[family].get("primary_skill")
@@ -55,10 +101,20 @@ def _decision(
     confidence: float,
     rules: list[str],
     ambiguous: list[str],
+    *,
+    registry: dict[str, Any],
 ) -> RouteDecision:
+    profiles = registry.get("verification_profiles") or {}
+    guard_sets = registry.get("route_guard_sets") or {}
+    if family not in (registry.get("work_families") or {}):
+        raise KeyError(f"router attempted undeclared family {family!r}")
+    if verification_profile not in profiles:
+        raise KeyError(f"router attempted undeclared verification_profile {verification_profile!r}")
+    if guard_set not in guard_sets:
+        raise KeyError(f"router attempted undeclared policy_guard_set {guard_set!r}")
     return RouteDecision(
         family,
-        _family_skill(family),
+        _family_skill(family, registry),
         verification_profile,
         guard_set,
         confidence,
@@ -70,121 +126,165 @@ def _decision(
 def route_work_item(
     request_text: str,
     *,
+    repo_root: Path | None = None,
+    registry: dict[str, Any] | None = None,
     touched_paths: tuple[str, ...] = (),
     execution_layers: tuple[str, ...] = (),
     requested_claims: tuple[str, ...] = (),
+    requested_family: str | None = None,
 ) -> RouteDecision:
-    text = " ".join([request_text, *touched_paths, *execution_layers, *requested_claims]).lower()
-    request_only = request_text.lower()
-    path_text = " ".join(touched_paths).lower()
-    layer_text = " ".join(execution_layers).lower()
-    claim_text = " ".join(requested_claims).lower()
+    active_registry = registry or load_routing_registry(repo_root)
+    claim_vocabulary = load_claim_vocabulary(repo_root)
+    families = active_registry.get("work_families") or {}
+    if requested_family is not None and requested_family not in families:
+        raise KeyError(f"requested_family {requested_family!r} is absent from {REGISTRY_PATH.as_posix()}")
+
+    text = " ".join([request_text, *touched_paths, *execution_layers, *requested_claims])
+    text_norm = _normalize_text(text)
+    request_norm = _normalize_text(request_text)
+    path_norm = _normalize_text(" ".join(touched_paths))
+    layer_norm = _normalize_text(" ".join(execution_layers))
     rules: list[str] = []
     ambiguous: list[str] = []
 
+    claim_hits = _claim_alias_hits(request_text, requested_claims, claim_vocabulary)
+    assertion_intent = _has_assertion_intent(request_text, execution_layers, requested_claims, claim_vocabulary)
+    protected_claim_read = bool(claim_hits) and not assertion_intent
+
     explanation_only = _contains_any(
-        request_only,
-        (
-            "explain",
-            "summarize",
-            "what is",
-            "status",
-            "tell me",
-            "알려",
-            "설명",
-            "요약",
-            "상태",
-        ),
+        request_norm,
+        ("explain", "summarize", "what is", "status", "tell me", "알려", "설명", "요약", "상태"),
     ) and not _contains_any(
-        " ".join([request_only, layer_text]),
+        " ".join([request_norm, layer_norm]),
         ("fix", "edit", "write", "execute", "migrate", "sync", "update", "create", "open", "close", "수정", "실행", "적용"),
     ) and not requested_claims
-    runtime_path = _contains_any(path_text, ("runtime/mt5_attempts", "foundation/config/mt5_runtime_probe_contract.yaml", "configs/mt5/"))
-    protected_claim = _contains_any(
-        " ".join([request_only, claim_text]),
-        ("runtime_authority", "economics_pass", "live_readiness", "selected_baseline", "reviewed", "verified", "production_deployment"),
-    )
+    runtime_path = _contains_any(path_norm, ("runtime/mt5 attempts", "foundation/config/mt5 runtime probe contract.yaml", "configs/mt5"))
+
+    if requested_family:
+        rules.append("requested_family")
+        profile = "runtime" if requested_family == "runtime_probe" else "policy_skill_governance"
+        if requested_family in {"code_edit", "code_refactor"}:
+            profile = "code_change"
+        elif requested_family in {"data_feature_build", "model_training", "synthesis_campaign", "candidate_evaluation"}:
+            profile = "lab_experiment"
+        elif requested_family == "experiment_design":
+            profile = "design_only"
+        elif requested_family in {"onnx_export_parity", "bundle_materialization"}:
+            profile = "onnx_bundle"
+        elif requested_family == "artifact_lineage":
+            profile = "artifact_lineage"
+        elif requested_family == "cleanup_archive":
+            profile = "cleanup_archive"
+        elif requested_family == "publish_handoff":
+            profile = "publish_handoff"
+        return _decision(requested_family, profile, "safe_default", 0.7, rules, ambiguous, registry=active_registry)
+
+    if protected_claim_read and explanation_only:
+        rules.append("protected_claim_read_only")
+        return _decision("information_only", "information_only", "protected_claim_read_only", 0.9, rules, ambiguous, registry=active_registry)
+
+    if claim_hits and assertion_intent:
+        rules.append("protected_claim_guard")
+        if claim_hits == {"selected_baseline"} or "selected_baseline" in claim_hits and not (claim_hits - {"selected_baseline"}):
+            rules.append("protected_selected_baseline_claim")
+            return _decision("candidate_evaluation", "lab_experiment", "protected_candidate_model", 0.97, rules, ambiguous, registry=active_registry)
+        return _decision("runtime_probe", "runtime", "protected_runtime", 0.98, rules, ambiguous, registry=active_registry)
 
     if explanation_only:
         rules.append("information_only_terms")
-        if runtime_path or _contains_any(request_only, ("runtime", "mt5", "tester", "l4", "l5")):
+        if runtime_path or _contains_any(request_norm, ("runtime", "mt5", "tester", "l4", "l5")):
             rules.append("runtime_truth_read_only")
-            return _decision("information_only", "information_only", "runtime_read_only", 0.88, rules, ambiguous)
-        return _decision("information_only", "information_only", "answer_only", 0.86, rules, ambiguous)
-
-    if "selected_baseline" in claim_text or "selected baseline" in request_only:
-        rules.append("protected_selected_baseline_claim")
-        return _decision(
-            "candidate_evaluation",
-            "lab_experiment",
-            "protected_candidate_model",
-            0.97,
-            rules,
-            ambiguous,
-        )
-
-    if protected_claim:
-        rules.append("protected_claim_guard")
-        return _decision("runtime_probe", "runtime_probe", "protected_runtime", 0.98, rules, ambiguous)
+            return _decision("information_only", "information_only", "runtime_read_only", 0.88, rules, ambiguous, registry=active_registry)
+        return _decision("information_only", "information_only", "answer_only", 0.86, rules, ambiguous, registry=active_registry)
 
     if (
-        _contains_any(text, ("maybe", "later", "not sure", "unclear", "defer", "future"))
+        _contains_any(text_norm, ("maybe", "later", "not sure", "unclear", "defer", "future"))
         and not touched_paths
         and not execution_layers
         and not requested_claims
     ):
         rules.append("ambiguous_future_intent")
         ambiguous.append("deferred_or_unclear_mutation_intent")
-        return _decision("policy_skill_governance", "policy_skill_governance", "safe_default", 0.55, rules, ambiguous)
+        return _decision("policy_skill_governance", "policy_skill_governance", "safe_default", 0.55, rules, ambiguous, registry=active_registry)
 
-    if _contains_any(text, ("workspace_state", "workspace projection", "workspace sync", "project workspace")) or _contains_any(
-        path_text, ("docs/workspace/workspace_state.yaml", "docs/workspace/")
+    if _contains_any(text_norm, ("workspace state", "workspace projection", "workspace sync", "project workspace")) or _contains_any(
+        path_norm, ("docs/workspace/workspace state.yaml", "docs/workspace")
     ):
         rules.append("workspace_projection_terms")
-        return _decision("workspace_state_sync", "policy_skill_governance", "workspace_state", 0.9, rules, ambiguous)
+        return _decision("workspace_state_sync", "policy_skill_governance", "workspace_state", 0.9, rules, ambiguous, registry=active_registry)
 
-    if _contains_any(text, ("mt5", "tester", "strategy tester", "runtime probe", "l4", "l5")) or runtime_path:
-        rules.append("runtime_terms")
-        return _decision("runtime_probe", "runtime_probe", "runtime_research", 0.92, rules, ambiguous)
-
-    if _contains_any(text, ("onnx export", "export to onnx", "onnxruntime")) or "foundation/onnx" in path_text:
-        rules.append("onnx_export_terms")
-        return _decision("onnx_export_parity", "onnx_bundle", "research", 0.87, rules, ambiguous)
-
-    if _contains_any(text, ("train", "model", "threshold", "calibration", "wfo")) or "foundation/training" in path_text:
-        rules.append("model_training_terms")
-        return _decision("model_training", "lab_experiment", "research", 0.84, rules, ambiguous)
-
-    if _contains_any(text, ("feature", "label", "dataset", "data recipe", "split", "leakage", "time axis")) or _contains_any(
-        path_text,
-        ("foundation/features", "foundation/labels", "configs/onnx_lab/split_recipes", "data/"),
-    ):
-        rules.append("data_feature_terms")
-        return _decision("data_feature_build", "lab_experiment", "research", 0.88, rules, ambiguous)
-
-    if _contains_any(text, ("move artifact", "artifact", "lineage", "hash", "archive", "bundle", "handoff")) or _contains_any(
-        path_text,
-        ("docs/registers/artifact_registry.csv", "runtime/packages", "lab/runs"),
-    ):
-        if _contains_any(text, ("delete", "cleanup", "archive")):
-            rules.append("cleanup_archive_terms")
-            return _decision("cleanup_archive", "cleanup_archive", "artifact_identity", 0.88, rules, ambiguous)
-        if _contains_any(text, ("handoff", "deliverable")):
-            rules.append("handoff_terms")
-            return _decision("publish_handoff", "artifact_lineage", "handoff_preflight", 0.84, rules, ambiguous)
-        rules.append("artifact_lineage_terms")
-        return _decision("artifact_lineage", "artifact_lineage", "artifact_identity", 0.86, rules, ambiguous)
-
-    if _contains_any(text, ("policy", "agents.md", "skill", "routing", "validator", "control plane")) or _contains_any(
-        path_text,
-        ("docs/agent_control", "docs/policies", "agents.md"),
+    if _contains_any(request_norm, ("protected claim validation policy", "guard semantics", "claim validation policy")) or _contains_any(
+        path_norm,
+        ("docs/agent control", "docs/policies"),
     ):
         rules.append("governance_terms")
-        return _decision("policy_skill_governance", "policy_skill_governance", "governance", 0.9, rules, ambiguous)
+        return _decision("policy_skill_governance", "policy_skill_governance", "governance", 0.9, rules, ambiguous, registry=active_registry)
 
-    if _contains_any(text, ("refactor", "bug", "python", "parser", "helper")) or _contains_any(path_text, ("src/", "foundation/validation")):
+    if _contains_any(request_norm, ("refactor", "extract module", "reorganize reusable code", "ownership preserving restructuring")):
+        rules.append("code_refactor_terms")
+        return _decision("code_refactor", "code_change", "research", 0.86, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(request_norm, ("fix", "bug", "exception", "parser", "parsing", "python", "helper")) or _contains_any(path_norm, ("src/", "foundation/validation")):
         rules.append("code_change_terms")
-        return _decision("code_edit", "code_change", "research", 0.82, rules, ambiguous)
+        return _decision("code_edit", "code_change", "research", 0.84, rules, ambiguous, registry=active_registry)
+
+    governance_text = " ".join([request_norm, layer_norm])
+    if _contains_any(governance_text, ("protected claim validation policy", "guard semantics", "claim validation policy", "policy", "agents.md", "skill", "routing", "control plane")) or _contains_any(
+        path_norm,
+        ("docs/agent control", "docs/policies", "agents.md"),
+    ):
+        rules.append("governance_terms")
+        return _decision("policy_skill_governance", "policy_skill_governance", "governance", 0.9, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("bounded synthesis", "ingredient card", "ingredient cards", "mix 2", "mix 3", "prior material synthesis", "previous material synthesis")):
+        rules.append("synthesis_terms")
+        return _decision("synthesis_campaign", "lab_experiment", "research", 0.86, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("experiment design", "hypothesis", "broad sweep", "extreme sweep", "campaign design", "exploration axes")):
+        rules.append("experiment_design_terms")
+        return _decision("experiment_design", "design_only", "research", 0.86, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("evaluate candidate", "candidate metrics", "promotion decision", "candidate gate")):
+        rules.append("candidate_evaluation_terms")
+        return _decision("candidate_evaluation", "lab_experiment", "research", 0.86, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("delete", "cleanup", "stale generated")):
+        rules.append("cleanup_archive_terms")
+        return _decision("cleanup_archive", "cleanup_archive", "artifact_identity", 0.88, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("handoff", "deliverable")):
+        rules.append("handoff_terms")
+        return _decision("publish_handoff", "publish_handoff", "handoff_preflight", 0.84, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("materialize bundle", "experiment bundle", "runtime package", "package model", "package schema", "package ea inputs")) or _contains_any(path_norm, ("runtime/packages",)):
+        rules.append("bundle_materialization_terms")
+        return _decision("bundle_materialization", "onnx_bundle", "artifact_identity", 0.87, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("mt5", "tester", "strategy tester", "runtime probe", "l4", "l5")) or runtime_path:
+        rules.append("runtime_terms")
+        return _decision("runtime_probe", "runtime", "runtime_research", 0.92, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("onnx export", "export to onnx", "onnxruntime")) or "foundation/onnx" in path_norm:
+        rules.append("onnx_export_terms")
+        return _decision("onnx_export_parity", "onnx_bundle", "research", 0.87, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("train", "model", "threshold", "calibration", "wfo")) or "foundation/training" in path_norm:
+        rules.append("model_training_terms")
+        return _decision("model_training", "lab_experiment", "research", 0.84, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("feature", "label", "dataset", "data recipe", "split", "leakage", "time axis")) or _contains_any(
+        path_norm,
+        ("foundation/features", "foundation/labels", "configs/onnx lab/split recipes", "data/"),
+    ):
+        rules.append("data_feature_terms")
+        return _decision("data_feature_build", "lab_experiment", "research", 0.88, rules, ambiguous, registry=active_registry)
+
+    if _contains_any(text_norm, ("move artifact", "artifact", "lineage", "hash")) or _contains_any(
+        path_norm,
+        ("docs/registers/artifact registry.csv", "lab/runs"),
+    ):
+        rules.append("artifact_lineage_terms")
+        return _decision("artifact_lineage", "artifact_lineage", "artifact_identity", 0.86, rules, ambiguous, registry=active_registry)
 
     ambiguous.append("no_strong_domain_terms")
-    return _decision("policy_skill_governance", "policy_skill_governance", "safe_default", 0.55, rules, ambiguous)
+    return _decision("policy_skill_governance", "policy_skill_governance", "safe_default", 0.55, rules, ambiguous, registry=active_registry)

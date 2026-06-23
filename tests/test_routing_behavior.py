@@ -16,7 +16,12 @@ def test_routing_behavior_cases_pass() -> None:
 
     assert not errors
     assert metrics["accuracy"] >= 0.95
-    assert metrics["protected_claim_guard_recall"] == 1.0
+    assert metrics["protected_claim_assertion_recall"] == 1.0
+    assert metrics["protected_claim_read_only_recall"] == 1.0
+    assert metrics["automatic_family_coverage"] == 1.0
+    assert metrics["unknown_verification_profile_count"] == 0
+    assert metrics["unknown_guard_set_count"] == 0
+    assert metrics["unreachable_automatic_family_count"] == 0
 
 
 def test_runtime_token_mutation_changes_route() -> None:
@@ -99,6 +104,25 @@ def test_every_family_resolves_to_valid_canonical_skills_and_limits() -> None:
             assert skill_name in canonical or "replaced_by" not in metadata
 
 
+def test_every_routing_case_returns_registry_valid_profile_and_guard() -> None:
+    registry = load_yaml(ROOT / "docs/agent_control/work_family_registry.yaml")
+    cases = load_yaml(ROOT / "docs/agent_control/routing_behavior_cases.yaml")["cases"]
+    profiles = set(registry["verification_profiles"])
+    guard_sets = set(registry["route_guard_sets"])
+    for case in cases:
+        decision = route_work_item(
+            case["request_text"],
+            repo_root=ROOT,
+            touched_paths=tuple(case.get("touched_paths") or []),
+            execution_layers=tuple(case.get("execution_layers") or []),
+            requested_claims=tuple(case.get("requested_claims") or []),
+        )
+        assert decision.primary_family in registry["work_families"], case["id"]
+        assert decision.primary_skill == registry["work_families"][decision.primary_family]["primary_skill"]
+        assert decision.verification_profile in profiles, case["id"]
+        assert decision.policy_guard_set in guard_sets, case["id"]
+
+
 def test_data_feature_route_is_not_code_edit() -> None:
     decision = route_work_item(
         "Create a US100 M5 feature recipe and check label boundary.",
@@ -119,11 +143,30 @@ def test_workspace_projection_route_is_workspace_sync() -> None:
     assert decision.primary_skill == "spacesonar-workspace-state-sync"
 
 
+def test_runtime_route_uses_runtime_verification_profile() -> None:
+    decision = route_work_item("Run MT5 tester L4 runtime probe.")
+
+    assert decision.primary_family == "runtime_probe"
+    assert decision.verification_profile == "runtime"
+
+
 def test_selected_baseline_uses_protected_candidate_model_route() -> None:
     decision = route_work_item("Mark the model as selected_baseline.", requested_claims=("selected_baseline",))
 
     assert decision.primary_family == "candidate_evaluation"
     assert decision.policy_guard_set == "protected_candidate_model"
+
+
+def test_protected_runtime_assertion_aliases() -> None:
+    for prompt in (
+        "Approve live readiness.",
+        "Declare economics pass.",
+        "Grant runtime authority.",
+        "라이브 준비 완료를 승인해줘.",
+    ):
+        decision = route_work_item(prompt)
+        assert decision.primary_family == "runtime_probe"
+        assert decision.policy_guard_set == "protected_runtime"
 
 
 def test_explanation_only_runtime_path_does_not_trigger_execution() -> None:
@@ -136,9 +179,134 @@ def test_explanation_only_runtime_path_does_not_trigger_execution() -> None:
     assert decision.policy_guard_set == "runtime_read_only"
 
 
+def test_read_only_protected_claim_uses_protected_read_only_guard() -> None:
+    decision = route_work_item("What is the current live-readiness status?")
+
+    assert decision.primary_family == "information_only"
+    assert decision.policy_guard_set == "protected_claim_read_only"
+
+
+def test_required_automatic_routes() -> None:
+    cases = {
+        "Design an experiment hypothesis with broad sweep axes.": "experiment_design",
+        "Open bounded synthesis using ingredient cards and mix-2.": "synthesis_campaign",
+        "Materialize experiment bundle and package model/schema/EA inputs.": "bundle_materialization",
+        "Evaluate candidate metrics before promotion decision.": "candidate_evaluation",
+        "Refactor and extract module for ownership-preserving restructuring.": "code_refactor",
+    }
+    for prompt, family in cases.items():
+        assert route_work_item(prompt).primary_family == family
+
+
+def test_policy_semantic_and_implementation_validator_changes_split() -> None:
+    implementation = route_work_item(
+        "Fix a Python parsing exception in control_plane_validator.py.",
+        touched_paths=("foundation/validation/control_plane_validator.py",),
+    )
+    semantic = route_work_item(
+        "Change protected-claim validation policy and guard semantics.",
+        touched_paths=("foundation/validation/control_plane_validator.py", "docs/agent_control/policy_contract.yaml"),
+    )
+
+    assert implementation.primary_family == "code_edit"
+    assert implementation.primary_skill == "spacesonar-code-change-quality"
+    assert semantic.primary_family == "policy_skill_governance"
+    assert semantic.primary_skill == "spacesonar-work-item-router"
+
+
 def test_ambiguity_lowers_confidence_and_records_reasons() -> None:
     decision = route_work_item("Maybe update docs and train something later, not sure.")
 
     assert decision.primary_family == "policy_skill_governance"
     assert decision.confidence < 0.70
     assert decision.ambiguous_reasons
+
+
+def minimal_registry(primary_skill: str = "spacesonar-session-bootstrap") -> dict:
+    return {
+        "version": "test_registry_v1",
+        "verification_profiles": {"information_only": {}, "policy_skill_governance": {}},
+        "route_guard_sets": {"answer_only": {}, "safe_default": {}},
+        "work_families": {
+            "information_only": {
+                "routing_mode": "automatic",
+                "primary_skill": primary_skill,
+                "support_skills": [],
+                "required_gates": [],
+            },
+            "policy_skill_governance": {
+                "routing_mode": "explicit_only",
+                "primary_skill": "spacesonar-work-item-router",
+                "support_skills": [],
+                "required_gates": [],
+            },
+        },
+    }
+
+
+def write_tmp_repo(root: Path, primary_skill: str = "spacesonar-session-bootstrap") -> None:
+    (root / "docs/agent_control").mkdir(parents=True)
+    (root / ".agents/skills" / primary_skill).mkdir(parents=True)
+    (root / ".agents/skills/spacesonar-work-item-router").mkdir(parents=True, exist_ok=True)
+    (root / "docs/agent_control/work_family_registry.yaml").write_text(
+        yaml.safe_dump(minimal_registry(primary_skill), sort_keys=False),
+        encoding="utf-8",
+    )
+    (root / "docs/agent_control/claim_vocabulary.yaml").write_text(
+        yaml.safe_dump({"version": "claim_vocabulary_v1", "protected_claim_aliases": {}, "protected_claim_assertion_intent_aliases": []}, sort_keys=False),
+        encoding="utf-8",
+    )
+    (root / "docs/agent_control/routing_behavior_cases.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "version": "routing_behavior_cases_test_v1",
+                "cases": [
+                    {
+                        "id": "info",
+                        "request_text": "Explain status.",
+                        "touched_paths": [],
+                        "execution_layers": [],
+                        "requested_claims": [],
+                        "expected_primary_family": "information_only",
+                        "expected_primary_skill": primary_skill,
+                        "expected_verification_profile": "information_only",
+                        "expected_guard_set": "answer_only",
+                        "minimum_confidence": 0.8,
+                    }
+                ],
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+    for skill_name in (primary_skill, "spacesonar-work-item-router"):
+        (root / ".agents/skills" / skill_name / "SKILL.md").write_text(
+            f"---\nname: {skill_name}\ndescription: test\n---\n\n# Test\n",
+            encoding="utf-8",
+        )
+
+
+def test_registry_edit_same_process_changes_next_route(tmp_path: Path) -> None:
+    write_tmp_repo(tmp_path, "spacesonar-session-bootstrap")
+    first = route_work_item("Explain status.", repo_root=tmp_path)
+    (tmp_path / ".agents/skills/spacesonar-alt-bootstrap").mkdir(parents=True)
+    (tmp_path / ".agents/skills/spacesonar-alt-bootstrap/SKILL.md").write_text(
+        "---\nname: spacesonar-alt-bootstrap\ndescription: test\n---\n\n# Test\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "docs/agent_control/work_family_registry.yaml").write_text(
+        yaml.safe_dump(minimal_registry("spacesonar-alt-bootstrap"), sort_keys=False),
+        encoding="utf-8",
+    )
+    second = route_work_item("Explain status.", repo_root=tmp_path)
+
+    assert first.primary_skill == "spacesonar-session-bootstrap"
+    assert second.primary_skill == "spacesonar-alt-bootstrap"
+
+
+def test_evaluator_uses_requested_repo_root_registry(tmp_path: Path) -> None:
+    write_tmp_repo(tmp_path, "spacesonar-alt-bootstrap")
+    errors, metrics = evaluate(tmp_path)
+
+    assert not errors
+    assert metrics["accuracy"] == 1.0

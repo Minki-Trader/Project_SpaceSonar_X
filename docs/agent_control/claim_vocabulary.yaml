@@ -1,4 +1,42 @@
 version: claim_vocabulary_v1
+protected_claim_aliases:
+  runtime_authority:
+    - runtime_authority
+    - runtime authority
+    - runtime-authority
+    - 런타임 권한
+  economics_pass:
+    - economics_pass
+    - economics pass
+    - economics-pass
+    - 경제성 통과
+  live_readiness:
+    - live_readiness
+    - live readiness
+    - live-readiness
+    - 라이브 준비 완료
+  selected_baseline:
+    - selected_baseline
+    - selected baseline
+    - selected-baseline
+    - 선택 기준선
+  production_deployment:
+    - production_deployment
+    - production deployment
+    - production-deployment
+    - 운영 배포
+protected_claim_assertion_intent_aliases:
+  - approve
+  - mark
+  - declare
+  - claim
+  - promote
+  - set
+  - grant
+  - 인정
+  - 승인
+  - 선언
+  - 설정
 claim_classes:
   completed:
     allowed_when:

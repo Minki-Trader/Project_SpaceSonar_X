@@ -108,14 +108,54 @@ verification_profiles:
       - target_path_safety
       - archive_or_boundary_record
       - final_claim_guard
+  artifact_lineage:
+    claim_surface: "artifact_identity_or_lineage_change"
+    extra_gates:
+      - lineage_record
+      - storage_contract_check
+      - final_claim_guard
+  publish_handoff:
+    claim_surface: "handoff_preflight_no_handoff_complete_claim"
+    extra_gates:
+      - handoff_surface_check
+      - storage_contract_check
+      - final_claim_guard
+
+route_guard_sets:
+  answer_only:
+    claim_effect: information_only_no_mutation
+  protected_claim_read_only:
+    claim_effect: protected_claim_discussion_only_no_assertion
+  runtime_read_only:
+    claim_effect: runtime_truth_read_only_no_execution
+  protected_candidate_model:
+    claim_effect: candidate_or_model_protected_claim_requires_matching_evidence
+  protected_runtime:
+    claim_effect: runtime_or_economics_protected_claim_requires_matching_evidence
+  safe_default:
+    claim_effect: low_confidence_safe_verification_no_stronger_claim
+  workspace_state:
+    claim_effect: workspace_projection_guard
+  runtime_research:
+    claim_effect: runtime_research_no_runtime_authority
+  research:
+    claim_effect: research_or_code_change_no_operating_claim
+  artifact_identity:
+    claim_effect: artifact_identity_guard
+  handoff_preflight:
+    claim_effect: handoff_preflight_no_handoff_complete
+  governance:
+    claim_effect: policy_skill_control_plane_guard
 
 work_families:
   information_only:
+    routing_mode: automatic
     primary_skill: spacesonar-session-bootstrap
     support_skills: []
     required_gates: []
 
   workspace_state_sync:
+    routing_mode: automatic
     primary_skill: spacesonar-workspace-state-sync
     support_skills:
       - spacesonar-session-bootstrap
@@ -124,6 +164,7 @@ work_families:
       - final_claim_guard
 
   policy_skill_governance:
+    routing_mode: automatic
     primary_skill: spacesonar-work-item-router
     support_skills:
       - spacesonar-architecture-guard
@@ -139,6 +180,7 @@ work_families:
       - final_claim_guard
 
   code_edit:
+    routing_mode: automatic
     primary_skill: spacesonar-code-change-quality
     support_skills:
       - spacesonar-reference-scout
@@ -147,6 +189,7 @@ work_families:
       - final_claim_guard
 
   code_refactor:
+    routing_mode: automatic
     primary_skill: spacesonar-code-change-quality
     support_skills:
       - spacesonar-architecture-guard
@@ -156,6 +199,7 @@ work_families:
       - final_claim_guard
 
   data_feature_build:
+    routing_mode: automatic
     primary_skill: spacesonar-data-integrity
     support_skills:
       - spacesonar-evidence-provenance
@@ -166,6 +210,7 @@ work_families:
       - final_claim_guard
 
   experiment_design:
+    routing_mode: automatic
     primary_skill: spacesonar-experiment-design
     support_skills:
       - spacesonar-data-integrity
@@ -176,6 +221,7 @@ work_families:
       - final_claim_guard
 
   synthesis_campaign:
+    routing_mode: automatic
     primary_skill: spacesonar-experiment-design
     support_skills:
       - spacesonar-evidence-provenance
@@ -189,6 +235,7 @@ work_families:
       - final_claim_guard
 
   model_training:
+    routing_mode: automatic
     primary_skill: spacesonar-model-validation
     support_skills:
       - spacesonar-data-integrity
@@ -204,6 +251,7 @@ work_families:
       - final_claim_guard
 
   onnx_export_parity:
+    routing_mode: automatic
     primary_skill: spacesonar-runtime-evidence
     support_skills:
       - spacesonar-evidence-provenance
@@ -215,6 +263,7 @@ work_families:
       - final_claim_guard
 
   candidate_evaluation:
+    routing_mode: automatic
     primary_skill: spacesonar-result-judgment
     support_skills:
       - spacesonar-performance-attribution
@@ -225,6 +274,7 @@ work_families:
       - final_claim_guard
 
   bundle_materialization:
+    routing_mode: automatic
     primary_skill: spacesonar-evidence-provenance
     support_skills:
       - spacesonar-runtime-evidence
@@ -234,6 +284,7 @@ work_families:
       - final_claim_guard
 
   runtime_probe:
+    routing_mode: automatic
     primary_skill: spacesonar-runtime-evidence
     support_skills:
       - spacesonar-evidence-provenance
@@ -246,6 +297,7 @@ work_families:
       - final_claim_guard
 
   artifact_lineage:
+    routing_mode: automatic
     primary_skill: spacesonar-evidence-provenance
     support_skills: []
     required_gates:
@@ -253,6 +305,7 @@ work_families:
       - final_claim_guard
 
   cleanup_archive:
+    routing_mode: automatic
     primary_skill: spacesonar-evidence-provenance
     support_skills:
       - spacesonar-workflow-drift-guard
@@ -262,6 +315,7 @@ work_families:
       - final_claim_guard
 
   publish_handoff:
+    routing_mode: automatic
     primary_skill: spacesonar-evidence-provenance
     support_skills:
       - spacesonar-runtime-evidence

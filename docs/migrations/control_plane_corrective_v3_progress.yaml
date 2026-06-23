@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp05_skill_routing_alignment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp05_amendment_completed_routing_contract_validity_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -933,21 +933,38 @@ work_units:
     routing_benchmark:
       accuracy: 1.0
       protected_claim_guard_recall: 1.0
+      protected_claim_assertion_recall: 1.0
+      protected_claim_read_only_recall: 1.0
+      automatic_family_coverage: 1.0
+      unknown_verification_profile_count: 0
+      unknown_guard_set_count: 0
+      unreachable_automatic_family_count: 0
       ambiguous_cases_record_reasons: true
       explanation_only_runtime_paths_stay_information_only: true
       selected_baseline_route: protected_candidate_model
+      valid_verification_profile_count: 10
+      valid_route_guard_set_count: 12
+      automatic_family_count: 16
+      same_process_registry_refresh_test: passed
+      alternate_repo_root_registry_test: passed
     validation:
     - command: uv run pytest tests/test_routing_behavior.py -q
       status: passed
-      result: 12 passed
+      result: 20 passed
     - command: uv run python foundation/validation/routing_behavior_eval.py --repo-root
         .
       status: passed
-      result: accuracy 1.0; protected_claim_guard_recall 1.0
+      result: accuracy 1.0; protected assertion recall 1.0; protected read-only
+        recall 1.0; automatic family coverage 1.0; unknown profiles 0; unknown
+        guard sets 0; unreachable automatic families 0
     - command: uv run python foundation/validation/routing_contract_lint.py --repo-root
         .
       status: passed
       result: routing contract lint passed
+    - command: uv run python foundation/validation/policy_duplicate_lint.py --repo-root
+        .
+      status: passed
+      result: policy duplicate lint passed
     - command: uv run python -m spacesonar.cli project validate
       status: passed
       result: project validation passed
@@ -957,7 +974,10 @@ work_units:
       result: routing and validation modules compiled successfully
     - command: uv run pytest -q
       status: passed
-      result: 319 passed in 979.02s
+      result: 327 passed in 781.06s
+    - command: git diff --check
+      status: passed
+      result: no whitespace errors; CRLF normalization warning only
     wp06_handoff:
       next_packet: WP06
       required_entry_condition: WP05.status completed
@@ -966,7 +986,26 @@ work_units:
         route_work_item behavior for provenance and agent telemetry integration.
       remaining_claim_boundary: no runtime authority, no economics pass, no live
         readiness, no selected baseline.
-    claim_boundary: corrective_wp05_skill_routing_alignment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    amendment:
+      id: wp05_routing_contract_valid_protected_claim_safe_repository_bound
+      status: completed
+      started_at_utc: '2026-06-23T12:45:00Z'
+      completed_at_utc: '2026-06-23T13:19:16Z'
+      objective: Make RouteDecision outputs registry-valid, repository-bound,
+        protected-claim-safe, and complete across automatic routing families.
+      results:
+        route_decision_structural_validity: passed
+        route_guard_sets_declared: passed
+        verification_profiles_declared: passed
+        protected_claim_aliases_centralized: passed
+        requested_claims_always_protected: passed
+        protected_claim_read_only_guard: passed
+        automatic_family_coverage: passed
+        same_process_registry_refresh: passed
+        alternate_repo_root_binding: passed
+      commit_subject: WP05 make routing contract valid and repository bound
+      commit_sha: recorded_by_final_wp05_amendment_commit
+    claim_boundary: corrective_wp05_amendment_completed_routing_contract_validity_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   WP06:
     status: pending
   WP07:
