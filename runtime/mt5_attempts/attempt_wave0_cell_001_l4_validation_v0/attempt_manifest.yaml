@@ -365,7 +365,8 @@ required_gate_coverage:
   - locked_final_oos_b_access
   - economics_pass
   - runtime_authority
-missing_evidence: []
+missing_evidence:
+- tester_report_receipt_missing:tester_report_receipt_missing
 next_action: aggregate this period role with its paired L4 attempt before L5 decision
 forbidden_claims:
 - selected_baseline
@@ -561,9 +562,15 @@ migration_history:
   previous_status: runtime_probe_completed
   reason: materialize_report_receipt_and_reconstruct_runtime_completion_from_durable_evidence
   executed_at_utc: '2026-06-23T02:40:15Z'
+- migration_id: runtime_graph_revalidation_inventory_bound_v1
+  previous_sha256: bc2daf271d28622a9aebaf8f6ef6b7929ff2c6a599250b096fd65a4879a556ad
+  previous_status: runtime_probe_completed
+  reason: inventory_bound_runtime_graph_revalidation_with_historical_receipt_binding
+  executed_at_utc: '2026-06-23T04:28:59Z'
+  preserves_previous_migration_id: materialize_runtime_report_receipts_v1
 tester_report_receipt:
   path: runtime/mt5_attempts/attempt_wave0_cell_001_l4_validation_v0/tester_report_receipt.yaml
-  sha256: 4fe644c5aac643dc240aeabbaf3b2c6a86f2ddde14c457a7ec37b1ed3e85bc9f
-  size_bytes: 1512
+  sha256: 0b11a70b871160f3462ea1e8deec22e4e2ddbdedfc8e55370fd47f7d05def9b5
+  size_bytes: 2126
   availability: present_hash_recorded
-  migration_id: materialize_runtime_report_receipts_v1
+  migration_id: runtime_graph_revalidation_inventory_bound_v1

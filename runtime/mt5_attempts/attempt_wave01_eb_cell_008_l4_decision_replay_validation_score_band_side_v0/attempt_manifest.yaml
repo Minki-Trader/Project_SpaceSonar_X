@@ -166,7 +166,8 @@ required_gate_coverage:
   - economics_metrics
   not_applicable:
   - locked_final_oos_b_access
-missing_evidence: []
+missing_evidence:
+- tester_report_receipt_missing:tester_report_receipt_missing
 next_action: parse tester report and judge sparse decision surface with lowered claim
   boundary
 forbidden_claims:
@@ -480,9 +481,15 @@ migration_history:
   previous_status: runtime_probe_completed
   reason: materialize_report_receipt_and_reconstruct_runtime_completion_from_durable_evidence
   executed_at_utc: '2026-06-23T02:40:15Z'
+- migration_id: runtime_graph_revalidation_inventory_bound_v1
+  previous_sha256: aea42e7b598f594ad553365b21d6e026a1651bad24a11b46939ba087c585dd71
+  previous_status: runtime_probe_completed
+  reason: inventory_bound_runtime_graph_revalidation_with_historical_receipt_binding
+  executed_at_utc: '2026-06-23T04:28:59Z'
+  preserves_previous_migration_id: materialize_runtime_report_receipts_v1
 tester_report_receipt:
   path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/tester_report_receipt.yaml
-  sha256: c558303509945edb62a20331ec3d9f95dbfcee7b1cc392f093fa80aa55072bd6
-  size_bytes: 1597
+  sha256: 0b4652675b7f97694e8d1416f268213951574bb7eeb092d545aea838e388050c
+  size_bytes: 2211
   availability: present_hash_recorded
-  migration_id: materialize_runtime_report_receipts_v1
+  migration_id: runtime_graph_revalidation_inventory_bound_v1

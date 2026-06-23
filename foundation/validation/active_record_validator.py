@@ -1087,6 +1087,11 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
     attempt_root = repo_root / "runtime" / "mt5_attempts"
     if not path_exists(attempt_root):
         return errors
+    inventory_path = repo_root / "docs" / "migrations" / "runtime_graph_target_inventory_v1.yaml"
+    if path_exists(inventory_path):
+        from foundation.migrations.runtime_graph_target_inventory import validate_runtime_graph_target_inventory
+
+        errors.extend(validate_runtime_graph_target_inventory(repo_root))
 
     for path in sorted(attempt_root.glob("*/attempt_manifest.yaml")):
         attempt = load_yaml(path) or {}
@@ -1158,7 +1163,11 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
                 evaluate_runtime_attempt,
                 reconstruct_runtime_attempt,
             )
-            from foundation.mt5.tester_report_receipt import load_receipt, tester_report_completed
+            from foundation.mt5.tester_report_receipt import (
+                load_receipt,
+                tester_report_completed,
+                validate_tester_report_receipt_binding,
+            )
 
             reconstructed = reconstruct_runtime_attempt(
                 repo_root,
@@ -1170,6 +1179,8 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
                 ),
             )
             receipt = load_receipt(receipt_path)
+            for binding_error in validate_tester_report_receipt_binding(attempt, receipt, receipt_path):
+                errors.append(f"{label}: tester_report_receipt binding failed {binding_error}")
             if reconstructed.tester_report_completed != tester_report_completed(receipt):
                 errors.append(f"{label}: reconstructed tester_report_completed conflicts with receipt predicate")
             reconstructed_result = evaluate_runtime_attempt(

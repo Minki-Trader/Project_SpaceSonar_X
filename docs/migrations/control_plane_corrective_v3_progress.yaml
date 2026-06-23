@@ -363,58 +363,118 @@ work_units:
     claim_boundary: corrective_wp02_transaction_atomicity_only_no_runtime_migration_no_runtime_authority_no_economics_pass
   WP03:
     status: completed
-    completed_at_utc: '2026-06-23T02:44:08Z'
-    objective: Revalidate the historical Wave0/Wave01 L4 runtime graph from durable MT5 evidence and materialize tester report receipts transactionally.
+    completed_at_utc: '2026-06-23T05:17:48Z'
+    objective: Revalidate the historical Wave0/Wave01 L4 runtime graph from inventory-bound durable MT5 evidence and materialize tester report receipts transactionally.
     changed_files:
       - docs/migrations/control_plane_corrective_v3_progress.yaml
-      - foundation/evaluation/common.py
+      - docs/migrations/runtime_graph_target_inventory_v1.yaml
+      - docs/registers/artifact_registry.csv
       - foundation/evaluation/runtime_contract_evaluator.py
       - foundation/migrations/materialize_runtime_report_receipts_v1.py
-      - foundation/mt5/runtime_completion.py
+      - foundation/migrations/runtime_graph_target_inventory.py
       - foundation/mt5/tester_report_receipt.py
       - foundation/validation/active_record_validator.py
       - lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
       - runtime/mt5_attempts/<86_target_attempts>/attempt_manifest.yaml
       - runtime/mt5_attempts/<86_target_attempts>/tester_report_receipt.yaml
-      - src/spacesonar/control_plane/store.py
-      - src/spacesonar/control_plane/transaction.py
       - tests/test_runtime_graph_revalidation.py
+      - tests/test_wave01_operating_closeout.py
+    amendment:
+      id: wp03_inventory_bound_portable_runtime_graph_revalidation
+      status: completed
+      commit_subject: WP03 inventory-bound runtime graph revalidation
+      commit_sha: recorded_by_final_wp03_amendment_commit
+      constraints:
+        wp04_started: false
+        wave01_closeout_regenerated: false
+        locked_final_oos_used: false
+        raw_reports_required_for_check_mode_after_receipts_committed: false
+    target_inventory:
+      path: docs/migrations/runtime_graph_target_inventory_v1.yaml
+      sha256: be6bc47cfdea778ebdea270700d997f5b9e5f0505327232dde658d5aac33afdb
+      expected_attempt_count: 86
+      expected_pair_group_count: 43
+      expected_surface_kind_counts:
+        score_probe: 68
+        decision_replay: 18
+      source: canonical_score_probe_and_decision_replay_preparation_indexes
+      validation:
+        duplicate_attempt_ids: 0
+        duplicate_manifest_paths: 0
+        duplicate_target_identities: 0
+        unregistered_wave0_or_wave01_l4_attempts: 0
+        incomplete_pair_groups: 0
     migration:
-      migration_id: materialize_runtime_report_receipts_v1
+      migration_id: runtime_graph_revalidation_inventory_bound_v1
+      previous_migration_id_preserved: materialize_runtime_report_receipts_v1
       transaction_status: committed
-      transaction_receipt_path: .spacesonar/transactions/tx_20260623T024048736380Z_e56da546_8d2c897e/transaction_receipt.yaml
+      transaction_receipt_path: .spacesonar/transactions/tx_20260623T042933868906Z_e56da546_046f80ae/transaction_receipt.yaml
+      transaction_receipt_sha256: b661371f1d69cf126a816e4d088d8ba554cd244f3f46fcf97bc8166a758203b5
+      changed_record_count_initial_write: 174
       attempts_examined: 86
-      report_receipts_created: 86
+      report_receipts_materialized_or_verified: 86
       report_receipts_missing: 0
       attempts_complete_independent: 86
       attempts_incomplete_independent: 0
       pair_groups_complete: 43
       pair_groups_incomplete: 0
       idempotency_check_changed_record_count: 0
+      clean_checkout_without_ignored_raw_reports_changed_record_count: 0
       runtime_surface_kind_counts:
         score_probe: 68
         decision_replay: 18
-      terminal_mode_counts:
-        portable_contract_attempt: 86
       missing_requirements_by_count: {}
+      receipt_binding_failure_count: 0
+      receipt_artifact_row_count: 86
+      artifact_registry:
+        receipt_rows_added_or_refreshed: 86
+        target_manifest_hash_rows_refreshed: true
+        unrelated_rows_modified: false
+      historical_evidence:
+        fabricated_absent_prelaunch_claims: false
+        receipt_provenance_class: historical_archive_migration
+        freshness_reason: historical_archive_window_and_hash_verified
+        replace_report_required: true
+        attempt_specific_report_path_required: true
       claim_boundary: corrective_wp03_runtime_graph_revalidation_no_runtime_authority_no_economics_pass
     evaluator:
       evaluator_id: runtime_contract_evaluator_v2
       evaluator_result_path: lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
-      evaluator_result_sha256: 7c0b6e035a47f92f1e73eca33f017c830833991bc8d58d566d6deb8c7f1b2c50
+      evaluator_file_sha256: cc77290d98b3c08c2a81e12209d0322f826e07587acbe88a770c59bd6dc5720d
+      evaluator_output_sha256: d620bc05ca353501a3ff1d88023c270948ac49329e9b9e51a096a417dddc3740
       status: passed
-      note: Provisional WP03 evaluator result was generated from manifest, terminal summary, telemetry summary, and tester report receipt inputs; Wave01 closeout was not regenerated in WP03.
+      metrics:
+        attempt_count: 86
+        runtime_probe_complete_count: 86
+        runtime_probe_incomplete_count: 0
+        pair_group_count: 43
+        pair_groups_complete: 43
+        pair_groups_incomplete: 0
+        receipt_to_attempt_binding_failure: 0
+        stored_execution_projection_mismatch: 0
+        incomplete_attempt: 0
+        incomplete_pair_group: 0
+      note: Evaluator result is inventory-bound and generated from committed manifests, terminal summaries, telemetry summaries, and tester report receipts. Wave01 closeout was not regenerated in WP03.
     hardening:
-      - Runtime report mtime precision now preserves subsecond timestamps to avoid same-second false stale judgments.
-      - Transaction, validator, evaluator, and runtime evidence readers support Windows long paths under .spacesonar transaction future trees and runtime attempt directories.
-      - Runtime surface kind is read from explicit runtime_surface_contract.runtime_surface_kind before compatibility inference, preventing score/decision pairing mixups.
+      - Runtime target selection is pinned to docs/migrations/runtime_graph_target_inventory_v1.yaml rather than execution_state presence.
+      - Materialization from raw reports and check-mode verification from committed receipts are separate paths.
+      - Historical receipts no longer fabricate absent prelaunch observations; they use hash, size, mtime window, ReplaceReport, attempt-specific path, parser, identity, completion marker, and fatal-error checks.
+      - Receipt-to-attempt binding is shared by runtime_contract_evaluator_v2 and active_record_validator.
+      - Attempt manifests, tester report receipts, target inventory, and artifact_registry.csv are staged in one transaction.
+      - Evaluator output is sorted for stable semantic digests regardless of filesystem discovery order.
     validation:
       - command: uv run pytest tests/test_runtime_graph_revalidation.py -q
         status: passed
-        result: 8 passed
-      - command: uv run pytest tests/test_runtime_evidence_truth_kernel.py tests/test_runtime_completion_contract.py tests/test_wave01_runtime_truth_migration.py tests/control_plane/test_transaction_atomicity.py tests/control_plane/test_lifecycle_idempotency.py -q
+        result: 17 passed
+      - command: uv run pytest tests/test_runtime_evidence_truth_kernel.py -q
         status: passed
-        result: 74 passed
+        result: 35 passed
+      - command: uv run pytest tests/test_runtime_completion_contract.py -q
+        status: passed
+        result: 8 passed
+      - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
+        status: passed
+        result: 28 passed
       - command: uv run pytest tests/control_plane -q
         status: passed
         result: 50 passed
@@ -423,38 +483,44 @@ work_units:
         result: 86 examined; 86 receipts; 86 complete; 43 pair groups complete; changed_record_count 0
       - command: uv run python foundation/evaluation/runtime_contract_evaluator.py --repo-root . --output lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
         status: passed
-        result: runtime_contract_evaluator_v2 passed with output_sha256 7c0b6e035a47f92f1e73eca33f017c830833991bc8d58d566d6deb8c7f1b2c50 and status_prefix_completion_violations 0
+        result: runtime_contract_evaluator_v2 passed with output_sha256 d620bc05ca353501a3ff1d88023c270948ac49329e9b9e51a096a417dddc3740 and status_prefix_completion_violations 0
+      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+        status: passed
+        result: active-record validation passed
       - command: uv run python -m spacesonar.cli project validate
         status: passed
         result: project validation passed
-      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+      - command: uv run pytest tests/test_wave01_operating_closeout.py -q
         status: passed
-        result: active-record validation passed after target manifest registry hash refresh
-      - command: targeted artifact_registry.csv refresh for WP03 target attempt manifests
-        status: passed
-        result: 86 target manifest paths updated across 94 artifact registry rows; unrelated registry rows restored from HEAD projection baseline
-      - command: python -m compileall foundation/mt5 foundation/migrations foundation/evaluation foundation/validation src/spacesonar/control_plane src/spacesonar/cli.py
-        status: passed
-        result: changed Python files compiled successfully
-      - command: git diff --check
-        status: passed
-        result: no whitespace errors; Git reported artifact_registry.csv CRLF normalization warning only
+        result: 6 passed
       - command: uv run pytest -q
         status: passed
-        result: 280 passed in 771.26s
+        result: 289 passed in 893.75s
+      - command: git diff --check
+        status: passed
+        result: no whitespace errors
     tests_added:
-      - evaluator rejects unpaired duplicate period roles
-      - evaluator does not mix score and decision-replay pair groups
-      - stored completion true cannot override failing tester report receipt
-      - missing raw report creates no fabricated completion
-      - stored report hash mismatch keeps runtime incomplete
-      - receipt materialization migration is idempotent
-      - injected migration failure rolls back related records
-      - evaluator digest changes when durable evidence input changes
+      - clean checkout without ignored raw reports remains idempotent
+      - both manifests of one pair missing fail with the full 86-attempt denominator
+      - both execution_state blocks missing remain inventoried and fail projection validation
+      - unexpected target attempt fails inventory-bound evaluator
+      - duplicate inventory attempt ID fails
+      - receipt attempt_id mismatch fails binding and check mode
+      - source report SHA differing from stored SHA fails
+      - missing stored report SHA fails historical completion
+      - historical report mtime after terminal end stays incomplete
+      - ReplaceReport disabled stays incomplete
+      - missing raw report does not fabricate receipt or completion
+      - historical receipt does not claim fabricated prelaunch absence
+      - registry, inventory, manifests, and receipts roll back together
+      - receipt artifact rows are present and hash-valid
+      - aborted precondition CLI status is nonzero
+      - rolled-back transaction CLI status is nonzero
+      - evaluator digest is independent of inventory discovery order
     wp04_handoff:
       next_packet: WP04
       required_entry_condition: WP03.status completed
-      exact_handoff: Use the now materialized tester_report_receipt.yaml files and WP03 evaluator result as runtime graph truth; do not re-infer runtime completion from status strings or telemetry alone.
+      exact_handoff: Use the inventory-bound target list, committed tester_report_receipt.yaml files, artifact registry receipt rows, and WP03 evaluator result as runtime graph truth; do not re-infer runtime completion from status strings, telemetry alone, or execution_state presence.
       runtime_evidence_identity:
         target_attempt_count: 86
         receipt_count: 86

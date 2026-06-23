@@ -3,7 +3,7 @@ from __future__ import annotations
 import html
 import os
 import re
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -26,6 +26,13 @@ REQUIRED_IDENTITY_FIELDS = (
     "leverage",
     "expert",
 )
+HISTORICAL_RECEIPT_PROVENANCE_CLASS = "historical_archive_migration"
+HISTORICAL_FRESHNESS_REASON = "historical_archive_window_and_hash_verified"
+HISTORICAL_FRESHNESS_EVIDENCE_CLASS = "historical_archive_window_and_hash_verified"
+RECOGNIZED_HISTORICAL_MIGRATION_IDS = {
+    "materialize_runtime_report_receipts_v1",
+    "runtime_graph_revalidation_inventory_bound_v1",
+}
 
 
 def utc_now() -> str:
@@ -84,7 +91,7 @@ def load_receipt(path: Path) -> dict[str, Any]:
 
 
 def tester_report_completed(receipt: dict[str, Any]) -> bool:
-    return all(
+    base_complete = all(
         [
             receipt.get("receipt_version") == RECEIPT_VERSION,
             bool(receipt.get("attempt_id")),
@@ -100,6 +107,7 @@ def tester_report_completed(receipt: dict[str, Any]) -> bool:
             fatal_error_count_is_zero(receipt.get("fatal_error_count")),
         ]
     )
+    return base_complete and _historical_contract_satisfied(receipt)
 
 
 def tester_config_identity(path: Path) -> dict[str, str]:
@@ -439,6 +447,118 @@ def receipt_missing_requirements(receipt: dict[str, Any], expected_identity: dic
         missing.append("stored_report_sha256_match")
     if not fatal_error_count_is_zero(receipt.get("fatal_error_count")):
         missing.append("tester_report_fatal_errors_absent")
+    if _is_historical_receipt(receipt):
+        for item in _historical_missing_requirements(receipt):
+            if item not in missing:
+                missing.append(item)
+    return missing
+
+
+def validate_tester_report_receipt_binding(
+    manifest: dict[str, Any],
+    receipt: dict[str, Any],
+    receipt_path: Path,
+) -> list[str]:
+    errors: list[str] = []
+    attempt_id = str(manifest.get("attempt_id") or "")
+    if receipt.get("attempt_id") != attempt_id:
+        errors.append("receipt_attempt_id_mismatch")
+
+    expected_source_report_path = manifest_tester_report_path(manifest)
+    if expected_source_report_path and receipt.get("source_report_path") != expected_source_report_path:
+        errors.append("receipt_source_report_path_mismatch")
+    if not receipt.get("stored_report_sha256"):
+        errors.append("stored_report_sha256_missing")
+    if receipt.get("source_report_sha256") != receipt.get("stored_report_sha256"):
+        errors.append("source_report_sha256_differs_from_stored_sha256")
+    if receipt.get("stored_report_sha256_match") is not True:
+        errors.append("stored_report_sha256_match_not_true")
+    if receipt.get("stored_report_size_bytes") not in (None, "") and receipt.get("stored_report_size_match") is not True:
+        errors.append("stored_report_size_match_not_true")
+
+    projection = manifest.get("tester_report_receipt") or {}
+    if isinstance(projection, dict):
+        expected_hash = projection.get("sha256")
+        expected_size = projection.get("size_bytes")
+        if expected_hash and os.path.exists(filesystem_path(receipt_path)) and file_sha256(receipt_path) != expected_hash:
+            errors.append("manifest_receipt_sha256_mismatch")
+        if expected_size not in (None, "") and os.path.exists(filesystem_path(receipt_path)):
+            try:
+                if os.stat(filesystem_path(receipt_path)).st_size != int(expected_size):
+                    errors.append("manifest_receipt_size_mismatch")
+            except (TypeError, ValueError):
+                errors.append("manifest_receipt_size_invalid")
+
+    if not _is_historical_receipt(receipt):
+        errors.append("unrecognized_historical_receipt_evidence_class")
+    errors.extend(_historical_missing_requirements(receipt))
+    return list(dict.fromkeys(errors))
+
+
+def manifest_tester_report_path(manifest: dict[str, Any]) -> str | None:
+    tester_report = manifest.get("tester_report")
+    if isinstance(tester_report, dict) and tester_report.get("path"):
+        return str(tester_report["path"]).replace("\\", "/")
+    for item in (manifest.get("artifact_identity") or {}).get("tester_reports") or []:
+        if isinstance(item, dict) and item.get("path"):
+            return str(item["path"]).replace("\\", "/")
+    return None
+
+
+def _is_historical_receipt(receipt: dict[str, Any]) -> bool:
+    return (
+        receipt.get("receipt_provenance_class") == HISTORICAL_RECEIPT_PROVENANCE_CLASS
+        or receipt.get("migration_id") in RECOGNIZED_HISTORICAL_MIGRATION_IDS
+    )
+
+
+def _historical_contract_satisfied(receipt: dict[str, Any]) -> bool:
+    if not _is_historical_receipt(receipt):
+        return True
+    return not _historical_missing_requirements(receipt)
+
+
+def _historical_missing_requirements(receipt: dict[str, Any]) -> list[str]:
+    if not _is_historical_receipt(receipt):
+        return []
+    missing: list[str] = []
+    if receipt.get("receipt_provenance_class") != HISTORICAL_RECEIPT_PROVENANCE_CLASS:
+        missing.append("receipt_provenance_class")
+    if receipt.get("prelaunch_observation_available") is not False:
+        missing.append("prelaunch_observation_unavailable_recorded")
+    if receipt.get("freshness_reason") != HISTORICAL_FRESHNESS_REASON:
+        missing.append("historical_freshness_reason")
+    if receipt.get("freshness_evidence_class") != HISTORICAL_FRESHNESS_EVIDENCE_CLASS:
+        missing.append("freshness_evidence_class")
+    if not receipt.get("stored_report_sha256"):
+        missing.append("stored_report_sha256")
+    if receipt.get("source_report_sha256") != receipt.get("stored_report_sha256"):
+        missing.append("source_report_sha256_equals_stored_report_sha256")
+    if receipt.get("stored_report_sha256_match") is not True:
+        missing.append("stored_report_sha256_match")
+    if receipt.get("stored_report_size_bytes") in (None, ""):
+        missing.append("stored_report_size_bytes")
+    if receipt.get("stored_report_size_match") is not True:
+        missing.append("stored_report_size_match")
+    if not _source_mtime_not_after_launch_end_plus_tolerance(receipt):
+        missing.append("source_report_mtime_not_after_launch_end_plus_tolerance")
+    if receipt.get("replace_report_enabled") is not True:
+        missing.append("replace_report_enabled")
+    if receipt.get("source_report_attempt_specific") is not True:
+        missing.append("source_report_attempt_specific")
+    checks = receipt.get("historical_freshness_checks") or {}
+    for field in (
+        "raw_report_existed_at_materialization",
+        "stored_report_sha256_present",
+        "stored_report_sha256_match",
+        "stored_report_size_match",
+        "mtime_at_or_after_launch_start",
+        "mtime_at_or_before_launch_end_plus_tolerance",
+        "replace_report_enabled",
+        "source_report_attempt_specific",
+    ):
+        if checks.get(field) is not True:
+            missing.append(f"historical_freshness_checks:{field}")
     return missing
 
 
@@ -475,6 +595,19 @@ def _source_mtime_not_before_launch(receipt: dict[str, Any]) -> bool:
     if source_mtime is None or launch_started is None:
         return False
     return source_mtime >= launch_started
+
+
+def _source_mtime_not_after_launch_end_plus_tolerance(receipt: dict[str, Any]) -> bool:
+    source_mtime = parse_utc(receipt.get("source_report_mtime_utc"))
+    launch_ended = parse_utc(receipt.get("launch_ended_at_utc"))
+    if source_mtime is None or launch_ended is None:
+        return False
+    tolerance_seconds = receipt.get("launch_end_tolerance_seconds", 120)
+    try:
+        tolerance = timedelta(seconds=float(tolerance_seconds))
+    except (TypeError, ValueError):
+        return False
+    return source_mtime <= launch_ended + tolerance
 
 
 def fatal_error_count_is_zero(value: Any) -> bool:

@@ -9,7 +9,7 @@ launch_started_at_utc: '2026-06-22T14:31:22.431846Z'
 report_observed_at_utc: '2026-06-22T14:31:53.676592Z'
 prelaunch_report_sha256: null
 postlaunch_report_sha256: 16fe60ac50d338f2a0f2211523e16b943077e282c8797dac5f532201e18478d8
-freshness_reason: absent_prelaunch_created_after_launch
+freshness_reason: historical_archive_window_and_hash_verified
 report_fresh_for_launch: true
 parse_status: parsed
 completion_marker_observed: true
@@ -32,5 +32,21 @@ stored_report_sha256: 16fe60ac50d338f2a0f2211523e16b943077e282c8797dac5f532201e1
 stored_report_sha256_match: true
 stored_report_size_bytes: 5486770
 stored_report_size_match: true
-migration_id: materialize_runtime_report_receipts_v1
-migration_freshness_basis: historical_attempt_archive_hash_verified_and_mtime_after_launch
+launch_ended_at_utc: '2026-06-22T14:31:54.873182Z'
+launch_end_tolerance_seconds: 120
+replace_report_enabled: true
+prelaunch_observation_available: false
+historical_freshness_checks:
+  raw_report_existed_at_materialization: true
+  stored_report_sha256_present: true
+  stored_report_sha256_match: true
+  stored_report_size_present: true
+  stored_report_size_match: true
+  mtime_at_or_after_launch_start: true
+  mtime_at_or_before_launch_end_plus_tolerance: true
+  replace_report_enabled: true
+  source_report_attempt_specific: true
+freshness_evidence_class: historical_archive_window_and_hash_verified
+source_report_attempt_specific: true
+receipt_provenance_class: historical_archive_migration
+migration_id: runtime_graph_revalidation_inventory_bound_v1
