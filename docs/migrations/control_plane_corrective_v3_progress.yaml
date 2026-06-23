@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp05_final_correction_completed_requested_claim_fail_closed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp06_completed_batch_provenance_and_agent_telemetry_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -1112,7 +1112,133 @@ work_units:
       commit_sha: recorded_by_wp05_final_correction_commit
     claim_boundary: corrective_wp05_final_correction_completed_requested_claim_fail_closed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   WP06:
-    status: pending
+    status: completed
+    completed_at_utc: '2026-06-23T16:08:35Z'
+    objective: Complete batch provenance capture, wire historical run and attempt
+      records to compact batch provenance, and generate agent operating metrics
+      from durable event counts.
+    changed_files:
+    - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - docs/registers/artifact_registry.csv
+    - docs/workspace/agent_operating_events.yaml
+    - docs/workspace/agent_operating_metrics.yaml
+    - foundation/validation/control_plane_validator.py
+    - lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+    - lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source_snapshot/source_snapshot_manifest.yaml
+    - lab/runs/*/run_manifest.json
+    - runtime/mt5_attempts/*/attempt_manifest.yaml
+    - src/spacesonar/cli.py
+    - src/spacesonar/control_plane/agent_metrics.py
+    - src/spacesonar/control_plane/provenance.py
+    - tests/control_plane/test_batch_provenance.py
+    - tests/test_agent_metrics_projection.py
+    source_snapshot_formats_tested:
+    - tracked_unstaged_patch
+    - tracked_staged_patch
+    - untracked_non_ignored_source_archive
+    - deleted_source_path_inventory
+    - renamed_source_path_inventory
+    - binary_source_patch_detection
+    source_tree_identity:
+      includes_tracked_source: true
+      includes_untracked_non_ignored_source: true
+      mutation_cases_verified:
+      - unstaged
+      - untracked
+      - deleted
+      - renamed
+      - binary
+    batch_receipt:
+      path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+      source_snapshot_manifest: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source_snapshot/source_snapshot_manifest.yaml
+      inputs_nonempty: true
+      outputs_nonempty: true
+      lock_hash_recorded: true
+      clean_dirty_decision_recorded: true
+      claim_boundary_recorded: true
+    run_attempt_wiring:
+      future_api:
+      - src.spacesonar.control_plane.provenance.execution_batch_ref
+      - src.spacesonar.control_plane.provenance.attach_execution_batch_ref
+      historical_compaction_marker:
+        migrated_to_batch_receipt: true
+        batch_receipt_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+        historical_inline_provenance_retained: true
+      historical_records_migrated:
+        run_manifests: 37
+        attempt_manifests: 88
+        total: 125
+      inline_provenance_deleted: false
+    lineage_refresh:
+      reason: minimal fixture run and attempt manifest hashes changed after non-destructive
+        provenance compaction markers were added.
+      refreshed_lineage_path: lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json
+      artifact_registry_refreshed: true
+    agent_metrics:
+      event_denominator_path: docs/workspace/agent_operating_events.yaml
+      generated_metrics_path: docs/workspace/agent_operating_metrics.yaml
+      generator: python -m spacesonar.cli agents metrics --write
+      manual_drift_fails_validation: true
+      counts:
+        work_item_count: 7
+        solo_work_item_count: 7
+        consult_count: 1
+        one_agent_consult_count: 0
+        two_agent_consult_count: 0
+        three_plus_agent_consult_count: 1
+        total_advice_items: 18
+        duplicate_advice_items: 0
+        unsupported_assertion_count: 0
+        accepted_after_verification_count: 3
+        rejected_after_verification_count: 0
+        rewritten_after_verification_count: 1
+        operating_event_count: 8
+      ratios:
+        solo_work_share: 0.875
+        one_agent_share: 0.0
+        two_agent_share: 0.0
+        three_plus_agent_share: 0.125
+        routine_solo_or_single_agent_share: 0.875
+        duplicate_advice_ratio: 0.0
+        accepted_after_verification_ratio: 0.166667
+    validation:
+    - command: uv run pytest tests/control_plane/test_batch_provenance.py tests/test_agent_metrics_projection.py tests/test_agent_consult_receipts.py -q
+      status: passed
+      result: 21 passed
+    - command: uv run pytest tests/control_plane -q
+      status: passed
+      result: 82 passed
+    - command: uv run python -m spacesonar.cli agents metrics --check
+      status: passed
+      result: agent metrics projection check passed
+    - command: uv run python foundation/validation/active_record_validator.py --repo-root
+        .
+      status: passed
+      result: active-record validation passed
+    - command: python foundation/validation/control_plane_validator.py --repo-root .
+      status: passed
+      result: control-plane validation passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
+        --repo-root . --check
+      status: passed
+      result: rows=877 refreshable=877 changed=0 missing=0
+    - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
+        foundation/validation
+      status: passed
+      result: changed Python modules compiled successfully
+    - command: uv run pytest -q
+      status: passed
+      result: 351 passed
+    claim_boundary: corrective_wp06_completed_batch_provenance_and_agent_telemetry_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    handoff:
+      next_packet: WP07
+      required_entry_condition: WP06.status completed
+      exact_handoff: Continue with the next corrective packet without changing runtime
+        authority, economics pass, live readiness, selected baseline, or production
+        deployment claims.
   WP07:
     status: pending
   WP08:

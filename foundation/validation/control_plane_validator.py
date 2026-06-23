@@ -530,6 +530,16 @@ def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
     return errors
 
 
+def validate_agent_operating_metrics_projection(repo_root: Path) -> list[str]:
+    src_path = str(repo_root / "src")
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
+
+    from spacesonar.control_plane.agent_metrics import agent_operating_metrics_diff
+
+    return agent_operating_metrics_diff(repo_root)
+
+
 def validate_routing_smoke_prompts(repo_root: Path) -> list[str]:
     path = repo_root / "docs" / "agent_control" / "routing_smoke_prompts.yaml"
     data = load_yaml(path)
@@ -606,6 +616,7 @@ def validate(repo_root: Path, *, include_active_records: bool = False) -> list[s
     errors.extend(validate_templates(repo_root))
     errors.extend(validate_task_force_registry(repo_root))
     errors.extend(validate_agent_consult_receipts(repo_root))
+    errors.extend(validate_agent_operating_metrics_projection(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))
 

@@ -153,7 +153,8 @@ forbidden_claims:
 - live_readiness
 - goal_achieve
 missing_evidence: []
-next_action: none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics or runtime authority
+next_action: none_for_fixed_fixture_micro_probe; do not infer Strategy Tester economics
+  or runtime authority
 compile_provenance:
   command_argv_redacted:
   - ${PROGRAMFILES}\MetaTrader 5\MetaEditor64.exe
@@ -332,3 +333,7 @@ runtime_probe_routing:
   runtime_period_profile_id: period_profile_split_set_v0
   runtime_period_set_id: specific_fixture_micro_probe_no_period_completion
 result_judgment: preserved_clue
+provenance_compaction:
+  migrated_to_batch_receipt: true
+  batch_receipt_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+  historical_inline_provenance_retained: true

@@ -186,7 +186,8 @@ missing_evidence:
 - handle_release_log
 - compile_terminal_exit_code_provenance
 - clean_commit_superseding_rerun
-next_action: supersede with clean orchestrated prepare/compile/terminal-run/closeout rerun
+next_action: supersede with clean orchestrated prepare/compile/terminal-run/closeout
+  rerun
 evidence_debt:
   status: acknowledged_claim_blocking_until_clean_superseding_rerun
   items:
@@ -195,3 +196,7 @@ evidence_debt:
   - handle_release_log
   - compile_terminal_exit_code_provenance
   - clean_commit_superseding_rerun
+provenance_compaction:
+  migrated_to_batch_receipt: true
+  batch_receipt_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+  historical_inline_provenance_retained: true

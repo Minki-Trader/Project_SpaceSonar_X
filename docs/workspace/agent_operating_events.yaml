@@ -1,0 +1,32 @@
+version: agent_operating_events_v1
+updated_utc: '2026-06-24T00:00:00Z'
+measurement_boundary: control_plane_corrective_v3_local_records_only
+source_refs:
+- docs/migrations/control_plane_corrective_v3_progress.yaml
+- docs/agent_control/codex_task_force_registry.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
+work_item_events:
+- work_item_id: WP00
+  agent_mode: solo
+  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+- work_item_id: WP01
+  agent_mode: solo
+  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+- work_item_id: WP02
+  agent_mode: solo
+  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+- work_item_id: WP03
+  agent_mode: solo
+  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+- work_item_id: WP04
+  agent_mode: solo
+  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+- work_item_id: WP05
+  agent_mode: solo
+  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+- work_item_id: WP06
+  agent_mode: solo
+  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+consult_receipts:
+- path: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
+  event_class: formal_protected_review_historical_initial_consult

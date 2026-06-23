@@ -292,12 +292,39 @@ git:
     - tests/test_wave0_l4_mt5_attempt_preparer.py
     - tests/test_wave0_l4_mt5_attempt_runner.py
     - uv.lock
+  source_snapshot:
+    version: source_snapshot_v1
+    batch_id: batch_control_plane_stabilization_v2_runtime_revalidation
+    tracked_patch_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source.patch
+    tracked_patch_sha256: 4eae229d06c7cc23b300226b567b834481df98405298686e2063c849c07fcca3
+    staged_patch_path: null
+    staged_patch_sha256: null
+    untracked_archive_path: null
+    untracked_archive_sha256: null
+    untracked_paths: []
+    deleted_paths: []
+    renamed_paths: []
+    binary_source_paths: []
+    source_tree_hash: 6c629aff20b46175f9d881e0f24db44904a8588b0ea1a5355e63e6512844f3e5
+    historical_snapshot_note: WP06 links the pre-existing source.patch; staged/untracked
+      archive evidence was not separately recorded by the historical batch.
+    manifest_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source_snapshot/source_snapshot_manifest.yaml
+    manifest_sha256: 140a9d1d43704ec555f884db4cfd62e256b91bc0d9a930171edcddbb0f2ec65e
 environment:
   python_executable_redacted: ${PYTHON}
   python_version: 3.13.9
   platform: Windows-11-10.0.26200-SP0
   lock_file: uv.lock
   lock_file_sha256: 19836faa417eec98234c4c9297451aa5fdf836de389e09a6d00cb5ddc60d0fc1
-inputs: []
-outputs: []
+inputs:
+- path: uv.lock
+  sha256: 19836faa417eec98234c4c9297451aa5fdf836de389e09a6d00cb5ddc60d0fc1
+  size_bytes: 156166
+outputs:
+- path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source.patch
+  sha256: 4eae229d06c7cc23b300226b567b834481df98405298686e2063c849c07fcca3
+  size_bytes: 59339
+- path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source_snapshot/source_snapshot_manifest.yaml
+  sha256: 140a9d1d43704ec555f884db4cfd62e256b91bc0d9a930171edcddbb0f2ec65e
+  size_bytes: 869
 claim_boundary: exploratory_dirty_source_not_reproducible_candidate_or_runtime_authority
