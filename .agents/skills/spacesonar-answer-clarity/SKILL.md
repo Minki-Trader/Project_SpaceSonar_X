@@ -1,6 +1,6 @@
 ---
 name: spacesonar-answer-clarity
-description: Final user-facing answer filter: concise Korean-friendly summaries with clear action/effect/claim boundary.
+description: "Final user-facing answer filter: concise Korean-friendly summaries with clear action/effect/claim boundary."
 ---
 
 # SpaceSonar Answer Clarity
@@ -23,4 +23,3 @@ Use this only at the final user-facing response layer.
 - Do not bury the result behind process detail.
 - Do not over-explain obvious tool steps.
 - Do not imply reviewed/verified/pass unless matching evidence exists.
-

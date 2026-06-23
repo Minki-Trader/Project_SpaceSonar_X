@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp04_last_amendment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp05_skill_routing_alignment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -871,7 +871,102 @@ work_units:
     final_amendment_relock_at_utc: '2026-06-23T10:02:20Z'
     last_amendment_relock_at_utc: '2026-06-23T10:45:00Z'
   WP05:
-    status: pending
+    status: completed
+    started_at_utc: '2026-06-23T11:45:00Z'
+    completed_at_utc: '2026-06-23T12:22:06Z'
+    objective: Align canonical skills, work-family registry mappings, registry-backed
+      routing behavior, and routing benchmarks with the actual operating model.
+    changed_files:
+    - .agents/skills/spacesonar-session-bootstrap/SKILL.md
+    - .agents/skills/spacesonar-evidence-provenance/SKILL.md
+    - .agents/skills/spacesonar-runtime-evidence/SKILL.md
+    - .agents/skills/spacesonar-code-change-quality/SKILL.md
+    - .agents/skills/spacesonar-experiment-design/SKILL.md
+    - .agents/skills/<compatibility_stub>/SKILL.md
+    - docs/agent_control/work_family_registry.yaml
+    - docs/agent_control/routing_behavior_cases.yaml
+    - docs/agent_control/routing_smoke_prompts.yaml
+    - docs/agent_control/skill_receipt_schema.yaml
+    - docs/agent_control/claim_vocabulary.yaml
+    - src/spacesonar/control_plane/routing.py
+    - foundation/validation/routing_behavior_eval.py
+    - tests/test_routing_behavior.py
+    canonical_skills:
+      count: 5
+      names:
+      - spacesonar-session-bootstrap
+      - spacesonar-evidence-provenance
+      - spacesonar-runtime-evidence
+      - spacesonar-experiment-design
+      - spacesonar-code-change-quality
+    compatibility_stubs:
+      count: 10
+      compatibility_until: skill_schema_v2
+      names:
+      - spacesonar-session-intake
+      - spacesonar-reentry-read
+      - spacesonar-run-evidence-system
+      - spacesonar-artifact-lineage
+      - spacesonar-environment-reproducibility
+      - spacesonar-runtime-parity
+      - spacesonar-backtest-forensics
+      - spacesonar-exploration-mandate
+      - spacesonar-code-surface-guard
+      - spacesonar-code-quality
+    global_guards:
+    - spacesonar-answer-clarity
+    - spacesonar-claim-discipline
+    changed_family_mappings:
+      information_only: spacesonar-session-bootstrap
+      workspace_state_sync: spacesonar-workspace-state-sync
+      code_edit: spacesonar-code-change-quality
+      code_refactor: spacesonar-code-change-quality
+      data_feature_build: spacesonar-data-integrity
+      synthesis_campaign: spacesonar-experiment-design
+      model_training: spacesonar-model-validation
+      onnx_export_parity: spacesonar-runtime-evidence
+      bundle_materialization: spacesonar-evidence-provenance
+      runtime_probe: spacesonar-runtime-evidence
+      artifact_lineage: spacesonar-evidence-provenance
+      cleanup_archive: spacesonar-evidence-provenance
+      publish_handoff: spacesonar-evidence-provenance
+    routing_benchmark:
+      accuracy: 1.0
+      protected_claim_guard_recall: 1.0
+      ambiguous_cases_record_reasons: true
+      explanation_only_runtime_paths_stay_information_only: true
+      selected_baseline_route: protected_candidate_model
+    validation:
+    - command: uv run pytest tests/test_routing_behavior.py -q
+      status: passed
+      result: 12 passed
+    - command: uv run python foundation/validation/routing_behavior_eval.py --repo-root
+        .
+      status: passed
+      result: accuracy 1.0; protected_claim_guard_recall 1.0
+    - command: uv run python foundation/validation/routing_contract_lint.py --repo-root
+        .
+      status: passed
+      result: routing contract lint passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: python -m compileall src/spacesonar/control_plane foundation/validation
+        tests/test_routing_behavior.py
+      status: passed
+      result: routing and validation modules compiled successfully
+    - command: uv run pytest -q
+      status: passed
+      result: 319 passed in 979.02s
+    wp06_handoff:
+      next_packet: WP06
+      required_entry_condition: WP05.status completed
+      exact_handoff: Use canonical skill names from the work-family registry, keep
+        answer clarity and claim discipline as global guards, and use registry-backed
+        route_work_item behavior for provenance and agent telemetry integration.
+      remaining_claim_boundary: no runtime authority, no economics pass, no live
+        readiness, no selected baseline.
+    claim_boundary: corrective_wp05_skill_routing_alignment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   WP06:
     status: pending
   WP07:

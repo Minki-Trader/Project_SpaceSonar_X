@@ -1,6 +1,6 @@
 ---
 name: spacesonar-lane-classifier
-description: Classify ONNX lab lane: exploration, evidence, model, bundle, runtime, handoff, cleanup, or mixed intent.
+description: "Classify ONNX lab lane: exploration, evidence, model, bundle, runtime, handoff, cleanup, or mixed intent."
 ---
 
 # SpaceSonar Lane Classifier
@@ -35,4 +35,3 @@ Use this skill when a task mixes exploration, evidence, data, model, ONNX export
 - Runtime/economics/handoff claims need runtime evidence.
 - Candidate status is not selected baseline.
 - Bundle parity is not economics pass.
-

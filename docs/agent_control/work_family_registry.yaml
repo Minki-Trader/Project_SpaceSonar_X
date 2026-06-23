@@ -37,6 +37,18 @@ global_rules:
     claim_effect: unavailable_no_inheritance
     recovery_rule: "Do not route to legacy archive material unless the user restores it and explicitly asks for archive recovery."
 
+global_guards:
+  - spacesonar-answer-clarity
+  - spacesonar-claim-discipline
+
+explicit_skill_limits:
+  information_only: 1
+  code_change: 2
+  experiment: 3
+  runtime: 3
+  governance: 3
+  exceeding_three_requires: why_not_smaller
+
 verification_profiles:
   information_only:
     claim_surface: "answer_or_status_only"
@@ -99,17 +111,14 @@ verification_profiles:
 
 work_families:
   information_only:
-    primary_skill: spacesonar-answer-clarity
-    support_skills:
-      - spacesonar-claim-discipline
-      - spacesonar-reentry-read
+    primary_skill: spacesonar-session-bootstrap
+    support_skills: []
     required_gates: []
 
   workspace_state_sync:
     primary_skill: spacesonar-workspace-state-sync
     support_skills:
-      - spacesonar-reentry-read
-      - spacesonar-claim-discipline
+      - spacesonar-session-bootstrap
     required_gates:
       - workspace_state_consistency
       - final_claim_guard
@@ -118,10 +127,7 @@ work_families:
     primary_skill: spacesonar-work-item-router
     support_skills:
       - spacesonar-architecture-guard
-      - spacesonar-task-force-review
-      - spacesonar-run-evidence-system
-      - spacesonar-workflow-drift-guard
-      - spacesonar-claim-discipline
+      - spacesonar-evidence-provenance
     required_gates:
       - branch_worktree_fit
       - provenance_capture
@@ -133,21 +139,17 @@ work_families:
       - final_claim_guard
 
   code_edit:
-    primary_skill: spacesonar-code-surface-guard
+    primary_skill: spacesonar-code-change-quality
     support_skills:
-      - spacesonar-code-quality
       - spacesonar-reference-scout
-      - spacesonar-claim-discipline
     required_gates:
       - test_or_syntax_check
       - final_claim_guard
 
   code_refactor:
-    primary_skill: spacesonar-code-surface-guard
+    primary_skill: spacesonar-code-change-quality
     support_skills:
-      - spacesonar-code-quality
       - spacesonar-architecture-guard
-      - spacesonar-claim-discipline
     required_gates:
       - ownership_boundary_check
       - test_or_syntax_check
@@ -156,8 +158,7 @@ work_families:
   data_feature_build:
     primary_skill: spacesonar-data-integrity
     support_skills:
-      - spacesonar-artifact-lineage
-      - spacesonar-claim-discipline
+      - spacesonar-evidence-provenance
     required_gates:
       - time_axis_check
       - feature_label_boundary_check
@@ -167,9 +168,7 @@ work_families:
   experiment_design:
     primary_skill: spacesonar-experiment-design
     support_skills:
-      - spacesonar-exploration-mandate
       - spacesonar-data-integrity
-      - spacesonar-claim-discipline
     required_gates:
       - design_contract_check
       - exploration_coverage_check
@@ -179,11 +178,8 @@ work_families:
   synthesis_campaign:
     primary_skill: spacesonar-experiment-design
     support_skills:
-      - spacesonar-exploration-mandate
-      - spacesonar-run-evidence-system
-      - spacesonar-runtime-parity
+      - spacesonar-evidence-provenance
       - spacesonar-result-judgment
-      - spacesonar-claim-discipline
     required_gates:
       - synthesis_source_lineage_check
       - ingredient_card_lineage_check
@@ -195,10 +191,8 @@ work_families:
   model_training:
     primary_skill: spacesonar-model-validation
     support_skills:
-      - spacesonar-experiment-design
       - spacesonar-data-integrity
-      - spacesonar-run-evidence-system
-      - spacesonar-claim-discipline
+      - spacesonar-evidence-provenance
     required_gates:
       - split_boundary_check
       - selection_bias_check
@@ -210,11 +204,9 @@ work_families:
       - final_claim_guard
 
   onnx_export_parity:
-    primary_skill: spacesonar-runtime-parity
+    primary_skill: spacesonar-runtime-evidence
     support_skills:
-      - spacesonar-artifact-lineage
-      - spacesonar-environment-reproducibility
-      - spacesonar-claim-discipline
+      - spacesonar-evidence-provenance
     required_gates:
       - onnx_export_smoke
       - python_onnx_parity
@@ -227,30 +219,25 @@ work_families:
     support_skills:
       - spacesonar-performance-attribution
       - spacesonar-model-validation
-      - spacesonar-claim-discipline
     required_gates:
       - metrics_source_check
       - candidate_registry_update
       - final_claim_guard
 
   bundle_materialization:
-    primary_skill: spacesonar-artifact-lineage
+    primary_skill: spacesonar-evidence-provenance
     support_skills:
-      - spacesonar-runtime-parity
-      - spacesonar-environment-reproducibility
-      - spacesonar-claim-discipline
+      - spacesonar-runtime-evidence
     required_gates:
       - experiment_bundle_manifest
       - bundle_integrity_hash
       - final_claim_guard
 
   runtime_probe:
-    primary_skill: spacesonar-runtime-parity
+    primary_skill: spacesonar-runtime-evidence
     support_skills:
-      - spacesonar-backtest-forensics
-      - spacesonar-run-evidence-system
+      - spacesonar-evidence-provenance
       - spacesonar-result-judgment
-      - spacesonar-claim-discipline
     required_gates:
       - runtime_learning_probe_decision
       - mt5_runtime_probe_contract_audit
@@ -259,30 +246,25 @@ work_families:
       - final_claim_guard
 
   artifact_lineage:
-    primary_skill: spacesonar-artifact-lineage
-    support_skills:
-      - spacesonar-environment-reproducibility
-      - spacesonar-claim-discipline
+    primary_skill: spacesonar-evidence-provenance
+    support_skills: []
     required_gates:
       - lineage_record
       - final_claim_guard
 
   cleanup_archive:
-    primary_skill: spacesonar-artifact-lineage
+    primary_skill: spacesonar-evidence-provenance
     support_skills:
       - spacesonar-workflow-drift-guard
-      - spacesonar-claim-discipline
     required_gates:
       - target_path_safety
       - archive_or_boundary_record
       - final_claim_guard
 
   publish_handoff:
-    primary_skill: spacesonar-artifact-lineage
+    primary_skill: spacesonar-evidence-provenance
     support_skills:
-      - spacesonar-runtime-parity
-      - spacesonar-environment-reproducibility
-      - spacesonar-claim-discipline
+      - spacesonar-runtime-evidence
     required_gates:
       - handoff_surface_check
       - final_claim_guard

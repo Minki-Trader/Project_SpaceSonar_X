@@ -53,14 +53,14 @@ skill_specific:
       - leakage_risk
       - integrity_judgment
 
-  spacesonar-runtime-parity:
+  spacesonar-runtime-evidence:
     required_fields:
       - shared_contract
       - parity_check
       - parity_identity
       - runtime_claim_boundary
 
-  spacesonar-artifact-lineage:
+  spacesonar-evidence-provenance:
     required_fields:
       - source_inputs
       - artifact_paths
@@ -78,7 +78,45 @@ skill_specific:
       - opinion_classification
       - allowed_claim_effect
 
+  spacesonar-code-change-quality:
+    required_fields:
+      - owner_surface
+      - input_contract
+      - output_contract
+      - artifact_effect
+      - test_or_syntax_check
+
+  spacesonar-session-bootstrap:
+    required_fields:
+      - reentry_mode
+      - user_intent
+      - current_truth_need
+      - claim_boundary
+
   spacesonar-run-evidence-system:
+    compatibility_stub: true
+    replaced_by: spacesonar-evidence-provenance
+    required_fields:
+      - storage_contract
+      - required_gate_coverage
+      - runtime_learning_probe_decision
+      - missing_evidence
+
+  spacesonar-artifact-lineage:
+    compatibility_stub: true
+    replaced_by: spacesonar-evidence-provenance
+    required_fields:
+      - source_inputs
+      - artifact_paths
+      - artifact_hashes
+      - source_of_truth_paths
+      - regeneration_commands
+      - availability
+      - lineage_judgment
+
+  spacesonar-runtime-parity:
+    compatibility_stub: true
+    replaced_by: spacesonar-runtime-evidence
     required_fields:
       - storage_contract
       - required_gate_coverage

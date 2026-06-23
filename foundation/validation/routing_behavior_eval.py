@@ -20,6 +20,25 @@ def load_yaml(path: Path):
         return yaml.safe_load(handle)
 
 
+def _skill_frontmatter(text: str) -> dict[str, object]:
+    if not text.startswith("---"):
+        return {}
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return {}
+    return yaml.safe_load(parts[1]) or {}
+
+
+def _skill_exists_or_stub(repo_root: Path, skill_name: str) -> bool:
+    skill_path = repo_root / ".agents" / "skills" / skill_name / "SKILL.md"
+    if not skill_path.exists():
+        return False
+    metadata = _skill_frontmatter(skill_path.read_text(encoding="utf-8-sig"))
+    return metadata.get("name") == skill_name and (
+        "replaced_by" not in metadata or bool(metadata.get("compatibility_until"))
+    )
+
+
 def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
     cases = load_yaml(repo_root / "docs/agent_control/routing_behavior_cases.yaml").get("cases", [])
     registry = load_yaml(repo_root / "docs/agent_control/work_family_registry.yaml")
@@ -39,6 +58,8 @@ def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
             errors.append(f"{case['id']}: router returned unknown family {decision.primary_family}")
         elif decision.primary_skill != (families[decision.primary_family] or {}).get("primary_skill"):
             errors.append(f"{case['id']}: router returned skill absent from active family registry")
+        if not _skill_exists_or_stub(repo_root, decision.primary_skill):
+            errors.append(f"{case['id']}: router returned missing skill or invalid stub {decision.primary_skill}")
         expected = (
             decision.primary_family == case["expected_primary_family"]
             and decision.primary_skill == case["expected_primary_skill"]
@@ -46,6 +67,10 @@ def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
             and decision.policy_guard_set == case["expected_guard_set"]
             and decision.confidence >= float(case.get("minimum_confidence", 0))
         )
+        if "maximum_confidence" in case:
+            expected = expected and decision.confidence <= float(case["maximum_confidence"])
+        if case.get("expected_ambiguous"):
+            expected = expected and bool(decision.ambiguous_reasons)
         correct += int(expected)
         if case.get("requested_claims"):
             protected += 1

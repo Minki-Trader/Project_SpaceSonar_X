@@ -1,6 +1,6 @@
 ---
 name: spacesonar-work-item-router
-description: Route non-trivial ONNX lab work: family, primary skill, support skills, gates, phases, and stop conditions.
+description: "Route non-trivial ONNX lab work: family, primary skill, support skills, gates, phases, and stop conditions."
 ---
 
 # SpaceSonar Work Item Router
