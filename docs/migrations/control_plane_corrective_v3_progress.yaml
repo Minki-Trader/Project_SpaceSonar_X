@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_work_in_progress_no_new_protected_claims
+current_claim_boundary: corrective_wp04_lifecycle_projection_activation_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -529,7 +529,124 @@ work_units:
       remaining_claim_boundary: no runtime authority, no economics pass, no live readiness, no selected baseline.
     claim_boundary: corrective_wp03_runtime_graph_revalidation_no_runtime_authority_no_economics_pass
   WP04:
-    status: pending
+    status: completed
+    started_at_utc: '2026-06-23T06:15:50Z'
+    completed_at_utc: '2026-06-23T06:42:11Z'
+    objective: Activate future-safe lifecycle commands and generated registry/workspace projections after WP02 transactional hardening and WP03 runtime graph revalidation.
+    changed_files:
+      - docs/migrations/control_plane_corrective_v3_progress.yaml
+      - docs/registers/artifact_registry.csv
+      - docs/registers/campaign_registry.csv
+      - docs/registers/candidate_registry.csv.projection.yaml
+      - docs/registers/campaign_registry.csv.projection.yaml
+      - docs/registers/clue_registry.csv
+      - docs/registers/clue_registry.csv.projection.yaml
+      - docs/registers/experiment_surface_registry.csv
+      - docs/registers/experiment_surface_registry.csv.projection.yaml
+      - docs/registers/goal_registry.csv.projection.yaml
+      - docs/registers/negative_memory_registry.csv
+      - docs/registers/negative_memory_registry.csv.projection.yaml
+      - docs/registers/run_registry.csv
+      - docs/registers/run_registry.csv.projection.yaml
+      - docs/registers/sweep_registry.csv
+      - docs/registers/sweep_registry.csv.projection.yaml
+      - docs/registers/wave_registry.csv
+      - docs/registers/wave_registry.csv.projection.yaml
+      - src/spacesonar/control_plane/lifecycle.py
+      - src/spacesonar/control_plane/registry_projection.py
+      - src/spacesonar/control_plane/state_projection.py
+      - tests/control_plane/test_lifecycle_and_projections_wp04.py
+    lifecycle_activation:
+      canonical_lifecycle_guard_released: true
+      release_condition:
+        WP02: completed
+        WP04: completed
+      commands_covered:
+        - python -m spacesonar.cli campaign open --spec <path>
+        - python -m spacesonar.cli campaign materialize --campaign-id <id>
+        - python -m spacesonar.cli campaign judge --campaign-id <id>
+        - python -m spacesonar.cli campaign close --campaign-id <id>
+        - python -m spacesonar.cli wave close --wave-id <id>
+      closeout_evidence_gate: campaign and wave closeout commands abort validation and commit zero closeout files when declared evidence inputs are missing.
+      claim_boundary: lifecycle_control_plane_only_no_runtime_authority_no_economics_pass
+    transaction_path:
+      graph_updates: campaign open stages campaign manifest, surface manifest, hypothesis record, idea record, sweep manifest, wave allocation, campaign refs, goal active IDs, generated registries, and workspace projection in one ControlPlaneTransaction.
+      rollback_test: injected replacement failure restored campaign, registry, and workspace outputs.
+      idempotency: repeated projection writes return committed or noop_already_applied through the transaction layer.
+      internal_workspaces_ignored: .spacesonar/transactions remains local-only.
+    registry_projection:
+      projection_version: registry_projection_v2
+      generated_registries:
+        - docs/registers/goal_registry.csv
+        - docs/registers/wave_registry.csv
+        - docs/registers/campaign_registry.csv
+        - docs/registers/run_registry.csv
+        - docs/registers/experiment_surface_registry.csv
+        - docs/registers/sweep_registry.csv
+        - docs/registers/clue_registry.csv
+        - docs/registers/negative_memory_registry.csv
+        - docs/registers/candidate_registry.csv
+      sidecar_notices_written: true
+      artifact_registry_hashes_updated_for_generated_registry_artifacts: true
+      drift_check_status: passed
+    workspace_projection:
+      projection_version: workspace_state_projection_v2
+      hardcoded_wave01_paths_removed: true
+      synthetic_second_goal_wave_fixture_selected_correctly: true
+      workspace_projection_check_status: passed
+    wrapper_conversion:
+      status: passed
+      legacy_wrapper_direct_mutation_tokens_absent:
+        - csv.DictWriter
+        - yaml.safe_dump
+        - write_text(
+        - registry
+        - workspace
+        - sha256
+    validation:
+      - command: uv run pytest tests/control_plane/test_lifecycle_and_projections_wp04.py -q
+        status: passed
+        result: 8 passed
+      - command: uv run pytest tests/control_plane -q
+        status: passed
+        result: 58 passed
+      - command: uv run python -m spacesonar.cli registry project --check
+        status: passed
+        result: registry projection check passed
+      - command: uv run python -m spacesonar.cli project workspace --check
+        status: passed
+        result: workspace projection check passed
+      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+        status: passed
+        result: active-record validation passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
+        status: passed
+        result: control-plane modules compiled successfully
+      - command: uv run pytest -q
+        status: passed
+        result: 297 passed
+    amendment:
+      id: wp04_lifecycle_and_projection_activation
+      status: completed
+      commit_subject: WP04 lifecycle and projection activation
+      commit_sha: recorded_by_final_wp04_commit
+      results:
+        lifecycle_full_state_open: passed
+        multi_record_transaction_rollback: passed
+        registry_projection_all_nine: passed
+        generated_registry_artifact_hash_sync: passed
+        generic_workspace_projection: passed
+        legacy_wrapper_thinness: passed
+        lifecycle_guard_release_after_wp04: passed
+    wp05_handoff:
+      next_packet: WP05
+      required_entry_condition: WP04.status completed
+      exact_handoff: Use generated registries and generic workspace projection as current truth; do not hand-edit registry rows or workspace current state.
+      remaining_claim_boundary: no runtime authority, no economics pass, no live readiness, no selected baseline.
+    claim_boundary: corrective_wp04_lifecycle_projection_activation_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   WP05:
     status: pending
   WP06:
