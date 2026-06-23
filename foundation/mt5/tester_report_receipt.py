@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import html
+import os
 import re
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Iterable
 
 import yaml
+
+from spacesonar.control_plane.store import filesystem_path
 
 
 RECEIPT_VERSION = "tester_report_receipt_v1"
@@ -33,14 +36,14 @@ def file_sha256(path: Path) -> str:
     import hashlib
 
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(filesystem_path(path), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
 
 
 def snapshot_report_candidate(path: Path, origin: str) -> dict[str, Any]:
-    if not path.exists():
+    if not os.path.exists(filesystem_path(path)):
         return {
             "path_key": path_key(path),
             "origin": origin,
@@ -67,15 +70,15 @@ def path_key(path: Path) -> str:
 
 
 def write_receipt(path: Path, receipt: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as handle:
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
         yaml.safe_dump(receipt, handle, sort_keys=False, allow_unicode=False)
 
 
 def load_receipt(path: Path) -> dict[str, Any]:
-    if not path.exists():
+    if not os.path.exists(filesystem_path(path)):
         return {}
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         loaded = yaml.safe_load(handle)
     return loaded if isinstance(loaded, dict) else {}
 
@@ -93,6 +96,7 @@ def tester_report_completed(receipt: dict[str, Any]) -> bool:
             receipt.get("parse_status") == PARSED_STATUS,
             bool(receipt.get("completion_marker_observed")),
             bool(receipt.get("tester_identity_match")),
+            receipt.get("stored_report_sha256_match") is not False,
             fatal_error_count_is_zero(receipt.get("fatal_error_count")),
         ]
     )
@@ -100,9 +104,11 @@ def tester_report_completed(receipt: dict[str, Any]) -> bool:
 
 def tester_config_identity(path: Path) -> dict[str, str]:
     values: dict[str, str] = {}
-    if not path.exists():
+    if not os.path.exists(filesystem_path(path)):
         return values
-    for line in path.read_text(encoding="utf-8-sig").splitlines():
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        lines = handle.read().splitlines()
+    for line in lines:
         stripped = line.strip()
         if not stripped or stripped.startswith(";") or "=" not in stripped:
             continue
@@ -164,7 +170,7 @@ def build_tester_report_receipt(
         "claim_boundary": claim_boundary,
     }
 
-    if report_path is None or not report_path.exists():
+    if report_path is None or not os.path.exists(filesystem_path(report_path)):
         receipt["missing_requirements"] = ["tester_report_observed"]
         receipt["tester_report_completed"] = False
         return receipt
@@ -263,7 +269,8 @@ def report_freshness(
 
 def parse_tester_report(path: Path) -> dict[str, Any]:
     try:
-        raw = path.read_bytes()
+        with open(filesystem_path(path), "rb") as handle:
+            raw = handle.read()
     except OSError:
         return _unparseable()
     text = decode_report_bytes(raw)
@@ -273,18 +280,21 @@ def parse_tester_report(path: Path) -> dict[str, Any]:
     if not normalized.strip():
         return _unparseable()
     period_value = find_label_value(normalized, ["Period"])
+    if not period_value:
+        period_value = find_label_value(normalized, ["주기"])
     period_timeframe, period_from, period_to = parse_period_value(period_value)
+    history_quality = find_label_value(normalized, ["History Quality", "히스토리 품질"])
     fields = {
         "parse_status": PARSED_STATUS,
         "completion_marker_observed": completion_marker_observed(normalized),
-        "symbol": find_label_value(normalized, ["Symbol"]),
-        "timeframe": find_label_value(normalized, ["Timeframe"]) or period_timeframe,
+        "symbol": find_label_value(normalized, ["Symbol", "통화"]),
+        "timeframe": find_label_value(normalized, ["Timeframe", "시간 주기"]) or period_timeframe,
         "from_date": find_label_value(normalized, ["FromDate", "From date", "From"]) or period_from,
         "to_date": find_label_value(normalized, ["ToDate", "To date", "To"]) or period_to,
-        "model": find_label_value(normalized, ["Model"]),
-        "deposit": find_label_value(normalized, ["Deposit", "Initial deposit"]),
-        "leverage": find_label_value(normalized, ["Leverage"]),
-        "expert": find_label_value(normalized, ["Expert", "Expert Advisor"]),
+        "model": find_label_value(normalized, ["Model", "모델"]) or model_from_history_quality(history_quality),
+        "deposit": find_label_value(normalized, ["Deposit", "Initial deposit", "입금액"]),
+        "leverage": find_label_value(normalized, ["Leverage", "레버리지"]),
+        "expert": find_label_value(normalized, ["Expert", "Expert Advisor", "시스템 트레이딩"]),
         "fatal_error_count": fatal_error_count(normalized),
     }
     return fields
@@ -334,13 +344,25 @@ def completion_marker_observed(text: str) -> bool:
     lower = text.lower()
     markers = (
         "total trades",
+        "총 거래횟수",
         "profit factor",
         "total net profit",
+        "총수입",
         "balance drawdown",
         "bars in test",
+        "봉수",
         "report completed",
     )
     return any(marker in lower for marker in markers)
+
+
+def model_from_history_quality(value: str | None) -> str | None:
+    if not value:
+        return None
+    normalized = value.strip().lower()
+    if "real tick" in normalized or "실제 틱" in normalized:
+        return "4"
+    return None
 
 
 def fatal_error_count(text: str) -> int:
@@ -413,6 +435,8 @@ def receipt_missing_requirements(receipt: dict[str, Any], expected_identity: dic
         missing.append(f"expected_identity:{field}")
     if not receipt.get("tester_identity_match"):
         missing.append("tester_identity_match")
+    if receipt.get("stored_report_sha256_match") is False:
+        missing.append("stored_report_sha256_match")
     if not fatal_error_count_is_zero(receipt.get("fatal_error_count")):
         missing.append("tester_report_fatal_errors_absent")
     return missing
@@ -423,7 +447,7 @@ def expected_identity_missing_fields(expected_identity: dict[str, Any]) -> list[
 
 
 def timestamp_to_utc(timestamp: float) -> str:
-    return datetime.fromtimestamp(timestamp, tz=UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return datetime.fromtimestamp(timestamp, tz=UTC).isoformat().replace("+00:00", "Z")
 
 
 def parse_utc(value: Any) -> datetime | None:

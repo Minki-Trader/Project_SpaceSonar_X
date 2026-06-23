@@ -105,6 +105,8 @@ runtime_surface_contract:
   ea_feature_reconstruction: closed_bar_CopyRates_shift_1_feature_columns_in_bundle_order
   feature_columns_transport: common_file_with_inline_fallback
   feature_columns_common_relative_path: SpaceSonar\l4_score_probe\bundle_wave0_cell_003_l4_onnx_export_v0\feature_columns.txt
+  completion_surface_scope: full_period_deterministic
+  runtime_surface_kind: score_probe
 proxy_runtime_parity:
   status: attempt_prepared_runtime_execution_pending
   shared_contract:
@@ -554,3 +556,14 @@ migration_history:
   previous_status: completed_l4_score_telemetry_observed
   reason: runtime_completion_previously_inferred_from_telemetry_or_status_prefix
   executed_at_utc: '2026-06-22T11:52:40Z'
+- migration_id: materialize_runtime_report_receipts_v1
+  previous_sha256: fcb217e5aaef1c3b9fa7911abf1b012749ac646e7c2162763cd871bf1e72ea20
+  previous_status: runtime_probe_completed
+  reason: materialize_report_receipt_and_reconstruct_runtime_completion_from_durable_evidence
+  executed_at_utc: '2026-06-23T02:40:15Z'
+tester_report_receipt:
+  path: runtime/mt5_attempts/attempt_wave0_cell_003_l4_research_oos_v0/tester_report_receipt.yaml
+  sha256: 6e4311bba6d074e9072c04308cfcdaf4ff56c5f1829214bbb192b21d1fc07e36
+  size_bytes: 1516
+  availability: present_hash_recorded
+  migration_id: materialize_runtime_report_receipts_v1

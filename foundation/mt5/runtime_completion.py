@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -7,6 +8,7 @@ from typing import Any, Iterable
 import yaml
 
 from foundation.mt5.tester_report_receipt import tester_report_completed
+from spacesonar.control_plane.store import filesystem_path
 
 
 EXPECTED_PERIOD_PROFILE_ID = "period_profile_split_set_v0"
@@ -197,6 +199,21 @@ def reconstruct_runtime_attempt(repo_root: Path, paths: RuntimeEvidencePaths) ->
     telemetry_summary = _load_yaml(_resolve(repo_root, paths.telemetry_summary))
     report_receipt = _load_yaml(_resolve(repo_root, paths.tester_report_receipt))
 
+    return reconstruct_runtime_attempt_from_records(
+        attempt_manifest=attempt_manifest,
+        terminal_summary=terminal_summary,
+        telemetry_summary=telemetry_summary,
+        report_receipt=report_receipt,
+    )
+
+
+def reconstruct_runtime_attempt_from_records(
+    *,
+    attempt_manifest: dict[str, Any],
+    terminal_summary: dict[str, Any],
+    telemetry_summary: dict[str, Any],
+    report_receipt: dict[str, Any],
+) -> RuntimeAttemptState:
     surface_contract = _mapping(attempt_manifest.get("runtime_surface_contract"))
     routing = _mapping(attempt_manifest.get("runtime_probe_routing"))
     period_identity = _mapping(attempt_manifest.get("period_identity"))
@@ -270,9 +287,9 @@ def _resolve(repo_root: Path, path: Path) -> Path:
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
-    if not path.exists():
+    if not os.path.exists(filesystem_path(path)):
         return {}
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         loaded = yaml.safe_load(handle)
     return loaded if isinstance(loaded, dict) else {}
 

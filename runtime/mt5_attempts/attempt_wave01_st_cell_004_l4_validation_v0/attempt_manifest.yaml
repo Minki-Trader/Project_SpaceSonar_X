@@ -105,6 +105,8 @@ runtime_surface_contract:
   has_low_high_threshold: true
   decision_output: telemetry_only_no_trades
   ea_feature_reconstruction: closed_bar_CopyRates_shift_1_feature_columns_in_bundle_order
+  completion_surface_scope: full_period_deterministic
+  runtime_surface_kind: score_probe
 proxy_runtime_parity:
   status: attempt_prepared_runtime_execution_pending
   shared_contract:
@@ -553,3 +555,14 @@ migration_history:
   previous_status: completed_l4_score_telemetry_observed
   reason: runtime_completion_previously_inferred_from_telemetry_or_status_prefix
   executed_at_utc: '2026-06-22T11:52:40Z'
+- migration_id: materialize_runtime_report_receipts_v1
+  previous_sha256: d41465e6846f6647fab9a6cd8dd7a4ea4f9f890016c352c4e69027ecd3b97ec9
+  previous_status: runtime_probe_completed
+  reason: materialize_report_receipt_and_reconstruct_runtime_completion_from_durable_evidence
+  executed_at_utc: '2026-06-23T02:40:15Z'
+tester_report_receipt:
+  path: runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/tester_report_receipt.yaml
+  sha256: d36943fd46de99748851e51e89fe805bcbb872ab6b8d63529eb50e4fd0632f44
+  size_bytes: 1520
+  availability: present_hash_recorded
+  migration_id: materialize_runtime_report_receipts_v1

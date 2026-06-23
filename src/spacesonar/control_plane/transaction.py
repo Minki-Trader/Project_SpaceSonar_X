@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Callable
 
 from .models import ExecutionContext, TransactionResult
-from .store import dump_yaml, sha256_file
+from .store import dump_yaml, filesystem_path, sha256_file
 
 
 def utc_now() -> str:
@@ -19,9 +19,9 @@ def utc_now() -> str:
 
 
 def transaction_id(seed: str) -> str:
-    digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()[:12]
+    digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()[:8]
     stamp = datetime.now(tz=UTC).strftime("%Y%m%dT%H%M%S%fZ")
-    nonce = uuid.uuid4().hex[:16]
+    nonce = uuid.uuid4().hex[:8]
     return f"tx_{stamp}_{digest}_{nonce}"
 
 
@@ -88,13 +88,65 @@ class ReplacementFailure(RuntimeError):
         self.applied_paths = tuple(applied_paths)
 
 
+def _exists(path: Path) -> bool:
+    return os.path.exists(filesystem_path(path))
+
+
+def _is_file(path: Path) -> bool:
+    return os.path.isfile(filesystem_path(path))
+
+
+def _mkdir(path: Path) -> None:
+    os.makedirs(filesystem_path(path), exist_ok=True)
+
+
+def _unlink(path: Path) -> None:
+    os.unlink(filesystem_path(path))
+
+
+def _remove_tree(path: Path) -> None:
+    shutil.rmtree(filesystem_path(path))
+
+
+def _copy2(source: Path, target: Path) -> None:
+    _mkdir(target.parent)
+    shutil.copy2(filesystem_path(source), filesystem_path(target))
+
+
+def _replace(source: Path, target: Path) -> None:
+    _mkdir(target.parent)
+    os.replace(filesystem_path(source), filesystem_path(target))
+
+
+def _read_bytes(path: Path) -> bytes:
+    with open(filesystem_path(path), "rb") as handle:
+        return handle.read()
+
+
+def _write_bytes(path: Path, payload: bytes) -> None:
+    _mkdir(path.parent)
+    with open(filesystem_path(path), "wb") as handle:
+        handle.write(payload)
+
+
+def _write_text(path: Path, text: str) -> None:
+    _mkdir(path.parent)
+    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
+        handle.write(text)
+
+
+def _read_text(path: Path) -> str:
+    with open(filesystem_path(path), "r", encoding="utf-8") as handle:
+        return handle.read()
+
+
 class ControlPlaneTransaction:
     def __init__(self, context: ExecutionContext, *, tx_id: str | None = None) -> None:
         self.context = context
         seed = "|".join([context.work_item_id, *context.command_argv])
         self.transaction_id = tx_id or transaction_id(seed)
         self.tx_root = context.repo_root / ".spacesonar" / "transactions" / self.transaction_id
-        if self.tx_root.exists():
+        if _exists(self.tx_root):
             raise FileExistsError(
                 f"transaction workspace already exists; resume mode is not implemented: {self.tx_root}"
             )
@@ -143,22 +195,19 @@ class ControlPlaneTransaction:
             return
         current = self.context.repo_root / rel_path
         self._preconditions[rel_path] = Precondition(
-            existed=current.exists(),
-            sha256=sha256_file(current) if current.exists() else None,
+            existed=_exists(current),
+            sha256=sha256_file(current) if _exists(current) else None,
         )
 
     def _write_staged_tree(self) -> None:
-        if self.staged_root.exists():
-            shutil.rmtree(self.staged_root)
-        self.staged_root.mkdir(parents=True, exist_ok=True)
+        if _exists(self.staged_root):
+            _remove_tree(self.staged_root)
+        _mkdir(self.staged_root)
         for rel_path, payload in self._staged.items():
-            target = self.staged_root / rel_path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(payload)
+            _write_bytes(self.staged_root / rel_path, payload)
         for rel_path in self._deletions:
             marker = self.staged_root / ".deletions" / f"{self._digest_rel(rel_path)}.txt"
-            marker.parent.mkdir(parents=True, exist_ok=True)
-            marker.write_text(rel_path.as_posix(), encoding="utf-8")
+            _write_text(marker, rel_path.as_posix())
 
     def _all_paths(self) -> list[Path]:
         return sorted(set(self._staged) | set(self._deletions), key=lambda item: item.as_posix())
@@ -192,8 +241,8 @@ class ControlPlaneTransaction:
             hashes.append(
                 {
                     "path": rel_path.as_posix(),
-                    "existed": final_path.exists(),
-                    "sha256": sha256_file(final_path) if final_path.exists() else None,
+                    "existed": _exists(final_path),
+                    "sha256": sha256_file(final_path) if _exists(final_path) else None,
                 }
             )
         return hashes
@@ -235,7 +284,7 @@ class ControlPlaneTransaction:
             "rollback_verification": rollback_verification or [],
             "validation_commands": list(self.context.validation_commands),
             "commit_journal_path": self.commit_journal_path.relative_to(self.context.repo_root).as_posix()
-            if self.commit_journal_path.exists()
+            if _exists(self.commit_journal_path)
             else None,
             "errors": errors or [],
             "rollback_errors": rollback_errors or [],
@@ -243,19 +292,19 @@ class ControlPlaneTransaction:
         }
 
     def _write_yaml_file(self, path: Path, payload: dict) -> None:
-        path.parent.mkdir(parents=True, exist_ok=True)
+        _mkdir(path.parent)
         temp_path = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
         try:
-            with temp_path.open("w", encoding="utf-8") as handle:
+            with open(filesystem_path(temp_path), "w", encoding="utf-8") as handle:
                 handle.write(dump_yaml(payload))
                 handle.flush()
                 os.fsync(handle.fileno())
-            os.replace(temp_path, path)
+            _replace(temp_path, path)
             self._fsync_parent_dir(path.parent)
         except Exception:
-            if temp_path.exists():
+            if _exists(temp_path):
                 try:
-                    temp_path.unlink()
+                    _unlink(temp_path)
                 except OSError:
                     pass
             raise
@@ -263,7 +312,7 @@ class ControlPlaneTransaction:
     @staticmethod
     def _fsync_parent_dir(path: Path) -> None:
         try:
-            fd = os.open(path, os.O_RDONLY)
+            fd = os.open(filesystem_path(path), os.O_RDONLY)
         except OSError:
             return
         try:
@@ -274,7 +323,7 @@ class ControlPlaneTransaction:
             os.close(fd)
 
     def _write_receipt(self, receipt: dict) -> None:
-        if self.receipt_path.exists():
+        if _exists(self.receipt_path):
             raise FileExistsError(f"transaction receipt already exists: {self.receipt_path}")
         self._write_yaml_file(self.receipt_path, receipt)
 
@@ -282,7 +331,7 @@ class ControlPlaneTransaction:
         errors = []
         for rel_path, precondition in self._preconditions.items():
             current = self.context.repo_root / rel_path
-            exists = current.exists()
+            exists = _exists(current)
             current_hash = sha256_file(current) if exists else None
             if exists != precondition.existed or current_hash != precondition.sha256:
                 errors.append(f"{rel_path.as_posix()}: current hash differs from staged precondition")
@@ -293,29 +342,27 @@ class ControlPlaneTransaction:
             return True
         for rel_path, payload in self._staged.items():
             current = self.context.repo_root / rel_path
-            if not current.exists() or current.read_bytes() != payload:
+            if not _exists(current) or _read_bytes(current) != payload:
                 return False
         for rel_path in self._deletions:
-            if (self.context.repo_root / rel_path).exists():
+            if _exists(self.context.repo_root / rel_path):
                 return False
         return True
 
     def _materialize_merged_future_state(self) -> None:
-        if self.future_root.exists():
-            shutil.rmtree(self.future_root)
-        self.future_root.mkdir(parents=True, exist_ok=True)
+        if _exists(self.future_root):
+            _remove_tree(self.future_root)
+        _mkdir(self.future_root)
         if self._is_git_repo():
             self._materialize_git_future_state()
         else:
             self._materialize_fallback_future_state()
         for rel_path, payload in self._staged.items():
-            target = self.future_root / rel_path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(payload)
+            _write_bytes(self.future_root / rel_path, payload)
         for rel_path in self._deletions:
             target = self.future_root / rel_path
-            if target.exists():
-                target.unlink()
+            if _exists(target):
+                _unlink(target)
 
     def _is_git_repo(self) -> bool:
         result = subprocess.run(
@@ -345,11 +392,9 @@ class ControlPlaneTransaction:
             if self._future_excluded(rel_path):
                 continue
             source = self.context.repo_root / rel_path
-            if not source.is_file():
+            if not _is_file(source):
                 continue
-            target = self.future_root / rel_path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, target)
+            _copy2(source, self.future_root / rel_path)
 
     def _materialize_fallback_future_state(self) -> None:
         repo_root = self.context.repo_root.resolve()
@@ -371,11 +416,9 @@ class ControlPlaneTransaction:
                 rel_path = source.relative_to(repo_root)
                 if rel_path in self._deletions or rel_path in self._staged or self._future_excluded(rel_path):
                     continue
-                if not source.is_file():
+                if not _is_file(source):
                     continue
-                target = self.future_root / rel_path
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(source, target)
+                _copy2(source, self.future_root / rel_path)
 
     def _future_excluded(self, rel_path: Path) -> bool:
         parts = rel_path.parts
@@ -390,36 +433,34 @@ class ControlPlaneTransaction:
         return rel_path.suffix in SKIP_FUTURE_SUFFIXES
 
     def _capture_preimages(self) -> tuple[list[Preimage], list[str]]:
-        if self.preimage_root.exists():
-            shutil.rmtree(self.preimage_root)
+        if _exists(self.preimage_root):
+            _remove_tree(self.preimage_root)
         preimages: list[Preimage] = []
         errors: list[str] = []
         for rel_path in self._all_paths():
             current = self.context.repo_root / rel_path
             precondition = self._preconditions[rel_path]
-            exists = current.exists()
+            exists = _exists(current)
             current_hash = sha256_file(current) if exists else None
             if exists != precondition.existed or current_hash != precondition.sha256:
                 errors.append(f"{rel_path.as_posix()}: current hash differs during preimage capture")
                 continue
             if exists:
                 backup = self.preimage_root / rel_path
-                backup.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(current, backup)
+                _copy2(current, backup)
                 preimages.append(Preimage(rel_path, True, current_hash, backup))
             else:
                 preimages.append(Preimage(rel_path, False, None, None))
         return preimages, errors
 
     def _prepare_temps(self) -> dict[Path, Path]:
-        if self.temp_root.exists():
-            shutil.rmtree(self.temp_root)
+        if _exists(self.temp_root):
+            _remove_tree(self.temp_root)
         temps: dict[Path, Path] = {}
         for rel_path in self._staged:
             source = self.staged_root / rel_path
             temp = self.temp_root / rel_path
-            temp.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, temp)
+            _copy2(source, temp)
             temps[rel_path] = temp
         return temps
 
@@ -435,10 +476,10 @@ class ControlPlaneTransaction:
     ) -> None:
         existing = {}
         written_at = utc_now()
-        if self.commit_journal_path.exists():
+        if _exists(self.commit_journal_path):
             import yaml
 
-            existing = yaml.safe_load(self.commit_journal_path.read_text(encoding="utf-8")) or {}
+            existing = yaml.safe_load(_read_text(self.commit_journal_path)) or {}
             written_at = existing.get("written_at_utc", written_at)
         temps = temps or {}
         journal = {
@@ -457,7 +498,7 @@ class ControlPlaneTransaction:
                 {
                     "path": rel_path.as_posix(),
                     "temp_path": temp.relative_to(self.context.repo_root).as_posix(),
-                    "sha256": sha256_file(temp) if temp.exists() else None,
+                    "sha256": sha256_file(temp) if _exists(temp) else None,
                 }
                 for rel_path, temp in sorted(temps.items(), key=lambda item: item[0].as_posix())
             ],
@@ -475,13 +516,12 @@ class ControlPlaneTransaction:
         replace_count = 0
         for rel_path in self._all_paths():
             target = self.context.repo_root / rel_path
-            target.parent.mkdir(parents=True, exist_ok=True)
             try:
                 if rel_path in self._deletions:
-                    if target.exists():
-                        target.unlink()
+                    if _exists(target):
+                        _unlink(target)
                 else:
-                    os.replace(temps[rel_path], target)
+                    _replace(temps[rel_path], target)
             except Exception as exc:
                 raise ReplacementFailure(f"{rel_path.as_posix()}: replacement failed: {exc}", applied) from exc
             applied.append(rel_path)
@@ -495,13 +535,13 @@ class ControlPlaneTransaction:
         for rel_path in sorted(self._staged, key=lambda item: item.as_posix()):
             target = self.context.repo_root / rel_path
             staged = self.staged_root / rel_path
-            if not target.exists():
+            if not _exists(target):
                 errors.append(f"{rel_path.as_posix()}: committed file missing")
                 continue
             if sha256_file(target) != sha256_file(staged):
                 errors.append(f"{rel_path.as_posix()}: committed hash mismatch")
         for rel_path in sorted(self._deletions, key=lambda item: item.as_posix()):
-            if (self.context.repo_root / rel_path).exists():
+            if _exists(self.context.repo_root / rel_path):
                 errors.append(f"{rel_path.as_posix()}: staged deletion target still exists")
         return errors
 
@@ -515,10 +555,9 @@ class ControlPlaneTransaction:
                     if preimage.backup_path is None:
                         errors.append(f"{preimage.path.as_posix()}: missing backup path")
                         continue
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(preimage.backup_path, target)
-                elif target.exists():
-                    target.unlink()
+                    _copy2(preimage.backup_path, target)
+                elif _exists(target):
+                    _unlink(target)
                 restored.append(preimage.path)
             except OSError as exc:
                 errors.append(f"{preimage.path.as_posix()}: restore failed: {exc}")
@@ -531,7 +570,7 @@ class ControlPlaneTransaction:
         for preimage in preimages:
             target = self.context.repo_root / preimage.path
             if preimage.existed:
-                if not target.exists():
+                if not _exists(target):
                     results.append(
                         {
                             "path": preimage.path.as_posix(),
@@ -550,7 +589,7 @@ class ControlPlaneTransaction:
                         }
                     )
                     continue
-            elif target.exists():
+            elif _exists(target):
                 results.append(
                     {
                         "path": preimage.path.as_posix(),

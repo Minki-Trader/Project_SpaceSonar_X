@@ -46,6 +46,8 @@ runtime_surface_contract:
   hold_bars: 6
   decision_output: sparse_tester_trade_orders
   forbidden_interpretation: not_ONNX_runtime_authority_not_standard_L4_completion_until_terminal_report_exists
+  completion_surface_scope: full_period_sparse_decision_surface
+  runtime_surface_kind: decision_replay
 proxy_runtime_parity:
   status: adapter_prepared_terminal_execution_pending
   shared_contract:
@@ -462,3 +464,14 @@ migration_history:
   previous_status: completed_decision_replay_execution_telemetry_observed
   reason: runtime_completion_previously_inferred_from_telemetry_or_status_prefix
   executed_at_utc: '2026-06-22T11:52:40Z'
+- migration_id: materialize_runtime_report_receipts_v1
+  previous_sha256: 6752f323afb86c23fb818cf42223c2e8cbb52610b4882ac3306a4f5ad813d570
+  previous_status: runtime_probe_completed
+  reason: materialize_report_receipt_and_reconstruct_runtime_completion_from_durable_evidence
+  executed_at_utc: '2026-06-23T02:40:15Z'
+tester_report_receipt:
+  path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+  sha256: a708954d537fcb375c8a44677d7f79cddca4bd1223f310b5ae58d88604722d1b
+  size_bytes: 1589
+  availability: present_hash_recorded
+  migration_id: materialize_runtime_report_receipts_v1

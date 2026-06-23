@@ -4,6 +4,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -15,6 +16,8 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+
+from spacesonar.control_plane.store import filesystem_path
 
 LOCAL_USER_PATH_RE = re.compile(r"C:\\Users\\[^\\\s,\"']+", re.IGNORECASE)
 CLAIM_BLOCKING_WORDS = {
@@ -58,16 +61,25 @@ def is_try_first_disposition_token(value: str) -> bool:
 
 
 def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8-sig")
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        return handle.read()
+
+
+def path_exists(path: Path) -> bool:
+    return os.path.exists(filesystem_path(path))
+
+
+def path_is_file(path: Path) -> bool:
+    return os.path.isfile(filesystem_path(path))
 
 
 def load_yaml(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def load_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
 
@@ -82,7 +94,7 @@ def load_structured(path: Path) -> Any:
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(filesystem_path(path), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
@@ -93,7 +105,8 @@ def sha256_bytes(data: bytes) -> str:
 
 
 def text_checkout_sha256_variants(path: Path) -> set[str]:
-    data = path.read_bytes()
+    with open(filesystem_path(path), "rb") as handle:
+        data = handle.read()
     variants = {sha256_bytes(data)}
     if b"\0" in data:
         return variants
@@ -104,7 +117,8 @@ def text_checkout_sha256_variants(path: Path) -> set[str]:
 
 
 def text_checkout_size_variants(path: Path) -> set[int]:
-    data = path.read_bytes()
+    with open(filesystem_path(path), "rb") as handle:
+        data = handle.read()
     variants = {len(data)}
     if b"\0" in data:
         return variants
@@ -1071,7 +1085,7 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
 def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
     errors: list[str] = []
     attempt_root = repo_root / "runtime" / "mt5_attempts"
-    if not attempt_root.exists():
+    if not path_exists(attempt_root):
         return errors
 
     for path in sorted(attempt_root.glob("*/attempt_manifest.yaml")):
@@ -1113,24 +1127,38 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
             path.parent / "score_telemetry_summary.yaml",
             path.parent / "execution_telemetry_summary.yaml",
         ]
-        telemetry_path = next((candidate for candidate in telemetry_candidates if candidate.exists()), None)
+        telemetry_path = next((candidate for candidate in telemetry_candidates if path_exists(candidate)), None)
         has_new_receipt_projection = bool(attempt.get("tester_report_receipt"))
-        has_new_evidence = receipt_path.exists() or has_new_receipt_projection
+        has_durable_runtime_evidence = (
+            path_exists(receipt_path)
+            or has_new_receipt_projection
+            or path_exists(terminal_path)
+            or telemetry_path is not None
+        )
+        has_new_evidence = (
+            has_durable_runtime_evidence if is_l4_runtime_attempt else (path_exists(receipt_path) or has_new_receipt_projection)
+        )
         if has_new_evidence:
-            if not receipt_path.exists():
-                errors.append(f"{label}: tester_report_receipt.yaml missing from receipt-bearing runtime evidence set")
-            if not terminal_path.exists():
-                errors.append(f"{label}: terminal_run_summary.yaml missing from receipt-bearing runtime evidence set")
+            if not path_exists(receipt_path):
+                errors.append(f"{label}: tester_report_receipt.yaml missing from runtime evidence set")
+            if not path_exists(terminal_path):
+                errors.append(f"{label}: terminal_run_summary.yaml missing from runtime evidence set")
             if telemetry_path is None:
-                errors.append(f"{label}: telemetry summary missing from receipt-bearing runtime evidence set")
-            if not (receipt_path.exists() and terminal_path.exists() and telemetry_path is not None):
+                errors.append(f"{label}: telemetry summary missing from runtime evidence set")
+            if not (path_exists(receipt_path) and path_exists(terminal_path) and telemetry_path is not None):
                 continue
+            receipt_projection = attempt.get("tester_report_receipt") or {}
+            if isinstance(receipt_projection, dict):
+                expected_receipt_hash = receipt_projection.get("sha256")
+                if expected_receipt_hash and sha256(receipt_path) != expected_receipt_hash:
+                    errors.append(f"{label}: tester_report_receipt.yaml sha256 does not match manifest projection")
 
             from foundation.mt5.runtime_completion import (
                 RuntimeEvidencePaths,
                 evaluate_runtime_attempt,
                 reconstruct_runtime_attempt,
             )
+            from foundation.mt5.tester_report_receipt import load_receipt, tester_report_completed
 
             reconstructed = reconstruct_runtime_attempt(
                 repo_root,
@@ -1141,6 +1169,9 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
                     tester_report_receipt=receipt_path,
                 ),
             )
+            receipt = load_receipt(receipt_path)
+            if reconstructed.tester_report_completed != tester_report_completed(receipt):
+                errors.append(f"{label}: reconstructed tester_report_completed conflicts with receipt predicate")
             reconstructed_result = evaluate_runtime_attempt(
                 reconstructed,
                 required_period_roles=["validation", "research_oos"],
@@ -1153,6 +1184,8 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
                 errors.append(
                     f"{label}: stored runtime_probe_complete projection conflicts with reconstructed runtime evidence"
                 )
+            if status.startswith("runtime_probe_completed") and not reconstructed_result.runtime_probe_complete:
+                errors.append(f"{label}: runtime_probe_completed status conflicts with reconstructed runtime evidence")
             projected = {
                 "terminal_launched": bool(execution_state.get("terminal_launched")),
                 "telemetry_file_observed": bool(execution_state.get("telemetry_file_observed")),
@@ -1195,7 +1228,7 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
                 errors.append(f"{label}: status_counts retains legacy completed_* runtime status {status}")
 
     closeout_path = repo_root / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_closeout.yaml"
-    if closeout_path.exists():
+    if path_exists(closeout_path):
         closeout = load_yaml(closeout_path) or {}
         runtime_integrity = closeout.get("runtime_contract_integrity") or {}
         if runtime_integrity.get("status") == "passed":
@@ -1204,7 +1237,7 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
             runtime_result = evaluate_runtime_contract(repo_root)
             if runtime_result.get("status") != "passed":
                 errors.append(f"{rel(closeout_path, repo_root)}: runtime_contract_integrity passed but runtime evaluator did not pass")
-        if closeout.get("version") == "wave_closeout_v2" and (repo_root / ".git").exists() and (repo_root / "AGENTS.md").exists():
+        if closeout.get("version") == "wave_closeout_v2" and path_exists(repo_root / ".git") and path_exists(repo_root / "AGENTS.md"):
             from foundation.evaluation.build_operating_closeout import validate_committed_closeout
 
             errors.extend(validate_committed_closeout(repo_root))

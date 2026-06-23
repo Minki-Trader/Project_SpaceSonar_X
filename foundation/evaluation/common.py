@@ -6,18 +6,21 @@ from typing import Any
 
 import yaml
 
+from spacesonar.control_plane.store import filesystem_path
+
 
 EVALUATION_TIME_UTC = "2026-06-22T14:00:00Z"
 
 
 def load_yaml(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def write_yaml(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(data, sort_keys=False, allow_unicode=False), encoding="utf-8")
+    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
+        handle.write(yaml.safe_dump(data, sort_keys=False, allow_unicode=False))
 
 
 def stable_yaml_bytes(data: Any) -> bytes:
@@ -30,7 +33,7 @@ def stable_sha256(data: Any) -> str:
 
 def file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(filesystem_path(path), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()

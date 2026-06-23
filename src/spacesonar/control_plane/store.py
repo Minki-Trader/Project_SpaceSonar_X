@@ -3,10 +3,23 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+
+def filesystem_path(path: Path) -> str:
+    if os.name != "nt":
+        return str(path)
+    text = str(path)
+    if text.startswith("\\\\?\\"):
+        return text
+    resolved = str(path.resolve(strict=False))
+    if resolved.startswith("\\\\"):
+        return "\\\\?\\UNC\\" + resolved[2:]
+    return "\\\\?\\" + resolved
 
 
 class NoAliasDumper(yaml.SafeDumper):
@@ -16,14 +29,14 @@ class NoAliasDumper(yaml.SafeDumper):
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(filesystem_path(path), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
 
 
 def read_yaml(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle) or {}
 
 
@@ -32,7 +45,7 @@ def dump_yaml(data: dict[str, Any]) -> str:
 
 
 def read_json(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
 
@@ -41,7 +54,7 @@ def dump_json(data: dict[str, Any]) -> str:
 
 
 def read_csv_rows(path: Path) -> list[dict[str, str]]:
-    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
         return list(csv.DictReader(handle))
 
 
