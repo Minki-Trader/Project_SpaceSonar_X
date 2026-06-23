@@ -641,22 +641,11 @@ def update_artifact_hashes() -> None:
     write_csv(path, rows, fields)
 
 
-def main() -> None:
-    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-    update_run_records()
-    update_yaml_state(now)
-    update_registries()
-    update_artifact_hashes()
-    print(
-        json.dumps(
-            {
-                "status": "proxy_l4_policy_clarified",
-                "next_work_item": NEW_WORK,
-                "proxy_runs_requiring_l4": len(run_ids()),
-                "claim_boundary": CLAIM_BOUNDARY,
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
 
 

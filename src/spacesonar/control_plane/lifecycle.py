@@ -862,7 +862,25 @@ def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
             raise LifecycleInputError(f"wave close requires matching closed campaign closeout: {campaign_id}")
         _validate_evaluator_refs(context.repo_root, closeout_payload.get("evaluator_refs") or closeout_payload.get("evaluator_ref") or [], "wave close")
         evidence_inputs.append(closeout.as_posix())
-    evaluator_result = evaluate_wave_closeout(context.repo_root, wave_id)
+
+    wave = dict(wave)
+    wave["status"] = "closed"
+    wave["next_action"] = "open_next_wave_or_user_directed_review"
+    yaml_updates: dict[Path, dict[str, Any]] = {wave_path: wave}
+    text_updates: dict[Path, str] = {}
+    for allocation in allocations:
+        campaign = _read_yaml_if_exists(context.repo_root / str(allocation.get("campaign_manifest")))
+        if campaign:
+            _stage_common_neighbors(
+                context.repo_root,
+                str(allocation["campaign_id"]),
+                campaign,
+                yaml_updates,
+                text_updates,
+                update_goal=False,
+            )
+    final_wave = yaml_updates[wave_path]
+    evaluator_result = evaluate_wave_closeout(context.repo_root, wave_id, yaml_overrides=yaml_updates)
     if evaluator_result["status"] != "passed":
         raise LifecycleInputError(f"wave closeout evaluator failed: {evaluator_result['findings']}")
     evaluator_path = Path("lab/evaluations/control_plane_corrective_v3") / f"lifecycle_wave_closeout_{wave_id}.yaml"
@@ -884,26 +902,25 @@ def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
         "claim_boundary": wave.get("claim_boundary") or context.claim_boundary,
         "next_action": "open_next_wave_or_user_directed_review",
     }
-    wave = dict(wave)
-    wave["status"] = "closed"
-    wave["next_action"] = payload["next_action"]
-    goal_updates = _goal_updates_for_wave_close(context.repo_root, wave, payload)
-    yaml_updates = {wave_path: wave, Path("lab/waves") / wave_id / "wave_closeout.yaml": payload, evaluator_path: evaluator_result, **goal_updates}
-    text_updates: dict[Path, str] = {}
-    for allocation in allocations:
-        campaign = _read_yaml_if_exists(context.repo_root / str(allocation.get("campaign_manifest")))
-        if campaign:
-            _stage_common_neighbors(context.repo_root, str(allocation["campaign_id"]), campaign, yaml_updates, text_updates, wave_override=wave)
+    yaml_updates[wave_path] = final_wave
+    yaml_updates[Path("lab/waves") / wave_id / "wave_closeout.yaml"] = payload
+    yaml_updates[evaluator_path] = evaluator_result
+    yaml_updates.update(_goal_updates_for_wave_close(context.repo_root, final_wave, payload, yaml_updates))
     artifact_paths = tuple(sorted(set(yaml_updates) | set(text_updates), key=lambda item: item.as_posix()))
     return LifecyclePlan(yaml_updates=yaml_updates, text_updates=text_updates, artifact_paths=artifact_paths)
 
 
-def _goal_updates_for_wave_close(repo_root: Path, wave: dict[str, Any], closeout: dict[str, Any]) -> dict[Path, dict[str, Any]]:
+def _goal_updates_for_wave_close(
+    repo_root: Path,
+    wave: dict[str, Any],
+    closeout: dict[str, Any],
+    yaml_updates: dict[Path, dict[str, Any]] | None = None,
+) -> dict[Path, dict[str, Any]]:
     goal_id = wave.get("active_goal_id")
     if not goal_id:
         return {}
     goal_path = Path("lab/goals") / str(goal_id) / "goal_manifest.yaml"
-    goal = _read_yaml_if_exists(repo_root / goal_path)
+    goal = (yaml_updates or {}).get(goal_path) or _read_yaml_if_exists(repo_root / goal_path)
     if not goal:
         return {}
     goal = dict(goal)
@@ -914,7 +931,7 @@ def _goal_updates_for_wave_close(repo_root: Path, wave: dict[str, Any], closeout
     goal["next_work_item"] = {
         "work_item_id": closeout["next_action"],
         "path": f"lab/goals/{goal_id}/next_work_item.yaml",
-        "summary": "Wave closed; user-directed next wave or review required.",
+        "summary": closeout["next_action"],
     }
     next_work_path = Path("lab/goals") / str(goal_id) / "next_work_item.yaml"
     next_work = {
@@ -932,7 +949,18 @@ def _goal_updates_for_wave_close(repo_root: Path, wave: dict[str, Any], closeout
         "next_action": closeout["next_action"],
         "provenance": {"source": "wave_close_lifecycle"},
     }
-    return {goal_path: goal, next_work_path: next_work}
+    resume_cursor_path = Path("lab/goals") / str(goal_id) / "resume_cursor.yaml"
+    updates = {goal_path: goal, next_work_path: next_work}
+    cursor = dict((yaml_updates or {}).get(resume_cursor_path) or _read_yaml_if_exists(repo_root / resume_cursor_path))
+    cursor.setdefault("version", "active_goal_resume_cursor_v1")
+    cursor["active_goal_id"] = goal_id
+    cursor["active_work_item_id"] = closeout["next_action"]
+    cursor["active_phase"] = "wave_closeout"
+    cursor["campaign_id"] = None
+    cursor["updated_at_utc"] = goal["updated_at_utc"]
+    cursor["next_work_item"] = {"work_item_id": closeout["next_action"], "path": next_work_path.as_posix()}
+    updates[resume_cursor_path] = cursor
+    return updates
 
 
 def _require_campaign_status(campaign: dict[str, Any], allowed: list[str], action: str) -> None:
@@ -1000,6 +1028,7 @@ def _stage_common_neighbors(
     text_updates: dict[Path, str],
     *,
     wave_override: dict[str, Any] | None = None,
+    update_goal: bool = True,
 ) -> None:
     wave_id = (campaign.get("wave_ids") or [None])[0]
     if not wave_id:
@@ -1038,6 +1067,8 @@ def _stage_common_neighbors(
             }
         )
         text_updates[refs_path] = dump_csv(CAMPAIGN_REF_FIELDS, rows)
+    if not update_goal:
+        return
     goal_id = campaign.get("active_goal_id")
     goal_path = Path("lab/goals") / str(goal_id) / "goal_manifest.yaml"
     goal = dict(yaml_updates.get(goal_path) or _read_yaml_if_exists(repo_root / goal_path))

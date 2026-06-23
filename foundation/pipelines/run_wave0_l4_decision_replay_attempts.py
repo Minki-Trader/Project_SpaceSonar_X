@@ -1257,76 +1257,12 @@ def build_command_argv(args: argparse.Namespace) -> list[str]:
     return command
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = utc_now()
-    command_argv = build_command_argv(args)
-    rows = read_csv_rows(repo_root / PREP_INDEX)
-    selected = selected_attempt_rows(
-        rows,
-        repo_root=repo_root,
-        attempt_ids=set(args.attempt_id) if args.attempt_id else None,
-        period_roles=set(args.period_role) if args.period_role else None,
-        limit=None if args.limit == 0 else args.limit,
-        include_completed=args.include_completed,
-    )
-    compile_summary = ensure_ea_binary(
-        repo_root=repo_root,
-        metaeditor=Path(args.metaeditor),
-        force_compile=args.force_compile_ea,
-        skip_compile_if_missing=args.skip_compile_ea_if_missing,
-        timeout_seconds=args.compile_timeout_seconds,
-        started_at_utc=started_at,
-        write_summary=not args.dry_run,
-    )
-    if args.dry_run:
-        ended_at = utc_now()
-        summary = build_summary(
-            repo_root=repo_root,
-            selected_rows=selected,
-            execution_rows=[],
-            compile_summary=compile_summary,
-            started_at_utc=started_at,
-            ended_at_utc=ended_at,
-            command_argv=command_argv,
-        )
-        summary["status"] = "dry_run_no_terminal_execution"
-        summary["selected_attempt_ids"] = [row["attempt_id"] for row in selected]
-        print(yaml.dump(summary, sort_keys=False, allow_unicode=False))
-        return 0
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
 
-    execution_rows: list[dict[str, Any]] = []
-    for row in selected:
-        execution_rows.append(
-            run_one_attempt(
-                repo_root=repo_root,
-                row=row,
-                terminal=Path(args.terminal),
-                timeout_seconds=args.terminal_timeout_seconds,
-                terminate_existing=args.terminate_existing_terminal,
-                allow_main_mode_fallback=args.allow_main_mode_fallback and not args.no_main_mode_fallback,
-            )
-        )
-    merged_rows = merge_execution_rows(repo_root, execution_rows)
-    ended_at = utc_now()
-    summary = build_summary(
-        repo_root=repo_root,
-        selected_rows=selected,
-        execution_rows=merged_rows,
-        compile_summary=compile_summary,
-        started_at_utc=started_at,
-        ended_at_utc=ended_at,
-        command_argv=command_argv,
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    write_execution_records(
-        repo_root=repo_root,
-        summary=summary,
-        execution_rows=merged_rows,
-        write_control_records=args.write_control_records,
-    )
-    print(yaml.dump(summary, sort_keys=False, allow_unicode=False))
-    return 0
 
 
 if __name__ == "__main__":

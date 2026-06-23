@@ -1591,115 +1591,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = utc_now()
-    command_argv = ["python", "foundation/pipelines/run_wave0_l4_mt5_attempts.py"]
-    for attempt_id in args.attempt_id:
-        command_argv.extend(["--attempt-id", attempt_id])
-    for period_role in args.period_role:
-        command_argv.extend(["--period-role", period_role])
-    command_argv.extend(["--limit", str(args.limit)])
-    if args.include_completed:
-        command_argv.append("--include-completed")
-    if args.force_compile_ea:
-        command_argv.append("--force-compile-ea")
-    if args.skip_compile_ea_if_missing:
-        command_argv.append("--skip-compile-ea-if-missing")
-    if args.terminate_existing_terminal:
-        command_argv.append("--terminate-existing-terminal")
-    if args.allow_main_mode_fallback:
-        command_argv.append("--allow-main-mode-fallback")
-    if args.no_main_mode_fallback:
-        command_argv.append("--no-main-mode-fallback")
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    if args.dry_run:
-        command_argv.append("--dry-run")
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
 
-    rows = read_csv_rows(repo_root / PREP_INDEX)
-    selected = selected_attempt_rows(
-        rows,
-        repo_root=repo_root,
-        attempt_ids=set(args.attempt_id) if args.attempt_id else None,
-        period_roles=set(args.period_role) if args.period_role else None,
-        limit=args.limit if args.limit > 0 else None,
-        include_completed=args.include_completed,
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    if args.dry_run:
-        print(json.dumps({"status": "dry_run", "selected_attempt_ids": [row["attempt_id"] for row in selected]}, indent=2))
-        return 0
-    compile_summary = ensure_ea_binary(
-        repo_root=repo_root,
-        metaeditor=Path(args.metaeditor),
-        force_compile=args.force_compile_ea,
-        skip_compile_if_missing=args.skip_compile_ea_if_missing,
-        timeout_seconds=args.compile_timeout_seconds,
-        started_at_utc=started_at,
-    )
-    if not (repo_root / EA_BINARY).exists():
-        ended_at = utc_now()
-        summary = build_summary(
-            repo_root=repo_root,
-            selected_rows=selected,
-            execution_rows=[],
-            compile_summary=compile_summary,
-            started_at_utc=started_at,
-            ended_at_utc=ended_at,
-            command_argv=command_argv,
-        )
-        summary["status"] = "blocked_ea_binary_missing_after_compile_preflight"
-        summary["failure_disposition"] = compile_summary.get("failure_disposition")
-        write_execution_records(repo_root=repo_root, summary=summary, execution_rows=[], write_control_records=args.write_control_records)
-        print(json.dumps({"status": summary["status"], "summary": RUNTIME_SUMMARY.as_posix()}, indent=2))
-        return 1
-
-    execution_rows: list[dict[str, Any]] = []
-    for row in selected:
-        execution_rows.append(
-            run_one_attempt(
-                repo_root=repo_root,
-                row=row,
-                terminal=Path(args.terminal),
-                timeout_seconds=args.terminal_timeout_seconds,
-                terminate_existing=args.terminate_existing_terminal,
-                allow_main_mode_fallback=args.allow_main_mode_fallback and not args.no_main_mode_fallback,
-                started_at_utc=started_at,
-            )
-        )
-
-    ended_at = utc_now()
-    merged_rows = merge_execution_rows(repo_root, execution_rows)
-    summary = build_summary(
-        repo_root=repo_root,
-        selected_rows=selected,
-        execution_rows=merged_rows,
-        compile_summary=compile_summary,
-        started_at_utc=started_at,
-        ended_at_utc=ended_at,
-        command_argv=command_argv,
-    )
-    write_execution_records(
-        repo_root=repo_root,
-        summary=summary,
-        execution_rows=merged_rows,
-        write_control_records=args.write_control_records,
-    )
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": RUNTIME_SUMMARY.as_posix(),
-                "current_batch_executed_attempt_count": len(execution_rows),
-                "indexed_execution_count": len(merged_rows),
-                "telemetry_observed_count": summary["counts"]["telemetry_observed_count"],
-                "claim_boundary": summary["claim_boundary"],
-            },
-            indent=2,
-        )
-    )
-    return 0 if all(row["telemetry_observed"] for row in execution_rows) else 1
 
 
 if __name__ == "__main__":

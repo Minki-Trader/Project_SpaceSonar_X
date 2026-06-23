@@ -55,19 +55,19 @@ entrypoints:
       - campaign_close
     replacement_command: python -m spacesonar.cli campaign close --campaign-id campaign_us100_session_transition_regime_surface_v0
   - path: foundation/pipelines/aggregate_wave01_event_barrier_l4_pair_judgments.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
-    reason: L4 pair judgment/domain evidence aggregation; direct lifecycle projections are historical side effects and must not replace canonical lifecycle commands.
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
   - path: foundation/pipelines/aggregate_wave01_session_transition_l4_pair_judgments.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
-    reason: L4 pair judgment/domain evidence aggregation; direct lifecycle projections are historical side effects and must not replace canonical lifecycle commands.
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
   - path: foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical L4 pair judgment aggregation.
   - path: foundation/pipelines/apply_proxy_l4_policy_clarification.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical policy clarification migration, not an active lifecycle command.
   - path: foundation/pipelines/close_wave0_first_batch_axis_review.py
@@ -76,23 +76,23 @@ entrypoints:
       - campaign_close
     replacement_command: python -m spacesonar.cli campaign close --campaign-id campaign_us100_task_surface_scout_v0
   - path: foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Decision-replay result judgment, not canonical lifecycle state transition.
   - path: foundation/pipelines/judge_wave01_session_transition_l4_decision_replay_results.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Decision-replay result judgment, not canonical lifecycle state transition.
   - path: foundation/pipelines/judge_wave0_l4_decision_replay_results.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical decision-replay result judgment.
   - path: foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: ONNX bundle materialization for runtime follow-through, not campaign lifecycle materialization.
   - path: foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: ONNX bundle materialization for runtime follow-through, not campaign lifecycle materialization.
   - path: foundation/pipelines/materialize_wave0_first_batch_run_specs.py
@@ -101,43 +101,43 @@ entrypoints:
       - campaign_materialize
     replacement_command: python -m spacesonar.cli campaign materialize --campaign-id campaign_us100_task_surface_scout_v0
   - path: foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical L4 ingredient card materialization.
   - path: foundation/pipelines/materialize_wave0_l4_onnx_bundles.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical ONNX bundle materialization.
   - path: foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Plumbing slice/domain probe.
   - path: foundation/pipelines/preflight_wave0_l4_materialization.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical L4 materialization preflight.
   - path: foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Runtime attempt preparation.
   - path: foundation/pipelines/prepare_wave01_event_barrier_l4_mt5_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Runtime attempt preparation.
   - path: foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Runtime attempt preparation.
   - path: foundation/pipelines/prepare_wave01_session_transition_l4_mt5_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Runtime attempt preparation.
   - path: foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical runtime attempt preparation.
   - path: foundation/pipelines/prepare_wave0_l4_mt5_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical runtime attempt preparation.
   - path: foundation/pipelines/run_mt5_fixed_fixture_probe.py
@@ -145,35 +145,35 @@ entrypoints:
     lifecycle_actions: []
     reason: Fixed MT5 plumbing/runtime probe.
   - path: foundation/pipelines/run_wave01_event_barrier_l4_decision_replay_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Runtime execution command.
   - path: foundation/pipelines/run_wave01_event_barrier_l4_mt5_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Runtime execution command.
   - path: foundation/pipelines/run_wave01_event_barrier_proxy_batch.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
-    reason: Proxy/domain execution command; historical lifecycle projection side effects are not canonical lifecycle transitions.
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
   - path: foundation/pipelines/run_wave01_session_transition_l4_mt5_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Runtime execution command.
   - path: foundation/pipelines/run_wave01_session_transition_proxy_batch.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
-    reason: Proxy/domain execution command; historical lifecycle projection side effects are not canonical lifecycle transitions.
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
   - path: foundation/pipelines/run_wave0_first_batch_proxy_scout.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical proxy/domain execution command.
   - path: foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical runtime execution command.
   - path: foundation/pipelines/run_wave0_l4_mt5_attempts.py
-    classification: domain_execution_not_lifecycle
+    classification: historical_disabled
     lifecycle_actions: []
     reason: Historical runtime execution command.
   - path: foundation/pipelines/sync_wave_campaign_integration_contract.py

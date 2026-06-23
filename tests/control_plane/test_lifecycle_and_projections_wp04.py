@@ -15,6 +15,12 @@ import pytest
 import yaml
 
 from foundation.pipelines import control_plane_legacy_wrappers
+from foundation.evaluation.lifecycle_wave_closeout_evaluator import (
+    _result_sha as lifecycle_wave_result_sha,
+    compare_committed_evaluator,
+    evaluate_wave_closeout,
+    main as lifecycle_wave_evaluator_main,
+)
 from spacesonar import cli
 from spacesonar.control_plane.lifecycle import close_campaign, close_wave, judge_campaign, materialize_run_specs, open_campaign
 from spacesonar.control_plane.lock import LOCK_REL_PATH, ControlPlaneLockError, control_plane_lock
@@ -328,11 +334,99 @@ def test_materialize_judge_campaign_close_and_wave_close_state_machine(tmp_path:
     assert "closed" in refs
     assert "close_campaign" not in (tmp_path / "docs/workspace/workspace_state.yaml").read_text(encoding="utf-8")
     assert load_yaml(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_allocation.yaml")["status"] == "closed"
-    assert load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/goal_manifest.yaml")["status"] == "wave_closed"
+    goal = load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/goal_manifest.yaml")
+    assert goal["status"] == "wave_closed"
+    assert goal["active_phase"] == "wave_closeout"
+    assert goal["active_ids"]["campaign_id"] is None
+    assert goal["next_work_item"]["work_item_id"] == "open_next_wave_or_user_directed_review"
+    assert load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/next_work_item.yaml")["work_item_id"] == "open_next_wave_or_user_directed_review"
+    assert load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/resume_cursor.yaml")["active_work_item_id"] == "open_next_wave_or_user_directed_review"
+    assert load_yaml(tmp_path / "docs/workspace/workspace_state.yaml")["next_action"] == "open_next_wave_or_user_directed_review"
     wave_closeout = load_yaml(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_closeout.yaml")
     evaluator_path = tmp_path / wave_closeout["evaluator_result_path"]
     assert evaluator_path.exists()
     assert wave_closeout["evaluator_result_sha256"] == sha256_file(evaluator_path)
+    committed_evaluator = load_yaml(evaluator_path)
+    fresh_evaluator = evaluate_wave_closeout(tmp_path, "wave_wave02_fixture_v0")
+    for key in ["status", "input_hashes", "metrics", "findings", "output_sha256"]:
+        assert committed_evaluator[key] == fresh_evaluator[key]
+    wave_input = next(item for item in committed_evaluator["input_hashes"] if item["path"] == "lab/waves/wave_wave02_fixture_v0/wave_allocation.yaml")
+    assert wave_input["sha256"] == sha256_file(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_allocation.yaml")
+    changed_time = dict(committed_evaluator)
+    changed_time["executed_at_utc"] = "2099-01-01T00:00:00Z"
+    assert lifecycle_wave_result_sha(changed_time) == committed_evaluator["output_sha256"]
+    assert compare_committed_evaluator(tmp_path, "wave_wave02_fixture_v0") == []
+    assert lifecycle_wave_evaluator_main(["--repo-root", str(tmp_path), "--wave-id", "wave_wave02_fixture_v0", "--check"]) == 0
+
+
+def test_multiple_campaigns_cannot_overwrite_final_wave_handoff(tmp_path: Path) -> None:
+    assert open_campaign(write_spec(tmp_path), context(tmp_path)).status == "committed"
+    assert materialize_run_specs("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
+    write_judgment_evidence(tmp_path)
+    assert judge_campaign("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
+    assert close_campaign("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
+
+    evaluator_path = tmp_path / "fixture_inputs/campaign_wave02_fixture_evaluator.yaml"
+    evaluator_ref = {
+        "path": "fixture_inputs/campaign_wave02_fixture_evaluator.yaml",
+        "sha256": sha256_file(evaluator_path),
+        "evaluator_id": "fixture_evaluator_v0",
+        "status": "passed",
+    }
+    write_yaml(
+        tmp_path / "lab/campaigns/campaign_wave02_second_v0/campaign_manifest.yaml",
+            {
+                "campaign_id": "campaign_wave02_second_v0",
+                "active_goal_id": "goal_wave02_fixture_v0",
+                "status": "closed",
+                "wave_ids": ["wave_wave02_fixture_v0"],
+                "idea_ids": ["idea_wave02_second_v0"],
+                "hypothesis_ids": ["hyp_wave02_second_v0"],
+                "claim_boundary": "second_campaign_fixture",
+                "next_action": "campaign_loop_must_not_win",
+                "storage_contract": {"campaign_closeout": "lab/campaigns/campaign_wave02_second_v0/campaign_closeout.yaml"},
+            },
+    )
+    write_yaml(
+        tmp_path / "lab/campaigns/campaign_wave02_second_v0/campaign_closeout.yaml",
+        {
+            "version": "campaign_closeout_v2",
+            "campaign_id": "campaign_wave02_second_v0",
+            "status": "closed",
+            "candidate_count": 2,
+            "l5_candidate_count": 1,
+            "clue_ids": ["clue_second_v0"],
+            "negative_memory_ids": [],
+            "evaluator_refs": [evaluator_ref],
+            "claim_boundary": "second_campaign_fixture",
+        },
+    )
+    wave_path = tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_allocation.yaml"
+    wave = load_yaml(wave_path)
+    wave["campaign_allocations"].append(
+        {
+            "campaign_id": "campaign_wave02_second_v0",
+            "campaign_manifest": "lab/campaigns/campaign_wave02_second_v0/campaign_manifest.yaml",
+            "campaign_closeout": "lab/campaigns/campaign_wave02_second_v0/campaign_closeout.yaml",
+            "status": "closed",
+            "claim_boundary": "second_campaign_fixture",
+            "next_action": "campaign_loop_must_not_win",
+        }
+    )
+    write_yaml(wave_path, wave)
+
+    result = close_wave("wave_wave02_fixture_v0", context(tmp_path))
+
+    assert result.status == "committed", result.errors
+    goal = load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/goal_manifest.yaml")
+    assert goal["active_ids"]["campaign_id"] is None
+    assert goal["next_work_item"]["work_item_id"] == "open_next_wave_or_user_directed_review"
+    assert load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/next_work_item.yaml")["work_item_id"] == "open_next_wave_or_user_directed_review"
+    assert load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/resume_cursor.yaml")["active_work_item_id"] == "open_next_wave_or_user_directed_review"
+    assert load_yaml(tmp_path / "docs/workspace/workspace_state.yaml")["next_action"] == "open_next_wave_or_user_directed_review"
+    closeout = load_yaml(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_closeout.yaml")
+    assert closeout["candidate_count"] == 2
+    assert closeout["l5_candidate_count"] == 1
 
 
 def test_all_nine_registry_projection_checks_detect_drift(tmp_path: Path) -> None:
@@ -486,6 +580,13 @@ def test_every_declared_legacy_lifecycle_script_is_thin() -> None:
     entries = {entry["path"]: entry for entry in manifest["entrypoints"]}
     tokens = [re.escape(token) for token in manifest["classification_contract"]["direct_mutator_detection_tokens"]]
     direct_mutator_pattern = re.compile("|".join(tokens))
+    protected_write_pattern = re.compile(
+        r"(write_yaml|write_csv|write_text|upsert_csv_row|base\.write_yaml|base\.write_csv|update_registry_row)"
+        r".*?(GOAL|NEXT_WORK|RESUME|WORKSPACE|REGISTRY|docs/registers|workspace_state|goal_manifest|next_work_item|resume_cursor)"
+        r"|(?:GOAL|NEXT_WORK|RESUME|WORKSPACE|GOAL_REGISTRY)"
+        r".*?(write_yaml|write_csv|write_text|upsert_csv_row|base\.write_yaml|base\.write_csv)",
+        re.S,
+    )
     detected = {
         path.relative_to(REPO_ROOT).as_posix()
         for path in sorted((REPO_ROOT / "foundation/pipelines").glob("*.py"))
@@ -508,29 +609,34 @@ def test_every_declared_legacy_lifecycle_script_is_thin() -> None:
             for token in forbidden:
                 assert token not in source, entry["path"]
         if entry["classification"] == "historical_disabled":
-            assert "historical lifecycle" in source, entry["path"]
+            assert "disabled_lifecycle_entrypoint" in source or "historical lifecycle" in source, entry["path"]
+        if entry["classification"] == "domain_execution_not_lifecycle":
+            assert not protected_write_pattern.search(source), entry["path"]
 
 
 def test_legacy_disabled_entrypoint_creates_zero_file_changes(tmp_path: Path) -> None:
-    script = REPO_ROOT / "foundation/pipelines/open_wave01_event_barrier_decision_campaign.py"
+    scripts = [
+        "foundation/pipelines/open_wave01_event_barrier_decision_campaign.py",
+        "foundation/pipelines/run_wave01_event_barrier_proxy_batch.py",
+    ]
+    for rel_path in scripts:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(REPO_ROOT / rel_path),
+                "--repo-root",
+                str(tmp_path),
+                "--write-control-records",
+            ],
+            cwd=tmp_path,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
 
-    result = subprocess.run(
-        [
-            sys.executable,
-            str(script),
-            "--repo-root",
-            str(tmp_path),
-            "--write-control-records",
-        ],
-        cwd=tmp_path,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-
-    assert result.returncode != 0
-    assert "historical lifecycle entrypoint disabled" in result.stderr
-    assert list(tmp_path.rglob("*")) == []
+        assert result.returncode != 0, rel_path
+        assert "historical lifecycle entrypoint disabled" in result.stderr, rel_path
+        assert list(tmp_path.rglob("*")) == []
 
 
 def test_concurrent_lifecycle_command_is_rejected_by_lock(tmp_path: Path) -> None:

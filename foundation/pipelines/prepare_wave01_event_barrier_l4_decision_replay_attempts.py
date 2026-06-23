@@ -787,36 +787,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    created_at = base.utc_now()
-    summary, rows, eligibility, manifests, configs = build_records(repo_root, created_at_utc=created_at)
-    if args.write_control_records:
-        summary["environment"]["command_argv"].append("--write-control-records")
-    write_records(
-        repo_root,
-        summary,
-        rows,
-        eligibility,
-        manifests,
-        configs,
-        write_control_records=args.write_control_records,
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": SUMMARY_PATH.as_posix(),
-                "prepared_attempt_count": summary["counts"]["prepared_attempt_count"],
-                "eligible_cells": summary["counts"]["direct_trade_adapter_eligible_cell_count"],
-                "not_direct_trade_cells": summary["counts"]["not_direct_trade_adapter_eligible_cell_count"],
-                "claim_boundary": CLAIM_BOUNDARY,
-            },
-            indent=2,
-        )
-    )
-    return 0
 
 
 if __name__ == "__main__":

@@ -824,32 +824,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    policies = args.direction_policy or list(DEFAULT_DIRECTION_POLICIES)
-    created_at = utc_now()
-    summary, rows, manifests, configs = build_attempt_rows_manifests_configs(
-        repo_root,
-        direction_policies=policies,
-        write_mode=args.write_records,
-        created_at_utc=created_at,
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    if args.write_records:
-        write_records(repo_root, summary, rows, manifests, configs)
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": SUMMARY_PATH.as_posix(),
-                "prepared_attempt_count": len(rows),
-                "direction_policies": policies,
-                "claim_boundary": summary["claim_boundary"],
-            },
-            indent=2,
-        )
-    )
-    return 0
 
 
 if __name__ == "__main__":

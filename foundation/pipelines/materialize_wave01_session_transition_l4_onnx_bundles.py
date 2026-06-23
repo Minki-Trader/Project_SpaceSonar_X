@@ -870,32 +870,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = base.utc_now()
-    command_argv = ["python", "foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py"]
-    if args.limit is not None:
-        command_argv.extend(["--limit", str(args.limit)])
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    summary, rows = materialize(repo_root, command_argv=command_argv, started_at_utc=started_at, limit=args.limit)
-    write_outputs(repo_root, summary, rows, write_control_records=args.write_control_records)
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": SUMMARY_PATH.as_posix(),
-                "exportable_bundle_count": summary["counts"]["exportable_bundle_count"],
-                "failed_materialization_count": summary["counts"]["failed_materialization_count"],
-                "parity_status_counts": summary["counts"]["parity_status_counts"],
-                "claim_boundary": CLAIM_BOUNDARY,
-                "attempt_depth": summary["attempt_depth"],
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0 if summary["counts"]["failed_materialization_count"] == 0 else 1
 
 
 if __name__ == "__main__":

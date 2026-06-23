@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp04_final_amendment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp04_last_amendment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -586,7 +586,7 @@ work_units:
   WP04:
     status: completed
     started_at_utc: '2026-06-23T06:15:50Z'
-    completed_at_utc: '2026-06-23T10:33:06Z'
+    completed_at_utc: '2026-06-23T11:20:06Z'
     amendment_relock_at_utc: '2026-06-23T07:40:24Z'
     objective: Complete the canonical lifecycle state machine, lock lifecycle mutations,
       preserve registry semantics, and release lifecycle commands only after validation.
@@ -595,14 +595,42 @@ work_units:
     - docs/agent_control/legacy_lifecycle_entrypoints.yaml
     - docs/migrations/control_plane_corrective_v3_progress.yaml
     - foundation/evaluation/lifecycle_wave_closeout_evaluator.py
+    - foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
+    - foundation/pipelines/aggregate_wave01_event_barrier_l4_pair_judgments.py
+    - foundation/pipelines/aggregate_wave01_session_transition_l4_pair_judgments.py
+    - foundation/pipelines/apply_proxy_l4_policy_clarification.py
     - foundation/pipelines/close_wave0_first_batch_axis_review.py
     - foundation/pipelines/close_wave01_event_barrier_campaign.py
     - foundation/pipelines/close_wave01_session_transition_campaign.py
+    - foundation/pipelines/historical_lifecycle_guard.py
+    - foundation/pipelines/judge_wave0_l4_decision_replay_results.py
+    - foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py
+    - foundation/pipelines/judge_wave01_session_transition_l4_decision_replay_results.py
     - foundation/pipelines/materialize_wave0_first_batch_run_specs.py
+    - foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
+    - foundation/pipelines/materialize_wave0_l4_onnx_bundles.py
     - foundation/pipelines/materialize_wave01_event_barrier_first_batch_specs.py
+    - foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
     - foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py
+    - foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
+    - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
     - foundation/pipelines/open_wave01_event_barrier_decision_campaign.py
     - foundation/pipelines/open_wave01_session_transition_regime_campaign.py
+    - foundation/pipelines/preflight_wave0_l4_materialization.py
+    - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave0_l4_mt5_attempts.py
+    - foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave01_event_barrier_l4_mt5_attempts.py
+    - foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave01_session_transition_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave0_first_batch_proxy_scout.py
+    - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+    - foundation/pipelines/run_wave0_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave01_event_barrier_l4_decision_replay_attempts.py
+    - foundation/pipelines/run_wave01_event_barrier_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave01_event_barrier_proxy_batch.py
+    - foundation/pipelines/run_wave01_session_transition_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave01_session_transition_proxy_batch.py
     - foundation/pipelines/sync_wave_campaign_integration_contract.py
     - docs/registers/artifact_registry.csv
     - docs/registers/clue_registry.csv
@@ -694,6 +722,9 @@ work_units:
       unclassified_direct_mutator_count: 0
       historical_disabled_entrypoints_execute_nonzero: true
       historical_disabled_entrypoints_create_zero_lifecycle_records: true
+      domain_execution_protected_write_bypass_count: 0
+      domain_execution_not_lifecycle_remaining:
+      - foundation/pipelines/run_mt5_fixed_fixture_probe.py
       legacy_wrapper_direct_mutation_tokens_absent:
       - csv.DictWriter
       - yaml.safe_dump
@@ -714,12 +745,20 @@ work_units:
       amendment_result: final amendment tests include explicit active goal, fresh evaluator-backed
         wave closeout, nested/thread/process lock behavior, complete legacy mutator
         inventory, and disabled entrypoint zero-mutation checks
+    - command: uv run pytest tests/control_plane/test_lifecycle_and_projections_wp04.py
+        -q
+      status: passed
+      result: 22 passed
+      amendment_result: last amendment tests include fresh post-commit wave evaluator
+        recomputation, closed-wave allocation input hash, timestamp-independent semantic
+        evaluator digest, final Goal handoff, multi-campaign handoff overwrite prevention,
+        and domain lifecycle bypass rejection
     - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
       status: passed
       result: 28 passed
     - command: uv run pytest tests/control_plane -q
       status: passed
-      result: 71 passed
+      result: 72 passed
     - command: uv run python -m spacesonar.cli registry project --check
       status: passed
       result: registry projection check passed
@@ -743,7 +782,7 @@ work_units:
         successfully
     - command: uv run pytest -q
       status: passed
-      result: 310 passed in 829.18s
+      result: 311 passed in 893.97s
     - command: git diff --check
       status: passed
       result: no whitespace errors; CRLF normalization warnings only
@@ -793,6 +832,33 @@ work_units:
         wp00_guard_tests: 14 passed
         control_plane_tests: 71 passed
         full_pytest: 310 passed in 829.18s
+    last_amendment:
+      id: wp04_fix_fresh_wave_evaluation_final_goal_handoff_domain_lifecycle_bypass
+      status: completed
+      completed_at_utc: '2026-06-23T11:20:06Z'
+      commit_subject: WP04 last amendment fix wave evaluator and domain lifecycle bypass
+      commit_sha: recorded_by_final_wp04_last_amendment_commit
+      results:
+        future_closed_wave_evaluator_overrides: passed
+        committed_wave_evaluator_equals_fresh_recomputation: passed
+        evaluator_output_sha_excludes_executed_at_utc: passed
+        evaluator_check_mode: passed
+        evaluator_ref_file_id_status_hash_validation: passed
+        final_goal_transition_applied_once_after_campaign_neighbors: passed
+        goal_active_campaign_null_after_wave_close: passed
+        next_work_and_resume_cursor_wave_close_handoff: passed
+        workspace_next_action_wave_close_handoff: passed
+        multi_campaign_loop_cannot_overwrite_wave_handoff: passed
+        domain_execution_protected_lifecycle_write_ci_rejection: passed
+        historical_disabled_domain_entrypoints_nonzero_zero_mutation: passed
+      validation_summary:
+        wp04_tests: 22 passed
+        transaction_atomicity_tests: 28 passed
+        lifecycle_idempotency_tests: 1 passed
+        control_plane_tests: 72 passed
+        active_record_validator: passed
+        project_validate: passed
+        full_pytest: 311 passed in 893.97s
     wp05_handoff:
       next_packet: WP05
       required_entry_condition: WP04.status completed
@@ -801,8 +867,9 @@ work_units:
         truth; do not hand-edit registry rows or workspace current state.
       remaining_claim_boundary: no runtime authority, no economics pass, no live readiness,
         no selected baseline.
-    claim_boundary: corrective_wp04_lifecycle_state_machine_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    claim_boundary: corrective_wp04_last_amendment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
     final_amendment_relock_at_utc: '2026-06-23T10:02:20Z'
+    last_amendment_relock_at_utc: '2026-06-23T10:45:00Z'
   WP05:
     status: pending
   WP06:

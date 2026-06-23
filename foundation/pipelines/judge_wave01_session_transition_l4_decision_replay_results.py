@@ -364,32 +364,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    created_at = base.utc_now()
-    summary, rows, negative_memory = build_records(repo_root, created_at_utc=created_at)
-    if args.write_records or args.write_control_records:
-        summary["environment"]["command_argv"].append("--write-records")
-    if args.write_control_records:
-        summary["environment"]["command_argv"].append("--write-control-records")
-    if args.write_records or args.write_control_records:
-        write_records(repo_root, summary, rows, negative_memory)
-    if args.write_control_records:
-        update_control_records(repo_root, summary)
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": JUDGMENT_SUMMARY.as_posix(),
-                "cell_pair_count": summary["counts"]["cell_pair_count"],
-                "result_judgment_counts": summary["counts"]["result_judgment_counts"],
-                "claim_boundary": CLAIM_BOUNDARY,
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0
 
 
 if __name__ == "__main__":
