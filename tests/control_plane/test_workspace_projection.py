@@ -13,8 +13,9 @@ def test_workspace_projection_excludes_historical_payloads(tmp_path: Path) -> No
     goal.write_text(
         yaml.safe_dump(
             {
-                "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
-                "status": "closed",
+                    "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
+                    "workspace_active": True,
+                    "status": "closed",
                 "updated_at_utc": "2026-06-22T00:00:00Z",
                 "claim_boundary": "no_runtime_authority",
                 "active_ids": {"campaign_id": "campaign_a"},

@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import socket
 import sys
+import threading
 import uuid
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -17,7 +18,7 @@ from .store import dump_yaml, filesystem_path
 
 
 LOCK_REL_PATH = Path(".spacesonar/locks/control_plane.lock")
-_HELD_LOCKS: dict[Path, int] = {}
+_HELD_LOCKS: dict[Path, "LockLease"] = {}
 
 
 class ControlPlaneLockError(RuntimeError):
@@ -36,6 +37,14 @@ class LockOwner:
     work_item_id: str
     started_at_utc: str
     token: str | None = None
+
+
+@dataclass
+class LockLease:
+    path: Path
+    token: str
+    owner_thread_id: int
+    depth: int = 1
 
 
 def lock_path(repo_root: Path) -> Path:
@@ -123,12 +132,16 @@ def _write_lock_file(path: Path, context: ExecutionContext, token: str) -> None:
 @contextmanager
 def control_plane_lock(context: ExecutionContext) -> Iterator[None]:
     path = lock_path(context.repo_root).resolve()
-    if _HELD_LOCKS.get(path, 0) > 0:
-        _HELD_LOCKS[path] += 1
+    current_thread_id = threading.get_ident()
+    lease = _HELD_LOCKS.get(path)
+    if lease is not None:
+        if lease.owner_thread_id != current_thread_id:
+            raise ControlPlaneLockError(f"control plane lock held by live owner in this process: {path}")
+        lease.depth += 1
         try:
             yield
         finally:
-            _HELD_LOCKS[path] -= 1
+            lease.depth -= 1
         return
 
     token = uuid.uuid4().hex
@@ -140,13 +153,16 @@ def control_plane_lock(context: ExecutionContext) -> Iterator[None]:
             raise ControlPlaneLockError(f"control plane lock held by live owner: {owner}") from exc
         if not context.recover_stale_lock:
             raise ControlPlaneLockError("stale control plane lock requires --recover-stale-lock") from exc
+        owner_before_unlink = _read_owner(path)
+        if owner_before_unlink != owner:
+            raise ControlPlaneLockError("stale control plane lock changed before recovery")
         try:
             os.unlink(filesystem_path(path))
         except OSError as unlink_exc:
             raise ControlPlaneLockError(f"failed to remove stale control plane lock: {unlink_exc}") from unlink_exc
         _write_lock_file(path, context, token)
 
-    _HELD_LOCKS[path] = 1
+    _HELD_LOCKS[path] = LockLease(path=path, token=token, owner_thread_id=current_thread_id)
     try:
         yield
     finally:

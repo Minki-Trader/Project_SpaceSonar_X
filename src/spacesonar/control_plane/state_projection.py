@@ -65,7 +65,7 @@ def select_active_goal(repo_root: Path, yaml_overrides: YamlOverrides | None = N
     candidates = [(path, _read_yaml_view(repo_root, path, yaml_overrides)) for path in _goal_paths(repo_root, yaml_overrides)]
     candidates = [(path, goal) for path, goal in candidates if goal]
     if not candidates:
-        return None, {}
+        raise ValueError("zero workspace-active goals declared")
     explicit = [
         (path, goal)
         for path, goal in candidates
@@ -78,14 +78,7 @@ def select_active_goal(repo_root: Path, yaml_overrides: YamlOverrides | None = N
             ids = ", ".join(_goal_id(goal, path) for path, goal in explicit)
             raise ValueError(f"multiple workspace-active goals declared: {ids}")
         return sorted(explicit, key=lambda item: item[0].as_posix())[0]
-    return sorted(
-        candidates,
-        key=lambda item: (
-            str(item[1].get("updated_at_utc") or item[1].get("created_at_utc") or ""),
-            item[0].as_posix(),
-        ),
-        reverse=True,
-    )[0]
+    raise ValueError("zero workspace-active goals declared")
 
 
 def _select_wave_for_goal(

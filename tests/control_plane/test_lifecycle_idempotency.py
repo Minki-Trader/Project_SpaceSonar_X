@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
 
 import yaml
 
@@ -9,6 +10,10 @@ from spacesonar.control_plane.models import ExecutionContext
 
 
 def test_second_identical_command_writes_byte_identical_manifest(tmp_path: Path) -> None:
+    objective_path = tmp_path / "lab/goals/goal_test_v0/objective.yaml"
+    objective_path.parent.mkdir(parents=True, exist_ok=True)
+    objective_path.write_text("objective: idempotency fixture\n", encoding="utf-8")
+    objective_hash = hashlib.sha256(objective_path.read_bytes()).hexdigest()
     spec = tmp_path / "spec.yaml"
     spec.write_text(
         yaml.safe_dump(
@@ -37,6 +42,18 @@ def test_second_identical_command_writes_byte_identical_manifest(tmp_path: Path)
                 },
                 "policy_binding": {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
                 "storage_contract": {"durable_identity_policy": "repo_relative_paths_only"},
+                "objective_identity": {
+                    "source_type": "test_fixture",
+                    "content_hash_sha256": objective_hash,
+                    "source_path": "lab/goals/goal_test_v0/objective.yaml",
+                    "summary": "idempotency fixture",
+                },
+                "objective_revision": {
+                    "revision_id": "objective_test_v0",
+                    "source_of_truth": "lab/goals/goal_test_v0/objective.yaml",
+                    "primary_objective": "idempotency",
+                    "proof_window": "unit_test",
+                },
                 "next_work_item": {
                     "version": "work_item_lite_v1",
                     "work_item_id": "work_test_next_v0",

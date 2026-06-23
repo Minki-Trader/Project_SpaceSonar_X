@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 from pathlib import Path
 from typing import Any, Callable
 
@@ -62,6 +63,8 @@ SPEC_REQUIRED = [
     "claim_boundary",
     "storage_contract",
     "next_work_item",
+    "objective_identity",
+    "objective_revision",
 ]
 NEXT_WORK_REQUIRED = [
     "work_item_id",
@@ -130,10 +133,15 @@ class CampaignLifecycleSpec:
         payload = read_yaml(repo_root / rel_path)
         if not isinstance(payload, dict):
             raise LifecycleInputError("campaign open spec must be a YAML mapping")
+        if payload.get("version") != "campaign_lifecycle_spec_v1":
+            raise LifecycleInputError("campaign open spec version must be campaign_lifecycle_spec_v1")
         missing = [field for field in SPEC_REQUIRED if field not in payload]
+        for mapping_field in ["routing", "policy_binding", "storage_contract", "next_work_item", "objective_identity", "objective_revision"]:
+            if mapping_field not in payload:
+                missing.append(mapping_field)
+            elif not isinstance(payload.get(mapping_field), dict):
+                raise LifecycleInputError(f"campaign open spec {mapping_field} must be a mapping")
         routing = payload.get("routing") or {}
-        if "routing" not in payload:
-            missing.append("routing")
         for field in ["primary_family", "primary_skill"]:
             if field not in routing:
                 missing.append(f"routing.{field}")
@@ -141,6 +149,21 @@ class CampaignLifecycleSpec:
         for field in NEXT_WORK_REQUIRED:
             if field not in next_work:
                 missing.append(f"next_work_item.{field}")
+            elif field != "outputs" and next_work.get(field) in ("", None, [], {}):
+                raise LifecycleInputError(f"campaign open spec next_work_item.{field} must not be empty")
+        for id_field in ["goal_id", "wave_id", "campaign_id", "idea_id", "hypothesis_id", "surface_id", "sweep_id"]:
+            value = str(payload.get(id_field) or "")
+            if not value:
+                raise LifecycleInputError(f"campaign open spec {id_field} must not be empty")
+            if Path(value).is_absolute() or "/" in value or "\\" in value:
+                raise LifecycleInputError(f"campaign open spec {id_field} must be an ID, not a path")
+        for text_field in ["objective", "claim_boundary"]:
+            if not str(payload.get(text_field) or "").strip():
+                raise LifecycleInputError(f"campaign open spec {text_field} must not be empty")
+        _validate_objective_source(repo_root, payload)
+        _validate_next_work_path(payload)
+        _validate_run_spec_ids(payload)
+        _validate_existing_identity_conflicts(repo_root, payload)
         if missing:
             raise LifecycleInputError(f"campaign open spec missing required fields: {', '.join(sorted(set(missing)))}")
         return cls(payload=payload, rel_path=rel_path)
@@ -162,6 +185,85 @@ def _repo_rel_strict(repo_root: Path, path: Path) -> Path:
         raise LifecycleInputError(
             f"spec path must be repository-relative or copied into the repository before mutation: {path}"
         ) from exc
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _validate_objective_source(repo_root: Path, payload: dict[str, Any]) -> None:
+    objective_identity = payload.get("objective_identity") or {}
+    objective_revision = payload.get("objective_revision") or {}
+    for field in ["source_type", "content_hash_sha256", "source_path", "summary"]:
+        if not str(objective_identity.get(field) or "").strip():
+            raise LifecycleInputError(f"campaign open spec objective_identity.{field} must not be empty")
+    for field in ["revision_id", "source_of_truth", "primary_objective", "proof_window"]:
+        if not str(objective_revision.get(field) or "").strip():
+            raise LifecycleInputError(f"campaign open spec objective_revision.{field} must not be empty")
+    source_path = Path(str(objective_identity["source_path"]).replace("\\", "/"))
+    if source_path.is_absolute() or ".." in source_path.parts:
+        raise LifecycleInputError("objective_identity.source_path must be repository-relative")
+    source = repo_root / source_path
+    if not source.exists():
+        raise LifecycleInputError(f"objective identity source file does not exist: {source_path.as_posix()}")
+    observed = _sha256_file(source)
+    if observed != objective_identity["content_hash_sha256"]:
+        raise LifecycleInputError(
+            f"objective identity source hash mismatch: {source_path.as_posix()} expected={objective_identity['content_hash_sha256']} observed={observed}"
+        )
+    if objective_revision["source_of_truth"] != source_path.as_posix():
+        raise LifecycleInputError("objective_revision.source_of_truth must match objective_identity.source_path")
+
+
+def _validate_next_work_path(payload: dict[str, Any]) -> None:
+    next_work = payload.get("next_work_item") or {}
+    goal_id = str(payload.get("goal_id") or "")
+    next_path = Path(str(next_work.get("path") or "").replace("\\", "/"))
+    expected_parent = Path("lab/goals") / goal_id
+    if next_path.is_absolute() or ".." in next_path.parts or not next_path.as_posix().startswith(expected_parent.as_posix() + "/"):
+        raise LifecycleInputError("next_work_item.path must stay inside the declared goal directory")
+
+
+def _validate_run_spec_ids(payload: dict[str, Any]) -> None:
+    run_specs = (payload.get("materialization") or {}).get("run_specs") or []
+    ids = [str(item.get("run_id") or "") for item in run_specs]
+    duplicates = sorted({item for item in ids if item and ids.count(item) > 1})
+    if duplicates:
+        raise LifecycleInputError(f"duplicate run IDs in materialization.run_specs: {', '.join(duplicates)}")
+
+
+def _validate_existing_identity_conflicts(repo_root: Path, payload: dict[str, Any]) -> None:
+    expected = {
+        "lab/campaigns/{campaign_id}/campaign_manifest.yaml": {"campaign_id": "campaign_id", "active_goal_id": "goal_id"},
+        "lab/goals/{goal_id}/goal_manifest.yaml": {"active_goal_id": "goal_id", "goal_id": "goal_id"},
+        "lab/waves/{wave_id}/wave_allocation.yaml": {"wave_id": "wave_id", "active_goal_id": "goal_id"},
+        "lab/hypotheses/{idea_id}.yaml": {"idea_id": "idea_id"},
+        "lab/hypotheses/{hypothesis_id}.yaml": {"hypothesis_id": "hypothesis_id", "idea_id": "idea_id"},
+        "lab/surfaces/{surface_id}/surface_manifest.yaml": {"surface_id": "surface_id", "hypothesis_id": "hypothesis_id"},
+        "lab/campaigns/{campaign_id}/sweeps/{sweep_id}/sweep_manifest.yaml": {
+            "sweep_id": "sweep_id",
+            "campaign_id": "campaign_id",
+            "surface_id": "surface_id",
+        },
+    }
+    for template, field_map in expected.items():
+        rel_path = Path(template.format(**payload))
+        existing = _read_yaml_if_exists(repo_root / rel_path)
+        if not existing:
+            continue
+        for existing_field, payload_field in field_map.items():
+            if existing.get(existing_field) and str(existing[existing_field]) != str(payload[payload_field]):
+                raise LifecycleInputError(
+                    f"existing {rel_path.as_posix()} has conflicting {existing_field}: {existing[existing_field]}"
+                )
+        if rel_path.match("lab/goals/*/goal_manifest.yaml"):
+            for field in ["objective_identity", "objective_revision"]:
+                if existing.get(field) and existing[field] != payload[field]:
+                    raise LifecycleInputError(f"existing goal has conflicting {field}")
 
 
 def _abort(context: ExecutionContext, status: str, errors: list[str]) -> TransactionResult:
@@ -409,6 +511,13 @@ def _goal_manifest(repo_root: Path, spec: CampaignLifecycleSpec, next_work: dict
             "updated_at_utc": spec.payload.get("updated_at_utc") or spec.payload["created_at_utc"],
             "claim_boundary": _claim_boundary(spec, context),
             "workspace_active": spec.payload.get("workspace_active", existing.get("workspace_active", True)),
+            "active_workspace": spec.payload.get("workspace_active", existing.get("active_workspace", True)),
+            "workspace_projection": {
+                **(existing.get("workspace_projection") or {}),
+                "active": spec.payload.get("workspace_active", (existing.get("workspace_projection") or {}).get("active", True)),
+            },
+            "objective_identity": spec.payload["objective_identity"],
+            "objective_revision": spec.payload["objective_revision"],
             "active_phase": spec.payload.get("active_phase", "campaign_open"),
             "routing": existing.get("routing") or spec.routing,
             "storage_contract": {
@@ -561,6 +670,8 @@ def _apply_workspace_handoff(repo_root: Path, spec: CampaignLifecycleSpec, yaml_
     for rel_path, goal in active:
         updated = dict(goal)
         updated["workspace_active"] = False
+        updated["active_workspace"] = False
+        updated["workspace_projection"] = {**(updated.get("workspace_projection") or {}), "active": False}
         updated["updated_at_utc"] = spec.payload["created_at_utc"]
         yaml_updates[rel_path] = updated
 
@@ -568,8 +679,7 @@ def _apply_workspace_handoff(repo_root: Path, spec: CampaignLifecycleSpec, yaml_
 def _materialize_plan(campaign_id: str, context: ExecutionContext) -> LifecyclePlan:
     campaign_path = Path("lab/campaigns") / campaign_id / "campaign_manifest.yaml"
     campaign = _require_existing(context.repo_root / campaign_path, "campaign manifest")
-    if campaign.get("status") in {"closed", "campaign_closed"}:
-        raise LifecycleInputError(f"campaign is already closed: {campaign_id}")
+    _require_campaign_status(campaign, ["campaign_opened"], "materialize")
     design = campaign.get("experiment_design") or {}
     surface_id = design.get("surface_id")
     sweep_id = design.get("sweep_id")
@@ -644,20 +754,27 @@ def _materialize_plan(campaign_id: str, context: ExecutionContext) -> LifecycleP
 def _judgment_plan(campaign_id: str, context: ExecutionContext) -> LifecyclePlan:
     campaign_path = Path("lab/campaigns") / campaign_id / "campaign_manifest.yaml"
     campaign = _require_existing(context.repo_root / campaign_path, "campaign manifest")
-    if campaign.get("status") in {"closed", "campaign_closed"}:
-        raise LifecycleInputError(f"campaign is already closed: {campaign_id}")
+    _require_campaign_status(campaign, ["run_specs_materialized"], "judge")
+    _validate_run_specs_index(context.repo_root, campaign)
     contract = campaign.get("judgment_contract") or {}
     evidence_inputs = contract.get("evidence_inputs") or campaign.get("evidence_paths") or []
     _require_evidence(context.repo_root, evidence_inputs, "campaign judgment")
+    _validate_evidence_identity(context.repo_root, evidence_inputs, campaign_id)
+    evaluator_refs = contract.get("evaluator_refs") or []
+    _validate_evaluator_refs(context.repo_root, evaluator_refs, "campaign judgment")
     payload = {
         "version": "campaign_judgment_v1",
         "campaign_id": campaign_id,
         "status": "judged",
         "result_judgment": contract.get("result_judgment", "inconclusive"),
-        "evaluator_refs": contract.get("evaluator_refs", []),
+        "evaluator_refs": evaluator_refs,
         "candidate_effect": contract.get("candidate_effect", "no_candidate_claimed"),
         "clue_effect": contract.get("clue_effect", "no_new_clue_claimed"),
         "negative_memory_effect": contract.get("negative_memory_effect", "no_new_negative_memory_claimed"),
+        "candidate_count": int(contract.get("candidate_count") or 0),
+        "l5_candidate_count": int(contract.get("l5_candidate_count") or 0),
+        "clue_ids": contract.get("clue_ids") or [],
+        "negative_memory_ids": contract.get("negative_memory_ids") or [],
         "missing_evidence": contract.get("missing_evidence", []),
         "reopen_conditions": contract.get("reopen_conditions", []),
         "evidence_inputs": evidence_inputs,
@@ -678,22 +795,34 @@ def _judgment_plan(campaign_id: str, context: ExecutionContext) -> LifecyclePlan
 def _close_campaign_plan(campaign_id: str, context: ExecutionContext) -> LifecyclePlan:
     campaign_path = Path("lab/campaigns") / campaign_id / "campaign_manifest.yaml"
     campaign = _require_existing(context.repo_root / campaign_path, "campaign manifest")
+    _require_campaign_status(campaign, ["judged"], "close")
     judgment_path = Path("lab/campaigns") / campaign_id / "campaign_judgment.yaml"
     judgment = _read_yaml_if_exists(context.repo_root / judgment_path)
     evaluator = (campaign.get("closeout_contract") or {}).get("evaluator_ref")
     if not judgment and not evaluator:
         raise LifecycleInputError(f"campaign close requires a valid judgment or closeout evaluator: {campaign_id}")
+    if judgment.get("campaign_id") != campaign_id or judgment.get("status") != "judged":
+        raise LifecycleInputError(f"campaign close requires matching judged campaign_judgment.yaml: {campaign_id}")
+    _validate_evaluator_refs(context.repo_root, judgment.get("evaluator_refs") or [], "campaign closeout")
     evidence_inputs = (campaign.get("closeout_contract") or {}).get("evidence_inputs") or [judgment_path.as_posix()]
     _require_evidence(context.repo_root, evidence_inputs, "campaign closeout")
+    for item in judgment.get("evidence_inputs") or []:
+        if item not in evidence_inputs and not (context.repo_root / item).exists():
+            raise LifecycleInputError(f"campaign closeout judgment evidence ref missing: {item}")
     payload = {
         "version": "campaign_closeout_v2",
         "campaign_id": campaign_id,
         "status": "closed",
         "result_judgment": judgment.get("result_judgment", campaign.get("result_judgment", "inconclusive")),
         "evaluator_ref": evaluator,
+        "evaluator_refs": judgment.get("evaluator_refs") or [],
         "candidate_effect": judgment.get("candidate_effect", "no_candidate_claimed"),
         "clue_effect": judgment.get("clue_effect", "preserved_existing_clues_only"),
         "negative_memory_effect": judgment.get("negative_memory_effect", "preserved_existing_negative_memory_only"),
+        "candidate_count": int(judgment.get("candidate_count") or (campaign.get("closeout_contract") or {}).get("candidate_count") or 0),
+        "l5_candidate_count": int(judgment.get("l5_candidate_count") or (campaign.get("closeout_contract") or {}).get("l5_candidate_count") or 0),
+        "clue_ids": judgment.get("clue_ids") or (campaign.get("closeout_contract") or {}).get("clue_ids") or [],
+        "negative_memory_ids": judgment.get("negative_memory_ids") or (campaign.get("closeout_contract") or {}).get("negative_memory_ids") or [],
         "missing_evidence": judgment.get("missing_evidence", []),
         "reopen_conditions": judgment.get("reopen_conditions", []),
         "evidence_inputs": evidence_inputs,
@@ -712,6 +841,8 @@ def _close_campaign_plan(campaign_id: str, context: ExecutionContext) -> Lifecyc
 
 
 def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
+    from foundation.evaluation.lifecycle_wave_closeout_evaluator import EVALUATOR_ID, evaluate_wave_closeout
+
     wave_path = Path("lab/waves") / wave_id / "wave_allocation.yaml"
     wave = _require_existing(context.repo_root / wave_path, "wave allocation")
     allocations = wave.get("campaign_allocations") or []
@@ -720,24 +851,35 @@ def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
     evidence_inputs = []
     for allocation in allocations:
         campaign_id = allocation.get("campaign_id")
+        campaign_manifest = _read_yaml_if_exists(context.repo_root / str(allocation.get("campaign_manifest")))
+        if campaign_manifest.get("status") != "closed":
+            raise LifecycleInputError(f"wave close requires closed campaign manifest: {campaign_id}")
         closeout = Path("lab/campaigns") / str(campaign_id) / "campaign_closeout.yaml"
-        if not (context.repo_root / closeout).exists():
+        closeout_payload = _read_yaml_if_exists(context.repo_root / closeout)
+        if not closeout_payload:
             raise LifecycleInputError(f"wave close requires campaign closeout: {campaign_id}")
+        if closeout_payload.get("campaign_id") != campaign_id or closeout_payload.get("status") != "closed":
+            raise LifecycleInputError(f"wave close requires matching closed campaign closeout: {campaign_id}")
+        _validate_evaluator_refs(context.repo_root, closeout_payload.get("evaluator_refs") or closeout_payload.get("evaluator_ref") or [], "wave close")
         evidence_inputs.append(closeout.as_posix())
+    evaluator_result = evaluate_wave_closeout(context.repo_root, wave_id)
+    if evaluator_result["status"] != "passed":
+        raise LifecycleInputError(f"wave closeout evaluator failed: {evaluator_result['findings']}")
+    evaluator_path = Path("lab/evaluations/control_plane_corrective_v3") / f"lifecycle_wave_closeout_{wave_id}.yaml"
+    evaluator_text = dump_yaml(evaluator_result)
+    evaluator_sha = hashlib.sha256(evaluator_text.encode("utf-8")).hexdigest()
     payload = {
         "version": "wave_closeout_v2",
         "wave_id": wave_id,
         "status": "closed",
-        "evaluator_backed": True,
-        "requirement_audit": [
-            {
-                "requirement": "campaign_closeouts_complete",
-                "evaluator_id": "lifecycle_transition_validator",
-                "status": "passed",
-            }
-        ],
-        "candidate_count": 0,
-        "l5_candidate_count": 0,
+        "evaluator_id": EVALUATOR_ID,
+        "evaluator_result_path": evaluator_path.as_posix(),
+        "evaluator_result_sha256": evaluator_sha,
+        "evaluator_input_hashes": evaluator_result["input_hashes"],
+        "candidate_count": evaluator_result["candidate_count"],
+        "l5_candidate_count": evaluator_result["l5_candidate_count"],
+        "clue_ids": evaluator_result["clue_ids"],
+        "negative_memory_ids": evaluator_result["negative_memory_ids"],
         "evidence_inputs": evidence_inputs,
         "claim_boundary": wave.get("claim_boundary") or context.claim_boundary,
         "next_action": "open_next_wave_or_user_directed_review",
@@ -746,7 +888,7 @@ def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
     wave["status"] = "closed"
     wave["next_action"] = payload["next_action"]
     goal_updates = _goal_updates_for_wave_close(context.repo_root, wave, payload)
-    yaml_updates = {wave_path: wave, Path("lab/waves") / wave_id / "wave_closeout.yaml": payload, **goal_updates}
+    yaml_updates = {wave_path: wave, Path("lab/waves") / wave_id / "wave_closeout.yaml": payload, evaluator_path: evaluator_result, **goal_updates}
     text_updates: dict[Path, str] = {}
     for allocation in allocations:
         campaign = _read_yaml_if_exists(context.repo_root / str(allocation.get("campaign_manifest")))
@@ -791,6 +933,55 @@ def _goal_updates_for_wave_close(repo_root: Path, wave: dict[str, Any], closeout
         "provenance": {"source": "wave_close_lifecycle"},
     }
     return {goal_path: goal, next_work_path: next_work}
+
+
+def _require_campaign_status(campaign: dict[str, Any], allowed: list[str], action: str) -> None:
+    status = str(campaign.get("status") or "")
+    if status not in allowed:
+        raise LifecycleInputError(
+            f"campaign {action} requires status {' or '.join(allowed)}, observed {status or '<empty>'}"
+        )
+
+
+def _validate_run_specs_index(repo_root: Path, campaign: dict[str, Any]) -> None:
+    index = campaign.get("run_specs_index")
+    if not index:
+        raise LifecycleInputError("campaign judgment requires run_specs index")
+    rows = read_csv_rows(repo_root / str(index)) if (repo_root / str(index)).exists() else []
+    if not rows:
+        raise LifecycleInputError(f"campaign judgment requires non-empty run_specs index: {index}")
+    missing = [row.get("run_spec_path") for row in rows if not row.get("run_spec_path") or not (repo_root / row["run_spec_path"]).exists()]
+    if missing:
+        raise LifecycleInputError(f"campaign judgment missing declared run-spec files: {', '.join(map(str, missing))}")
+
+
+def _validate_evidence_identity(repo_root: Path, evidence_inputs: list[str], campaign_id: str) -> None:
+    for rel in evidence_inputs:
+        path = repo_root / str(rel)
+        if path.suffix.lower() not in {".yaml", ".yml"}:
+            continue
+        payload = _read_yaml_if_exists(path)
+        if payload.get("campaign_id") and payload["campaign_id"] != campaign_id:
+            raise LifecycleInputError(f"evidence identity mismatch for {rel}: {payload['campaign_id']} != {campaign_id}")
+
+
+def _validate_evaluator_refs(repo_root: Path, refs: Any, label: str) -> None:
+    if not isinstance(refs, list) or not refs:
+        raise LifecycleInputError(f"{label} requires evaluator refs")
+    for ref in refs:
+        if not isinstance(ref, dict):
+            raise LifecycleInputError(f"{label} evaluator refs must be mappings")
+        for field in ["path", "sha256", "evaluator_id", "status"]:
+            if not str(ref.get(field) or "").strip():
+                raise LifecycleInputError(f"{label} evaluator ref missing {field}")
+        if ref["status"] not in {"passed", "failed"}:
+            raise LifecycleInputError(f"{label} evaluator ref status must be passed or failed")
+        path = repo_root / str(ref["path"])
+        if not path.exists():
+            raise LifecycleInputError(f"{label} evaluator ref missing path: {ref['path']}")
+        observed = _sha256_file(path)
+        if observed != ref["sha256"]:
+            raise LifecycleInputError(f"{label} evaluator ref hash mismatch: {ref['path']}")
 
 
 def _require_evidence(repo_root: Path, evidence_inputs: list[str], label: str) -> None:
@@ -851,14 +1042,70 @@ def _stage_common_neighbors(
     goal_path = Path("lab/goals") / str(goal_id) / "goal_manifest.yaml"
     goal = dict(yaml_updates.get(goal_path) or _read_yaml_if_exists(repo_root / goal_path))
     if goal:
-        goal["active_ids"] = {**(goal.get("active_ids") or {}), "campaign_id": campaign_id}
-        goal["updated_at_utc"] = utc_now()
-        goal["next_work_item"] = {
-            "work_item_id": campaign.get("next_action"),
-            "path": f"lab/goals/{goal_id}/next_work_item.yaml",
-            "summary": campaign.get("next_action"),
-        }
-        yaml_updates[goal_path] = goal
+        _stage_goal_transition(
+            repo_root,
+            yaml_updates,
+            goal,
+            campaign,
+            next_action=str(campaign.get("next_action") or "continue_campaign_lifecycle"),
+            targets=[f"lab/campaigns/{campaign_id}/campaign_manifest.yaml"],
+        )
+
+
+def _complete_transition_next_work(
+    *,
+    goal_id: str,
+    campaign: dict[str, Any],
+    next_action: str,
+    targets: list[str],
+) -> dict[str, Any]:
+    routing = campaign.get("routing") or campaign.get("skill_routing") or {}
+    claim_boundary = str(campaign.get("claim_boundary") or "control_plane_lifecycle_only_no_runtime_authority_no_economics_pass")
+    return {
+        "version": "work_item_lite_v1",
+        "work_item_id": next_action,
+        "request_digest": hashlib.sha256("|".join([campaign.get("campaign_id", ""), next_action, *targets]).encode("utf-8")).hexdigest(),
+        "primary_family": routing.get("primary_family") or "policy_skill_governance",
+        "primary_skill": routing.get("primary_skill") or "spacesonar-workspace-state-sync",
+        "verification_profile": campaign.get("verification_profile") or "governance",
+        "targets": targets,
+        "acceptance_criteria": [f"complete {next_action} without weakening claim boundary"],
+        "claim_boundary": claim_boundary,
+        "policy_binding": campaign.get("policy_binding") or {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
+        "outputs": [],
+        "next_action": next_action,
+        "path": f"lab/goals/{goal_id}/next_work_item.yaml",
+        "summary": next_action,
+        "provenance": {"source": "canonical_lifecycle_transition", "campaign_id": campaign.get("campaign_id")},
+    }
+
+
+def _stage_goal_transition(
+    repo_root: Path,
+    yaml_updates: dict[Path, dict[str, Any]],
+    goal: dict[str, Any],
+    campaign: dict[str, Any],
+    *,
+    next_action: str,
+    targets: list[str],
+) -> None:
+    goal_id = str(goal.get("active_goal_id") or goal.get("goal_id") or campaign.get("active_goal_id"))
+    goal_path = Path("lab/goals") / goal_id / "goal_manifest.yaml"
+    next_work_path = Path("lab/goals") / goal_id / "next_work_item.yaml"
+    next_work = _complete_transition_next_work(goal_id=goal_id, campaign=campaign, next_action=next_action, targets=targets)
+    goal = dict(goal)
+    goal["active_ids"] = {**(goal.get("active_ids") or {}), "campaign_id": campaign.get("campaign_id")}
+    goal["updated_at_utc"] = utc_now()
+    goal["next_work_item"] = _next_work_pointer(next_work)
+    yaml_updates[goal_path] = goal
+    yaml_updates[next_work_path] = next_work
+    resume_cursor_path = Path("lab/goals") / goal_id / "resume_cursor.yaml"
+    if (repo_root / resume_cursor_path).exists() or resume_cursor_path in yaml_updates:
+        cursor = dict(yaml_updates.get(resume_cursor_path) or _read_yaml_if_exists(repo_root / resume_cursor_path))
+        cursor["active_work_item_id"] = next_work["work_item_id"]
+        cursor["campaign_id"] = campaign.get("campaign_id")
+        cursor["updated_at_utc"] = goal["updated_at_utc"]
+        yaml_updates[resume_cursor_path] = cursor
 
 
 def _artifact_rows_for_plan(context: ExecutionContext, plan: LifecyclePlan) -> list[dict[str, str]]:

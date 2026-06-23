@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -935,29 +936,13 @@ def update_registries(now: str, records: tuple[dict, dict, dict, dict], run_rows
     write_csv(artifact_path, artifact_rows, artifact_fields)
 
 
-def main() -> None:
-    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-    run_rows, counts = metric_summary()
-    records = build_records(now, run_rows, counts)
-    write_primary_records(now, records, counts)
-    update_yaml_records(now, counts)
-    repair_run_gate_coverage(run_rows)
-    update_registries(now, records, run_rows)
+def main() -> int:
     print(
-        json.dumps(
-            {
-                "status": "axis_review_records_written",
-                "axis_review": rel(AXIS_REVIEW_PATH),
-                "goal_closeout": rel(GOAL_CLOSEOUT_PATH),
-                "clues": [rel(CLUE_TRADE_PATH), rel(CLUE_PATHQ_PATH)],
-                "next_work_item": NEW_WORK,
-                "result_counts": counts,
-                "claim_boundary": "first_batch_axis_review_only_no_candidate_no_baseline_no_runtime",
-            },
-            indent=2,
-        )
+        "historical lifecycle entrypoint disabled by WP04; use python -m spacesonar.cli campaign close --campaign-id <id>",
+        file=sys.stderr,
     )
+    return 2
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

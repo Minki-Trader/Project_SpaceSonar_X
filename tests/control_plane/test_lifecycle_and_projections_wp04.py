@@ -4,7 +4,11 @@ import csv
 import hashlib
 import inspect
 import os
+import re
 import socket
+import subprocess
+import sys
+import threading
 from pathlib import Path
 
 import pytest
@@ -44,8 +48,25 @@ def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def spec_payload() -> dict:
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def spec_payload(root: Path | None = None) -> dict:
     claim_boundary = "campaign_open_only_no_runtime_authority_no_economics_pass"
+    objective_path = "fixture_inputs/goal_wave02_fixture_objective.yaml"
+    evaluator_path = "fixture_inputs/campaign_wave02_fixture_evaluator.yaml"
+    objective_hash = "fixture_objective_hash"
+    evaluator_hash = "fixture_evaluator_hash"
+    if root is not None:
+        objective_file = root / objective_path
+        objective_file.parent.mkdir(parents=True, exist_ok=True)
+        objective_file.write_text("objective: synthetic Wave02 fixture\n", encoding="utf-8")
+        objective_hash = sha256_file(objective_file)
+        evaluator_file = root / evaluator_path
+        evaluator_file.parent.mkdir(parents=True, exist_ok=True)
+        evaluator_file.write_text("evaluator_id: fixture_evaluator_v0\nstatus: passed\n", encoding="utf-8")
+        evaluator_hash = sha256_file(evaluator_file)
     return {
         "version": "campaign_lifecycle_spec_v1",
         "campaign_id": "campaign_wave02_surface_probe_v0",
@@ -72,6 +93,18 @@ def spec_payload() -> dict:
         },
         "policy_binding": {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
         "storage_contract": {"durable_identity_policy": "repo_relative_paths_only"},
+        "objective_identity": {
+            "source_type": "test_fixture",
+            "content_hash_sha256": objective_hash,
+            "source_path": objective_path,
+            "summary": "Synthetic Wave02 fixture objective.",
+        },
+        "objective_revision": {
+            "revision_id": "objective_wave02_fixture_v0",
+            "source_of_truth": objective_path,
+            "primary_objective": "synthetic_lifecycle_validation",
+            "proof_window": "wp04_fixture",
+        },
         "next_work_item": {
             "version": "work_item_lite_v1",
             "work_item_id": "work_wave02_materialize_fixture_v0",
@@ -117,7 +150,14 @@ def spec_payload() -> dict:
         "judgment_contract": {
             "evidence_inputs": ["lab/campaigns/campaign_wave02_surface_probe_v0/evidence/judgment.yaml"],
             "result_judgment": "inconclusive",
-            "evaluator_refs": ["fixture_evaluator_v0"],
+            "evaluator_refs": [
+                {
+                    "path": evaluator_path,
+                    "sha256": evaluator_hash,
+                    "evaluator_id": "fixture_evaluator_v0",
+                    "status": "passed",
+                }
+            ],
             "candidate_effect": "no_candidate_claimed",
             "clue_effect": "no_new_clue_claimed",
             "negative_memory_effect": "no_new_negative_memory_claimed",
@@ -130,7 +170,7 @@ def spec_payload() -> dict:
 
 def write_spec(tmp_path: Path, payload: dict | None = None) -> Path:
     spec = tmp_path / "spec.yaml"
-    spec.write_text(yaml.safe_dump(payload or spec_payload(), sort_keys=False), encoding="utf-8")
+    spec.write_text(yaml.safe_dump(payload or spec_payload(tmp_path), sort_keys=False), encoding="utf-8")
     return spec
 
 
@@ -152,7 +192,7 @@ def artifact_paths(root: Path) -> set[str]:
 def write_judgment_evidence(root: Path) -> None:
     write_yaml(
         root / "lab/campaigns/campaign_wave02_surface_probe_v0/evidence/judgment.yaml",
-        {"status": "evidence_present", "claim_boundary": "fixture_only"},
+        {"campaign_id": "campaign_wave02_surface_probe_v0", "status": "evidence_present", "claim_boundary": "fixture_only"},
     )
 
 
@@ -289,7 +329,10 @@ def test_materialize_judge_campaign_close_and_wave_close_state_machine(tmp_path:
     assert "close_campaign" not in (tmp_path / "docs/workspace/workspace_state.yaml").read_text(encoding="utf-8")
     assert load_yaml(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_allocation.yaml")["status"] == "closed"
     assert load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/goal_manifest.yaml")["status"] == "wave_closed"
-    assert load_yaml(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_closeout.yaml")["evaluator_backed"] is True
+    wave_closeout = load_yaml(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_closeout.yaml")
+    evaluator_path = tmp_path / wave_closeout["evaluator_result_path"]
+    assert evaluator_path.exists()
+    assert wave_closeout["evaluator_result_sha256"] == sha256_file(evaluator_path)
 
 
 def test_all_nine_registry_projection_checks_detect_drift(tmp_path: Path) -> None:
@@ -398,6 +441,11 @@ def test_workspace_projection_selects_synthetic_active_goal_and_wave(tmp_path: P
 
 
 def test_workspace_projection_rejects_two_active_goals_and_missing_requested_wave(tmp_path: Path) -> None:
+    write_yaml(tmp_path / "lab/goals/goal_zero/goal_manifest.yaml", {"active_goal_id": "goal_zero"})
+    with pytest.raises(ValueError, match="zero workspace-active goals"):
+        workspace_projection_text(tmp_path)
+    (tmp_path / "lab/goals/goal_zero/goal_manifest.yaml").unlink()
+
     write_yaml(
         tmp_path / "lab/goals/goal_a/goal_manifest.yaml",
         {"active_goal_id": "goal_a", "workspace_active": True, "active_ids": {"wave_id": "wave_a"}},
@@ -434,6 +482,16 @@ def test_legacy_wrapper_contains_no_direct_mutation_logic() -> None:
 
 def test_every_declared_legacy_lifecycle_script_is_thin() -> None:
     manifest = load_yaml(REPO_ROOT / "docs/agent_control/legacy_lifecycle_entrypoints.yaml")
+    allowed_classifications = set(manifest["classification_contract"]["allowed_classifications"])
+    entries = {entry["path"]: entry for entry in manifest["entrypoints"]}
+    tokens = [re.escape(token) for token in manifest["classification_contract"]["direct_mutator_detection_tokens"]]
+    direct_mutator_pattern = re.compile("|".join(tokens))
+    detected = {
+        path.relative_to(REPO_ROOT).as_posix()
+        for path in sorted((REPO_ROOT / "foundation/pipelines").glob("*.py"))
+        if direct_mutator_pattern.search(path.read_text(encoding="utf-8-sig"))
+    }
+    assert detected <= set(entries)
     forbidden = [
         "csv.DictWriter",
         "yaml.safe_dump",
@@ -443,10 +501,36 @@ def test_every_declared_legacy_lifecycle_script_is_thin() -> None:
         "sha256",
         "git rev-parse",
     ]
-    for entry in manifest["entrypoints"]:
+    for entry in entries.values():
+        assert entry["classification"] in allowed_classifications
         source = (REPO_ROOT / entry["path"]).read_text(encoding="utf-8-sig")
-        for token in forbidden:
-            assert token not in source, entry["path"]
+        if entry["classification"] == "shared_lifecycle_wrapper":
+            for token in forbidden:
+                assert token not in source, entry["path"]
+        if entry["classification"] == "historical_disabled":
+            assert "historical lifecycle" in source, entry["path"]
+
+
+def test_legacy_disabled_entrypoint_creates_zero_file_changes(tmp_path: Path) -> None:
+    script = REPO_ROOT / "foundation/pipelines/open_wave01_event_barrier_decision_campaign.py"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--repo-root",
+            str(tmp_path),
+            "--write-control-records",
+        ],
+        cwd=tmp_path,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode != 0
+    assert "historical lifecycle entrypoint disabled" in result.stderr
+    assert list(tmp_path.rglob("*")) == []
 
 
 def test_concurrent_lifecycle_command_is_rejected_by_lock(tmp_path: Path) -> None:
@@ -468,6 +552,86 @@ def test_concurrent_lifecycle_command_is_rejected_by_lock(tmp_path: Path) -> Non
     assert result.status == "aborted_validation_failed"
     assert "lock held by live owner" in result.errors[0]
     assert not (tmp_path / "lab/campaigns/campaign_wave02_surface_probe_v0").exists()
+
+
+def test_same_process_second_thread_lock_acquisition_fails(tmp_path: Path) -> None:
+    errors: list[str] = []
+    acquired: list[str] = []
+
+    def attempt_lock() -> None:
+        try:
+            with control_plane_lock(context(tmp_path)):
+                acquired.append("acquired")
+        except ControlPlaneLockError as exc:
+            errors.append(str(exc))
+
+    with control_plane_lock(context(tmp_path)):
+        thread = threading.Thread(target=attempt_lock)
+        thread.start()
+        thread.join()
+    assert acquired == []
+    assert errors and "lock held by live owner" in errors[0]
+
+
+def test_same_thread_nested_lock_reenters_and_separate_process_is_rejected(tmp_path: Path) -> None:
+    with control_plane_lock(context(tmp_path)):
+        with control_plane_lock(context(tmp_path)):
+            assert (tmp_path / LOCK_REL_PATH).exists()
+        child = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                (
+                    "import sys; "
+                    "from pathlib import Path; "
+                    "from spacesonar.control_plane.lock import ControlPlaneLockError, control_plane_lock; "
+                    "from spacesonar.control_plane.models import ExecutionContext; "
+                    "ctx=ExecutionContext(repo_root=Path(sys.argv[1]), work_item_id='child', "
+                    "claim_boundary='test', command_argv=('child',)); "
+                    "\ntry:\n"
+                    "    with control_plane_lock(ctx):\n"
+                    "        raise SystemExit(0)\n"
+                    "except ControlPlaneLockError:\n"
+                    "    raise SystemExit(7)\n"
+                ),
+                str(tmp_path),
+            ],
+            cwd=REPO_ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        assert child.returncode == 7, child.stdout + child.stderr
+    assert not (tmp_path / LOCK_REL_PATH).exists()
+
+
+def test_open_campaign_cannot_jump_directly_to_judge_or_close(tmp_path: Path) -> None:
+    assert open_campaign(write_spec(tmp_path), context(tmp_path)).status == "committed"
+
+    judged = judge_campaign("campaign_wave02_surface_probe_v0", context(tmp_path))
+    closed = close_campaign("campaign_wave02_surface_probe_v0", context(tmp_path))
+
+    assert judged.status == "aborted_validation_failed"
+    assert "requires status run_specs_materialized" in judged.errors[0]
+    assert closed.status == "aborted_validation_failed"
+    assert "requires status judged" in closed.errors[0]
+
+
+def test_tampered_or_mismatched_campaign_closeout_blocks_wave_close(tmp_path: Path) -> None:
+    assert open_campaign(write_spec(tmp_path), context(tmp_path)).status == "committed"
+    assert materialize_run_specs("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
+    write_judgment_evidence(tmp_path)
+    assert judge_campaign("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
+    assert close_campaign("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
+    closeout = tmp_path / "lab/campaigns/campaign_wave02_surface_probe_v0/campaign_closeout.yaml"
+    payload = load_yaml(closeout)
+    payload["campaign_id"] = "campaign_other_v0"
+    write_yaml(closeout, payload)
+
+    wave_closed = close_wave("wave_wave02_fixture_v0", context(tmp_path))
+
+    assert wave_closed.status == "aborted_validation_failed"
+    assert "matching closed campaign closeout" in wave_closed.errors[0]
 
 
 def test_stale_lock_recovery_is_explicit(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

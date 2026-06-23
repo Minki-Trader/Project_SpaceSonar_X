@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import hashlib
 
 import pytest
 import yaml
@@ -48,7 +49,14 @@ def force_corrective_branch(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(cli, "current_git_branch", lambda _repo_root: cli.CORRECTIVE_BRANCH)
 
 
-def complete_spec(campaign_id: str) -> dict:
+def complete_spec(campaign_id: str, repo_root: Path | None = None) -> dict:
+    objective_path = "lab/goals/goal_fixture_v0/objective.yaml"
+    objective_hash = "fixture_objective_hash"
+    if repo_root is not None:
+        source = repo_root / objective_path
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text("objective: WP00 fixture\n", encoding="utf-8")
+        objective_hash = hashlib.sha256(source.read_bytes()).hexdigest()
     return {
         "version": "campaign_lifecycle_spec_v1",
         "campaign_id": campaign_id,
@@ -74,6 +82,18 @@ def complete_spec(campaign_id: str) -> dict:
         },
         "policy_binding": {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
         "storage_contract": {"durable_identity_policy": "repo_relative_paths_only"},
+        "objective_identity": {
+            "source_type": "test_fixture",
+            "content_hash_sha256": objective_hash,
+            "source_path": objective_path,
+            "summary": "WP00 fixture objective",
+        },
+        "objective_revision": {
+            "revision_id": "objective_fixture_v0",
+            "source_of_truth": objective_path,
+            "primary_objective": "guard_fixture",
+            "proof_window": "wp00_test",
+        },
         "next_work_item": {
             "version": "work_item_lite_v1",
             "work_item_id": "work_fixture_next_v0",
@@ -214,7 +234,7 @@ def test_wp02_and_wp04_completed_release_guard(
     force_corrective_branch(monkeypatch)
     write_progress_ledger(tmp_path, wp02_status="completed", wp04_status="completed")
     spec = tmp_path / "spec.yaml"
-    spec.write_text(yaml.safe_dump(complete_spec("campaign_released_v0"), sort_keys=False), encoding="utf-8")
+    spec.write_text(yaml.safe_dump(complete_spec("campaign_released_v0", tmp_path), sort_keys=False), encoding="utf-8")
 
     result = cli.main(["--repo-root", str(tmp_path), "campaign", "open", "--spec", str(spec)])
 
@@ -225,7 +245,7 @@ def test_wp02_and_wp04_completed_release_guard(
 def test_lifecycle_api_still_operates_in_temporary_fixture_repo(tmp_path: Path) -> None:
     write_progress_ledger(tmp_path)
     spec = tmp_path / "campaign_spec.yaml"
-    spec.write_text(yaml.safe_dump(complete_spec("campaign_fixture_v0"), sort_keys=False), encoding="utf-8")
+    spec.write_text(yaml.safe_dump(complete_spec("campaign_fixture_v0", tmp_path), sort_keys=False), encoding="utf-8")
     context = ExecutionContext(tmp_path, "work_fixture", "fixture_claim_boundary", ("test",))
 
     result = open_campaign(spec, context)

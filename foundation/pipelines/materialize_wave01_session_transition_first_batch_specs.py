@@ -1225,49 +1225,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = now_utc()
-    created_at = args.created_at_utc or started_at
-    rows = first_batch_rows()
-    validate_rows(rows)
-
-    branch = git_value(repo_root, ["branch", "--show-current"])
-    if branch != args.expected_branch:
-        raise RuntimeError(f"branch mismatch: expected {args.expected_branch}, observed {branch}")
-
-    command_argv = ["python", "foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py"]
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    input_hashes = collect_input_hashes(repo_root)
-
-    matrix = write_matrix(repo_root, rows)
-    run_specs_index, spec_rows = write_run_specs_index(repo_root, rows)
-    run_refs = write_run_refs(repo_root, spec_rows, created_at)
-    outputs = {"matrix": matrix, "run_specs_index": run_specs_index, "run_refs": run_refs}
-    anti_selection_ledger = write_anti_selection_ledger(repo_root, rows, outputs, created_at)
-    outputs["anti_selection_ledger"] = anti_selection_ledger
-    first_batch_manifest = write_first_batch_manifest(repo_root, rows, outputs, created_at)
-    outputs["first_batch_manifest"] = first_batch_manifest
-
-    if args.write_control_records:
-        update_yaml_records(repo_root, created_at, outputs, rows)
-        write_yaml(
-            repo_path(repo_root, PATHS["next_work_item"]),
-            next_work_item_payload(repo_root, created_at, outputs, rows, command_argv, started_at, input_hashes),
-        )
-        update_csv_registries(repo_root, outputs, rows)
-        update_artifact_registry(repo_root, outputs, " ".join(command_argv))
-
-    summary = {
-        "status": STATUS,
-        "spec_count": len(rows),
-        "claim_boundary": CLAIM_BOUNDARY,
-        "outputs": {key: rel(path, repo_root) for key, path in outputs.items()},
-        "current_branch": branch,
-        "changed_files": git_status_lines(repo_root),
-    }
-    print(yaml.dump(summary, Dumper=NoAliasDumper, sort_keys=False, allow_unicode=False))
-    return 0
+    _repo_root = Path(args.repo_root).resolve()
+    print(
+        "historical lifecycle entrypoint disabled by WP04; use python -m spacesonar.cli campaign materialize --campaign-id <id>",
+        file=sys.stderr,
+    )
+    return 2
 
 
 if __name__ == "__main__":

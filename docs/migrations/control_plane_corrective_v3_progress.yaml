@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp04_lifecycle_state_machine_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp04_final_amendment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -586,7 +586,7 @@ work_units:
   WP04:
     status: completed
     started_at_utc: '2026-06-23T06:15:50Z'
-    completed_at_utc: '2026-06-23T08:53:30Z'
+    completed_at_utc: '2026-06-23T10:33:06Z'
     amendment_relock_at_utc: '2026-06-23T07:40:24Z'
     objective: Complete the canonical lifecycle state machine, lock lifecycle mutations,
       preserve registry semantics, and release lifecycle commands only after validation.
@@ -594,6 +594,16 @@ work_units:
     - .gitignore
     - docs/agent_control/legacy_lifecycle_entrypoints.yaml
     - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - foundation/evaluation/lifecycle_wave_closeout_evaluator.py
+    - foundation/pipelines/close_wave0_first_batch_axis_review.py
+    - foundation/pipelines/close_wave01_event_barrier_campaign.py
+    - foundation/pipelines/close_wave01_session_transition_campaign.py
+    - foundation/pipelines/materialize_wave0_first_batch_run_specs.py
+    - foundation/pipelines/materialize_wave01_event_barrier_first_batch_specs.py
+    - foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py
+    - foundation/pipelines/open_wave01_event_barrier_decision_campaign.py
+    - foundation/pipelines/open_wave01_session_transition_regime_campaign.py
+    - foundation/pipelines/sync_wave_campaign_integration_contract.py
     - docs/registers/artifact_registry.csv
     - docs/registers/clue_registry.csv
     - docs/registers/hypothesis_registry.csv
@@ -607,6 +617,7 @@ work_units:
     - lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
     - lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
     - lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+    - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
     - src/spacesonar/cli.py
     - src/spacesonar/control_plane/lifecycle.py
     - src/spacesonar/control_plane/lock.py
@@ -617,6 +628,7 @@ work_units:
     - tests/control_plane/test_corrective_workstream_wp00.py
     - tests/control_plane/test_lifecycle_and_projections_wp04.py
     - tests/control_plane/test_lifecycle_idempotency.py
+    - tests/control_plane/test_workspace_projection.py
     lifecycle_activation:
       canonical_lifecycle_guard_released: true
       release_condition:
@@ -677,6 +689,11 @@ work_units:
     wrapper_conversion:
       status: passed
       declared_entrypoint_manifest: docs/agent_control/legacy_lifecycle_entrypoints.yaml
+      inventory_version: legacy_lifecycle_entrypoints_v2
+      direct_lifecycle_mutator_inventory_complete: true
+      unclassified_direct_mutator_count: 0
+      historical_disabled_entrypoints_execute_nonzero: true
+      historical_disabled_entrypoints_create_zero_lifecycle_records: true
       legacy_wrapper_direct_mutation_tokens_absent:
       - csv.DictWriter
       - yaml.safe_dump
@@ -690,12 +707,19 @@ work_units:
         -q
       status: passed
       result: 16 passed
+    - command: uv run pytest tests/control_plane/test_lifecycle_and_projections_wp04.py
+        -q
+      status: passed
+      result: 21 passed
+      amendment_result: final amendment tests include explicit active goal, fresh evaluator-backed
+        wave closeout, nested/thread/process lock behavior, complete legacy mutator
+        inventory, and disabled entrypoint zero-mutation checks
     - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
       status: passed
       result: 28 passed
     - command: uv run pytest tests/control_plane -q
       status: passed
-      result: 66 passed
+      result: 71 passed
     - command: uv run python -m spacesonar.cli registry project --check
       status: passed
       result: registry projection check passed
@@ -712,9 +736,14 @@ work_units:
     - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
       status: passed
       result: control-plane modules compiled successfully
+    - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
+        foundation/evaluation/lifecycle_wave_closeout_evaluator.py foundation/pipelines/<disabled_legacy_entrypoints>.py
+      status: passed
+      result: control-plane, evaluator, and disabled legacy entrypoint modules compiled
+        successfully
     - command: uv run pytest -q
       status: passed
-      result: 305 passed in 861.14s
+      result: 310 passed in 829.18s
     - command: git diff --check
       status: passed
       result: no whitespace errors; CRLF normalization warnings only
@@ -739,6 +768,31 @@ work_units:
         workspace_strict_selection: passed
         legacy_lifecycle_entrypoints_thin: passed
         lifecycle_guard_release_after_wp04: passed
+    final_amendment:
+      id: wp04_close_remaining_canonical_lifecycle_gaps
+      status: completed
+      completed_at_utc: '2026-06-23T10:33:06Z'
+      commit_subject: WP04 final amendment close canonical lifecycle gaps
+      commit_sha: recorded_by_final_wp04_final_amendment_commit
+      results:
+        explicit_workspace_active_goal_migrated: passed
+        timestamp_active_goal_fallback_removed: passed
+        strict_campaign_lifecycle_spec_pretransaction_validation: passed
+        goal_transition_helper_updates_full_next_work_and_resume_cursor: passed
+        lifecycle_transition_preconditions_enforced: passed
+        evaluator_backed_wave_closeout_fresh_hash_reference: passed
+        same_thread_lock_reentry: passed
+        same_process_second_thread_rejected: passed
+        separate_process_lock_rejected: passed
+        complete_legacy_lifecycle_mutator_inventory: passed
+        historical_disabled_entrypoint_zero_mutation: passed
+      validation_summary:
+        wp04_tests: 21 passed
+        transaction_atomicity_tests: 28 passed
+        lifecycle_idempotency_tests: 1 passed
+        wp00_guard_tests: 14 passed
+        control_plane_tests: 71 passed
+        full_pytest: 310 passed in 829.18s
     wp05_handoff:
       next_packet: WP05
       required_entry_condition: WP04.status completed
@@ -748,6 +802,7 @@ work_units:
       remaining_claim_boundary: no runtime authority, no economics pass, no live readiness,
         no selected baseline.
     claim_boundary: corrective_wp04_lifecycle_state_machine_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    final_amendment_relock_at_utc: '2026-06-23T10:02:20Z'
   WP05:
     status: pending
   WP06:
