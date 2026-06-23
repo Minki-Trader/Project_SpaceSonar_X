@@ -11,6 +11,19 @@ import yaml
 
 REGISTRY_PATH = Path("docs/agent_control/work_family_registry.yaml")
 CLAIM_VOCABULARY_PATH = Path("docs/agent_control/claim_vocabulary.yaml")
+BROKEN_INPUT_QUESTION = "\u003f"
+COMPAT_PROTECTED_CLAIM_ALIASES = {
+    "runtime_authority": ("\u003f\uace0" + BROKEN_INPUT_QUESTION * 3 + "\u6c85\ub6b0\ube33",),
+    "economics_pass": ("\u5bc3\uc38c\uc823" + BROKEN_INPUT_QUESTION * 3 + "\ub4e6\ub0b5",),
+    "selected_baseline": ("\u003f\uc88f\uae6e \u6e72\uacd7" + BROKEN_INPUT_QUESTION * 3,),
+    "production_deployment": ("\u003f\ub301\uc07a \u8adb\uace0\ub8f7",),
+}
+COMPAT_PROTECTED_CLAIM_ASSERTION_ALIASES = (
+    "\u003f\uba84\uc819",
+    "\u003f\ubc40\uc524",
+    "\u003f\uc88e\ubf35",
+    "\u003f\u317c\uc819",
+)
 
 
 @dataclass(frozen=True)
@@ -43,7 +56,23 @@ def load_routing_registry(repo_root: Path | None = None) -> dict[str, Any]:
 
 def load_claim_vocabulary(repo_root: Path | None = None) -> dict[str, Any]:
     root = (repo_root or _repo_root()).resolve()
-    return _load_yaml(root / CLAIM_VOCABULARY_PATH)
+    return _with_compat_claim_vocabulary(_load_yaml(root / CLAIM_VOCABULARY_PATH))
+
+
+def _with_compat_claim_vocabulary(payload: dict[str, Any]) -> dict[str, Any]:
+    merged = dict(payload)
+    protected = {
+        str(claim_id): list(aliases if isinstance(aliases, list) else [])
+        for claim_id, aliases in (payload.get("protected_claim_aliases") or {}).items()
+    }
+    for claim_id, aliases in COMPAT_PROTECTED_CLAIM_ALIASES.items():
+        protected.setdefault(claim_id, [])
+        protected[claim_id].extend(alias for alias in aliases if alias not in protected[claim_id])
+    intents = list(payload.get("protected_claim_assertion_intent_aliases") or [])
+    intents.extend(alias for alias in COMPAT_PROTECTED_CLAIM_ASSERTION_ALIASES if alias not in intents)
+    merged["protected_claim_aliases"] = protected
+    merged["protected_claim_assertion_intent_aliases"] = intents
+    return merged
 
 
 def _normalize_text(value: str) -> str:
@@ -55,6 +84,16 @@ def _normalize_text(value: str) -> str:
 
 def _contains_any(text: str, tokens: tuple[str, ...]) -> bool:
     return any(token in text for token in tokens)
+
+
+def _contains_intent_alias(haystack: str, alias: str) -> bool:
+    needle = _normalize_text(alias)
+    if not needle:
+        return False
+    if re.fullmatch(r"[a-z0-9 ]+", needle):
+        pattern = rf"(?<![a-z0-9]){re.escape(needle)}(?![a-z0-9])"
+        return re.search(pattern, haystack) is not None
+    return needle in haystack
 
 
 def _claim_alias_hits(text: str, requested_claims: tuple[str, ...], claim_vocabulary: dict[str, Any]) -> set[str]:
@@ -80,8 +119,8 @@ def _has_assertion_intent(text: str, execution_layers: tuple[str, ...], requeste
     if requested_claims:
         return True
     haystack = _normalize_text(" ".join([text, *execution_layers]))
-    aliases = tuple(_normalize_text(str(item)) for item in (claim_vocabulary.get("protected_claim_assertion_intent_aliases") or []))
-    return _contains_any(haystack, aliases)
+    aliases = tuple(str(item) for item in (claim_vocabulary.get("protected_claim_assertion_intent_aliases") or []))
+    return any(_contains_intent_alias(haystack, alias) for alias in aliases)
 
 
 def _family_skill(family: str, registry: dict[str, Any]) -> str:
@@ -149,7 +188,6 @@ def route_work_item(
 
     claim_hits = _claim_alias_hits(request_text, requested_claims, claim_vocabulary)
     assertion_intent = _has_assertion_intent(request_text, execution_layers, requested_claims, claim_vocabulary)
-    protected_claim_read = bool(claim_hits) and not assertion_intent
 
     explanation_only = _contains_any(
         request_norm,
@@ -159,6 +197,21 @@ def route_work_item(
         ("fix", "edit", "write", "execute", "migrate", "sync", "update", "create", "open", "close", "수정", "실행", "적용"),
     ) and not requested_claims
     runtime_path = _contains_any(path_norm, ("runtime/mt5 attempts", "foundation/config/mt5 runtime probe contract.yaml", "configs/mt5"))
+
+    if claim_hits and assertion_intent:
+        rules.append("protected_claim_guard")
+        if requested_family:
+            rules.extend(["requested_family", "requested_family_overridden_by_protected_claim"])
+        if claim_hits == {"selected_baseline"}:
+            rules.append("protected_selected_baseline_claim")
+            return _decision("candidate_evaluation", "lab_experiment", "protected_candidate_model", 0.97, rules, ambiguous, registry=active_registry)
+        return _decision("runtime_probe", "runtime", "protected_runtime", 0.98, rules, ambiguous, registry=active_registry)
+
+    if claim_hits and not assertion_intent:
+        if requested_family:
+            rules.extend(["requested_family", "requested_family_overridden_by_protected_claim"])
+        rules.append("protected_claim_read_only")
+        return _decision("information_only", "information_only", "protected_claim_read_only", 0.9, rules, ambiguous, registry=active_registry)
 
     if requested_family:
         rules.append("requested_family")
@@ -178,17 +231,6 @@ def route_work_item(
         elif requested_family == "publish_handoff":
             profile = "publish_handoff"
         return _decision(requested_family, profile, "safe_default", 0.7, rules, ambiguous, registry=active_registry)
-
-    if protected_claim_read and explanation_only:
-        rules.append("protected_claim_read_only")
-        return _decision("information_only", "information_only", "protected_claim_read_only", 0.9, rules, ambiguous, registry=active_registry)
-
-    if claim_hits and assertion_intent:
-        rules.append("protected_claim_guard")
-        if claim_hits == {"selected_baseline"} or "selected_baseline" in claim_hits and not (claim_hits - {"selected_baseline"}):
-            rules.append("protected_selected_baseline_claim")
-            return _decision("candidate_evaluation", "lab_experiment", "protected_candidate_model", 0.97, rules, ambiguous, registry=active_registry)
-        return _decision("runtime_probe", "runtime", "protected_runtime", 0.98, rules, ambiguous, registry=active_registry)
 
     if explanation_only:
         rules.append("information_only_terms")
@@ -215,7 +257,7 @@ def route_work_item(
 
     if _contains_any(request_norm, ("protected claim validation policy", "guard semantics", "claim validation policy")) or _contains_any(
         path_norm,
-        ("docs/agent control", "docs/policies"),
+        ("docs/agent control", "docs/policies", "agents.md"),
     ):
         rules.append("governance_terms")
         return _decision("policy_skill_governance", "policy_skill_governance", "governance", 0.9, rules, ambiguous, registry=active_registry)

@@ -53,10 +53,26 @@ def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
     protected_read_only_correct = 0
     unknown_profile_count = 0
     unknown_guard_set_count = 0
-    observed_families: set[str] = set()
+    invalid_routing_mode_count = 0
+    expected_automatic_families: set[str] = set()
+    correctly_exercised_automatic_families: set[str] = set()
+    automatic_families: set[str] = set()
+    for family, payload in families.items():
+        mode = (payload or {}).get("routing_mode")
+        if mode == "automatic":
+            automatic_families.add(family)
+        elif mode != "explicit_only":
+            invalid_routing_mode_count += 1
+            errors.append(f"{family}: routing_mode must be automatic or explicit_only")
     for case in cases:
         expected_profile = case["expected_verification_profile"]
         expected_guard_set = case["expected_guard_set"]
+        expected_family = case["expected_primary_family"]
+        expected_family_mode = (families.get(expected_family) or {}).get("routing_mode")
+        if expected_family_mode == "automatic":
+            expected_automatic_families.add(expected_family)
+        if expected_family_mode == "explicit_only" and not case.get("requested_family"):
+            errors.append(f"{case['id']}: explicit_only family {expected_family} exercised without requested_family")
         if expected_profile not in profiles:
             errors.append(f"{case['id']}: fixture expects unknown verification profile {expected_profile}")
             unknown_profile_count += 1
@@ -70,8 +86,8 @@ def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
             touched_paths=tuple(case.get("touched_paths") or []),
             execution_layers=tuple(case.get("execution_layers") or []),
             requested_claims=tuple(case.get("requested_claims") or []),
+            requested_family=case.get("requested_family"),
         )
-        observed_families.add(decision.primary_family)
         if decision.primary_family not in families:
             errors.append(f"{case['id']}: router returned unknown family {decision.primary_family}")
         elif decision.primary_skill != (families[decision.primary_family] or {}).get("primary_skill"):
@@ -96,6 +112,8 @@ def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
         if case.get("expected_ambiguous"):
             expected = expected and bool(decision.ambiguous_reasons)
         correct += int(expected)
+        if expected and expected_family_mode == "automatic":
+            correctly_exercised_automatic_families.add(expected_family)
         if case.get("protected_claim_assertion"):
             protected_assertion += 1
             protected_assertion_correct += int(decision.policy_guard_set in {"protected_runtime", "protected_candidate_model"})
@@ -107,22 +125,23 @@ def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
     accuracy = correct / len(cases) if cases else 0.0
     protected_assertion_recall = protected_assertion_correct / protected_assertion if protected_assertion else 1.0
     protected_read_only_recall = protected_read_only_correct / protected_read_only if protected_read_only else 1.0
-    automatic_families = {
-        family
-        for family, payload in families.items()
-        if (payload or {}).get("routing_mode") == "automatic"
-    }
-    missing_automatic_families = sorted(automatic_families - observed_families)
-    automatic_coverage = (len(automatic_families) - len(missing_automatic_families)) / len(automatic_families) if automatic_families else 1.0
+    missing_golden_families = sorted(automatic_families - expected_automatic_families)
+    unreachable_automatic_families = sorted(automatic_families - correctly_exercised_automatic_families)
+    expected_automatic_coverage = len(expected_automatic_families) / len(automatic_families) if automatic_families else 1.0
+    correctly_matched_automatic_coverage = len(correctly_exercised_automatic_families) / len(automatic_families) if automatic_families else 1.0
     metrics = {
         "accuracy": accuracy,
         "protected_claim_guard_recall": protected_assertion_recall,
         "protected_claim_assertion_recall": protected_assertion_recall,
         "protected_claim_read_only_recall": protected_read_only_recall,
-        "automatic_family_coverage": automatic_coverage,
+        "automatic_family_coverage": correctly_matched_automatic_coverage,
+        "expected_automatic_family_coverage": expected_automatic_coverage,
+        "correctly_matched_automatic_family_coverage": correctly_matched_automatic_coverage,
+        "missing_golden_family_count": float(len(missing_golden_families)),
         "unknown_verification_profile_count": float(unknown_profile_count),
         "unknown_guard_set_count": float(unknown_guard_set_count),
-        "unreachable_automatic_family_count": float(len(missing_automatic_families)),
+        "unreachable_automatic_family_count": float(len(unreachable_automatic_families)),
+        "invalid_routing_mode_count": float(invalid_routing_mode_count),
     }
     if accuracy < 0.95:
         errors.append(f"routing behavior accuracy below 0.95: {accuracy:.3f}")
@@ -130,8 +149,10 @@ def evaluate(repo_root: Path) -> tuple[list[str], dict[str, float]]:
         errors.append(f"protected claim assertion recall below 1.0: {protected_assertion_recall:.3f}")
     if protected_read_only_recall < 1.0:
         errors.append(f"protected claim read-only recall below 1.0: {protected_read_only_recall:.3f}")
-    if automatic_coverage < 1.0:
-        errors.append(f"automatic family coverage below 1.0; missing {missing_automatic_families}")
+    if expected_automatic_coverage < 1.0:
+        errors.append(f"expected automatic family coverage below 1.0; missing golden cases {missing_golden_families}")
+    if correctly_matched_automatic_coverage < 1.0:
+        errors.append(f"correctly matched automatic family coverage below 1.0; missing matches {unreachable_automatic_families}")
     if unknown_profile_count:
         errors.append(f"unknown verification profile count nonzero: {unknown_profile_count}")
     if unknown_guard_set_count:

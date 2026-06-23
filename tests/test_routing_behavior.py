@@ -19,9 +19,13 @@ def test_routing_behavior_cases_pass() -> None:
     assert metrics["protected_claim_assertion_recall"] == 1.0
     assert metrics["protected_claim_read_only_recall"] == 1.0
     assert metrics["automatic_family_coverage"] == 1.0
+    assert metrics["expected_automatic_family_coverage"] == 1.0
+    assert metrics["correctly_matched_automatic_family_coverage"] == 1.0
+    assert metrics["missing_golden_family_count"] == 0
     assert metrics["unknown_verification_profile_count"] == 0
     assert metrics["unknown_guard_set_count"] == 0
     assert metrics["unreachable_automatic_family_count"] == 0
+    assert metrics["invalid_routing_mode_count"] == 0
 
 
 def test_runtime_token_mutation_changes_route() -> None:
@@ -34,6 +38,12 @@ def test_runtime_token_mutation_changes_route() -> None:
 
 def test_policy_path_forces_governance_route() -> None:
     decision = route_work_item("Small wording update", touched_paths=("AGENTS.md",))
+
+    assert decision.primary_family == "policy_skill_governance"
+
+
+def test_policy_owned_paths_precede_generic_fix_terms() -> None:
+    decision = route_work_item("Fix typo in AGENTS.md", touched_paths=("AGENTS.md",))
 
     assert decision.primary_family == "policy_skill_governance"
 
@@ -157,6 +167,22 @@ def test_selected_baseline_uses_protected_candidate_model_route() -> None:
     assert decision.policy_guard_set == "protected_candidate_model"
 
 
+def test_requested_family_cannot_override_protected_claim_assertions() -> None:
+    live = route_work_item("Set live readiness.", requested_family="information_only")
+    economics = route_work_item("Declare economics pass.", requested_family="candidate_evaluation")
+    baseline = route_work_item("Mark this as selected baseline.", requested_family="information_only")
+
+    assert live.primary_family == "runtime_probe"
+    assert live.policy_guard_set == "protected_runtime"
+    assert "requested_family_overridden_by_protected_claim" in live.matched_rules
+    assert economics.primary_family == "runtime_probe"
+    assert economics.policy_guard_set == "protected_runtime"
+    assert "requested_family_overridden_by_protected_claim" in economics.matched_rules
+    assert baseline.primary_family == "candidate_evaluation"
+    assert baseline.policy_guard_set == "protected_candidate_model"
+    assert "requested_family_overridden_by_protected_claim" in baseline.matched_rules
+
+
 def test_protected_runtime_assertion_aliases() -> None:
     for prompt in (
         "Approve live readiness.",
@@ -167,6 +193,31 @@ def test_protected_runtime_assertion_aliases() -> None:
         decision = route_work_item(prompt)
         assert decision.primary_family == "runtime_probe"
         assert decision.policy_guard_set == "protected_runtime"
+
+
+def test_terse_protected_claim_mentions_are_read_only() -> None:
+    for prompt in (
+        "Live readiness?",
+        "Selected baseline?",
+        "寃쎌젣???듦낵 ?щ??",
+        "What is production deployment status?",
+    ):
+        decision = route_work_item(prompt)
+        assert decision.primary_family == "information_only"
+        assert decision.policy_guard_set == "protected_claim_read_only"
+
+
+def test_assertion_intent_is_token_aware() -> None:
+    read_only = route_work_item("What is live readiness in this dataset?")
+    assertion = route_work_item("Set live readiness.")
+    mojibake_assertion = route_work_item("?댁쁺 諛고룷濡??ㅼ젙?댁쨾.")
+
+    assert read_only.primary_family == "information_only"
+    assert read_only.policy_guard_set == "protected_claim_read_only"
+    assert assertion.primary_family == "runtime_probe"
+    assert assertion.policy_guard_set == "protected_runtime"
+    assert mojibake_assertion.primary_family == "runtime_probe"
+    assert mojibake_assertion.policy_guard_set == "protected_runtime"
 
 
 def test_explanation_only_runtime_path_does_not_trigger_execution() -> None:
@@ -310,3 +361,38 @@ def test_evaluator_uses_requested_repo_root_registry(tmp_path: Path) -> None:
 
     assert not errors
     assert metrics["accuracy"] == 1.0
+
+
+def test_each_automatic_family_has_expected_golden_case() -> None:
+    registry = load_yaml(ROOT / "docs/agent_control/work_family_registry.yaml")
+    cases = load_yaml(ROOT / "docs/agent_control/routing_behavior_cases.yaml")["cases"]
+    automatic = {family for family, payload in registry["work_families"].items() if payload["routing_mode"] == "automatic"}
+    expected = {case["expected_primary_family"] for case in cases}
+
+    assert automatic <= expected
+
+
+def test_incorrect_route_cannot_satisfy_automatic_family_coverage(tmp_path: Path) -> None:
+    write_tmp_repo(tmp_path, "spacesonar-session-bootstrap")
+    cases_path = tmp_path / "docs/agent_control/routing_behavior_cases.yaml"
+    payload = yaml.safe_load(cases_path.read_text(encoding="utf-8"))
+    payload["cases"][0]["expected_guard_set"] = "safe_default"
+    cases_path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+    errors, metrics = evaluate(tmp_path)
+
+    assert errors
+    assert metrics["expected_automatic_family_coverage"] == 1.0
+    assert metrics["correctly_matched_automatic_family_coverage"] == 0.0
+    assert metrics["unreachable_automatic_family_count"] == 1
+
+
+def test_invalid_routing_mode_fails_evaluation(tmp_path: Path) -> None:
+    write_tmp_repo(tmp_path, "spacesonar-session-bootstrap")
+    registry_path = tmp_path / "docs/agent_control/work_family_registry.yaml"
+    registry = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+    registry["work_families"]["information_only"]["routing_mode"] = "sometimes"
+    registry_path.write_text(yaml.safe_dump(registry, sort_keys=False), encoding="utf-8")
+    errors, metrics = evaluate(tmp_path)
+
+    assert errors
+    assert metrics["invalid_routing_mode_count"] == 1
