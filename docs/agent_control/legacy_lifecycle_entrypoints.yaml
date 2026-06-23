@@ -1,0 +1,6 @@
+version: legacy_lifecycle_entrypoints_v1
+entrypoints:
+  - path: foundation/pipelines/control_plane_legacy_wrappers.py
+    lifecycle_actions:
+      - campaign_open
+    wrapper_contract: argument_mapping_and_shared_lifecycle_invocation_only

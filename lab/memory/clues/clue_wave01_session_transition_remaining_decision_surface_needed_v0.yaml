@@ -26,3 +26,24 @@ do_not_repeat:
 candidate_effect: no_candidate_no_l5_until_new_decision_surface_and_MT5_L4
 reopen_condition: Open a genuinely new decision/tradeability surface with side or
   trade/no-trade semantics, then run MT5 L4 before any candidate or L5 claim.
+registry_projection:
+  status: preserved_decision_surface_requirement
+  surface_id: surface_us100_session_transition_regime_surface_v0
+  sweep_id: sweep_us100_session_transition_broad_v0
+  run_ids: []
+  observed_cells:
+  - wave01_st_cell_002
+  - wave01_st_cell_006
+  - wave01_st_cell_009
+  - wave01_st_cell_010
+  salvage_value: no_candidate_no_l5_until_new_decision_surface_and_MT5_L4
+  reopen_condition: Open a genuinely new decision/tradeability surface with side
+    or trade/no-trade semantics, then run MT5 L4 before any candidate or L5 claim.
+  evidence_paths:
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.yaml
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/remaining_preserved_clue_review.csv
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
+  next_action: open_new_decision_surface_then_mt5_l4
+  notes: Remaining Wave01 session-transition preserved clues require new decision-surface
+    semantics

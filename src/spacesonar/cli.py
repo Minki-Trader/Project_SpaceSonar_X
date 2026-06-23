@@ -15,8 +15,8 @@ from spacesonar.control_plane.lifecycle import (
     open_campaign,
 )
 from spacesonar.control_plane.models import ExecutionContext, TRANSACTION_SUCCESS_STATUSES
-from spacesonar.control_plane.registry_projection import projection_diffs, write_registry_projections
-from spacesonar.control_plane.state_projection import workspace_projection_diff, write_workspace_projection
+from spacesonar.control_plane.registry_projection import commit_registry_projections, projection_diffs
+from spacesonar.control_plane.state_projection import commit_workspace_projection, workspace_projection_diff
 
 
 DEFAULT_CLAIM_BOUNDARY = "control_plane_operation_only_no_runtime_authority_no_economics_pass"
@@ -37,6 +37,7 @@ def context(args: argparse.Namespace) -> ExecutionContext:
         work_item_id=args.work_item_id,
         claim_boundary=DEFAULT_CLAIM_BOUNDARY,
         command_argv=tuple(sys.argv),
+        recover_stale_lock=bool(getattr(args, "recover_stale_lock", False)),
     )
 
 
@@ -105,6 +106,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="spacesonar")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--work-item-id", default="work_codex_operating_stabilization_v2")
+    parser.add_argument("--recover-stale-lock", action="store_true")
     sub = parser.add_subparsers(dest="area", required=True)
 
     campaign = sub.add_parser("campaign")
@@ -182,9 +184,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.area == "registry" and args.action == "project":
         if args.write:
-            write_registry_projections(repo_root)
-            print("registry projection written")
-            return 0
+            result = commit_registry_projections(context(args))
+            print_result(result)
+            return transaction_exit_code(result)
         diffs = projection_diffs(repo_root)
         if diffs:
             print("registry projection drift:")
@@ -195,9 +197,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.area == "project" and args.action == "workspace":
         if args.write:
-            write_workspace_projection(repo_root)
-            print("workspace projection written")
-            return 0
+            result = commit_workspace_projection(context(args))
+            print_result(result)
+            return transaction_exit_code(result)
         if workspace_projection_diff(repo_root):
             print("workspace projection drift")
             return 1

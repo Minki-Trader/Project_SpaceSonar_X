@@ -48,6 +48,52 @@ def force_corrective_branch(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(cli, "current_git_branch", lambda _repo_root: cli.CORRECTIVE_BRANCH)
 
 
+def complete_spec(campaign_id: str) -> dict:
+    return {
+        "version": "campaign_lifecycle_spec_v1",
+        "campaign_id": campaign_id,
+        "goal_id": "goal_fixture_v0",
+        "wave_id": "wave_fixture_v0",
+        "idea_id": "idea_fixture_v0",
+        "hypothesis_id": "hyp_fixture_v0",
+        "surface_id": "surface_fixture_v0",
+        "sweep_id": "sweep_fixture_v0",
+        "status": "campaign_opened",
+        "created_at_utc": "2026-06-22T00:00:00Z",
+        "objective": "fixture lifecycle API remains callable",
+        "claim_boundary": "fixture_claim_boundary",
+        "routing": {
+            "primary_family": "experiment_design",
+            "primary_skill": "spacesonar-experiment-design",
+        },
+        "exploration_coverage": {
+            "mode": "fixture",
+            "primary_unknown_axis": "decision_surface",
+            "required_research_axes": ["target_or_label_surface"],
+            "companion_axes": ["evaluation_or_runtime_surface"],
+        },
+        "policy_binding": {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
+        "storage_contract": {"durable_identity_policy": "repo_relative_paths_only"},
+        "next_work_item": {
+            "version": "work_item_lite_v1",
+            "work_item_id": "work_fixture_next_v0",
+            "request_digest": "fixture",
+            "primary_family": "experiment_design",
+            "primary_skill": "spacesonar-experiment-design",
+            "verification_profile": "governance",
+            "targets": [f"lab/campaigns/{campaign_id}/campaign_manifest.yaml"],
+            "acceptance_criteria": ["open fixture campaign"],
+            "claim_boundary": "fixture_claim_boundary",
+            "policy_binding": {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
+            "outputs": [],
+            "next_action": "materialize fixture",
+            "summary": "materialize fixture",
+            "path": "lab/goals/goal_fixture_v0/next_work_item.yaml",
+            "provenance": {"source": "test"},
+        },
+    }
+
+
 def assert_no_lifecycle_artifacts(repo_root: Path) -> None:
     assert not (repo_root / "lab" / "campaigns").exists()
     assert not (repo_root / "lab" / "waves").exists()
@@ -168,18 +214,7 @@ def test_wp02_and_wp04_completed_release_guard(
     force_corrective_branch(monkeypatch)
     write_progress_ledger(tmp_path, wp02_status="completed", wp04_status="completed")
     spec = tmp_path / "spec.yaml"
-    spec.write_text(
-        yaml.safe_dump(
-            {
-                "campaign_id": "campaign_released_v0",
-                "status": "campaign_opened",
-                "created_at_utc": "2026-06-22T00:00:00Z",
-                "objective": "guard release dispatches lifecycle command",
-            },
-            sort_keys=False,
-        ),
-        encoding="utf-8",
-    )
+    spec.write_text(yaml.safe_dump(complete_spec("campaign_released_v0"), sort_keys=False), encoding="utf-8")
 
     result = cli.main(["--repo-root", str(tmp_path), "campaign", "open", "--spec", str(spec)])
 
@@ -190,18 +225,7 @@ def test_wp02_and_wp04_completed_release_guard(
 def test_lifecycle_api_still_operates_in_temporary_fixture_repo(tmp_path: Path) -> None:
     write_progress_ledger(tmp_path)
     spec = tmp_path / "campaign_spec.yaml"
-    spec.write_text(
-        yaml.safe_dump(
-            {
-                "campaign_id": "campaign_fixture_v0",
-                "status": "campaign_opened",
-                "created_at_utc": "2026-06-22T00:00:00Z",
-                "objective": "fixture lifecycle API remains callable",
-            },
-            sort_keys=False,
-        ),
-        encoding="utf-8",
-    )
+    spec.write_text(yaml.safe_dump(complete_spec("campaign_fixture_v0"), sort_keys=False), encoding="utf-8")
     context = ExecutionContext(tmp_path, "work_fixture", "fixture_claim_boundary", ("test",))
 
     result = open_campaign(spec, context)

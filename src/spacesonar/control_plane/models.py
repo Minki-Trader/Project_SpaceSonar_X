@@ -12,6 +12,7 @@ class ExecutionContext:
     claim_boundary: str
     command_argv: tuple[str, ...] = ()
     validation_commands: tuple[str, ...] = ()
+    recover_stale_lock: bool = False
 
 
 @dataclass(frozen=True)

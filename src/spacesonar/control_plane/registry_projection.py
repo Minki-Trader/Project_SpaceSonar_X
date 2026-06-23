@@ -17,6 +17,24 @@ GENERATOR_ID = "spacesonar.control_plane.registry_projection"
 REGISTRY_PROJECTION_VERSION = "registry_projection_v2"
 YamlOverrides = dict[Path, dict[str, Any]]
 TextOverrides = dict[Path, str]
+ARTIFACT_REGISTRY_PATH = Path("docs/registers/artifact_registry.csv")
+ARTIFACT_FIELDNAMES = [
+    "artifact_id",
+    "run_id",
+    "bundle_id",
+    "attempt_id",
+    "artifact_type",
+    "path_or_uri",
+    "sha256",
+    "size_bytes",
+    "availability",
+    "producer_command",
+    "regeneration_command",
+    "source_of_truth",
+    "consumer",
+    "claim_boundary",
+    "notes",
+]
 
 
 def _clean_text(value: object) -> str:
@@ -31,6 +49,22 @@ def _join(values: Any, sep: str = ";") -> str:
     if isinstance(values, (list, tuple, set)):
         return sep.join(str(item) for item in values)
     return str(values)
+
+
+def _first(values: Any) -> str:
+    if isinstance(values, list):
+        return str(values[0]) if values else ""
+    return str(values or "")
+
+
+def _projection_value(record: dict[str, Any], key: str, *fallback_keys: str) -> Any:
+    projection = record.get("registry_projection") or {}
+    if key in projection:
+        return projection[key]
+    for fallback_key in (key, *fallback_keys):
+        if fallback_key in record:
+            return record[fallback_key]
+    return None
 
 
 def _rel(repo_root: Path, path: Path) -> str:
@@ -59,8 +93,57 @@ def _read_json_view(repo_root: Path, rel_path: Path, text_overrides: TextOverrid
         return json.load(handle)
 
 
+def _exists_view(
+    repo_root: Path,
+    rel_path: str | Path,
+    *,
+    yaml_overrides: YamlOverrides | None = None,
+    text_overrides: TextOverrides | None = None,
+) -> bool:
+    normalized = Path(str(rel_path).replace("\\", "/"))
+    if yaml_overrides and normalized in yaml_overrides:
+        return True
+    if text_overrides and normalized in text_overrides:
+        return True
+    return os.path.exists(filesystem_path(repo_root / normalized))
+
+
 def _sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def artifact_row_for_text(
+    rel_path: Path,
+    text: str,
+    *,
+    artifact_type: str,
+    producer_command: str,
+    regeneration_command: str,
+    source_of_truth: str | None,
+    consumer: str,
+    claim_boundary: str,
+    notes: str,
+    artifact_id: str | None = None,
+) -> dict[str, str]:
+    normalized = rel_path.as_posix()
+    stable_id = artifact_id or "artifact_" + normalized.replace("/", "_").replace(".", "_").replace("-", "_")
+    return {
+        "artifact_id": stable_id,
+        "run_id": "",
+        "bundle_id": "",
+        "attempt_id": "",
+        "artifact_type": artifact_type,
+        "path_or_uri": normalized,
+        "sha256": _sha256_text(text),
+        "size_bytes": str(len(text.encode("utf-8"))),
+        "availability": "present_hash_recorded",
+        "producer_command": producer_command,
+        "regeneration_command": regeneration_command,
+        "source_of_truth": source_of_truth or normalized,
+        "consumer": consumer,
+        "claim_boundary": claim_boundary,
+        "notes": notes,
+    }
 
 
 def _glob_view(repo_root: Path, pattern: str, yaml_overrides: YamlOverrides | None = None) -> list[Path]:
@@ -70,11 +153,22 @@ def _glob_view(repo_root: Path, pattern: str, yaml_overrides: YamlOverrides | No
     return sorted(paths, key=lambda item: item.as_posix())
 
 
+def _literal_walk_prefix(pattern: str) -> Path:
+    parts = []
+    for part in Path(pattern).parts:
+        if any(token in part for token in "*?["):
+            break
+        parts.append(part)
+    return Path(*parts) if parts else Path(".")
+
+
 def _walk_matches(repo_root: Path, pattern: str) -> set[Path]:
     paths: set[Path] = set()
-    if not os.path.exists(filesystem_path(repo_root)):
+    prefix = _literal_walk_prefix(pattern)
+    walk_root = repo_root / prefix
+    if not os.path.exists(filesystem_path(walk_root)):
         return paths
-    for dirpath, _dirnames, filenames in os.walk(filesystem_path(repo_root)):
+    for dirpath, _dirnames, filenames in os.walk(filesystem_path(walk_root)):
         for filename in filenames:
             full_path = Path(dirpath) / filename
             rel_path = Path(os.path.relpath(filesystem_path(full_path), filesystem_path(repo_root))).as_posix()
@@ -178,7 +272,6 @@ def campaign_registry_projection(
     yaml_overrides: YamlOverrides | None = None,
     text_overrides: TextOverrides | None = None,
 ) -> str:
-    del text_overrides
     fieldnames = [
         "campaign_id",
         "status",
@@ -205,7 +298,15 @@ def campaign_registry_projection(
         evidence_candidates.extend((campaign.get("decision_replay_closeout") or {}).get("evidence_paths") or [])
         default_closeout = (rel_path.parent / "campaign_closeout.yaml").as_posix()
         evidence_candidates.append(default_closeout)
-        evidence_path = next((item for item in evidence_candidates if item and os.path.exists(filesystem_path(repo_root / str(item)))), default_closeout)
+        evidence_candidates.append(rel_path.as_posix())
+        evidence_path = next(
+            (
+                item
+                for item in evidence_candidates
+                if item and _exists_view(repo_root, str(item), yaml_overrides=yaml_overrides, text_overrides=text_overrides)
+            ),
+            rel_path.as_posix(),
+        )
         rows.append(
             {
                 "campaign_id": campaign.get("campaign_id"),
@@ -220,6 +321,80 @@ def campaign_registry_projection(
                 "evidence_path": evidence_path,
                 "next_action": campaign.get("next_action"),
                 "notes": _clean_text(campaign.get("notes") or campaign.get("status")),
+            }
+        )
+    return dump_csv(fieldnames, rows)
+
+
+def idea_registry_projection(
+    repo_root: Path,
+    *,
+    yaml_overrides: YamlOverrides | None = None,
+    text_overrides: TextOverrides | None = None,
+) -> str:
+    del text_overrides
+    fieldnames = [
+        "idea_id",
+        "status",
+        "created_at_utc",
+        "axis_tags",
+        "claim_boundary",
+        "evidence_path",
+        "next_action",
+        "notes",
+    ]
+    rows = []
+    for rel_path in _glob_view(repo_root, "lab/hypotheses/idea_*.yaml", yaml_overrides):
+        idea = _read_yaml_view(repo_root, rel_path, yaml_overrides)
+        rows.append(
+            {
+                "idea_id": idea.get("idea_id"),
+                "status": idea.get("status"),
+                "created_at_utc": idea.get("created_at_utc"),
+                "axis_tags": _join(idea.get("axis_tags")),
+                "claim_boundary": idea.get("claim_boundary"),
+                "evidence_path": idea.get("evidence_path") or rel_path.as_posix(),
+                "next_action": idea.get("next_action"),
+                "notes": _clean_text(idea.get("notes") or idea.get("summary")),
+            }
+        )
+    return dump_csv(fieldnames, rows)
+
+
+def hypothesis_registry_projection(
+    repo_root: Path,
+    *,
+    yaml_overrides: YamlOverrides | None = None,
+    text_overrides: TextOverrides | None = None,
+) -> str:
+    del text_overrides
+    fieldnames = [
+        "hypothesis_id",
+        "idea_id",
+        "status",
+        "hypothesis",
+        "decision_use",
+        "comparison_baseline",
+        "claim_boundary",
+        "evidence_path",
+        "next_action",
+        "notes",
+    ]
+    rows = []
+    for rel_path in _glob_view(repo_root, "lab/hypotheses/hyp*.yaml", yaml_overrides):
+        hypothesis = _read_yaml_view(repo_root, rel_path, yaml_overrides)
+        rows.append(
+            {
+                "hypothesis_id": hypothesis.get("hypothesis_id"),
+                "idea_id": hypothesis.get("idea_id"),
+                "status": hypothesis.get("status"),
+                "hypothesis": _clean_text(hypothesis.get("hypothesis")),
+                "decision_use": hypothesis.get("decision_use"),
+                "comparison_baseline": _join(hypothesis.get("comparison_baseline")),
+                "claim_boundary": hypothesis.get("claim_boundary"),
+                "evidence_path": hypothesis.get("evidence_path") or rel_path.as_posix(),
+                "next_action": hypothesis.get("next_action"),
+                "notes": _clean_text(hypothesis.get("notes")),
             }
         )
     return dump_csv(fieldnames, rows)
@@ -404,10 +579,12 @@ def clue_registry_projection(
         "surface_id",
         "sweep_id",
         "run_ids",
+        "observed_cells",
         "salvage_value",
         "reopen_condition",
         "claim_boundary",
         "evidence_path",
+        "evidence_paths",
         "next_action",
         "notes",
     ]
@@ -417,18 +594,20 @@ def clue_registry_projection(
         rows.append(
             {
                 "clue_id": clue.get("clue_id"),
-                "status": clue.get("status"),
+                "status": _projection_value(clue, "status", "clue_type"),
                 "created_at_utc": clue.get("created_at_utc"),
                 "clue_path": rel_path.as_posix(),
-                "surface_id": clue.get("surface_id"),
-                "sweep_id": clue.get("sweep_id"),
-                "run_ids": _join(clue.get("run_ids")),
-                "salvage_value": clue.get("salvage_value"),
-                "reopen_condition": clue.get("reopen_condition"),
+                "surface_id": _projection_value(clue, "surface_id"),
+                "sweep_id": _projection_value(clue, "sweep_id"),
+                "run_ids": _join(_projection_value(clue, "run_ids")),
+                "observed_cells": _join(_projection_value(clue, "observed_cells")),
+                "salvage_value": _projection_value(clue, "salvage_value", "observed_pattern", "candidate_effect"),
+                "reopen_condition": _projection_value(clue, "reopen_condition"),
                 "claim_boundary": clue.get("claim_boundary"),
-                "evidence_path": clue.get("evidence_path"),
-                "next_action": clue.get("next_action"),
-                "notes": _clean_text(clue.get("notes")),
+                "evidence_path": _first(_projection_value(clue, "evidence_paths", "evidence_path") or rel_path.as_posix()),
+                "evidence_paths": _join(_projection_value(clue, "evidence_paths", "evidence_path")),
+                "next_action": _projection_value(clue, "next_action"),
+                "notes": _clean_text(_projection_value(clue, "notes", "do_not_repeat_note", "subject")),
             }
         )
     return dump_csv(fieldnames, rows)
@@ -447,13 +626,16 @@ def negative_memory_registry_projection(
         "surface_id",
         "sweep_id",
         "run_id",
+        "observed_cells",
         "status",
         "evidence_path",
+        "evidence_paths",
         "failed_boundary",
         "why_failed",
         "salvage_value",
         "reopen_condition",
         "do_not_repeat_note",
+        "do_not_repeat_entries",
         "next_action",
     ]
     rows = []
@@ -462,18 +644,21 @@ def negative_memory_registry_projection(
         rows.append(
             {
                 "memory_id": memory.get("memory_id") or memory.get("negative_memory_id"),
-                "hypothesis_id": memory.get("hypothesis_id"),
-                "surface_id": memory.get("surface_id"),
-                "sweep_id": memory.get("sweep_id"),
-                "run_id": _join(memory.get("run_id") or memory.get("run_ids")),
-                "status": memory.get("status"),
-                "evidence_path": memory.get("evidence_path"),
-                "failed_boundary": memory.get("failed_boundary"),
-                "why_failed": _clean_text(memory.get("why_failed")),
-                "salvage_value": _clean_text(memory.get("salvage_value")),
-                "reopen_condition": _clean_text(memory.get("reopen_condition")),
-                "do_not_repeat_note": _clean_text(memory.get("do_not_repeat_note")),
-                "next_action": memory.get("next_action"),
+                "hypothesis_id": _projection_value(memory, "hypothesis_id"),
+                "surface_id": _projection_value(memory, "surface_id"),
+                "sweep_id": _projection_value(memory, "sweep_id"),
+                "run_id": _join(_projection_value(memory, "run_ids", "run_id")),
+                "observed_cells": _join(_projection_value(memory, "observed_cells")),
+                "status": _projection_value(memory, "status", "failed_boundary"),
+                "evidence_path": _first(_projection_value(memory, "evidence_paths", "evidence_path")),
+                "evidence_paths": _join(_projection_value(memory, "evidence_paths", "evidence_path")),
+                "failed_boundary": _projection_value(memory, "failed_boundary"),
+                "why_failed": _clean_text(_projection_value(memory, "why_failed")),
+                "salvage_value": _clean_text(_projection_value(memory, "salvage_value")),
+                "reopen_condition": _clean_text(_projection_value(memory, "reopen_condition")),
+                "do_not_repeat_note": _clean_text(_projection_value(memory, "do_not_repeat_note")),
+                "do_not_repeat_entries": _join(_projection_value(memory, "do_not_repeat")),
+                "next_action": _projection_value(memory, "next_action"),
             }
         )
     return dump_csv(fieldnames, rows)
@@ -482,13 +667,53 @@ def negative_memory_registry_projection(
 def _artifact_registry_projection_with_registry_hashes(
     repo_root: Path,
     projected_registries: dict[Path, str],
+    *,
+    extra_artifacts: list[dict[str, str]] | None = None,
+    include_projection_notices: bool = True,
 ) -> str | None:
-    rel_path = Path("docs/registers/artifact_registry.csv")
-    path = repo_root / rel_path
+    path = repo_root / ARTIFACT_REGISTRY_PATH
+    fieldnames = ARTIFACT_FIELDNAMES
+    rows: list[dict[str, str]]
     if not os.path.exists(filesystem_path(path)):
-        return None
-    rows = read_csv_rows(path)
+        rows = []
+    else:
+        rows = read_csv_rows(path)
+        if rows:
+            fieldnames = list(rows[0].keys())
     changed = False
+    by_path = {str(row.get("path_or_uri") or ""): row for row in rows}
+    projected_texts: dict[Path, tuple[str, str]] = {}
+    for registry_path, projected in projected_registries.items():
+        projected_texts[registry_path] = (projected, "generated registry projection")
+        if include_projection_notices:
+            projected_texts[registry_path.with_suffix(registry_path.suffix + ".projection.yaml")] = (
+                projection_notice_text(registry_path),
+                "generated registry projection notice",
+            )
+
+    for registry_path, (projected, note) in projected_texts.items():
+        row = by_path.get(registry_path.as_posix())
+        generated = artifact_row_for_text(
+            registry_path,
+            projected,
+            artifact_type="registry_projection",
+            producer_command=f"python -m spacesonar.cli registry project --write",
+            regeneration_command=f"python -m spacesonar.cli registry project --write",
+            source_of_truth=registry_path.as_posix(),
+            consumer="work_codex_control_plane_corrective_v3",
+            claim_boundary="registry_projection_only_no_runtime_authority_no_economics_pass",
+            notes=note,
+        )
+        if row is None:
+            rows.append(generated)
+            by_path[registry_path.as_posix()] = generated
+            changed = True
+            continue
+        for key in ["sha256", "size_bytes", "artifact_type", "availability", "producer_command", "regeneration_command", "source_of_truth", "consumer", "claim_boundary", "notes"]:
+            if row.get(key) != generated[key]:
+                row[key] = generated[key]
+                changed = True
+
     for row in rows:
         registry_path = Path(str(row.get("path_or_uri") or "").replace("\\", "/"))
         if registry_path in projected_registries:
@@ -496,9 +721,20 @@ def _artifact_registry_projection_with_registry_hashes(
             row["sha256"] = _sha256_text(projected)
             row["size_bytes"] = str(len(projected.encode("utf-8")))
             changed = True
-    if not changed:
+    for artifact in extra_artifacts or []:
+        row = by_path.get(artifact["path_or_uri"])
+        if row is None:
+            rows.append({key: artifact.get(key, "") for key in fieldnames})
+            by_path[artifact["path_or_uri"]] = rows[-1]
+            changed = True
+            continue
+        for key in fieldnames:
+            value = artifact.get(key, row.get(key, ""))
+            if row.get(key) != value:
+                row[key] = value
+                changed = True
+    if not rows and not changed:
         return None
-    fieldnames = list(rows[0].keys()) if rows else []
     return dump_csv(fieldnames, rows)
 
 
@@ -549,6 +785,8 @@ PROJECTIONS: dict[Path, Callable[..., str]] = {
     Path("docs/registers/goal_registry.csv"): goal_registry_projection,
     Path("docs/registers/wave_registry.csv"): wave_registry_projection,
     Path("docs/registers/campaign_registry.csv"): campaign_registry_projection,
+    Path("docs/registers/idea_registry.csv"): idea_registry_projection,
+    Path("docs/registers/hypothesis_registry.csv"): hypothesis_registry_projection,
     Path("docs/registers/run_registry.csv"): run_registry_projection,
     Path("docs/registers/experiment_surface_registry.csv"): experiment_surface_registry_projection,
     Path("docs/registers/sweep_registry.csv"): sweep_registry_projection,
@@ -586,7 +824,11 @@ def projection_diffs(repo_root: Path) -> list[str]:
     diffs: list[str] = []
     for rel_path, projected in project_registries(repo_root).items():
         path = repo_root / rel_path
-        current = path.read_text(encoding="utf-8-sig") if path.exists() else ""
+        if os.path.exists(filesystem_path(path)):
+            with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+                current = handle.read()
+        else:
+            current = ""
         if current != projected:
             diffs.append(rel_path.as_posix())
     return diffs
@@ -598,7 +840,12 @@ def _stage_registry_projections(
     *,
     yaml_overrides: YamlOverrides | None = None,
     text_overrides: TextOverrides | None = None,
+    extra_artifacts: list[dict[str, str]] | None = None,
 ) -> None:
+    include_projection_notices = os.path.exists(filesystem_path(repo_root / "AGENTS.md")) or any(
+        os.path.exists(filesystem_path(repo_root / rel_path.with_suffix(rel_path.suffix + ".projection.yaml")))
+        for rel_path in PROJECTIONS
+    )
     projected_registries = project_registries(
         repo_root,
         yaml_overrides=yaml_overrides,
@@ -606,16 +853,33 @@ def _stage_registry_projections(
     )
     for rel_path, projected in projected_registries.items():
         tx.stage_text(rel_path, projected)
-        tx.stage_text(rel_path.with_suffix(rel_path.suffix + ".projection.yaml"), projection_notice_text(rel_path))
-    artifact_registry = _artifact_registry_projection_with_registry_hashes(repo_root, projected_registries)
+        if include_projection_notices:
+            tx.stage_text(rel_path.with_suffix(rel_path.suffix + ".projection.yaml"), projection_notice_text(rel_path))
+    artifact_registry = _artifact_registry_projection_with_registry_hashes(
+        repo_root,
+        projected_registries,
+        extra_artifacts=extra_artifacts,
+        include_projection_notices=include_projection_notices,
+    )
     if artifact_registry is not None:
-        tx.stage_text(Path("docs/registers/artifact_registry.csv"), artifact_registry)
+        tx.stage_text(ARTIFACT_REGISTRY_PATH, artifact_registry)
 
 
 def commit_registry_projections(context: ExecutionContext) -> TransactionResult:
-    tx = ControlPlaneTransaction(context)
-    _stage_registry_projections(tx, context.repo_root)
-    return tx.commit(validate=lambda future_root: projection_diffs(future_root))
+    from .lock import ControlPlaneLockError, control_plane_lock
+
+    try:
+        with control_plane_lock(context):
+            tx = ControlPlaneTransaction(context)
+            _stage_registry_projections(tx, context.repo_root)
+            return tx.commit(validate=lambda future_root: projection_diffs(future_root))
+    except ControlPlaneLockError as exc:
+        return TransactionResult(
+            transaction_id="no_transaction_created",
+            status="aborted_precondition_failed",
+            receipt_path=context.repo_root / ".spacesonar" / "transactions" / "not_created",
+            errors=(str(exc),),
+        )
 
 
 def write_registry_projections(repo_root: Path) -> None:

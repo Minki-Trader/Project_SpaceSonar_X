@@ -44,9 +44,15 @@ def _wave_paths(repo_root: Path, yaml_overrides: YamlOverrides | None = None) ->
 
 def _walk_matches(repo_root: Path, pattern: str) -> set[Path]:
     paths: set[Path] = set()
-    if not os.path.exists(filesystem_path(repo_root)):
+    prefix_parts = []
+    for part in Path(pattern).parts:
+        if any(token in part for token in "*?["):
+            break
+        prefix_parts.append(part)
+    walk_root = repo_root / (Path(*prefix_parts) if prefix_parts else Path("."))
+    if not os.path.exists(filesystem_path(walk_root)):
         return paths
-    for dirpath, _dirnames, filenames in os.walk(filesystem_path(repo_root)):
+    for dirpath, _dirnames, filenames in os.walk(filesystem_path(walk_root)):
         for filename in filenames:
             full_path = Path(dirpath) / filename
             rel_path = Path(os.path.relpath(filesystem_path(full_path), filesystem_path(repo_root))).as_posix()
@@ -68,6 +74,9 @@ def select_active_goal(repo_root: Path, yaml_overrides: YamlOverrides | None = N
         or (goal.get("workspace_projection") or {}).get("active") is True
     ]
     if explicit:
+        if len(explicit) > 1:
+            ids = ", ".join(_goal_id(goal, path) for path, goal in explicit)
+            raise ValueError(f"multiple workspace-active goals declared: {ids}")
         return sorted(explicit, key=lambda item: item[0].as_posix())[0]
     return sorted(
         candidates,
@@ -92,13 +101,11 @@ def _select_wave_for_goal(
         for path, wave in waves:
             if wave.get("wave_id") == requested_wave_id:
                 return path, wave, _read_yaml_view(repo_root, Path(_closeout_rel_path(wave, path)), yaml_overrides)
+        raise ValueError(f"active goal declares missing wave_id: {requested_wave_id}")
     goal_id = goal.get("active_goal_id") or goal.get("goal_id")
     matching = [(path, wave) for path, wave in waves if wave.get("active_goal_id") == goal_id]
     if matching:
         path, wave = sorted(matching, key=lambda item: item[0].as_posix())[-1]
-        return path, wave, _read_yaml_view(repo_root, Path(_closeout_rel_path(wave, path)), yaml_overrides)
-    if waves:
-        path, wave = waves[-1]
         return path, wave, _read_yaml_view(repo_root, Path(_closeout_rel_path(wave, path)), yaml_overrides)
     return None, {}, {}
 
@@ -168,7 +175,11 @@ def workspace_projection_text(repo_root: Path, *, yaml_overrides: YamlOverrides 
 
 def workspace_projection_diff(repo_root: Path) -> bool:
     path = repo_root / "docs/workspace/workspace_state.yaml"
-    current = path.read_text(encoding="utf-8-sig") if path.exists() else ""
+    if os.path.exists(filesystem_path(path)):
+        with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+            current = handle.read()
+    else:
+        current = ""
     return current != workspace_projection_text(repo_root)
 
 
@@ -182,9 +193,20 @@ def stage_workspace_projection(
 
 
 def commit_workspace_projection(context: ExecutionContext) -> TransactionResult:
-    tx = ControlPlaneTransaction(context)
-    stage_workspace_projection(tx, context.repo_root)
-    return tx.commit(validate=lambda future_root: ["workspace projection drift"] if workspace_projection_diff(future_root) else [])
+    from .lock import ControlPlaneLockError, control_plane_lock
+
+    try:
+        with control_plane_lock(context):
+            tx = ControlPlaneTransaction(context)
+            stage_workspace_projection(tx, context.repo_root)
+            return tx.commit(validate=lambda future_root: ["workspace projection drift"] if workspace_projection_diff(future_root) else [])
+    except ControlPlaneLockError as exc:
+        return TransactionResult(
+            transaction_id="no_transaction_created",
+            status="aborted_precondition_failed",
+            receipt_path=context.repo_root / ".spacesonar" / "transactions" / "not_created",
+            errors=(str(exc),),
+        )
 
 
 def write_workspace_projection(repo_root: Path) -> None:

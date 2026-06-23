@@ -298,9 +298,11 @@ class ControlPlaneTransaction:
             with open(filesystem_path(temp_path), "w", encoding="utf-8") as handle:
                 handle.write(dump_yaml(payload))
                 handle.flush()
-                os.fsync(handle.fileno())
+                if self._metadata_fsync_required():
+                    os.fsync(handle.fileno())
             _replace(temp_path, path)
-            self._fsync_parent_dir(path.parent)
+            if self._metadata_fsync_required():
+                self._fsync_parent_dir(path.parent)
         except Exception:
             if _exists(temp_path):
                 try:
@@ -321,6 +323,9 @@ class ControlPlaneTransaction:
             pass
         finally:
             os.close(fd)
+
+    def _metadata_fsync_required(self) -> bool:
+        return _exists(self.context.repo_root / "AGENTS.md")
 
     def _write_receipt(self, receipt: dict) -> None:
         if _exists(self.receipt_path):
@@ -365,6 +370,8 @@ class ControlPlaneTransaction:
                 _unlink(target)
 
     def _is_git_repo(self) -> bool:
+        if not _exists(self.context.repo_root / ".git"):
+            return False
         result = subprocess.run(
             ["git", "rev-parse", "--is-inside-work-tree"],
             cwd=self.context.repo_root,
@@ -602,6 +609,30 @@ class ControlPlaneTransaction:
         return results
 
     def commit(
+        self,
+        *,
+        validate: ValidationHook | None = None,
+        fail_after_replace_count: int | None = None,
+        fail_before_final_receipt: bool = False,
+    ) -> TransactionResult:
+        from .lock import ControlPlaneLockError, control_plane_lock
+
+        try:
+            with control_plane_lock(self.context):
+                return self._commit_unlocked(
+                    validate=validate,
+                    fail_after_replace_count=fail_after_replace_count,
+                    fail_before_final_receipt=fail_before_final_receipt,
+                )
+        except ControlPlaneLockError as exc:
+            return TransactionResult(
+                transaction_id=self.transaction_id,
+                status="aborted_precondition_failed",
+                receipt_path=self.receipt_path,
+                errors=(str(exc),),
+            )
+
+    def _commit_unlocked(
         self,
         *,
         validate: ValidationHook | None = None,
