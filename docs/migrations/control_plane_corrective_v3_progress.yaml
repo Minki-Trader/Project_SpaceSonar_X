@@ -223,7 +223,87 @@ work_units:
       reason: WP01 adds truth primitives only; WP03 will migrate the 86 historical target attempts.
     claim_boundary: corrective_wp01_truth_kernel_only_no_historical_runtime_migration_no_runtime_authority_no_economics_pass
   WP02:
-    status: pending
+    status: completed
+    completed_at_utc: '2026-06-23T01:36:26Z'
+    objective: Harden control-plane transactions so multi-record mutation is all-or-rollback before runtime graph migration.
+    changed_files:
+      - docs/migrations/control_plane_corrective_v3_progress.yaml
+      - src/spacesonar/cli.py
+      - src/spacesonar/control_plane/models.py
+      - src/spacesonar/control_plane/transaction.py
+      - tests/control_plane/test_lifecycle_idempotency.py
+      - tests/control_plane/test_transaction_atomicity.py
+    transaction_protocol:
+      precondition_capture: stage time current hashes are recorded as input_hashes before mutation
+      preimages:
+        captured_before_replacement: true
+        fields:
+          - path
+          - existed
+          - sha256
+          - backup_path
+      merged_future_validation: current repository plus staged replacements, additions, and deletions is materialized under the transaction future tree
+      commit_journal: .spacesonar/transactions/<tx_id>/commit_journal.yaml
+      rollback:
+        restores_preimages: true
+        verifies_restored_hashes: true
+      statuses:
+        - committed
+        - noop_already_applied
+        - aborted_validation_failed
+        - aborted_precondition_failed
+        - rolled_back_commit_failure
+        - rollback_failed
+    validation:
+      - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
+        status: passed
+        result: 8 passed
+      - command: uv run pytest tests/control_plane -q
+        status: passed
+        result: 30 passed
+      - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
+        status: passed
+        result: 14 passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
+        status: passed
+        result: control-plane modules compiled successfully
+      - command: git diff --check
+        status: passed
+        result: no whitespace errors
+    fault_injection:
+      hook: fail_after_replace_count
+      test: failure_after_first_replacement_restores_all_files
+      status: passed
+      rollback_status_observed: rolled_back_commit_failure
+      restored_hashes_equal_original: true
+      rollback_required_after_restore: false
+    noop_behavior:
+      status: passed
+      observed_status: noop_already_applied
+      committed_paths: []
+    cli_exit_status:
+      status: passed
+      success_statuses:
+        - committed
+        - noop_already_applied
+      nonzero_statuses:
+        - aborted_validation_failed
+        - aborted_precondition_failed
+        - rolled_back_commit_failure
+        - rollback_failed
+    wp03_handoff:
+      transaction_class: spacesonar.control_plane.transaction.ControlPlaneTransaction
+      stage_methods:
+        - stage_bytes
+        - stage_text
+        - stage_yaml
+        - stage_delete
+      migration_requirement: WP03 runtime graph migration must stage all canonical record edits in one transaction and must not write runtime attempts directly.
+      validation_note: use merged future-state validation, not isolated staged-tree validation.
+    claim_boundary: corrective_wp02_transaction_atomicity_only_no_runtime_migration_no_runtime_authority_no_economics_pass
   WP03:
     status: pending
   WP04:

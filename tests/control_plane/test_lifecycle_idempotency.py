@@ -30,5 +30,6 @@ def test_second_identical_command_writes_byte_identical_manifest(tmp_path: Path)
     second = open_campaign(spec, context)
 
     assert first.status == "committed"
-    assert second.status == "committed"
+    assert second.status == "noop_already_applied"
+    assert second.committed_paths == ()
     assert manifest_path.read_bytes() == first_bytes

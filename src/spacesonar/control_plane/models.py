@@ -30,3 +30,6 @@ class TransactionResult:
     receipt_path: Path
     committed_paths: tuple[Path, ...] = ()
     errors: tuple[str, ...] = ()
+
+
+TRANSACTION_SUCCESS_STATUSES = frozenset({"committed", "noop_already_applied"})

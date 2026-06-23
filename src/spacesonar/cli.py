@@ -14,7 +14,7 @@ from spacesonar.control_plane.lifecycle import (
     materialize_run_specs,
     open_campaign,
 )
-from spacesonar.control_plane.models import ExecutionContext
+from spacesonar.control_plane.models import ExecutionContext, TRANSACTION_SUCCESS_STATUSES
 from spacesonar.control_plane.registry_projection import projection_diffs, write_registry_projections
 from spacesonar.control_plane.state_projection import workspace_projection_diff, write_workspace_projection
 
@@ -53,6 +53,10 @@ def print_result(result) -> None:
             sort_keys=False,
         )
     )
+
+
+def transaction_exit_code(result) -> int:
+    return 0 if result.status in TRANSACTION_SUCCESS_STATUSES else 1
 
 
 def current_git_branch(repo_root: Path) -> str | None:
@@ -152,21 +156,25 @@ def main(argv: list[str] | None = None) -> int:
             return CORRECTIVE_LIFECYCLE_GUARD_EXIT
         ctx = context(args)
         if args.action == "open":
-            print_result(open_campaign(Path(args.spec), ctx))
+            result = open_campaign(Path(args.spec), ctx)
         elif args.action == "materialize":
-            print_result(materialize_run_specs(args.campaign_id, ctx))
+            result = materialize_run_specs(args.campaign_id, ctx)
         elif args.action == "judge":
-            print_result(judge_campaign(args.campaign_id, ctx))
+            result = judge_campaign(args.campaign_id, ctx)
         elif args.action == "close":
-            print_result(close_campaign(args.campaign_id, ctx))
-        return 0
+            result = close_campaign(args.campaign_id, ctx)
+        else:
+            parser.error("unsupported campaign action")
+        print_result(result)
+        return transaction_exit_code(result)
     if args.area == "wave":
         reason = corrective_lifecycle_guard_reason(repo_root)
         if reason:
             print(reason, file=sys.stderr)
             return CORRECTIVE_LIFECYCLE_GUARD_EXIT
-        print_result(close_wave(args.wave_id, context(args)))
-        return 0
+        result = close_wave(args.wave_id, context(args))
+        print_result(result)
+        return transaction_exit_code(result)
     if args.area == "migrate" and args.action == "wave01-runtime-truth":
         from foundation.migrations.reclassify_wave01_runtime_completion import run
 
