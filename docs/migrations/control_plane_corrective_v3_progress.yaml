@@ -224,9 +224,10 @@ work_units:
     claim_boundary: corrective_wp01_truth_kernel_only_no_historical_runtime_migration_no_runtime_authority_no_economics_pass
   WP02:
     status: completed
-    completed_at_utc: '2026-06-23T01:36:26Z'
+    completed_at_utc: '2026-06-23T01:55:18Z'
     objective: Harden control-plane transactions so multi-record mutation is all-or-rollback before runtime graph migration.
     changed_files:
+      - .gitignore
       - docs/migrations/control_plane_corrective_v3_progress.yaml
       - src/spacesonar/cli.py
       - src/spacesonar/control_plane/models.py
@@ -234,19 +235,35 @@ work_units:
       - tests/control_plane/test_lifecycle_idempotency.py
       - tests/control_plane/test_transaction_atomicity.py
     transaction_protocol:
+      id_generation: microsecond timestamp plus random UUID nonce; same command transactions have distinct IDs and receipt paths
+      receipt_collision_policy: existing transaction workspace aborts before staging because resume mode is not implemented
       precondition_capture: stage time current hashes are recorded as input_hashes before mutation
       preimages:
         captured_before_replacement: true
+        verified_against_stage_time_precondition: true
         fields:
           - path
           - existed
           - sha256
           - backup_path
-      merged_future_validation: current repository plus staged replacements, additions, and deletions is materialized under the transaction future tree
+      merged_future_validation: isolated future repository is materialized from git ls-files cached and unignored-other files, then staged replacements and deletions are applied
+      future_tree_inode_policy: no hardlinks are used for unchanged files
+      validation_order: staged representation, stage-time precondition check, isolated future validation, precondition recheck, then noop detection
       commit_journal: .spacesonar/transactions/<tx_id>/commit_journal.yaml
+      commit_journal_states:
+        - prepared
+        - applying
+        - committed
+        - rolled_back
+        - rollback_failed
+      finalization_protection: rollback is attempted for any exception after canonical mutation, including output verification and final receipt path failures
+      output_verification: staged file hashes must match canonical outputs and staged deletion targets must be absent before committed status
       rollback:
         restores_preimages: true
         verifies_restored_hashes: true
+        records_applied_paths_before_failure: true
+        records_restored_paths: true
+        records_rollback_verification: true
       statuses:
         - committed
         - noop_already_applied
@@ -257,10 +274,13 @@ work_units:
     validation:
       - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
         status: passed
-        result: 8 passed
+        result: 25 passed
+      - command: uv run pytest tests/control_plane/test_lifecycle_idempotency.py -q
+        status: passed
+        result: 1 passed
       - command: uv run pytest tests/control_plane -q
         status: passed
-        result: 30 passed
+        result: 47 passed
       - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
         status: passed
         result: 14 passed
@@ -272,7 +292,10 @@ work_units:
         result: control-plane modules compiled successfully
       - command: git diff --check
         status: passed
-        result: no whitespace errors
+        result: no whitespace errors; Git reported .gitignore CRLF normalization warning only
+      - command: git check-ignore .spacesonar/transactions/probe.txt
+        status: passed
+        result: .spacesonar/transactions/probe.txt is ignored
     fault_injection:
       hook: fail_after_replace_count
       test: failure_after_first_replacement_restores_all_files
@@ -280,6 +303,7 @@ work_units:
       rollback_status_observed: rolled_back_commit_failure
       restored_hashes_equal_original: true
       rollback_required_after_restore: false
+      applied_paths_before_failure_recorded: true
     noop_behavior:
       status: passed
       observed_status: noop_already_applied
@@ -294,6 +318,22 @@ work_units:
         - aborted_precondition_failed
         - rolled_back_commit_failure
         - rollback_failed
+    amendment:
+      id: wp02_close_remaining_transaction_atomicity_gaps
+      status: completed
+      completed_at_utc: '2026-06-23T01:55:18Z'
+      commit_subject: WP02 close remaining transaction atomicity gaps
+      commit_sha: recorded_by_final_git_commit_for_this_amendment
+      results:
+        transaction_id_uniqueness_test: passed
+        concurrent_writer_test: passed
+        isolated_future_tree_test: passed
+        finalize_failure_rollback_test: passed
+        stage_delete_tests: passed
+        journal_terminal_state_tests: passed
+        reserved_internal_path_rejection: passed
+        validation_before_noop: passed
+        validator_exception_abort: passed
     wp03_handoff:
       transaction_class: spacesonar.control_plane.transaction.ControlPlaneTransaction
       stage_methods:

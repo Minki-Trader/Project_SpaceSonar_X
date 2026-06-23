@@ -3,6 +3,8 @@ from __future__ import annotations
 import hashlib
 import os
 import shutil
+import subprocess
+import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -13,13 +15,14 @@ from .store import dump_yaml, sha256_file
 
 
 def utc_now() -> str:
-    return datetime.now(tz=UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return datetime.now(tz=UTC).isoformat(timespec="microseconds").replace("+00:00", "Z")
 
 
 def transaction_id(seed: str) -> str:
     digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()[:12]
-    stamp = datetime.now(tz=UTC).strftime("%Y%m%dT%H%M%SZ")
-    return f"tx_{stamp}_{digest}"
+    stamp = datetime.now(tz=UTC).strftime("%Y%m%dT%H%M%S%fZ")
+    nonce = uuid.uuid4().hex[:16]
+    return f"tx_{stamp}_{digest}_{nonce}"
 
 
 ValidationHook = Callable[[Path], list[str]]
@@ -31,7 +34,30 @@ ALLOWED_STATUSES = {
     "rolled_back_commit_failure",
     "rollback_failed",
 }
-SKIP_MERGED_DIRS = {".git", ".spacesonar", ".venv", "__pycache__"}
+RESERVED_MUTATION_ROOTS = {".git", ".spacesonar", ".venv"}
+SKIP_FUTURE_DIRS = {
+    ".git",
+    ".spacesonar",
+    ".venv",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    "catboost_info",
+}
+SKIP_FUTURE_SUFFIXES = {
+    ".pyc",
+    ".pyo",
+    ".log",
+    ".pid",
+    ".parquet",
+    ".joblib",
+    ".onnx",
+    ".bin",
+    ".npy",
+    ".npz",
+    ".ex5",
+}
+SKIP_FUTURE_PARTS = {"telemetry", "reports", "artifacts"}
 
 
 @dataclass(frozen=True)
@@ -56,12 +82,22 @@ class Preimage:
         }
 
 
+class ReplacementFailure(RuntimeError):
+    def __init__(self, message: str, applied_paths: list[Path]) -> None:
+        super().__init__(message)
+        self.applied_paths = tuple(applied_paths)
+
+
 class ControlPlaneTransaction:
     def __init__(self, context: ExecutionContext, *, tx_id: str | None = None) -> None:
         self.context = context
-        seed = "|".join([context.work_item_id, *context.command_argv, utc_now()])
+        seed = "|".join([context.work_item_id, *context.command_argv])
         self.transaction_id = tx_id or transaction_id(seed)
         self.tx_root = context.repo_root / ".spacesonar" / "transactions" / self.transaction_id
+        if self.tx_root.exists():
+            raise FileExistsError(
+                f"transaction workspace already exists; resume mode is not implemented: {self.tx_root}"
+            )
         self.staged_root = self.tx_root / "staged"
         self.future_root = self.tx_root / "future"
         self.preimage_root = self.tx_root / "preimages"
@@ -92,9 +128,14 @@ class ControlPlaneTransaction:
         self._deletions.add(rel)
 
     def _normalize_rel_path(self, rel_path: str | Path) -> Path:
-        rel = Path(Path(rel_path).as_posix())
-        if rel.is_absolute() or rel.as_posix().startswith("../") or ".." in rel.parts:
+        raw = Path(rel_path)
+        if raw.is_absolute():
             raise ValueError(f"transaction path must be repo-relative: {rel_path}")
+        rel = Path(raw.as_posix())
+        if rel.as_posix() in {"", "."} or ".." in rel.parts:
+            raise ValueError(f"transaction path must be a non-empty repo-relative file path: {rel_path}")
+        if rel.parts and rel.parts[0] in RESERVED_MUTATION_ROOTS:
+            raise ValueError(f"transaction path is reserved for internal state: {rel_path}")
         return rel
 
     def _capture_precondition(self, rel_path: Path) -> None:
@@ -166,6 +207,9 @@ class ControlPlaneTransaction:
         preimages: list[Preimage] | None = None,
         rollback_required: bool = False,
         rollback_errors: list[str] | None = None,
+        applied_paths_before_failure: list[Path] | None = None,
+        restored_paths: list[Path] | None = None,
+        rollback_verification: list[dict] | None = None,
     ) -> dict:
         if status not in ALLOWED_STATUSES:
             raise ValueError(f"unknown transaction status: {status}")
@@ -184,6 +228,11 @@ class ControlPlaneTransaction:
             "staged_output_hashes": self._staged_hashes(),
             "committed_output_hashes": self._committed_hashes(committed),
             "committed_paths": [path.as_posix() for path in committed],
+            "applied_paths_before_failure": [
+                path.as_posix() for path in (applied_paths_before_failure or [])
+            ],
+            "restored_paths": [path.as_posix() for path in (restored_paths or [])],
+            "rollback_verification": rollback_verification or [],
             "validation_commands": list(self.context.validation_commands),
             "commit_journal_path": self.commit_journal_path.relative_to(self.context.repo_root).as_posix()
             if self.commit_journal_path.exists()
@@ -198,6 +247,8 @@ class ControlPlaneTransaction:
         path.write_text(dump_yaml(payload), encoding="utf-8")
 
     def _write_receipt(self, receipt: dict) -> None:
+        if self.receipt_path.exists():
+            raise FileExistsError(f"transaction receipt already exists: {self.receipt_path}")
         self._write_yaml_file(self.receipt_path, receipt)
 
     def _current_preconditions_match(self) -> list[str]:
@@ -226,6 +277,54 @@ class ControlPlaneTransaction:
         if self.future_root.exists():
             shutil.rmtree(self.future_root)
         self.future_root.mkdir(parents=True, exist_ok=True)
+        if self._is_git_repo():
+            self._materialize_git_future_state()
+        else:
+            self._materialize_fallback_future_state()
+        for rel_path, payload in self._staged.items():
+            target = self.future_root / rel_path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(payload)
+        for rel_path in self._deletions:
+            target = self.future_root / rel_path
+            if target.exists():
+                target.unlink()
+
+    def _is_git_repo(self) -> bool:
+        result = subprocess.run(
+            ["git", "rev-parse", "--is-inside-work-tree"],
+            cwd=self.context.repo_root,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        return result.returncode == 0 and result.stdout.strip() == "true"
+
+    def _materialize_git_future_state(self) -> None:
+        result = subprocess.run(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+            cwd=self.context.repo_root,
+            capture_output=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(result.stderr.decode("utf-8", errors="replace").strip() or "git ls-files failed")
+        for raw_name in result.stdout.split(b"\0"):
+            if not raw_name:
+                continue
+            rel_path = Path(raw_name.decode("utf-8", errors="surrogateescape"))
+            if rel_path in self._deletions or rel_path in self._staged:
+                continue
+            if self._future_excluded(rel_path):
+                continue
+            source = self.context.repo_root / rel_path
+            if not source.is_file():
+                continue
+            target = self.future_root / rel_path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+
+    def _materialize_fallback_future_state(self) -> None:
         repo_root = self.context.repo_root.resolve()
         future_root = self.future_root.resolve()
         for root, dirs, files in os.walk(repo_root):
@@ -234,44 +333,56 @@ class ControlPlaneTransaction:
             dirs[:] = [
                 item
                 for item in dirs
-                if item not in SKIP_MERGED_DIRS and not (rel_root == Path(".") and item == self.tx_root.name)
+                if item not in SKIP_FUTURE_DIRS
+                and not self._future_excluded(rel_root / item)
+                and not (root_path / item).resolve().is_relative_to(future_root)
             ]
-            if rel_root.parts and rel_root.parts[0] in SKIP_MERGED_DIRS:
-                continue
-            if root_path.resolve().is_relative_to(future_root):
+            if self._future_excluded(rel_root):
                 continue
             for filename in files:
                 source = root_path / filename
                 rel_path = source.relative_to(repo_root)
-                if rel_path in self._deletions:
+                if rel_path in self._deletions or rel_path in self._staged or self._future_excluded(rel_path):
+                    continue
+                if not source.is_file():
                     continue
                 target = self.future_root / rel_path
                 target.parent.mkdir(parents=True, exist_ok=True)
-                if rel_path in self._staged:
-                    continue
-                try:
-                    os.link(source, target)
-                except OSError:
-                    shutil.copy2(source, target)
-        for rel_path, payload in self._staged.items():
-            target = self.future_root / rel_path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(payload)
+                shutil.copy2(source, target)
 
-    def _capture_preimages(self) -> list[Preimage]:
+    def _future_excluded(self, rel_path: Path) -> bool:
+        parts = rel_path.parts
+        if not parts:
+            return False
+        if parts[0] in SKIP_FUTURE_DIRS:
+            return True
+        if any(part in SKIP_FUTURE_DIRS for part in parts):
+            return True
+        if any(part in SKIP_FUTURE_PARTS for part in parts):
+            return True
+        return rel_path.suffix in SKIP_FUTURE_SUFFIXES
+
+    def _capture_preimages(self) -> tuple[list[Preimage], list[str]]:
         if self.preimage_root.exists():
             shutil.rmtree(self.preimage_root)
         preimages: list[Preimage] = []
+        errors: list[str] = []
         for rel_path in self._all_paths():
             current = self.context.repo_root / rel_path
-            if current.exists():
+            precondition = self._preconditions[rel_path]
+            exists = current.exists()
+            current_hash = sha256_file(current) if exists else None
+            if exists != precondition.existed or current_hash != precondition.sha256:
+                errors.append(f"{rel_path.as_posix()}: current hash differs during preimage capture")
+                continue
+            if exists:
                 backup = self.preimage_root / rel_path
                 backup.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(current, backup)
-                preimages.append(Preimage(rel_path, True, sha256_file(current), backup))
+                preimages.append(Preimage(rel_path, True, current_hash, backup))
             else:
                 preimages.append(Preimage(rel_path, False, None, None))
-        return preimages
+        return preimages, errors
 
     def _prepare_temps(self) -> dict[Path, Path]:
         if self.temp_root.exists():
@@ -285,17 +396,41 @@ class ControlPlaneTransaction:
             temps[rel_path] = temp
         return temps
 
-    def _write_commit_journal(self, *, preimages: list[Preimage], temps: dict[Path, Path]) -> None:
+    def _write_commit_journal(
+        self,
+        *,
+        state: str,
+        planned_paths: list[Path],
+        applied_paths: list[Path] | None = None,
+        rollback_paths: list[Path] | None = None,
+        preimages: list[Preimage] | None = None,
+        temps: dict[Path, Path] | None = None,
+    ) -> None:
+        existing = {}
+        written_at = utc_now()
+        if self.commit_journal_path.exists():
+            import yaml
+
+            existing = yaml.safe_load(self.commit_journal_path.read_text(encoding="utf-8")) or {}
+            written_at = existing.get("written_at_utc", written_at)
+        temps = temps or {}
         journal = {
             "version": "control_plane_commit_journal_v1",
             "transaction_id": self.transaction_id,
-            "written_at_utc": utc_now(),
-            "preimages": [item.as_receipt(self.context.repo_root) for item in preimages],
+            "state": state,
+            "planned_paths": [path.as_posix() for path in planned_paths],
+            "applied_paths": [path.as_posix() for path in (applied_paths or [])],
+            "rollback_paths": [path.as_posix() for path in (rollback_paths or [])],
+            "written_at_utc": written_at,
+            "updated_at_utc": utc_now(),
+            "preimages": [
+                item.as_receipt(self.context.repo_root) for item in (preimages or [])
+            ],
             "temporary_destinations": [
                 {
                     "path": rel_path.as_posix(),
                     "temp_path": temp.relative_to(self.context.repo_root).as_posix(),
-                    "sha256": sha256_file(temp),
+                    "sha256": sha256_file(temp) if temp.exists() else None,
                 }
                 for rel_path, temp in sorted(temps.items(), key=lambda item: item[0].as_posix())
             ],
@@ -309,24 +444,43 @@ class ControlPlaneTransaction:
         temps: dict[Path, Path],
         fail_after_replace_count: int | None,
     ) -> list[Path]:
-        committed: list[Path] = []
+        applied: list[Path] = []
         replace_count = 0
         for rel_path in self._all_paths():
             target = self.context.repo_root / rel_path
             target.parent.mkdir(parents=True, exist_ok=True)
-            if rel_path in self._deletions:
-                if target.exists():
-                    target.unlink()
-            else:
-                os.replace(temps[rel_path], target)
-            committed.append(rel_path)
+            try:
+                if rel_path in self._deletions:
+                    if target.exists():
+                        target.unlink()
+                else:
+                    os.replace(temps[rel_path], target)
+            except Exception as exc:
+                raise ReplacementFailure(f"{rel_path.as_posix()}: replacement failed: {exc}", applied) from exc
+            applied.append(rel_path)
             replace_count += 1
             if fail_after_replace_count is not None and replace_count >= fail_after_replace_count:
-                raise RuntimeError(f"fault injection after {replace_count} replacements")
-        return committed
+                raise ReplacementFailure(f"fault injection after {replace_count} replacements", applied)
+        return applied
 
-    def _restore_preimages(self, preimages: list[Preimage]) -> list[str]:
+    def _verify_committed_outputs(self) -> list[str]:
         errors: list[str] = []
+        for rel_path in sorted(self._staged, key=lambda item: item.as_posix()):
+            target = self.context.repo_root / rel_path
+            staged = self.staged_root / rel_path
+            if not target.exists():
+                errors.append(f"{rel_path.as_posix()}: committed file missing")
+                continue
+            if sha256_file(target) != sha256_file(staged):
+                errors.append(f"{rel_path.as_posix()}: committed hash mismatch")
+        for rel_path in sorted(self._deletions, key=lambda item: item.as_posix()):
+            if (self.context.repo_root / rel_path).exists():
+                errors.append(f"{rel_path.as_posix()}: staged deletion target still exists")
+        return errors
+
+    def _restore_preimages(self, preimages: list[Preimage]) -> tuple[list[str], list[Path], list[dict]]:
+        errors: list[str] = []
+        restored: list[Path] = []
         for preimage in reversed(preimages):
             target = self.context.repo_root / preimage.path
             try:
@@ -338,44 +492,80 @@ class ControlPlaneTransaction:
                     shutil.copy2(preimage.backup_path, target)
                 elif target.exists():
                     target.unlink()
+                restored.append(preimage.path)
             except OSError as exc:
                 errors.append(f"{preimage.path.as_posix()}: restore failed: {exc}")
-        errors.extend(self._verify_preimages(preimages))
-        return errors
+        verification = self._verify_preimages(preimages)
+        errors.extend(item["error"] for item in verification if item["status"] != "passed")
+        return errors, restored, verification
 
-    def _verify_preimages(self, preimages: list[Preimage]) -> list[str]:
-        errors: list[str] = []
+    def _verify_preimages(self, preimages: list[Preimage]) -> list[dict]:
+        results: list[dict] = []
         for preimage in preimages:
             target = self.context.repo_root / preimage.path
             if preimage.existed:
                 if not target.exists():
-                    errors.append(f"{preimage.path.as_posix()}: restored file missing")
+                    results.append(
+                        {
+                            "path": preimage.path.as_posix(),
+                            "status": "failed",
+                            "error": "restored file missing",
+                        }
+                    )
                     continue
                 restored_hash = sha256_file(target)
                 if restored_hash != preimage.sha256:
-                    errors.append(f"{preimage.path.as_posix()}: restored hash mismatch")
+                    results.append(
+                        {
+                            "path": preimage.path.as_posix(),
+                            "status": "failed",
+                            "error": "restored hash mismatch",
+                        }
+                    )
+                    continue
             elif target.exists():
-                errors.append(f"{preimage.path.as_posix()}: restored absent file still exists")
-        return errors
+                results.append(
+                    {
+                        "path": preimage.path.as_posix(),
+                        "status": "failed",
+                        "error": "restored absent file still exists",
+                    }
+                )
+                continue
+            results.append({"path": preimage.path.as_posix(), "status": "passed", "error": None})
+        return results
 
     def commit(
         self,
         *,
         validate: ValidationHook | None = None,
         fail_after_replace_count: int | None = None,
+        fail_before_final_receipt: bool = False,
     ) -> TransactionResult:
         self._write_staged_tree()
         precondition_errors = self._current_preconditions_match()
         if precondition_errors:
+            return self._abort_precondition(precondition_errors)
+
+        try:
+            self._materialize_merged_future_state()
+            validation_errors = validate(self.future_root) if validate else []
+        except Exception as exc:
+            validation_errors = [f"{exc.__class__.__name__}: {exc}"]
+        if validation_errors:
             self._write_receipt(
-                self._receipt(status="aborted_precondition_failed", errors=precondition_errors, committed=[])
+                self._receipt(status="aborted_validation_failed", errors=validation_errors, committed=[])
             )
             return TransactionResult(
                 transaction_id=self.transaction_id,
-                status="aborted_precondition_failed",
+                status="aborted_validation_failed",
                 receipt_path=self.receipt_path,
-                errors=tuple(precondition_errors),
+                errors=tuple(validation_errors),
             )
+
+        precondition_errors = self._current_preconditions_match()
+        if precondition_errors:
+            return self._abort_precondition(precondition_errors)
 
         if self._is_noop():
             receipt = self._receipt(status="noop_already_applied", committed=[])
@@ -386,49 +576,137 @@ class ControlPlaneTransaction:
                 receipt_path=self.receipt_path,
             )
 
-        self._materialize_merged_future_state()
-        errors = validate(self.future_root) if validate else []
-        if errors:
-            self._write_receipt(self._receipt(status="aborted_validation_failed", errors=errors, committed=[]))
-            return TransactionResult(
-                transaction_id=self.transaction_id,
-                status="aborted_validation_failed",
-                receipt_path=self.receipt_path,
-                errors=tuple(errors),
-            )
+        preimages, preimage_errors = self._capture_preimages()
+        if preimage_errors:
+            return self._abort_precondition(preimage_errors)
 
-        preimages = self._capture_preimages()
-        temps = self._prepare_temps()
-        self._write_commit_journal(preimages=preimages, temps=temps)
-        committed: list[Path] = []
+        planned_paths = self._all_paths()
+        applied_paths: list[Path] = []
+        temps: dict[Path, Path] = {}
         try:
-            committed = self._apply_replacements(temps=temps, fail_after_replace_count=fail_after_replace_count)
-        except Exception as exc:
-            rollback_errors = self._restore_preimages(preimages)
-            status = "rollback_failed" if rollback_errors else "rolled_back_commit_failure"
-            errors = [f"{exc.__class__.__name__}: {exc}"]
-            receipt = self._receipt(
-                status=status,
-                errors=errors,
-                committed=committed,
+            temps = self._prepare_temps()
+            self._write_commit_journal(
+                state="prepared",
+                planned_paths=planned_paths,
+                applied_paths=[],
+                rollback_paths=[],
                 preimages=preimages,
-                rollback_required=bool(rollback_errors),
-                rollback_errors=rollback_errors,
+                temps=temps,
             )
-            self._write_receipt(receipt)
-            return TransactionResult(
-                transaction_id=self.transaction_id,
-                status=status,
-                receipt_path=self.receipt_path,
-                errors=tuple(errors + rollback_errors),
+            self._write_commit_journal(
+                state="applying",
+                planned_paths=planned_paths,
+                applied_paths=[],
+                rollback_paths=[],
+                preimages=preimages,
+                temps=temps,
+            )
+            applied_paths = self._apply_replacements(temps=temps, fail_after_replace_count=fail_after_replace_count)
+            self._write_commit_journal(
+                state="applying",
+                planned_paths=planned_paths,
+                applied_paths=applied_paths,
+                rollback_paths=[],
+                preimages=preimages,
+                temps=temps,
+            )
+            output_errors = self._verify_committed_outputs()
+            if output_errors:
+                raise RuntimeError("; ".join(output_errors))
+            if fail_before_final_receipt:
+                raise RuntimeError("fault injection before final receipt")
+            self._write_commit_journal(
+                state="committed",
+                planned_paths=planned_paths,
+                applied_paths=applied_paths,
+                rollback_paths=[],
+                preimages=preimages,
+                temps=temps,
+            )
+            committed_receipt = self._receipt(status="committed", committed=applied_paths, preimages=preimages)
+            self._write_receipt(committed_receipt)
+        except ReplacementFailure as exc:
+            applied_paths = list(exc.applied_paths)
+            return self._rollback_after_commit_failure(
+                exc=exc,
+                preimages=preimages,
+                temps=temps,
+                planned_paths=planned_paths,
+                applied_paths=applied_paths,
+            )
+        except Exception as exc:
+            return self._rollback_after_commit_failure(
+                exc=exc,
+                preimages=preimages,
+                temps=temps,
+                planned_paths=planned_paths,
+                applied_paths=applied_paths,
             )
 
-        self._write_receipt(self._receipt(status="committed", committed=committed, preimages=preimages))
         return TransactionResult(
             transaction_id=self.transaction_id,
             status="committed",
             receipt_path=self.receipt_path,
-            committed_paths=tuple(self.context.repo_root / path for path in committed),
+            committed_paths=tuple(self.context.repo_root / path for path in applied_paths),
+        )
+
+    def _abort_precondition(self, errors: list[str]) -> TransactionResult:
+        self._write_receipt(
+            self._receipt(status="aborted_precondition_failed", errors=errors, committed=[])
+        )
+        return TransactionResult(
+            transaction_id=self.transaction_id,
+            status="aborted_precondition_failed",
+            receipt_path=self.receipt_path,
+            errors=tuple(errors),
+        )
+
+    def _rollback_after_commit_failure(
+        self,
+        *,
+        exc: Exception,
+        preimages: list[Preimage],
+        temps: dict[Path, Path],
+        planned_paths: list[Path],
+        applied_paths: list[Path],
+    ) -> TransactionResult:
+        self._write_commit_journal(
+            state="applying",
+            planned_paths=planned_paths,
+            applied_paths=applied_paths,
+            rollback_paths=[],
+            preimages=preimages,
+            temps=temps,
+        )
+        rollback_errors, restored_paths, rollback_verification = self._restore_preimages(preimages)
+        status = "rollback_failed" if rollback_errors else "rolled_back_commit_failure"
+        terminal_state = "rollback_failed" if rollback_errors else "rolled_back"
+        self._write_commit_journal(
+            state=terminal_state,
+            planned_paths=planned_paths,
+            applied_paths=applied_paths,
+            rollback_paths=restored_paths,
+            preimages=preimages,
+            temps=temps,
+        )
+        errors = [f"{exc.__class__.__name__}: {exc}"]
+        receipt = self._receipt(
+            status=status,
+            errors=errors,
+            committed=[],
+            preimages=preimages,
+            rollback_required=bool(rollback_errors),
+            rollback_errors=rollback_errors,
+            applied_paths_before_failure=applied_paths,
+            restored_paths=restored_paths,
+            rollback_verification=rollback_verification,
+        )
+        self._write_receipt(receipt)
+        return TransactionResult(
+            transaction_id=self.transaction_id,
+            status=status,
+            receipt_path=self.receipt_path,
+            errors=tuple(errors + rollback_errors),
         )
 
     @staticmethod
