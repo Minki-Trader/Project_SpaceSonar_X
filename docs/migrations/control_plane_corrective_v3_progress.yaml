@@ -111,7 +111,65 @@ work_units:
         - foundation/config/mt5_runtime_probe_contract.yaml
       guard_state: canonical lifecycle CLI mutation remains blocked until WP02 and WP04 complete.
   WP01:
-    status: pending
+    status: completed
+    completed_at_utc: '2026-06-23T00:39:48Z'
+    objective: Build independent runtime-evidence truth primitives without migrating historical Wave0/Wave01 attempts.
+    changed_files:
+      - docs/migrations/control_plane_corrective_v3_progress.yaml
+      - foundation/mt5/runtime_completion.py
+      - foundation/mt5/tester_report_receipt.py
+      - foundation/pipelines/run_wave0_l4_mt5_attempts.py
+      - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+      - foundation/validation/active_record_validator.py
+      - tests/test_runtime_evidence_truth_kernel.py
+    truth_primitives:
+      - tester_report_receipt_v1 records report hash, size, origin, extension, freshness, parse status, completion marker, tester identity fields, fatal error count, and claim boundary.
+      - tester_report_completed is true only for fresh parsed reports with a completion marker, matching tester identity, and zero fatal errors.
+      - RuntimeEvidencePaths binds attempt manifest, terminal summary, telemetry summary, and tester report receipt for reconstruction.
+      - reconstruct_runtime_attempt rebuilds RuntimeAttemptState from durable files and does not read stored execution_state.runtime_probe_complete.
+      - active_record_validator compares stored runtime_probe_complete projections against reconstructed evidence when tester_report_receipt.yaml exists.
+    wp03_migration_api_handoff:
+      receipt_builder: foundation.mt5.tester_report_receipt.build_tester_report_receipt
+      receipt_completion_predicate: foundation.mt5.tester_report_receipt.tester_report_completed
+      receipt_writer: foundation.mt5.tester_report_receipt.write_receipt
+      runtime_evidence_paths: foundation.mt5.runtime_completion.RuntimeEvidencePaths
+      runtime_reconstructor: foundation.mt5.runtime_completion.reconstruct_runtime_attempt
+      runtime_evaluator: foundation.mt5.runtime_completion.evaluate_runtime_attempt
+      validator_hook: foundation.validation.active_record_validator.validate_runtime_completion_truth
+      receipt_path_template: runtime/mt5_attempts/<attempt_id>/tester_report_receipt.yaml
+    validation:
+      - command: uv run pytest tests/test_runtime_evidence_truth_kernel.py -q
+        status: passed
+        result: 19 passed
+      - command: uv run pytest tests/test_runtime_completion_contract.py -q
+        status: passed
+        result: 8 passed
+      - command: python -m compileall foundation/mt5/runtime_completion.py foundation/mt5/tester_report_receipt.py foundation/pipelines/run_wave0_l4_mt5_attempts.py foundation/pipelines/run_wave0_l4_decision_replay_attempts.py foundation/validation/active_record_validator.py
+        status: passed
+        result: changed Python files compiled successfully
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: git diff --check
+        status: passed
+        result: no whitespace errors
+    mutation_cases:
+      - telemetry_without_report_reconstructs_incomplete
+      - report_without_telemetry_rows_reconstructs_incomplete
+      - main_mode_fallback_reconstructs_incomplete
+      - stale_report_observed_but_not_completed
+      - unparseable_report_not_completed
+      - report_without_completion_marker_not_completed
+      - table_like_report_label_value_lines_can_complete
+      - wrong_symbol_timeframe_dates_or_model_not_completed
+      - missing_period_profile_runtime_period_execution_profile_or_surface_scope_fails_completion
+      - stored_completion_boolean_true_cannot_override_reconstructed_truth
+      - valid_portable_report_backed_score_attempt_completes
+      - valid_portable_report_backed_decision_replay_attempt_completes
+    historical_mutation:
+      status: not_started
+      reason: WP01 adds truth primitives only; WP03 will migrate the 86 historical target attempts.
+    claim_boundary: corrective_wp01_truth_kernel_only_no_historical_runtime_migration_no_runtime_authority_no_economics_pass
   WP02:
     status: pending
   WP03:

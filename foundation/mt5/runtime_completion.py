@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable
+
+import yaml
+
+from foundation.mt5.tester_report_receipt import tester_report_completed
 
 
 EXPECTED_PERIOD_PROFILE_ID = "period_profile_split_set_v0"
@@ -43,6 +47,14 @@ class RuntimeCompletionResult:
 class TesterReportCandidate:
     path: Path
     origin: str
+
+
+@dataclass(frozen=True)
+class RuntimeEvidencePaths:
+    attempt_manifest: Path
+    terminal_run_summary: Path
+    telemetry_summary: Path
+    tester_report_receipt: Path
 
 
 def _as_set(values: Iterable[str]) -> set[str]:
@@ -161,6 +173,120 @@ def evaluate_runtime_batch(
         for role in sorted(required_roles - observed_roles):
             missing_by_count[f"period_role:{role}"] = missing_by_count.get(f"period_role:{role}", 0) + 1
     return complete, results, missing_by_count
+
+
+def reconstruct_runtime_attempt(repo_root: Path, paths: RuntimeEvidencePaths) -> RuntimeAttemptState:
+    attempt_manifest = _load_yaml(_resolve(repo_root, paths.attempt_manifest))
+    terminal_summary = _load_yaml(_resolve(repo_root, paths.terminal_run_summary))
+    telemetry_summary = _load_yaml(_resolve(repo_root, paths.telemetry_summary))
+    report_receipt = _load_yaml(_resolve(repo_root, paths.tester_report_receipt))
+
+    surface_contract = _mapping(attempt_manifest.get("runtime_surface_contract"))
+    routing = _mapping(attempt_manifest.get("runtime_probe_routing"))
+    telemetry_stats = _mapping(telemetry_summary.get("stats"))
+    telemetry_artifact = _mapping(telemetry_summary.get("telemetry"))
+    terminal_policy = _mapping(terminal_summary.get("terminal_mode_policy"))
+
+    row_count = _int_or_zero(
+        telemetry_stats.get("row_count", telemetry_summary.get("row_count", terminal_summary.get("telemetry_row_count")))
+    )
+    telemetry_path = telemetry_artifact.get("path")
+    telemetry_file_observed = bool(telemetry_path) or row_count > 0
+    telemetry_rows_observed = row_count > 0
+
+    terminal_launched = _terminal_launched(terminal_summary)
+    terminal_mode = _terminal_mode(terminal_summary, terminal_policy, terminal_launched)
+    report_observed = bool(report_receipt.get("source_report_sha256"))
+
+    return RuntimeAttemptState(
+        terminal_launched=terminal_launched,
+        telemetry_file_observed=telemetry_file_observed,
+        telemetry_rows_observed=telemetry_rows_observed,
+        tester_report_observed=report_observed,
+        tester_report_completed=tester_report_completed(report_receipt),
+        terminal_mode=terminal_mode,
+        period_role=str(
+            _first_present(
+                attempt_manifest.get("period_role"),
+                routing.get("period_role"),
+                surface_contract.get("period_role"),
+            )
+            or ""
+        ),
+        period_profile_id=_first_present(
+            attempt_manifest.get("period_profile_id"),
+            routing.get("runtime_period_profile_id"),
+            surface_contract.get("period_profile_id"),
+            surface_contract.get("runtime_period_profile_id"),
+        ),
+        runtime_period_set_id=_first_present(
+            attempt_manifest.get("runtime_period_set_id"),
+            routing.get("runtime_period_set_id"),
+            surface_contract.get("runtime_period_set_id"),
+        ),
+        execution_profile_id=_first_present(
+            attempt_manifest.get("execution_profile_id"),
+            attempt_manifest.get("tester_execution_profile_id"),
+            routing.get("execution_profile_id"),
+            routing.get("tester_execution_profile_id"),
+            surface_contract.get("execution_profile_id"),
+            surface_contract.get("tester_execution_profile_id"),
+        ),
+        surface_scope=_first_present(
+            attempt_manifest.get("surface_scope"),
+            routing.get("surface_scope"),
+            surface_contract.get("surface_scope"),
+        ),
+    )
+
+
+def _resolve(repo_root: Path, path: Path) -> Path:
+    return path if path.is_absolute() else repo_root / path
+
+
+def _load_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    with path.open("r", encoding="utf-8-sig") as handle:
+        loaded = yaml.safe_load(handle)
+    return loaded if isinstance(loaded, dict) else {}
+
+
+def _mapping(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _first_present(*values: Any) -> str | None:
+    for value in values:
+        if value not in (None, ""):
+            return str(value)
+    return None
+
+
+def _int_or_zero(value: Any) -> int:
+    try:
+        return int(float(value or 0))
+    except (TypeError, ValueError):
+        return 0
+
+
+def _terminal_launched(summary: dict[str, Any]) -> bool:
+    if "terminal_launched" in summary:
+        return bool(summary.get("terminal_launched"))
+    if summary.get("terminal_not_launched_reason"):
+        return False
+    return any(key in summary for key in ("exit_code", "timed_out", "process_status", "telemetry_observed"))
+
+
+def _terminal_mode(summary: dict[str, Any], policy: dict[str, Any], terminal_launched: bool) -> str:
+    explicit = _first_present(summary.get("terminal_mode"), summary.get("terminal_mode_label"))
+    if explicit:
+        return explicit
+    if policy.get("main_mode_fallback_used"):
+        return "main_mode_config_fallback"
+    if terminal_launched:
+        return PORTABLE_CONTRACT_MODE
+    return ""
 
 
 def _with_report_suffixes(path: Path) -> list[Path]:

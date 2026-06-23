@@ -1107,6 +1107,42 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
         if is_l4_runtime_attempt and status.startswith("completed_") and not tester_report_observed:
             errors.append(f"{label}: completed_* status without tester report")
 
+        receipt_path = path.parent / "tester_report_receipt.yaml"
+        terminal_path = path.parent / "terminal_run_summary.yaml"
+        telemetry_candidates = [
+            path.parent / "score_telemetry_summary.yaml",
+            path.parent / "execution_telemetry_summary.yaml",
+        ]
+        telemetry_path = next((candidate for candidate in telemetry_candidates if candidate.exists()), None)
+        if receipt_path.exists() and terminal_path.exists() and telemetry_path is not None:
+            from foundation.mt5.runtime_completion import (
+                RuntimeEvidencePaths,
+                evaluate_runtime_attempt,
+                reconstruct_runtime_attempt,
+            )
+
+            reconstructed = reconstruct_runtime_attempt(
+                repo_root,
+                RuntimeEvidencePaths(
+                    attempt_manifest=path,
+                    terminal_run_summary=terminal_path,
+                    telemetry_summary=telemetry_path,
+                    tester_report_receipt=receipt_path,
+                ),
+            )
+            reconstructed_result = evaluate_runtime_attempt(
+                reconstructed,
+                required_period_roles=["validation", "research_oos"],
+                completion_eligible_surface_scopes=[
+                    "full_period_deterministic",
+                    "full_period_sparse_decision_surface",
+                ],
+            )
+            if runtime_complete != reconstructed_result.runtime_probe_complete:
+                errors.append(
+                    f"{label}: stored runtime_probe_complete projection conflicts with reconstructed runtime evidence"
+                )
+
     for path in sorted((repo_root / "lab" / "campaigns").glob("**/*runtime_execution_summary.yaml")):
         summary = load_yaml(path) or {}
         label = rel(path, repo_root)

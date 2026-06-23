@@ -30,13 +30,17 @@ from foundation.pipelines.run_mt5_fixed_fixture_probe import (
     run_terminal_sequence,
 )
 from foundation.mt5.runtime_completion import (
-    EXPECTED_EXECUTION_PROFILE_ID,
-    EXPECTED_PERIOD_PROFILE_ID,
-    EXPECTED_RUNTIME_PERIOD_SET_ID,
     RuntimeAttemptState,
     evaluate_runtime_attempt,
     resolve_tester_report_candidates,
     runtime_status,
+)
+from foundation.mt5.tester_report_receipt import (
+    build_tester_report_receipt,
+    snapshot_report_candidate,
+    tester_config_identity,
+    tester_report_completed,
+    write_receipt,
 )
 
 
@@ -506,6 +510,8 @@ def prepare_tester_report_directories(
         return {"status": "no_report_value_configured", "prepared": [], "skipped": []}
     prepared: list[dict[str, str]] = []
     skipped: list[dict[str, str]] = []
+    prelaunch: list[dict[str, Any]] = []
+    seen_prelaunch: set[str] = set()
     for candidate in resolve_tester_report_candidates(
         report_value=stem,
         repo_root=repo_root,
@@ -513,6 +519,10 @@ def prepare_tester_report_directories(
         main_terminal_data_root=main_terminal_data_root,
         attempt_root=attempt_root,
     ):
+        snapshot = snapshot_report_candidate(candidate.path, candidate.origin)
+        if snapshot["path_key"] not in seen_prelaunch:
+            prelaunch.append(snapshot)
+            seen_prelaunch.add(snapshot["path_key"])
         try:
             candidate.path.parent.mkdir(parents=True, exist_ok=True)
             prepared.append({"origin": candidate.origin, "redacted_parent": redact_path(str(candidate.path.parent))})
@@ -524,12 +534,36 @@ def prepare_tester_report_directories(
                     "reason": f"{exc.__class__.__name__}: {exc}",
                 }
             )
+    for path in attempt_root.glob("tester_report*"):
+        snapshot = snapshot_report_candidate(path, "attempt_archive_path")
+        if snapshot["path_key"] not in seen_prelaunch:
+            prelaunch.append(snapshot)
+            seen_prelaunch.add(snapshot["path_key"])
     status = "tester_report_directories_prepared"
     if skipped:
         status = "tester_report_directories_partially_prepared"
     if not prepared and skipped:
         status = "tester_report_directories_not_prepared"
-    return {"status": status, "report_value": stem, "prepared": prepared, "skipped": skipped}
+    return {
+        "status": status,
+        "report_value": stem,
+        "prepared": prepared,
+        "skipped": skipped,
+        "prelaunch_candidates": prelaunch,
+    }
+
+
+def public_report_resolution_summary(summary: dict[str, Any]) -> dict[str, Any]:
+    public = dict(summary)
+    public_candidates: list[dict[str, Any]] = []
+    for candidate in summary.get("prelaunch_candidates", []):
+        item = dict(candidate)
+        path_key_value = item.pop("path_key", "")
+        if path_key_value:
+            item["path_key_sha256"] = hashlib.sha256(str(path_key_value).encode("utf-8")).hexdigest()
+        public_candidates.append(item)
+    public["prelaunch_candidates"] = public_candidates
+    return public
 
 
 def archive_tester_report(
@@ -582,6 +616,60 @@ def archive_tester_report(
         **artifact_ref(archived, repo_root, availability="local_report_hash_recorded_ignored_by_git"),
         "claim_boundary": "tester_report_local_evidence_only_no_economics_pass",
     }
+
+
+def build_tester_report_receipt_for_attempt(
+    *,
+    repo_root: Path,
+    attempt_root: Path,
+    attempt_id: str,
+    tester_config: Path,
+    portable_terminal_root: Path | None,
+    main_terminal_data_root: Path | None,
+    prelaunch_candidates: list[dict[str, Any]],
+    launch_started_at_utc: str | None,
+) -> dict[str, Any]:
+    candidates = candidate_report_paths(
+        repo_root,
+        attempt_root,
+        tester_config,
+        portable_terminal_root=portable_terminal_root,
+        main_terminal_data_root=main_terminal_data_root,
+    )
+    report_path: Path | None = None
+    source_origin: str | None = None
+    if candidates:
+        report_path, source_origin = candidates[0]
+    receipt = build_tester_report_receipt(
+        attempt_id=attempt_id,
+        report_path=report_path,
+        source_origin=source_origin,
+        launch_started_at_utc=launch_started_at_utc,
+        prelaunch_candidates=prelaunch_candidates,
+        expected_identity=tester_config_identity(tester_config),
+    )
+    write_receipt(attempt_root / "tester_report_receipt.yaml", receipt)
+    return receipt
+
+
+def runtime_contract_value(
+    manifest: dict[str, Any],
+    row: dict[str, str],
+    key: str,
+    *contract_keys: str,
+) -> str | None:
+    runtime_contract = manifest.get("runtime_surface_contract") or {}
+    routing = manifest.get("runtime_probe_routing") or {}
+    for value in [
+        row.get(key),
+        manifest.get(key),
+        *(runtime_contract.get(item) for item in contract_keys),
+        routing.get(key),
+        *(routing.get(item) for item in contract_keys),
+    ]:
+        if value not in (None, ""):
+            return str(value)
+    return None
 
 
 def parse_score_telemetry(path: Path) -> dict[str, Any]:
@@ -752,7 +840,7 @@ def run_one_attempt(
         "bundle_id": row["bundle_id"],
         "tester_config": artifact_ref(tester_config, repo_root),
         "tester_report_config": report_config_summary,
-        "tester_report_resolution_prelaunch": report_directory_summary,
+        "tester_report_resolution_prelaunch": public_report_resolution_summary(report_directory_summary),
         "common_telemetry_redacted": redact_path(str(common_telemetry)),
         "claim_boundary": "terminal_execution_evidence_only_no_runtime_authority_no_economics_pass",
     }
@@ -825,6 +913,16 @@ def run_one_attempt(
         terminal_summary["empty_telemetry_claim_effect"] = "csv_header_only_no_l4_score_observation"
     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
 
+    report_receipt = build_tester_report_receipt_for_attempt(
+        repo_root=repo_root,
+        attempt_root=root,
+        attempt_id=attempt_id,
+        tester_config=tester_config,
+        portable_terminal_root=portable_terminal_root,
+        main_terminal_data_root=main_data_root,
+        prelaunch_candidates=report_directory_summary.get("prelaunch_candidates", []),
+        launch_started_at_utc=terminal_summary.get("started_at_utc"),
+    )
     report = archive_tester_report(
         repo_root,
         root,
@@ -833,7 +931,7 @@ def run_one_attempt(
         main_terminal_data_root=main_data_root,
     )
     report_observed = bool(report.get("observed"))
-    report_completed = report.get("status") == "tester_report_archived_local_hash_recorded"
+    report_completed = tester_report_completed(report_receipt)
 
     result_judgment = "runtime_probe" if telemetry_observed else "inconclusive"
     terminal_mode = (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used")
@@ -847,10 +945,12 @@ def run_one_attempt(
             tester_report_completed=report_completed,
             terminal_mode=terminal_mode_label,
             period_role=row["period_role"],
-            period_profile_id=EXPECTED_PERIOD_PROFILE_ID,
-            runtime_period_set_id=row.get("runtime_period_set_id") or EXPECTED_RUNTIME_PERIOD_SET_ID,
-            execution_profile_id=row.get("tester_execution_profile_id") or EXPECTED_EXECUTION_PROFILE_ID,
-            surface_scope="full_period_deterministic",
+            period_profile_id=runtime_contract_value(manifest, row, "period_profile_id", "runtime_period_profile_id"),
+            runtime_period_set_id=runtime_contract_value(manifest, row, "runtime_period_set_id"),
+            execution_profile_id=runtime_contract_value(
+                manifest, row, "tester_execution_profile_id", "execution_profile_id"
+            ),
+            surface_scope=runtime_contract_value(manifest, row, "surface_scope"),
         ),
         required_period_roles=["validation", "research_oos"],
         completion_eligible_surface_scopes=["full_period_deterministic", "full_period_sparse_decision_surface"],
@@ -893,8 +993,16 @@ def run_one_attempt(
     manifest["terminal_run_summary"] = terminal_summary
     manifest["score_telemetry_summary"] = telemetry_summary
     manifest["tester_report"] = report
+    manifest["tester_report_receipt"] = {
+        "path": f"runtime/mt5_attempts/{attempt_id}/tester_report_receipt.yaml",
+        "receipt_version": report_receipt.get("receipt_version"),
+        "tester_report_completed": report_receipt.get("tester_report_completed"),
+        "missing_requirements": report_receipt.get("missing_requirements", []),
+        "claim_boundary": report_receipt.get("claim_boundary"),
+    }
     manifest.setdefault("artifact_identity", {})["terminal_run_summary"] = artifact_ref(root / "terminal_run_summary.yaml", repo_root)
     manifest["artifact_identity"]["score_telemetry_summary"] = artifact_ref(root / "score_telemetry_summary.yaml", repo_root)
+    manifest["artifact_identity"]["tester_report_receipt"] = artifact_ref(root / "tester_report_receipt.yaml", repo_root)
     if telemetry_artifact:
         manifest["artifact_identity"]["telemetry"]["repo_copy"] = telemetry_artifact
     manifest["artifact_identity"]["tester_reports"] = [report]

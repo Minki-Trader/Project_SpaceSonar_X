@@ -29,25 +29,26 @@ from foundation.pipelines.run_mt5_fixed_fixture_probe import (
 from foundation.pipelines.run_wave0_l4_mt5_attempts import (
     archive_tester_report,
     artifact_ref,
+    build_tester_report_receipt_for_attempt,
     common_relative_to_path,
     current_git_identity,
     dependency_summary,
     normalize_tester_report_config,
     prepare_tester_report_directories,
+    public_report_resolution_summary,
     read_csv_rows,
     repo_relative,
+    runtime_contract_value,
     selected_attempt_rows,
     sha256,
     write_csv,
 )
 from foundation.mt5.runtime_completion import (
-    EXPECTED_EXECUTION_PROFILE_ID,
-    EXPECTED_PERIOD_PROFILE_ID,
-    EXPECTED_RUNTIME_PERIOD_SET_ID,
     RuntimeAttemptState,
     evaluate_runtime_attempt,
     runtime_status,
 )
+from foundation.mt5.tester_report_receipt import tester_report_completed
 from foundation.pipelines.prepare_wave0_l4_decision_replay_attempts import (
     EA_BINARY,
     EA_SOURCE,
@@ -461,7 +462,7 @@ def run_one_attempt(
             "bundle_id": row["bundle_id"],
             "tester_config": artifact_ref(tester_config, repo_root),
             "tester_report_config": report_config_summary,
-            "tester_report_resolution_prelaunch": report_directory_summary,
+            "tester_report_resolution_prelaunch": public_report_resolution_summary(report_directory_summary),
             "source_score_telemetry_redacted": redact_path(str(source_common)),
             "execution_telemetry_redacted": redact_path(str(execution_common)),
             "claim_boundary": "decision_replay_terminal_execution_evidence_only_no_runtime_authority_no_economics_pass",
@@ -537,6 +538,16 @@ def run_one_attempt(
         }
     write_yaml(root / "execution_telemetry_summary.yaml", telemetry_summary)
 
+    report_receipt = build_tester_report_receipt_for_attempt(
+        repo_root=repo_root,
+        attempt_root=root,
+        attempt_id=attempt_id,
+        tester_config=tester_config,
+        portable_terminal_root=portable_terminal_root,
+        main_terminal_data_root=main_data_root,
+        prelaunch_candidates=report_directory_summary.get("prelaunch_candidates", []),
+        launch_started_at_utc=terminal_summary.get("started_at_utc"),
+    )
     report = archive_tester_report(
         repo_root,
         root,
@@ -550,7 +561,7 @@ def run_one_attempt(
         "claim_boundary": "missing_source_no_tester_report_claim",
     }
     report_observed = bool(report.get("observed"))
-    report_completed = report.get("status") == "tester_report_archived_local_hash_recorded"
+    report_completed = tester_report_completed(report_receipt)
     tester_log_summary = build_tester_log_summary(repo_root, root, tester_config, attempt_id) if source_observed else {
         "version": "decision_replay_tester_log_summary_v1",
         "summary_path": f"runtime/mt5_attempts/{attempt_id}/tester_log_summary.yaml",
@@ -574,10 +585,12 @@ def run_one_attempt(
             tester_report_completed=report_completed,
             terminal_mode=terminal_mode_label,
             period_role=row["period_role"],
-            period_profile_id=EXPECTED_PERIOD_PROFILE_ID,
-            runtime_period_set_id=row.get("runtime_period_set_id") or EXPECTED_RUNTIME_PERIOD_SET_ID,
-            execution_profile_id=row.get("tester_execution_profile_id") or EXPECTED_EXECUTION_PROFILE_ID,
-            surface_scope="full_period_sparse_decision_surface",
+            period_profile_id=runtime_contract_value(manifest, row, "period_profile_id", "runtime_period_profile_id"),
+            runtime_period_set_id=runtime_contract_value(manifest, row, "runtime_period_set_id"),
+            execution_profile_id=runtime_contract_value(
+                manifest, row, "tester_execution_profile_id", "execution_profile_id"
+            ),
+            surface_scope=runtime_contract_value(manifest, row, "surface_scope"),
         ),
         required_period_roles=["validation", "research_oos"],
         completion_eligible_surface_scopes=["full_period_deterministic", "full_period_sparse_decision_surface"],
@@ -624,11 +637,19 @@ def run_one_attempt(
     manifest["execution_telemetry_summary"] = telemetry_summary
     manifest["tester_log_summary"] = tester_log_summary
     manifest["tester_report"] = report
+    manifest["tester_report_receipt"] = {
+        "path": f"runtime/mt5_attempts/{attempt_id}/tester_report_receipt.yaml",
+        "receipt_version": report_receipt.get("receipt_version"),
+        "tester_report_completed": report_receipt.get("tester_report_completed"),
+        "missing_requirements": report_receipt.get("missing_requirements", []),
+        "claim_boundary": report_receipt.get("claim_boundary"),
+    }
     if "failure_disposition" in telemetry_summary:
         manifest["failure_disposition"] = telemetry_summary["failure_disposition"]
     artifact_identity = manifest.setdefault("artifact_identity", {})
     artifact_identity["terminal_run_summary"] = artifact_ref(root / "terminal_run_summary.yaml", repo_root)
     artifact_identity["execution_telemetry_summary"] = artifact_ref(root / "execution_telemetry_summary.yaml", repo_root)
+    artifact_identity["tester_report_receipt"] = artifact_ref(root / "tester_report_receipt.yaml", repo_root)
     if source_observed:
         artifact_identity["tester_log_summary"] = artifact_ref(root / "tester_log_summary.yaml", repo_root)
     if telemetry_artifact:
