@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp05_final_amendment_completed_protected_claim_precedence_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp05_final_correction_completed_requested_claim_fail_closed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -873,7 +873,7 @@ work_units:
   WP05:
     status: completed
     started_at_utc: '2026-06-23T11:45:00Z'
-    completed_at_utc: '2026-06-23T14:34:38Z'
+    completed_at_utc: '2026-06-23T15:05:01Z'
     objective: Align canonical skills, work-family registry mappings, registry-backed
       routing behavior, and routing benchmarks with the actual operating model.
     changed_files:
@@ -1058,7 +1058,59 @@ work_units:
         result: 334 passed in 774.69s
       commit_subject: WP05 remove protected claim overrides
       commit_sha: recorded_by_final_wp05_final_amendment_commit
-    claim_boundary: corrective_wp05_final_amendment_completed_protected_claim_precedence_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    final_correction:
+      id: wp05_remove_partial_requested_claim_bypass_invalid_family_precedence_and_mojibake_aliases
+      status: completed
+      started_at_utc: '2026-06-23T14:47:24Z'
+      completed_at_utc: '2026-06-23T15:05:01Z'
+      objective: Ensure every requested_claims item is protected by exact alias
+        matching or generic fallback, detect protected claims before requested_family
+        validation, remove hardcoded mojibake routing aliases, and keep UTF-8
+        Korean routing tests readable.
+      results:
+        exact_requested_claim_matching_tests: passed
+        generic_requested_claim_fallback_tests: passed
+        requested_claims_nonempty_always_protected: passed
+        invalid_requested_family_protected_precedence_tests: passed
+        invalid_requested_family_without_protected_claim_fails: passed
+        utf8_korean_routing_tests: passed
+        hardcoded_mojibake_routing_aliases_removed: passed
+        token_aware_assertion_intent_preserved: passed
+        policy_path_precedence_preserved: passed
+        expected_automatic_family_coverage: 1.0
+        correctly_matched_automatic_family_coverage: 1.0
+      validation:
+      - command: uv run pytest tests/test_routing_behavior.py -q
+        status: passed
+        result: 32 passed
+      - command: uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+        status: passed
+        result: accuracy 1.0; protected assertion recall 1.0; protected read-only
+          recall 1.0; expected automatic family coverage 1.0; correctly matched
+          automatic family coverage 1.0
+      - command: uv run python foundation/validation/routing_contract_lint.py --repo-root
+          .
+        status: passed
+        result: routing contract lint passed
+      - command: uv run python foundation/validation/policy_duplicate_lint.py --repo-root
+          .
+        status: passed
+        result: policy duplicate lint passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: python -m compileall src/spacesonar/control_plane foundation/validation
+        status: passed
+        result: routing and validation modules compiled successfully
+      - command: uv run pytest -q
+        status: passed
+        result: 339 passed in 849.41s
+      - command: git diff --check
+        status: passed
+        result: no whitespace errors; CRLF normalization warning only
+      commit_subject: WP05 remove requested-claim bypass
+      commit_sha: recorded_by_wp05_final_correction_commit
+    claim_boundary: corrective_wp05_final_correction_completed_requested_claim_fail_closed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   WP06:
     status: pending
   WP07:

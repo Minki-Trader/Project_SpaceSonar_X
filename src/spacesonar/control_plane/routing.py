@@ -11,19 +11,6 @@ import yaml
 
 REGISTRY_PATH = Path("docs/agent_control/work_family_registry.yaml")
 CLAIM_VOCABULARY_PATH = Path("docs/agent_control/claim_vocabulary.yaml")
-BROKEN_INPUT_QUESTION = "\u003f"
-COMPAT_PROTECTED_CLAIM_ALIASES = {
-    "runtime_authority": ("\u003f\uace0" + BROKEN_INPUT_QUESTION * 3 + "\u6c85\ub6b0\ube33",),
-    "economics_pass": ("\u5bc3\uc38c\uc823" + BROKEN_INPUT_QUESTION * 3 + "\ub4e6\ub0b5",),
-    "selected_baseline": ("\u003f\uc88f\uae6e \u6e72\uacd7" + BROKEN_INPUT_QUESTION * 3,),
-    "production_deployment": ("\u003f\ub301\uc07a \u8adb\uace0\ub8f7",),
-}
-COMPAT_PROTECTED_CLAIM_ASSERTION_ALIASES = (
-    "\u003f\uba84\uc819",
-    "\u003f\ubc40\uc524",
-    "\u003f\uc88e\ubf35",
-    "\u003f\u317c\uc819",
-)
 
 
 @dataclass(frozen=True)
@@ -56,23 +43,7 @@ def load_routing_registry(repo_root: Path | None = None) -> dict[str, Any]:
 
 def load_claim_vocabulary(repo_root: Path | None = None) -> dict[str, Any]:
     root = (repo_root or _repo_root()).resolve()
-    return _with_compat_claim_vocabulary(_load_yaml(root / CLAIM_VOCABULARY_PATH))
-
-
-def _with_compat_claim_vocabulary(payload: dict[str, Any]) -> dict[str, Any]:
-    merged = dict(payload)
-    protected = {
-        str(claim_id): list(aliases if isinstance(aliases, list) else [])
-        for claim_id, aliases in (payload.get("protected_claim_aliases") or {}).items()
-    }
-    for claim_id, aliases in COMPAT_PROTECTED_CLAIM_ALIASES.items():
-        protected.setdefault(claim_id, [])
-        protected[claim_id].extend(alias for alias in aliases if alias not in protected[claim_id])
-    intents = list(payload.get("protected_claim_assertion_intent_aliases") or [])
-    intents.extend(alias for alias in COMPAT_PROTECTED_CLAIM_ASSERTION_ALIASES if alias not in intents)
-    merged["protected_claim_aliases"] = protected
-    merged["protected_claim_assertion_intent_aliases"] = intents
-    return merged
+    return _load_yaml(root / CLAIM_VOCABULARY_PATH)
 
 
 def _normalize_text(value: str) -> str:
@@ -97,20 +68,27 @@ def _contains_intent_alias(haystack: str, alias: str) -> bool:
 
 
 def _claim_alias_hits(text: str, requested_claims: tuple[str, ...], claim_vocabulary: dict[str, Any]) -> set[str]:
-    haystacks = [_normalize_text(text), *[_normalize_text(item) for item in requested_claims]]
+    text_haystack = _normalize_text(text)
     hits: set[str] = set()
+    exact_claim_lookup: dict[str, str] = {}
     for claim_id, aliases in (claim_vocabulary.get("protected_claim_aliases") or {}).items():
+        normalized_claim_id = _normalize_text(str(claim_id))
+        if normalized_claim_id:
+            exact_claim_lookup[normalized_claim_id] = str(claim_id)
         alias_values = aliases if isinstance(aliases, list) else []
         for alias in alias_values:
             needle = _normalize_text(str(alias))
-            if needle and any(needle in haystack for haystack in haystacks):
+            if needle:
+                exact_claim_lookup[needle] = str(claim_id)
+            if needle and needle in text_haystack:
                 hits.add(str(claim_id))
-                break
     if requested_claims:
         for item in requested_claims:
             normalized = _normalize_text(item)
-            matched_known = any(normalized in _normalize_text(str(alias)) for aliases in (claim_vocabulary.get("protected_claim_aliases") or {}).values() for alias in (aliases or []))
-            if not matched_known:
+            matched_claim = exact_claim_lookup.get(normalized)
+            if matched_claim:
+                hits.add(matched_claim)
+            else:
                 hits.add("generic_requested_claim")
     return hits
 
@@ -175,8 +153,6 @@ def route_work_item(
     active_registry = registry or load_routing_registry(repo_root)
     claim_vocabulary = load_claim_vocabulary(repo_root)
     families = active_registry.get("work_families") or {}
-    if requested_family is not None and requested_family not in families:
-        raise KeyError(f"requested_family {requested_family!r} is absent from {REGISTRY_PATH.as_posix()}")
 
     text = " ".join([request_text, *touched_paths, *execution_layers, *requested_claims])
     text_norm = _normalize_text(text)
@@ -201,7 +177,11 @@ def route_work_item(
     if claim_hits and assertion_intent:
         rules.append("protected_claim_guard")
         if requested_family:
-            rules.extend(["requested_family", "requested_family_overridden_by_protected_claim"])
+            rules.append("requested_family")
+            if requested_family in families:
+                rules.append("requested_family_overridden_by_protected_claim")
+            else:
+                rules.append("requested_family_invalid_but_overridden_by_protected_claim")
         if claim_hits == {"selected_baseline"}:
             rules.append("protected_selected_baseline_claim")
             return _decision("candidate_evaluation", "lab_experiment", "protected_candidate_model", 0.97, rules, ambiguous, registry=active_registry)
@@ -209,9 +189,16 @@ def route_work_item(
 
     if claim_hits and not assertion_intent:
         if requested_family:
-            rules.extend(["requested_family", "requested_family_overridden_by_protected_claim"])
+            rules.append("requested_family")
+            if requested_family in families:
+                rules.append("requested_family_overridden_by_protected_claim")
+            else:
+                rules.append("requested_family_invalid_but_overridden_by_protected_claim")
         rules.append("protected_claim_read_only")
         return _decision("information_only", "information_only", "protected_claim_read_only", 0.9, rules, ambiguous, registry=active_registry)
+
+    if requested_family is not None and requested_family not in families:
+        raise KeyError(f"requested_family {requested_family!r} is absent from {REGISTRY_PATH.as_posix()}")
 
     if requested_family:
         rules.append("requested_family")

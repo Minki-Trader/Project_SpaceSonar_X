@@ -2,10 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 import yaml
 
 from foundation.validation.routing_behavior_eval import evaluate
-from spacesonar.control_plane.routing import route_work_item
+from spacesonar.control_plane.routing import _claim_alias_hits, load_claim_vocabulary, route_work_item
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,6 +59,31 @@ def test_requested_runtime_authority_selects_protected_runtime_guard() -> None:
 def load_yaml(path: Path) -> dict:
     with path.open("r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle) or {}
+
+
+def test_routing_sources_keep_readable_utf8_korean_and_no_mojibake_alias_layer() -> None:
+    routing_text = (ROOT / "src/spacesonar/control_plane/routing.py").read_text(encoding="utf-8-sig")
+    test_text = Path(__file__).read_text(encoding="utf-8-sig")
+    vocabulary = load_yaml(ROOT / "docs/agent_control/claim_vocabulary.yaml")
+
+    assert "COMPAT_PROTECTED_CLAIM_ALIASES" not in routing_text
+    assert "COMPAT_PROTECTED_CLAIM_ASSERTION_ALIASES" not in routing_text
+    assert "BROKEN_INPUT_QUESTION" not in routing_text
+    assert "_with_compat_claim_vocabulary" not in routing_text
+    assert "\ufffd" not in routing_text
+    assert "\ufffd" not in test_text
+    for phrase in (
+        "경제성 통과 여부?",
+        "운영 배포로 설정해줘.",
+        "라이브 준비 완료를 승인해줘.",
+        "선택 기준선 상태는?",
+    ):
+        assert phrase in test_text
+    aliases = vocabulary["protected_claim_aliases"]
+    assert "경제성 통과" in aliases["economics_pass"]
+    assert "운영 배포" in aliases["production_deployment"]
+    assert "라이브 준비 완료" in aliases["live_readiness"]
+    assert "선택 기준선" in aliases["selected_baseline"]
 
 
 def skill_frontmatter(skill_name: str) -> dict:
@@ -183,12 +209,48 @@ def test_requested_family_cannot_override_protected_claim_assertions() -> None:
     assert "requested_family_overridden_by_protected_claim" in baseline.matched_rules
 
 
+def test_requested_claim_matching_is_exact_and_fail_closed() -> None:
+    vocabulary = load_claim_vocabulary(ROOT)
+
+    assert _claim_alias_hits("", ("runtime_authority",), vocabulary) == {"runtime_authority"}
+    assert _claim_alias_hits("", ("runtime authority",), vocabulary) == {"runtime_authority"}
+    assert _claim_alias_hits("", ("runtime",), vocabulary) == {"generic_requested_claim"}
+    assert _claim_alias_hits("", ("pass",), vocabulary) == {"generic_requested_claim"}
+    assert _claim_alias_hits("", ("selected",), vocabulary) == {"generic_requested_claim"}
+    assert _claim_alias_hits("", ("unknown_review_claim",), vocabulary) == {"generic_requested_claim"}
+
+
+def test_partial_or_unknown_requested_claims_are_protected() -> None:
+    for requested_claim in ("runtime", "pass", "selected", "unknown_review_claim"):
+        decision = route_work_item("Approve this.", requested_claims=(requested_claim,))
+        assert decision.primary_family == "runtime_probe"
+        assert decision.policy_guard_set == "protected_runtime"
+
+
+def test_invalid_requested_family_cannot_preempt_protected_claims() -> None:
+    assertion = route_work_item("Approve live readiness.", requested_family="invalid_family")
+    read_only = route_work_item("선택 기준선 상태는?", requested_family="invalid_family")
+
+    assert assertion.primary_family == "runtime_probe"
+    assert assertion.policy_guard_set == "protected_runtime"
+    assert "requested_family_invalid_but_overridden_by_protected_claim" in assertion.matched_rules
+    assert read_only.primary_family == "information_only"
+    assert read_only.policy_guard_set == "protected_claim_read_only"
+    assert "requested_family_invalid_but_overridden_by_protected_claim" in read_only.matched_rules
+
+
+def test_invalid_requested_family_without_protected_claim_fails() -> None:
+    with pytest.raises(KeyError):
+        route_work_item("Explain current status.", requested_family="invalid_family")
+
+
 def test_protected_runtime_assertion_aliases() -> None:
     for prompt in (
         "Approve live readiness.",
         "Declare economics pass.",
         "Grant runtime authority.",
         "라이브 준비 완료를 승인해줘.",
+        "운영 배포로 설정해줘.",
     ):
         decision = route_work_item(prompt)
         assert decision.primary_family == "runtime_probe"
@@ -199,7 +261,8 @@ def test_terse_protected_claim_mentions_are_read_only() -> None:
     for prompt in (
         "Live readiness?",
         "Selected baseline?",
-        "寃쎌젣???듦낵 ?щ??",
+        "경제성 통과 여부?",
+        "선택 기준선 상태는?",
         "What is production deployment status?",
     ):
         decision = route_work_item(prompt)
@@ -210,14 +273,14 @@ def test_terse_protected_claim_mentions_are_read_only() -> None:
 def test_assertion_intent_is_token_aware() -> None:
     read_only = route_work_item("What is live readiness in this dataset?")
     assertion = route_work_item("Set live readiness.")
-    mojibake_assertion = route_work_item("?댁쁺 諛고룷濡??ㅼ젙?댁쨾.")
+    korean_assertion = route_work_item("운영 배포로 설정해줘.")
 
     assert read_only.primary_family == "information_only"
     assert read_only.policy_guard_set == "protected_claim_read_only"
     assert assertion.primary_family == "runtime_probe"
     assert assertion.policy_guard_set == "protected_runtime"
-    assert mojibake_assertion.primary_family == "runtime_probe"
-    assert mojibake_assertion.policy_guard_set == "protected_runtime"
+    assert korean_assertion.primary_family == "runtime_probe"
+    assert korean_assertion.policy_guard_set == "protected_runtime"
 
 
 def test_explanation_only_runtime_path_does_not_trigger_execution() -> None:
