@@ -224,7 +224,7 @@ work_units:
     claim_boundary: corrective_wp01_truth_kernel_only_no_historical_runtime_migration_no_runtime_authority_no_economics_pass
   WP02:
     status: completed
-    completed_at_utc: '2026-06-23T01:55:18Z'
+    completed_at_utc: '2026-06-23T02:09:19Z'
     objective: Harden control-plane transactions so multi-record mutation is all-or-rollback before runtime graph migration.
     changed_files:
       - .gitignore
@@ -261,9 +261,12 @@ work_units:
       rollback:
         restores_preimages: true
         verifies_restored_hashes: true
+        occurs_before_rollback_journal_or_receipt_persistence: true
+        audit_persistence_failure_is_nonfatal_to_canonical_restore: true
         records_applied_paths_before_failure: true
         records_restored_paths: true
         records_rollback_verification: true
+      metadata_write_protocol: sibling temporary file, file fsync, atomic replace, best-effort parent directory fsync
       statuses:
         - committed
         - noop_already_applied
@@ -274,13 +277,13 @@ work_units:
     validation:
       - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
         status: passed
-        result: 25 passed
+        result: 28 passed
       - command: uv run pytest tests/control_plane/test_lifecycle_idempotency.py -q
         status: passed
         result: 1 passed
       - command: uv run pytest tests/control_plane -q
         status: passed
-        result: 47 passed
+        result: 50 passed
       - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
         status: passed
         result: 14 passed
@@ -334,6 +337,19 @@ work_units:
         reserved_internal_path_rejection: passed
         validation_before_noop: passed
         validator_exception_abort: passed
+    final_amendment:
+      id: wp02_rollback_independent_of_audit_persistence
+      status: completed
+      completed_at_utc: '2026-06-23T02:09:19Z'
+      commit_subject: WP02 make rollback independent of audit persistence
+      commit_sha: recorded_by_final_git_commit_for_this_amendment
+      results:
+        actual_receipt_write_failure_after_replacements: passed
+        rollback_terminal_journal_write_failure: passed
+        combined_journal_and_receipt_persistence_failure: passed
+        rollback_before_audit_persistence: passed
+        atomic_internal_metadata_write: passed
+        canonical_rollback_status_independent_of_audit_failure: passed
     wp03_handoff:
       transaction_class: spacesonar.control_plane.transaction.ControlPlaneTransaction
       stage_methods:

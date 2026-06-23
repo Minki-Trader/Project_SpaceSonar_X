@@ -146,6 +146,111 @@ def test_failure_before_final_receipt_restores_all_canonical_files(tmp_path: Pat
     assert journal["state"] == "rolled_back"
 
 
+def test_actual_receipt_write_failure_after_replacements_still_rolls_back(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    first = tmp_path / "docs/a.txt"
+    second = tmp_path / "docs/b.txt"
+    first.parent.mkdir(parents=True)
+    first.write_text("A0\n", encoding="utf-8")
+    second.write_text("B0\n", encoding="utf-8")
+    original_hashes = {first: sha256_file(first), second: sha256_file(second)}
+    tx = ControlPlaneTransaction(ctx(tmp_path), tx_id="tx_test_receipt_write_failure")
+    tx.stage_text("docs/a.txt", "A1\n")
+    tx.stage_text("docs/b.txt", "B1\n")
+
+    def fail_receipt(_receipt: dict) -> None:
+        raise OSError("receipt unavailable")
+
+    monkeypatch.setattr(tx, "_write_receipt", fail_receipt)
+
+    result = tx.commit()
+
+    assert result.status == "rolled_back_commit_failure"
+    assert first.read_text(encoding="utf-8") == "A0\n"
+    assert second.read_text(encoding="utf-8") == "B0\n"
+    assert sha256_file(first) == original_hashes[first]
+    assert sha256_file(second) == original_hashes[second]
+    assert any(error.startswith("receipt_persistence_failed:OSError:receipt unavailable") for error in result.errors)
+    assert not result.receipt_path.exists()
+
+
+def test_rollback_journal_write_failure_is_nonfatal_to_canonical_restore(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    first = tmp_path / "docs/a.txt"
+    second = tmp_path / "docs/b.txt"
+    first.parent.mkdir(parents=True)
+    first.write_text("A0\n", encoding="utf-8")
+    second.write_text("B0\n", encoding="utf-8")
+    original_hashes = {first: sha256_file(first), second: sha256_file(second)}
+    tx = ControlPlaneTransaction(ctx(tmp_path), tx_id="tx_test_rollback_journal_failure")
+    tx.stage_text("docs/a.txt", "A1\n")
+    tx.stage_text("docs/b.txt", "B1\n")
+    original_write_journal = tx._write_commit_journal
+
+    def fail_terminal_journal(*, state: str, **kwargs) -> None:
+        if state in {"rolled_back", "rollback_failed"}:
+            assert first.read_text(encoding="utf-8") == "A0\n"
+            assert second.read_text(encoding="utf-8") == "B0\n"
+            raise OSError("journal unavailable")
+        original_write_journal(state=state, **kwargs)
+
+    monkeypatch.setattr(tx, "_write_commit_journal", fail_terminal_journal)
+
+    result = tx.commit(fail_after_replace_count=1)
+
+    assert result.status == "rolled_back_commit_failure"
+    assert sha256_file(first) == original_hashes[first]
+    assert sha256_file(second) == original_hashes[second]
+    assert any(error.startswith("journal_persistence_failed:OSError:journal unavailable") for error in result.errors)
+    receipt = load_yaml(result.receipt_path)
+    assert receipt["rollback_verification"] == [
+        {"path": "docs/a.txt", "status": "passed", "error": None},
+        {"path": "docs/b.txt", "status": "passed", "error": None},
+    ]
+
+
+def test_rollback_still_returns_when_journal_and_receipt_persistence_fail(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    first = tmp_path / "docs/a.txt"
+    second = tmp_path / "docs/b.txt"
+    first.parent.mkdir(parents=True)
+    first.write_text("A0\n", encoding="utf-8")
+    second.write_text("B0\n", encoding="utf-8")
+    original_hashes = {first: sha256_file(first), second: sha256_file(second)}
+    tx = ControlPlaneTransaction(ctx(tmp_path), tx_id="tx_test_all_audit_failure")
+    tx.stage_text("docs/a.txt", "A1\n")
+    tx.stage_text("docs/b.txt", "B1\n")
+    original_write_journal = tx._write_commit_journal
+
+    def fail_terminal_journal(*, state: str, **kwargs) -> None:
+        if state in {"rolled_back", "rollback_failed"}:
+            raise OSError("journal unavailable")
+        original_write_journal(state=state, **kwargs)
+
+    def fail_receipt(_receipt: dict) -> None:
+        raise OSError("receipt unavailable")
+
+    monkeypatch.setattr(tx, "_write_commit_journal", fail_terminal_journal)
+    monkeypatch.setattr(tx, "_write_receipt", fail_receipt)
+
+    result = tx.commit(fail_after_replace_count=1)
+
+    assert result.status == "rolled_back_commit_failure"
+    assert first.read_text(encoding="utf-8") == "A0\n"
+    assert second.read_text(encoding="utf-8") == "B0\n"
+    assert sha256_file(first) == original_hashes[first]
+    assert sha256_file(second) == original_hashes[second]
+    assert any(error.startswith("journal_persistence_failed:OSError:journal unavailable") for error in result.errors)
+    assert any(error.startswith("receipt_persistence_failed:OSError:receipt unavailable") for error in result.errors)
+    assert not result.receipt_path.exists()
+
+
 def test_input_hashes_are_pre_mutation_and_committed_hashes_are_post_mutation(tmp_path: Path) -> None:
     target = tmp_path / "docs/current.yaml"
     target.parent.mkdir(parents=True)

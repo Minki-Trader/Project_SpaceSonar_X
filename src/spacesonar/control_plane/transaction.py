@@ -244,7 +244,34 @@ class ControlPlaneTransaction:
 
     def _write_yaml_file(self, path: Path, payload: dict) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(dump_yaml(payload), encoding="utf-8")
+        temp_path = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
+        try:
+            with temp_path.open("w", encoding="utf-8") as handle:
+                handle.write(dump_yaml(payload))
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temp_path, path)
+            self._fsync_parent_dir(path.parent)
+        except Exception:
+            if temp_path.exists():
+                try:
+                    temp_path.unlink()
+                except OSError:
+                    pass
+            raise
+
+    @staticmethod
+    def _fsync_parent_dir(path: Path) -> None:
+        try:
+            fd = os.open(path, os.O_RDONLY)
+        except OSError:
+            return
+        try:
+            os.fsync(fd)
+        except OSError:
+            pass
+        finally:
+            os.close(fd)
 
     def _write_receipt(self, receipt: dict) -> None:
         if self.receipt_path.exists():
@@ -670,29 +697,29 @@ class ControlPlaneTransaction:
         planned_paths: list[Path],
         applied_paths: list[Path],
     ) -> TransactionResult:
-        self._write_commit_journal(
-            state="applying",
-            planned_paths=planned_paths,
-            applied_paths=applied_paths,
-            rollback_paths=[],
-            preimages=preimages,
-            temps=temps,
-        )
         rollback_errors, restored_paths, rollback_verification = self._restore_preimages(preimages)
         status = "rollback_failed" if rollback_errors else "rolled_back_commit_failure"
         terminal_state = "rollback_failed" if rollback_errors else "rolled_back"
-        self._write_commit_journal(
-            state=terminal_state,
-            planned_paths=planned_paths,
-            applied_paths=applied_paths,
-            rollback_paths=restored_paths,
-            preimages=preimages,
-            temps=temps,
-        )
         errors = [f"{exc.__class__.__name__}: {exc}"]
+        audit_errors: list[str] = []
+        try:
+            self._write_commit_journal(
+                state=terminal_state,
+                planned_paths=planned_paths,
+                applied_paths=applied_paths,
+                rollback_paths=restored_paths,
+                preimages=preimages,
+                temps=temps,
+            )
+        except Exception as journal_exc:
+            audit_errors.append(
+                f"journal_persistence_failed:{journal_exc.__class__.__name__}:{journal_exc}"
+            )
+
+        receipt_errors = errors + audit_errors
         receipt = self._receipt(
             status=status,
-            errors=errors,
+            errors=receipt_errors,
             committed=[],
             preimages=preimages,
             rollback_required=bool(rollback_errors),
@@ -701,12 +728,17 @@ class ControlPlaneTransaction:
             restored_paths=restored_paths,
             rollback_verification=rollback_verification,
         )
-        self._write_receipt(receipt)
+        try:
+            self._write_receipt(receipt)
+        except Exception as receipt_exc:
+            audit_errors.append(
+                f"receipt_persistence_failed:{receipt_exc.__class__.__name__}:{receipt_exc}"
+            )
         return TransactionResult(
             transaction_id=self.transaction_id,
             status=status,
             receipt_path=self.receipt_path,
-            errors=tuple(errors + rollback_errors),
+            errors=tuple(errors + rollback_errors + audit_errors),
         )
 
     @staticmethod
