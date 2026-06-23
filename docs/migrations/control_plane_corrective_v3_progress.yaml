@@ -1,0 +1,99 @@
+version: corrective_workflow_progress_v1
+workflow_status: in_progress
+work_item_id: work_codex_control_plane_corrective_v3
+baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
+branch: codex/control-plane-corrective-v3
+current_claim_boundary: corrective_work_in_progress_no_new_protected_claims
+initialized_at_utc: '2026-06-22T23:53:38Z'
+invariants:
+  locked_final_oos_b_used: false
+  runtime_authority: false
+  economics_pass: false
+  live_readiness: false
+  selected_baseline: false
+baseline_facts:
+  initial_branch: codex/control-plane-corrective-v3
+  initial_head: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
+  initial_dirty_state: clean
+  initial_changed_paths: []
+  python_version: Python 3.13.9
+  uv_lock_sha256: 19836faa417eec98234c4c9297451aa5fdf836de389e09a6d00cb5ddc60d0fc1
+  candidate_count: 0
+  l5_candidate_count: 0
+  locked_final_oos_state:
+    locked_final_period_set_id: split_base_anchor_v0_locked_final
+    locked_final_oos_b_used: false
+    closeout_evidence: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+    contract_evidence: foundation/config/mt5_runtime_probe_contract.yaml
+  current_wave01_runtime_contract_status: passed
+  active_wave_status: wave01_control_plane_proof_closed_runtime_contract_complete
+  workspace_claim_boundary_at_entry: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+  runtime_attempt_directory_count: 88
+  runtime_attempt_manifest_count: 88
+work_units:
+  WP00:
+    status: completed
+    changed_files:
+      - docs/migrations/control_plane_corrective_v3_progress.yaml
+      - src/spacesonar/cli.py
+      - tests/control_plane/test_corrective_workstream_wp00.py
+    validation:
+      - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
+        status: passed
+        result: 7 passed
+      - command: python -m spacesonar.cli campaign materialize --campaign-id campaign_wp00_guard_probe_v0
+        status: passed
+        result: canonical lifecycle CLI rejected with exit code 3 before mutation
+      - command: python -m spacesonar.cli project validate
+        status: passed
+        result: project validation remained available while lifecycle mutation is blocked
+      - command: yaml parse docs/migrations/control_plane_corrective_v3_progress.yaml
+        status: passed
+        result: progress ledger parsed by WP00 test
+    findings:
+      - id: wp00_entry_head_verified
+        status: passed
+        detail: Repository HEAD matched baseline fbcde1e67221f0618e17388e6617c8dd3ff4c22d before mutation.
+      - id: wp00_lifecycle_cli_guard_required
+        status: passed
+        detail: Canonical campaign and wave lifecycle CLI commands are blocked until WP02 and WP04 complete.
+      - id: wp00_no_wave01_evidence_changed
+        status: passed
+        detail: WP00 changed only the progress ledger, CLI guard, and focused guard tests.
+    commands_executed:
+      - git rev-parse HEAD
+      - git switch -c codex/control-plane-corrective-v3
+      - git status --short --branch
+      - python --version
+      - Get-FileHash -Algorithm SHA256 -LiteralPath uv.lock
+      - uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
+      - python -m spacesonar.cli campaign materialize --campaign-id campaign_wp00_guard_probe_v0
+      - python -m spacesonar.cli project validate
+    baseline_facts_ref: baseline_facts
+    handoff:
+      next_packet: WP01
+      required_entry_condition: WP00.status completed
+      exact_handoff: Build the independent runtime-evidence truth kernel without migrating the 86 historical target attempts yet.
+      key_inputs:
+        - foundation/mt5/runtime_completion.py
+        - foundation/pipelines/run_wave0_l4_mt5_attempts.py
+        - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+        - foundation/validation/active_record_validator.py
+        - foundation/config/mt5_runtime_probe_contract.yaml
+      guard_state: canonical lifecycle CLI mutation remains blocked until WP02 and WP04 complete.
+  WP01:
+    status: pending
+  WP02:
+    status: pending
+  WP03:
+    status: pending
+  WP04:
+    status: pending
+  WP05:
+    status: pending
+  WP06:
+    status: pending
+  WP07:
+    status: pending
+  WP08:
+    status: pending

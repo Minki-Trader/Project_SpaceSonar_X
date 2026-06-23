@@ -19,6 +19,12 @@ from spacesonar.control_plane.state_projection import workspace_projection_diff,
 
 
 DEFAULT_CLAIM_BOUNDARY = "control_plane_operation_only_no_runtime_authority_no_economics_pass"
+CORRECTIVE_PROGRESS_PATH = Path("docs/migrations/control_plane_corrective_v3_progress.yaml")
+CORRECTIVE_LIFECYCLE_GUARD_EXIT = 3
+CORRECTIVE_LIFECYCLE_GUARD_MESSAGE = (
+    "canonical lifecycle mutation is blocked while control-plane corrective v3 is in progress; "
+    "Work Packets 02 and 04 must complete before activation"
+)
 
 
 def context(args: argparse.Namespace) -> ExecutionContext:
@@ -43,6 +49,24 @@ def print_result(result) -> None:
             sort_keys=False,
         )
     )
+
+
+def corrective_lifecycle_guard_reason(repo_root: Path) -> str | None:
+    """Block incomplete corrective lifecycle commands in the canonical repository only."""
+
+    progress_path = repo_root / CORRECTIVE_PROGRESS_PATH
+    if not progress_path.exists():
+        return None
+    try:
+        progress = yaml.safe_load(progress_path.read_text(encoding="utf-8-sig")) or {}
+    except yaml.YAMLError:
+        return f"{CORRECTIVE_LIFECYCLE_GUARD_MESSAGE}; progress ledger is not parseable"
+    work_units = progress.get("work_units") or {}
+    wp02_done = (work_units.get("WP02") or {}).get("status") == "completed"
+    wp04_done = (work_units.get("WP04") or {}).get("status") == "completed"
+    if wp02_done and wp04_done:
+        return None
+    return CORRECTIVE_LIFECYCLE_GUARD_MESSAGE
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -94,6 +118,10 @@ def main(argv: list[str] | None = None) -> int:
     repo_root = Path(args.repo_root).resolve()
 
     if args.area == "campaign":
+        reason = corrective_lifecycle_guard_reason(repo_root)
+        if reason:
+            print(reason, file=sys.stderr)
+            return CORRECTIVE_LIFECYCLE_GUARD_EXIT
         ctx = context(args)
         if args.action == "open":
             print_result(open_campaign(Path(args.spec), ctx))
@@ -105,6 +133,10 @@ def main(argv: list[str] | None = None) -> int:
             print_result(close_campaign(args.campaign_id, ctx))
         return 0
     if args.area == "wave":
+        reason = corrective_lifecycle_guard_reason(repo_root)
+        if reason:
+            print(reason, file=sys.stderr)
+            return CORRECTIVE_LIFECYCLE_GUARD_EXIT
         print_result(close_wave(args.wave_id, context(args)))
         return 0
     if args.area == "migrate" and args.action == "wave01-runtime-truth":
