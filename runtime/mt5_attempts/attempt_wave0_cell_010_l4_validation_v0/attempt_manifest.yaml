@@ -568,6 +568,11 @@ migration_history:
   reason: inventory_bound_runtime_graph_revalidation_with_historical_receipt_binding
   executed_at_utc: '2026-06-23T04:28:59Z'
   preserves_previous_migration_id: materialize_runtime_report_receipts_v1
+- migration_id: compact_historical_execution_provenance_v1
+  previous_sha256: ec65c60c3b53fed9b0d8f7cfed9ce1ec3f472362fd16cc3513633829b587fdd3
+  reason: compact_batch_wide_provenance_reference_without_deleting_historical_inline_provenance
+  executed_at_utc: '2026-06-24T00:20:55.981086Z'
+  claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 tester_report_receipt:
   path: runtime/mt5_attempts/attempt_wave0_cell_010_l4_validation_v0/tester_report_receipt.yaml
   sha256: d73c0bce06b15d7b885c823d0a0868e832b84024088fc0aea7c1507ddc71eb30
@@ -576,5 +581,11 @@ tester_report_receipt:
   migration_id: runtime_graph_revalidation_inventory_bound_v1
 provenance_compaction:
   migrated_to_batch_receipt: true
-  batch_receipt_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+  batch_receipt_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
   historical_inline_provenance_retained: true
+  compaction_role: metadata_compaction_only_not_original_execution_identity
+  claim_boundary: historical_provenance_compaction_only_no_runtime_authority_no_economics_pass
+  migration_id: compact_historical_execution_provenance_v1
+  compaction_batch_is_original_execution_identity: false
+  original_execution_identity_preserved_in_inline_provenance: true
+  previous_batch_receipt_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml

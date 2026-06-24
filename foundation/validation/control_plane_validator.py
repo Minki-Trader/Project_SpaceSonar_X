@@ -475,6 +475,11 @@ def validate_task_force_registry(repo_root: Path) -> list[str]:
 
 
 def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
+    src_path = str(repo_root / "src")
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
+    from spacesonar.control_plane.agent_metrics import consult_metric_errors
+
     registry = load_yaml(repo_root / "docs" / "agent_control" / "codex_task_force_registry.yaml")
     agents = {item.get("id") for item in registry.get("roster", [])}
     review_policy = registry.get("review_policy") or {}
@@ -525,6 +530,7 @@ def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
                 errors.append(f"{label}: unknown opinion classification {classification}")
             if classification in {"accepted", "rewritten"} and not refs:
                 errors.append(f"{label}: accepted/rewritten advice requires evidence_refs")
+        errors.extend(consult_metric_errors(data, label=label))
         if data.get("claim_effect") != "advisory_only_no_reviewed_pass":
             errors.append(f"{label}: consult claim_effect cannot satisfy reviewed/pass gates")
     return errors
@@ -535,9 +541,19 @@ def validate_agent_operating_metrics_projection(repo_root: Path) -> list[str]:
     if src_path not in sys.path:
         sys.path.insert(0, src_path)
 
-    from spacesonar.control_plane.agent_metrics import agent_operating_metrics_diff
+    from spacesonar.control_plane.agent_metrics import agent_operating_events_diff, agent_operating_metrics_diff
 
-    return agent_operating_metrics_diff(repo_root)
+    return [*agent_operating_events_diff(repo_root), *agent_operating_metrics_diff(repo_root)]
+
+
+def validate_execution_provenance(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.validation.execution_provenance_validator import validate as validate_execution_provenance_records
+
+    return validate_execution_provenance_records(repo_root)
 
 
 def validate_routing_smoke_prompts(repo_root: Path) -> list[str]:
@@ -617,6 +633,7 @@ def validate(repo_root: Path, *, include_active_records: bool = False) -> list[s
     errors.extend(validate_task_force_registry(repo_root))
     errors.extend(validate_agent_consult_receipts(repo_root))
     errors.extend(validate_agent_operating_metrics_projection(repo_root))
+    errors.extend(validate_execution_provenance(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))
 

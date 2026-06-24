@@ -19,8 +19,9 @@ def load_yaml(path: Path) -> Any:
 
 def write_yaml(path: Path, data: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
-        handle.write(yaml.safe_dump(data, sort_keys=False, allow_unicode=False))
+    payload = yaml.safe_dump(data, sort_keys=False, allow_unicode=False)
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(payload)
 
 
 def stable_yaml_bytes(data: Any) -> bytes:

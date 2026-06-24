@@ -36,6 +36,14 @@ baseline_facts:
 work_units:
   WP00:
     status: completed
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids:
+      - tf_goal_us100_onnx_forward_boundary_initial_v2
+      source_refs: []
+      started_at_utc: '2026-06-23T00:00:00Z'
+      ended_at_utc: '2026-06-23T00:00:00Z'
     changed_files:
     - docs/migrations/control_plane_corrective_v3_progress.yaml
     - docs/registers/artifact_registry.csv
@@ -124,6 +132,13 @@ work_units:
   WP01:
     status: completed
     completed_at_utc: '2026-06-23T01:10:00Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T00:00:00Z'
+      ended_at_utc: '2026-06-23T01:10:00Z'
     objective: Build independent runtime-evidence truth primitives without migrating
       historical Wave0/Wave01 attempts.
     changed_files:
@@ -249,6 +264,13 @@ work_units:
   WP02:
     status: completed
     completed_at_utc: '2026-06-23T02:09:19Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T01:10:00Z'
+      ended_at_utc: '2026-06-23T02:09:19Z'
     objective: Harden control-plane transactions so multi-record mutation is all-or-rollback
       before runtime graph migration.
     changed_files:
@@ -401,6 +423,13 @@ work_units:
   WP03:
     status: completed
     completed_at_utc: '2026-06-23T05:17:48Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T02:09:19Z'
+      ended_at_utc: '2026-06-23T05:17:48Z'
     objective: Revalidate the historical Wave0/Wave01 L4 runtime graph from inventory-bound
       durable MT5 evidence and materialize tester report receipts transactionally.
     changed_files:
@@ -587,6 +616,13 @@ work_units:
     status: completed
     started_at_utc: '2026-06-23T06:15:50Z'
     completed_at_utc: '2026-06-23T11:20:06Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T06:15:50Z'
+      ended_at_utc: '2026-06-23T11:20:06Z'
     amendment_relock_at_utc: '2026-06-23T07:40:24Z'
     objective: Complete the canonical lifecycle state machine, lock lifecycle mutations,
       preserve registry semantics, and release lifecycle commands only after validation.
@@ -874,6 +910,13 @@ work_units:
     status: completed
     started_at_utc: '2026-06-23T11:45:00Z'
     completed_at_utc: '2026-06-23T15:05:01Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T11:45:00Z'
+      ended_at_utc: '2026-06-23T15:05:01Z'
     objective: Align canonical skills, work-family registry mappings, registry-backed
       routing behavior, and routing benchmarks with the actual operating model.
     changed_files:
@@ -1113,7 +1156,14 @@ work_units:
     claim_boundary: corrective_wp05_final_correction_completed_requested_claim_fail_closed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   WP06:
     status: completed
-    completed_at_utc: '2026-06-23T16:08:35Z'
+    completed_at_utc: '2026-06-24T00:51:00Z'
+    agent_execution:
+      mode: solo
+      evidence_class: contemporaneous_work_receipt
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T15:05:01Z'
+      ended_at_utc: '2026-06-24T00:51:00Z'
     objective: Complete batch provenance capture, wire historical run and attempt
       records to compact batch provenance, and generate agent operating metrics
       from durable event counts.
@@ -1122,16 +1172,26 @@ work_units:
     - docs/registers/artifact_registry.csv
     - docs/workspace/agent_operating_events.yaml
     - docs/workspace/agent_operating_metrics.yaml
+    - foundation/evaluation/common.py
+    - foundation/migrations/compact_historical_execution_provenance_v1.py
     - foundation/validation/control_plane_validator.py
+    - foundation/validation/execution_provenance_validator.py
+    - lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/migration_inventory.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot/source_snapshot_manifest.yaml
     - lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
-    - lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source_snapshot/source_snapshot_manifest.yaml
+    - lab/runs/*/artifact_lineage.json
     - lab/runs/*/run_manifest.json
     - runtime/mt5_attempts/*/attempt_manifest.yaml
     - src/spacesonar/cli.py
     - src/spacesonar/control_plane/agent_metrics.py
     - src/spacesonar/control_plane/provenance.py
     - tests/control_plane/test_batch_provenance.py
+    - tests/test_agent_event_projection.py
     - tests/test_agent_metrics_projection.py
+    - tests/test_execution_provenance_validator.py
+    - tests/test_provenance_compaction_migration.py
     source_snapshot_formats_tested:
     - tracked_unstaged_patch
     - tracked_staged_patch
@@ -1149,8 +1209,11 @@ work_units:
       - renamed
       - binary
     batch_receipt:
-      path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
-      source_snapshot_manifest: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source_snapshot/source_snapshot_manifest.yaml
+      path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+      source_snapshot_manifest: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot/source_snapshot_manifest.yaml
+      migration_inventory: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/migration_inventory.yaml
+      receipt_completeness: complete
+      transaction_id: tx_20260624T005259729528Z_ec511bc5_44379828
       inputs_nonempty: true
       outputs_nonempty: true
       lock_hash_recorded: true
@@ -1162,8 +1225,10 @@ work_units:
       - src.spacesonar.control_plane.provenance.attach_execution_batch_ref
       historical_compaction_marker:
         migrated_to_batch_receipt: true
-        batch_receipt_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+        batch_receipt_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
         historical_inline_provenance_retained: true
+        compaction_role: metadata_compaction_only_not_original_execution_identity
+        original_execution_identity_preserved_in_inline_provenance: true
       historical_records_migrated:
         run_manifests: 37
         attempt_manifests: 88
@@ -1172,7 +1237,20 @@ work_units:
     lineage_refresh:
       reason: minimal fixture run and attempt manifest hashes changed after non-destructive
         provenance compaction markers were added.
-      refreshed_lineage_path: lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json
+      refreshed_lineage_paths:
+      - lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifact_lineage.json
       artifact_registry_refreshed: true
     agent_metrics:
       event_denominator_path: docs/workspace/agent_operating_events.yaml
@@ -1181,41 +1259,73 @@ work_units:
       manual_drift_fails_validation: true
       counts:
         work_item_count: 7
-        solo_work_item_count: 7
-        consult_count: 1
+        observed_work_item_count: 1
+        solo_work_item_count: 1
+        consult_count: 0
         one_agent_consult_count: 0
         two_agent_consult_count: 0
-        three_plus_agent_consult_count: 1
-        total_advice_items: 18
+        three_plus_agent_consult_count: 0
+        total_advice_items: 0
         duplicate_advice_items: 0
         unsupported_assertion_count: 0
-        accepted_after_verification_count: 3
+        accepted_after_verification_count: 0
         rejected_after_verification_count: 0
-        rewritten_after_verification_count: 1
-        operating_event_count: 8
+        rewritten_after_verification_count: 0
+        operating_event_count: 7
       ratios:
-        solo_work_share: 0.875
-        one_agent_share: 0.0
-        two_agent_share: 0.0
-        three_plus_agent_share: 0.125
-        routine_solo_or_single_agent_share: 0.875
+        solo_work_share: 1.0
+        one_agent_consult_share: 0.0
+        two_agent_consult_share: 0.0
+        three_plus_agent_consult_share: 0.0
+        routine_solo_or_single_agent_share: 1.0
         duplicate_advice_ratio: 0.0
-        accepted_after_verification_ratio: 0.166667
+        accepted_after_verification_ratio: 0.0
     validation:
-    - command: uv run pytest tests/control_plane/test_batch_provenance.py tests/test_agent_metrics_projection.py tests/test_agent_consult_receipts.py -q
+    - command: uv run pytest tests/control_plane/test_batch_provenance.py -q
       status: passed
-      result: 21 passed
+      result: 19 passed
+    - command: uv run pytest tests/test_execution_provenance_validator.py -q
+      status: passed
+      result: 4 passed
+    - command: uv run pytest tests/test_provenance_compaction_migration.py -q
+      status: passed
+      result: 4 passed
+    - command: uv run pytest tests/test_agent_event_projection.py -q
+      status: passed
+      result: 5 passed
+    - command: uv run pytest tests/test_agent_metrics_projection.py -q
+      status: passed
+      result: 3 passed
+    - command: uv run pytest tests/test_agent_consult_receipts.py -q
+      status: passed
+      result: 5 passed
     - command: uv run pytest tests/control_plane -q
       status: passed
-      result: 82 passed
+      result: 87 passed
+    - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py
+        --repo-root . --check
+      status: passed
+      result: changed_record_count=0 record_counts=37/88/125 runtime_evaluator_status=passed
+    - command: uv run python -m spacesonar.cli agents events --check
+      status: passed
+      result: agent events projection check passed
     - command: uv run python -m spacesonar.cli agents metrics --check
       status: passed
       result: agent metrics projection check passed
+    - command: uv run python foundation/evaluation/runtime_contract_evaluator.py
+        --repo-root . --output lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+      status: passed
+      result: runtime evaluator output remained migration-idempotent
+    - command: uv run python foundation/validation/execution_provenance_validator.py
+        --repo-root .
+      status: passed
+      result: execution provenance validation passed
     - command: uv run python foundation/validation/active_record_validator.py --repo-root
         .
       status: passed
       result: active-record validation passed
-    - command: python foundation/validation/control_plane_validator.py --repo-root .
+    - command: uv run python foundation/validation/control_plane_validator.py --repo-root
+        .
       status: passed
       result: control-plane validation passed
     - command: uv run python -m spacesonar.cli project validate
@@ -1224,14 +1334,10 @@ work_units:
     - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
         --repo-root . --check
       status: passed
-      result: rows=877 refreshable=877 changed=0 missing=0
-    - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
-        foundation/validation
-      status: passed
-      result: changed Python modules compiled successfully
+      result: rows=929 refreshable=929 changed=0 missing=0
     - command: uv run pytest -q
       status: passed
-      result: 351 passed
+      result: 370 passed in 1151.04s
     claim_boundary: corrective_wp06_completed_batch_provenance_and_agent_telemetry_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
     handoff:
       next_packet: WP07

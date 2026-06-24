@@ -1,32 +1,34 @@
-version: agent_operating_metrics_v2
-updated_utc: '2026-06-24T00:00:00Z'
+version: agent_operating_metrics_v3
+updated_utc: '2026-06-22T23:53:38Z'
 source_refs:
 - path: docs/workspace/agent_operating_events.yaml
-  sha256: ef25ee12148888e9e34aefa774fe062fd121cc28a2eb47e334be04d783b81bc0
-- path: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
-  sha256: 8a3ba1097a925fe40f06016466a41fa1199d345a320544dd0969ade73038d57f
-measurement_boundary: control_plane_corrective_v3_local_records_only
+  sha256: 1951fae25833aa568e621f91a564df5a5e8cf8b079fbc622b6e555aa25d861bf
+  size_bytes: 4138
+measurement_boundary:
+  start_utc: '2026-06-22T23:53:38Z'
+  end_utc: null
+  boundary_id: control_plane_corrective_v3
 agent_operating_metrics:
   work_item_count: 7
-  solo_work_item_count: 7
-  consult_count: 1
+  observed_work_item_count: 1
+  solo_work_item_count: 1
+  consult_count: 0
   one_agent_consult_count: 0
   two_agent_consult_count: 0
-  three_plus_agent_consult_count: 1
-  total_advice_items: 18
+  three_plus_agent_consult_count: 0
+  total_advice_items: 0
   duplicate_advice_items: 0
   unsupported_assertion_count: 0
-  accepted_after_verification_count: 3
+  accepted_after_verification_count: 0
   rejected_after_verification_count: 0
-  rewritten_after_verification_count: 1
-  operating_event_count: 8
-  solo_work_share: 0.875
-  one_agent_share: 0.0
-  two_agent_share: 0.0
-  three_plus_agent_share: 0.125
-  routine_solo_or_single_agent_share: 0.875
+  rewritten_after_verification_count: 0
+  solo_work_share: 1.0
+  one_agent_consult_share: 0.0
+  two_agent_consult_share: 0.0
+  three_plus_agent_consult_share: 0.0
+  routine_solo_or_single_agent_share: 1.0
   duplicate_advice_ratio: 0.0
-  accepted_after_verification_ratio: 0.166667
+  accepted_after_verification_ratio: 0.0
 compact_work_default:
   agent_mode: solo
   allocation_block_required: false

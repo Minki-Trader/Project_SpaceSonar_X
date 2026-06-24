@@ -1,32 +1,116 @@
-version: agent_operating_events_v1
-updated_utc: '2026-06-24T00:00:00Z'
-measurement_boundary: control_plane_corrective_v3_local_records_only
+version: agent_operating_events_v2
+updated_utc: '2026-06-22T23:53:38Z'
+measurement_boundary:
+  start_utc: '2026-06-22T23:53:38Z'
+  end_utc: null
+  boundary_id: control_plane_corrective_v3
 source_refs:
-- docs/migrations/control_plane_corrective_v3_progress.yaml
-- docs/agent_control/codex_task_force_registry.yaml
-- lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
+- path: docs/migrations/control_plane_corrective_v3_progress.yaml
+  sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+  size_bytes: 66604
 work_item_events:
 - work_item_id: WP00
   agent_mode: solo
-  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+  evidence_class: retrospective_attestation
+  consult_ids:
+  - tf_goal_us100_onnx_forward_boundary_initial_v2
+  source_refs:
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+    size_bytes: 66604
+  started_at_utc: '2026-06-23T00:00:00Z'
+  ended_at_utc: '2026-06-23T00:00:00Z'
+  in_boundary: true
+  observed_for_slo: false
 - work_item_id: WP01
   agent_mode: solo
-  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+  evidence_class: retrospective_attestation
+  consult_ids: []
+  source_refs:
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+    size_bytes: 66604
+  started_at_utc: '2026-06-23T00:00:00Z'
+  ended_at_utc: '2026-06-23T01:10:00Z'
+  in_boundary: true
+  observed_for_slo: false
 - work_item_id: WP02
   agent_mode: solo
-  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+  evidence_class: retrospective_attestation
+  consult_ids: []
+  source_refs:
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+    size_bytes: 66604
+  started_at_utc: '2026-06-23T01:10:00Z'
+  ended_at_utc: '2026-06-23T02:09:19Z'
+  in_boundary: true
+  observed_for_slo: false
 - work_item_id: WP03
   agent_mode: solo
-  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+  evidence_class: retrospective_attestation
+  consult_ids: []
+  source_refs:
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+    size_bytes: 66604
+  started_at_utc: '2026-06-23T02:09:19Z'
+  ended_at_utc: '2026-06-23T05:17:48Z'
+  in_boundary: true
+  observed_for_slo: false
 - work_item_id: WP04
   agent_mode: solo
-  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+  evidence_class: retrospective_attestation
+  consult_ids: []
+  source_refs:
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+    size_bytes: 66604
+  started_at_utc: '2026-06-23T06:15:50Z'
+  ended_at_utc: '2026-06-23T11:20:06Z'
+  in_boundary: true
+  observed_for_slo: false
 - work_item_id: WP05
   agent_mode: solo
-  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
+  evidence_class: retrospective_attestation
+  consult_ids: []
+  source_refs:
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+    size_bytes: 66604
+  started_at_utc: '2026-06-23T11:45:00Z'
+  ended_at_utc: '2026-06-23T15:05:01Z'
+  in_boundary: true
+  observed_for_slo: false
 - work_item_id: WP06
   agent_mode: solo
-  source_ref: docs/migrations/control_plane_corrective_v3_progress.yaml
-consult_receipts:
-- path: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
-  event_class: formal_protected_review_historical_initial_consult
+  evidence_class: contemporaneous_work_receipt
+  consult_ids: []
+  source_refs:
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: 1a344e2567ed4542eade5d81cd65d34dde57894b2a80f1d7f6a63535b0798d65
+    size_bytes: 66604
+  started_at_utc: '2026-06-23T15:05:01Z'
+  ended_at_utc: '2026-06-24T00:51:00Z'
+  in_boundary: true
+  observed_for_slo: true
+consult_events:
+- consult_id: tf_goal_us100_onnx_forward_boundary_initial_v2
+  work_item_id: WP00
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
+  sha256: b08f50fca01e8fde4b01991fd809ed04ce3484b95ff814cd147330880729ae28
+  selected_agent_count: 4
+  created_at_utc: '2026-06-22T13:40:00Z'
+  in_boundary: false
+  boundary_class: historical_out_of_boundary
+  advice_metrics:
+    total_advice_items: 4
+    duplicate_advice_items: 0
+    unsupported_assertion_count: 0
+    accepted_after_verification_count: 3
+    rejected_after_verification_count: 0
+    rewritten_after_verification_count: 1
+projection:
+  generated_from: docs/migrations/control_plane_corrective_v3_progress.yaml
+  generator: python -m spacesonar.cli agents events --write
+  manual_edit_policy: manual edits fail projection check

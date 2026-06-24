@@ -16,7 +16,7 @@ git:
   source_tree_hash: 6c629aff20b46175f9d881e0f24db44904a8588b0ea1a5355e63e6512844f3e5
   source_diff:
     path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source.patch
-    sha256: 99d5c1086890e60f3dc027ee4e0667f3fc7ca295c21551948eadeb93d4a89966
+    sha256: 4eae229d06c7cc23b300226b567b834481df98405298686e2063c849c07fcca3
   changed_files_summary:
     source_files:
     - docs/agent_control/codex_task_force_registry.yaml
@@ -310,6 +310,10 @@ git:
       archive evidence was not separately recorded by the historical batch.
     manifest_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/source_snapshot/source_snapshot_manifest.yaml
     manifest_sha256: 140a9d1d43704ec555f884db4cfd62e256b91bc0d9a930171edcddbb0f2ec65e
+    receipt_completeness: historical_partial
+    missing_historical_evidence:
+    - staged_patch_observation
+    - untracked_source_archive_observation
 environment:
   python_executable_redacted: ${PYTHON}
   python_version: 3.13.9
@@ -328,3 +332,10 @@ outputs:
   sha256: 140a9d1d43704ec555f884db4cfd62e256b91bc0d9a930171edcddbb0f2ec65e
   size_bytes: 869
 claim_boundary: exploratory_dirty_source_not_reproducible_candidate_or_runtime_authority
+receipt_completeness: historical_partial
+missing_historical_evidence:
+- staged_patch_observation
+- untracked_source_archive_observation
+historical_original_sha256: 99d5c1086890e60f3dc027ee4e0667f3fc7ca295c21551948eadeb93d4a89966
+current_checkout_sha256: 4eae229d06c7cc23b300226b567b834481df98405298686e2063c849c07fcca3
+normalization_reason: line_ending_or_historical_snapshot_normalization_between_recorded_source_diff_and_current_checkout

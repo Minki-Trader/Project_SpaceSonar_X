@@ -14,7 +14,12 @@ from spacesonar.control_plane.lifecycle import (
     materialize_run_specs,
     open_campaign,
 )
-from spacesonar.control_plane.agent_metrics import agent_operating_metrics_diff, write_agent_operating_metrics
+from spacesonar.control_plane.agent_metrics import (
+    agent_operating_events_diff,
+    agent_operating_metrics_diff,
+    write_agent_operating_events,
+    write_agent_operating_metrics,
+)
 from spacesonar.control_plane.models import ExecutionContext, TRANSACTION_SUCCESS_STATUSES
 from spacesonar.control_plane.registry_projection import commit_registry_projections, projection_diffs
 from spacesonar.control_plane.state_projection import commit_workspace_projection, workspace_projection_diff
@@ -147,6 +152,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     agents = sub.add_parser("agents")
     agents_sub = agents.add_subparsers(dest="action", required=True)
+    events = agents_sub.add_parser("events")
+    events_group = events.add_mutually_exclusive_group(required=True)
+    events_group.add_argument("--check", action="store_true")
+    events_group.add_argument("--write", action="store_true")
     metrics = agents_sub.add_parser("metrics")
     metrics_group = metrics.add_mutually_exclusive_group(required=True)
     metrics_group.add_argument("--check", action="store_true")
@@ -225,7 +234,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.area == "agents" and args.action == "metrics":
         if args.write:
-            write_agent_operating_metrics(repo_root)
+            write_agent_operating_metrics(repo_root, command_argv=tuple(sys.argv))
             print("agent metrics projection written")
             return 0
         diffs = agent_operating_metrics_diff(repo_root)
@@ -235,6 +244,19 @@ def main(argv: list[str] | None = None) -> int:
                 print(item)
             return 1
         print("agent metrics projection check passed")
+        return 0
+    if args.area == "agents" and args.action == "events":
+        if args.write:
+            write_agent_operating_events(repo_root, command_argv=tuple(sys.argv))
+            print("agent events projection written")
+            return 0
+        diffs = agent_operating_events_diff(repo_root)
+        if diffs:
+            print("agent events projection drift:")
+            for item in diffs:
+                print(item)
+            return 1
+        print("agent events projection check passed")
         return 0
     parser.error("unsupported command")
     return 2

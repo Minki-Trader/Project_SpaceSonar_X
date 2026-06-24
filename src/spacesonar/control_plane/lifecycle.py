@@ -7,6 +7,7 @@ from typing import Any, Callable
 
 from .lock import ControlPlaneLockError, control_plane_lock
 from .models import ExecutionContext, RunResult, TransactionResult
+from .provenance import attach_execution_batch_ref
 from .registry_projection import _stage_registry_projections, artifact_row_for_text
 from .state_projection import stage_workspace_projection, workspace_projection_diff
 from .store import dump_csv, dump_yaml, read_csv_rows, read_yaml
@@ -1247,6 +1248,9 @@ def record_run_result(run_id: str, result: RunResult, context: ExecutionContext)
         "claim_boundary": result.claim_boundary,
         **result.payload,
     }
+    batch_id = result.payload.get("execution_batch_id") or result.payload.get("batch_id")
+    if batch_id:
+        payload = attach_execution_batch_ref(payload, context.repo_root, str(batch_id))
     plan = LifecyclePlan({Path("lab/runs") / run_id / "result.yaml": payload}, {}, (Path("lab/runs") / run_id / "result.yaml",))
     return _run_with_lifecycle_lock(context, lambda: _commit_plan(context, plan))
 
