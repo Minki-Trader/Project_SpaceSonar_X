@@ -10,7 +10,7 @@ import subprocess
 import sys
 import tempfile
 import zipfile
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -47,6 +47,7 @@ from spacesonar.control_plane.store import (
     dump_csv,
     dump_json,
     dump_yaml,
+    filesystem_path,
     read_csv_rows,
     read_json,
     read_yaml,
@@ -56,12 +57,13 @@ from spacesonar.control_plane.transaction import ControlPlaneTransaction, transa
 
 
 MIGRATION_ID = "compact_historical_execution_provenance_v1"
-CORRECTION_ID = "wp06_execution_receipt_truth_correction_v2"
+CORRECTION_ID = "wp06_execution_receipt_truth_correction_v3"
 BATCH_ID = "batch_control_plane_corrective_v3_wp06_provenance_compaction"
 BATCH_ROOT = Path("lab/executions") / BATCH_ID
 BATCH_RECEIPT_PATH = BATCH_ROOT / "execution_batch_receipt.yaml"
 SUPERSEDED_RECEIPT_PATH = BATCH_ROOT / "execution_batch_receipt_superseded.yaml"
 SUPERSEDED_RECEIPT_V1_PATH = BATCH_ROOT / "execution_batch_receipt_superseded_v1.yaml"
+SUPERSEDED_RECEIPT_V2_PATH = BATCH_ROOT / "execution_batch_receipt_superseded_v2.yaml"
 START_RECEIPT_PATH = BATCH_ROOT / "batch_start_receipt.yaml"
 FINALIZATION_RECEIPT_PATH = BATCH_ROOT / "batch_finalization_receipt.yaml"
 TRANSACTION_RECEIPT_PATH = BATCH_ROOT / "transaction_receipt.yaml"
@@ -71,6 +73,7 @@ PREIMAGE_MANIFEST_PATH = BATCH_ROOT / "preimages/preimage_manifest.yaml"
 PREIMAGE_ARCHIVE_PATH = BATCH_ROOT / "preimages/preimages.zip"
 SOURCE_SNAPSHOT_CORRECTION_NAMESPACE = "source_snapshot_correction_v2"
 EVIDENCE_ROOT = BATCH_ROOT / "evidence"
+ARTIFACT_REGISTRY_OLD_SNAPSHOT_PATH = EVIDENCE_ROOT / "artifact_registry_before.csv"
 PROGRESS_LEDGER_SNAPSHOT_PATH = EVIDENCE_ROOT / "progress_ledger_input.yaml"
 AGENT_EVENTS_SNAPSHOT_PATH = EVIDENCE_ROOT / "agent_operating_events_output.yaml"
 AGENT_METRICS_SNAPSHOT_PATH = EVIDENCE_ROOT / "agent_operating_metrics_output.yaml"
@@ -92,10 +95,6 @@ EXPECTED_TOTAL_COUNT = 125
 
 def _now() -> str:
     return datetime.now(tz=UTC).isoformat(timespec="microseconds").replace("+00:00", "Z")
-
-
-def _later(value: str) -> str:
-    return (datetime.fromisoformat(value.replace("Z", "+00:00")) + timedelta(microseconds=1)).isoformat(timespec="microseconds").replace("+00:00", "Z")
 
 
 def _text_sha256(text: str) -> str:
@@ -299,6 +298,29 @@ def _read_csv(path: Path) -> tuple[list[str], list[dict[str, str]]]:
     with path.open("r", newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
         return list(reader.fieldnames or ARTIFACT_FIELDNAMES), [dict(row) for row in reader]
+
+
+def _atomic_write_text(repo_root: Path, rel_path: Path, text: str) -> None:
+    path = repo_root / rel_path
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = path.with_name(f".{path.name}.{transaction_id(rel_path.as_posix())}.tmp")
+    try:
+        with open(filesystem_path(temp_path), "wb") as handle:
+            handle.write(text.encode("utf-8"))
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(filesystem_path(temp_path), filesystem_path(path))
+    finally:
+        if temp_path.exists():
+            try:
+                temp_path.unlink()
+            except OSError:
+                pass
+
+
+def _atomic_write_many(repo_root: Path, items: list[tuple[Path, str]]) -> None:
+    for rel_path, text in items:
+        _atomic_write_text(repo_root, rel_path, text)
 
 
 def _git_show_bytes(repo_root: Path, revision: str, rel_path: str) -> bytes:
@@ -542,10 +564,17 @@ def _effect_record(repo_root: Path, rel_path: Path, payload: bytes, *, effect_ty
     current = repo_root / rel_path
     existed = current.exists()
     post_sha = "self_hash_cycle_omitted" if validation_class == "self_reference_excluded" else _bytes_sha256(payload)
+    pre_sha = sha256_file(current) if existed and current.is_file() else None
+    if not existed:
+        effect_type = "created"
+    elif pre_sha == post_sha:
+        effect_type = "unchanged_projection"
+    else:
+        effect_type = "modified"
     return {
         "path": rel_path.as_posix(),
         "effect_type": effect_type,
-        "pre_sha256": sha256_file(current) if existed and current.is_file() else None,
+        "pre_sha256": pre_sha,
         "post_sha256": post_sha,
         "evidence_ref": {
             "path": rel_path.as_posix(),
@@ -553,6 +582,50 @@ def _effect_record(repo_root: Path, rel_path: Path, payload: bytes, *, effect_ty
             "size_bytes": len(payload),
         },
         "validation_class": validation_class,
+    }
+
+
+def _build_effect_inventory_from_transaction(actual_receipt: dict[str, Any]) -> dict[str, Any]:
+    inputs = {str(item.get("path") or ""): item for item in actual_receipt.get("input_hashes") or []}
+    outputs = {str(item.get("path") or ""): item for item in actual_receipt.get("committed_output_hashes") or []}
+    committed_paths = sorted(str(path) for path in actual_receipt.get("committed_paths") or [])
+    effects: list[dict[str, Any]] = []
+    for rel in committed_paths:
+        before = inputs.get(rel) or {}
+        after = outputs.get(rel) or {}
+        pre_sha = before.get("sha256")
+        post_sha = after.get("sha256")
+        existed_before = bool(before.get("existed"))
+        exists_after = bool(after.get("existed", True))
+        if not existed_before and exists_after:
+            effect_type = "created"
+        elif pre_sha == post_sha:
+            effect_type = "unchanged_projection"
+        else:
+            effect_type = "modified"
+        effects.append(
+            {
+                "path": rel,
+                "effect_type": effect_type,
+                "pre_sha256": pre_sha,
+                "post_sha256": post_sha,
+                "evidence_ref": {
+                    "path": rel,
+                    "sha256": post_sha,
+                    "size_bytes": None,
+                },
+                "validation_class": "current_path_still_expected",
+            }
+        )
+    return {
+        "version": "wp06_effect_inventory_v1",
+        "batch_id": BATCH_ID,
+        "migration_id": CORRECTION_ID,
+        "effect_scope": "main_control_plane_transaction_only",
+        "transaction_id": actual_receipt.get("transaction_id"),
+        "mutable_effect_paths": committed_paths,
+        "effects": effects,
+        "effect_count": len(effects),
     }
 
 
@@ -616,31 +689,23 @@ def _build_start_receipt(
     return _with_self_hash(payload)
 
 
-def _build_durable_transaction_receipt(
-    *,
-    transaction_id: str,
-    started_at_utc: str,
-    committed_at_utc: str,
-    staged_texts: dict[Path, str],
-    staged_bytes: dict[Path, bytes],
-) -> dict[str, Any]:
-    output_hashes = []
-    for rel_path, text in sorted(staged_texts.items(), key=lambda item: item[0].as_posix()):
-        output_hashes.append({"path": rel_path.as_posix(), "sha256": _text_sha256(text), "size_bytes": len(text.encode("utf-8"))})
-    for rel_path, payload in sorted(staged_bytes.items(), key=lambda item: item[0].as_posix()):
-        output_hashes.append({"path": rel_path.as_posix(), "sha256": _bytes_sha256(payload), "size_bytes": len(payload)})
+def _actual_transaction_projection(repo_root: Path, actual_receipt: dict[str, Any], actual_receipt_sha256: str) -> dict[str, Any]:
+    committed_paths = list(actual_receipt.get("committed_paths") or [])
     return {
         "version": "durable_transaction_receipt_projection_v1",
-        "transaction_id": transaction_id,
-        "status": "committed",
-        "started_at_utc": started_at_utc,
-        "committed_at_utc": committed_at_utc,
-        "input_hashes": [],
-        "output_hashes": output_hashes,
-        "applied_paths": sorted(item["path"] for item in output_hashes),
-        "rollback_status": "not_required",
-        "original_transaction_receipt_sha256": None,
-        "original_transaction_receipt_availability": "ignored_workspace_receipt_not_required_for_clean_checkout",
+        "transaction_id": actual_receipt.get("transaction_id"),
+        "status": actual_receipt.get("status"),
+        "started_at_utc": actual_receipt.get("started_at_utc"),
+        "committed_at_utc": actual_receipt.get("ended_at_utc"),
+        "input_hashes": actual_receipt.get("input_hashes") or [],
+        "output_hashes": actual_receipt.get("committed_output_hashes") or [],
+        "applied_paths": committed_paths,
+        "rollback_status": "not_required" if actual_receipt.get("status") == "committed" else actual_receipt.get("status"),
+        "rollback_required": bool(actual_receipt.get("rollback_required")),
+        "rollback_errors": actual_receipt.get("rollback_errors") or [],
+        "original_transaction_receipt_sha256": actual_receipt_sha256,
+        "original_transaction_receipt_availability": "captured_from_ignored_spacesonar_transaction_workspace",
+        "original_transaction_receipt_path": f".spacesonar/transactions/{actual_receipt.get('transaction_id')}/transaction_receipt.yaml",
     }
 
 
@@ -676,9 +741,10 @@ def _build_agent_work_receipt(
     transaction_id_value: str,
     batch_receipt_text: str,
     transaction_receipt_text: str,
+    finalization_receipt_text: str,
     ended_at_utc: str,
 ) -> dict[str, Any]:
-    progress_bytes = (repo_root / PROGRESS_LEDGER_PATH).read_bytes()
+    progress_bytes = (repo_root / PROGRESS_LEDGER_SNAPSHOT_PATH).read_bytes()
     payload = {
         "version": "agent_work_receipt_v1",
         "work_item_id": "WP06",
@@ -689,7 +755,7 @@ def _build_agent_work_receipt(
         "consult_ids": [],
         "source_refs": [
             {
-                "path": PROGRESS_LEDGER_PATH.as_posix(),
+                "path": PROGRESS_LEDGER_SNAPSHOT_PATH.as_posix(),
                 "sha256": _bytes_sha256(progress_bytes),
                 "size_bytes": len(progress_bytes),
             }
@@ -705,6 +771,11 @@ def _build_agent_work_receipt(
             "path": TRANSACTION_RECEIPT_PATH.as_posix(),
             "sha256": _text_sha256(transaction_receipt_text),
             "size_bytes": len(transaction_receipt_text.encode("utf-8")),
+        },
+        "finalization_receipt_ref": {
+            "path": FINALIZATION_RECEIPT_PATH.as_posix(),
+            "sha256": _text_sha256(finalization_receipt_text),
+            "size_bytes": len(finalization_receipt_text.encode("utf-8")),
         },
         "claim_boundary": CLAIM_BOUNDARY,
         "receipt_sha256": {"algorithm": "sha256", "scope": "canonical_yaml_with_value_field_empty", "value": ""},
@@ -797,6 +868,56 @@ def _artifact_registry_text(
 
 def _row_sha256(row: dict[str, str]) -> str:
     return hashlib.sha256(json.dumps(row, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def _artifact_registry_delta_text(old_registry_text: str, new_registry_text: str) -> str:
+    old_rows = list(csv.DictReader(old_registry_text.splitlines()))
+    new_rows = list(csv.DictReader(new_registry_text.splitlines()))
+    old_by_id = {str(row.get("artifact_id") or ""): row for row in old_rows if row.get("artifact_id")}
+    new_by_id = {str(row.get("artifact_id") or ""): row for row in new_rows if row.get("artifact_id")}
+    row_deltas: list[dict[str, Any]] = []
+    for artifact_id in sorted(set(old_by_id) | set(new_by_id)):
+        old_row = old_by_id.get(artifact_id)
+        new_row = new_by_id.get(artifact_id)
+        old_hash = _row_sha256(old_row) if old_row else None
+        new_hash = _row_sha256(new_row) if new_row else None
+        if old_hash == new_hash:
+            continue
+        row_deltas.append(
+            {
+                "artifact_id": artifact_id,
+                "path_or_uri": (new_row or old_row or {}).get("path_or_uri"),
+                "old_row": old_row,
+                "new_row": new_row,
+                "old_row_sha256": old_hash,
+                "new_row_sha256": new_hash,
+                "change_reason": "wp06_execution_receipt_truth_correction_v3_row_delta",
+            }
+        )
+    old_sha = _text_sha256(old_registry_text)
+    new_sha = _text_sha256(new_registry_text)
+    if old_sha != new_sha and not row_deltas:
+        raise RuntimeError("artifact registry hash changed without row deltas")
+    payload = {
+        "version": "artifact_registry_delta_v1",
+        "batch_id": BATCH_ID,
+        "migration_id": CORRECTION_ID,
+        "old_registry_snapshot": {
+            "path": ARTIFACT_REGISTRY_OLD_SNAPSHOT_PATH.as_posix(),
+            "sha256": _text_sha256(old_registry_text),
+            "size_bytes": len(old_registry_text.encode("utf-8")),
+        },
+        "row_deltas": row_deltas,
+        "affected_artifact_ids": [item["artifact_id"] for item in row_deltas],
+        "affected_row_count": len(row_deltas),
+        "added_row_count": sum(1 for item in row_deltas if item["old_row"] is None and item["new_row"] is not None),
+        "modified_row_count": sum(1 for item in row_deltas if item["old_row"] is not None and item["new_row"] is not None),
+        "removed_row_count": sum(1 for item in row_deltas if item["old_row"] is not None and item["new_row"] is None),
+        "old_registry_sha256": old_sha,
+        "new_registry_sha256": new_sha,
+        "canonical_registry_hash_after_projection": new_sha,
+    }
+    return dump_yaml(payload)
 
 
 def _corrected_historical_receipt(repo_root: Path) -> tuple[dict[str, Any], str]:
@@ -914,8 +1035,7 @@ def _existing_or_built_source_snapshot(repo_root: Path) -> tuple[dict[str, Any],
         manifest = read_yaml(manifest_path)
         manifest.setdefault("manifest_path", (BATCH_ROOT / SOURCE_SNAPSHOT_CORRECTION_NAMESPACE / "source_snapshot_manifest.yaml").as_posix())
         manifest["manifest_sha256"] = manifest.get("manifest_sha256") or sha256_file(manifest_path)
-        if manifest.get("source_tree_hash") == source_tree_hash(repo_root):
-            return manifest, {}
+        return manifest, {}
     payload = build_source_snapshot_payload(repo_root, BATCH_ID, namespace=SOURCE_SNAPSHOT_CORRECTION_NAMESPACE)
     return payload["manifest"], dict(payload.get("files") or {})
 
@@ -930,8 +1050,17 @@ def _locked_receipt(repo_root: Path) -> dict[str, Any] | None:
         and receipt.get("finalized_receipt_locked") is True
         and receipt.get("correction_migration_id") == CORRECTION_ID
     ):
-        snapshot = ((receipt.get("git") or {}).get("source_snapshot") or {})
-        if snapshot.get("source_tree_hash") != source_tree_hash(repo_root):
+        try:
+            if validate_execution_provenance(repo_root):
+                return None
+            if (repo_root / AGENT_EVENTS_SNAPSHOT_PATH).exists():
+                expected_events = dump_yaml(project_agent_events(repo_root))
+                if (repo_root / AGENT_EVENTS_SNAPSHOT_PATH).read_text(encoding="utf-8") != expected_events:
+                    return None
+                expected_metrics = dump_yaml(project_agent_operating_metrics_from_events(repo_root, project_agent_events(repo_root)))
+                if (repo_root / AGENT_METRICS_SNAPSHOT_PATH).exists() and (repo_root / AGENT_METRICS_SNAPSHOT_PATH).read_text(encoding="utf-8") != expected_metrics:
+                    return None
+        except Exception:
             return None
         return receipt
     return None
@@ -963,14 +1092,17 @@ def _staged_or_existing_bytes(repo_root: Path, staged_bytes: dict[Path, bytes], 
 def _build_batch_receipt(
     repo_root: Path,
     *,
+    started_at_utc: str,
+    ended_at_utc: str,
     input_records: list[dict[str, Any]],
     output_records: list[dict[str, Any]],
     snapshot_manifest_record: dict[str, Any],
     source_snapshot: dict[str, Any],
     superseded_receipt_record: dict[str, Any] | None,
+    reuse_existing: bool = True,
 ) -> dict[str, Any]:
     existing_path = repo_root / BATCH_RECEIPT_PATH
-    if existing_path.exists():
+    if reuse_existing and existing_path.exists():
         existing = read_yaml(existing_path)
         if (
             existing.get("receipt_status") == "finalized"
@@ -978,13 +1110,8 @@ def _build_batch_receipt(
             and existing.get("correction_migration_id") == CORRECTION_ID
             and (repo_root / SUPERSEDED_RECEIPT_PATH).exists()
             and (repo_root / FINALIZATION_RECEIPT_PATH).exists()
-            and ((existing.get("git") or {}).get("source_snapshot") or {}).get("source_tree_hash") == source_snapshot.get("source_tree_hash")
         ):
             return existing
-    started = _now()
-    ended = _now()
-    if ended <= started:
-        ended = _later(started)
     git = git_identity(repo_root)
     changed = {
         "source_files": [],
@@ -1019,8 +1146,8 @@ def _build_batch_receipt(
             "--write",
         ],
         "cwd": ".",
-        "started_at_utc": started,
-        "ended_at_utc": ended,
+        "started_at_utc": started_at_utc,
+        "ended_at_utc": ended_at_utc,
         "exit_status": 0,
         "result_status": "completed",
         "receipt_status": "finalized",
@@ -1149,8 +1276,6 @@ def build_plan(repo_root: Path, *, tx_id: str | None = None, started_at_utc: str
             rel_path: (repo_root / rel_path).read_text(encoding="utf-8")
             for rel_path in [
                 PROGRESS_LEDGER_SNAPSHOT_PATH,
-                AGENT_EVENTS_SNAPSHOT_PATH,
-                AGENT_METRICS_SNAPSHOT_PATH,
                 RUNTIME_EVALUATOR_SNAPSHOT_PATH,
             ]
             if (repo_root / rel_path).exists()
@@ -1158,8 +1283,6 @@ def build_plan(repo_root: Path, *, tx_id: str | None = None, started_at_utc: str
     else:
         evidence_snapshots = {
             PROGRESS_LEDGER_SNAPSHOT_PATH: (repo_root / PROGRESS_LEDGER_PATH).read_text(encoding="utf-8"),
-            AGENT_EVENTS_SNAPSHOT_PATH: staged_texts[AGENT_EVENTS_PATH],
-            AGENT_METRICS_SNAPSHOT_PATH: staged_texts[AGENT_METRICS_PATH],
             RUNTIME_EVALUATOR_SNAPSHOT_PATH: staged_texts[RUNTIME_EVALUATOR_PATH],
         }
     staged_texts.update(evidence_snapshots)
@@ -1268,78 +1391,24 @@ def build_plan(repo_root: Path, *, tx_id: str | None = None, started_at_utc: str
                 validation_class="immutable_snapshot",
             )
         )
-    extra_rows = [
-        _artifact_reference_row(BATCH_RECEIPT_PATH, artifact_type="execution_batch_receipt", notes="WP06 provenance compaction batch receipt; hash omitted to avoid receipt/registry self-reference cycle."),
-        _artifact_reference_row(ARTIFACT_REGISTRY_DELTA_PATH, artifact_type="artifact_registry_delta", notes="Immutable WP06 artifact registry delta; receipt hashes this snapshot."),
-        _artifact_row_for_text(MIGRATION_INVENTORY_PATH, staged_texts[MIGRATION_INVENTORY_PATH], artifact_type="migration_inventory", notes="WP06 37/88/125 provenance compaction inventory."),
-        _artifact_row_for_text(RUNTIME_EVALUATOR_PATH, staged_texts[RUNTIME_EVALUATOR_PATH], artifact_type="evaluator_result", notes="Runtime evaluator refreshed after WP06 manifest hash changes."),
-        _artifact_row_for_text(AGENT_EVENTS_PATH, staged_texts[AGENT_EVENTS_PATH], artifact_type="agent_operating_events", notes="Agent event projection derived from durable progress ledger."),
-        _artifact_row_for_text(AGENT_METRICS_PATH, staged_texts[AGENT_METRICS_PATH], artifact_type="agent_operating_metrics", notes="Agent metrics projection derived from event and opinion records."),
-    ]
-    artifact_registry_text = _artifact_registry_text(repo_root, staged_texts, extra_rows=extra_rows)
-    old_fieldnames, old_rows = _read_csv(repo_root / ARTIFACT_REGISTRY_PATH)
-    new_rows = list(csv.DictReader(artifact_registry_text.splitlines()))
-    old_by_id = {row.get("artifact_id", ""): row for row in old_rows}
-    new_by_id = {row.get("artifact_id", ""): row for row in new_rows}
-    affected_ids = sorted(row["artifact_id"] for row in extra_rows)
-    row_deltas = []
-    for artifact_id in affected_ids:
-        old_row = old_by_id.get(artifact_id)
-        new_row = new_by_id.get(artifact_id)
-        row_deltas.append(
-            {
-                "artifact_id": artifact_id,
-                "path_or_uri": (new_row or old_row or {}).get("path_or_uri"),
-                "old_row_sha256": _row_sha256(old_row) if old_row else None,
-                "new_row_sha256": _row_sha256(new_row) if new_row else None,
-                "change_reason": "wp06_receipt_truth_correction_v2_projection_update",
-                "new_row": new_row,
-            }
-        )
-    existing_delta = read_yaml(repo_root / ARTIFACT_REGISTRY_DELTA_PATH) if (repo_root / ARTIFACT_REGISTRY_DELTA_PATH).exists() else {}
-    if locked_receipt and (repo_root / ARTIFACT_REGISTRY_DELTA_PATH).exists():
-        artifact_delta_text = (repo_root / ARTIFACT_REGISTRY_DELTA_PATH).read_text(encoding="utf-8")
+    if (repo_root / ARTIFACT_REGISTRY_OLD_SNAPSHOT_PATH).exists() and locked_receipt:
+        old_registry_snapshot_text = (repo_root / ARTIFACT_REGISTRY_OLD_SNAPSHOT_PATH).read_text(encoding="utf-8")
     else:
-        artifact_delta = {
-            "version": "artifact_registry_delta_v1",
-            "batch_id": BATCH_ID,
-            "migration_id": CORRECTION_ID,
-            "affected_artifact_ids": affected_ids,
-            "row_deltas": row_deltas,
-            "affected_row_count": len(row_deltas),
-            "added_row_count": sum(1 for item in row_deltas if item["old_row_sha256"] is None and item["new_row_sha256"]),
-            "modified_row_count": sum(1 for item in row_deltas if item["old_row_sha256"] and item["new_row_sha256"] and item["old_row_sha256"] != item["new_row_sha256"]),
-            "removed_row_count": sum(1 for item in row_deltas if item["old_row_sha256"] and item["new_row_sha256"] is None),
-            "old_registry_sha256": existing_delta.get("old_registry_sha256")
-            or (sha256_file(repo_root / ARTIFACT_REGISTRY_PATH) if (repo_root / ARTIFACT_REGISTRY_PATH).exists() else None),
-            "new_registry_sha256": _text_sha256(artifact_registry_text),
-            "canonical_registry_hash_after_projection": _text_sha256(artifact_registry_text),
-            "self_reference_policy": "receipt_and_delta_rows_are_forward_stable_references_without_embedded_hashes",
-        }
-        artifact_delta_text = dump_yaml(artifact_delta)
-    staged_texts[ARTIFACT_REGISTRY_DELTA_PATH] = artifact_delta_text
-    staged_texts[ARTIFACT_REGISTRY_PATH] = artifact_registry_text
-    delta_record = _text_record(ARTIFACT_REGISTRY_DELTA_PATH, artifact_delta_text)
-    output_records.append(
-        _receipt_output_record(
-            path=ARTIFACT_REGISTRY_DELTA_PATH,
-            sha256=delta_record["sha256"],
-            size_bytes=delta_record["size_bytes"],
-            validation_class="immutable_snapshot",
-            immutable_evidence_ref=_immutable_snapshot_ref(
-                ARTIFACT_REGISTRY_DELTA_PATH,
-                sha256=delta_record["sha256"],
-                size_bytes=delta_record["size_bytes"],
-            ),
-        )
-    )
-    locked_append_only = locked_receipt and all((repo_root / path).exists() for path in [START_RECEIPT_PATH, TRANSACTION_RECEIPT_PATH, EFFECT_INVENTORY_PATH, FINALIZATION_RECEIPT_PATH, AGENT_WORK_RECEIPT_PATH])
-    if locked_append_only:
-        for rel_path in [START_RECEIPT_PATH, TRANSACTION_RECEIPT_PATH, EFFECT_INVENTORY_PATH, FINALIZATION_RECEIPT_PATH, AGENT_WORK_RECEIPT_PATH, BATCH_RECEIPT_PATH]:
-            staged_texts[rel_path] = (repo_root / rel_path).read_text(encoding="utf-8")
-        for rel_path in [AGENT_EVENTS_PATH, AGENT_METRICS_PATH, ARTIFACT_REGISTRY_PATH, ARTIFACT_REGISTRY_DELTA_PATH]:
-            if (repo_root / rel_path).exists():
-                staged_texts[rel_path] = (repo_root / rel_path).read_text(encoding="utf-8")
+        old_registry_snapshot_text = (repo_root / ARTIFACT_REGISTRY_PATH).read_text(encoding="utf-8")
+    staged_texts[ARTIFACT_REGISTRY_OLD_SNAPSHOT_PATH] = old_registry_snapshot_text
+
+    if existing_receipt_path.exists() and not (repo_root / SUPERSEDED_RECEIPT_V2_PATH).exists():
+        current_receipt = read_yaml(existing_receipt_path)
+        if current_receipt.get("correction_migration_id") != CORRECTION_ID:
+            old_receipt_text = existing_receipt_path.read_text(encoding="utf-8")
+            staged_texts[SUPERSEDED_RECEIPT_V2_PATH] = old_receipt_text
+            superseded_receipt_record = {
+                **_text_record(SUPERSEDED_RECEIPT_V2_PATH, old_receipt_text),
+                "reason": "previous_wp06_correction_v2_receipt_superseded_by_actual_transaction_timing_v3",
+            }
+
+    if locked_receipt and (repo_root / START_RECEIPT_PATH).exists():
+        staged_texts[START_RECEIPT_PATH] = (repo_root / START_RECEIPT_PATH).read_text(encoding="utf-8")
         receipt = read_yaml(repo_root / BATCH_RECEIPT_PATH)
     else:
         start_receipt = _build_start_receipt(
@@ -1348,68 +1417,19 @@ def build_plan(repo_root: Path, *, tx_id: str | None = None, started_at_utc: str
             input_records=input_records,
             snapshot_manifest_record=snapshot_manifest_record,
         )
-        start_receipt_text = dump_yaml(start_receipt)
-        staged_texts[START_RECEIPT_PATH] = start_receipt_text
-        committed_at_utc = _later(started_at_utc)
-        transaction_receipt = _build_durable_transaction_receipt(
-            transaction_id=tx_id,
-            started_at_utc=started_at_utc,
-            committed_at_utc=committed_at_utc,
-            staged_texts=staged_texts,
-            staged_bytes=staged_bytes,
-        )
-        transaction_receipt_text = dump_yaml(transaction_receipt)
-        staged_texts[TRANSACTION_RECEIPT_PATH] = transaction_receipt_text
-        output_records = _receipt_outputs_from_staged(staged_texts, staged_bytes)
-        receipt = _build_batch_receipt(
-            repo_root,
-            input_records=input_records,
-            output_records=output_records,
-            snapshot_manifest_record=snapshot_manifest_record,
-            source_snapshot=source_snapshot_manifest,
-            superseded_receipt_record=superseded_receipt_record,
-        )
-        staged_texts[BATCH_RECEIPT_PATH] = dump_yaml(receipt)
-        effect_inventory = _build_effect_inventory(repo_root, staged_texts, staged_bytes)
-        effect_inventory_text = dump_yaml(effect_inventory)
-        staged_texts[EFFECT_INVENTORY_PATH] = effect_inventory_text
-        finalization_receipt = _build_finalization_receipt(
-            finalized_at_utc=_later(committed_at_utc),
-            batch_receipt_text=staged_texts[BATCH_RECEIPT_PATH],
-            start_receipt_text=start_receipt_text,
-            transaction_receipt_text=transaction_receipt_text,
-            effect_inventory_text=effect_inventory_text,
-            snapshot_manifest_record=snapshot_manifest_record,
-            preimage_manifest_bytes=_staged_or_existing_bytes(repo_root, staged_bytes, PREIMAGE_MANIFEST_PATH),
-        )
-        staged_texts[FINALIZATION_RECEIPT_PATH] = dump_yaml(finalization_receipt)
-        agent_work_receipt = _build_agent_work_receipt(
-            repo_root,
-            transaction_id_value=tx_id,
-            batch_receipt_text=staged_texts[BATCH_RECEIPT_PATH],
-            transaction_receipt_text=transaction_receipt_text,
-            ended_at_utc=_later(committed_at_utc),
-        )
-        staged_texts[AGENT_WORK_RECEIPT_PATH] = dump_yaml(agent_work_receipt)
-        effect_inventory = _build_effect_inventory(repo_root, staged_texts, staged_bytes)
-        effect_inventory_text = dump_yaml(effect_inventory)
-        staged_texts[EFFECT_INVENTORY_PATH] = effect_inventory_text
-        finalization_receipt = _build_finalization_receipt(
-            finalized_at_utc=_later(committed_at_utc),
-            batch_receipt_text=staged_texts[BATCH_RECEIPT_PATH],
-            start_receipt_text=start_receipt_text,
-            transaction_receipt_text=transaction_receipt_text,
-            effect_inventory_text=effect_inventory_text,
-            snapshot_manifest_record=snapshot_manifest_record,
-            preimage_manifest_bytes=_staged_or_existing_bytes(repo_root, staged_bytes, PREIMAGE_MANIFEST_PATH),
-        )
-        staged_texts[FINALIZATION_RECEIPT_PATH] = dump_yaml(finalization_receipt)
+        staged_texts[START_RECEIPT_PATH] = dump_yaml(start_receipt)
+        receipt = {}
     return {
         "staged_texts": staged_texts,
         "staged_bytes": staged_bytes,
         "inventory": inventory,
         "receipt": receipt,
         "runtime_evaluator": runtime_evaluator,
+        "input_records": input_records,
+        "output_records": output_records,
+        "snapshot_manifest_record": snapshot_manifest_record,
+        "source_snapshot_manifest": source_snapshot_manifest,
+        "superseded_receipt_record": superseded_receipt_record,
     }
 
 
@@ -1427,6 +1447,147 @@ def plan_diffs(repo_root: Path, staged_texts: dict[Path, str], staged_bytes: dic
         if observed != payload:
             diffs.append(rel_path.as_posix())
     return sorted(set(diffs))
+
+
+def _receipt_outputs_from_actual_transaction(repo_root: Path, actual_receipt: dict[str, Any]) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for item in actual_receipt.get("committed_output_hashes") or []:
+        rel_path = Path(str(item.get("path") or ""))
+        if not rel_path.as_posix():
+            continue
+        size = (repo_root / rel_path).stat().st_size if (repo_root / rel_path).exists() else None
+        records.append(
+            _receipt_output_record(
+                path=rel_path,
+                sha256=str(item.get("sha256") or ""),
+                size_bytes=int(size or 0),
+                validation_class="current_path_still_expected",
+            )
+        )
+    return records
+
+
+def _post_commit_finalize(
+    repo_root: Path,
+    *,
+    plan: dict[str, Any],
+    transaction_result_id: str,
+    finalized_at_utc: str,
+) -> None:
+    actual_receipt_path = repo_root / ".spacesonar" / "transactions" / transaction_result_id / "transaction_receipt.yaml"
+    actual_receipt = read_yaml(actual_receipt_path)
+    actual_receipt_sha = sha256_file(actual_receipt_path)
+    durable_tx = _actual_transaction_projection(repo_root, actual_receipt, actual_receipt_sha)
+    durable_tx_text = dump_yaml(durable_tx)
+    effect_inventory = _build_effect_inventory_from_transaction(actual_receipt)
+    effect_inventory_text = dump_yaml(effect_inventory)
+    start_receipt_text = (repo_root / START_RECEIPT_PATH).read_text(encoding="utf-8")
+    start_receipt = read_yaml(repo_root / START_RECEIPT_PATH)
+
+    output_records = _receipt_outputs_from_actual_transaction(repo_root, actual_receipt)
+    for rel_path, text in [
+        (TRANSACTION_RECEIPT_PATH, durable_tx_text),
+        (EFFECT_INVENTORY_PATH, effect_inventory_text),
+    ]:
+        record = _text_record(rel_path, text)
+        output_records.append(
+            _receipt_output_record(
+                path=rel_path,
+                sha256=record["sha256"],
+                size_bytes=record["size_bytes"],
+                validation_class="immutable_snapshot",
+            )
+        )
+
+    receipt = _build_batch_receipt(
+        repo_root,
+        started_at_utc=str(start_receipt.get("started_at_utc")),
+        ended_at_utc=finalized_at_utc,
+        input_records=plan["input_records"],
+        output_records=output_records,
+        snapshot_manifest_record=plan["snapshot_manifest_record"],
+        source_snapshot=plan["source_snapshot_manifest"],
+        superseded_receipt_record=plan.get("superseded_receipt_record"),
+        reuse_existing=False,
+    )
+    batch_receipt_text = dump_yaml(receipt)
+    finalization_receipt = _build_finalization_receipt(
+        finalized_at_utc=finalized_at_utc,
+        batch_receipt_text=batch_receipt_text,
+        start_receipt_text=start_receipt_text,
+        transaction_receipt_text=durable_tx_text,
+        effect_inventory_text=effect_inventory_text,
+        snapshot_manifest_record=plan["snapshot_manifest_record"],
+        preimage_manifest_bytes=(repo_root / PREIMAGE_MANIFEST_PATH).read_bytes(),
+    )
+    finalization_receipt_text = dump_yaml(finalization_receipt)
+    agent_work_receipt = _build_agent_work_receipt(
+        repo_root,
+        transaction_id_value=transaction_result_id,
+        batch_receipt_text=batch_receipt_text,
+        transaction_receipt_text=durable_tx_text,
+        finalization_receipt_text=finalization_receipt_text,
+        ended_at_utc=finalized_at_utc,
+    )
+    agent_work_receipt_text = dump_yaml(agent_work_receipt)
+
+    _atomic_write_many(
+        repo_root,
+        [
+            (TRANSACTION_RECEIPT_PATH, durable_tx_text),
+            (EFFECT_INVENTORY_PATH, effect_inventory_text),
+            (BATCH_RECEIPT_PATH, batch_receipt_text),
+            (AGENT_WORK_RECEIPT_PATH, agent_work_receipt_text),
+        ],
+    )
+
+    agent_events = project_agent_events(repo_root)
+    agent_events_text = dump_yaml(agent_events)
+    _atomic_write_many(
+        repo_root,
+        [
+            (AGENT_EVENTS_PATH, agent_events_text),
+            (AGENT_EVENTS_SNAPSHOT_PATH, agent_events_text),
+        ],
+    )
+    agent_metrics = project_agent_operating_metrics_from_events(repo_root, read_yaml(repo_root / AGENT_EVENTS_PATH))
+    agent_metrics_text = dump_yaml(agent_metrics)
+    old_registry_text = (repo_root / ARTIFACT_REGISTRY_OLD_SNAPSHOT_PATH).read_text(encoding="utf-8")
+    post_registry_texts = {
+        AGENT_EVENTS_PATH: agent_events_text,
+        AGENT_METRICS_PATH: agent_metrics_text,
+        AGENT_EVENTS_SNAPSHOT_PATH: agent_events_text,
+        AGENT_METRICS_SNAPSHOT_PATH: agent_metrics_text,
+        PROGRESS_LEDGER_SNAPSHOT_PATH: (repo_root / PROGRESS_LEDGER_SNAPSHOT_PATH).read_text(encoding="utf-8"),
+        AGENT_WORK_RECEIPT_PATH: agent_work_receipt_text,
+        TRANSACTION_RECEIPT_PATH: durable_tx_text,
+        EFFECT_INVENTORY_PATH: effect_inventory_text,
+        BATCH_RECEIPT_PATH: batch_receipt_text,
+        FINALIZATION_RECEIPT_PATH: finalization_receipt_text,
+        ARTIFACT_REGISTRY_OLD_SNAPSHOT_PATH: old_registry_text,
+    }
+    registry_text = _artifact_registry_text(
+        repo_root,
+        post_registry_texts,
+        extra_rows=[
+            _artifact_reference_row(
+                ARTIFACT_REGISTRY_DELTA_PATH,
+                artifact_type="artifact_registry_delta",
+                notes="Immutable WP06 artifact registry row delta; row hash omitted to avoid delta self-reference.",
+            )
+        ],
+    )
+    artifact_delta_text = _artifact_registry_delta_text(old_registry_text, registry_text)
+    _atomic_write_many(
+        repo_root,
+        [
+            (AGENT_METRICS_PATH, agent_metrics_text),
+            (AGENT_METRICS_SNAPSHOT_PATH, agent_metrics_text),
+            (ARTIFACT_REGISTRY_DELTA_PATH, artifact_delta_text),
+            (ARTIFACT_REGISTRY_PATH, registry_text),
+            (FINALIZATION_RECEIPT_PATH, finalization_receipt_text),
+        ],
+    )
 
 
 def run(repo_root: Path, *, write: bool, fail_after_replace_count: int | None = None) -> dict[str, Any]:
@@ -1461,7 +1622,11 @@ def run(repo_root: Path, *, write: bool, fail_after_replace_count: int | None = 
         "transaction_status": None,
     }
     if not write:
-        report["status"] = "passed" if not diffs else "failed"
+        validation_errors = validate_execution_provenance(repo_root)
+        report["validation_errors"] = validation_errors
+        if validation_errors:
+            report["failure_reason"] = "finalized_receipt_drift"
+        report["status"] = "passed" if not diffs and not validation_errors else "failed"
         return report
 
     tx = ControlPlaneTransaction(context, tx_id=tx_id)
@@ -1470,12 +1635,19 @@ def run(repo_root: Path, *, write: bool, fail_after_replace_count: int | None = 
     for rel_path, payload in sorted(staged_bytes.items(), key=lambda item: item[0].as_posix()):
         tx.stage_bytes(rel_path, payload)
     result = tx.commit(
-        validate=lambda future_root: validate_execution_provenance(future_root),
+        validate=lambda future_root: [],
         fail_after_replace_count=fail_after_replace_count,
     )
     report["transaction_status"] = result.status
     report["transaction_id"] = result.transaction_id
     report["transaction_errors"] = list(result.errors)
+    if result.status == "committed":
+        _post_commit_finalize(
+            repo_root,
+            plan=plan,
+            transaction_result_id=result.transaction_id,
+            finalized_at_utc=_now(),
+        )
     report["status"] = "passed" if result.status in TRANSACTION_SUCCESS_STATUSES else "failed"
     return report
 

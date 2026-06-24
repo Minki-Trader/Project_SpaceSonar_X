@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp06_closure_amendment_completed_receipt_internal_consistency_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp06_true_final_closure_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -1443,9 +1443,64 @@ work_units:
       - command: uv run python -m spacesonar.cli project validate
         status: passed
         result: project validation passed
+      - command: uv run pytest -q
+        status: passed
+        result: 385 passed in 1021.67s
       - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py --repo-root . --check
         status: passed
         result: rows=936 refreshable=934 changed=0 missing=0
+    true_final_closure:
+      id: wp06_true_final_actual_transaction_timing_forward_stable_work_receipt_complete_delta_v3
+      status: completed
+      completed_at_utc: '2026-06-24T08:13:56Z'
+      migration_id: wp06_execution_receipt_truth_correction_v3
+      actual_transaction_receipt:
+        source: .spacesonar/transactions/<transaction_id>/transaction_receipt.yaml
+        durable_projection: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+        input_hashes_nonempty: true
+        applied_paths_equal_effect_inventory: true
+      finalization_flow:
+        batch_start_before_transaction: true
+        finalization_after_transaction_commit: true
+        execution_batch_started_at_equals_start_receipt: true
+        execution_batch_ended_at_equals_finalization_receipt: true
+        synthetic_one_microsecond_timing_removed: true
+        post_commit_finalization_written_last: true
+      forward_stable_work_receipt:
+        source_ref: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+        canonical_progress_ledger_updates_do_not_invalidate_receipt: true
+      artifact_registry_delta:
+        old_snapshot: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+        row_complete_delta: true
+        reconstructs_new_registry_hash: true
+      validation:
+      - command: uv run pytest tests/control_plane/test_batch_provenance.py tests/test_execution_provenance_validator.py tests/test_provenance_compaction_migration.py tests/test_agent_event_projection.py -q
+        status: passed
+        result: 47 passed
+      - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py --repo-root . --check
+        status: passed
+        result: changed_record_count=0 validation_errors=0
+      - command: uv run python foundation/validation/execution_provenance_validator.py --repo-root .
+        status: passed
+        result: execution provenance validation passed
+      - command: uv run python -m spacesonar.cli agents events --check
+        status: passed
+        result: agent events projection check passed
+      - command: uv run python -m spacesonar.cli agents metrics --check
+        status: passed
+        result: agent metrics projection check passed
+      - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py --repo-root . --check
+        status: passed
+        result: rows=941 refreshable=940 changed=0 missing=0
+      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+        status: passed
+        result: active-record validation passed
+      - command: uv run python foundation/validation/control_plane_validator.py --repo-root .
+        status: passed
+        result: control-plane validation passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
     validation:
     - command: uv run pytest tests/control_plane/test_batch_provenance.py -q
       status: passed

@@ -30,6 +30,7 @@ WP06_INVENTORY = WP06_BATCH_ROOT / "migration_inventory.yaml"
 WP06_PREIMAGE_MANIFEST = WP06_BATCH_ROOT / "preimages/preimage_manifest.yaml"
 WP06_PREIMAGE_ARCHIVE = WP06_BATCH_ROOT / "preimages/preimages.zip"
 WP06_ARTIFACT_DELTA = WP06_BATCH_ROOT / "evidence/artifact_registry_delta.yaml"
+WP06_ARTIFACT_OLD_SNAPSHOT = WP06_BATCH_ROOT / "evidence/artifact_registry_before.csv"
 WP06_COMPACTION_ROLE = "metadata_compaction_only_not_original_execution_identity"
 HISTORICAL_RECEIPT = Path("lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml")
 LEGACY_ENTRYPOINTS = Path("docs/agent_control/legacy_lifecycle_entrypoints.yaml")
@@ -359,8 +360,11 @@ def validate_agent_work_receipt(repo_root: Path, rel_path: Path) -> list[str]:
             errors.append(f"{rel_path.as_posix()}: source ref hash mismatch {ref.get('path')}")
         if int(ref.get("size_bytes") or -1) != _stat_size(ref_path):
             errors.append(f"{rel_path.as_posix()}: source ref size mismatch {ref.get('path')}")
-    for key in ["wp06_batch_receipt_ref", "transaction_receipt_ref"]:
+    for key in ["wp06_batch_receipt_ref", "transaction_receipt_ref", "finalization_receipt_ref"]:
         ref = receipt.get(key) or {}
+        if not ref.get("path"):
+            errors.append(f"{rel_path.as_posix()}: {key} missing")
+            continue
         ref_path = repo_root / str(ref.get("path") or "")
         if not _exists(ref_path):
             errors.append(f"{rel_path.as_posix()}: {key} missing")
@@ -441,17 +445,53 @@ def _validate_wp06_inventory(repo_root: Path) -> list[str]:
             if not artifact_id or not item.get("path_or_uri") or not item.get("change_reason"):
                 errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: incomplete row delta")
                 continue
-            snapshot_row = item.get("new_row")
-            if not isinstance(snapshot_row, dict):
-                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: row delta snapshot missing {artifact_id}")
-                continue
-            observed = hashlib.sha256(
-                __import__("json").dumps(snapshot_row, sort_keys=True, separators=(",", ":")).encode("utf-8")
-            ).hexdigest()
-            if item.get("new_row_sha256") != observed:
-                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: row delta hash mismatch {artifact_id}")
+            for key in ["old_row", "new_row"]:
+                snapshot_row = item.get(key)
+                declared_hash = item.get(f"{key}_sha256")
+                if snapshot_row is None:
+                    if declared_hash is not None:
+                        errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: {key} null hash mismatch {artifact_id}")
+                    continue
+                if not isinstance(snapshot_row, dict):
+                    errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: {key} snapshot invalid {artifact_id}")
+                    continue
+                observed = hashlib.sha256(
+                    __import__("json").dumps(snapshot_row, sort_keys=True, separators=(",", ":")).encode("utf-8")
+                ).hexdigest()
+                if declared_hash != observed:
+                    errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: {key} hash mismatch {artifact_id}")
         if int(delta.get("affected_row_count") or -1) != len(delta.get("row_deltas") or []):
             errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: affected_row_count mismatch")
+        if _exists(repo_root / WP06_ARTIFACT_OLD_SNAPSHOT):
+            with open(filesystem_path(repo_root / WP06_ARTIFACT_OLD_SNAPSHOT), "r", newline="", encoding="utf-8-sig") as handle:
+                fieldnames = list(csv.DictReader(handle).fieldnames or [])
+            with open(filesystem_path(repo_root / WP06_ARTIFACT_OLD_SNAPSHOT), "r", newline="", encoding="utf-8-sig") as handle:
+                old_rows = {row.get("artifact_id", ""): dict(row) for row in csv.DictReader(handle) if row.get("artifact_id")}
+            reconstructed = dict(old_rows)
+            for item in delta.get("row_deltas") or []:
+                artifact_id = str(item.get("artifact_id") or "")
+                if item.get("new_row") is None:
+                    reconstructed.pop(artifact_id, None)
+                else:
+                    reconstructed[artifact_id] = item["new_row"]
+            from io import StringIO
+
+            handle = StringIO()
+            writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+            writer.writeheader()
+            for row in sorted(reconstructed.values(), key=lambda value: str(value.get("path_or_uri") or "")):
+                writer.writerow({key: "" if row.get(key) is None else row.get(key, "") for key in fieldnames})
+            rebuilt = handle.getvalue()
+            if hashlib.sha256(rebuilt.encode("utf-8")).hexdigest() != delta.get("new_registry_sha256"):
+                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: row delta does not reconstruct new registry")
+            if delta.get("new_registry_sha256") != sha256_file(repo_root / ARTIFACT_REGISTRY):
+                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: new registry hash mismatch")
+            if delta.get("old_registry_sha256") != sha256_file(repo_root / WP06_ARTIFACT_OLD_SNAPSHOT):
+                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: old registry snapshot hash mismatch")
+            if delta.get("old_registry_sha256") != delta.get("new_registry_sha256") and not delta.get("row_deltas"):
+                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: registry hash changed without row deltas")
+        else:
+            errors.append(f"{WP06_ARTIFACT_OLD_SNAPSHOT.as_posix()}: missing old artifact registry snapshot")
     else:
         errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: missing artifact registry delta")
     return errors
@@ -469,6 +509,13 @@ def _validate_wp06_append_only_receipts(repo_root: Path) -> list[str]:
     finalization = read_yaml(repo_root / WP06_FINALIZATION_RECEIPT)
     tx = read_yaml(repo_root / WP06_TRANSACTION_RECEIPT)
     effects = read_yaml(repo_root / WP06_EFFECT_INVENTORY)
+    batch = read_yaml(repo_root / WP06_RECEIPT)
+    if batch.get("started_at_utc") != start.get("started_at_utc"):
+        errors.append(f"{WP06_RECEIPT.as_posix()}: started_at_utc does not match start receipt")
+    if batch.get("ended_at_utc") != finalization.get("finalized_at_utc"):
+        errors.append(f"{WP06_RECEIPT.as_posix()}: ended_at_utc does not match finalization receipt")
+    if not tx.get("input_hashes"):
+        errors.append(f"{WP06_TRANSACTION_RECEIPT.as_posix()}: input_hashes must be nonempty")
     if finalization.get("batch_start_receipt_sha256") != sha256_file(repo_root / WP06_START_RECEIPT):
         errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: start receipt hash mismatch")
     if finalization.get("transaction_receipt_sha256") != sha256_file(repo_root / WP06_TRANSACTION_RECEIPT):
@@ -496,9 +543,12 @@ def _validate_wp06_append_only_receipts(repo_root: Path) -> list[str]:
         errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: invalid timing data {exc}")
     effect_paths = {str(item.get("path") or "") for item in effects.get("effects") or []}
     applied_paths = set(str(path) for path in tx.get("applied_paths") or [])
-    if applied_paths and not applied_paths.issubset(effect_paths):
+    if applied_paths != effect_paths:
         missing = sorted(applied_paths - effect_paths)
-        errors.append(f"{WP06_EFFECT_INVENTORY.as_posix()}: transaction applied paths missing from effect inventory: {missing[:5]}")
+        extra = sorted(effect_paths - applied_paths)
+        errors.append(f"{WP06_EFFECT_INVENTORY.as_posix()}: transaction applied paths differ from effect inventory missing={missing[:5]} extra={extra[:5]}")
+    if sorted(effects.get("mutable_effect_paths") or []) != sorted(applied_paths):
+        errors.append(f"{WP06_EFFECT_INVENTORY.as_posix()}: mutable_effect_paths mismatch")
     for item in effects.get("effects") or []:
         rel = str(item.get("path") or "")
         if item.get("validation_class") == "self_reference_excluded":

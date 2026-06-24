@@ -1,6 +1,6 @@
 batch_id: batch_control_plane_corrective_v3_wp06_provenance_compaction
 claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
-correction_migration_id: wp06_execution_receipt_truth_correction_v2
+correction_migration_id: wp06_execution_receipt_truth_correction_v3
 inputs:
 - hash_validation_class: current_path_still_expected
   path_at_execution: docs/migrations/runtime_graph_target_inventory_v1.yaml
@@ -10,11 +10,11 @@ inputs:
   immutable_evidence_ref:
     evidence_class: immutable_batch_evidence_snapshot
     path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
-    sha256: f9ea600db426c4bef669056facf3e4d64e624595caa168a95499dc682657c655
-    size_bytes: 75439
+    sha256: 54850d4400b546c039a63bbf6229089ddbfa5fa331478da4bc8f317482ad147c
+    size_bytes: 78548
   path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
-  sha256_at_start: f9ea600db426c4bef669056facf3e4d64e624595caa168a95499dc682657c655
-  size_bytes_at_start: 75439
+  sha256_at_start: 54850d4400b546c039a63bbf6229089ddbfa5fa331478da4bc8f317482ad147c
+  size_bytes_at_start: 78548
 - hash_validation_class: current_path_still_expected
   path_at_execution: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
   sha256_at_start: 2f484d4f9a47220b30f002629a30a2195b12a5333d373fbbb0a78562423bcfdb
@@ -2276,12 +2276,12 @@ inputs:
 receipt_sha256:
   algorithm: sha256
   scope: canonical_yaml_with_value_field_empty
-  value: 616895961d651f31da79856f8eaf0d6219d9306452db6d29534dccb1a3fc5eb5
+  value: 822833d3d2f5a575a115ad9652dd76387f965664b97f985fe6456e721ace98a7
 source_snapshot_ref:
   path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/source_snapshot_manifest.yaml
   sha256: 96703bacc063dab5c450efe8fb01627c5a5c21d5a1e61df6bc2a8de255a28eb7
   size_bytes: 1021
 source_tree_hash: 76196c04c605e01caee52d5090b12f3a00aba557174a32f016a38df7054bd9f3
-started_at_utc: '2026-06-24T06:18:29.646727Z'
+started_at_utc: '2026-06-24T08:35:32.777968Z'
 version: execution_batch_start_receipt_v1
 work_item_id: work_codex_control_plane_corrective_v3

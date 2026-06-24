@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import hashlib
+from io import StringIO
 from pathlib import Path
 
 import yaml
@@ -166,6 +168,47 @@ def test_wp06_source_tree_hashes_and_finalization_anchor_match() -> None:
     assert finalization["transaction_receipt_sha256"]
 
 
+def test_wp06_actual_timing_and_effect_inventory_are_exact() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    root = repo_root / "lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction"
+    start = read_yaml(root / "batch_start_receipt.yaml")
+    receipt = read_yaml(root / "execution_batch_receipt.yaml")
+    tx = read_yaml(root / "transaction_receipt.yaml")
+    finalization = read_yaml(root / "batch_finalization_receipt.yaml")
+    effects = read_yaml(root / "effect_inventory.yaml")
+
+    assert receipt["started_at_utc"] == start["started_at_utc"]
+    assert receipt["ended_at_utc"] == finalization["finalized_at_utc"]
+    assert start["started_at_utc"] < tx["committed_at_utc"] <= finalization["finalized_at_utc"]
+    assert tx["input_hashes"]
+    assert set(tx["applied_paths"]) == set(effects["mutable_effect_paths"])
+    assert set(tx["applied_paths"]) == {item["path"] for item in effects["effects"]}
+    assert any(item["effect_type"] == "unchanged_projection" for item in effects["effects"])
+
+
+def test_wp06_artifact_delta_reconstructs_registry() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    root = repo_root / "lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction"
+    delta = read_yaml(root / "evidence" / "artifact_registry_delta.yaml")
+    old_snapshot = root / "evidence" / "artifact_registry_before.csv"
+    with old_snapshot.open("r", newline="", encoding="utf-8-sig") as handle:
+        reader = csv.DictReader(handle)
+        fieldnames = list(reader.fieldnames or [])
+        rows = {row["artifact_id"]: dict(row) for row in reader if row.get("artifact_id")}
+    for item in delta["row_deltas"]:
+        if item["new_row"] is None:
+            rows.pop(item["artifact_id"], None)
+        else:
+            rows[item["artifact_id"]] = item["new_row"]
+    handle = StringIO()
+    writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+    writer.writeheader()
+    for row in sorted(rows.values(), key=lambda value: str(value.get("path_or_uri") or "")):
+        writer.writerow({key: "" if row.get(key) is None else row.get(key, "") for key in fieldnames})
+
+    assert hashlib.sha256(handle.getvalue().encode("utf-8")).hexdigest() == delta["new_registry_sha256"]
+
+
 def test_wp06_work_receipt_validates_and_tamper_fails(tmp_path: Path) -> None:
     repo_root = Path(__file__).resolve().parents[1]
     source = repo_root / "docs/workspace/agent_work_receipts/WP06.yaml"
@@ -174,7 +217,7 @@ def test_wp06_work_receipt_validates_and_tamper_fails(tmp_path: Path) -> None:
     target.write_bytes(source.read_bytes())
     # Copy only referenced files needed for the hash-bound check.
     receipt = read_yaml(source)
-    for ref in [*receipt.get("source_refs", []), receipt["wp06_batch_receipt_ref"], receipt["transaction_receipt_ref"]]:
+    for ref in [*receipt.get("source_refs", []), receipt["wp06_batch_receipt_ref"], receipt["transaction_receipt_ref"], receipt["finalization_receipt_ref"]]:
         src = repo_root / ref["path"]
         dst = tmp_path / ref["path"]
         dst.parent.mkdir(parents=True, exist_ok=True)
@@ -186,3 +229,22 @@ def test_wp06_work_receipt_validates_and_tamper_fails(tmp_path: Path) -> None:
     target.write_text(tampered, encoding="utf-8")
 
     assert any("self-hash mismatch" in error for error in validate_agent_work_receipt(tmp_path, Path("docs/workspace/agent_work_receipts/WP06.yaml")))
+
+
+def test_wp06_work_receipt_survives_canonical_progress_change(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    source = repo_root / "docs/workspace/agent_work_receipts/WP06.yaml"
+    target = tmp_path / "docs/workspace/agent_work_receipts/WP06.yaml"
+    target.parent.mkdir(parents=True)
+    target.write_bytes(source.read_bytes())
+    receipt = read_yaml(source)
+    for ref in [*receipt.get("source_refs", []), receipt["wp06_batch_receipt_ref"], receipt["transaction_receipt_ref"], receipt["finalization_receipt_ref"]]:
+        src = repo_root / ref["path"]
+        dst = tmp_path / ref["path"]
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.write_bytes(src.read_bytes())
+    progress = tmp_path / "docs/migrations/control_plane_corrective_v3_progress.yaml"
+    progress.parent.mkdir(parents=True, exist_ok=True)
+    progress.write_text("version: changed_later\n", encoding="utf-8")
+
+    assert validate_agent_work_receipt(tmp_path, Path("docs/workspace/agent_work_receipts/WP06.yaml")) == []

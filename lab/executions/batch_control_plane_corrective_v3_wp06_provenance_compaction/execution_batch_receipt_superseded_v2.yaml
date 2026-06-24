@@ -8,16 +8,16 @@ command_argv:
 - .
 - --write
 cwd: .
-started_at_utc: '2026-06-24T08:35:32.777968Z'
-ended_at_utc: '2026-06-24T08:35:59.236261Z'
+started_at_utc: '2026-06-24T06:18:45.913875Z'
+ended_at_utc: '2026-06-24T06:18:45.913886Z'
 exit_status: 0
 result_status: completed
 receipt_status: finalized
 final_receipt_status: valid
 finalized_receipt_locked: true
-correction_migration_id: wp06_execution_receipt_truth_correction_v3
+correction_migration_id: wp06_execution_receipt_truth_correction_v2
 git:
-  sha: 77bd99351800d509c3ab07135200bb0a8796e59a
+  sha: c64220f45896e15e787086f55c5ab12eb17ce269
   branch: codex/control-plane-corrective-v3
   source_dirty: true
   generated_output_dirty: true
@@ -53,9 +53,21 @@ git:
   changed_files_summary:
     source_files:
     - foundation/migrations/compact_historical_execution_provenance_v1.py
+    - foundation/pipelines/materialize_wave0_first_batch_run_specs.py
+    - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
+    - foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave0_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave01_event_barrier_proxy_batch.py
+    - foundation/pipelines/run_wave01_session_transition_proxy_batch.py
     - foundation/validation/execution_provenance_validator.py
+    - lab/templates/attempt_manifest.template.yaml
+    - lab/templates/run_manifest.template.json
+    - src/spacesonar/control_plane/lifecycle.py
+    - src/spacesonar/control_plane/provenance.py
+    - tests/control_plane/test_batch_provenance.py
     - tests/test_execution_provenance_validator.py
-    - tests/test_provenance_compaction_migration.py
     generated_files:
     - docs/registers/artifact_registry.csv
     - docs/workspace/agent_operating_events.yaml
@@ -68,11 +80,12 @@ git:
     - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
     - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
     - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
-    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
     - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_delta.yaml
     - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
     - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
-    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded_v2.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded_v1.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/preimages/preimage_manifest.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/
     - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
 environment:
   python_executable_redacted: ${PYTHON}
@@ -85,13 +98,13 @@ inputs:
   size_bytes_at_start: 79829
   hash_validation_class: current_path_still_expected
 - path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
-  sha256_at_start: 54850d4400b546c039a63bbf6229089ddbfa5fa331478da4bc8f317482ad147c
-  size_bytes_at_start: 78548
+  sha256_at_start: f9ea600db426c4bef669056facf3e4d64e624595caa168a95499dc682657c655
+  size_bytes_at_start: 75439
   hash_validation_class: immutable_snapshot
   immutable_evidence_ref:
     path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
-    sha256: 54850d4400b546c039a63bbf6229089ddbfa5fa331478da4bc8f317482ad147c
-    size_bytes: 78548
+    sha256: f9ea600db426c4bef669056facf3e4d64e624595caa168a95499dc682657c655
+    size_bytes: 75439
     evidence_class: immutable_batch_evidence_snapshot
 - path_at_execution: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
   sha256_at_start: 2f484d4f9a47220b30f002629a30a2195b12a5333d373fbbb0a78562423bcfdb
@@ -2352,12 +2365,16 @@ inputs:
     normalization_applied: true
     normalization_type: lf_to_crlf
 outputs:
+- path_at_execution: docs/registers/artifact_registry.csv
+  sha256_at_end: 2df4aa51d5f66ab73c717be01267fe7fbb9d5b396cab2470abcd7cff6454b13d
+  size_bytes_at_end: 944235
+  hash_validation_class: current_path_still_expected
 - path_at_execution: docs/workspace/agent_operating_events.yaml
-  sha256_at_end: 6c3c3a393125d4f2c67e250425684c51a2bb23e624fd6c6d9bda2a1323929482
-  size_bytes_at_end: 4486
+  sha256_at_end: 8c7e544b32bc4f0617a44edcf653ee8200a9efaad10b60ef73a143c65b5ac9da
+  size_bytes_at_end: 4479
   hash_validation_class: current_path_still_expected
 - path_at_execution: docs/workspace/agent_operating_metrics.yaml
-  sha256_at_end: c42301a76c06e01446b0d032eb9e417f27e58c17805bcea929e46aa34b4733b0
+  sha256_at_end: 7b93d1d3941cf1305363dbfe0bc548b5e9d04e54a9fff481cb07eec8dc434af1
   size_bytes_at_end: 1367
   hash_validation_class: current_path_still_expected
 - path_at_execution: lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
@@ -2365,32 +2382,44 @@ outputs:
   size_bytes_at_end: 106078
   hash_validation_class: current_path_still_expected
 - path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_start_receipt.yaml
-  sha256_at_end: fb070b1ed5e5ec53120ead7782787878f2d064eed686993f68e4a596d5662d1d
+  sha256_at_end: 699d3574841f5ebe9cff537779251598752c0ee351d9a20c9b1991851add30ab
   size_bytes_at_end: 147047
-  hash_validation_class: current_path_still_expected
-- path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
-  sha256_at_end: c685813429cf399b32d3c9316eb9db2ba5384e8b1f975a48f7c33163c74257ee
-  size_bytes_at_end: 94059
   hash_validation_class: immutable_snapshot
-- path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
-  sha256_at_end: 42f5051bd4b6ebff1044d96204e50a5f01c5e84e08aaefa2474ae9d7dfeb99b4
-  size_bytes_at_end: 948175
-  hash_validation_class: current_path_still_expected
+- path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+  sha256_at_end: 8c7e544b32bc4f0617a44edcf653ee8200a9efaad10b60ef73a143c65b5ac9da
+  size_bytes_at_end: 4479
+  hash_validation_class: immutable_snapshot
+- path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+  sha256_at_end: 7b93d1d3941cf1305363dbfe0bc548b5e9d04e54a9fff481cb07eec8dc434af1
+  size_bytes_at_end: 1367
+  hash_validation_class: immutable_snapshot
+- path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_delta.yaml
+  sha256_at_end: be1a1688aee242e11b43bf4929b1cb5f364cb7ff9a4417339b3ad233da040834
+  size_bytes_at_end: 10200
+  hash_validation_class: immutable_snapshot
 - path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
-  sha256_at_end: 54850d4400b546c039a63bbf6229089ddbfa5fa331478da4bc8f317482ad147c
-  size_bytes_at_end: 78548
-  hash_validation_class: current_path_still_expected
+  sha256_at_end: f9ea600db426c4bef669056facf3e4d64e624595caa168a95499dc682657c655
+  size_bytes_at_end: 75439
+  hash_validation_class: immutable_snapshot
 - path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/runtime_contract_evaluator_output.yaml
   sha256_at_end: 0cca11cbb2aa4eda9faab04cc0426f26c1bf1c1c7b491ea52d177f5716158393
   size_bytes_at_end: 106078
-  hash_validation_class: current_path_still_expected
+  hash_validation_class: immutable_snapshot
 - path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/migration_inventory.yaml
   sha256_at_end: 32519f8f556cc0ed0f03c4a597c1253ba6d6141b59cae4e500e67afdeece012d
   size_bytes_at_end: 62008
-  hash_validation_class: current_path_still_expected
+  hash_validation_class: immutable_snapshot
+- path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/source_snapshot_manifest.yaml
+  sha256_at_end: 96703bacc063dab5c450efe8fb01627c5a5c21d5a1e61df6bc2a8de255a28eb7
+  size_bytes_at_end: 1021
+  hash_validation_class: immutable_snapshot
+- path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/tracked_unstaged.patch
+  sha256_at_end: 5ecd41c2616cb7c278957d3c1b6389ce498851cf782da84d1a496b02461d71b8
+  size_bytes_at_end: 67171
+  hash_validation_class: immutable_snapshot
 - path_at_execution: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
-  sha256_at_end: 2a66f46d40340da0a2ce0dd4d92691270449c313d5a07776701eb985abd8c730
-  size_bytes_at_end: 68426
+  sha256_at_end: fd8acc110a7a9ec25596ad8daa212b46ee0b2b46e102293fa116aa4056f0014e
+  size_bytes_at_end: 43043
   hash_validation_class: immutable_snapshot
 - path_at_execution: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
   sha256_at_end: 2f484d4f9a47220b30f002629a30a2195b12a5333d373fbbb0a78562423bcfdb

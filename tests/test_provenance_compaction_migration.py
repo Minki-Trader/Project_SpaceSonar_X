@@ -50,6 +50,7 @@ def test_migration_rollback_restores_staged_records(monkeypatch, tmp_path: Path)
     assert report["transaction_status"] == "rolled_back_commit_failure"
     assert target.read_text(encoding="utf-8") == "before\n"
     assert not (tmp_path / "b.txt").exists()
+    assert not (tmp_path / migration.FINALIZATION_RECEIPT_PATH).exists()
 
 
 def test_runtime_evaluator_references_changed_attempt_hashes() -> None:
@@ -87,3 +88,34 @@ def test_wp06_receipt_is_locked_and_noop_check_preserves_hash() -> None:
 
     assert report["status"] == "passed"
     assert (repo_root / migration.BATCH_RECEIPT_PATH).read_bytes() == before
+
+
+def test_migration_check_reports_finalized_receipt_drift(monkeypatch, tmp_path: Path) -> None:
+    def fake_build_plan(repo_root: Path, **kwargs) -> dict:
+        return {
+            "staged_texts": {},
+            "staged_bytes": {},
+            "inventory": {"record_counts": {"run_manifest": 37, "attempt_manifest": 88, "total": 125}},
+            "receipt": {},
+            "runtime_evaluator": {"status": "passed"},
+        }
+
+    monkeypatch.setattr(migration, "build_plan", fake_build_plan)
+    monkeypatch.setattr(migration, "validate_execution_provenance", lambda repo_root: ["receipt drift"])
+
+    report = migration.run(tmp_path, write=False)
+
+    assert report["status"] == "failed"
+    assert report["failure_reason"] == "finalized_receipt_drift"
+
+
+def test_migration_check_writes_zero_files() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    receipt_before = (repo_root / migration.BATCH_RECEIPT_PATH).read_bytes()
+    final_before = (repo_root / migration.FINALIZATION_RECEIPT_PATH).read_bytes()
+
+    report = migration.run(repo_root, write=False)
+
+    assert report["status"] == "passed"
+    assert (repo_root / migration.BATCH_RECEIPT_PATH).read_bytes() == receipt_before
+    assert (repo_root / migration.FINALIZATION_RECEIPT_PATH).read_bytes() == final_before
