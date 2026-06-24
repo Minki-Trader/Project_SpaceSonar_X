@@ -1,20 +1,33 @@
 version: evaluator_result_v1
 evaluator_id: agent_value_evaluator_v1
-executed_at_utc: '2026-06-22T14:00:00Z'
+executed_at_utc: '2026-06-24T11:33:15Z'
 input_hashes:
 - path: docs/workspace/agent_operating_metrics.yaml
-  sha256: 1c5faa316cf1ec57b9126f910d34c88292efdd92b2d5e3614a7f7ca8aada298a
-  size_bytes: 684
+  sha256: fceb18e7153d6e6ab6696627d5260bf265d9caa9f5d0d3dbd3d3d3bd6ef13970
+  size_bytes: 1367
 status: passed
 metrics:
-  consult_count: 1
-  solo_work_share: 0.8
-  one_agent_share: 0.0
-  two_agent_share: 0.0
-  three_plus_agent_share: 0.2
-  duplicate_advice_ratio: 0.0
+  work_item_count: 7
+  observed_work_item_count: 1
+  solo_work_item_count: 1
+  consult_count: 0
+  one_agent_consult_count: 0
+  two_agent_consult_count: 0
+  three_plus_agent_consult_count: 0
+  total_advice_items: 0
+  duplicate_advice_items: 0
   unsupported_assertion_count: 0
-  accepted_after_verification_ratio: 0.75
+  accepted_after_verification_count: 0
+  rejected_after_verification_count: 0
+  rewritten_after_verification_count: 0
+  solo_work_share: 1.0
+  observation_coverage_ratio: 0.142857
+  one_agent_consult_share: 0.0
+  two_agent_consult_share: 0.0
+  three_plus_agent_consult_share: 0.0
+  routine_solo_or_single_agent_share: 1.0
+  duplicate_advice_ratio: 0.0
+  accepted_after_verification_ratio: 0.0
 findings: []
 claim_effect: agent_metrics_are_operating_telemetry_only_no_reviewed_pass
-output_sha256: ec96562fb1f6bc1dfe6f0214a2e49ecec0093d450f4e474687d569b3f99d245d
+output_sha256: ab6947cf9de0c4f9d9b0f5412e43a06f9df2fa5aac7849f74be84ab92cd86ff0

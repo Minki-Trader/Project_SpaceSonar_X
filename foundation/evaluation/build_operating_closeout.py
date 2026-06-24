@@ -12,9 +12,12 @@ if str(REPO_ROOT) not in sys.path:
 
 from foundation.evaluation.agent_value_evaluator import EVALUATOR_ID as AGENT_EVALUATOR_ID
 from foundation.evaluation.agent_value_evaluator import evaluate_agent_value
-from foundation.evaluation.common import EVALUATION_TIME_UTC, load_yaml, stable_sha256, write_yaml
+from foundation.evaluation.common import evaluation_time_utc, load_yaml, stable_sha256, write_yaml
+from foundation.evaluation.fresh_evaluator_validator import compare_committed_evaluator_file
 from foundation.evaluation.operating_slo_evaluator import EVALUATOR_ID as OPERATING_EVALUATOR_ID
 from foundation.evaluation.operating_slo_evaluator import evaluate_operating_slo
+from foundation.evaluation.research_cycle_closeout_evaluator import EVALUATOR_ID as RESEARCH_EVALUATOR_ID
+from foundation.evaluation.research_cycle_closeout_evaluator import evaluate_research_cycle_closeout
 from foundation.evaluation.routing_quality_evaluator import EVALUATOR_ID as ROUTING_EVALUATOR_ID
 from foundation.evaluation.routing_quality_evaluator import evaluate_routing_quality
 from foundation.evaluation.runtime_contract_evaluator import EVALUATOR_ID as RUNTIME_EVALUATOR_ID
@@ -56,21 +59,10 @@ def _write_result(repo_root: Path, evaluator_id: str, result: dict[str, Any], *,
     }
 
 
-def _load_result_ref(repo_root: Path, evaluator_id: str) -> dict[str, Any]:
-    rel_path = _result_path(evaluator_id)
-    result = load_yaml(repo_root / rel_path) or {}
+def _summary_status(*, operating_status: str, research_status: str, runtime_status: str) -> dict[str, Any]:
     return {
-        "evaluator_id": evaluator_id,
-        "evaluator_result_path": rel_path.as_posix(),
-        "evaluator_result_sha256": result["output_sha256"],
-        "status": result["status"],
-    }
-
-
-def _summary_status(runtime_status: str) -> dict[str, Any]:
-    return {
-        "control_plane_operating_proof": "passed",
-        "research_cycle_closeout": "passed",
+        "control_plane_operating_proof": operating_status,
+        "research_cycle_closeout": research_status,
         "runtime_contract_integrity": runtime_status,
         "runtime_authority": "not_claimed",
         "economics_pass": "not_claimed",
@@ -84,12 +76,12 @@ def _build_audit(result_refs: dict[str, dict[str, Any]]) -> list[dict[str, Any]]
         {
             "requirement": "control_plane_operating_proof",
             **result_refs[OPERATING_EVALUATOR_ID],
-            "status": "passed",
+            "status": result_refs[OPERATING_EVALUATOR_ID]["status"],
         },
         {
             "requirement": "research_cycle_closeout",
-            **result_refs[OPERATING_EVALUATOR_ID],
-            "status": "passed",
+            **result_refs[RESEARCH_EVALUATOR_ID],
+            "status": result_refs[RESEARCH_EVALUATOR_ID]["status"],
         },
         {
             "requirement": "runtime_contract_integrity",
@@ -126,34 +118,14 @@ def evaluate_operating_closeout(repo_root: Path, *, write: bool = False) -> Clos
     routing = evaluate_routing_quality(repo_root)
     agent = evaluate_agent_value(repo_root)
     operating = evaluate_operating_slo(repo_root)
-    if write:
-        result_refs = {
-            RUNTIME_EVALUATOR_ID: _write_result(repo_root, RUNTIME_EVALUATOR_ID, runtime, write=True),
-            ROUTING_EVALUATOR_ID: _write_result(repo_root, ROUTING_EVALUATOR_ID, routing, write=True),
-            AGENT_EVALUATOR_ID: _write_result(repo_root, AGENT_EVALUATOR_ID, agent, write=True),
-            OPERATING_EVALUATOR_ID: _write_result(repo_root, OPERATING_EVALUATOR_ID, operating, write=True),
-        }
-    else:
-        result_paths_exist = all((repo_root / _result_path(item)).exists() for item in [
-            RUNTIME_EVALUATOR_ID,
-            ROUTING_EVALUATOR_ID,
-            AGENT_EVALUATOR_ID,
-            OPERATING_EVALUATOR_ID,
-        ])
-        if result_paths_exist:
-            result_refs = {
-                RUNTIME_EVALUATOR_ID: _load_result_ref(repo_root, RUNTIME_EVALUATOR_ID),
-                ROUTING_EVALUATOR_ID: _load_result_ref(repo_root, ROUTING_EVALUATOR_ID),
-                AGENT_EVALUATOR_ID: _load_result_ref(repo_root, AGENT_EVALUATOR_ID),
-                OPERATING_EVALUATOR_ID: _load_result_ref(repo_root, OPERATING_EVALUATOR_ID),
-            }
-        else:
-            result_refs = {
-                RUNTIME_EVALUATOR_ID: {"evaluator_id": RUNTIME_EVALUATOR_ID, "evaluator_result_path": _result_path(RUNTIME_EVALUATOR_ID).as_posix(), "evaluator_result_sha256": runtime["output_sha256"], "status": runtime["status"]},
-                ROUTING_EVALUATOR_ID: {"evaluator_id": ROUTING_EVALUATOR_ID, "evaluator_result_path": _result_path(ROUTING_EVALUATOR_ID).as_posix(), "evaluator_result_sha256": routing["output_sha256"], "status": routing["status"]},
-                AGENT_EVALUATOR_ID: {"evaluator_id": AGENT_EVALUATOR_ID, "evaluator_result_path": _result_path(AGENT_EVALUATOR_ID).as_posix(), "evaluator_result_sha256": agent["output_sha256"], "status": agent["status"]},
-                OPERATING_EVALUATOR_ID: {"evaluator_id": OPERATING_EVALUATOR_ID, "evaluator_result_path": _result_path(OPERATING_EVALUATOR_ID).as_posix(), "evaluator_result_sha256": operating["output_sha256"], "status": operating["status"]},
-            }
+    research = evaluate_research_cycle_closeout(repo_root)
+    result_refs = {
+        RUNTIME_EVALUATOR_ID: _write_result(repo_root, RUNTIME_EVALUATOR_ID, runtime, write=write),
+        ROUTING_EVALUATOR_ID: _write_result(repo_root, ROUTING_EVALUATOR_ID, routing, write=write),
+        AGENT_EVALUATOR_ID: _write_result(repo_root, AGENT_EVALUATOR_ID, agent, write=write),
+        OPERATING_EVALUATOR_ID: _write_result(repo_root, OPERATING_EVALUATOR_ID, operating, write=write),
+        RESEARCH_EVALUATOR_ID: _write_result(repo_root, RESEARCH_EVALUATOR_ID, research, write=write),
+    }
 
     audit = _build_audit(result_refs)
     wave_summary = existing.get("wave_summary") or {}
@@ -195,9 +167,13 @@ def evaluate_operating_closeout(repo_root: Path, *, write: bool = False) -> Clos
         "version": "wave_closeout_v2",
         "closeout_id": existing.get("closeout_id", "wave01_operating_closeout_v0"),
         "generated_by": "foundation.evaluation.build_operating_closeout",
-        "generated_at_utc": EVALUATION_TIME_UTC,
+        "generated_at_utc": evaluation_time_utc(),
         "status": closeout_status,
-        "result": _summary_status(runtime["status"]),
+        "result": _summary_status(
+            operating_status=operating["status"],
+            research_status=research["status"],
+            runtime_status=runtime["status"],
+        ),
         "result_judgment": {
             "control_plane": "positive",
             "runtime_contract": runtime_contract_judgment,
@@ -254,6 +230,20 @@ def validate_committed_closeout(repo_root: Path) -> list[str]:
             errors.append(f"closeout requirement {item.get('requirement')}: missing evaluator fields {sorted(missing)}")
         if item.get("status") == "passed" and not item.get("evaluator_id"):
             errors.append(f"closeout requirement {item.get('requirement')}: self-attested passed status")
+        rel_path = item.get("evaluator_result_path")
+        if rel_path:
+            evaluator_path = repo_root / rel_path
+            if not evaluator_path.exists():
+                errors.append(f"closeout requirement {item.get('requirement')}: missing evaluator result {rel_path}")
+            else:
+                evaluator_payload = load_yaml(evaluator_path) or {}
+                if evaluator_payload.get("evaluator_id") != item.get("evaluator_id"):
+                    errors.append(f"closeout requirement {item.get('requirement')}: evaluator_id mismatch")
+                if evaluator_payload.get("status") != item.get("status"):
+                    errors.append(f"closeout requirement {item.get('requirement')}: evaluator status mismatch")
+                if evaluator_payload.get("output_sha256") != item.get("evaluator_result_sha256"):
+                    errors.append(f"closeout requirement {item.get('requirement')}: evaluator output_sha256 mismatch")
+                errors.extend(compare_committed_evaluator_file(repo_root, evaluator_path))
     if committed.get("evaluation_digest") != recomputed.digest:
         errors.append("committed closeout evaluation_digest does not match recomputed digest")
     if committed.get("requirement_audit") != recomputed.requirement_audit:

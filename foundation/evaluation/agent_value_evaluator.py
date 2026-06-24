@@ -8,7 +8,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from foundation.evaluation.common import EVALUATION_TIME_UTC, finalize_result, input_hash, load_yaml, write_yaml
+from foundation.evaluation.common import evaluation_time_utc, finalize_result, input_hash, load_yaml, write_yaml
 
 
 EVALUATOR_ID = "agent_value_evaluator_v1"
@@ -19,16 +19,20 @@ def evaluate_agent_value(repo_root: Path) -> dict:
     data = load_yaml(repo_root / metrics_path) or {}
     metrics = data.get("agent_operating_metrics") or {}
     findings = []
-    if float(metrics.get("solo_work_share", 0.0)) < 0.80:
-        findings.append({"id": "solo_or_single_agent_share_below_slo", "value": metrics.get("solo_work_share")})
-    if float(metrics.get("duplicate_advice_ratio", 1.0)) > 0.20:
+    required_metrics = ("routine_solo_or_single_agent_share", "duplicate_advice_ratio", "unsupported_assertion_count")
+    for metric in required_metrics:
+        if metric not in metrics or metrics.get(metric) is None:
+            findings.append({"id": "required_agent_metric_unavailable", "metric": metric})
+    if "routine_solo_or_single_agent_share" in metrics and float(metrics.get("routine_solo_or_single_agent_share", 0.0)) < 0.80:
+        findings.append({"id": "routine_solo_or_single_agent_share_below_slo", "value": metrics.get("routine_solo_or_single_agent_share")})
+    if "duplicate_advice_ratio" in metrics and float(metrics.get("duplicate_advice_ratio", 1.0)) > 0.20:
         findings.append({"id": "duplicate_advice_ratio_above_slo", "value": metrics.get("duplicate_advice_ratio")})
-    if int(metrics.get("unsupported_assertion_count", 0)) > 0:
+    if "unsupported_assertion_count" in metrics and int(metrics.get("unsupported_assertion_count", 0)) > 0:
         findings.append({"id": "unsupported_agent_assertions", "count": metrics.get("unsupported_assertion_count")})
     result = {
         "version": "evaluator_result_v1",
         "evaluator_id": EVALUATOR_ID,
-        "executed_at_utc": EVALUATION_TIME_UTC,
+        "executed_at_utc": evaluation_time_utc(),
         "input_hashes": [input_hash(repo_root, metrics_path)],
         "status": "failed" if findings else "passed",
         "metrics": metrics,

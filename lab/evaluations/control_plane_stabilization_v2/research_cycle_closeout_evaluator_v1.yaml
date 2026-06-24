@@ -1,0 +1,58 @@
+version: evaluator_result_v1
+evaluator_id: research_cycle_closeout_evaluator_v1
+executed_at_utc: '2026-06-24T11:33:43Z'
+input_hashes:
+- path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+  sha256: ea2c2f14cafcca6085d5357513a4c924aeee0187ff9da5c7eccb9cec8c498a75
+  size_bytes: 5781
+- path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+  sha256: f20c43534ce1168c0bf2513f0349157039706789b3a73704234703ca4b6bbe7a
+  size_bytes: 7622
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  sha256: 13ead9885f8c2ea741582d78eecc38cd28bb85143188217d0291c0448971c5b2
+  size_bytes: 4733
+- path: lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
+  sha256: 05c33cc5a886a647b658596c858f8fea091256f378b2b4336c96d56249755f14
+  size_bytes: 2987
+- path: lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
+  sha256: 97c654940b935817c0f3ce0b8b3b4641b99bda4d6cdcbb7b76503cc399090602
+  size_bytes: 3779
+- path: lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+  sha256: 2fd5d7e259d6d29b60986ace32660ad79358d34b2a24bfa828f09cfec438f231
+  size_bytes: 2932
+- path: lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+  sha256: 7141312443c97f38635ad45434483f770f2644749454d71907253740d863b2b7
+  size_bytes: 3252
+- path: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+  sha256: befc06168cc65d43e089107b91573687a06aabeb5362164f4afd6624ef8a4478
+  size_bytes: 1634
+- path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  sha256: 85c5c126096a9bf466f61d740a407730b2f2ff397efdfb45aa52614035617535
+  size_bytes: 11284
+status: passed
+metrics:
+  campaign_count: 3
+  candidate_count: 0
+  l5_candidate_count: 0
+  negative_memory_count: 3
+  preserved_clue_count: 1
+  locked_final_oos_used: false
+campaign_results:
+- campaign_id: campaign_us100_event_barrier_decision_surface_v0
+  status: wave01_event_barrier_decision_replay_closed_no_candidate
+  evidence_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
+  candidate_count: 0
+  l5_candidate_count: 0
+- campaign_id: campaign_us100_session_transition_regime_surface_v0
+  status: wave01_session_transition_closed_preserved_clues_no_candidate
+  evidence_path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/campaign_closeout.yaml
+  candidate_count: 0
+  l5_candidate_count: 0
+- campaign_id: campaign_us100_task_surface_scout_v0
+  status: decision_replay_judgment_closed_no_candidate
+  evidence_path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
+  candidate_count: 0
+  l5_candidate_count: 0
+findings: []
+claim_effect: research_cycle_closeout_evaluated_no_candidate_no_runtime_authority_no_economics_pass
+output_sha256: 0c816e5709681e28adc622a3e6b20a52722ec6596b8fc08179ebe469115ab5b3

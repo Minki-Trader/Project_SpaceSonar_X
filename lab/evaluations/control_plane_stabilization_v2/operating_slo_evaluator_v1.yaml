@@ -1,6 +1,6 @@
 version: evaluator_result_v1
 evaluator_id: operating_slo_evaluator_v1
-executed_at_utc: '2026-06-22T14:00:00Z'
+executed_at_utc: '2026-06-24T11:33:43Z'
 input_hashes:
 - path: docs/policies/codex_operating_slo.yaml
   sha256: 7b935dcff63b75559da66a8af6f40c52823c05b9f825de1c63faaee32115a530
@@ -9,24 +9,29 @@ input_hashes:
   sha256: 4a75dec8f64a57a161f1be6149fb8bcae738b8ecca57c7647689ad70f8535839
   size_bytes: 5293
 - path: docs/workspace/workspace_state.yaml
-  sha256: 9a39716b133205f802046044a34afd9e277692cc6b7c2840bd762156ea4c299e
-  size_bytes: 7995
+  sha256: 8e9ad3f9ffaaa10beb2a3ab155b1f52a8e6a4ec4a84471172462a944da61014e
+  size_bytes: 1542
 - path: docs/agent_control/policy_contract.yaml
   sha256: 34e11b2e31583b92c1d59e42b807fc80dd80c325ecf24cc3aadaa691ff30d5d8
   size_bytes: 2932
 status: passed
 metrics:
   cold_reentry_truth_files: 4
-  cold_reentry_context_bytes: 28590
-  transaction_receipt_count: 0
+  cold_reentry_context_bytes: 23059
+  transaction_receipt_count: 72
+  transaction_idempotency_score: 1.0
   partial_unclassified_transactions: 0
+  durable_runs_with_dirty_source: 0
+  self_attested_closeout_requirements: 0
   routing_golden_accuracy: 1.0
   protected_claim_guard_recall: 1.0
   runtime_completion_contract_violations: 0
   runtime_contract_integrity: passed
-  solo_work_share: 0.8
+  routine_solo_or_single_agent_share: 1.0
+  solo_work_share: 1.0
+  observation_coverage_ratio: 0.142857
   duplicate_agent_advice_ratio: 0.0
   tracked_ignored_artifact_count: 0
 findings: []
 claim_effect: operating_slo_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: 0e9c7c4313e436c1c2aadc7b7c6a7d2b2b1d281a02bdab52af74ed41d7e62111
+output_sha256: 13895be10ff8f53b47f8de0fff86ef41ec3f4fde6f3e4dc9caafbb1d7999b90e

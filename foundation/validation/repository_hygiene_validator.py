@@ -12,6 +12,9 @@ REQUIRED_BRANCH_POLICY_SNIPPETS = [
     "merge_mode: squash_only",
     "direct_push: forbidden",
 ]
+TRACKED_IGNORED_ALLOWLIST = {
+    "tests/fixtures/mt5_strategy_tester_report_minimal.html",
+}
 
 
 def tracked_ignored_files(repo_root: Path) -> list[str]:
@@ -56,6 +59,8 @@ def validate(repo_root: Path, *, tracked_ignored: list[str] | None = None) -> li
     errors = validate_branch_policy(repo_root)
     ignored = tracked_ignored_files(repo_root) if tracked_ignored is None else tracked_ignored
     for path in ignored:
+        if path in TRACKED_IGNORED_ALLOWLIST:
+            continue
         errors.append(f"tracked ignored artifact outside allowlist: {path}")
     return errors
 

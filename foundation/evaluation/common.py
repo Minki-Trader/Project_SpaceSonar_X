@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -9,7 +10,8 @@ import yaml
 from spacesonar.control_plane.store import filesystem_path
 
 
-EVALUATION_TIME_UTC = "2026-06-22T14:00:00Z"
+def evaluation_time_utc() -> str:
+    return datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
 def load_yaml(path: Path) -> Any:
@@ -49,7 +51,15 @@ def input_hash(repo_root: Path, rel_path: str) -> dict[str, Any]:
     }
 
 
+def semantic_result_payload(result: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in result.items()
+        if key not in {"output_sha256", "executed_at_utc"}
+    }
+
+
 def finalize_result(result: dict[str, Any]) -> dict[str, Any]:
-    payload = {key: value for key, value in result.items() if key != "output_sha256"}
+    payload = semantic_result_payload(result)
     result["output_sha256"] = stable_sha256(payload)
     return result

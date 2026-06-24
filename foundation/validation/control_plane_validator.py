@@ -556,6 +556,16 @@ def validate_execution_provenance(repo_root: Path) -> list[str]:
     return validate_execution_provenance_records(repo_root)
 
 
+def validate_fresh_evaluators(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.evaluation.fresh_evaluator_validator import validate_committed_evaluators
+
+    return validate_committed_evaluators(repo_root)
+
+
 def validate_routing_smoke_prompts(repo_root: Path) -> list[str]:
     path = repo_root / "docs" / "agent_control" / "routing_smoke_prompts.yaml"
     data = load_yaml(path)
@@ -634,6 +644,7 @@ def validate(repo_root: Path, *, include_active_records: bool = False) -> list[s
     errors.extend(validate_agent_consult_receipts(repo_root))
     errors.extend(validate_agent_operating_metrics_projection(repo_root))
     errors.extend(validate_execution_provenance(repo_root))
+    errors.extend(validate_fresh_evaluators(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))
 

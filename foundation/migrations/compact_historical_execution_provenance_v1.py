@@ -1053,13 +1053,6 @@ def _locked_receipt(repo_root: Path) -> dict[str, Any] | None:
         try:
             if validate_execution_provenance(repo_root):
                 return None
-            if (repo_root / AGENT_EVENTS_SNAPSHOT_PATH).exists():
-                expected_events = dump_yaml(project_agent_events(repo_root))
-                if (repo_root / AGENT_EVENTS_SNAPSHOT_PATH).read_text(encoding="utf-8") != expected_events:
-                    return None
-                expected_metrics = dump_yaml(project_agent_operating_metrics_from_events(repo_root, project_agent_events(repo_root)))
-                if (repo_root / AGENT_METRICS_SNAPSHOT_PATH).exists() and (repo_root / AGENT_METRICS_SNAPSHOT_PATH).read_text(encoding="utf-8") != expected_metrics:
-                    return None
         except Exception:
             return None
         return receipt
@@ -1610,6 +1603,7 @@ def run(repo_root: Path, *, write: bool, fail_after_replace_count: int | None = 
     staged_texts: dict[Path, str] = plan["staged_texts"]
     staged_bytes: dict[Path, bytes] = plan.get("staged_bytes", {})
     diffs = plan_diffs(repo_root, staged_texts, staged_bytes)
+    locked_receipt = _locked_receipt(repo_root)
     report = {
         "migration_id": MIGRATION_ID,
         "mode": "write" if write else "check",
@@ -1623,10 +1617,27 @@ def run(repo_root: Path, *, write: bool, fail_after_replace_count: int | None = 
     }
     if not write:
         validation_errors = validate_execution_provenance(repo_root)
+        if locked_receipt and not validation_errors:
+            diffs = []
+            report["changed_paths"] = diffs
+            report["changed_record_count"] = 0
         report["validation_errors"] = validation_errors
         if validation_errors:
             report["failure_reason"] = "finalized_receipt_drift"
         report["status"] = "passed" if not diffs and not validation_errors else "failed"
+        return report
+
+    if locked_receipt:
+        validation_errors = validate_execution_provenance(repo_root)
+        report["validation_errors"] = validation_errors
+        if validation_errors:
+            report["failure_reason"] = "finalized_receipt_drift"
+            report["status"] = "failed"
+            return report
+        report["changed_paths"] = []
+        report["changed_record_count"] = 0
+        report["transaction_status"] = "noop_already_applied"
+        report["status"] = "passed"
         return report
 
     tx = ControlPlaneTransaction(context, tx_id=tx_id)

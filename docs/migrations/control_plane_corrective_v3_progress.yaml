@@ -1567,6 +1567,77 @@ work_units:
         authority, economics pass, live readiness, selected baseline, or production
         deployment claims.
   WP07:
-    status: pending
+    status: completed
+    started_at_utc: '2026-06-24T00:00:00Z'
+    completed_at_utc: '2026-06-24T11:31:48Z'
+    objective: make_evaluators_slos_and_closeout_checks_fresh_and_non_self_attested
+    implementation:
+      evaluator_time_source:
+        hardcoded_global_timestamp_removed: true
+        semantic_output_hash_excludes_executed_at_utc: true
+      fresh_evaluator_verification:
+        validator: foundation/evaluation/fresh_evaluator_validator.py
+        integrated_into_control_plane_validator: true
+        compared_fields:
+        - evaluator_id
+        - output_sha256
+        - input_hashes
+        - status
+        - metrics
+        - findings
+      hardcoded_pass_removal:
+        control_plane_operating_proof: evaluator_derived
+        research_cycle_closeout: evaluator_derived
+        manual_pass_without_evaluator_ref: rejected
+      slo_gates:
+        configured_gates_enforced: true
+        missing_required_metric_fails_closed: required_slo_metric_unavailable
+        zero_transaction_idempotency_denominator_fails_closed: true
+      mutation_tests:
+        stale_runtime_evaluator_file: detected
+        changed_evaluator_input_attempt_manifest: detected
+        changed_terminal_summary: detected
+        changed_tester_report_receipt: detected
+        self_authored_passed_requirement: detected
+        evaluator_output_hash_corruption: detected
+        evaluator_input_hash_corruption: detected
+        candidate_count_research_cycle_failure: detected
+      wp06_forward_stability:
+        finalized_receipt_check_uses_execution_provenance_validator: true
+        wp07_progress_or_evaluator_changes_do_not_refresh_wp06_receipt: true
+    generated_evidence:
+    - foundation/evaluation/fresh_evaluator_validator.py
+    - foundation/evaluation/research_cycle_closeout_evaluator.py
+    - lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
+    - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+    validation:
+    - command: uv run pytest tests/test_wave01_operating_closeout.py -q
+      status: passed
+      result: 17 passed
+    - command: uv run python foundation/evaluation/fresh_evaluator_validator.py --repo-root .
+      status: passed
+      result: committed evaluator fresh comparison passed
+    - command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root . --check
+      status: passed
+      result: operating closeout validation passed
+    - command: uv run pytest tests/test_repository_hygiene_validator.py tests/test_runtime_graph_revalidation.py tests/test_routing_behavior.py tests/test_agent_metrics_projection.py -q
+      status: passed
+      result: 54 passed
+    - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py --repo-root . --check
+      status: passed
+      result: changed_record_count=0 record_counts=37/88/125 runtime_evaluator_status=passed
+    - command: uv run pytest tests/test_execution_provenance_validator.py tests/test_provenance_compaction_migration.py tests/test_wave01_operating_closeout.py tests/test_repository_hygiene_validator.py -q
+      status: passed
+      result: 38 passed
+    - command: python -m compileall foundation/evaluation foundation/validation foundation/migrations src/spacesonar/control_plane
+      status: passed
+      result: compileall passed
+    claim_boundary: corrective_wp07_completed_fresh_evaluator_slo_closeout_checks_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    handoff:
+      next_packet: WP08
+      required_entry_condition: WP07.status completed
+      exact_handoff: Continue with final hygiene/main-integration packet only after
+        fresh evaluator validation, SLO enforcement, and evaluator-backed closeout
+        checks remain green after projection refresh.
   WP08:
     status: pending

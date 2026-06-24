@@ -8,7 +8,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from foundation.evaluation.common import EVALUATION_TIME_UTC, finalize_result, input_hash, write_yaml
+from foundation.evaluation.common import evaluation_time_utc, finalize_result, input_hash, write_yaml
 from foundation.validation.routing_behavior_eval import evaluate as evaluate_routing_behavior
 
 
@@ -20,7 +20,7 @@ def evaluate_routing_quality(repo_root: Path) -> dict:
     result = {
         "version": "evaluator_result_v1",
         "evaluator_id": EVALUATOR_ID,
-        "executed_at_utc": EVALUATION_TIME_UTC,
+        "executed_at_utc": evaluation_time_utc(),
         "input_hashes": [
             input_hash(repo_root, "docs/agent_control/routing_behavior_cases.yaml"),
             input_hash(repo_root, "docs/agent_control/work_family_registry.yaml"),
