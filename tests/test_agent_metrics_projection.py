@@ -124,6 +124,7 @@ def test_agent_ratios_are_reproducible_from_progress_and_consult_items(tmp_path:
     assert metrics["duplicate_advice_items"] == 1
     assert metrics["accepted_after_verification_count"] == 2
     assert metrics["solo_work_share"] == 0.333333
+    assert metrics["observation_coverage_ratio"] == 1.0
     assert metrics["two_agent_consult_share"] == 1.0
     assert metrics["routine_solo_or_single_agent_share"] == 0.666667
     assert metrics["duplicate_advice_ratio"] == 0.25

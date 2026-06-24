@@ -6,8 +6,8 @@ measurement_boundary:
   boundary_id: control_plane_corrective_v3
 source_refs:
 - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-  sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
-  size_bytes: 72532
+  sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+  size_bytes: 66623
 work_item_events:
 - work_item_id: WP00
   agent_mode: solo
@@ -16,8 +16,8 @@ work_item_events:
   - tf_goal_us100_onnx_forward_boundary_initial_v2
   source_refs:
   - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
-    size_bytes: 72532
+    sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+    size_bytes: 66623
   started_at_utc: '2026-06-23T00:00:00Z'
   ended_at_utc: '2026-06-23T00:00:00Z'
   in_boundary: true
@@ -28,8 +28,8 @@ work_item_events:
   consult_ids: []
   source_refs:
   - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
-    size_bytes: 72532
+    sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+    size_bytes: 66623
   started_at_utc: '2026-06-23T00:00:00Z'
   ended_at_utc: '2026-06-23T01:10:00Z'
   in_boundary: true
@@ -40,8 +40,8 @@ work_item_events:
   consult_ids: []
   source_refs:
   - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
-    size_bytes: 72532
+    sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+    size_bytes: 66623
   started_at_utc: '2026-06-23T01:10:00Z'
   ended_at_utc: '2026-06-23T02:09:19Z'
   in_boundary: true
@@ -52,8 +52,8 @@ work_item_events:
   consult_ids: []
   source_refs:
   - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
-    size_bytes: 72532
+    sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+    size_bytes: 66623
   started_at_utc: '2026-06-23T02:09:19Z'
   ended_at_utc: '2026-06-23T05:17:48Z'
   in_boundary: true
@@ -64,8 +64,8 @@ work_item_events:
   consult_ids: []
   source_refs:
   - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
-    size_bytes: 72532
+    sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+    size_bytes: 66623
   started_at_utc: '2026-06-23T06:15:50Z'
   ended_at_utc: '2026-06-23T11:20:06Z'
   in_boundary: true
@@ -76,8 +76,8 @@ work_item_events:
   consult_ids: []
   source_refs:
   - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
-    size_bytes: 72532
+    sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+    size_bytes: 66623
   started_at_utc: '2026-06-23T11:45:00Z'
   ended_at_utc: '2026-06-23T15:05:01Z'
   in_boundary: true
@@ -87,17 +87,13 @@ work_item_events:
   evidence_class: contemporaneous_work_receipt
   consult_ids: []
   source_refs:
-  - path: docs/workspace/agent_work_receipts/WP06.yaml
-    sha256: 606b6abdfc218017fc39f1cc05b94701ece19d7d770b73f4d9bf3c396ba83ff6
-    size_bytes: 1278
+  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
+    sha256: e909fba03a7864fc7785eaf819af02fcc183a57686ff1681d8357dddbb18da09
+    size_bytes: 66623
   started_at_utc: '2026-06-23T15:05:01Z'
-  ended_at_utc: '2026-06-24T04:16:39Z'
+  ended_at_utc: '2026-06-24T00:51:00Z'
   in_boundary: true
   observed_for_slo: true
-  work_receipt_ref:
-    path: docs/workspace/agent_work_receipts/WP06.yaml
-    sha256: 606b6abdfc218017fc39f1cc05b94701ece19d7d770b73f4d9bf3c396ba83ff6
-    size_bytes: 1278
 consult_events:
 - consult_id: tf_goal_us100_onnx_forward_boundary_initial_v2
   work_item_id: WP00
@@ -114,10 +110,6 @@ consult_events:
     accepted_after_verification_count: 3
     rejected_after_verification_count: 0
     rewritten_after_verification_count: 1
-excluded_historical_consults:
-- consult_id: tf_goal_us100_onnx_forward_boundary_initial_v2
-  boundary_class: historical_out_of_boundary
-  original_work_context: initial_goal_framing
 projection:
   generated_from: docs/migrations/control_plane_corrective_v3_progress.yaml
   generator: python -m spacesonar.cli agents events --write

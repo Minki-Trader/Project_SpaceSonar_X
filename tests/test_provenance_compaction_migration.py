@@ -65,3 +65,25 @@ def test_runtime_evaluator_references_changed_attempt_hashes() -> None:
     )
 
     assert target_paths[first_attempt["path"]]["sha256"] == first_attempt["post_migration_sha256"]
+
+
+def test_receipt_input_and_output_hashes_match_inventory_pre_and_post() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    inventory = read_yaml(repo_root / migration.MIGRATION_INVENTORY_PATH)
+    receipt = read_yaml(repo_root / migration.BATCH_RECEIPT_PATH)
+    inputs = {item["path_at_execution"]: item for item in receipt["inputs"]}
+    outputs = {item["path_at_execution"]: item for item in receipt["outputs"]}
+
+    for entry in inventory["entries"]:
+        assert inputs[entry["path"]]["sha256_at_start"] == entry["pre_migration_sha256"]
+        assert outputs[entry["path"]]["sha256_at_end"] == entry["post_migration_sha256"]
+
+
+def test_wp06_receipt_is_locked_and_noop_check_preserves_hash() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    before = (repo_root / migration.BATCH_RECEIPT_PATH).read_bytes()
+
+    report = migration.run(repo_root, write=False)
+
+    assert report["status"] == "passed"
+    assert (repo_root / migration.BATCH_RECEIPT_PATH).read_bytes() == before

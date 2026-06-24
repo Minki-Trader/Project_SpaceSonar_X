@@ -11,8 +11,10 @@ from spacesonar.control_plane.provenance import (
     BatchReceiptError,
     DirtySourceError,
     add_provenance_compaction_marker,
-    attach_execution_batch_ref,
     build_execution_batch_receipt,
+    build_source_snapshot_payload,
+    create_attempt_manifest,
+    create_run_manifest,
     execution_batch_ref,
     provenance_compaction_marker,
     source_snapshot,
@@ -130,6 +132,16 @@ def test_staged_change_is_captured(tmp_path: Path) -> None:
 
     assert snapshot["staged_patch_path"]
     assert snapshot["staged_patch_sha256"]
+
+
+def test_build_source_snapshot_payload_writes_zero_files(tmp_path: Path) -> None:
+    seed_git_repo(tmp_path)
+    (tmp_path / "src/module.py").write_text("VALUE = 12\n", encoding="utf-8")
+
+    payload = build_source_snapshot_payload(tmp_path, "batch_payload")
+
+    assert payload["manifest"]["tracked_patch_path"]
+    assert not (tmp_path / "lab" / "executions" / "batch_payload").exists()
 
 
 def test_unstaged_change_is_captured(tmp_path: Path) -> None:
@@ -287,12 +299,21 @@ def test_run_and_attempt_records_reference_batch_receipt(tmp_path: Path) -> None
         command_argv=["run"],
     )
 
-    run_record = attach_execution_batch_ref({"run_id": "run_a"}, tmp_path, "batch_ref")
-    attempt_record = attach_execution_batch_ref({"attempt_id": "attempt_a"}, tmp_path, "batch_ref")
+    run_record = create_run_manifest(tmp_path, {"run_id": "run_a"}, execution_batch_id="batch_ref")
+    attempt_record = create_attempt_manifest(tmp_path, {"attempt_id": "attempt_a"}, execution_batch_id="batch_ref")
 
     assert run_record["execution_batch_ref"]["batch_id"] == "batch_ref"
+    assert run_record["version"] == "run_manifest_v3"
     assert run_record["execution_batch_ref"]["sha256"]
+    assert attempt_record["version"] == "mt5_attempt_manifest_v2"
     assert attempt_record["execution_batch_ref"]["path"] == "lab/executions/batch_ref/execution_batch_receipt.yaml"
+
+
+def test_run_and_attempt_creation_requires_batch_ref(tmp_path: Path) -> None:
+    with pytest.raises(BatchReceiptError):
+        create_run_manifest(tmp_path, {"run_id": "run_a"}, execution_batch_id="")
+    with pytest.raises(BatchReceiptError):
+        create_attempt_manifest(tmp_path, {"attempt_id": "attempt_a"}, execution_batch_id="")
 
 
 def test_execution_batch_ref_with_null_sha_fails(tmp_path: Path) -> None:

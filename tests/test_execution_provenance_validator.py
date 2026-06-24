@@ -13,7 +13,7 @@ from foundation.validation.execution_provenance_validator import (
 from spacesonar.control_plane.provenance import validate_execution_batch_receipt
 
 
-def test_same_path_with_conflicting_batch_hashes_fails() -> None:
+def test_same_path_may_have_different_pre_and_post_hashes() -> None:
     receipt = {
         "version": "execution_batch_receipt_v1",
         "batch_id": "batch_conflict",
@@ -30,7 +30,30 @@ def test_same_path_with_conflicting_batch_hashes_fails() -> None:
         "receipt_status": "finalized",
     }
 
-    assert any("conflicting hashes for same.txt" in error for error in validate_execution_batch_receipt(receipt))
+    assert not any("conflicting hashes for same.txt" in error for error in validate_execution_batch_receipt(receipt))
+
+
+def test_conflicting_duplicate_hash_within_same_phase_fails() -> None:
+    receipt = {
+        "version": "execution_batch_receipt_v1",
+        "batch_id": "batch_conflict",
+        "work_item_id": "work_a",
+        "command_argv": ["run"],
+        "cwd": ".",
+        "started_at_utc": "2026-06-24T00:00:00.000001Z",
+        "ended_at_utc": "2026-06-24T00:00:00.000002Z",
+        "git": {"source_snapshot": {"manifest_sha256": "abc"}},
+        "environment": {"lock_file_sha256": "abc"},
+        "inputs": [
+            {"path_at_execution": "same.txt", "sha256_at_start": "aaa", "size_bytes_at_start": 1},
+            {"path_at_execution": "same.txt", "sha256_at_start": "bbb", "size_bytes_at_start": 1},
+        ],
+        "outputs": [{"path_at_execution": "same.txt", "sha256_at_end": "ccc", "size_bytes_at_end": 1}],
+        "claim_boundary": "test",
+        "receipt_status": "finalized",
+    }
+
+    assert any("conflicting inputs hashes for same.txt" in error for error in validate_execution_batch_receipt(receipt))
 
 
 def test_execution_batch_ref_with_null_sha_fails(tmp_path: Path) -> None:
@@ -67,6 +90,20 @@ def test_execution_batch_ref_with_null_sha_fails(tmp_path: Path) -> None:
     errors = _validate_execution_refs(tmp_path)
 
     assert any("execution_batch_ref sha256 mismatch" in error for error in errors)
+
+
+def test_new_run_and_attempt_without_batch_ref_fail(tmp_path: Path) -> None:
+    run_path = tmp_path / "lab" / "runs" / "run_new" / "run_manifest.json"
+    run_path.parent.mkdir(parents=True)
+    run_path.write_text('{"version":"run_manifest_v3","run_id":"run_new"}\n', encoding="utf-8")
+    attempt_path = tmp_path / "runtime" / "mt5_attempts" / "attempt_new" / "attempt_manifest.yaml"
+    attempt_path.parent.mkdir(parents=True)
+    attempt_path.write_text("version: mt5_attempt_manifest_v2\nattempt_id: attempt_new\n", encoding="utf-8")
+
+    errors = _validate_execution_refs(tmp_path)
+
+    assert any("execution_batch_ref missing for run_manifest_v3" in error for error in errors)
+    assert any("execution_batch_ref missing for mt5_attempt_manifest_v2" in error for error in errors)
 
 
 def test_disabled_regeneration_command_is_rejected(tmp_path: Path) -> None:

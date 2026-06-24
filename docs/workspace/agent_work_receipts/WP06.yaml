@@ -1,0 +1,26 @@
+version: agent_work_receipt_v1
+work_item_id: WP06
+agent_mode: solo
+evidence_class: contemporaneous_work_receipt
+started_at_utc: '2026-06-23T15:05:01Z'
+ended_at_utc: '2026-06-24T04:16:39Z'
+consult_ids: []
+source_refs:
+- path: docs/migrations/control_plane_corrective_v3_progress.yaml
+  sha256: abf4e2c5ca5b26e45a48f2036d40e04921ec9b67270bc2bcbeb7be0572ebcee0
+  size_bytes: 72532
+wp06_batch_receipt_ref:
+  batch_id: batch_control_plane_corrective_v3_wp06_provenance_compaction
+  path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+  sha256: 612b36691200df3264b9deef3c17956b54ebc810aa844cf64b9899af663c64e3
+  size_bytes: 159887
+transaction_receipt_ref:
+  transaction_id: tx_20260624T025438678025Z_ec511bc5_d083706f
+  path: .spacesonar/transactions/tx_20260624T025438678025Z_ec511bc5_d083706f/transaction_receipt.yaml
+  sha256: acf97b82f940717fc2c6809d920c901ad07a4564033955a803a9e79ff2ab2f1a
+  size_bytes: 152553
+claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+receipt_sha256:
+  algorithm: sha256
+  scope: canonical_yaml_with_value_field_empty
+  value: fc8bd41bb86a8645bd5686a2c4f0e60e955795dbd3c0357134fe7aa1d8d663f1

@@ -10,6 +10,7 @@ from .transaction import ControlPlaneTransaction
 
 AGENT_EVENTS_PATH = Path("docs/workspace/agent_operating_events.yaml")
 AGENT_METRICS_PATH = Path("docs/workspace/agent_operating_metrics.yaml")
+AGENT_WORK_RECEIPTS_DIR = Path("docs/workspace/agent_work_receipts")
 PROGRESS_LEDGER_PATH = Path("docs/migrations/control_plane_corrective_v3_progress.yaml")
 CONSULT_RECEIPT_VERSION = "agent_consult_receipt_v2"
 EVENT_VERSION = "agent_operating_events_v2"
@@ -47,6 +48,20 @@ def _load_consult_receipt(repo_root: Path, rel_path: str) -> dict[str, Any]:
     if data.get("version") != CONSULT_RECEIPT_VERSION:
         raise ValueError(f"{rel_path}: expected {CONSULT_RECEIPT_VERSION}")
     return data
+
+
+def _work_receipt_path(work_item_id: str) -> Path:
+    return AGENT_WORK_RECEIPTS_DIR / f"{work_item_id}.yaml"
+
+
+def _load_work_receipt(repo_root: Path, work_item_id: str) -> dict[str, Any] | None:
+    path = repo_root / _work_receipt_path(work_item_id)
+    if not path.exists():
+        return None
+    receipt = read_yaml(path)
+    if receipt.get("work_item_id") != work_item_id:
+        raise ValueError(f"{_work_receipt_path(work_item_id).as_posix()}: work_item_id mismatch")
+    return receipt
 
 
 def derive_advice_metrics(receipt: dict[str, Any]) -> dict[str, int]:
@@ -100,6 +115,16 @@ def project_agent_events(repo_root: Path) -> dict[str, Any]:
     for work_item_id in sorted(work_units):
         unit = work_units[work_item_id] or {}
         execution = unit.get("agent_execution") or {}
+        work_receipt = _load_work_receipt(repo_root, work_item_id)
+        if work_receipt:
+            execution = {
+                "mode": work_receipt.get("agent_mode"),
+                "evidence_class": work_receipt.get("evidence_class", "contemporaneous_work_receipt"),
+                "consult_ids": work_receipt.get("consult_ids") or [],
+                "source_refs": [_source_ref(repo_root, _work_receipt_path(work_item_id))],
+                "started_at_utc": work_receipt.get("started_at_utc"),
+                "ended_at_utc": work_receipt.get("ended_at_utc"),
+            }
         if not execution:
             continue
         mode = str(execution.get("mode") or "unknown")
@@ -108,8 +133,7 @@ def project_agent_events(repo_root: Path) -> dict[str, Any]:
         ended = execution.get("ended_at_utc") or unit.get("completed_at_utc")
         in_boundary = _timestamp_in_boundary(str(started) if started else None, start, end or None)
         observed = evidence_class == "contemporaneous_work_receipt" and mode != "unknown" and in_boundary
-        work_events.append(
-            {
+        event = {
                 "work_item_id": work_item_id,
                 "agent_mode": mode,
                 "evidence_class": evidence_class,
@@ -120,7 +144,9 @@ def project_agent_events(repo_root: Path) -> dict[str, Any]:
                 "in_boundary": in_boundary,
                 "observed_for_slo": observed,
             }
-        )
+        if work_receipt:
+            event["work_receipt_ref"] = _source_ref(repo_root, _work_receipt_path(work_item_id))
+        work_events.append(event)
     for work in work_events:
         for consult_id in work.get("consult_ids") or []:
             found_path: str | None = None
@@ -148,6 +174,17 @@ def project_agent_events(repo_root: Path) -> dict[str, Any]:
                     "advice_metrics": derive_advice_metrics(receipt),
                 }
             )
+    excluded_historical_consults = [
+        {
+            "consult_id": item.get("consult_id"),
+            "boundary_class": item.get("boundary_class"),
+            "original_work_context": "initial_goal_framing"
+            if item.get("consult_id") == "tf_goal_us100_onnx_forward_boundary_initial_v2"
+            else item.get("work_item_id"),
+        }
+        for item in consult_events
+        if item.get("boundary_class") == "historical_out_of_boundary"
+    ]
     return {
         "version": EVENT_VERSION,
         "updated_utc": progress.get("initialized_at_utc"),
@@ -159,6 +196,7 @@ def project_agent_events(repo_root: Path) -> dict[str, Any]:
         "source_refs": [_source_ref(repo_root, PROGRESS_LEDGER_PATH)],
         "work_item_events": work_events,
         "consult_events": consult_events,
+        "excluded_historical_consults": excluded_historical_consults,
         "projection": {
             "generated_from": PROGRESS_LEDGER_PATH.as_posix(),
             "generator": "python -m spacesonar.cli agents events --write",
@@ -258,6 +296,7 @@ def project_agent_operating_metrics_from_events(repo_root: Path, events: dict[st
         "three_plus_agent_consult_count": three_plus_agent_consult_count,
         **totals,
         "solo_work_share": _ratio(solo_work_item_count, observed_work_item_count),
+        "observation_coverage_ratio": _ratio(observed_work_item_count, work_item_count),
         "one_agent_consult_share": _ratio(one_agent_consult_count, len(consult_events)),
         "two_agent_consult_share": _ratio(two_agent_consult_count, len(consult_events)),
         "three_plus_agent_consult_share": _ratio(three_plus_agent_consult_count, len(consult_events)),

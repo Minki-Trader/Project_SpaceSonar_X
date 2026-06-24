@@ -75,6 +75,32 @@ def test_agent_events_are_derived_from_progress_ledger(tmp_path: Path) -> None:
     assert events["consult_events"][0]["in_boundary"] is True
 
 
+def test_agent_events_use_work_receipt_when_present(tmp_path: Path) -> None:
+    _write_progress(tmp_path)
+    receipt_path = tmp_path / "docs" / "workspace" / "agent_work_receipts" / "WP00.yaml"
+    receipt_path.parent.mkdir(parents=True)
+    receipt_path.write_text(
+        yaml.safe_dump(
+            {
+                "version": "agent_work_receipt_v1",
+                "work_item_id": "WP00",
+                "agent_mode": "solo",
+                "evidence_class": "contemporaneous_work_receipt",
+                "consult_ids": [],
+                "started_at_utc": "2026-06-24T00:05:00Z",
+                "ended_at_utc": "2026-06-24T00:10:00Z",
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+
+    event = project_agent_events(tmp_path)["work_item_events"][0]
+
+    assert event["source_refs"][0]["path"] == "docs/workspace/agent_work_receipts/WP00.yaml"
+    assert event["work_receipt_ref"]["sha256"]
+
+
 def test_out_of_boundary_consult_is_classified_not_silently_counted(tmp_path: Path) -> None:
     _write_progress(tmp_path)
     _write_receipt(tmp_path, created_at_utc="2026-06-23T23:59:59Z")

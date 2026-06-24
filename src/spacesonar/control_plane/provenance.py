@@ -8,11 +8,12 @@ import stat
 import subprocess
 import sys
 import zipfile
+from io import BytesIO
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from .store import dump_yaml, read_json, read_yaml, sha256_file
+from .store import dump_json, dump_yaml, read_json, read_yaml, sha256_file
 
 
 SOURCE_ROOTS = (
@@ -192,13 +193,12 @@ def _write_text_if_nonempty(repo_root: Path, rel_path: Path, text: str) -> tuple
     return rel_path.as_posix(), sha256_file(path)
 
 
-def _zip_untracked_sources(repo_root: Path, archive_rel_path: Path, paths: list[str]) -> tuple[str | None, str | None, list[dict[str, Any]]]:
+def _zip_untracked_sources_payload(repo_root: Path, paths: list[str]) -> tuple[bytes | None, str | None, list[dict[str, Any]]]:
     if not paths:
         return None, None, []
-    target = repo_root / archive_rel_path
-    target.parent.mkdir(parents=True, exist_ok=True)
     manifest: list[dict[str, Any]] = []
-    with zipfile.ZipFile(target, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+    buffer = BytesIO()
+    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for source_rel_path in sorted(paths):
             source = repo_root / source_rel_path
             payload = _path_digest_payload(source)
@@ -227,10 +227,21 @@ def _zip_untracked_sources(repo_root: Path, archive_rel_path: Path, paths: list[
             ).encode("utf-8"),
             compress_type=zipfile.ZIP_DEFLATED,
         )
-    return archive_rel_path.as_posix(), sha256_file(target), manifest
+    archive_bytes = buffer.getvalue()
+    return archive_bytes, hashlib.sha256(archive_bytes).hexdigest(), manifest
 
 
-def source_snapshot(repo_root: Path, batch_id: str, *, write: bool = True) -> dict[str, Any]:
+def _zip_untracked_sources(repo_root: Path, archive_rel_path: Path, paths: list[str]) -> tuple[str | None, str | None, list[dict[str, Any]]]:
+    archive_bytes, archive_sha, manifest = _zip_untracked_sources_payload(repo_root, paths)
+    if archive_bytes is None:
+        return None, None, []
+    target = repo_root / archive_rel_path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(archive_bytes)
+    return archive_rel_path.as_posix(), archive_sha, manifest
+
+
+def build_source_snapshot_payload(repo_root: Path, batch_id: str) -> dict[str, Any]:
     root = repo_root / "lab" / "executions" / batch_id / "source_snapshot"
     rel_root = Path("lab") / "executions" / batch_id / "source_snapshot"
     status_entries = _status_source_entries(repo_root)
@@ -269,25 +280,26 @@ def source_snapshot(repo_root: Path, batch_id: str, *, write: bool = True) -> di
         | {path for path in untracked_paths if _looks_binary(repo_root / path)}
     )
 
+    files: dict[Path, bytes] = {}
     tracked_patch_rel = staged_patch_rel = untracked_archive_rel = None
     tracked_patch_sha = staged_patch_sha = untracked_archive_sha = None
     untracked_archive_manifest: list[dict[str, Any]] = []
-    if write:
-        tracked_patch_rel, tracked_patch_sha = _write_text_if_nonempty(
-            repo_root,
-            rel_root / "tracked_unstaged.patch",
-            _run(repo_root, ["git", "diff", "--binary", "--", *SOURCE_ROOTS]),
-        )
-        staged_patch_rel, staged_patch_sha = _write_text_if_nonempty(
-            repo_root,
-            rel_root / "staged.patch",
-            _run(repo_root, ["git", "diff", "--cached", "--binary", "--", *SOURCE_ROOTS]),
-        )
-        untracked_archive_rel, untracked_archive_sha, untracked_archive_manifest = _zip_untracked_sources(
-            repo_root,
-            rel_root / "untracked_source.zip",
-            untracked_paths,
-        )
+    tracked_patch = _run(repo_root, ["git", "diff", "--binary", "--", *SOURCE_ROOTS])
+    if tracked_patch:
+        tracked_patch_rel = (rel_root / "tracked_unstaged.patch").as_posix()
+        tracked_patch_bytes = tracked_patch.encode("utf-8")
+        tracked_patch_sha = hashlib.sha256(tracked_patch_bytes).hexdigest()
+        files[rel_root / "tracked_unstaged.patch"] = tracked_patch_bytes
+    staged_patch = _run(repo_root, ["git", "diff", "--cached", "--binary", "--", *SOURCE_ROOTS])
+    if staged_patch:
+        staged_patch_rel = (rel_root / "staged.patch").as_posix()
+        staged_patch_bytes = staged_patch.encode("utf-8")
+        staged_patch_sha = hashlib.sha256(staged_patch_bytes).hexdigest()
+        files[rel_root / "staged.patch"] = staged_patch_bytes
+    archive_bytes, untracked_archive_sha, untracked_archive_manifest = _zip_untracked_sources_payload(repo_root, untracked_paths)
+    if archive_bytes is not None:
+        untracked_archive_rel = (rel_root / "untracked_source.zip").as_posix()
+        files[rel_root / "untracked_source.zip"] = archive_bytes
 
     manifest = {
         "version": "source_snapshot_v1",
@@ -305,19 +317,27 @@ def source_snapshot(repo_root: Path, batch_id: str, *, write: bool = True) -> di
         "binary_source_paths": binary_paths,
         "source_tree_hash": source_tree_hash(repo_root),
         "source_surface": list(SOURCE_ROOTS),
+        "manifest_path": (rel_root / "source_snapshot_manifest.yaml").as_posix(),
     }
+    manifest_text = dump_yaml(manifest)
+    manifest["manifest_sha256"] = hashlib.sha256(manifest_text.encode("utf-8")).hexdigest()
+    files[rel_root / "source_snapshot_manifest.yaml"] = manifest_text.encode("utf-8")
+    return {"manifest": manifest, "files": files}
+
+
+def stage_source_snapshot(tx: Any, payload: dict[str, Any]) -> None:
+    for rel_path, content in payload.get("files", {}).items():
+        tx.stage_bytes(rel_path, content)
+
+
+def source_snapshot(repo_root: Path, batch_id: str, *, write: bool = True) -> dict[str, Any]:
+    payload = build_source_snapshot_payload(repo_root, batch_id)
     if write:
-        root.mkdir(parents=True, exist_ok=True)
-        manifest_path = root / "source_snapshot_manifest.yaml"
-        manifest_file_payload = dict(manifest)
-        manifest_file_payload["manifest_path"] = (rel_root / "source_snapshot_manifest.yaml").as_posix()
-        manifest_path.write_text(dump_yaml(manifest_file_payload), encoding="utf-8")
-        manifest["manifest_path"] = manifest_file_payload["manifest_path"]
-        manifest["manifest_sha256"] = sha256_file(manifest_path)
-    else:
-        manifest["manifest_path"] = (rel_root / "source_snapshot_manifest.yaml").as_posix()
-        manifest["manifest_sha256"] = None
-    return manifest
+        for rel_path, content in payload["files"].items():
+            path = repo_root / rel_path
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+    return payload["manifest"]
 
 
 def file_hash_record(repo_root: Path, rel_path: str) -> dict[str, Any]:
@@ -372,6 +392,22 @@ def _receipt_rel_path(batch_id: str) -> str:
     return f"lab/executions/{batch_id}/execution_batch_receipt.yaml"
 
 
+def _phase_path(item: dict[str, Any]) -> str:
+    return str(item.get("path_at_execution") or item.get("path") or "")
+
+
+def _phase_sha(item: dict[str, Any], label: str) -> Any:
+    if label == "inputs":
+        return item.get("sha256_at_start", item.get("sha256"))
+    return item.get("sha256_at_end", item.get("sha256"))
+
+
+def _phase_size(item: dict[str, Any], label: str) -> Any:
+    if label == "inputs":
+        return item.get("size_bytes_at_start", item.get("size_bytes"))
+    return item.get("size_bytes_at_end", item.get("size_bytes"))
+
+
 def validate_execution_batch_receipt(receipt: dict[str, Any], *, require_finalized: bool = True) -> list[str]:
     errors: list[str] = []
     for field in ["version", "batch_id", "work_item_id", "command_argv", "cwd", "started_at_utc", "git", "environment", "inputs", "claim_boundary"]:
@@ -390,22 +426,18 @@ def validate_execution_batch_receipt(receipt: dict[str, Any], *, require_finaliz
             errors.append("batch receipt outputs must not be empty")
         if receipt.get("ended_at_utc") in (None, ""):
             errors.append("batch receipt missing ended_at_utc")
-    seen_all: dict[str, str] = {}
     for label in ["inputs", "outputs"]:
         seen: dict[str, str] = {}
         for item in receipt.get(label) or []:
-            path = str(item.get("path") or "")
-            sha = item.get("sha256")
-            size = item.get("size_bytes")
+            path = _phase_path(item)
+            sha = _phase_sha(item, label)
+            size = _phase_size(item, label)
             if not path or sha in (None, "") or size is None:
                 errors.append(f"batch receipt {label} has null path/hash/size: {path}")
                 continue
             if path in seen and seen[path] != sha:
-                errors.append(f"batch receipt conflicting hashes for {path}")
+                errors.append(f"batch receipt conflicting {label} hashes for {path}")
             seen[path] = sha
-            if path in seen_all and seen_all[path] != sha:
-                errors.append(f"batch receipt conflicting hashes for {path}")
-            seen_all[path] = sha
     start = receipt.get("started_at_utc")
     end = receipt.get("ended_at_utc")
     if start and end:
@@ -608,6 +640,26 @@ def attach_execution_batch_ref(record: dict[str, Any], repo_root: Path, batch_id
     updated = dict(record)
     updated["execution_batch_ref"] = execution_batch_ref(repo_root, batch_id)
     return updated
+
+
+def create_run_manifest(repo_root: Path, payload: dict[str, Any], *, execution_batch_id: str) -> dict[str, Any]:
+    if not str(execution_batch_id or "").strip():
+        raise BatchReceiptError("execution_batch_id is required for run manifest creation")
+    record = dict(payload)
+    record.setdefault("version", "run_manifest_v3")
+    if not record.get("run_id"):
+        raise BatchReceiptError("run_id is required for run manifest creation")
+    return attach_execution_batch_ref(record, repo_root, execution_batch_id)
+
+
+def create_attempt_manifest(repo_root: Path, payload: dict[str, Any], *, execution_batch_id: str) -> dict[str, Any]:
+    if not str(execution_batch_id or "").strip():
+        raise BatchReceiptError("execution_batch_id is required for attempt manifest creation")
+    record = dict(payload)
+    record.setdefault("version", "mt5_attempt_manifest_v2")
+    if not record.get("attempt_id"):
+        raise BatchReceiptError("attempt_id is required for attempt manifest creation")
+    return attach_execution_batch_ref(record, repo_root, execution_batch_id)
 
 
 def provenance_compaction_marker(batch_receipt_path: str) -> dict[str, Any]:
