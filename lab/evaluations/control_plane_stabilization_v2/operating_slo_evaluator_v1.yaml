@@ -1,10 +1,10 @@
 version: evaluator_result_v1
 evaluator_id: operating_slo_evaluator_v1
-executed_at_utc: '2026-06-24T11:33:43Z'
+executed_at_utc: '2026-06-24T14:00:46Z'
 input_hashes:
 - path: docs/policies/codex_operating_slo.yaml
-  sha256: 7b935dcff63b75559da66a8af6f40c52823c05b9f825de1c63faaee32115a530
-  size_bytes: 745
+  sha256: ed4a664fb956e59520f447fb6d21a04762ef2473d5c1071063acb1b59d9c88be
+  size_bytes: 800
 - path: AGENTS.md
   sha256: 4a75dec8f64a57a161f1be6149fb8bcae738b8ecca57c7647689ad70f8535839
   size_bytes: 5293
@@ -14,14 +14,35 @@ input_hashes:
 - path: docs/agent_control/policy_contract.yaml
   sha256: 34e11b2e31583b92c1d59e42b807fc80dd80c325ecf24cc3aadaa691ff30d5d8
   size_bytes: 2932
-status: passed
+- path: docs/agent_control/work_family_registry.yaml
+  sha256: 84d0105b4539db1ed1af6d7db3e7ce6103c1e411756ce66cf084e10aafaeba28
+  size_bytes: 13292
+implementation_hashes:
+- path: foundation/evaluation/agent_value_evaluator.py
+  sha256: a55dcca981c5c5631d705f6805101a22bb935827e97ef5fec5f847582a231919
+  size_bytes: 3893
+- path: foundation/evaluation/operating_slo_evaluator.py
+  sha256: a83b31234740b5fa5bc2a41ff1573a55bbddfb4eaa8d22d7f0ea55f5d69d66bf
+  size_bytes: 15213
+- path: foundation/evaluation/routing_quality_evaluator.py
+  sha256: f1f661ca14679137f4830e4412a71a0ff1943b9dd4a490b7af993bcf3b41e59d
+  size_bytes: 2005
+- path: foundation/evaluation/runtime_contract_evaluator.py
+  sha256: 8110317c0ebf9d9f88e7fed987de261251a85e8a6da9df02d9ca5478745e5b4f
+  size_bytes: 17051
+- path: src/spacesonar/control_plane/transaction.py
+  sha256: a8c6c1e337d251d5f76d4f01677359756462296953546317c94b2853bea13452
+  size_bytes: 31483
+status: failed
 metrics:
   cold_reentry_truth_files: 4
   cold_reentry_context_bytes: 23059
-  transaction_receipt_count: 72
+  durable_transaction_receipt_count: 1
+  transaction_idempotency_probe_count: 1
+  transaction_idempotency_pass_count: 1
   transaction_idempotency_score: 1.0
   partial_unclassified_transactions: 0
-  durable_runs_with_dirty_source: 0
+  durable_runs_with_unbounded_dirty_source: 0
   self_attested_closeout_requirements: 0
   routing_golden_accuracy: 1.0
   protected_claim_guard_recall: 1.0
@@ -32,6 +53,11 @@ metrics:
   observation_coverage_ratio: 0.142857
   duplicate_agent_advice_ratio: 0.0
   tracked_ignored_artifact_count: 0
-findings: []
+findings:
+- id: agent_value_slo_failed
+  details:
+  - id: agent_observation_coverage_below_slo
+    value: 0.142857
+    minimum: 0.8
 claim_effect: operating_slo_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: 13895be10ff8f53b47f8de0fff86ef41ec3f4fde6f3e4dc9caafbb1d7999b90e
+output_sha256: a1b06bc09f04bb4bfbaedd7cdc24b16250e1e79b63d8db09174d24e5ec8267a9

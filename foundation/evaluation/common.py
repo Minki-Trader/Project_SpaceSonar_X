@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -47,8 +48,22 @@ def input_hash(repo_root: Path, rel_path: str) -> dict[str, Any]:
     return {
         "path": rel_path,
         "sha256": file_sha256(path),
-        "size_bytes": path.stat().st_size,
+        "size_bytes": os.stat(filesystem_path(path)).st_size,
     }
+
+
+def input_hash_or_missing(repo_root: Path, rel_path: str) -> dict[str, Any]:
+    path = repo_root / rel_path
+    if not path.exists():
+        return {"path": rel_path, "sha256": None, "size_bytes": None, "missing": True}
+    return input_hash(repo_root, rel_path)
+
+
+def implementation_hashes(repo_root: Path, rel_paths: list[str] | tuple[str, ...]) -> list[dict[str, Any]]:
+    return sorted(
+        (input_hash_or_missing(repo_root, rel_path) for rel_path in rel_paths),
+        key=lambda item: str(item.get("path") or ""),
+    )
 
 
 def semantic_result_payload(result: dict[str, Any]) -> dict[str, Any]:

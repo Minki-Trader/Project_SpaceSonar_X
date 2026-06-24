@@ -8,7 +8,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from foundation.evaluation.common import evaluation_time_utc, finalize_result, input_hash, write_yaml
+from foundation.evaluation.common import evaluation_time_utc, finalize_result, implementation_hashes, input_hash, write_yaml
 from foundation.validation.routing_behavior_eval import evaluate as evaluate_routing_behavior
 
 
@@ -25,6 +25,14 @@ def evaluate_routing_quality(repo_root: Path) -> dict:
             input_hash(repo_root, "docs/agent_control/routing_behavior_cases.yaml"),
             input_hash(repo_root, "docs/agent_control/work_family_registry.yaml"),
         ],
+        "implementation_hashes": implementation_hashes(
+            repo_root,
+            (
+                "foundation/evaluation/routing_quality_evaluator.py",
+                "foundation/validation/routing_behavior_eval.py",
+                "src/spacesonar/control_plane/routing.py",
+            ),
+        ),
         "status": "failed" if errors else "passed",
         "metrics": metrics,
         "findings": [{"id": "routing_error", "detail": error} for error in errors],

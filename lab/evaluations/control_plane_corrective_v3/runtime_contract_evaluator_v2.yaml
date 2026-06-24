@@ -1,6 +1,6 @@
 version: evaluator_result_v1
 evaluator_id: runtime_contract_evaluator_v2
-executed_at_utc: '2026-06-24T11:32:59Z'
+executed_at_utc: '2026-06-24T13:27:01Z'
 input_hashes:
 - path: docs/migrations/runtime_graph_target_inventory_v1.yaml
   missing: false
@@ -1382,6 +1382,19 @@ input_hashes:
   missing: false
   sha256: 1ba53f91faf3dc5d2e806f50e3b17b85b1371150544374f3090679907a5db71b
   size_bytes: 2126
+implementation_hashes:
+- path: foundation/evaluation/runtime_contract_evaluator.py
+  sha256: 8110317c0ebf9d9f88e7fed987de261251a85e8a6da9df02d9ca5478745e5b4f
+  size_bytes: 17051
+- path: foundation/migrations/runtime_graph_target_inventory.py
+  sha256: 3fc0005f618d9d6f52e124371a42b99caf3e129708cb0d11bb175d33f20f33ea
+  size_bytes: 10728
+- path: foundation/mt5/runtime_completion.py
+  sha256: a58cb87df54e0eda0e5635448dac5864b603b046170cd91eb43f62af4ffdb84b
+  size_bytes: 15404
+- path: foundation/mt5/tester_report_receipt.py
+  sha256: 1b26aa8e0e09863477361445c2a5a960033556d817cfceaede6d50f1edcbabd7
+  size_bytes: 24542
 status: passed
 metrics:
   expected_attempt_count: 86
@@ -2320,4 +2333,4 @@ attempt_results:
   receipt_binding_errors: []
 findings: []
 claim_effect: runtime_contract_integrity_passed_no_runtime_authority_no_economics_pass
-output_sha256: 872cd4bbeda80437c561749d9641a213c607cf142a07633cfc0a2ee5dd5ee9cf
+output_sha256: 12ec3e401229e686d35485be2673b98577458c5ef73e74aede79f4a69aaf125b

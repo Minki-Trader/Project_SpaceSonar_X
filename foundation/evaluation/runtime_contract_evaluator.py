@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from foundation.evaluation.common import evaluation_time_utc, file_sha256, finalize_result, load_yaml, write_yaml
+from foundation.evaluation.common import evaluation_time_utc, file_sha256, finalize_result, implementation_hashes, load_yaml, write_yaml
 from foundation.migrations.runtime_graph_target_inventory import (
     EXPECTED_ATTEMPT_COUNT,
     EXPECTED_PAIR_GROUP_COUNT,
@@ -318,6 +318,15 @@ def evaluate_runtime_contract(repo_root: Path) -> dict[str, Any]:
         "evaluator_id": EVALUATOR_ID,
         "executed_at_utc": evaluation_time_utc(),
         "input_hashes": sorted(input_hashes, key=lambda item: str(item.get("path") or "")),
+        "implementation_hashes": implementation_hashes(
+            repo_root,
+            (
+                "foundation/evaluation/runtime_contract_evaluator.py",
+                "foundation/mt5/runtime_completion.py",
+                "foundation/mt5/tester_report_receipt.py",
+                "foundation/migrations/runtime_graph_target_inventory.py",
+            ),
+        ),
         "status": status,
         "metrics": {
             "expected_attempt_count": EXPECTED_ATTEMPT_COUNT,

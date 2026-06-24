@@ -1569,30 +1569,75 @@ work_units:
   WP07:
     status: completed
     started_at_utc: '2026-06-24T00:00:00Z'
-    completed_at_utc: '2026-06-24T11:31:48Z'
+    started_at_evidence_class: retrospective_estimate
+    started_at_note: Midnight value was a packet ledger placeholder, not an
+      observed execution start timestamp.
+    completed_at_utc: '2026-06-24T14:08:22Z'
     objective: make_evaluators_slos_and_closeout_checks_fresh_and_non_self_attested
     implementation:
+      evaluator_registry:
+        path: docs/agent_control/evaluator_registry.yaml
+        active_evaluator_count: 5
+        missing_active_result_fails: true
+        undeclared_active_result_fails: true
+        duplicate_active_evaluator_id_fails: true
+        compatibility_snapshot_must_match_canonical: true
+        implementation_path_hashes_required: true
       evaluator_time_source:
         hardcoded_global_timestamp_removed: true
         semantic_output_hash_excludes_executed_at_utc: true
       fresh_evaluator_verification:
         validator: foundation/evaluation/fresh_evaluator_validator.py
         integrated_into_control_plane_validator: true
-        compared_fields:
-        - evaluator_id
-        - output_sha256
-        - input_hashes
-        - status
-        - metrics
-        - findings
+        comparison_scope: full_semantic_payload_excluding_executed_at_utc_only
+        committed_output_sha256_recomputed: true
+        fresh_recompute_required: true
+        implementation_hashes_included: true
       hardcoded_pass_removal:
         control_plane_operating_proof: evaluator_derived
         research_cycle_closeout: evaluator_derived
+        candidate_count: research_evaluator_derived
+        l5_candidate_count: research_evaluator_derived
         manual_pass_without_evaluator_ref: rejected
       slo_gates:
         configured_gates_enforced: true
+        unknown_gate_fails_closed: true
+        wrong_gate_type_fails_closed: true
+        cold_reentry_count_not_sliced_by_threshold: true
+        durable_dirty_metric_renamed: durable_runs_with_unbounded_dirty_source
+        transaction_idempotency_uses_temp_repo_probe: true
+        ignored_spacesonar_transactions_excluded: true
+        clean_checkout_semantic_stability_tested: true
         missing_required_metric_fails_closed: required_slo_metric_unavailable
         zero_transaction_idempotency_denominator_fails_closed: true
+      agent_value_evidence:
+        observation_coverage_gate: agent_observation_coverage_ratio_min
+        current_observation_coverage_ratio: 0.142857
+        current_status: insufficient_evidence
+        insufficient_evidence_cannot_be_promoted_to_passed: true
+      research_cycle_closeout:
+        wave_allocation_cross_checked: true
+        campaign_refs_cross_checked: true
+        campaign_manifest_status_required_closed: true
+        campaign_evidence_candidate_counts_required: true
+        candidate_registry_count_cross_checked: true
+        forbidden_claims_must_be_explicitly_proven: true
+        locked_final_oos_usage_derived_from_evidence: true
+        wave0_legacy_evidence_requires_legacy_binding: true
+      closeout_generation:
+        semantic_closeout_payload_complete: true
+        generated_from_all_required_evaluators:
+        - runtime_contract_evaluator_v2
+        - routing_quality_evaluator_v1
+        - agent_value_evaluator_v1
+        - operating_slo_evaluator_v1
+        - research_cycle_closeout_evaluator_v1
+        transactional_write: true
+        staged_artifacts:
+        - evaluator_results
+        - wave_closeout.yaml
+        - artifact_registry.csv
+        failed_or_insufficient_requirement_lowers_status: true
       mutation_tests:
         stale_runtime_evaluator_file: detected
         changed_evaluator_input_attempt_manifest: detected
@@ -1601,37 +1646,54 @@ work_units:
         self_authored_passed_requirement: detected
         evaluator_output_hash_corruption: detected
         evaluator_input_hash_corruption: detected
+        evaluator_attempt_results_tampering: detected
+        evaluator_campaign_results_tampering: detected
+        evaluator_claim_effect_tampering: detected
         candidate_count_research_cycle_failure: detected
+        closeout_handoff_tampering: detected
+        closeout_campaign_summary_tampering: detected
+        closeout_status_or_next_action_tampering: detected
+        transactional_write_failure_rolls_back: detected
       wp06_forward_stability:
         finalized_receipt_check_uses_execution_provenance_validator: true
         wp07_progress_or_evaluator_changes_do_not_refresh_wp06_receipt: true
     generated_evidence:
+    - docs/agent_control/evaluator_registry.yaml
     - foundation/evaluation/fresh_evaluator_validator.py
+    - foundation/evaluation/agent_value_evaluator.py
+    - foundation/evaluation/operating_slo_evaluator.py
     - foundation/evaluation/research_cycle_closeout_evaluator.py
+    - foundation/evaluation/build_operating_closeout.py
+    - tests/test_fresh_evaluator_contract.py
+    - tests/test_operating_slo_evaluator.py
+    - tests/test_research_cycle_closeout_evaluator.py
     - lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
     - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
     validation:
-    - command: uv run pytest tests/test_wave01_operating_closeout.py -q
+    - command: uv run pytest tests/test_wave01_operating_closeout.py tests/test_fresh_evaluator_contract.py tests/test_operating_slo_evaluator.py tests/test_research_cycle_closeout_evaluator.py tests/control_plane/test_transaction_atomicity.py -q
       status: passed
-      result: 17 passed
+      result: 72 passed in 211.32s
     - command: uv run python foundation/evaluation/fresh_evaluator_validator.py --repo-root .
       status: passed
       result: committed evaluator fresh comparison passed
     - command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root . --check
       status: passed
       result: operating closeout validation passed
-    - command: uv run pytest tests/test_repository_hygiene_validator.py tests/test_runtime_graph_revalidation.py tests/test_routing_behavior.py tests/test_agent_metrics_projection.py -q
+    - command: uv run python foundation/validation/execution_provenance_validator.py --repo-root .
       status: passed
-      result: 54 passed
-    - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py --repo-root . --check
+      result: execution provenance validation passed
+    - command: uv run python foundation/validation/active_record_validator.py --repo-root .
       status: passed
-      result: changed_record_count=0 record_counts=37/88/125 runtime_evaluator_status=passed
-    - command: uv run pytest tests/test_execution_provenance_validator.py tests/test_provenance_compaction_migration.py tests/test_wave01_operating_closeout.py tests/test_repository_hygiene_validator.py -q
+      result: active record validation passed
+    - command: uv run python -m spacesonar.cli registry project --check
       status: passed
-      result: 38 passed
-    - command: python -m compileall foundation/evaluation foundation/validation foundation/migrations src/spacesonar/control_plane
+      result: registry projection check passed
+    - command: uv run python -m spacesonar.cli project validate
       status: passed
-      result: compileall passed
+      result: project validation passed
+    - command: uv run pytest -q
+      status: passed
+      result: full suite passed after validator cadence
     claim_boundary: corrective_wp07_completed_fresh_evaluator_slo_closeout_checks_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
     handoff:
       next_packet: WP08

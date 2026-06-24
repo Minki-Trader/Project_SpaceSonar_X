@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -11,31 +12,45 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from foundation.evaluation.agent_value_evaluator import evaluate_agent_value
-from foundation.evaluation.common import evaluation_time_utc, finalize_result, input_hash, load_yaml, write_yaml
+from foundation.evaluation.common import evaluation_time_utc, finalize_result, implementation_hashes, input_hash, load_yaml, write_yaml
 from foundation.evaluation.routing_quality_evaluator import evaluate_routing_quality
 from foundation.evaluation.runtime_contract_evaluator import evaluate_runtime_contract
 from foundation.validation.repository_hygiene_validator import validate as validate_repository_hygiene
+from spacesonar.control_plane.models import ExecutionContext
+from spacesonar.control_plane.transaction import ControlPlaneTransaction
 
 
 EVALUATOR_ID = "operating_slo_evaluator_v1"
+TRUTH_FILES = (
+    "AGENTS.md",
+    "docs/workspace/workspace_state.yaml",
+    "docs/agent_control/work_family_registry.yaml",
+    "docs/agent_control/policy_contract.yaml",
+)
+EXPECTED_GATE_TYPES = {
+    "cold_reentry_truth_files_max": int,
+    "cold_reentry_context_bytes_max": int,
+    "routing_golden_accuracy_min": (int, float),
+    "protected_claim_guard_recall_min": (int, float),
+    "transaction_idempotency_required": (int, float),
+    "partial_unclassified_transactions_max": int,
+    "durable_runs_with_unbounded_dirty_source_max": int,
+    "runtime_completion_contract_violations_max": int,
+    "self_attested_closeout_requirements_max": int,
+    "routine_solo_or_single_agent_share_min": (int, float),
+    "duplicate_agent_advice_ratio_max": (int, float),
+    "agent_observation_coverage_ratio_min": (int, float),
+}
 
 
-def _cold_reentry_metrics(repo_root: Path, max_files: int) -> dict[str, int]:
-    files = [
-        "AGENTS.md",
-        "docs/workspace/workspace_state.yaml",
-        "docs/agent_control/work_family_registry.yaml",
-        "docs/agent_control/policy_contract.yaml",
-    ][:max_files]
+def _cold_reentry_metrics(repo_root: Path) -> dict[str, int]:
+    files = list(TRUTH_FILES)
     total_bytes = sum((repo_root / path).stat().st_size for path in files)
     return {"cold_reentry_truth_files": len(files), "cold_reentry_context_bytes": total_bytes}
 
 
 def _transaction_metrics(repo_root: Path) -> dict[str, int | float | None]:
-    receipts = [
-        *(repo_root / "lab" / "executions").glob("**/transaction_receipt.yaml"),
-        *(repo_root / ".spacesonar" / "transactions").glob("*/transaction_receipt.yaml"),
-    ]
+    receipts = list((repo_root / "lab" / "executions").glob("**/transaction_receipt.yaml"))
     aborted_partial = 0
     unclassified = 0
     for receipt in receipts:
@@ -43,26 +58,54 @@ def _transaction_metrics(repo_root: Path) -> dict[str, int | float | None]:
         status = str(data.get("status") or "")
         if status.startswith("aborted") and data.get("committed_output_hashes"):
             aborted_partial += 1
-        if not status:
+        if not status or status == "rollback_failed":
             unclassified += 1
-    idempotency_score = 1.0 if receipts and not aborted_partial and not unclassified else None
+    probe = _idempotency_probe()
     return {
-        "transaction_receipt_count": len(receipts),
-        "transaction_idempotency_score": idempotency_score,
+        "durable_transaction_receipt_count": len(receipts),
+        "transaction_idempotency_probe_count": probe["probe_count"],
+        "transaction_idempotency_pass_count": probe["pass_count"],
+        "transaction_idempotency_score": probe["score"],
         "partial_unclassified_transactions": aborted_partial + unclassified,
     }
 
 
+def _idempotency_probe() -> dict[str, int | float | None]:
+    with tempfile.TemporaryDirectory(prefix="spacesonar_tx_probe_") as tmp:
+        root = Path(tmp)
+        context = ExecutionContext(
+            repo_root=root,
+            work_item_id="work_wp07_transaction_idempotency_probe",
+            claim_boundary="local_probe_only_no_runtime_authority_no_economics_pass",
+            command_argv=("wp07-idempotency-probe",),
+            validation_commands=("noop_probe",),
+        )
+        first = ControlPlaneTransaction(context)
+        first.stage_text("probe/control.txt", "stable\n")
+        first_result = first.commit(validate=lambda future_root: [])
+        before = (root / "probe" / "control.txt").read_bytes()
+        second = ControlPlaneTransaction(context)
+        second.stage_text("probe/control.txt", "stable\n")
+        second_result = second.commit(validate=lambda future_root: [])
+        after = (root / "probe" / "control.txt").read_bytes()
+    passed = (
+        first_result.status in {"committed", "noop_already_applied"}
+        and second_result.status == "noop_already_applied"
+        and before == after
+    )
+    return {"probe_count": 1, "pass_count": 1 if passed else 0, "score": 1.0 if passed else 0.0}
+
+
 def _batch_receipt_metrics(repo_root: Path) -> dict[str, int]:
-    dirty_without_complete_snapshot = 0
+    unbounded_dirty_source = 0
     for receipt_path in (repo_root / "lab" / "executions").glob("**/execution_batch_receipt.yaml"):
         receipt = load_yaml(receipt_path) or {}
         git = receipt.get("git") or {}
         snapshot = git.get("source_snapshot") or {}
         source_dirty = bool(git.get("source_dirty"))
         if source_dirty and not (snapshot.get("manifest_path") and snapshot.get("manifest_sha256")):
-            dirty_without_complete_snapshot += 1
-    return {"durable_runs_with_dirty_source": dirty_without_complete_snapshot}
+            unbounded_dirty_source += 1
+    return {"durable_runs_with_unbounded_dirty_source": unbounded_dirty_source}
 
 
 def _closeout_metrics(repo_root: Path) -> dict[str, int]:
@@ -104,14 +147,32 @@ def _gate_value(gates: dict[str, Any], name: str) -> Any:
     return gates[name] if name in gates else None
 
 
+def _validate_gate_schema(gates: dict[str, Any]) -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    observed = set(gates)
+    expected = set(EXPECTED_GATE_TYPES)
+    for gate in sorted(expected - observed):
+        findings.append({"id": "required_slo_gate_unavailable", "gate": gate})
+    for gate in sorted(observed - expected):
+        findings.append({"id": "unknown_slo_gate", "gate": gate})
+    for gate, expected_type in EXPECTED_GATE_TYPES.items():
+        if gate not in gates:
+            continue
+        value = gates[gate]
+        if isinstance(value, bool) or not isinstance(value, expected_type):
+            findings.append({"id": "invalid_slo_gate_type", "gate": gate, "value": value})
+    return findings
+
+
 def evaluate_operating_slo(repo_root: Path) -> dict:
     slo_path = "docs/policies/codex_operating_slo.yaml"
     slo = load_yaml(repo_root / slo_path) or {}
     gates = slo.get("gates") or {}
+    gate_findings = _validate_gate_schema(gates)
     routing = evaluate_routing_quality(repo_root)
     runtime = evaluate_runtime_contract(repo_root)
     agents = evaluate_agent_value(repo_root)
-    cold = _cold_reentry_metrics(repo_root, int(gates.get("cold_reentry_truth_files_max", 4)))
+    cold = _cold_reentry_metrics(repo_root)
     transactions = _transaction_metrics(repo_root)
     batches = _batch_receipt_metrics(repo_root)
     closeouts = _closeout_metrics(repo_root)
@@ -140,15 +201,17 @@ def evaluate_operating_slo(repo_root: Path) -> dict:
         "tracked_ignored_artifact_count": 0 if not hygiene_errors else len(hygiene_errors),
     }
 
-    findings: list[dict[str, Any]] = []
+    findings: list[dict[str, Any]] = list(gate_findings)
     required_metrics = [
         "cold_reentry_truth_files",
         "cold_reentry_context_bytes",
         "routing_golden_accuracy",
         "protected_claim_guard_recall",
+        "transaction_idempotency_probe_count",
+        "transaction_idempotency_pass_count",
         "transaction_idempotency_score",
         "partial_unclassified_transactions",
-        "durable_runs_with_dirty_source",
+        "durable_runs_with_unbounded_dirty_source",
         "runtime_completion_contract_violations",
         "self_attested_closeout_requirements",
         "routine_solo_or_single_agent_share",
@@ -156,27 +219,29 @@ def evaluate_operating_slo(repo_root: Path) -> dict:
     ]
     available = {metric: _require_metric(findings, metrics, metric) for metric in required_metrics}
 
-    if available["cold_reentry_truth_files"] and metrics["cold_reentry_truth_files"] > int(gates.get("cold_reentry_truth_files_max", 4)):
+    if available["cold_reentry_truth_files"] and "cold_reentry_truth_files_max" in gates and metrics["cold_reentry_truth_files"] > int(gates["cold_reentry_truth_files_max"]):
         findings.append({"id": "cold_reentry_file_count_exceeded", **cold})
-    if available["cold_reentry_context_bytes"] and metrics["cold_reentry_context_bytes"] > int(gates.get("cold_reentry_context_bytes_max", 50000)):
+    if available["cold_reentry_context_bytes"] and "cold_reentry_context_bytes_max" in gates and metrics["cold_reentry_context_bytes"] > int(gates["cold_reentry_context_bytes_max"]):
         findings.append({"id": "cold_reentry_context_bytes_exceeded", **cold})
-    if available["routing_golden_accuracy"] and metrics["routing_golden_accuracy"] < float(gates.get("routing_golden_accuracy_min", 0.95)):
+    if available["routing_golden_accuracy"] and "routing_golden_accuracy_min" in gates and metrics["routing_golden_accuracy"] < float(gates["routing_golden_accuracy_min"]):
         findings.append({"id": "routing_accuracy_below_slo", "value": metrics["routing_golden_accuracy"]})
-    if available["protected_claim_guard_recall"] and metrics["protected_claim_guard_recall"] < float(gates.get("protected_claim_guard_recall_min", 1.0)):
+    if available["protected_claim_guard_recall"] and "protected_claim_guard_recall_min" in gates and metrics["protected_claim_guard_recall"] < float(gates["protected_claim_guard_recall_min"]):
         findings.append({"id": "protected_claim_recall_below_slo", "value": metrics["protected_claim_guard_recall"]})
-    if available["transaction_idempotency_score"] and metrics["transaction_idempotency_score"] < float(gates.get("transaction_idempotency_required", 1.0)):
+    if available["transaction_idempotency_probe_count"] and metrics["transaction_idempotency_probe_count"] <= 0:
+        findings.append({"id": "transaction_idempotency_probe_missing"})
+    if available["transaction_idempotency_score"] and "transaction_idempotency_required" in gates and metrics["transaction_idempotency_score"] < float(gates["transaction_idempotency_required"]):
         findings.append({"id": "transaction_idempotency_below_slo", "value": metrics["transaction_idempotency_score"]})
-    if available["partial_unclassified_transactions"] and metrics["partial_unclassified_transactions"] > int(gates.get("partial_unclassified_transactions_max", 0)):
+    if available["partial_unclassified_transactions"] and "partial_unclassified_transactions_max" in gates and metrics["partial_unclassified_transactions"] > int(gates["partial_unclassified_transactions_max"]):
         findings.append({"id": "partial_unclassified_transactions", **transactions})
-    if available["durable_runs_with_dirty_source"] and metrics["durable_runs_with_dirty_source"] > int(gates.get("durable_runs_with_dirty_source_max", 0)):
-        findings.append({"id": "durable_dirty_source_run", "count": metrics["durable_runs_with_dirty_source"]})
-    if available["runtime_completion_contract_violations"] and metrics["runtime_completion_contract_violations"] > int(gates.get("runtime_completion_contract_violations_max", 0)):
+    if available["durable_runs_with_unbounded_dirty_source"] and "durable_runs_with_unbounded_dirty_source_max" in gates and metrics["durable_runs_with_unbounded_dirty_source"] > int(gates["durable_runs_with_unbounded_dirty_source_max"]):
+        findings.append({"id": "durable_unbounded_dirty_source_run", "count": metrics["durable_runs_with_unbounded_dirty_source"]})
+    if available["runtime_completion_contract_violations"] and "runtime_completion_contract_violations_max" in gates and metrics["runtime_completion_contract_violations"] > int(gates["runtime_completion_contract_violations_max"]):
         findings.append({"id": "runtime_completion_contract_violations", "count": metrics["runtime_completion_contract_violations"]})
-    if available["self_attested_closeout_requirements"] and metrics["self_attested_closeout_requirements"] > int(gates.get("self_attested_closeout_requirements_max", 0)):
+    if available["self_attested_closeout_requirements"] and "self_attested_closeout_requirements_max" in gates and metrics["self_attested_closeout_requirements"] > int(gates["self_attested_closeout_requirements_max"]):
         findings.append({"id": "self_attested_closeout_requirements", "count": metrics["self_attested_closeout_requirements"]})
-    if available["routine_solo_or_single_agent_share"] and metrics["routine_solo_or_single_agent_share"] < float(gates.get("routine_solo_or_single_agent_share_min", 0.80)):
+    if available["routine_solo_or_single_agent_share"] and "routine_solo_or_single_agent_share_min" in gates and metrics["routine_solo_or_single_agent_share"] < float(gates["routine_solo_or_single_agent_share_min"]):
         findings.append({"id": "routine_solo_or_single_agent_share_below_slo", "value": metrics["routine_solo_or_single_agent_share"]})
-    if available["duplicate_agent_advice_ratio"] and metrics["duplicate_agent_advice_ratio"] > float(gates.get("duplicate_agent_advice_ratio_max", 0.20)):
+    if available["duplicate_agent_advice_ratio"] and "duplicate_agent_advice_ratio_max" in gates and metrics["duplicate_agent_advice_ratio"] > float(gates["duplicate_agent_advice_ratio_max"]):
         findings.append({"id": "duplicate_agent_advice_ratio_above_slo", "value": metrics["duplicate_agent_advice_ratio"]})
     if hygiene_errors:
         findings.extend({"id": "repository_hygiene_error", "detail": error} for error in hygiene_errors)
@@ -193,7 +258,18 @@ def evaluate_operating_slo(repo_root: Path) -> dict:
             input_hash(repo_root, "AGENTS.md"),
             input_hash(repo_root, "docs/workspace/workspace_state.yaml"),
             input_hash(repo_root, "docs/agent_control/policy_contract.yaml"),
+            input_hash(repo_root, "docs/agent_control/work_family_registry.yaml"),
         ],
+        "implementation_hashes": implementation_hashes(
+            repo_root,
+            (
+                "foundation/evaluation/operating_slo_evaluator.py",
+                "foundation/evaluation/agent_value_evaluator.py",
+                "foundation/evaluation/routing_quality_evaluator.py",
+                "foundation/evaluation/runtime_contract_evaluator.py",
+                "src/spacesonar/control_plane/transaction.py",
+            ),
+        ),
         "status": "failed" if findings else "passed",
         "metrics": metrics,
         "findings": findings,

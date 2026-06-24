@@ -1,11 +1,21 @@
 version: evaluator_result_v1
 evaluator_id: agent_value_evaluator_v1
-executed_at_utc: '2026-06-24T11:33:15Z'
+executed_at_utc: '2026-06-24T14:14:09Z'
 input_hashes:
 - path: docs/workspace/agent_operating_metrics.yaml
-  sha256: fceb18e7153d6e6ab6696627d5260bf265d9caa9f5d0d3dbd3d3d3bd6ef13970
+  sha256: 07c5abe50bcc24a34274676e226d049336dc56d4cfa2cfbf482fed2af7d2db4d
   size_bytes: 1367
-status: passed
+- path: docs/policies/codex_operating_slo.yaml
+  sha256: ed4a664fb956e59520f447fb6d21a04762ef2473d5c1071063acb1b59d9c88be
+  size_bytes: 800
+implementation_hashes:
+- path: foundation/evaluation/agent_value_evaluator.py
+  sha256: a55dcca981c5c5631d705f6805101a22bb935827e97ef5fec5f847582a231919
+  size_bytes: 3893
+- path: src/spacesonar/control_plane/agent_metrics.py
+  sha256: 724fda0b794fd341992a960fd97af44d86184f85390fae9a8376523f28857969
+  size_bytes: 17670
+status: insufficient_evidence
 metrics:
   work_item_count: 7
   observed_work_item_count: 1
@@ -28,6 +38,9 @@ metrics:
   routine_solo_or_single_agent_share: 1.0
   duplicate_advice_ratio: 0.0
   accepted_after_verification_ratio: 0.0
-findings: []
+findings:
+- id: agent_observation_coverage_below_slo
+  value: 0.142857
+  minimum: 0.8
 claim_effect: agent_metrics_are_operating_telemetry_only_no_reviewed_pass
-output_sha256: ab6947cf9de0c4f9d9b0f5412e43a06f9df2fa5aac7849f74be84ab92cd86ff0
+output_sha256: a3db82234fff3ef38eefd036dd5cabcd4b7bfcedb196bffb808509fbe84d8fd9

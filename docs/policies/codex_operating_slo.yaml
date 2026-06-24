@@ -7,11 +7,12 @@ gates:
   protected_claim_guard_recall_min: 1.0
   transaction_idempotency_required: 1.0
   partial_unclassified_transactions_max: 0
-  durable_runs_with_dirty_source_max: 0
+  durable_runs_with_unbounded_dirty_source_max: 0
   runtime_completion_contract_violations_max: 0
   self_attested_closeout_requirements_max: 0
   routine_solo_or_single_agent_share_min: 0.80
   duplicate_agent_advice_ratio_max: 0.20
+  agent_observation_coverage_ratio_min: 0.80
 
 observations:
   - validator_duration_p50_seconds

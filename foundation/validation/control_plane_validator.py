@@ -10,6 +10,14 @@ from typing import Any
 
 import yaml
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+for path in [REPO_ROOT, REPO_ROOT / "src"]:
+    text = str(path)
+    if text not in sys.path:
+        sys.path.insert(0, text)
+
+from spacesonar.control_plane.store import filesystem_path
+
 
 REQUIRED_WORK_ITEM_TOP_LEVEL = {
     "branch_worktree",
@@ -83,16 +91,17 @@ ROUTING_CASE_REQUIRED_KEYS = {
 
 
 def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8-sig")
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        return handle.read()
 
 
 def load_yaml(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def load_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
 
@@ -141,7 +150,7 @@ def validate_yaml_json_csv_parse(repo_root: Path) -> list[str]:
                 elif suffix == ".json":
                     load_json(path)
                 elif suffix == ".csv":
-                    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+                    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
                         reader = csv.reader(handle)
                         next(reader, None)
             except Exception as exc:  # noqa: BLE001 - validator reports all parse failures.
@@ -566,6 +575,16 @@ def validate_fresh_evaluators(repo_root: Path) -> list[str]:
     return validate_committed_evaluators(repo_root)
 
 
+def validate_operating_closeout(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.evaluation.build_operating_closeout import validate_committed_closeout
+
+    return validate_committed_closeout(repo_root)
+
+
 def validate_routing_smoke_prompts(repo_root: Path) -> list[str]:
     path = repo_root / "docs" / "agent_control" / "routing_smoke_prompts.yaml"
     data = load_yaml(path)
@@ -645,6 +664,7 @@ def validate(repo_root: Path, *, include_active_records: bool = False) -> list[s
     errors.extend(validate_agent_operating_metrics_projection(repo_root))
     errors.extend(validate_execution_provenance(repo_root))
     errors.extend(validate_fresh_evaluators(repo_root))
+    errors.extend(validate_operating_closeout(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))
 

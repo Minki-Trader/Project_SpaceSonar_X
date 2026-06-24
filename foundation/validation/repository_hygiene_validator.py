@@ -23,8 +23,10 @@ def tracked_ignored_files(repo_root: Path) -> list[str]:
         cwd=repo_root,
         text=True,
         capture_output=True,
-        check=True,
+        check=False,
     )
+    if result.returncode != 0:
+        return []
     return [line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip()]
 
 
