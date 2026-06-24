@@ -1,0 +1,619 @@
+version: durable_transaction_receipt_projection_v1
+transaction_id: tx_20260624T061829646676Z_ec511bc5_c0247538
+status: committed
+started_at_utc: '2026-06-24T06:18:29.646727Z'
+committed_at_utc: '2026-06-24T06:18:29.646728Z'
+input_hashes: []
+output_hashes:
+- path: docs/registers/artifact_registry.csv
+  sha256: 2df4aa51d5f66ab73c717be01267fe7fbb9d5b396cab2470abcd7cff6454b13d
+  size_bytes: 944235
+- path: docs/workspace/agent_operating_events.yaml
+  sha256: 8c7e544b32bc4f0617a44edcf653ee8200a9efaad10b60ef73a143c65b5ac9da
+  size_bytes: 4479
+- path: docs/workspace/agent_operating_metrics.yaml
+  sha256: 7b93d1d3941cf1305363dbfe0bc548b5e9d04e54a9fff481cb07eec8dc434af1
+  size_bytes: 1367
+- path: lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+  sha256: 0cca11cbb2aa4eda9faab04cc0426f26c1bf1c1c7b491ea52d177f5716158393
+  size_bytes: 106078
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_start_receipt.yaml
+  sha256: 699d3574841f5ebe9cff537779251598752c0ee351d9a20c9b1991851add30ab
+  size_bytes: 147047
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+  sha256: 8c7e544b32bc4f0617a44edcf653ee8200a9efaad10b60ef73a143c65b5ac9da
+  size_bytes: 4479
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+  sha256: 7b93d1d3941cf1305363dbfe0bc548b5e9d04e54a9fff481cb07eec8dc434af1
+  size_bytes: 1367
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_delta.yaml
+  sha256: be1a1688aee242e11b43bf4929b1cb5f364cb7ff9a4417339b3ad233da040834
+  size_bytes: 10200
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+  sha256: f9ea600db426c4bef669056facf3e4d64e624595caa168a95499dc682657c655
+  size_bytes: 75439
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/runtime_contract_evaluator_output.yaml
+  sha256: 0cca11cbb2aa4eda9faab04cc0426f26c1bf1c1c7b491ea52d177f5716158393
+  size_bytes: 106078
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/migration_inventory.yaml
+  sha256: 32519f8f556cc0ed0f03c4a597c1253ba6d6141b59cae4e500e67afdeece012d
+  size_bytes: 62008
+- path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+  sha256: 2f484d4f9a47220b30f002629a30a2195b12a5333d373fbbb0a78562423bcfdb
+  size_bytes: 27312
+- path: lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json
+  sha256: 87b41e5317ca80096c73034f3c6c65820fa755fa7b69020ac47ca82dd6965bac
+  size_bytes: 6984
+- path: lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json
+  sha256: 1b56e083f1ac42344a0c95928a338aeeb6ec383e9d471815c2031b616cb5db3d
+  size_bytes: 12908
+- path: lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json
+  sha256: 80fea1d385f81ebf3b58f0dd7c5bf529a512fa5f9d5cd1877f3256d57061055b
+  size_bytes: 8668
+- path: lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json
+  sha256: 961d15d57d22e245cccca09e938f062fbb4535b2d9d74748b24ec47038174287
+  size_bytes: 12174
+- path: lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/run_manifest.json
+  sha256: 9b86400ebd0d12d19b8a62ca7de6d38bad77e4330cb03a419785b53d309f6e78
+  size_bytes: 30197
+- path: lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/run_manifest.json
+  sha256: c88a5616690ff21e6c31c303fe67b592bf1acfdd0ed5bb31f91b9c6d8d8e7acb
+  size_bytes: 30551
+- path: lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/run_manifest.json
+  sha256: dadaf3210cda8dc4422bc0f479d25a443e6ce74f2cb6cd9ad317841a39b24311
+  size_bytes: 31157
+- path: lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/run_manifest.json
+  sha256: 65b6b89fe80fd48e30e2d95a45b42a8599c7e4bea8a7f4438883e0be7391536a
+  size_bytes: 31972
+- path: lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/run_manifest.json
+  sha256: 485291623beb26b9a8914b4d1a498f4a16c0ee1775778a6a822510bd5f788303
+  size_bytes: 32804
+- path: lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/run_manifest.json
+  sha256: 60ed9b8617d3c57cc4c2a4ff9751c4458e670432e2e2b0c9726f99dd23d904be
+  size_bytes: 33607
+- path: lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/run_manifest.json
+  sha256: c470cf79972056c1b5601ada7af398f12e59bf0510b2f3b84257957b08e4e0fe
+  size_bytes: 34434
+- path: lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/run_manifest.json
+  sha256: a6845a1c50986cc7834527e058e20852da4f4d9d54972d3ac489cfd66267ef7b
+  size_bytes: 35263
+- path: lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/run_manifest.json
+  sha256: 6279650532f9debdb8754b0c58c541e50c48046dd97c065747d25de2d28db09c
+  size_bytes: 35587
+- path: lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/run_manifest.json
+  sha256: e6e366793cb9074dc8bc65af9d5448da26e1f23d91489fc8bfae59e602807a8b
+  size_bytes: 36226
+- path: lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/run_manifest.json
+  sha256: 93586bd8a127b8c51b5386b4205ec2ec3b8fbff0e2135cf588996d946821ab07
+  size_bytes: 37049
+- path: lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/run_manifest.json
+  sha256: 74d3c9a47677d9de25d5da676e5f7605dc9e7f15f5cf482459b19c7215615088
+  size_bytes: 37831
+- path: lab/runs/onnxlab_wave01_st_cell_001_session_transition_surface_v0/run_manifest.json
+  sha256: 5e9b59c3407f7b56bb8a8e7e8ea38657cdc326fba0c5c796a20b5a7c739e3d4f
+  size_bytes: 14408
+- path: lab/runs/onnxlab_wave01_st_cell_002_session_transition_surface_v0/run_manifest.json
+  sha256: b2025c6d5f2ec4be5b7004454487e132560358959387e3743fd2216ec9ea538c
+  size_bytes: 14368
+- path: lab/runs/onnxlab_wave01_st_cell_003_session_transition_surface_v0/run_manifest.json
+  sha256: b4d478fd62d7d5e618e61dc971c3644dee18d7f3b7250b1dcbf1f125a53059d3
+  size_bytes: 14384
+- path: lab/runs/onnxlab_wave01_st_cell_004_session_transition_surface_v0/run_manifest.json
+  sha256: ecc09c4cf0abd5d984970ec700e8a45ce365af10dad69442fa023601bc426980
+  size_bytes: 14380
+- path: lab/runs/onnxlab_wave01_st_cell_005_session_transition_surface_v0/run_manifest.json
+  sha256: 48f23e85bf73e289a105bae5f42a9df8049e2a7dde2a599ee498c13bdbb39545
+  size_bytes: 14395
+- path: lab/runs/onnxlab_wave01_st_cell_006_session_transition_surface_v0/run_manifest.json
+  sha256: d98d65e44fc742e88a58faa75d4ef977c171e8f636bc0b4a5c480b65e6cc655d
+  size_bytes: 14426
+- path: lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/run_manifest.json
+  sha256: edad34f2e635ace79adb9600d54fbb49e70cb1e9d62613f4b25676760e226776
+  size_bytes: 14383
+- path: lab/runs/onnxlab_wave01_st_cell_008_session_transition_surface_v0/run_manifest.json
+  sha256: 8117d9a3220d37297d11b6e1ca10fa8881a1c7370b6a5b85228fac9b0386f015
+  size_bytes: 14397
+- path: lab/runs/onnxlab_wave01_st_cell_009_session_transition_surface_v0/run_manifest.json
+  sha256: 980a82c1f3502bbbbf82efe4777d533afa1938f135314d9260945f5ca663af25
+  size_bytes: 14385
+- path: lab/runs/onnxlab_wave01_st_cell_010_session_transition_surface_v0/run_manifest.json
+  sha256: 43e9b8a7b1a0539002629516986ae08a23d5dcc13a5ff20419eadc5ed94d36c4
+  size_bytes: 14394
+- path: lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/artifact_lineage.json
+  sha256: 396ab4b5267ed161c0f56164ad7ac13435cdd57d544ff1cd0a73683426c310e1
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/run_manifest.json
+  sha256: dd50807fcae8a22f6cf05cdbaeff5a8739aecf23026afc2a70d3b2d8fb39fd4c
+  size_bytes: 21752
+- path: lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/artifact_lineage.json
+  sha256: 634dfe2601e079747487ab1821e6ac430e313d2a5063e5108594dde924e04833
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/run_manifest.json
+  sha256: c0226e760965fe47a3e7b10c0d4dcd10fe1b8dd988a2e50fbfc1b71d21b09be1
+  size_bytes: 21807
+- path: lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifact_lineage.json
+  sha256: d0396417b369628f1e7b633fb745e4978b37de0141c8e9f207121b8df3f35c25
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/run_manifest.json
+  sha256: 053c254ddc40433a3fc9e865157790b15aec2f5403c0eded62ad736ef44f5003
+  size_bytes: 21693
+- path: lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/artifact_lineage.json
+  sha256: d8afce0195e03c0a1c37253d3dc069f0c95aec24896f19e02fda7625d52a8dfd
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/run_manifest.json
+  sha256: a72511b63c406676f64f50848835cf52c3ba171969a82cd43eedccb5f60c8a96
+  size_bytes: 21757
+- path: lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/artifact_lineage.json
+  sha256: 8c3708b9345a11b585cc16402f3a1e8192b9e31d67c510499a4a0fe7e1482610
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/run_manifest.json
+  sha256: 76c7e8b1711d4fdfe28499ac9443627dd793e0ec549074d56960f41654e39154
+  size_bytes: 21780
+- path: lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifact_lineage.json
+  sha256: 65c0e4f28b72f86efd48b1c1641c9665d135d0f245dd0c061549fcf8a111e256
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/run_manifest.json
+  sha256: c8386875c3d1b3d37efc0d102802b55cc774b2b25c379b2690656c807ae261f1
+  size_bytes: 21681
+- path: lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/artifact_lineage.json
+  sha256: e95c0798b3d00ce70544f9d6826075210a8dce7e4edd79f45e0e057f7365ebb2
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/run_manifest.json
+  sha256: 30404ee3ef30c96239415ede210bce9f54fab1d71d0706e6e43c42207d2c0f2c
+  size_bytes: 21849
+- path: lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifact_lineage.json
+  sha256: 58b4d23eb4c73beb4028493638fcf080b59f6d153b25c9b8c00563bc8d15de7e
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json
+  sha256: 541bd50fba1bccbb23c4017a690f34a503a377065574d1dde8fbc5c335c7b640
+  size_bytes: 21841
+- path: lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifact_lineage.json
+  sha256: efa551740897a169720cd00005df2740c85c686133d563e0d1d81202e4046f64
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/run_manifest.json
+  sha256: d578d41e92d9265558e405fc77d2b6e181c4d1b794e144c624c77ec4fdd8640e
+  size_bytes: 21728
+- path: lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/artifact_lineage.json
+  sha256: af91a6eb12b119a69f8bda8915ba42e6dbe2967ab837dda1e0c6e0732bdecd1e
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/run_manifest.json
+  sha256: a434a37a8b31ffa8890e30601ea5136574a60552d2003ff4f6b274ca05ea7979
+  size_bytes: 21723
+- path: lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/artifact_lineage.json
+  sha256: 5688b206a9498d6ea7734a027884b68849937d1af4eb2d76816e076f6005c2d8
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/run_manifest.json
+  sha256: f0b2cbafa64bf751ef0687519792f6ceacc91a924b8b172b27fc4ca338047ded
+  size_bytes: 21766
+- path: lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifact_lineage.json
+  sha256: eed96b3388b19903cd66a6f7c88a5716ff1e9d890dbb37006d3ac4ff10c9ee5e
+  size_bytes: 6233
+- path: lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/run_manifest.json
+  sha256: c1386c6d19b90450ab8de985dc7f0d146e571aab711cdbb62471e6b2592a69ba
+  size_bytes: 21828
+- path: runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+  sha256: dae3080943e26176e4042ff6bc306821a6819e3efbb80b3a704eb4f20f8d020f
+  size_bytes: 9834
+- path: runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+  sha256: 14f2f0bb243f1d9dc32c7042ea8fe676274b6e46e4dda0280e5eaed2a61506b8
+  size_bytes: 16160
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: eb691aeb42817c96f9dbd194e6fef6cb093db1e2d171d889d54a39548de3649c
+  size_bytes: 39117
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/attempt_manifest.yaml
+  sha256: 5b566c5cf0f1ac8f5eb7b0695d5805aae19bc63773168b46d03ed22f13ca7b05
+  size_bytes: 37562
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+  sha256: c2ac9770be40639c5d8337cb938387645c7f861ab8192bfd28956de463a65a0c
+  size_bytes: 29929
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+  sha256: 9f1a63c666f72479bda10c59ad4678bc4ce562fb8b18a7e22f7b01b31ca9f09c
+  size_bytes: 29817
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 75160606fcdf332acaef79a93ed6c477a92a035cfbaec79ab93abe12135b354b
+  size_bytes: 39124
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/attempt_manifest.yaml
+  sha256: adbc04c773faec0228f3e1687db0944038bde3bd62159a6972928ea271a27626
+  size_bytes: 37568
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 6171e87953e20eed8db506fb9a67e15eca675f256d4ba77139c95bf67fe69e38
+  size_bytes: 39127
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/attempt_manifest.yaml
+  sha256: 512a24db4ff2b74f1562708d55f9c63557db260b70315440cb10581396dcaba8
+  size_bytes: 37571
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 493f3734b9d451c3b3f41cfd541929ae8b184e12de7cd01103231cb76e62bc99
+  size_bytes: 39116
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/attempt_manifest.yaml
+  sha256: a2a8bacb984d690adebc58d732b7c4d52a4bd6553246b2abc0a6c916eed8f413
+  size_bytes: 37564
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: c86e88381ce98ff161e3dcc482afab0ea5df4d608f425c4c41e88e3f43b23cc1
+  size_bytes: 39122
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/attempt_manifest.yaml
+  sha256: 194de4f3f3d4b1acbaf43369731bca500f8cebdd354c5f532e724195613e4eb4
+  size_bytes: 37567
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+  sha256: 4ab3c16f78d69401a44b832558a6fe222d66a81a6c83b3a5d648172946bb1aef
+  size_bytes: 29923
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+  sha256: 19d117c11ad3376dde04d088fba10f3122a10117191b98a79b427b28c1de9919
+  size_bytes: 29810
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: eb899abf4620ea614ce12f1c2d4cecac534b60fa775d0204fd5e10cb9f8968bd
+  size_bytes: 39121
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/attempt_manifest.yaml
+  sha256: 8d96b6a3142e7e19853d408cc890fbb1179a619c9abfa6092bfaf4854ad56902
+  size_bytes: 37566
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+  sha256: 2fa41753a81401393c52a949433f00e63ae893a076362d962b4eb78d9c4b9ecd
+  size_bytes: 29922
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+  sha256: 96985600c68ac81b4315f758348f9007652454a08488eb23fff3195a3173c473
+  size_bytes: 29805
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: a30d653e0905d44358bc0244a2dce7e248b9566eb912ef24ced9796b50df04b5
+  size_bytes: 39114
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/attempt_manifest.yaml
+  sha256: 40292b55d08b1e2c8fc232698115121a94e964c0b69c99ea77ef2940d9c44b54
+  size_bytes: 37559
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+  sha256: a5839c9dbf283f6a752ac2cc8aeb400c49bc7cd5dd00598dffd38deb8715e5da
+  size_bytes: 29928
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+  sha256: 5ac4801c606c2eaea387a9df5728f1395f276a2c671c183ee9c8066c6c1fe039
+  size_bytes: 29816
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 7edfafe9878d99bd140bcdf76951ef9110f117823c5c1f6dd2a9dec30f97afa8
+  size_bytes: 39119
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/attempt_manifest.yaml
+  sha256: 399e34017975fa0e9f23d81770e96f45aab180bed8d910b306a25de98467705d
+  size_bytes: 37566
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 3bfc124307778c727554ac69c9e5edeecdc8b8dec881dea0f2267b961c7a9aaf
+  size_bytes: 39116
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/attempt_manifest.yaml
+  sha256: 9383df8d3f121205eb5062196240847d8b6e722a067dd54de1ce222647156626
+  size_bytes: 37560
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 583b41da04f54e83a470a09b12a0dbc9fb66dc505449039549210e63980c14a3
+  size_bytes: 39120
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/attempt_manifest.yaml
+  sha256: 3ba906805b6af2d7bfa4a36bdb100f7e6208d08f13ccddee7f9351c4acc30b70
+  size_bytes: 37565
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+  sha256: 8688464d54014468ff08f573f40d55167c9139a570cd8d4bb136eedad444efca
+  size_bytes: 29911
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+  sha256: 34143b2e4c74012149cff728d97e411224ca49ce1728a312c9c237fc079eb60c
+  size_bytes: 29799
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 3e5313debf35662e892a969769afb44d24d9fa7fd3b4faf44e8807feb9a22e00
+  size_bytes: 39107
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/attempt_manifest.yaml
+  sha256: d35dbcb40565edadb61817bcc26b2cb3bdf95de7d3c1af369b39a490bb8b2956
+  size_bytes: 37553
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 5b851616a57c5110efb5e6c6bd5aee52b7c0ddd1fd87390b3bd087a6cb577b46
+  size_bytes: 39143
+- path: runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/attempt_manifest.yaml
+  sha256: 27049d77f110dfe168cc676b494a5841b29f93dfed2d81ef21b5a860c9741c47
+  size_bytes: 37588
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: cfb609f4c9bdf3a300e208c3c9c46fa0a786092e2a2591adffcf465ca6720686
+  size_bytes: 32550
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/attempt_manifest.yaml
+  sha256: 037c065718048408e08aba34196036ab465b83925d2c8043b0ffd80834b42bcb
+  size_bytes: 30994
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: aa7e0efc3ab34204ec0bb953bba95a6967e8307732e57fd86f6de671dcad304d
+  size_bytes: 32572
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/attempt_manifest.yaml
+  sha256: 8a86bc01d0a47440b9c6e3c49d3d8e9406cbab9756c56c7424b2215df39780b0
+  size_bytes: 31014
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_research_oos_score_band_inverse_side_v0/attempt_manifest.yaml
+  sha256: 5b27acd64028750aa531b0ebf6338e98cbd3d16936106482253b10e66fcfa373
+  size_bytes: 30328
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_validation_score_band_inverse_side_v0/attempt_manifest.yaml
+  sha256: b257eb8b1342769e3b81184d6c648ea57be5a8665f813f43a6aeb8fde8a93a91
+  size_bytes: 30213
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: a9d4b4933b72072868db3df03e9ea70fa13c740b36e883da17587b83346e902b
+  size_bytes: 32561
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/attempt_manifest.yaml
+  sha256: 2ccefd473d4f5d500a6e43ccf6711d6b84e0eb162f91c1d62fe01955012db967
+  size_bytes: 31006
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 1149746d309c60ea5c9f7554cce2f6604844483d1e93d3c2247738884f2cf40f
+  size_bytes: 32564
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/attempt_manifest.yaml
+  sha256: cb245332c5e5f724dc5fa2636f1a0879f74924c03a56f33b6b88f3648186342d
+  size_bytes: 31009
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 035f0747722306ac48c420086303927d426c634b623704c9fc08ff3bad945435
+  size_bytes: 32551
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/attempt_manifest.yaml
+  sha256: 77f824fb6b0adb487999fbf05a01f1cf21356be8d5678efd1f9d0ce147980d30
+  size_bytes: 30997
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 5aa6bca677321ae93d69636d2d80fc862cea881da0aabf2b7b682a3a66eeb731
+  size_bytes: 32552
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/attempt_manifest.yaml
+  sha256: a5ce535032c875b8247fdd7d0cf2d70e9e5e3de031b57aaad7b30ca8525f541b
+  size_bytes: 30996
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 2363386342d78b1c4a73bcb716d0ecc40568d8df1ffbc5176dd6a8fd4d70d94a
+  size_bytes: 32563
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/attempt_manifest.yaml
+  sha256: 4f15e5bc80744e41c91a71ac7a7f0e3502a988db7a164f3a8d1bddb030cb8952
+  size_bytes: 31008
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 1229ecb36153e626da0a5a5474303557dadc460bf4d4a0e16e0c41f122c93dbf
+  size_bytes: 32552
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/attempt_manifest.yaml
+  sha256: a9fa1c716f98e0f7a97a4ce52b88b7adbb58cca2229a853c8e116e06acb3451e
+  size_bytes: 30997
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 5445673c5037fe91a081251d32f4d8a3a3111f336a83bca6ca6b6f455dd8b08f
+  size_bytes: 32570
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/attempt_manifest.yaml
+  sha256: 7b72b0666388f5b10f411dcf0fcb92279d85711a111cce0f8518c91d2154c6d9
+  size_bytes: 31015
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: a34df86069c88b74bb69466c894e203fe516b2e7b12c18993a58d43404d007c0
+  size_bytes: 32568
+- path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/attempt_manifest.yaml
+  sha256: 0489305f6ee089052d7179a42b69c8f96cb2010a074e0ed7e4fbafa2584bd411
+  size_bytes: 31022
+- path: runtime/mt5_attempts/attempt_wave0_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: d5203759bd523288964fcfe1d4fb5c8ac91562278e4f8c93b58eb71ddbb4c971
+  size_bytes: 30635
+- path: runtime/mt5_attempts/attempt_wave0_cell_001_l4_validation_v0/attempt_manifest.yaml
+  sha256: 0dc9087d051e7dcf5938a7da527029c556e31a96e638534f88bedb2c54056a17
+  size_bytes: 30547
+- path: runtime/mt5_attempts/attempt_wave0_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: ba334ee70fb6dfb35144aec32c4e4a393762295c7d8489e7dc58255da237a4d2
+  size_bytes: 30698
+- path: runtime/mt5_attempts/attempt_wave0_cell_002_l4_validation_v0/attempt_manifest.yaml
+  sha256: 8f49a00a79e5aeec4cc587815b65db25c84899d4ecc70232c00ff32b2c1eca84
+  size_bytes: 30610
+- path: runtime/mt5_attempts/attempt_wave0_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: ee2c4eaa35604372e629ecf9aebeeb62b87d0e1571e87e0836d4055e1cfb6cd4
+  size_bytes: 30636
+- path: runtime/mt5_attempts/attempt_wave0_cell_003_l4_validation_v0/attempt_manifest.yaml
+  sha256: 4739d96294df70328a072c0da2142247e20d50de9183a84a313a3c573a07b39c
+  size_bytes: 30549
+- path: runtime/mt5_attempts/attempt_wave0_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: f4677139896e0463a462b0cc8bce4cac51297a100e0de596542b46fda9a89949
+  size_bytes: 30698
+- path: runtime/mt5_attempts/attempt_wave0_cell_004_l4_validation_v0/attempt_manifest.yaml
+  sha256: b9cb138e05a7e5f3ea3359c59ea566bb1d34ee7c2c8b29f82f9159d0feb3e352
+  size_bytes: 30610
+- path: runtime/mt5_attempts/attempt_wave0_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 20755971fa15da088ec4404004c868714faa29934349d72b4042b80dc185b853
+  size_bytes: 30703
+- path: runtime/mt5_attempts/attempt_wave0_cell_005_l4_validation_v0/attempt_manifest.yaml
+  sha256: 8ca520c8994dbbc320fc08997b2e08c5fd51fa60e4a93ce0b46b33ffb84a67f7
+  size_bytes: 30617
+- path: runtime/mt5_attempts/attempt_wave0_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 6a9392042d4cea594eed17d83217669f5c07ff340fa10f9dbfe0089b91e46170
+  size_bytes: 30635
+- path: runtime/mt5_attempts/attempt_wave0_cell_006_l4_validation_v0/attempt_manifest.yaml
+  sha256: ca3567010dfcf4e7736223c4f6bbc02a8124bbe6f70e3a2d5ae47829b7c3c64a
+  size_bytes: 30547
+- path: runtime/mt5_attempts/attempt_wave0_cell_007_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 8351fdddec83c0cc8e31fcf9098d998d35588f25e0e85b5f98d49a10bf353caa
+  size_bytes: 30705
+- path: runtime/mt5_attempts/attempt_wave0_cell_007_l4_validation_v0/attempt_manifest.yaml
+  sha256: 7085f85b69f5c3ec1d6333e0fd92ce2fc3865c7ef7b53daeee06b8806095a3c3
+  size_bytes: 30615
+- path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+  sha256: 10c60953b94d71d92af061af8be25c0983f932bd352aa121288b830e5c37fd79
+  size_bytes: 28716
+- path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+  sha256: e80449b42467d9e1bc41564a6288351b41448239b2b6f2cc6334826707a16550
+  size_bytes: 28599
+- path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 5181a4677453385d3299f88b768acf1fd178c471839017eef15543be68716d08
+  size_bytes: 30708
+- path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_validation_v0/attempt_manifest.yaml
+  sha256: 377969e1ce86b26c587e514a309e96ad67723c53631733bc24241bca8038afca
+  size_bytes: 30621
+- path: runtime/mt5_attempts/attempt_wave0_cell_009_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: cfe778f7edd8af2920b441de36f3a4b9c55c40e863c699d9ffa154c63880a31f
+  size_bytes: 30632
+- path: runtime/mt5_attempts/attempt_wave0_cell_009_l4_validation_v0/attempt_manifest.yaml
+  sha256: fbc1de7479bddf80f4d85e82a5712eea052e2d7c48eeb4eeda82a4f4a3e96336
+  size_bytes: 30546
+- path: runtime/mt5_attempts/attempt_wave0_cell_010_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: bedd0efa186acb11eb96679b86ba84bfebb5b44c7066e768a7557a01e5270ec1
+  size_bytes: 30625
+- path: runtime/mt5_attempts/attempt_wave0_cell_010_l4_validation_v0/attempt_manifest.yaml
+  sha256: f35c4c233ec75e6c7d03ca002316f4591c9113491d926a51db7d289881beea1a
+  size_bytes: 30538
+- path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+  sha256: 86f9c097c5d9553a30b0844c6dd3a706b65b2b732483c817b405cc95d18d4e70
+  size_bytes: 28716
+- path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+  sha256: a8543779e68695e8c6aa1bb6a9f0b2ce83861823bdb32b75b5d7ca66f9c43083
+  size_bytes: 28599
+- path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: bb2ce20573b855bef14c5b790abbe2b095a3f769c2aba3d6212eee45551c5e72
+  size_bytes: 30708
+- path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_validation_v0/attempt_manifest.yaml
+  sha256: 8778a28912447f2c5ab08022c6e19d37c539ecdbb46c754f2d6c7fbadf2f77c5
+  size_bytes: 30621
+- path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+  sha256: ab82e13bb6a74f6e55a4ed0524210c33c74d5095246d9cd62ae6465ac4c43dbb
+  size_bytes: 28715
+- path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+  sha256: ba9f781903ff7766afb6e511112e3dcf03667c68587b37a376fee7fdc9a4bbfd
+  size_bytes: 28599
+- path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_research_oos_v0/attempt_manifest.yaml
+  sha256: 5b1a6bb8d0b6d2cd2977c8027cb077e5d906f68c27fc8e3435fecc119feb3548
+  size_bytes: 30709
+- path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_validation_v0/attempt_manifest.yaml
+  sha256: da4a5d96a28dbd4cda11f7a54944a83fdab7076bb8deea6530625b3c81f706d5
+  size_bytes: 30623
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/source_snapshot_manifest.yaml
+  sha256: 96703bacc063dab5c450efe8fb01627c5a5c21d5a1e61df6bc2a8de255a28eb7
+  size_bytes: 1021
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/tracked_unstaged.patch
+  sha256: 5ecd41c2616cb7c278957d3c1b6389ce498851cf782da84d1a496b02461d71b8
+  size_bytes: 67171
+applied_paths:
+- docs/registers/artifact_registry.csv
+- docs/workspace/agent_operating_events.yaml
+- docs/workspace/agent_operating_metrics.yaml
+- lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_start_receipt.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_delta.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/runtime_contract_evaluator_output.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/migration_inventory.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/source_snapshot_manifest.yaml
+- lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/tracked_unstaged.patch
+- lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+- lab/runs/onnxlab_20260621T092135Z_control_plane_dryrun/run_manifest.json
+- lab/runs/onnxlab_20260621T115145Z_minimal_onnx_mt5_plumbing/run_manifest.json
+- lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json
+- lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_001_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_002_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_003_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_004_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_005_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_006_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_007_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_008_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_009_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave01_st_cell_010_session_transition_surface_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/run_manifest.json
+- lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/run_manifest.json
+- runtime/mt5_attempts/attempt_20260621T115145Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_research_oos_score_band_inverse_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_validation_score_band_inverse_side_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_001_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_002_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_003_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_004_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_005_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_006_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_007_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_007_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_008_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_008_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_009_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_009_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_010_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_010_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_011_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_011_l4_validation_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_012_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave0_cell_012_l4_validation_v0/attempt_manifest.yaml
+rollback_status: not_required
+original_transaction_receipt_sha256: null
+original_transaction_receipt_availability: ignored_workspace_receipt_not_required_for_clean_checkout

@@ -297,7 +297,7 @@ def attempt_manifest(
     report_path = f"runtime/mt5_attempts/{attempt_id}/tester_report.htm"
     telemetry_common = f"{COMMON_REL_ROOT}\\{attempt_id}\\score_telemetry.csv"
     return {
-        "version": "mt5_attempt_manifest_v1",
+        "version": "mt5_attempt_manifest_v2",
         "attempt_id": attempt_id,
         "run_id": bundle["run_id"],
         "cell_id": (bundle.get("id_chain") or {}).get("cell_id") or bundle["bundle_id"].replace("bundle_", "").replace("_l4_onnx_export_v0", ""),

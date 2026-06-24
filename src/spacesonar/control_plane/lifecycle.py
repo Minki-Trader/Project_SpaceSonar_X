@@ -1249,8 +1249,9 @@ def record_run_result(run_id: str, result: RunResult, context: ExecutionContext)
         **result.payload,
     }
     batch_id = result.payload.get("execution_batch_id") or result.payload.get("batch_id")
-    if batch_id:
-        payload = attach_execution_batch_ref(payload, context.repo_root, str(batch_id))
+    if not batch_id:
+        raise ValueError("record_run_result requires execution_batch_id")
+    payload = attach_execution_batch_ref(payload, context.repo_root, str(batch_id))
     plan = LifecyclePlan({Path("lab/runs") / run_id / "result.yaml": payload}, {}, (Path("lab/runs") / run_id / "result.yaml",))
     return _run_with_lifecycle_lock(context, lambda: _commit_plan(context, plan))
 

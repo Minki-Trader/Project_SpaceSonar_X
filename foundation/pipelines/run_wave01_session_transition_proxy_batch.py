@@ -362,7 +362,7 @@ def run_one(
         "next_action": NEXT_WORK_ITEM_ID,
     }
     manifest = {
-        "version": "run_manifest_v2",
+        "version": "run_manifest_v3",
         **base_record,
         "trigger_source": WORK_ITEM_ID,
         "status": "executed_proxy_observation_l4_required",

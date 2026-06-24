@@ -319,7 +319,7 @@ def build_run_records(
         "threshold_policy": row["threshold_policy"],
     }
     manifest = {
-        "version": "run_manifest_v2",
+        "version": "run_manifest_v3",
         "run_id": run_id,
         "id_chain": id_chain,
         "trigger_source": "wave0_first_batch_matrix",

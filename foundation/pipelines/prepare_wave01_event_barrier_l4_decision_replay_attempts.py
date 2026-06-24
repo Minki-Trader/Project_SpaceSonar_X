@@ -203,7 +203,7 @@ def build_attempt_manifest(
 ) -> dict[str, Any]:
     ea_binary_available = (repo_root / EA_BINARY).exists()
     return {
-        "version": "mt5_attempt_manifest_v1",
+        "version": "mt5_attempt_manifest_v2",
         "attempt_id": row["attempt_id"],
         "parent_score_attempt_id": row["source_attempt_id"],
         "adapter_id": ADAPTER_ID,

@@ -671,7 +671,7 @@ def run_manifest_payload(
     axis = spec["axis_values"]
     run_id = spec["planned_run_id"]
     return {
-        "version": "run_manifest_v2",
+        "version": "run_manifest_v3",
         "run_id": run_id,
         "id_chain": {**spec["id_chain"], "artifact_ids": [], "bundle_id": None, "candidate_id": None},
         "trigger_source": WORK_ITEM_ID,

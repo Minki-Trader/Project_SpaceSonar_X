@@ -316,6 +316,17 @@ def test_run_and_attempt_creation_requires_batch_ref(tmp_path: Path) -> None:
         create_attempt_manifest(tmp_path, {"attempt_id": "attempt_a"}, execution_batch_id="")
 
 
+def test_templates_require_future_batch_ref_schema() -> None:
+    repo_root = Path(__file__).resolve().parents[2]
+    run_template = (repo_root / "lab/templates/run_manifest.template.json").read_text(encoding="utf-8")
+    attempt_template = (repo_root / "lab/templates/attempt_manifest.template.yaml").read_text(encoding="utf-8")
+
+    assert '"version": "run_manifest_v3"' in run_template
+    assert "version: mt5_attempt_manifest_v2" in attempt_template
+    assert '"batch_id": null' not in run_template
+    assert "batch_id: null" not in attempt_template
+
+
 def test_execution_batch_ref_with_null_sha_fails(tmp_path: Path) -> None:
     receipt_path = tmp_path / "lab" / "executions" / "batch_bad" / "execution_batch_receipt.yaml"
     receipt_path.parent.mkdir(parents=True)

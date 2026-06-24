@@ -9,7 +9,9 @@ from foundation.validation.execution_provenance_validator import (
     _validate_execution_refs,
     _validate_historical_regeneration_lineage,
     validate,
+    validate_agent_work_receipt,
 )
+from spacesonar.control_plane.store import read_yaml
 from spacesonar.control_plane.provenance import validate_execution_batch_receipt
 
 
@@ -149,3 +151,38 @@ def test_committed_wp06_provenance_state_validates() -> None:
     repo_root = Path(__file__).resolve().parents[1]
 
     assert validate(repo_root) == []
+
+
+def test_wp06_source_tree_hashes_and_finalization_anchor_match() -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    receipt = read_yaml(repo_root / "lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml")
+    snapshot_ref = receipt["git"]["source_snapshot"]
+    snapshot = read_yaml(repo_root / snapshot_ref["manifest_path"])
+    finalization = read_yaml(repo_root / "lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml")
+
+    assert receipt["git"]["source_tree_hash_at_start"] == snapshot_ref["source_tree_hash"]
+    assert snapshot_ref["source_tree_hash"] == snapshot["source_tree_hash"]
+    assert finalization["execution_batch_receipt_sha256"]
+    assert finalization["transaction_receipt_sha256"]
+
+
+def test_wp06_work_receipt_validates_and_tamper_fails(tmp_path: Path) -> None:
+    repo_root = Path(__file__).resolve().parents[1]
+    source = repo_root / "docs/workspace/agent_work_receipts/WP06.yaml"
+    target = tmp_path / "docs/workspace/agent_work_receipts/WP06.yaml"
+    target.parent.mkdir(parents=True)
+    target.write_bytes(source.read_bytes())
+    # Copy only referenced files needed for the hash-bound check.
+    receipt = read_yaml(source)
+    for ref in [*receipt.get("source_refs", []), receipt["wp06_batch_receipt_ref"], receipt["transaction_receipt_ref"]]:
+        src = repo_root / ref["path"]
+        dst = tmp_path / ref["path"]
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.write_bytes(src.read_bytes())
+
+    assert validate_agent_work_receipt(tmp_path, Path("docs/workspace/agent_work_receipts/WP06.yaml")) == []
+
+    tampered = target.read_text(encoding="utf-8").replace("agent_mode: solo", "agent_mode: micro_specialist")
+    target.write_text(tampered, encoding="utf-8")
+
+    assert any("self-hash mismatch" in error for error in validate_agent_work_receipt(tmp_path, Path("docs/workspace/agent_work_receipts/WP06.yaml")))

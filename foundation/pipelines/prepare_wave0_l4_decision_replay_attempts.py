@@ -262,7 +262,7 @@ def build_attempt_manifest(
     if not ea_binary_available:
         missing_evidence.insert(0, "score_replay_EA_not_compiled_in_this_preparation_step")
     return {
-        "version": "mt5_attempt_manifest_v1",
+        "version": "mt5_attempt_manifest_v2",
         "attempt_id": attempt_row["attempt_id"],
         "parent_score_attempt_id": attempt_row["source_attempt_id"],
         "adapter_id": ADAPTER_ID,

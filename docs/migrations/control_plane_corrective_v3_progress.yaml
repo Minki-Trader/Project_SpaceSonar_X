@@ -3,7 +3,7 @@ workflow_status: in_progress
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp06_final_amendment_completed_receipt_truth_and_forward_stability_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: corrective_wp06_closure_amendment_completed_receipt_internal_consistency_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -1156,14 +1156,14 @@ work_units:
     claim_boundary: corrective_wp05_final_correction_completed_requested_claim_fail_closed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   WP06:
     status: completed
-    completed_at_utc: '2026-06-24T04:16:39Z'
+    completed_at_utc: '2026-06-24T06:12:51Z'
     agent_execution:
       mode: solo
       evidence_class: contemporaneous_work_receipt
       consult_ids: []
       source_refs: []
       started_at_utc: '2026-06-23T15:05:01Z'
-      ended_at_utc: '2026-06-24T04:16:39Z'
+      ended_at_utc: '2026-06-24T06:12:51Z'
     objective: Complete batch provenance capture, wire historical run and attempt
       records to compact batch provenance, and generate agent operating metrics
       from durable event counts.
@@ -1380,6 +1380,72 @@ work_units:
       - command: git diff --check
         status: passed
         result: no whitespace errors; CRLF normalization warning only
+    closure_amendment:
+      id: wp06_final_receipt_internal_consistency_clean_checkout_verifiable_v2
+      status: completed
+      completed_at_utc: '2026-06-24T06:12:51Z'
+      migration_id: wp06_execution_receipt_truth_correction_v2
+      source_snapshot_namespace: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/
+      append_only_receipts:
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_start_receipt.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
+      preserved_superseded_receipts:
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded_v1.yaml
+      guarantees:
+        source_tree_hash_triplet_validated: true
+        clean_checkout_transaction_receipt_committed: true
+        agent_work_receipt_self_hash_validated: true
+        symbolic_preimage_git_refs_rejected: true
+        future_run_manifest_schema: run_manifest_v3
+        future_attempt_manifest_schema: mt5_attempt_manifest_v2
+        nullable_template_batch_refs_removed: true
+        record_run_result_requires_execution_batch_id: true
+      validation:
+      - command: uv run pytest tests/control_plane/test_batch_provenance.py -q
+        status: passed
+        result: 22 passed
+      - command: uv run pytest tests/test_execution_provenance_validator.py -q
+        status: passed
+        result: 8 passed
+      - command: uv run pytest tests/test_provenance_compaction_migration.py -q
+        status: passed
+        result: 6 passed
+      - command: uv run pytest tests/test_agent_event_projection.py -q
+        status: passed
+        result: 6 passed
+      - command: uv run pytest tests/test_agent_metrics_projection.py -q
+        status: passed
+        result: 3 passed
+      - command: uv run pytest tests/test_agent_consult_receipts.py -q
+        status: passed
+        result: 5 passed
+      - command: uv run pytest tests/control_plane -q
+        status: passed
+        result: 90 passed
+      - command: uv run pytest -q
+        status: passed
+        result: 380 passed in 988.11s
+      - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py --repo-root . --check
+        status: passed
+        result: changed_record_count=0 record_counts=37/88/125 runtime_evaluator_status=passed
+      - command: uv run python foundation/validation/execution_provenance_validator.py --repo-root .
+        status: passed
+        result: execution provenance validation passed
+      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+        status: passed
+        result: active-record validation passed
+      - command: uv run python foundation/validation/control_plane_validator.py --repo-root .
+        status: passed
+        result: control-plane validation passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py --repo-root . --check
+        status: passed
+        result: rows=936 refreshable=934 changed=0 missing=0
     validation:
     - command: uv run pytest tests/control_plane/test_batch_provenance.py -q
       status: passed

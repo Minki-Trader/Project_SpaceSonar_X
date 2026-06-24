@@ -241,9 +241,11 @@ def _zip_untracked_sources(repo_root: Path, archive_rel_path: Path, paths: list[
     return archive_rel_path.as_posix(), archive_sha, manifest
 
 
-def build_source_snapshot_payload(repo_root: Path, batch_id: str) -> dict[str, Any]:
-    root = repo_root / "lab" / "executions" / batch_id / "source_snapshot"
-    rel_root = Path("lab") / "executions" / batch_id / "source_snapshot"
+def build_source_snapshot_payload(repo_root: Path, batch_id: str, *, namespace: str = "source_snapshot") -> dict[str, Any]:
+    if not namespace or Path(namespace).is_absolute() or ".." in Path(namespace).parts:
+        raise BatchReceiptError(f"source snapshot namespace must be a simple relative path: {namespace}")
+    root = repo_root / "lab" / "executions" / batch_id / namespace
+    rel_root = Path("lab") / "executions" / batch_id / namespace
     status_entries = _status_source_entries(repo_root)
     deleted_paths = sorted(
         {
@@ -448,6 +450,14 @@ def validate_execution_batch_receipt(receipt: dict[str, Any], *, require_finaliz
             errors.append(f"batch receipt invalid timestamp: {exc}")
     if not ((receipt.get("git") or {}).get("source_snapshot") or {}).get("manifest_sha256"):
         errors.append("batch receipt missing source snapshot manifest hash")
+    git = receipt.get("git") or {}
+    snapshot = git.get("source_snapshot") or {}
+    tree_values = [
+        str(git.get("source_tree_hash_at_start") or ""),
+        str(snapshot.get("source_tree_hash") or ""),
+    ]
+    if all(tree_values) and len(set(tree_values)) != 1:
+        errors.append("batch receipt source tree hash does not match source snapshot")
     if not (receipt.get("environment") or {}).get("lock_file_sha256"):
         errors.append("batch receipt missing lock hash")
     return errors

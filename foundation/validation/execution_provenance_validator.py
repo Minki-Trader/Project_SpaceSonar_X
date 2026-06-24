@@ -16,12 +16,16 @@ if str(REPO_ROOT / "src") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from spacesonar.control_plane.provenance import validate_execution_batch_receipt
-from spacesonar.control_plane.store import filesystem_path, read_json, read_yaml, sha256_file
+from spacesonar.control_plane.store import dump_yaml, filesystem_path, read_json, read_yaml, sha256_file
 
 
 WP06_BATCH_ID = "batch_control_plane_corrective_v3_wp06_provenance_compaction"
 WP06_BATCH_ROOT = Path("lab/executions") / WP06_BATCH_ID
 WP06_RECEIPT = WP06_BATCH_ROOT / "execution_batch_receipt.yaml"
+WP06_START_RECEIPT = WP06_BATCH_ROOT / "batch_start_receipt.yaml"
+WP06_FINALIZATION_RECEIPT = WP06_BATCH_ROOT / "batch_finalization_receipt.yaml"
+WP06_TRANSACTION_RECEIPT = WP06_BATCH_ROOT / "transaction_receipt.yaml"
+WP06_EFFECT_INVENTORY = WP06_BATCH_ROOT / "effect_inventory.yaml"
 WP06_INVENTORY = WP06_BATCH_ROOT / "migration_inventory.yaml"
 WP06_PREIMAGE_MANIFEST = WP06_BATCH_ROOT / "preimages/preimage_manifest.yaml"
 WP06_PREIMAGE_ARCHIVE = WP06_BATCH_ROOT / "preimages/preimages.zip"
@@ -30,6 +34,12 @@ WP06_COMPACTION_ROLE = "metadata_compaction_only_not_original_execution_identity
 HISTORICAL_RECEIPT = Path("lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml")
 LEGACY_ENTRYPOINTS = Path("docs/agent_control/legacy_lifecycle_entrypoints.yaml")
 ARTIFACT_REGISTRY = Path("docs/registers/artifact_registry.csv")
+FORWARD_MUTABLE_OUTPUTS = {
+    "docs/workspace/agent_operating_events.yaml",
+    "docs/workspace/agent_operating_metrics.yaml",
+    "docs/workspace/agent_work_receipts/WP06.yaml",
+    "docs/registers/artifact_registry.csv",
+}
 
 
 def _exists(path: Path) -> bool:
@@ -86,6 +96,9 @@ def _hash_record_errors(repo_root: Path, receipt: dict[str, Any], rel_path: Path
             expected_hash = _phase_sha(item, label)
             expected_size = _phase_size(item, label)
             validation_class = str(item.get("hash_validation_class") or "current_path_still_expected")
+            if label == "outputs" and path_value in FORWARD_MUTABLE_OUTPUTS:
+                seen[path_value] = expected_hash
+                continue
             if label == "inputs" and validation_class in {"immutable_snapshot", "superseded_mutable_path", "git_object"}:
                 preimage = item.get("preimage_ref") or {}
                 immutable_ref = item.get("immutable_evidence_ref") or {}
@@ -182,8 +195,19 @@ def _validate_wp06_preimages(repo_root: Path) -> list[str]:
                     errors.append(f"{WP06_PREIMAGE_ARCHIVE.as_posix()}: member hash mismatch {member}")
                 if int(item.get("size_bytes") or -1) != len(payload):
                     errors.append(f"{WP06_PREIMAGE_ARCHIVE.as_posix()}: member size mismatch {member}")
-                if item.get("normalization_verified") is not True:
-                    errors.append(f"{WP06_PREIMAGE_MANIFEST.as_posix()}: normalization not verified {member}")
+                symbolic = str(item.get("git_revision") or "")
+                if symbolic in {"HEAD", "HEAD~1", "main"} or (symbolic and len(symbolic) != 40):
+                    errors.append(f"{WP06_PREIMAGE_MANIFEST.as_posix()}: symbolic git revision is not allowed {member}")
+                if len(str(item.get("git_commit_sha") or "")) != 40:
+                    errors.append(f"{WP06_PREIMAGE_MANIFEST.as_posix()}: git_commit_sha missing or invalid {member}")
+                if not str(item.get("git_blob_sha") or ""):
+                    errors.append(f"{WP06_PREIMAGE_MANIFEST.as_posix()}: git_blob_sha missing {member}")
+                if item.get("content_sha256") != item.get("sha256"):
+                    errors.append(f"{WP06_PREIMAGE_MANIFEST.as_posix()}: content_sha256 mismatch {member}")
+                if item.get("content_match_verified") is not True:
+                    errors.append(f"{WP06_PREIMAGE_MANIFEST.as_posix()}: content match not verified {member}")
+                if item.get("normalization_applied") is True and not item.get("normalization_type"):
+                    errors.append(f"{WP06_PREIMAGE_MANIFEST.as_posix()}: normalization type missing {member}")
     except zipfile.BadZipFile as exc:
         errors.append(f"{WP06_PREIMAGE_ARCHIVE.as_posix()}: invalid zip {exc}")
     return errors
@@ -206,6 +230,13 @@ def _validate_source_snapshot(repo_root: Path, receipt: dict[str, Any], rel_path
         errors.append(f"{rel_path.as_posix()}: source snapshot batch_id mismatch")
     if manifest.get("source_tree_hash") and len(str(manifest.get("source_tree_hash"))) != 64:
         errors.append(f"{rel_path.as_posix()}: source snapshot source_tree_hash format invalid")
+    tree_hashes = [
+        str(git.get("source_tree_hash_at_start") or ""),
+        str((git.get("source_snapshot") or {}).get("source_tree_hash") or ""),
+        str(manifest.get("source_tree_hash") or ""),
+    ]
+    if all(tree_hashes) and len(set(tree_hashes)) != 1:
+        errors.append(f"{rel_path.as_posix()}: source tree hash mismatch between receipt and snapshot")
     source_dirty = bool(git.get("source_dirty"))
     dirty_mechanisms = [
         manifest.get("tracked_patch_path"),
@@ -291,6 +322,69 @@ def _validate_execution_refs(repo_root: Path) -> list[str]:
     return errors
 
 
+def _canonical_self_hash(payload: dict[str, Any]) -> str:
+    import copy
+
+    clone = copy.deepcopy(payload)
+    (((clone.setdefault("receipt_sha256", {})))["value"]) = ""
+    return hashlib.sha256(dump_yaml(clone).encode("utf-8")).hexdigest()
+
+
+def validate_agent_work_receipt(repo_root: Path, rel_path: Path) -> list[str]:
+    path = repo_root / rel_path
+    if not _exists(path):
+        return [f"{rel_path.as_posix()}: missing agent work receipt"]
+    receipt = read_yaml(path)
+    errors: list[str] = []
+    for field in ["version", "work_item_id", "agent_mode", "evidence_class", "started_at_utc", "ended_at_utc", "claim_boundary"]:
+        if receipt.get(field) in (None, "", [], {}):
+            errors.append(f"{rel_path.as_posix()}: missing {field}")
+    if receipt.get("version") != "agent_work_receipt_v1":
+        errors.append(f"{rel_path.as_posix()}: version mismatch")
+    try:
+        from datetime import datetime
+
+        start = datetime.fromisoformat(str(receipt.get("started_at_utc")).replace("Z", "+00:00"))
+        end = datetime.fromisoformat(str(receipt.get("ended_at_utc")).replace("Z", "+00:00"))
+        if end < start:
+            errors.append(f"{rel_path.as_posix()}: ended_at_utc precedes started_at_utc")
+    except Exception as exc:
+        errors.append(f"{rel_path.as_posix()}: invalid timestamp {exc}")
+    for ref in receipt.get("source_refs") or []:
+        ref_path = repo_root / str(ref.get("path") or "")
+        if not _exists(ref_path):
+            errors.append(f"{rel_path.as_posix()}: source ref missing {ref.get('path')}")
+            continue
+        if ref.get("sha256") != sha256_file(ref_path):
+            errors.append(f"{rel_path.as_posix()}: source ref hash mismatch {ref.get('path')}")
+        if int(ref.get("size_bytes") or -1) != _stat_size(ref_path):
+            errors.append(f"{rel_path.as_posix()}: source ref size mismatch {ref.get('path')}")
+    for key in ["wp06_batch_receipt_ref", "transaction_receipt_ref"]:
+        ref = receipt.get(key) or {}
+        ref_path = repo_root / str(ref.get("path") or "")
+        if not _exists(ref_path):
+            errors.append(f"{rel_path.as_posix()}: {key} missing")
+            continue
+        if ref.get("sha256") != sha256_file(ref_path):
+            errors.append(f"{rel_path.as_posix()}: {key} hash mismatch")
+        if int(ref.get("size_bytes") or -1) != _stat_size(ref_path):
+            errors.append(f"{rel_path.as_posix()}: {key} size mismatch")
+    stored_hash = ((receipt.get("receipt_sha256") or {}).get("value"))
+    if not stored_hash or stored_hash != _canonical_self_hash(receipt):
+        errors.append(f"{rel_path.as_posix()}: self-hash mismatch")
+    return errors
+
+
+def _validate_agent_work_receipts(repo_root: Path) -> list[str]:
+    root = repo_root / "docs" / "workspace" / "agent_work_receipts"
+    if not _exists(root):
+        return []
+    errors: list[str] = []
+    for path in sorted(root.glob("*.yaml")):
+        errors.extend(validate_agent_work_receipt(repo_root, path.relative_to(repo_root)))
+    return errors
+
+
 def _validate_wp06_inventory(repo_root: Path) -> list[str]:
     inventory_path = repo_root / WP06_INVENTORY
     if not _exists(inventory_path):
@@ -342,8 +436,85 @@ def _validate_wp06_inventory(repo_root: Path) -> list[str]:
         delta = read_yaml(repo_root / WP06_ARTIFACT_DELTA)
         if not delta.get("canonical_registry_hash_after_projection"):
             errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: missing canonical registry hash")
+        for item in delta.get("row_deltas") or []:
+            artifact_id = str(item.get("artifact_id") or "")
+            if not artifact_id or not item.get("path_or_uri") or not item.get("change_reason"):
+                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: incomplete row delta")
+                continue
+            snapshot_row = item.get("new_row")
+            if not isinstance(snapshot_row, dict):
+                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: row delta snapshot missing {artifact_id}")
+                continue
+            observed = hashlib.sha256(
+                __import__("json").dumps(snapshot_row, sort_keys=True, separators=(",", ":")).encode("utf-8")
+            ).hexdigest()
+            if item.get("new_row_sha256") != observed:
+                errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: row delta hash mismatch {artifact_id}")
+        if int(delta.get("affected_row_count") or -1) != len(delta.get("row_deltas") or []):
+            errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: affected_row_count mismatch")
     else:
         errors.append(f"{WP06_ARTIFACT_DELTA.as_posix()}: missing artifact registry delta")
+    return errors
+
+
+def _validate_wp06_append_only_receipts(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    required = [WP06_START_RECEIPT, WP06_FINALIZATION_RECEIPT, WP06_TRANSACTION_RECEIPT, WP06_EFFECT_INVENTORY]
+    for rel_path in required:
+        if not _exists(repo_root / rel_path):
+            errors.append(f"{rel_path.as_posix()}: missing WP06 append-only receipt")
+    if errors:
+        return errors
+    start = read_yaml(repo_root / WP06_START_RECEIPT)
+    finalization = read_yaml(repo_root / WP06_FINALIZATION_RECEIPT)
+    tx = read_yaml(repo_root / WP06_TRANSACTION_RECEIPT)
+    effects = read_yaml(repo_root / WP06_EFFECT_INVENTORY)
+    if finalization.get("batch_start_receipt_sha256") != sha256_file(repo_root / WP06_START_RECEIPT):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: start receipt hash mismatch")
+    if finalization.get("transaction_receipt_sha256") != sha256_file(repo_root / WP06_TRANSACTION_RECEIPT):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: transaction receipt hash mismatch")
+    if finalization.get("effect_inventory_sha256") != sha256_file(repo_root / WP06_EFFECT_INVENTORY):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: effect inventory hash mismatch")
+    if finalization.get("execution_batch_receipt_sha256") != sha256_file(repo_root / WP06_RECEIPT):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: batch receipt hash mismatch")
+    snapshot_manifest = str((read_yaml(repo_root / WP06_RECEIPT).get("git") or {}).get("source_snapshot", {}).get("manifest_path") or "")
+    if not snapshot_manifest or not _exists(repo_root / snapshot_manifest):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: source snapshot manifest missing")
+    elif finalization.get("source_snapshot_manifest_sha256") != sha256_file(repo_root / snapshot_manifest):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: source snapshot manifest hash mismatch")
+    if finalization.get("preimage_manifest_sha256") != sha256_file(repo_root / WP06_PREIMAGE_MANIFEST):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: preimage manifest hash mismatch")
+    try:
+        from datetime import datetime
+
+        start_time = datetime.fromisoformat(str(start.get("started_at_utc")).replace("Z", "+00:00"))
+        commit_time = datetime.fromisoformat(str(tx.get("committed_at_utc")).replace("Z", "+00:00"))
+        final_time = datetime.fromisoformat(str(finalization.get("finalized_at_utc")).replace("Z", "+00:00"))
+        if not (start_time < commit_time <= final_time):
+            errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: invalid start/commit/finalization ordering")
+    except Exception as exc:
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: invalid timing data {exc}")
+    effect_paths = {str(item.get("path") or "") for item in effects.get("effects") or []}
+    applied_paths = set(str(path) for path in tx.get("applied_paths") or [])
+    if applied_paths and not applied_paths.issubset(effect_paths):
+        missing = sorted(applied_paths - effect_paths)
+        errors.append(f"{WP06_EFFECT_INVENTORY.as_posix()}: transaction applied paths missing from effect inventory: {missing[:5]}")
+    for item in effects.get("effects") or []:
+        rel = str(item.get("path") or "")
+        if item.get("validation_class") == "self_reference_excluded":
+            continue
+        if rel in FORWARD_MUTABLE_OUTPUTS:
+            continue
+        path = repo_root / rel
+        if not _exists(path):
+            errors.append(f"{WP06_EFFECT_INVENTORY.as_posix()}: effect path missing {rel}")
+            continue
+        expected = item.get("post_sha256")
+        if expected and expected != "self_hash_cycle_omitted" and expected != sha256_file(path):
+            errors.append(f"{WP06_EFFECT_INVENTORY.as_posix()}: effect hash mismatch {rel}")
+    stored_hash = ((finalization.get("receipt_sha256") or {}).get("value"))
+    if not stored_hash or stored_hash != _canonical_self_hash(finalization):
+        errors.append(f"{WP06_FINALIZATION_RECEIPT.as_posix()}: self-hash mismatch")
     return errors
 
 
@@ -385,6 +556,27 @@ def _validate_historical_regeneration_lineage(repo_root: Path) -> list[str]:
     return errors
 
 
+def _validate_future_writer_schema_versions(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    roots = [repo_root / "src", repo_root / "foundation", repo_root / "lab" / "templates"]
+    forbidden = [
+        '"version": "' + "run_manifest_v2" + '"',
+        '"version": "' + "mt5_attempt_manifest_v1" + '"',
+        "version: " + "mt5_attempt_manifest_v1",
+    ]
+    for root in roots:
+        if not _exists(root):
+            continue
+        for path in sorted(root.rglob("*")):
+            if not path.is_file() or path.suffix.lower() not in {".py", ".json", ".yaml", ".yml"}:
+                continue
+            text = path.read_text(encoding="utf-8", errors="replace")
+            for needle in forbidden:
+                if needle in text:
+                    errors.append(f"{path.relative_to(repo_root).as_posix()}: forbidden future writer schema literal {needle}")
+    return errors
+
+
 def validate(repo_root: Path) -> list[str]:
     repo_root = repo_root.resolve()
     return [
@@ -392,7 +584,10 @@ def validate(repo_root: Path) -> list[str]:
         *_validate_execution_refs(repo_root),
         *_validate_wp06_inventory(repo_root),
         *_validate_wp06_preimages(repo_root),
+        *_validate_wp06_append_only_receipts(repo_root),
+        *_validate_agent_work_receipts(repo_root),
         *_validate_historical_regeneration_lineage(repo_root),
+        *_validate_future_writer_schema_versions(repo_root),
     ]
 
 

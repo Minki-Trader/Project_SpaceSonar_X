@@ -629,7 +629,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
     write_json(bundle_root / "experiment_bundle.json", experiment_bundle)
 
     run_manifest = {
-        "version": "run_manifest_v2",
+        "version": "run_manifest_v3",
         "run_id": run_id,
         "id_chain": {
             "idea_id": "idea_a_to_z_validation_spine_v0",
@@ -891,7 +891,7 @@ def run(args: argparse.Namespace) -> dict[str, str]:
     write_yaml(run_root / "runtime_evidence.yaml", runtime_evidence)
 
     attempt_manifest = {
-        "version": "mt5_attempt_manifest_v1",
+        "version": "mt5_attempt_manifest_v2",
         "attempt_id": attempt_id,
         "run_id": run_id,
         "surface_id": TASK_SURFACE_ID,
