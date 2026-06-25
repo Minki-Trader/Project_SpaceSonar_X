@@ -32,28 +32,44 @@ def test_full_suite_runs_complete_pytest() -> None:
     assert "uv run pytest -q" in commands
 
 
-def test_wp08_hygiene_completed_does_not_imply_main_readiness() -> None:
+def test_wp08_hygiene_completed_does_not_imply_wave_progression_readiness() -> None:
     ledger = _load_yaml("docs/migrations/control_plane_corrective_v3.yaml")
     progress = _load_yaml("docs/migrations/control_plane_corrective_v3_progress.yaml")
 
     assert ledger["wp08_final_hygiene"]["status"] == "completed"
-    assert ledger["main_integration_readiness"]["status"] == "blocked"
+    assert ledger["wave_progression_readiness"]["status"] == "blocked"
     assert progress["wp08_final_hygiene"]["status"] == "completed"
-    assert progress["main_integration_readiness"]["status"] == "blocked"
-    assert ledger["workflow_status"] == "wp08_hygiene_completed_main_integration_blocked"
+    assert progress["wave_progression_readiness"]["status"] == "blocked"
+    assert ledger["workflow_status"] == "wp08_hygiene_completed_wave_progression_blocked"
 
 
-def test_main_readiness_blocked_when_closeout_requires_repair() -> None:
+def test_wave_progression_readiness_blocked_when_closeout_requires_repair() -> None:
     ledger = _load_yaml("docs/migrations/control_plane_corrective_v3.yaml")
 
     assert ledger["operating_closeout"]["status"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
-    assert "operating_closeout_evidence_repair_required" in ledger["main_integration_readiness"]["blockers"]
-    assert "agent_observation_coverage_below_slo" in ledger["main_integration_readiness"]["blockers"]
+    assert "operating_closeout_evidence_repair_required" in ledger["wave_progression_readiness"]["blockers"]
+    assert "agent_observation_coverage_below_slo" in ledger["wave_progression_readiness"]["blockers"]
+    assert ledger["wave_progression_readiness"]["active_work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
 
 
-def test_main_readiness_blocked_when_remote_protection_is_not_verified() -> None:
+def test_main_integration_readiness_records_verified_remote_protection() -> None:
     ledger = _load_yaml("docs/migrations/control_plane_corrective_v3.yaml")
+    remote_settings = _load_yaml("docs/policies/remote_repository_settings.yaml")
 
-    assert ledger["remote_branch_protection"] == "not_enabled_or_not_visible"
-    assert "main_branch_protection_missing_or_not_visible" in ledger["main_integration_readiness"]["blockers"]
-
+    assert ledger["remote_branch_protection"] == "verified"
+    assert remote_settings["remote_branch_protection"] == "verified"
+    assert remote_settings["checks"] == {
+        "pull_request_required_on_main": True,
+        "required_status_checks": True,
+        "squash_merge_enabled": True,
+        "merge_commit_disabled": True,
+        "rebase_merge_disabled": True,
+        "force_push_disabled": True,
+        "direct_push_restricted": True,
+    }
+    assert ledger["main_integration_readiness"]["required_checks"] == [
+        "control-plane-fast",
+        "unit",
+        "evidence-graph-full",
+        "full-suite",
+    ]

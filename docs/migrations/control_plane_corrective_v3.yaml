@@ -1,27 +1,34 @@
 version: migration_ledger_v1
 migration_id: control_plane_corrective_v3
 work_item_id: work_codex_control_plane_corrective_v3
-branch: codex/control-plane-corrective-v3
+branch: codex/wp08-delivery-reconciliation
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 wp08_entry_head: 30f55cb449bc11f29947f2f8128a3ce4098d2115
 final_delivery_commit_sha: self_referential_commit_hash_recorded_by_git_and_user_report
 generated_at_utc: '2026-06-25T04:13:30Z'
-claim_boundary: wp08_hygiene_completed_main_integration_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
-workflow_status: wp08_hygiene_completed_main_integration_blocked
+claim_boundary: wp08_hygiene_completed_wave_progression_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
+workflow_status: wp08_hygiene_completed_wave_progression_blocked
 wp08_final_hygiene:
   status: completed
   scope: final_repository_hygiene_validation_only
 main_integration_readiness:
+  status: ready_after_remote_protection_verified_and_required_checks_pass
+  required_checks:
+  - control-plane-fast
+  - unit
+  - evidence-graph-full
+  - full-suite
+  enforcement_command: python foundation/validation/remote_repository_settings_verifier.py --repo-root . --enforce-main-integration
+wave_progression_readiness:
   status: blocked
   blockers:
-  - main_branch_protection_missing_or_not_visible
   - operating_closeout_evidence_repair_required
   - agent_observation_coverage_below_slo
-  enforcement_command: python foundation/validation/remote_repository_settings_verifier.py --repo-root . --enforce-main-integration
-  claim_boundary: wp08_hygiene_completed_main_integration_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
-remote_branch_protection: not_enabled_or_not_visible
+  active_work_item_id: work_wp07_closeout_evidence_repair_v0
+  claim_boundary: wp08_hygiene_completed_wave_progression_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
+remote_branch_protection: verified
 remote_branch_protection_record: docs/policies/remote_repository_settings.yaml
-remote_branch_protection_note: GitHub API verification succeeded; main branch protection was missing or not visible, squash merge is enabled, and merge/rebase merge are still enabled.
+remote_branch_protection_note: GitHub API verification succeeded; main requires pull request and the four required status checks, force push is disabled, and repository merge mode is squash-only.
 migrations:
 - id: WP00
   status: completed
