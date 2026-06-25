@@ -20,6 +20,7 @@ jobs:
       - run: uv run python foundation/validation/policy_duplicate_lint.py --repo-root .
       - run: uv run python foundation/validation/routing_contract_lint.py --repo-root .
       - run: uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+      - run: uv run python foundation/validation/remote_repository_settings_verifier.py --repo-root . --check
       - run: uv run python -m spacesonar.cli registry project --check
       - run: git diff --check
 

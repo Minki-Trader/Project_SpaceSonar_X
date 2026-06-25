@@ -1,0 +1,18 @@
+version: remote_repository_settings_verification_v1
+executed_at_utc: '2026-06-25T04:07:56Z'
+repository: Minki-Trader/Project_SpaceSonar_X
+remote_url: https://github.com/Minki-Trader/Project_SpaceSonar_X.git
+default_branch: main
+verification_source: local_git_remote_only
+remote_branch_protection: unverified_external_state
+claim_boundary: remote_repository_settings_observation_only_no_runtime_authority_no_production_deployment
+checks:
+  direct_push_restricted: unverified_external_state
+  force_push_disabled: unverified_external_state
+  merge_commit_disabled: unverified_external_state
+  pull_request_required_on_main: unverified_external_state
+  rebase_merge_disabled: unverified_external_state
+  required_status_checks: unverified_external_state
+  squash_merge_enabled: unverified_external_state
+errors:
+- missing_GITHUB_TOKEN_or_GH_TOKEN

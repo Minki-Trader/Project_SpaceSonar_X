@@ -1,9 +1,9 @@
 version: corrective_workflow_progress_v1
-workflow_status: in_progress
+workflow_status: completed
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: corrective_wp06_true_final_closure_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 initialized_at_utc: '2026-06-22T23:53:38Z'
 invariants:
   locked_final_oos_b_used: false
@@ -1772,4 +1772,48 @@ work_units:
         fresh evaluator validation, SLO enforcement, and evaluator-backed closeout
         checks remain green after projection refresh.
   WP08:
-    status: pending
+    status: completed
+    started_at_utc: '2026-06-25T04:07:00Z'
+    completed_at_utc: '2026-06-25T04:13:30Z'
+    objective: final_integration_delivery_hygiene_and_main_boundary_preparation
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-25T04:07:00Z'
+      ended_at_utc: '2026-06-25T04:13:30Z'
+    implementation:
+      final_runtime_re_evaluation:
+        runtime_attempt_count: 86
+        runtime_complete_count: 86
+        runtime_incomplete_count: 0
+        pair_group_count: 43
+        pair_groups_complete: 43
+        tester_report_receipt_count: 86
+      final_state_boundary:
+        wave_closeout_status: wave01_evaluator_backed_closeout_requires_evidence_repair
+        runtime_contract_integrity: passed
+        research_cycle_closeout: passed
+        agent_value_metrics: insufficient_evidence
+        control_plane_operating_proof: failed
+        repair_work_item_id: work_wp07_closeout_evidence_repair_v0
+      delivery_hygiene:
+        remote_repository_settings_record: docs/policies/remote_repository_settings.yaml
+        remote_branch_protection: unverified_external_state
+        mt5_manual_workflow: .github/workflows/mt5-runtime-manual.yml
+        final_migration_ledger: docs/migrations/control_plane_corrective_v3.yaml
+    validation:
+    - command: uv run pytest -q
+      status: scheduled_for_wp08_final_validation
+    - command: uv run python -m spacesonar.cli project validate
+      status: scheduled_for_wp08_final_validation
+    - command: git diff --check
+      status: scheduled_for_wp08_final_validation
+    claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    handoff:
+      next_packet: none
+      required_entry_condition: WP08.status completed
+      exact_handoff: Deliver final corrective branch and request remote branch-protection
+        verification plus evidence repair for agent observation coverage before any
+        main integration or Wave02-ready claim.

@@ -575,6 +575,16 @@ def validate_fresh_evaluators(repo_root: Path) -> list[str]:
     return validate_committed_evaluators(repo_root)
 
 
+def validate_remote_repository_settings(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.validation.remote_repository_settings_verifier import validate_record
+
+    return validate_record(repo_root)
+
+
 def validate_operating_closeout(repo_root: Path) -> list[str]:
     for path in [repo_root, repo_root / "src"]:
         text = str(path)
@@ -628,6 +638,7 @@ def validate_import_smoke(repo_root: Path) -> list[str]:
         "foundation.validation.active_record_validator",
         "foundation.validation.control_plane_validator",
         "foundation.validation.refresh_artifact_registry_hashes",
+        "foundation.validation.remote_repository_settings_verifier",
     ]:
         try:
             importlib.import_module(module_name)
@@ -664,6 +675,7 @@ def validate(repo_root: Path, *, include_active_records: bool = False) -> list[s
     errors.extend(validate_agent_operating_metrics_projection(repo_root))
     errors.extend(validate_execution_provenance(repo_root))
     errors.extend(validate_fresh_evaluators(repo_root))
+    errors.extend(validate_remote_repository_settings(repo_root))
     errors.extend(validate_operating_closeout(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))

@@ -1,10 +1,10 @@
 version: evaluator_result_v1
 evaluator_id: agent_value_evaluator_v1
-executed_at_utc: '2026-06-25T01:59:26Z'
+executed_at_utc: '2026-06-25T04:20:18Z'
 input_hashes:
 - path: docs/workspace/agent_operating_metrics.yaml
-  sha256: 1b58da53c66b4b43c51a74080558b25ee98621be4926f6c991faaccf22584e87
-  size_bytes: 1367
+  sha256: 486dc81b3b57b27282893acc3b0f0421b23a3a22550ebaa17364f686b2d63a62
+  size_bytes: 1364
 - path: docs/policies/codex_operating_slo.yaml
   sha256: ed4a664fb956e59520f447fb6d21a04762ef2473d5c1071063acb1b59d9c88be
   size_bytes: 800
@@ -17,7 +17,7 @@ implementation_hashes:
   size_bytes: 17670
 status: insufficient_evidence
 metrics:
-  work_item_count: 7
+  work_item_count: 8
   observed_work_item_count: 1
   solo_work_item_count: 1
   consult_count: 0
@@ -31,7 +31,7 @@ metrics:
   rejected_after_verification_count: 0
   rewritten_after_verification_count: 0
   solo_work_share: 1.0
-  observation_coverage_ratio: 0.142857
+  observation_coverage_ratio: 0.125
   one_agent_consult_share: 0.0
   two_agent_consult_share: 0.0
   three_plus_agent_consult_share: 0.0
@@ -40,7 +40,7 @@ metrics:
   accepted_after_verification_ratio: 0.0
 findings:
 - id: agent_observation_coverage_below_slo
-  value: 0.142857
+  value: 0.125
   minimum: 0.8
 claim_effect: agent_metrics_are_operating_telemetry_only_no_reviewed_pass
-output_sha256: 54b29998032bb792c1d7a5bf559a78596aa411f8f49dfa3ad79806a858d3481f
+output_sha256: eb4b43f5ca3c4d0b7735d0fb126e8f1703a72e5449fbc1446c470e321f3aa102
