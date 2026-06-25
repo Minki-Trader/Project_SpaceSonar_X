@@ -6,8 +6,19 @@ baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 wp08_entry_head: 30f55cb449bc11f29947f2f8128a3ce4098d2115
 final_delivery_commit_sha: self_referential_commit_hash_recorded_by_git_and_user_report
 generated_at_utc: '2026-06-25T04:13:30Z'
-claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
-workflow_status: completed
+claim_boundary: wp08_hygiene_completed_main_integration_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
+workflow_status: wp08_hygiene_completed_main_integration_blocked
+wp08_final_hygiene:
+  status: completed
+  scope: final_repository_hygiene_validation_only
+main_integration_readiness:
+  status: blocked
+  blockers:
+  - main_branch_protection_missing_or_not_visible
+  - operating_closeout_evidence_repair_required
+  - agent_observation_coverage_below_slo
+  enforcement_command: python foundation/validation/remote_repository_settings_verifier.py --repo-root . --enforce-main-integration
+  claim_boundary: wp08_hygiene_completed_main_integration_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
 remote_branch_protection: not_enabled_or_not_visible
 remote_branch_protection_record: docs/policies/remote_repository_settings.yaml
 remote_branch_protection_note: GitHub API verification succeeded; main branch protection was missing or not visible, squash merge is enabled, and merge/rebase merge are still enabled.
@@ -38,7 +49,7 @@ migrations:
   summary: evaluator_backed_closeout_and_state_consistency
 - id: WP08
   status: completed
-  summary: final_integration_hygiene_manual_mt5_workflow_remote_settings_record_and_delivery_validation
+  summary: final_hygiene_completed_main_integration_readiness_blocked_by_remote_protection_and_operating_evidence
 runtime_re_evaluation:
   evaluator_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
   evaluator_status: passed
