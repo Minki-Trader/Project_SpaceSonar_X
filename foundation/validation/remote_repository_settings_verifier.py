@@ -60,6 +60,22 @@ def _origin_repo(repo_root: Path) -> tuple[str | None, str | None, str | None]:
     return remote, parts[0], parts[1]
 
 
+def _github_token(repo_root: Path) -> str | None:
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token:
+        return token
+    result = subprocess.run(
+        ["gh", "auth", "token"],
+        cwd=filesystem_path(repo_root),
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip() or None
+
+
 def _github_get(owner: str, repo: str, path: str, token: str) -> tuple[int, dict[str, Any]]:
     request = urllib.request.Request(
         f"https://api.github.com/repos/{owner}/{repo}{path}",
@@ -85,7 +101,7 @@ def _github_get(owner: str, repo: str, path: str, token: str) -> tuple[int, dict
 def verify_remote_settings(repo_root: Path) -> dict[str, Any]:
     repo_root = repo_root.resolve()
     remote_url, owner, repo = _origin_repo(repo_root)
-    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    token = _github_token(repo_root)
     result: dict[str, Any] = {
         "version": "remote_repository_settings_verification_v1",
         "executed_at_utc": _now(),

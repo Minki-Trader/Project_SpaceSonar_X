@@ -8,9 +8,9 @@ final_delivery_commit_sha: self_referential_commit_hash_recorded_by_git_and_user
 generated_at_utc: '2026-06-25T04:13:30Z'
 claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 workflow_status: completed
-remote_branch_protection: unverified_external_state
+remote_branch_protection: not_enabled_or_not_visible
 remote_branch_protection_record: docs/policies/remote_repository_settings.yaml
-remote_branch_protection_note: GitHub token was not available locally; local policy does not claim remote enforcement.
+remote_branch_protection_note: GitHub API verification succeeded; main branch protection was missing or not visible, squash merge is enabled, and merge/rebase merge are still enabled.
 migrations:
 - id: WP00
   status: completed
@@ -137,31 +137,34 @@ wp08_record_hashes:
   new_sha256: 2c1ec3d5437c8605ebf95d60ba62ee240b21e114d9ad19f245bbc0d9b7c29647
 - path: docs/policies/remote_repository_settings.yaml
   old_sha256: null
-  new_sha256: b51da26a7fd2f2f4032318a6e1fbd888c7305931b064f059147f7018092d2d5f
+  new_sha256: a71a19045c8257e977518597c0ebc434a712d54ee6c3a4f6e665037d4054d10f
 - path: foundation/validation/control_plane_validator.py
   old_sha256: 58a972016b131c85c40cfb056fc702c9b6398a9141cde781a7d604e6f745842c
   new_sha256: 645231ec81243cb7320124a56bce0ddec065908d71bb77cb8e30ccda55c86796
 - path: foundation/validation/remote_repository_settings_verifier.py
   old_sha256: null
-  new_sha256: 3d9718ac189e392ee2b65794721762ae7f5635e1d553ebf0a08c6a0ff9a85128
+  new_sha256: 2f6be7b521823935ba62f25645179801a6d2fd604a991e2b871d64b8aaa8ce70
 - path: tests/test_remote_repository_settings_verifier.py
   old_sha256: null
-  new_sha256: cdc456d9275fd1ba898ef417214796f402029b645edf5293497b7fbc03a88ae2
+  new_sha256: 7975da7fb4b4361c3477d7e70724cc1fd50fd5151e77bef9ca14c9bf343757cb
 - path: docs/workspace/agent_operating_events.yaml
   old_sha256: 54570244989ee37264fa5146bfe340f974f773c91633306d198298c675959ece
-  new_sha256: 32da4699a49f430a69c0dd2433434329f7d2b9eb040af528fc7b6122f0653644
+  new_sha256: 5fa627130edb45e355ea23ee6de992e97af1c5cdaa01444fc5dd96b3c54ca808
 - path: docs/workspace/agent_operating_metrics.yaml
   old_sha256: 1b58da53c66b4b43c51a74080558b25ee98621be4926f6c991faaccf22584e87
-  new_sha256: 486dc81b3b57b27282893acc3b0f0421b23a3a22550ebaa17364f686b2d63a62
+  new_sha256: 15ae0a4e236171bf63a7287d666f3bee778ad7443076db8954527a7e51f54940
 - path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
   old_sha256: 0ac9ffa9fa3affce1a5362539959a21446e7f299ac7f34745451257ab49e5b20
-  new_sha256: b5f8a87653bbed8289072866220e3aa242a46119a393df3a7b98fb8c647f4b0e
+  new_sha256: 87f70e269cb11d14032cb511fa93628a9a7b91f7f1b2a81db5c3ecf5c2c13017
 - path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
   old_sha256: d4b77aca8f28dc67e90f3e3b6d70585ce93f879d35270b7684694d96abc6106d
-  new_sha256: 8ca10cb08ac6c6f5de617971659bfc116ab50732dbab9fb3ec77a2cd5ac96d63
+  new_sha256: e14cfbb963269ad91f5b815fb02fc60ded80a697f48e389de556580c6c93c451
+- path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
+  old_sha256: 91fe8f3e8578b0ff9f43327e43b1fbceda2e359bda7f04be9abf233e2e23d28c
+  new_sha256: 207023ce02f9a814560c8cf170328968f1f78b695454c4c19b9273723e8f5545
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
   old_sha256: f793136035739da76db50772c4133b4e2dc84911dcda2526c3470f119037f01e
-  new_sha256: 26fc42e955fddcd736401bc7b3fe7a4feed709e1b99275e894a089808540a506
+  new_sha256: 66fa8f000a906ddadc65b3ba691aae635a046769f571ad9b443b0fbc31132fe3
 final_validation_commands:
 - uv sync --locked --extra dev --extra onnxlab
 - uv run pytest -q
@@ -181,12 +184,12 @@ final_validation_commands:
 validation_results:
   status: passed
   uv_sync_locked: passed
-  pytest_full: 445 passed in 1593.60s
+  pytest_full: 445 passed in 1524.73s
   policy_duplicate_lint: passed
   routing_contract_lint: passed
   routing_behavior_eval: passed
   repository_hygiene_validator: passed
-  remote_repository_settings_check: passed_unverified_external_state_recorded
+  remote_repository_settings_check: passed_github_api_verified_remote_gap_recorded
   control_plane_validator: passed
   active_record_validator: passed
   registry_projection_check: passed

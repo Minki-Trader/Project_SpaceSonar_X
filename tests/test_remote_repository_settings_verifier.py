@@ -18,6 +18,7 @@ class _Result:
 def test_missing_token_records_unverified_external_state(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     monkeypatch.delenv("GITHUB_TOKEN", raising=False)
     monkeypatch.delenv("GH_TOKEN", raising=False)
+    monkeypatch.setattr(verifier, "_github_token", lambda repo_root: None)
     monkeypatch.setattr(subprocess, "run", lambda *args, **kwargs: _Result())
 
     record = verifier.verify_remote_settings(tmp_path)
