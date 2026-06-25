@@ -74,3 +74,69 @@ def test_non_mapping_record_fails(tmp_path: Path) -> None:
     errors = verifier.validate_record(tmp_path)
 
     assert any("root is not a mapping" in error for error in errors)
+
+
+def test_check_still_validates_observation_record(tmp_path: Path) -> None:
+    path = tmp_path / verifier.SETTINGS_PATH
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        dump_yaml(
+            {
+                "version": "remote_repository_settings_verification_v1",
+                "remote_branch_protection": "not_enabled_or_not_visible",
+                "checks": {
+                    "direct_push_restricted": "unverified_external_state",
+                    "force_push_disabled": "unverified_external_state",
+                    "merge_commit_disabled": False,
+                    "pull_request_required_on_main": "unverified_external_state",
+                    "rebase_merge_disabled": False,
+                    "required_status_checks": "unverified_external_state",
+                    "squash_merge_enabled": True,
+                },
+                "errors": ["main_branch_protection_missing_or_not_visible"],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert verifier.main(["--repo-root", str(tmp_path), "--check"]) == 0
+
+
+def test_enforce_main_integration_fails_when_branch_protection_missing(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(
+        verifier,
+        "verify_remote_settings",
+        lambda repo_root: {
+            "verification_source": "github_rest_api",
+            "remote_branch_protection": "not_enabled_or_not_visible",
+            "checks": {
+                "direct_push_restricted": "unverified_external_state",
+                "force_push_disabled": "unverified_external_state",
+                "merge_commit_disabled": False,
+                "pull_request_required_on_main": "unverified_external_state",
+                "rebase_merge_disabled": False,
+                "required_status_checks": "unverified_external_state",
+                "squash_merge_enabled": True,
+            },
+            "errors": ["main_branch_protection_missing_or_not_visible"],
+        },
+    )
+
+    assert verifier.main(["--repo-root", str(tmp_path), "--enforce-main-integration"]) == 1
+
+
+def test_enforce_main_integration_requires_every_check_true() -> None:
+    record = {
+        "verification_source": "github_rest_api",
+        "remote_branch_protection": "verified",
+        "checks": {key: True for key in verifier.REQUIRED_CHECKS},
+    }
+
+    assert verifier.main_integration_enforcement_errors(record) == []
+
+    record["checks"]["merge_commit_disabled"] = False
+    assert verifier.main_integration_enforcement_errors(record) == [
+        "main integration blocked: checks.merge_commit_disabled is False"
+    ]
