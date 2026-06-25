@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import pytest
 import yaml
 
 from foundation.features.wave01_session_transition_features import build_wave01_session_transition_features
@@ -16,6 +17,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 def _row_membership_frame():
     manifest_path = REPO_ROOT / "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml"
     manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8-sig"))
+    csv_path = REPO_ROOT / manifest["row_membership"]["full_csv"]["path"]
+    if not csv_path.exists():
+        pytest.skip(f"row membership CSV is local evidence not present in this checkout: {csv_path}")
     return load_row_membership(manifest)
 
 
