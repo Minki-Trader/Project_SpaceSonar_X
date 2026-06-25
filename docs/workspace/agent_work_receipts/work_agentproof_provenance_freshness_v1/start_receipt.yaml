@@ -1,0 +1,21 @@
+version: agent_work_start_receipt_v1
+receipt_status: started
+work_item_id: work_agentproof_provenance_freshness_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: publish_handoff
+agent_mode: solo
+consult_ids: []
+started_at_utc: '2026-06-25T15:57:48.743771Z'
+branch: codex/post-wp08-agent-observation-proof-v1
+start_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+claim_boundary: provenance_and_evaluator_freshness_validation_only_no_handoff_complete_no_wave02
+planned_commands:
+- uv run python foundation/validation/execution_provenance_validator.py --repo-root
+  .
+- uv run python foundation/evaluation/fresh_evaluator_validator.py --repo-root .
+- uv run python foundation/evaluation/build_operating_closeout.py --repo-root . --check
+- uv run python -m spacesonar.cli project validate
+input_refs: []
+receipt_sha256:
+  algorithm: sha256
+  value: 55d0cbeb58ce469d1456dd68378d82b2d277d2be7c26ccf0070dcc35a97cb52d

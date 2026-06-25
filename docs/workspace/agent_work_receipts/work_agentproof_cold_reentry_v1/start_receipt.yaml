@@ -1,0 +1,21 @@
+version: agent_work_start_receipt_v1
+receipt_status: started
+work_item_id: work_agentproof_cold_reentry_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: workspace_state_sync
+agent_mode: solo
+consult_ids: []
+started_at_utc: '2026-06-25T15:18:20.320979Z'
+branch: codex/post-wp08-agent-observation-proof-v1
+start_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+claim_boundary: cold_reentry_and_workspace_truth_validation_only_no_wave02_no_runtime_authority
+planned_commands:
+- uv run python -m spacesonar.cli agents events --write
+- uv run python -m spacesonar.cli agents metrics --write
+- uv run python foundation/evaluation/build_operating_closeout.py --repo-root . --write
+- uv run python -m spacesonar.cli project workspace --check
+- uv run python foundation/validation/active_record_validator.py --repo-root .
+input_refs: []
+receipt_sha256:
+  algorithm: sha256
+  value: 681dd85da74b8976b852288f2061af4e46344eace06cfdaa50961c60601f15fa

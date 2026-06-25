@@ -1,0 +1,88 @@
+version: agentproof_command_results_v1
+work_item_id: work_agentproof_lifecycle_idempotency_v1
+observation_window_id: post_wp08_operating_proof_v1
+result_status: passed
+commands:
+- command: uv run python -m spacesonar.cli agents events --write
+  started_at_utc: '2026-06-25T15:50:57.562635Z'
+  ended_at_utc: '2026-06-25T15:51:01.966058Z'
+  exit_code: 0
+  stdout: 'agent events projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli agents metrics --write
+  started_at_utc: '2026-06-25T15:51:01.966078Z'
+  ended_at_utc: '2026-06-25T15:51:06.297304Z'
+  exit_code: 0
+  stdout: 'agent metrics projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
+    --repo-root . --write
+  started_at_utc: '2026-06-25T15:51:06.297332Z'
+  ended_at_utc: '2026-06-25T15:51:08.812484Z'
+  exit_code: 0
+  stdout: 'artifact registry refresh: rows=951 refreshable=950 changed=2 missing=0
+
+    CHANGE artifact_docs_workspace_agent_operating_events_yaml docs/workspace/agent_operating_events.yaml
+    size 5039->6365 sha256 cf34bad6138347de68d485a9df7ce9470af786d1f5483a0cd97068c4ce3e8ad1->25e7e6bddb9732a97c4de878d7c86100dcfec9ffa6e8a11ff45b9a4dfd8ed0aa
+
+    CHANGE artifact_docs_workspace_agent_operating_metrics_yaml docs/workspace/agent_operating_metrics.yaml
+    size 2282->2278 sha256 6c45be4f1955586303f4f10a7e3e4ffacc3f88ecd355d2b0b4d9466f231b043d->bf5399c82915f2bb19c720a66cf365f0f6c2bf3905ba029b3893107e79fe3391
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root
+    . --write
+  started_at_utc: '2026-06-25T15:51:08.812500Z'
+  ended_at_utc: '2026-06-25T15:57:07.426167Z'
+  exit_code: 0
+  stdout: 'transaction_id: tx_20260625T155230664168Z_6a6af29e_3779e9fe
+
+    status: committed
+
+    receipt_path: C:/Users/awdse/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/Project_SpaceSonar_X/.spacesonar/transactions/tx_20260625T155230664168Z_6a6af29e_3779e9fe/transaction_receipt.yaml
+
+    errors: []
+
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run pytest tests/control_plane/test_lifecycle_idempotency.py tests/control_plane/test_lifecycle_and_projections_wp04.py
+    -q
+  started_at_utc: '2026-06-25T15:57:07.426182Z'
+  ended_at_utc: '2026-06-25T15:57:27.685408Z'
+  exit_code: 0
+  stdout: '.......................                                                  [100%]
+
+    23 passed in 19.34s
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli registry project --check
+  started_at_utc: '2026-06-25T15:57:27.685438Z'
+  ended_at_utc: '2026-06-25T15:57:28.860497Z'
+  exit_code: 0
+  stdout: 'registry projection check passed
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli project workspace --check
+  started_at_utc: '2026-06-25T15:57:28.860513Z'
+  ended_at_utc: '2026-06-25T15:57:29.816605Z'
+  exit_code: 0
+  stdout: 'workspace projection check passed
+
+    '
+  stderr: ''
+  status: passed
+evidence_files:
+- lifecycle_projection_summary.yaml

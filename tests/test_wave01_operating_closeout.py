@@ -69,10 +69,10 @@ def test_wave01_closeout_result_separates_operating_proof_from_runtime_contract(
     result = closeout["result"]
     summary = closeout["wave_summary"]
 
-    assert result["control_plane_operating_proof"] == "failed"
+    assert result["control_plane_operating_proof"] == "passed"
     assert result["research_cycle_closeout"] == "passed"
     assert result["runtime_contract_integrity"] == "passed"
-    assert result["agent_value_metrics"] == "insufficient_evidence"
+    assert result["agent_value_metrics"] == "passed"
     assert result["runtime_authority"] == "not_claimed"
     assert result["economics_pass"] == "not_claimed"
     assert result["candidate_count"] == 0
@@ -83,7 +83,7 @@ def test_wave01_closeout_result_separates_operating_proof_from_runtime_contract(
     assert summary["economics_pass"] is False
     assert summary["locked_final_oos_used"] is False
     assert summary["runtime_contract_integrity"] == "passed"
-    assert summary["agent_value_status"] == "insufficient_evidence"
+    assert summary["agent_value_status"] == "passed"
 
 
 def test_current_workspace_projection_is_not_stale() -> None:
@@ -97,67 +97,73 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
     cursor = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "resume_cursor.yaml")
     workspace = load_yaml(ROOT / "docs" / "workspace" / "workspace_state.yaml")
     wave_rows = read_csv(ROOT / "docs" / "registers" / "wave_registry.csv")
-    work_item_id = "work_wp07_closeout_evidence_repair_v0"
+    work_item_id = "work_post_wave01_user_directed_wave02_or_review_v0"
 
-    assert goal["status"] == "wave01_operating_proof_evidence_repair_required"
-    assert goal["active_phase"] == "wp07_closeout_evidence_repair"
+    assert goal["status"] == "complete_wave01_operating_proof_window"
+    assert goal["active_phase"] == "wave01_operating_closeout_complete"
     assert goal["active_ids"]["campaign_id"] is None
     assert goal["next_work_item"]["work_item_id"] == work_item_id
     assert next_work["work_item_id"] == work_item_id
-    assert cursor["cursor_state"] == "wave01_operating_proof_evidence_repair_required"
-    assert cursor["active_phase"] == "wp07_closeout_evidence_repair"
+    assert cursor["cursor_state"] == "complete_wave01_operating_proof_window"
+    assert cursor["active_phase"] == "wave01_operating_closeout_complete"
     assert workspace["active_wave"]["status"] == closeout["status"]
     assert workspace["active_work_item"]["work_item_id"] == work_item_id
-    assert "agent_observation_coverage_below_slo" in workspace["unresolved_blockers"]
+    assert workspace["unresolved_blockers"] == []
     assert wave_rows[0]["status"] == closeout["status"]
     assert wave_rows[0]["next_action"] == closeout["next_action"]
 
 
-def test_failed_agent_evaluator_produces_repair_work_item_everywhere() -> None:
+def test_agent_observation_proof_releases_repair_work_item_everywhere() -> None:
     closeout = load_yaml(CLOSEOUT_PATH)
     goal = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml")
     workspace = load_yaml(ROOT / "docs" / "workspace" / "workspace_state.yaml")
 
-    assert closeout["result"]["agent_value_metrics"] == "insufficient_evidence"
-    assert closeout["next_action"] == "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
-    assert goal["next_work_item"]["work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
-    assert workspace["active_work_item"]["work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
-    assert set(closeout["handoff"]["blocking_requirements"]) == {"control_plane_operating_proof", "agent_value_metrics"}
-    assert "agent_observation_coverage_below_slo" in closeout["handoff"]["blocking_findings"]
+    assert closeout["result"]["agent_value_metrics"] == "passed"
+    assert closeout["next_action"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+    assert goal["next_work_item"]["work_item_id"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+    assert workspace["active_work_item"]["work_item_id"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+    assert closeout["handoff"]["blocking_requirements"] == []
+    assert closeout["handoff"]["blocking_findings"] == []
 
 
-def test_handoff_cannot_advertise_wave02_when_required_evaluator_is_not_passed() -> None:
+def test_handoff_advertises_only_user_directed_wave02_or_review_after_required_evaluators_pass() -> None:
     closeout = load_yaml(CLOSEOUT_PATH)
 
-    assert closeout["status"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
-    assert closeout["handoff"]["next_action"] == "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
-    assert "Wave02" not in closeout["handoff"]["next_action"]
+    assert closeout["status"] == "wave01_control_plane_proof_closed_runtime_contract_complete"
+    assert closeout["handoff"]["next_action"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+    assert closeout["handoff"]["blocking_requirements"] == []
 
 
-def test_repair_state_removes_wave02_from_next_allowed_shapes() -> None:
+def test_successful_proof_restores_user_directed_next_allowed_shapes() -> None:
     next_work = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "next_work_item.yaml")
 
-    assert next_work["next_allowed_shapes"] == ["closeout_evidence_repair"]
-    assert "user_directed_wave02_open" not in next_work["next_allowed_shapes"]
-    assert "previous_material_only_bounded_synthesis_mix2_then_mix3" not in next_work["next_allowed_shapes"]
-    assert next_work["missing_material_if_relevant"] == ["agent_observation_coverage_work_receipts"]
+    assert "user_directed_wave02_open" in next_work["next_allowed_shapes"]
+    assert "post_closeout_review" in next_work["next_allowed_shapes"]
+    assert "closeout_evidence_repair" not in next_work["next_allowed_shapes"]
+    assert next_work["missing_material_if_relevant"] == []
 
 
-def test_repair_state_updates_wave_allocation_status_next_action_and_git_integration() -> None:
+def test_successful_proof_updates_wave_allocation_status_next_action_and_git_integration() -> None:
     wave = load_yaml(ROOT / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_allocation.yaml")
 
-    assert wave["status"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
-    assert wave["next_action"] == "work_wp07_closeout_evidence_repair_v0"
-    assert wave["claim_boundary"] == closeout_builder.REPAIR_CLAIM_BOUNDARY
-    assert wave["git_integration"]["status"] == "blocked_pending_evaluator_evidence_repair_not_ready_for_main_integration"
-    assert wave["wave01_operating_completion_assertion"]["validation_status"] == "superseded_by_fresh_evaluator_insufficient_evidence"
+    assert wave["status"] == "wave01_operating_proof_window_closed"
+    assert wave["next_action"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+    assert wave["claim_boundary"] == "active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness"
+    assert wave["git_integration"]["status"] == "wave_closeout_ready_for_boundary_commit_and_main_integration"
 
 
-def test_wave_registry_contains_no_main_integration_ready_note_during_repair() -> None:
+def test_wave_registry_records_boundary_closeout_ready_after_proof() -> None:
     wave_rows = read_csv(ROOT / "docs" / "registers" / "wave_registry.csv")
 
-    assert wave_rows[0]["notes"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
-    assert "main_integration" not in wave_rows[0]["notes"]
+    assert wave_rows[0]["notes"] == "wave_closeout_ready_for_boundary_commit_and_main_integration"
+    assert wave_rows[0]["next_action"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+
+
+def test_wave02_is_not_created_automatically_after_proof() -> None:
+    wave_paths = [path.as_posix().lower() for path in (ROOT / "lab" / "waves").rglob("*")]
+    campaign_paths = [path.as_posix().lower() for path in (ROOT / "lab" / "campaigns").rglob("*")]
+
+    assert not any("wave02" in path or "wave_02" in path for path in wave_paths + campaign_paths)
 
 
 def test_updated_timestamps_change_with_state_transition() -> None:

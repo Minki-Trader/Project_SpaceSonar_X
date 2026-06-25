@@ -1,0 +1,44 @@
+version: agentproof_reentry_decision_v1
+work_item_id: work_agentproof_cold_reentry_v1
+observation_window_id: post_wp08_operating_proof_v1
+truth_file_count: 4
+truth_file_total_bytes: 23219
+truth_files:
+- path: AGENTS.md
+  sha256: 4a75dec8f64a57a161f1be6149fb8bcae738b8ecca57c7647689ad70f8535839
+  size_bytes: 5293
+- path: docs/workspace/workspace_state.yaml
+  sha256: d81f36e098c9fa99a2ed4d038c6bed25bfb2e56fb2c56fe2984b65b252be7078
+  size_bytes: 1702
+- path: docs/agent_control/work_family_registry.yaml
+  sha256: 84d0105b4539db1ed1af6d7db3e7ce6103c1e411756ce66cf084e10aafaeba28
+  size_bytes: 13292
+- path: docs/agent_control/policy_contract.yaml
+  sha256: 34e11b2e31583b92c1d59e42b807fc80dd80c325ecf24cc3aadaa691ff30d5d8
+  size_bytes: 2932
+configured_limits:
+  cold_reentry_truth_files_max: 4
+  cold_reentry_context_bytes_max: 50000
+active_goal:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  status: wave01_operating_proof_evidence_repair_required
+  manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+active_wave:
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  status: wave01_evaluator_backed_closeout_requires_evidence_repair
+  allocation: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+active_work_item:
+  work_item_id: work_wp07_closeout_evidence_repair_v0
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+unresolved_blockers:
+- agent_observation_coverage_below_slo
+- agent_observation_window_not_closed
+- agent_observed_distinct_work_family_count_below_slo
+- agent_observed_work_item_count_below_slo
+- agent_receipt_validation_failures
+- agent_value_slo_failed
+- routine_solo_or_single_agent_share_below_slo
+claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+active_repair_item_preserved: true
+wave02_created: false

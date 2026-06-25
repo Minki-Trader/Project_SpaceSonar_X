@@ -6,8 +6,8 @@ baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 wp08_entry_head: 30f55cb449bc11f29947f2f8128a3ce4098d2115
 final_delivery_commit_sha: self_referential_commit_hash_recorded_by_git_and_user_report
 generated_at_utc: '2026-06-25T04:13:30Z'
-claim_boundary: wp08_hygiene_completed_wave_progression_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
-workflow_status: wp08_hygiene_completed_wave_progression_blocked
+claim_boundary: post_wp08_agent_observation_proof_completed_user_directed_wave02_or_review_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline_no_production_deployment
+workflow_status: post_wp08_agent_observation_proof_completed_wave_progression_ready_for_user_direction
 wp08_final_hygiene:
   status: completed
   scope: final_repository_hygiene_validation_only
@@ -19,16 +19,19 @@ main_integration_readiness:
   - evidence-graph-full
   - full-suite
   enforcement_command: python foundation/validation/remote_repository_settings_verifier.py --repo-root . --enforce-main-integration
+  observation_only_after_post_wp08_proof: true
+  wave_progression_ready_for_user_direction: true
+  wave02_created: false
 wave_progression_readiness:
-  status: blocked
-  blockers:
-  - operating_closeout_evidence_repair_required
-  - agent_observation_coverage_below_slo
-  active_work_item_id: work_wp07_closeout_evidence_repair_v0
-  claim_boundary: wp08_hygiene_completed_wave_progression_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
+  status: ready_for_user_directed_wave02_or_review
+  blockers: []
+  active_work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
+  wave02_created: false
+  claim_boundary: post_wp08_agent_observation_proof_completed_user_directed_wave02_or_review_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline_no_production_deployment
 remote_branch_protection: verified
 remote_branch_protection_record: docs/policies/remote_repository_settings.yaml
-remote_branch_protection_note: GitHub API verification succeeded; main requires pull request and the four required status checks, force push is disabled, and repository merge mode is squash-only.
+remote_branch_protection_note: GitHub API verification succeeded; main requires pull request and the four required status
+  checks, force push is disabled, and repository merge mode is squash-only.
 migrations:
 - id: WP00
   status: completed
@@ -87,22 +90,31 @@ research_closeout:
   candidate_registry_count: 0
 operating_closeout:
   wave_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
-  status: wave01_evaluator_backed_closeout_requires_evidence_repair
+  status: wave01_control_plane_proof_closed_runtime_contract_complete
   runtime_contract_integrity: passed
   routing_behavior_quality: passed
   research_cycle_closeout: passed
-  agent_value_metrics: insufficient_evidence
-  control_plane_operating_proof: failed
-  unresolved_blockers:
-  - agent_observation_coverage_below_slo
-  - agent_value_slo_failed
-  next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
+  agent_value_metrics: passed
+  control_plane_operating_proof: passed
+  unresolved_blockers: []
+  next_action: work_post_wave01_user_directed_wave02_or_review_v0
 agent_metrics:
-  expected_after_wp08_projection:
+  current_prospective_window:
+    window_id: post_wp08_operating_proof_v1
+    status: closed
+    observed_work_item_count: 5
+    work_item_count: 5
+    observation_coverage_ratio: 1.0
+    observed_distinct_work_family_count: 5
+    routine_solo_or_single_agent_share: 1.0
+    unsupported_assertion_count: 0
+    receipt_validation_failure_count: 0
+    status_effect: passed
+  historical_corrective_v3_window_preserved:
     observed_work_item_count: 1
     work_item_count: 8
     observation_coverage_ratio: 0.125
-    status_effect: insufficient_evidence
+    claim_effect: historical_telemetry_preserved_not_reclassified_as_contemporaneous
 routing_benchmark:
   evaluator_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
   evaluator_status: passed
@@ -236,3 +248,22 @@ non_claims:
   production_deployment: false
   reviewed_or_verified_pass: false
   Goal_Achieve_as_profitability: false
+post_wp08_agent_observation_proof:
+  window_id: post_wp08_operating_proof_v1
+  status: completed
+  historical_window_preserved: true
+  observed_work_item_count: 5
+  work_item_count: 5
+  observation_coverage_ratio: 1.0
+  distinct_work_family_count: 5
+  agent_value_status: passed
+  operating_slo_status: passed
+  wave_progression_readiness: ready_for_user_directed_wave02_or_review
+  wave02_created: false
+  work_item_ids:
+  - work_agentproof_cold_reentry_v1
+  - work_agentproof_routing_guard_v1
+  - work_agentproof_transaction_rollback_v1
+  - work_agentproof_lifecycle_idempotency_v1
+  - work_agentproof_provenance_freshness_v1
+  claim_boundary: post_wp08_agent_observation_proof_completed_user_directed_wave02_or_review_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline_no_production_deployment

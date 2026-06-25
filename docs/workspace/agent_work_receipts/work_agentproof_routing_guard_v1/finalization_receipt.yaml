@@ -1,0 +1,46 @@
+version: agent_work_finalization_receipt_v1
+receipt_status: finalized
+work_item_id: work_agentproof_routing_guard_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: policy_skill_governance
+agent_mode: solo
+consult_ids: []
+evidence_class: contemporaneous_work_receipt
+start_receipt_ref:
+  path: docs/workspace/agent_work_receipts/work_agentproof_routing_guard_v1/start_receipt.yaml
+  sha256: a2e55f92ef56528f5baed44fd7d15547674ebac101bc18ddfaa299992c2dd38e
+  size_bytes: 829
+ended_at_utc: '2026-06-25T15:42:04.964058Z'
+end_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+result_status: passed
+command_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_routing_guard_v1/command_results.yaml
+    sha256: 8e21f6c40fb52dce3adbe58e853ccae99dad25b15f2fb2e6709a5e61bb12cfc7
+    size_bytes: 3535
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_routing_guard_v1/routing_guard_summary.yaml
+    sha256: bceac421b1f48a6a7862ded1892fea744615b76544db0800bb96ccf0ddfd16e2
+    size_bytes: 963
+evidence_refs:
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_routing_guard_v1/command_results.yaml
+  sha256: 8e21f6c40fb52dce3adbe58e853ccae99dad25b15f2fb2e6709a5e61bb12cfc7
+  size_bytes: 3535
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_routing_guard_v1/routing_guard_summary.yaml
+  sha256: bceac421b1f48a6a7862ded1892fea744615b76544db0800bb96ccf0ddfd16e2
+  size_bytes: 963
+validation_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_routing_guard_v1/command_results.yaml
+    sha256: 8e21f6c40fb52dce3adbe58e853ccae99dad25b15f2fb2e6709a5e61bb12cfc7
+    size_bytes: 3535
+  status: passed
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_routing_guard_v1/routing_guard_summary.yaml
+    sha256: bceac421b1f48a6a7862ded1892fea744615b76544db0800bb96ccf0ddfd16e2
+    size_bytes: 963
+  status: passed
+claim_boundary: routing_and_protected_claim_guard_validation_only_no_protected_claim_granted
+receipt_sha256:
+  algorithm: sha256
+  value: 43a3d22c3f75506cdd9f8b655fb421c867a1c0cfa7ed60b73fcd8da4bd6c21ed

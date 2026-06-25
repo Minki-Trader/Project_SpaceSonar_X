@@ -1,10 +1,10 @@
 version: onnx_lab_work_item_v1
-work_item_id: work_wp07_closeout_evidence_repair_v0
+work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 created_at_utc: '2026-06-22T04:56:57Z'
-status: wave01_operating_proof_evidence_repair_required
+status: wave01_operating_proof_window_closed
 current_truth:
-  active_goal_status: wave01_operating_proof_evidence_repair_required
+  active_goal_status: complete_wave01_operating_proof_window
   wave_id: wave_us100_closedbar_surface_cartography_v0
   wave_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
   campaign_count_closed: 3
@@ -18,7 +18,7 @@ current_truth:
   - clue_wave0_tradeability_mid_horizon_v0
   - clue_wave0_path_quality_h12_side_signal_v0
   - clue_wave01_session_transition_remaining_decision_surface_needed_v0
-  claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+  claim_boundary: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
   wave01_event_barrier_l4_runtime_execution_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
   wave01_event_barrier_l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
   wave01_event_barrier_l4_runtime_execution_counts:
@@ -164,7 +164,10 @@ current_truth:
     result_judgment_counts:
       runtime_probe: 6
 next_allowed_shapes:
-- closeout_evidence_repair
+- user_directed_wave02_open
+- new_unexplored_multi_axis_surface
+- previous_material_only_bounded_synthesis_mix2_then_mix3
+- post_closeout_review
 forbidden_carryover:
 - replay_Wave01_score_band_side_as_candidate_repair
 - replay_Wave01_inverse_score_band_as_candidate_repair
@@ -174,7 +177,7 @@ forbidden_carryover:
 - model_only_campaign
 - threshold_only_campaign
 - repair_only_campaign
-claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+claim_boundary: post_wave01_handoff_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -185,15 +188,10 @@ forbidden_claims:
 - handoff_complete
 - live_readiness
 - reviewed_verified_pass
-next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
-next_action_detail: Repair failed or insufficient evaluator evidence before WP08 or
-  main integration.
-missing_material_if_relevant:
-- agent_observation_coverage_work_receipts
-blocking_requirements:
-- agent_value_metrics
-- control_plane_operating_proof
-updated_at_utc: '2026-06-25T12:06:16Z'
-blocking_findings:
-- agent_observation_coverage_below_slo
-- agent_value_slo_failed
+next_action: work_post_wave01_user_directed_wave02_or_review_v0
+next_action_detail: Wave01 evaluator-backed closeout is complete. Continue only with
+  user-directed Wave02, review, or a newly declared surface.
+missing_material_if_relevant: []
+blocking_requirements: []
+updated_at_utc: '2026-06-25T16:47:56Z'
+blocking_findings: []

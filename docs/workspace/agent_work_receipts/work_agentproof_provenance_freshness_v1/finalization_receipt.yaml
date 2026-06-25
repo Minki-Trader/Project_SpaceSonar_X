@@ -1,0 +1,46 @@
+version: agent_work_finalization_receipt_v1
+receipt_status: finalized
+work_item_id: work_agentproof_provenance_freshness_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: publish_handoff
+agent_mode: solo
+consult_ids: []
+evidence_class: contemporaneous_work_receipt
+start_receipt_ref:
+  path: docs/workspace/agent_work_receipts/work_agentproof_provenance_freshness_v1/start_receipt.yaml
+  sha256: dea91df209a09164141d57298d4cdc920b9cc56e35cfddc0e70e7d590692e209
+  size_bytes: 936
+ended_at_utc: '2026-06-25T16:09:52.137014Z'
+end_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+result_status: passed
+command_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_provenance_freshness_v1/command_results.yaml
+    sha256: 5c03fd4596cd8e3ac350c22a495483671007cd8f90eb079da28b342cf0b233cb
+    size_bytes: 3326
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_provenance_freshness_v1/provenance_freshness_summary.yaml
+    sha256: a3de1dc55328c4aa93eef37627d915633965785d6f1eb8bab3daedb06d77187b
+    size_bytes: 519
+evidence_refs:
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_provenance_freshness_v1/command_results.yaml
+  sha256: 5c03fd4596cd8e3ac350c22a495483671007cd8f90eb079da28b342cf0b233cb
+  size_bytes: 3326
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_provenance_freshness_v1/provenance_freshness_summary.yaml
+  sha256: a3de1dc55328c4aa93eef37627d915633965785d6f1eb8bab3daedb06d77187b
+  size_bytes: 519
+validation_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_provenance_freshness_v1/command_results.yaml
+    sha256: 5c03fd4596cd8e3ac350c22a495483671007cd8f90eb079da28b342cf0b233cb
+    size_bytes: 3326
+  status: passed
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_provenance_freshness_v1/provenance_freshness_summary.yaml
+    sha256: a3de1dc55328c4aa93eef37627d915633965785d6f1eb8bab3daedb06d77187b
+    size_bytes: 519
+  status: passed
+claim_boundary: provenance_and_evaluator_freshness_validation_only_no_handoff_complete_no_wave02
+receipt_sha256:
+  algorithm: sha256
+  value: ffbab018871989a6ac6e9cc64ba22382faabfa2a1194ac6fd8889badf6c4c278

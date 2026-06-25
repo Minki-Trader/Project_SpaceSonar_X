@@ -1,0 +1,97 @@
+version: agentproof_command_results_v1
+work_item_id: work_agentproof_provenance_freshness_v1
+observation_window_id: post_wp08_operating_proof_v1
+result_status: passed
+commands:
+- command: uv run python -m spacesonar.cli agents events --write
+  started_at_utc: '2026-06-25T15:58:10.196502Z'
+  ended_at_utc: '2026-06-25T15:58:14.616519Z'
+  exit_code: 0
+  stdout: 'agent events projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli agents metrics --write
+  started_at_utc: '2026-06-25T15:58:14.616548Z'
+  ended_at_utc: '2026-06-25T15:58:19.245094Z'
+  exit_code: 0
+  stdout: 'agent metrics projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
+    --repo-root . --write
+  started_at_utc: '2026-06-25T15:58:19.245134Z'
+  ended_at_utc: '2026-06-25T15:58:21.879430Z'
+  exit_code: 0
+  stdout: 'artifact registry refresh: rows=951 refreshable=950 changed=2 missing=0
+
+    CHANGE artifact_docs_workspace_agent_operating_events_yaml docs/workspace/agent_operating_events.yaml
+    size 6365->7685 sha256 25e7e6bddb9732a97c4de878d7c86100dcfec9ffa6e8a11ff45b9a4dfd8ed0aa->d19d33918787d4098aec82acd80838c2e631122837ad42c02fd22a175e59c86f
+
+    CHANGE artifact_docs_workspace_agent_operating_metrics_yaml docs/workspace/agent_operating_metrics.yaml
+    size 2278->2277 sha256 bf5399c82915f2bb19c720a66cf365f0f6c2bf3905ba029b3893107e79fe3391->137b5cd84ad9c1f8098db21d31b62a34e6c6c5fa5494b8519abc35d5646b0315
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root
+    . --write
+  started_at_utc: '2026-06-25T15:58:21.879448Z'
+  ended_at_utc: '2026-06-25T16:03:52.327087Z'
+  exit_code: 0
+  stdout: 'transaction_id: tx_20260625T155930683215Z_6a6af29e_36e60c63
+
+    status: committed
+
+    receipt_path: C:/Users/awdse/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/Project_SpaceSonar_X/.spacesonar/transactions/tx_20260625T155930683215Z_6a6af29e_36e60c63/transaction_receipt.yaml
+
+    errors: []
+
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/execution_provenance_validator.py --repo-root
+    .
+  started_at_utc: '2026-06-25T16:03:52.327105Z'
+  ended_at_utc: '2026-06-25T16:04:01.613222Z'
+  exit_code: 0
+  stdout: 'execution provenance validation passed
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/evaluation/fresh_evaluator_validator.py --repo-root
+    .
+  started_at_utc: '2026-06-25T16:04:01.613238Z'
+  ended_at_utc: '2026-06-25T16:04:56.009196Z'
+  exit_code: 0
+  stdout: 'committed evaluator fresh comparison passed
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root
+    . --check
+  started_at_utc: '2026-06-25T16:04:56.009220Z'
+  ended_at_utc: '2026-06-25T16:06:44.680686Z'
+  exit_code: 0
+  stdout: 'operating closeout validation passed
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli project validate
+  started_at_utc: '2026-06-25T16:06:44.680701Z'
+  ended_at_utc: '2026-06-25T16:09:45.714605Z'
+  exit_code: 0
+  stdout: 'project validation passed
+
+    '
+  stderr: ''
+  status: passed
+evidence_files:
+- provenance_freshness_summary.yaml

@@ -1,0 +1,46 @@
+version: agent_work_finalization_receipt_v1
+receipt_status: finalized
+work_item_id: work_agentproof_lifecycle_idempotency_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: artifact_lineage
+agent_mode: solo
+consult_ids: []
+evidence_class: contemporaneous_work_receipt
+start_receipt_ref:
+  path: docs/workspace/agent_work_receipts/work_agentproof_lifecycle_idempotency_v1/start_receipt.yaml
+  sha256: ea5a95607e0ddbeee619e873459ebf36a390f140ac16b08ab7518bda9cc5635a
+  size_bytes: 876
+ended_at_utc: '2026-06-25T15:57:36.411089Z'
+end_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+result_status: passed
+command_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_lifecycle_idempotency_v1/command_results.yaml
+    sha256: 251e4c1dcaf736ac446d59f5d06303a00261f404098f31353034c7da4dc1e266
+    size_bytes: 3120
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_lifecycle_idempotency_v1/lifecycle_projection_summary.yaml
+    sha256: 512457f008478c6edb004e44dad81d5d6f2b948dc1dd53e9ac2115277487aa61
+    size_bytes: 602
+evidence_refs:
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_lifecycle_idempotency_v1/command_results.yaml
+  sha256: 251e4c1dcaf736ac446d59f5d06303a00261f404098f31353034c7da4dc1e266
+  size_bytes: 3120
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_lifecycle_idempotency_v1/lifecycle_projection_summary.yaml
+  sha256: 512457f008478c6edb004e44dad81d5d6f2b948dc1dd53e9ac2115277487aa61
+  size_bytes: 602
+validation_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_lifecycle_idempotency_v1/command_results.yaml
+    sha256: 251e4c1dcaf736ac446d59f5d06303a00261f404098f31353034c7da4dc1e266
+    size_bytes: 3120
+  status: passed
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_lifecycle_idempotency_v1/lifecycle_projection_summary.yaml
+    sha256: 512457f008478c6edb004e44dad81d5d6f2b948dc1dd53e9ac2115277487aa61
+    size_bytes: 602
+  status: passed
+claim_boundary: lifecycle_idempotency_and_projection_validation_only_no_campaign_or_wave_open
+receipt_sha256:
+  algorithm: sha256
+  value: dda24d9c02d5f4ea36e7d335005358162a544cd939bda34a648362dd4a7ddfa5

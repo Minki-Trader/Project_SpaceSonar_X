@@ -1,16 +1,16 @@
 version: evaluator_result_v1
 evaluator_id: operating_slo_evaluator_v1
-executed_at_utc: '2026-06-25T12:06:58Z'
+executed_at_utc: '2026-06-25T16:48:43Z'
 input_hashes:
 - path: docs/policies/codex_operating_slo.yaml
-  sha256: ed4a664fb956e59520f447fb6d21a04762ef2473d5c1071063acb1b59d9c88be
-  size_bytes: 800
+  sha256: 568e17e3ee836f4f69f39af236ecfd15590757043507fc1e5c34eb9d142db4df
+  size_bytes: 988
 - path: AGENTS.md
   sha256: 4a75dec8f64a57a161f1be6149fb8bcae738b8ecca57c7647689ad70f8535839
   size_bytes: 5293
 - path: docs/workspace/workspace_state.yaml
-  sha256: f5f25e0dc6ace908c1102b8e826e5bfa3ed55753f0ade34818e60232880bec57
-  size_bytes: 1484
+  sha256: 32b1c72409a9601bc86e4a58598b5c893d6a2a6b287980ad6b53b54a214686f9
+  size_bytes: 1469
 - path: docs/agent_control/policy_contract.yaml
   sha256: 34e11b2e31583b92c1d59e42b807fc80dd80c325ecf24cc3aadaa691ff30d5d8
   size_bytes: 2932
@@ -19,11 +19,11 @@ input_hashes:
   size_bytes: 13292
 implementation_hashes:
 - path: foundation/evaluation/agent_value_evaluator.py
-  sha256: a55dcca981c5c5631d705f6805101a22bb935827e97ef5fec5f847582a231919
-  size_bytes: 3893
+  sha256: 9dea77a2cc7dda9a142ccaffb328450bfc7687a233bec9d468af62451c1ae06e
+  size_bytes: 6813
 - path: foundation/evaluation/operating_slo_evaluator.py
-  sha256: a83b31234740b5fa5bc2a41ff1573a55bbddfb4eaa8d22d7f0ea55f5d69d66bf
-  size_bytes: 15213
+  sha256: be78c19d8662ba83eff2ae351267e086cfef45c206a6f92fad29da21c12ff7c9
+  size_bytes: 17870
 - path: foundation/evaluation/routing_quality_evaluator.py
   sha256: f1f661ca14679137f4830e4412a71a0ff1943b9dd4a490b7af993bcf3b41e59d
   size_bytes: 2005
@@ -33,10 +33,10 @@ implementation_hashes:
 - path: src/spacesonar/control_plane/transaction.py
   sha256: a8c6c1e337d251d5f76d4f01677359756462296953546317c94b2853bea13452
   size_bytes: 31483
-status: failed
+status: passed
 metrics:
   cold_reentry_truth_files: 4
-  cold_reentry_context_bytes: 23001
+  cold_reentry_context_bytes: 22986
   durable_transaction_receipt_count: 1
   transaction_idempotency_probe_count: 1
   transaction_idempotency_pass_count: 1
@@ -50,14 +50,13 @@ metrics:
   runtime_contract_integrity: passed
   routine_solo_or_single_agent_share: 1.0
   solo_work_share: 1.0
-  observation_coverage_ratio: 0.125
+  observation_coverage_ratio: 1.0
+  agent_observation_window_status: closed
+  agent_observed_work_item_count: 5
+  agent_observed_distinct_work_family_count: 5
+  agent_receipt_validation_failure_count: 0
   duplicate_agent_advice_ratio: 0.0
   tracked_ignored_artifact_count: 0
-findings:
-- id: agent_value_slo_failed
-  details:
-  - id: agent_observation_coverage_below_slo
-    value: 0.125
-    minimum: 0.8
+findings: []
 claim_effect: operating_slo_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: 07fcd704669d076f7dd00940baec69bd13ea7fd541f2b45b8fe36dd8fe1bca3f
+output_sha256: f7f6d510f00e7ab00181ad0068026b793b9119ba7e023e481ffe830914d2a02f

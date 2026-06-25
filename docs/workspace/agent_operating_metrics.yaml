@@ -1,21 +1,27 @@
 version: agent_operating_metrics_v3
-updated_utc: '2026-06-22T23:53:38Z'
+updated_utc: '2026-06-25T16:10:01.539960Z'
 source_refs:
 - path: docs/workspace/agent_operating_events.yaml
-  sha256: 94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32
-  size_bytes: 4896
+  sha256: 28cba0858caeedcbf75623354290eaf9aa7f81a1185d9ae7d5a4e38e58774b8b
+  size_bytes: 7890
 measurement_boundary:
-  start_utc: '2026-06-22T23:53:38Z'
-  end_utc: null
-  boundary_id: control_plane_corrective_v3
+  start_utc: '2026-06-25T15:18:09.361050Z'
+  end_utc: '2026-06-25T16:10:01.539960Z'
+  boundary_id: post_wp08_operating_proof_v1
+  status: closed
 agent_operating_metrics:
-  work_item_count: 8
-  observed_work_item_count: 1
-  solo_work_item_count: 1
+  observation_window_id: post_wp08_operating_proof_v1
+  observation_window_status: closed
+  work_item_count: 5
+  observed_work_item_count: 5
+  observed_distinct_work_family_count: 5
+  solo_work_item_count: 5
   consult_count: 0
   one_agent_consult_count: 0
   two_agent_consult_count: 0
   three_plus_agent_consult_count: 0
+  receipt_validation_failure_count: 0
+  failed_or_aborted_work_item_count: 0
   total_advice_items: 0
   duplicate_advice_items: 0
   unsupported_assertion_count: 0
@@ -23,13 +29,28 @@ agent_operating_metrics:
   rejected_after_verification_count: 0
   rewritten_after_verification_count: 0
   solo_work_share: 1.0
-  observation_coverage_ratio: 0.125
+  observation_coverage_ratio: 1.0
   one_agent_consult_share: 0.0
   two_agent_consult_share: 0.0
   three_plus_agent_consult_share: 0.0
   routine_solo_or_single_agent_share: 1.0
   duplicate_advice_ratio: 0.0
   accepted_after_verification_ratio: 0.0
+historical_windows:
+- window_id: control_plane_corrective_v3_historical
+  status: closed
+  work_item_count: 8
+  observed_work_item_count: 1
+  observation_coverage_ratio: 0.125
+  event_snapshot_ref:
+    path: docs/workspace/agent_operating_history/control_plane_corrective_v3_events.yaml
+    sha256: 94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32
+    size_bytes: 4896
+  metric_snapshot_ref:
+    path: docs/workspace/agent_operating_history/control_plane_corrective_v3_metrics.yaml
+    sha256: 6a331ee07f2760e8a5c6009ca4164a1edb137f64a8526bf583857a1c052aa9cf
+    size_bytes: 1364
+  claim_effect: historical_telemetry_preserved_not_reclassified_as_contemporaneous
 compact_work_default:
   agent_mode: solo
   allocation_block_required: false

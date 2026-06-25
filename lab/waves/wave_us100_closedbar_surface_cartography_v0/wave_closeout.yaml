@@ -1,36 +1,34 @@
 version: wave_closeout_v2
 closeout_id: wave_us100_closedbar_surface_cartography_v0_operating_closeout_v0
 generated_by: foundation.evaluation.build_operating_closeout
-generated_at_utc: '2026-06-25T12:06:16Z'
-status: wave01_evaluator_backed_closeout_requires_evidence_repair
+generated_at_utc: '2026-06-25T16:47:56Z'
+status: wave01_control_plane_proof_closed_runtime_contract_complete
 result:
-  control_plane_operating_proof: failed
+  control_plane_operating_proof: passed
   research_cycle_closeout: passed
   runtime_contract_integrity: passed
   routing_behavior_quality: passed
-  agent_value_metrics: insufficient_evidence
+  agent_value_metrics: passed
   runtime_authority: not_claimed
   economics_pass: not_claimed
   candidate_count: 0
   l5_candidate_count: 0
 result_judgment:
-  control_plane: evidence_repair_required
+  control_plane: positive
   runtime_contract: complete
   research_outcome: no_candidate_with_negative_memory_and_preserved_clues
-  failed_or_insufficient_requirements:
-  - agent_value_metrics
-  - control_plane_operating_proof
-claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+  failed_or_insufficient_requirements: []
+claim_boundary: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 wave_id: wave_us100_closedbar_surface_cartography_v0
 source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
 source_inputs:
 - path: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
-  sha256: 64c35674242da542070d004ab80d558c2cf577e01ad6301f2cf118eea5cc2668
-  size_bytes: 33225
+  sha256: fd6daf1da1355f3da87af8ad94d709721cee9b02fe8930bcda9aaacdf280d73b
+  size_bytes: 33130
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  sha256: 55bc1b0e4d27be76d30512f199cc02842413750ad61cc338dc34d36cad1751b9
-  size_bytes: 11691
+  sha256: f49db0b46b5a4d9d388ae271020bd479e855e7e934e83199bfc8094e5604c3c9
+  size_bytes: 11235
 - path: docs/agent_control/evaluator_registry.yaml
   sha256: 6782ff64d5edeb06a28478553cb5074d5755a18df101dbb66abfdf233e7da0f4
   size_bytes: 2608
@@ -51,8 +49,8 @@ source_inputs:
   sha256: be6bc47cfdea778ebdea270700d997f5b9e5f0505327232dde658d5aac33afdb
   size_bytes: 79829
 - path: docs/policies/codex_operating_slo.yaml
-  sha256: ed4a664fb956e59520f447fb6d21a04762ef2473d5c1071063acb1b59d9c88be
-  size_bytes: 800
+  sha256: 568e17e3ee836f4f69f39af236ecfd15590757043507fc1e5c34eb9d142db4df
+  size_bytes: 988
 - path: docs/registers/candidate_registry.csv
   sha256: 0096c5deded38cf2319d7ec9d069cc75338e3c1f90d34c4c2f00c105c0812f06
   size_bytes: 168
@@ -63,11 +61,11 @@ source_inputs:
   sha256: 33c6ecf57b23e22d19b051540462405ac6ed56f6d36b2bbb99ab030a3d617a30
   size_bytes: 5126
 - path: docs/workspace/agent_operating_metrics.yaml
-  sha256: 6a331ee07f2760e8a5c6009ca4164a1edb137f64a8526bf583857a1c052aa9cf
-  size_bytes: 1364
+  sha256: e8f1696de24acdb6954755f28dcbbb9af2aa93c9b6397cc7b6bed3cc409c72d0
+  size_bytes: 2306
 - path: docs/workspace/workspace_state.yaml
-  sha256: f5f25e0dc6ace908c1102b8e826e5bfa3ed55753f0ade34818e60232880bec57
-  size_bytes: 1484
+  sha256: 32b1c72409a9601bc86e4a58598b5c893d6a2a6b287980ad6b53b54a214686f9
+  size_bytes: 1469
 - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
   sha256: ea2c2f14cafcca6085d5357513a4c924aeee0187ff9da5c7eccb9cec8c498a75
   size_bytes: 5781
@@ -138,8 +136,8 @@ source_inputs:
   sha256: befc06168cc65d43e089107b91573687a06aabeb5362164f4afd6624ef8a4478
   size_bytes: 1634
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  sha256: 55bc1b0e4d27be76d30512f199cc02842413750ad61cc338dc34d36cad1751b9
-  size_bytes: 11691
+  sha256: f49db0b46b5a4d9d388ae271020bd479e855e7e934e83199bfc8094e5604c3c9
+  size_bytes: 11235
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/attempt_manifest.yaml
   missing: false
   sha256: eb691aeb42817c96f9dbd194e6fef6cb093db1e2d171d889d54a39548de3649c
@@ -1525,8 +1523,8 @@ wave_summary:
   economics_pass: false
   locked_final_oos_used: false
   runtime_contract_integrity: passed
-  operating_slo_status: failed
-  agent_value_status: insufficient_evidence
+  operating_slo_status: passed
+  agent_value_status: passed
   research_cycle_status: passed
 campaign_summaries:
 - campaign_id: campaign_us100_event_barrier_decision_surface_v0
@@ -1554,23 +1552,23 @@ requirement_audit:
 - requirement: agent_value_metrics
   evaluator_id: agent_value_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
-  evaluator_output_sha256: 0aad0a67c6354847b7c719035715fdf4c6c0758b0bb5ceaf6bbfb588c8f2be23
-  evaluator_file_sha256: 2ca0fcac6cc04eb6281644e5db98f3b722474316e4b4b8d4916ffbc6d555e3b5
-  evaluator_result_sha256: 0aad0a67c6354847b7c719035715fdf4c6c0758b0bb5ceaf6bbfb588c8f2be23
-  status: insufficient_evidence
+  evaluator_output_sha256: 96109846207d77cd2db7eb615beae33f9ccfde2a811c11400a71b9952f95dcb2
+  evaluator_file_sha256: f2a94f41df7b06d134b8f036d487667b688a04c0ec40e05fcc7f93c0d38c6ebc
+  evaluator_result_sha256: 96109846207d77cd2db7eb615beae33f9ccfde2a811c11400a71b9952f95dcb2
+  status: passed
 - requirement: control_plane_operating_proof
   evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_output_sha256: 07fcd704669d076f7dd00940baec69bd13ea7fd541f2b45b8fe36dd8fe1bca3f
-  evaluator_file_sha256: ebc26c622bfac50dac701c6a9a5a4afba12e98834d549b297ec6f67d5171ebd8
-  evaluator_result_sha256: 07fcd704669d076f7dd00940baec69bd13ea7fd541f2b45b8fe36dd8fe1bca3f
-  status: failed
+  evaluator_output_sha256: f7f6d510f00e7ab00181ad0068026b793b9119ba7e023e481ffe830914d2a02f
+  evaluator_file_sha256: 39dbb84e9ac9c9bc191fba084b2153009251ba10dc882ed1b3bbdf18410376de
+  evaluator_result_sha256: f7f6d510f00e7ab00181ad0068026b793b9119ba7e023e481ffe830914d2a02f
+  status: passed
 - requirement: research_cycle_closeout
   evaluator_id: research_cycle_closeout_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
-  evaluator_output_sha256: 5cc8d9c8caa242d4648ea0ec4080f1031811e1b70e0f89b1cc48fa0fb77255d0
-  evaluator_file_sha256: e95ef6c567931728114521233f87dd4184452693c767b866ec756cc3f4610194
-  evaluator_result_sha256: 5cc8d9c8caa242d4648ea0ec4080f1031811e1b70e0f89b1cc48fa0fb77255d0
+  evaluator_output_sha256: bf04b52e91a611f9ce65363d80a0a4c9ec29d8156ec41f60665dfceca61990bf
+  evaluator_file_sha256: 93143df548ea807e1557e9563ac9612c4384a649c3ce508d5f33682560b333e8
+  evaluator_result_sha256: bf04b52e91a611f9ce65363d80a0a4c9ec29d8156ec41f60665dfceca61990bf
   status: passed
 - requirement: routing_behavior_quality
   evaluator_id: routing_quality_evaluator_v1
@@ -1589,21 +1587,21 @@ requirement_audit:
 evaluation_results:
 - evaluator_id: agent_value_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
-  evaluator_output_sha256: 0aad0a67c6354847b7c719035715fdf4c6c0758b0bb5ceaf6bbfb588c8f2be23
-  evaluator_file_sha256: 2ca0fcac6cc04eb6281644e5db98f3b722474316e4b4b8d4916ffbc6d555e3b5
-  evaluator_result_sha256: 0aad0a67c6354847b7c719035715fdf4c6c0758b0bb5ceaf6bbfb588c8f2be23
-  status: insufficient_evidence
+  evaluator_output_sha256: 96109846207d77cd2db7eb615beae33f9ccfde2a811c11400a71b9952f95dcb2
+  evaluator_file_sha256: f2a94f41df7b06d134b8f036d487667b688a04c0ec40e05fcc7f93c0d38c6ebc
+  evaluator_result_sha256: 96109846207d77cd2db7eb615beae33f9ccfde2a811c11400a71b9952f95dcb2
+  status: passed
 - evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_output_sha256: 07fcd704669d076f7dd00940baec69bd13ea7fd541f2b45b8fe36dd8fe1bca3f
-  evaluator_file_sha256: ebc26c622bfac50dac701c6a9a5a4afba12e98834d549b297ec6f67d5171ebd8
-  evaluator_result_sha256: 07fcd704669d076f7dd00940baec69bd13ea7fd541f2b45b8fe36dd8fe1bca3f
-  status: failed
+  evaluator_output_sha256: f7f6d510f00e7ab00181ad0068026b793b9119ba7e023e481ffe830914d2a02f
+  evaluator_file_sha256: 39dbb84e9ac9c9bc191fba084b2153009251ba10dc882ed1b3bbdf18410376de
+  evaluator_result_sha256: f7f6d510f00e7ab00181ad0068026b793b9119ba7e023e481ffe830914d2a02f
+  status: passed
 - evaluator_id: research_cycle_closeout_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
-  evaluator_output_sha256: 5cc8d9c8caa242d4648ea0ec4080f1031811e1b70e0f89b1cc48fa0fb77255d0
-  evaluator_file_sha256: e95ef6c567931728114521233f87dd4184452693c767b866ec756cc3f4610194
-  evaluator_result_sha256: 5cc8d9c8caa242d4648ea0ec4080f1031811e1b70e0f89b1cc48fa0fb77255d0
+  evaluator_output_sha256: bf04b52e91a611f9ce65363d80a0a4c9ec29d8156ec41f60665dfceca61990bf
+  evaluator_file_sha256: 93143df548ea807e1557e9563ac9612c4384a649c3ce508d5f33682560b333e8
+  evaluator_result_sha256: bf04b52e91a611f9ce65363d80a0a4c9ec29d8156ec41f60665dfceca61990bf
   status: passed
 - evaluator_id: routing_quality_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
@@ -1627,14 +1625,10 @@ handoff:
   candidate_count: 0
   l5_candidate_count: 0
   locked_final_oos_used: false
-  blocking_requirements:
-  - agent_value_metrics
-  - control_plane_operating_proof
-  blocking_findings:
-  - agent_observation_coverage_below_slo
-  - agent_value_slo_failed
-  next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
-  claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+  blocking_requirements: []
+  blocking_findings: []
+  next_action: work_post_wave01_user_directed_wave02_or_review_v0
+  claim_boundary: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 runtime_contract_integrity:
   status: passed
   reason: runtime contract evaluated from committed attempt, terminal, telemetry,
@@ -1658,8 +1652,6 @@ migration_history:
   previous_status: wave01_operating_proof_window_closed
   reason: separate_control_plane_closeout_from_standard_l4_runtime_completion
   executed_at_utc: '2026-06-22T11:52:40Z'
-unresolved_blockers:
-- agent_observation_coverage_below_slo
-- agent_value_slo_failed
-next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
-evaluation_digest: 84d54678863eb0da12aa1c20565e11383f2a6d61498a8e55eb75a9cc8cb4b4fb
+unresolved_blockers: []
+next_action: work_post_wave01_user_directed_wave02_or_review_v0
+evaluation_digest: f85a848cddb30d61d3f7836f87c17972a5e0270fc03656de3f8bb331b02f7d88

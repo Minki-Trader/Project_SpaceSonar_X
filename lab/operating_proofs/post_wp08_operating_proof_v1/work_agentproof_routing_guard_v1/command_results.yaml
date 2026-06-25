@@ -1,0 +1,114 @@
+version: agentproof_command_results_v1
+work_item_id: work_agentproof_routing_guard_v1
+observation_window_id: post_wp08_operating_proof_v1
+result_status: passed
+commands:
+- command: uv run python -m spacesonar.cli agents events --write
+  started_at_utc: '2026-06-25T15:35:52.796234Z'
+  ended_at_utc: '2026-06-25T15:35:57.135557Z'
+  exit_code: 0
+  stdout: 'agent events projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli agents metrics --write
+  started_at_utc: '2026-06-25T15:35:57.135578Z'
+  ended_at_utc: '2026-06-25T15:36:01.726177Z'
+  exit_code: 0
+  stdout: 'agent metrics projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
+    --repo-root . --write
+  started_at_utc: '2026-06-25T15:36:01.726201Z'
+  ended_at_utc: '2026-06-25T15:36:04.479728Z'
+  exit_code: 0
+  stdout: 'artifact registry refresh: rows=951 refreshable=950 changed=2 missing=0
+
+    CHANGE artifact_docs_workspace_agent_operating_events_yaml docs/workspace/agent_operating_events.yaml
+    size 2428->3721 sha256 3b413fce3055511dc1c998612e8a0a0835ae221b98d00ca4c4438cf1b9993e6a->0a7f7135ea7d1d36bc4172a628755ab448ba5ed603031d25b3f36c62cdc4a1f7
+
+    CHANGE artifact_docs_workspace_agent_operating_metrics_yaml docs/workspace/agent_operating_metrics.yaml
+    size 2277->2277 sha256 1222976584d5f73cab6aba29c65655600262c565ce54036300896495d993f6cc->be8905140f6bb9d9f47972c47b6e6fcf9ae064d6104cf8401807f08bacc2a74c
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root
+    . --write
+  started_at_utc: '2026-06-25T15:36:04.479749Z'
+  ended_at_utc: '2026-06-25T15:41:53.301861Z'
+  exit_code: 0
+  stdout: 'transaction_id: tx_20260625T153723416798Z_6a6af29e_01674e6c
+
+    status: committed
+
+    receipt_path: C:/Users/awdse/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/Project_SpaceSonar_X/.spacesonar/transactions/tx_20260625T153723416798Z_6a6af29e_01674e6c/transaction_receipt.yaml
+
+    errors: []
+
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/routing_contract_lint.py --repo-root
+    .
+  started_at_utc: '2026-06-25T15:41:53.301894Z'
+  ended_at_utc: '2026-06-25T15:41:54.028964Z'
+  exit_code: 0
+  stdout: 'routing contract lint passed
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/routing_behavior_eval.py --repo-root
+    .
+  started_at_utc: '2026-06-25T15:41:54.028985Z'
+  ended_at_utc: '2026-06-25T15:41:54.955374Z'
+  exit_code: 0
+  stdout: 'routing behavior eval passed
+
+    accuracy: 1.0
+
+    protected_claim_guard_recall: 1.0
+
+    protected_claim_assertion_recall: 1.0
+
+    protected_claim_read_only_recall: 1.0
+
+    automatic_family_coverage: 1.0
+
+    expected_automatic_family_coverage: 1.0
+
+    correctly_matched_automatic_family_coverage: 1.0
+
+    missing_golden_family_count: 0.0
+
+    unknown_verification_profile_count: 0.0
+
+    unknown_guard_set_count: 0.0
+
+    unreachable_automatic_family_count: 0.0
+
+    invalid_routing_mode_count: 0.0
+
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run pytest tests/test_routing_behavior.py -q
+  started_at_utc: '2026-06-25T15:41:54.955405Z'
+  ended_at_utc: '2026-06-25T15:41:57.595119Z'
+  exit_code: 0
+  stdout: '................................                                         [100%]
+
+    32 passed in 1.71s
+
+    '
+  stderr: ''
+  status: passed
+evidence_files:
+- routing_guard_summary.yaml

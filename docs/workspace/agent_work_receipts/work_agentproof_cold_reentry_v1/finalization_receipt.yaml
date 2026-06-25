@@ -1,0 +1,46 @@
+version: agent_work_finalization_receipt_v1
+receipt_status: finalized
+work_item_id: work_agentproof_cold_reentry_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: workspace_state_sync
+agent_mode: solo
+consult_ids: []
+evidence_class: contemporaneous_work_receipt
+start_receipt_ref:
+  path: docs/workspace/agent_work_receipts/work_agentproof_cold_reentry_v1/start_receipt.yaml
+  sha256: 51c20c8041ec422b63523afa8a70375f43b687baa5815ef290bb64264dbd4458
+  size_bytes: 964
+ended_at_utc: '2026-06-25T15:35:18.892896Z'
+end_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+result_status: passed
+command_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_cold_reentry_v1/command_results.yaml
+    sha256: 4dca495e2a9482046056a4f8eb9c79b230e028a9f8ed5abdf394443d6f505a7c
+    size_bytes: 6736
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_cold_reentry_v1/reentry_decision.yaml
+    sha256: cecfe4e365d50e6a89c9d5205bc50f96953f9ac07bada1bd6f37542bf9220231
+    size_bytes: 1987
+evidence_refs:
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_cold_reentry_v1/command_results.yaml
+  sha256: 4dca495e2a9482046056a4f8eb9c79b230e028a9f8ed5abdf394443d6f505a7c
+  size_bytes: 6736
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_cold_reentry_v1/reentry_decision.yaml
+  sha256: cecfe4e365d50e6a89c9d5205bc50f96953f9ac07bada1bd6f37542bf9220231
+  size_bytes: 1987
+validation_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_cold_reentry_v1/command_results.yaml
+    sha256: 4dca495e2a9482046056a4f8eb9c79b230e028a9f8ed5abdf394443d6f505a7c
+    size_bytes: 6736
+  status: passed
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_cold_reentry_v1/reentry_decision.yaml
+    sha256: cecfe4e365d50e6a89c9d5205bc50f96953f9ac07bada1bd6f37542bf9220231
+    size_bytes: 1987
+  status: passed
+claim_boundary: cold_reentry_and_workspace_truth_validation_only_no_wave02_no_runtime_authority
+receipt_sha256:
+  algorithm: sha256
+  value: 22c88699773ea27d30b9e528feb8d1915f3797d0fc5efe8322c62566e68a4cd1

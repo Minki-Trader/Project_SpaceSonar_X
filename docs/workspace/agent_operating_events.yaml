@@ -1,136 +1,173 @@
 version: agent_operating_events_v2
-updated_utc: '2026-06-22T23:53:38Z'
+updated_utc: '2026-06-25T16:10:01.539960Z'
 measurement_boundary:
-  start_utc: '2026-06-22T23:53:38Z'
-  end_utc: null
-  boundary_id: control_plane_corrective_v3
+  start_utc: '2026-06-25T15:18:09.361050Z'
+  end_utc: '2026-06-25T16:10:01.539960Z'
+  boundary_id: post_wp08_operating_proof_v1
+  status: closed
 source_refs:
-- path: docs/migrations/control_plane_corrective_v3_progress.yaml
-  sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-  size_bytes: 92181
+- path: docs/workspace/agent_observation_windows.yaml
+  sha256: 8ecc726c682b8026ed944c1c94095d53f63e4cf06a3da6480515b0ca7d9aa635
+  size_bytes: 4977
 work_item_events:
-- work_item_id: WP00
-  agent_mode: solo
-  evidence_class: retrospective_attestation
-  consult_ids:
-  - tf_goal_us100_onnx_forward_boundary_initial_v2
-  source_refs:
-  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-    size_bytes: 92181
-  started_at_utc: '2026-06-23T00:00:00Z'
-  ended_at_utc: '2026-06-23T00:00:00Z'
-  in_boundary: true
-  observed_for_slo: false
-- work_item_id: WP01
-  agent_mode: solo
-  evidence_class: retrospective_attestation
-  consult_ids: []
-  source_refs:
-  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-    size_bytes: 92181
-  started_at_utc: '2026-06-23T00:00:00Z'
-  ended_at_utc: '2026-06-23T01:10:00Z'
-  in_boundary: true
-  observed_for_slo: false
-- work_item_id: WP02
-  agent_mode: solo
-  evidence_class: retrospective_attestation
-  consult_ids: []
-  source_refs:
-  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-    size_bytes: 92181
-  started_at_utc: '2026-06-23T01:10:00Z'
-  ended_at_utc: '2026-06-23T02:09:19Z'
-  in_boundary: true
-  observed_for_slo: false
-- work_item_id: WP03
-  agent_mode: solo
-  evidence_class: retrospective_attestation
-  consult_ids: []
-  source_refs:
-  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-    size_bytes: 92181
-  started_at_utc: '2026-06-23T02:09:19Z'
-  ended_at_utc: '2026-06-23T05:17:48Z'
-  in_boundary: true
-  observed_for_slo: false
-- work_item_id: WP04
-  agent_mode: solo
-  evidence_class: retrospective_attestation
-  consult_ids: []
-  source_refs:
-  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-    size_bytes: 92181
-  started_at_utc: '2026-06-23T06:15:50Z'
-  ended_at_utc: '2026-06-23T11:20:06Z'
-  in_boundary: true
-  observed_for_slo: false
-- work_item_id: WP05
-  agent_mode: solo
-  evidence_class: retrospective_attestation
-  consult_ids: []
-  source_refs:
-  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-    size_bytes: 92181
-  started_at_utc: '2026-06-23T11:45:00Z'
-  ended_at_utc: '2026-06-23T15:05:01Z'
-  in_boundary: true
-  observed_for_slo: false
-- work_item_id: WP06
+- work_item_id: work_agentproof_cold_reentry_v1
+  observation_window_id: post_wp08_operating_proof_v1
+  primary_family: workspace_state_sync
   agent_mode: solo
   evidence_class: contemporaneous_work_receipt
   consult_ids: []
   source_refs:
-  - path: docs/workspace/agent_work_receipts/WP06.yaml
-    sha256: 0f37e3ec1a44fe5a0eda583796a04d3ed81644f1ff169ca68f5ee645562c3520
-    size_bytes: 1554
-  started_at_utc: '2026-06-23T15:05:01Z'
-  ended_at_utc: '2026-06-24T08:35:59.236261Z'
+  - path: docs/workspace/agent_work_receipts/work_agentproof_cold_reentry_v1/start_receipt.yaml
+    sha256: 51c20c8041ec422b63523afa8a70375f43b687baa5815ef290bb64264dbd4458
+    size_bytes: 964
+  - path: docs/workspace/agent_work_receipts/work_agentproof_cold_reentry_v1/finalization_receipt.yaml
+    sha256: 255a9a963ae10197ba5f03bf07422579ca9bac28570440ebf5043b509a4e50f9
+    size_bytes: 2217
+  started_at_utc: '2026-06-25T15:18:20.320979Z'
+  ended_at_utc: '2026-06-25T15:35:18.892896Z'
+  result_status: passed
   in_boundary: true
   observed_for_slo: true
-  work_receipt_ref:
-    path: docs/workspace/agent_work_receipts/WP06.yaml
-    sha256: 0f37e3ec1a44fe5a0eda583796a04d3ed81644f1ff169ca68f5ee645562c3520
-    size_bytes: 1554
-- work_item_id: WP08
+  receipt_validation_errors: []
+  work_receipt_refs:
+    start:
+      path: docs/workspace/agent_work_receipts/work_agentproof_cold_reentry_v1/start_receipt.yaml
+      sha256: 51c20c8041ec422b63523afa8a70375f43b687baa5815ef290bb64264dbd4458
+      size_bytes: 964
+    finalization:
+      path: docs/workspace/agent_work_receipts/work_agentproof_cold_reentry_v1/finalization_receipt.yaml
+      sha256: 255a9a963ae10197ba5f03bf07422579ca9bac28570440ebf5043b509a4e50f9
+      size_bytes: 2217
+- work_item_id: work_agentproof_lifecycle_idempotency_v1
+  observation_window_id: post_wp08_operating_proof_v1
+  primary_family: artifact_lineage
   agent_mode: solo
-  evidence_class: retrospective_attestation
+  evidence_class: contemporaneous_work_receipt
   consult_ids: []
   source_refs:
-  - path: docs/migrations/control_plane_corrective_v3_progress.yaml
-    sha256: f042c538921b039cc95b0ceae6154527c2daf9acc188386e7c0e7309622aa350
-    size_bytes: 92181
-  started_at_utc: '2026-06-25T04:07:00Z'
-  ended_at_utc: '2026-06-25T04:13:30Z'
+  - path: docs/workspace/agent_work_receipts/work_agentproof_lifecycle_idempotency_v1/start_receipt.yaml
+    sha256: ea5a95607e0ddbeee619e873459ebf36a390f140ac16b08ab7518bda9cc5635a
+    size_bytes: 876
+  - path: docs/workspace/agent_work_receipts/work_agentproof_lifecycle_idempotency_v1/finalization_receipt.yaml
+    sha256: bbf297ce7b8cb927db6446585a360480c1c1941046377ddc9e3deea49f98b385
+    size_bytes: 2316
+  started_at_utc: '2026-06-25T15:50:30.740187Z'
+  ended_at_utc: '2026-06-25T15:57:36.411089Z'
+  result_status: passed
   in_boundary: true
-  observed_for_slo: false
-consult_events:
-- consult_id: tf_goal_us100_onnx_forward_boundary_initial_v2
-  work_item_id: WP00
-  path: lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
-  sha256: b08f50fca01e8fde4b01991fd809ed04ce3484b95ff814cd147330880729ae28
-  selected_agent_count: 4
-  created_at_utc: '2026-06-22T13:40:00Z'
-  in_boundary: false
-  boundary_class: historical_out_of_boundary
-  advice_metrics:
-    total_advice_items: 4
-    duplicate_advice_items: 0
-    unsupported_assertion_count: 0
-    accepted_after_verification_count: 3
-    rejected_after_verification_count: 0
-    rewritten_after_verification_count: 1
-excluded_historical_consults:
-- consult_id: tf_goal_us100_onnx_forward_boundary_initial_v2
-  boundary_class: historical_out_of_boundary
-  original_work_context: initial_goal_framing
+  observed_for_slo: true
+  receipt_validation_errors: []
+  work_receipt_refs:
+    start:
+      path: docs/workspace/agent_work_receipts/work_agentproof_lifecycle_idempotency_v1/start_receipt.yaml
+      sha256: ea5a95607e0ddbeee619e873459ebf36a390f140ac16b08ab7518bda9cc5635a
+      size_bytes: 876
+    finalization:
+      path: docs/workspace/agent_work_receipts/work_agentproof_lifecycle_idempotency_v1/finalization_receipt.yaml
+      sha256: bbf297ce7b8cb927db6446585a360480c1c1941046377ddc9e3deea49f98b385
+      size_bytes: 2316
+- work_item_id: work_agentproof_provenance_freshness_v1
+  observation_window_id: post_wp08_operating_proof_v1
+  primary_family: publish_handoff
+  agent_mode: solo
+  evidence_class: contemporaneous_work_receipt
+  consult_ids: []
+  source_refs:
+  - path: docs/workspace/agent_work_receipts/work_agentproof_provenance_freshness_v1/start_receipt.yaml
+    sha256: dea91df209a09164141d57298d4cdc920b9cc56e35cfddc0e70e7d590692e209
+    size_bytes: 936
+  - path: docs/workspace/agent_work_receipts/work_agentproof_provenance_freshness_v1/finalization_receipt.yaml
+    sha256: b210f0245437420585639f98e346d7ffc2912756dff23abdcf5afb0c234d85bb
+    size_bytes: 2310
+  started_at_utc: '2026-06-25T15:57:48.743771Z'
+  ended_at_utc: '2026-06-25T16:09:52.137014Z'
+  result_status: passed
+  in_boundary: true
+  observed_for_slo: true
+  receipt_validation_errors: []
+  work_receipt_refs:
+    start:
+      path: docs/workspace/agent_work_receipts/work_agentproof_provenance_freshness_v1/start_receipt.yaml
+      sha256: dea91df209a09164141d57298d4cdc920b9cc56e35cfddc0e70e7d590692e209
+      size_bytes: 936
+    finalization:
+      path: docs/workspace/agent_work_receipts/work_agentproof_provenance_freshness_v1/finalization_receipt.yaml
+      sha256: b210f0245437420585639f98e346d7ffc2912756dff23abdcf5afb0c234d85bb
+      size_bytes: 2310
+- work_item_id: work_agentproof_routing_guard_v1
+  observation_window_id: post_wp08_operating_proof_v1
+  primary_family: policy_skill_governance
+  agent_mode: solo
+  evidence_class: contemporaneous_work_receipt
+  consult_ids: []
+  source_refs:
+  - path: docs/workspace/agent_work_receipts/work_agentproof_routing_guard_v1/start_receipt.yaml
+    sha256: a2e55f92ef56528f5baed44fd7d15547674ebac101bc18ddfaa299992c2dd38e
+    size_bytes: 829
+  - path: docs/workspace/agent_work_receipts/work_agentproof_routing_guard_v1/finalization_receipt.yaml
+    sha256: 21fff5ebedb784b369d6abaae60a9cdb599e809bfd7b832ef5b66fc916059ec1
+    size_bytes: 2237
+  started_at_utc: '2026-06-25T15:35:32.965151Z'
+  ended_at_utc: '2026-06-25T15:42:04.964058Z'
+  result_status: passed
+  in_boundary: true
+  observed_for_slo: true
+  receipt_validation_errors: []
+  work_receipt_refs:
+    start:
+      path: docs/workspace/agent_work_receipts/work_agentproof_routing_guard_v1/start_receipt.yaml
+      sha256: a2e55f92ef56528f5baed44fd7d15547674ebac101bc18ddfaa299992c2dd38e
+      size_bytes: 829
+    finalization:
+      path: docs/workspace/agent_work_receipts/work_agentproof_routing_guard_v1/finalization_receipt.yaml
+      sha256: 21fff5ebedb784b369d6abaae60a9cdb599e809bfd7b832ef5b66fc916059ec1
+      size_bytes: 2237
+- work_item_id: work_agentproof_transaction_rollback_v1
+  observation_window_id: post_wp08_operating_proof_v1
+  primary_family: code_refactor
+  agent_mode: solo
+  evidence_class: contemporaneous_work_receipt
+  consult_ids: []
+  source_refs:
+  - path: docs/workspace/agent_work_receipts/work_agentproof_transaction_rollback_v1/start_receipt.yaml
+    sha256: d03afd9ae2749703c0a466db4e867e94364351a014571461100fe53900dc5b71
+    size_bytes: 731
+  - path: docs/workspace/agent_work_receipts/work_agentproof_transaction_rollback_v1/finalization_receipt.yaml
+    sha256: 59e7e207997e5c7a3dfb270f3f462acce0e7e762f52ad89dc6e0939fec39422e
+    size_bytes: 2291
+  started_at_utc: '2026-06-25T15:42:37.933162Z'
+  ended_at_utc: '2026-06-25T15:50:01.947646Z'
+  result_status: passed
+  in_boundary: true
+  observed_for_slo: true
+  receipt_validation_errors: []
+  work_receipt_refs:
+    start:
+      path: docs/workspace/agent_work_receipts/work_agentproof_transaction_rollback_v1/start_receipt.yaml
+      sha256: d03afd9ae2749703c0a466db4e867e94364351a014571461100fe53900dc5b71
+      size_bytes: 731
+    finalization:
+      path: docs/workspace/agent_work_receipts/work_agentproof_transaction_rollback_v1/finalization_receipt.yaml
+      sha256: 59e7e207997e5c7a3dfb270f3f462acce0e7e762f52ad89dc6e0939fec39422e
+      size_bytes: 2291
+consult_events: []
+excluded_historical_consults: []
+historical_windows:
+- window_id: control_plane_corrective_v3_historical
+  status: closed
+  work_item_count: 8
+  observed_work_item_count: 1
+  observation_coverage_ratio: 0.125
+  event_snapshot_ref:
+    path: docs/workspace/agent_operating_history/control_plane_corrective_v3_events.yaml
+    sha256: 94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32
+    size_bytes: 4896
+  metric_snapshot_ref:
+    path: docs/workspace/agent_operating_history/control_plane_corrective_v3_metrics.yaml
+    sha256: 6a331ee07f2760e8a5c6009ca4164a1edb137f64a8526bf583857a1c052aa9cf
+    size_bytes: 1364
+  claim_effect: historical_telemetry_preserved_not_reclassified_as_contemporaneous
 projection:
-  generated_from: docs/migrations/control_plane_corrective_v3_progress.yaml
+  generated_from: docs/workspace/agent_observation_windows.yaml
   generator: python -m spacesonar.cli agents events --write
   manual_edit_policy: manual edits fail projection check

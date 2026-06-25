@@ -1,0 +1,20 @@
+version: agent_work_start_receipt_v1
+receipt_status: started
+work_item_id: work_agentproof_lifecycle_idempotency_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: artifact_lineage
+agent_mode: solo
+consult_ids: []
+started_at_utc: '2026-06-25T15:50:30.740187Z'
+branch: codex/post-wp08-agent-observation-proof-v1
+start_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+claim_boundary: lifecycle_idempotency_and_projection_validation_only_no_campaign_or_wave_open
+planned_commands:
+- uv run pytest tests/control_plane/test_lifecycle_idempotency.py tests/control_plane/test_lifecycle_and_projections_wp04.py
+  -q
+- uv run python -m spacesonar.cli registry project --check
+- uv run python -m spacesonar.cli project workspace --check
+input_refs: []
+receipt_sha256:
+  algorithm: sha256
+  value: b57a0bf78a1e88435c051cc59092e73819537bb774ab26098a2b66406382a27e
