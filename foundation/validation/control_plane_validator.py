@@ -550,9 +550,17 @@ def validate_agent_operating_metrics_projection(repo_root: Path) -> list[str]:
     if src_path not in sys.path:
         sys.path.insert(0, src_path)
 
-    from spacesonar.control_plane.agent_metrics import agent_operating_events_diff, agent_operating_metrics_diff
+    from spacesonar.control_plane.agent_metrics import (
+        AGENT_WINDOWS_PATH,
+        agent_operating_events_diff,
+        agent_operating_metrics_diff,
+        validate_agent_observation_windows,
+    )
 
-    return [*agent_operating_events_diff(repo_root), *agent_operating_metrics_diff(repo_root)]
+    errors: list[str] = []
+    if (repo_root / AGENT_WINDOWS_PATH).exists():
+        errors.extend(validate_agent_observation_windows(repo_root))
+    return [*errors, *agent_operating_events_diff(repo_root), *agent_operating_metrics_diff(repo_root)]
 
 
 def validate_execution_provenance(repo_root: Path) -> list[str]:

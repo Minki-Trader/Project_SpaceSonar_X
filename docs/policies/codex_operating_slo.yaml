@@ -13,6 +13,10 @@ gates:
   routine_solo_or_single_agent_share_min: 0.80
   duplicate_agent_advice_ratio_max: 0.20
   agent_observation_coverage_ratio_min: 0.80
+  agent_observed_work_item_count_min: 5
+  agent_observed_distinct_work_family_count_min: 4
+  agent_observation_window_closed_required: true
+  agent_receipt_validation_failure_count_max: 0
 
 observations:
   - validator_duration_p50_seconds

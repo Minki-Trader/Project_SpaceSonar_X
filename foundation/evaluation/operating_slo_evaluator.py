@@ -40,6 +40,10 @@ EXPECTED_GATE_TYPES = {
     "routine_solo_or_single_agent_share_min": (int, float),
     "duplicate_agent_advice_ratio_max": (int, float),
     "agent_observation_coverage_ratio_min": (int, float),
+    "agent_observed_work_item_count_min": int,
+    "agent_observed_distinct_work_family_count_min": int,
+    "agent_observation_window_closed_required": bool,
+    "agent_receipt_validation_failure_count_max": int,
 }
 
 
@@ -159,7 +163,11 @@ def _validate_gate_schema(gates: dict[str, Any]) -> list[dict[str, Any]]:
         if gate not in gates:
             continue
         value = gates[gate]
-        if isinstance(value, bool) or not isinstance(value, expected_type):
+        if expected_type is bool:
+            valid_type = isinstance(value, bool)
+        else:
+            valid_type = not isinstance(value, bool) and isinstance(value, expected_type)
+        if not valid_type:
             findings.append({"id": "invalid_slo_gate_type", "gate": gate, "value": value})
     return findings
 
@@ -197,6 +205,10 @@ def evaluate_operating_slo(repo_root: Path) -> dict:
         "routine_solo_or_single_agent_share": agents["metrics"].get("routine_solo_or_single_agent_share"),
         "solo_work_share": agents["metrics"].get("solo_work_share"),
         "observation_coverage_ratio": agents["metrics"].get("observation_coverage_ratio"),
+        "agent_observation_window_status": agents["metrics"].get("observation_window_status"),
+        "agent_observed_work_item_count": agents["metrics"].get("observed_work_item_count"),
+        "agent_observed_distinct_work_family_count": agents["metrics"].get("observed_distinct_work_family_count"),
+        "agent_receipt_validation_failure_count": agents["metrics"].get("receipt_validation_failure_count"),
         "duplicate_agent_advice_ratio": agents["metrics"].get("duplicate_advice_ratio"),
         "tracked_ignored_artifact_count": 0 if not hygiene_errors else len(hygiene_errors),
     }
@@ -215,6 +227,10 @@ def evaluate_operating_slo(repo_root: Path) -> dict:
         "runtime_completion_contract_violations",
         "self_attested_closeout_requirements",
         "routine_solo_or_single_agent_share",
+        "observation_coverage_ratio",
+        "agent_observed_work_item_count",
+        "agent_observed_distinct_work_family_count",
+        "agent_receipt_validation_failure_count",
         "duplicate_agent_advice_ratio",
     ]
     available = {metric: _require_metric(findings, metrics, metric) for metric in required_metrics}
@@ -241,6 +257,16 @@ def evaluate_operating_slo(repo_root: Path) -> dict:
         findings.append({"id": "self_attested_closeout_requirements", "count": metrics["self_attested_closeout_requirements"]})
     if available["routine_solo_or_single_agent_share"] and "routine_solo_or_single_agent_share_min" in gates and metrics["routine_solo_or_single_agent_share"] < float(gates["routine_solo_or_single_agent_share_min"]):
         findings.append({"id": "routine_solo_or_single_agent_share_below_slo", "value": metrics["routine_solo_or_single_agent_share"]})
+    if available["observation_coverage_ratio"] and "agent_observation_coverage_ratio_min" in gates and metrics["observation_coverage_ratio"] < float(gates["agent_observation_coverage_ratio_min"]):
+        findings.append({"id": "agent_observation_coverage_below_slo", "value": metrics["observation_coverage_ratio"]})
+    if "agent_observation_window_closed_required" in gates and gates["agent_observation_window_closed_required"] is True and metrics.get("agent_observation_window_status") != "closed":
+        findings.append({"id": "agent_observation_window_not_closed", "value": metrics.get("agent_observation_window_status")})
+    if available["agent_observed_work_item_count"] and "agent_observed_work_item_count_min" in gates and metrics["agent_observed_work_item_count"] < int(gates["agent_observed_work_item_count_min"]):
+        findings.append({"id": "agent_observed_work_item_count_below_slo", "value": metrics["agent_observed_work_item_count"]})
+    if available["agent_observed_distinct_work_family_count"] and "agent_observed_distinct_work_family_count_min" in gates and metrics["agent_observed_distinct_work_family_count"] < int(gates["agent_observed_distinct_work_family_count_min"]):
+        findings.append({"id": "agent_observed_distinct_work_family_count_below_slo", "value": metrics["agent_observed_distinct_work_family_count"]})
+    if available["agent_receipt_validation_failure_count"] and "agent_receipt_validation_failure_count_max" in gates and metrics["agent_receipt_validation_failure_count"] > int(gates["agent_receipt_validation_failure_count_max"]):
+        findings.append({"id": "agent_receipt_validation_failures", "count": metrics["agent_receipt_validation_failure_count"]})
     if available["duplicate_agent_advice_ratio"] and "duplicate_agent_advice_ratio_max" in gates and metrics["duplicate_agent_advice_ratio"] > float(gates["duplicate_agent_advice_ratio_max"]):
         findings.append({"id": "duplicate_agent_advice_ratio_above_slo", "value": metrics["duplicate_agent_advice_ratio"]})
     if hygiene_errors:

@@ -1,0 +1,16 @@
+version: agent_observation_windows_v1
+active_window_id: null
+windows:
+  control_plane_corrective_v3_historical:
+    status: closed
+    role: historical_preserved
+    start_utc: '2026-06-22T23:53:38Z'
+    end_utc: '2026-06-25T04:13:30Z'
+    event_snapshot_path: docs/workspace/agent_operating_history/control_plane_corrective_v3_events.yaml
+    metric_snapshot_path: docs/workspace/agent_operating_history/control_plane_corrective_v3_metrics.yaml
+    event_snapshot_sha256: 94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32
+    metric_snapshot_sha256: 6a331ee07f2760e8a5c6009ca4164a1edb137f64a8526bf583857a1c052aa9cf
+    observed_work_item_count: 1
+    work_item_count: 8
+    observation_coverage_ratio: 0.125
+    claim_effect: historical_telemetry_preserved_not_reclassified_as_contemporaneous

@@ -337,6 +337,14 @@ def validate_agent_work_receipt(repo_root: Path, rel_path: Path) -> list[str]:
     if not _exists(path):
         return [f"{rel_path.as_posix()}: missing agent work receipt"]
     receipt = read_yaml(path)
+    if receipt.get("version") == "agent_work_start_receipt_v1":
+        from spacesonar.control_plane.agent_metrics import validate_agent_start_receipt
+
+        return validate_agent_start_receipt(repo_root, rel_path)
+    if receipt.get("version") == "agent_work_finalization_receipt_v1":
+        from spacesonar.control_plane.agent_metrics import validate_agent_finalization_receipt
+
+        return validate_agent_finalization_receipt(repo_root, rel_path)
     errors: list[str] = []
     for field in ["version", "work_item_id", "agent_mode", "evidence_class", "started_at_utc", "ended_at_utc", "claim_boundary"]:
         if receipt.get(field) in (None, "", [], {}):
@@ -386,6 +394,10 @@ def _validate_agent_work_receipts(repo_root: Path) -> list[str]:
         return []
     errors: list[str] = []
     for path in sorted(root.glob("*.yaml")):
+        errors.extend(validate_agent_work_receipt(repo_root, path.relative_to(repo_root)))
+    for path in sorted(root.glob("*/start_receipt.yaml")):
+        errors.extend(validate_agent_work_receipt(repo_root, path.relative_to(repo_root)))
+    for path in sorted(root.glob("*/finalization_receipt.yaml")):
         errors.extend(validate_agent_work_receipt(repo_root, path.relative_to(repo_root)))
     return errors
 
