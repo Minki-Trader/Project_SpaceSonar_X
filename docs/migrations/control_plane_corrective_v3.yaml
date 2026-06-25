@@ -42,6 +42,10 @@ migrations:
 runtime_re_evaluation:
   evaluator_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
   evaluator_status: passed
+  line_ending_normalization:
+    telemetry_summary_files_normalized_to_lf: 86
+    reason: cross_platform_evaluator_hash_stability_for_linux_ci
+    semantic_runtime_result_changed: false
   expected_attempt_count: 86
   attempt_count: 86
   runtime_probe_complete_count: 86
@@ -153,6 +157,12 @@ wp08_record_hashes:
 - path: docs/workspace/agent_operating_metrics.yaml
   old_sha256: 1b58da53c66b4b43c51a74080558b25ee98621be4926f6c991faaccf22584e87
   new_sha256: c8c8223b45f663ef18e49acf6e6f83c9c571f7cddb30224e27ecedc8e08db254
+- path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
+  old_sha256: 05d36278274b2ff6d69f54f7e8575958b7fc54a1d31e7171dfc1f11b4a8974af
+  new_sha256: b1a3217aca1d50a7617d27ae454bb7ab7416dd1ce6af1129a8ae69364a1b11f9
+- path: lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+  old_sha256: 05d36278274b2ff6d69f54f7e8575958b7fc54a1d31e7171dfc1f11b4a8974af
+  new_sha256: b1a3217aca1d50a7617d27ae454bb7ab7416dd1ce6af1129a8ae69364a1b11f9
 - path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
   old_sha256: 0ac9ffa9fa3affce1a5362539959a21446e7f299ac7f34745451257ab49e5b20
   new_sha256: f011942bcfc7d320df96499bc1ec14b3a809fb608f7f9c0533708e2b35e93e2e
@@ -164,7 +174,7 @@ wp08_record_hashes:
   new_sha256: 8b1ed1731e5280f48239dd9cb1fc0355a6d82c4a839ec8a4c880f90331c6037c
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
   old_sha256: f793136035739da76db50772c4133b4e2dc84911dcda2526c3470f119037f01e
-  new_sha256: e6676f7fdd32281f68f58e3a7a5076da224fed54cf3af8c3ca074448b03c3fdd
+  new_sha256: be93efb5a63ab145aaf1f8846063a11e231485e103bf566e8954757038db2a97
 final_validation_commands:
 - uv sync --locked --extra dev --extra onnxlab
 - uv run pytest -q
@@ -184,7 +194,7 @@ final_validation_commands:
 validation_results:
   status: passed
   uv_sync_locked: passed
-  pytest_full: 445 passed in 1381.49s
+  pytest_full: 445 passed in 1506.40s
   policy_duplicate_lint: passed
   routing_contract_lint: passed
   routing_behavior_eval: passed

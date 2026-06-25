@@ -1,7 +1,7 @@
 version: wave_closeout_v2
 closeout_id: wave_us100_closedbar_surface_cartography_v0_operating_closeout_v0
 generated_by: foundation.evaluation.build_operating_closeout
-generated_at_utc: '2026-06-25T05:51:50Z'
+generated_at_utc: '2026-06-25T06:29:47Z'
 status: wave01_evaluator_backed_closeout_requires_evidence_repair
 result:
   control_plane_operating_proof: failed
@@ -26,10 +26,10 @@ wave_id: wave_us100_closedbar_surface_cartography_v0
 source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
 source_inputs:
 - path: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
-  sha256: 04f06e588029d8bf9e7b29045a8dd8ccf3fba0dce3aa2d007599fec24eddbebd
+  sha256: 9708a54de233c6c8d75631834dbaf89aabb8b084339bf0743055bcc59373a1eb
   size_bytes: 33225
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  sha256: 9754bb5a04cf2f8459f22c1a4a4b9cc5113c7bf57747fb73e2f62718e88b8f5f
+  sha256: 9d6a7f1498ba86547369be1eae5ce04e3ab792e7f91de8fd84f0f930c96542b5
   size_bytes: 11691
 - path: docs/agent_control/evaluator_registry.yaml
   sha256: 6782ff64d5edeb06a28478553cb5074d5755a18df101dbb66abfdf233e7da0f4
@@ -66,7 +66,7 @@ source_inputs:
   sha256: c8c8223b45f663ef18e49acf6e6f83c9c571f7cddb30224e27ecedc8e08db254
   size_bytes: 1364
 - path: docs/workspace/workspace_state.yaml
-  sha256: 46da7bca8939d62864c0a0b96de60c687731c514f90b36136a884e058c2f5f2b
+  sha256: fe986cea43d7e779966565b4bea45c24dce43a51dcfc0be9da8c5ee32db24433
   size_bytes: 1484
 - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
   sha256: ea2c2f14cafcca6085d5357513a4c924aeee0187ff9da5c7eccb9cec8c498a75
@@ -138,7 +138,7 @@ source_inputs:
   sha256: befc06168cc65d43e089107b91573687a06aabeb5362164f4afd6624ef8a4478
   size_bytes: 1634
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  sha256: 9754bb5a04cf2f8459f22c1a4a4b9cc5113c7bf57747fb73e2f62718e88b8f5f
+  sha256: 9d6a7f1498ba86547369be1eae5ce04e3ab792e7f91de8fd84f0f930c96542b5
   size_bytes: 11691
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/attempt_manifest.yaml
   missing: false
@@ -146,8 +146,8 @@ source_inputs:
   size_bytes: 39117
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 72fb2e4efb34b3928f352f72dcb78b2f6448a95355ef0b6482ea3d7d3bd35ce4
-  size_bytes: 1817
+  sha256: 91baee6560330148223ce4d9792dc1c4e0476f78bb9948ee6edbe9376da452a1
+  size_bytes: 1775
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: d467ad0b7770046d0b07f300f6d5a72d9587c90e37175d0ce36fa4032beff5fa
@@ -162,8 +162,8 @@ source_inputs:
   size_bytes: 37562
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: ecead888f12ce2047834ee0b372b48553bb137401666dac36c184b91baf23203
-  size_bytes: 1806
+  sha256: d2027d0ed7335905c3fbf19a4f2781b9b572dac737e52c35cdeaf2d9ad094478
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 68b40bb9feaaf087cbdac2d9f908ba81ea6248f23b20f14de13342129428fd7b
@@ -178,8 +178,8 @@ source_inputs:
   size_bytes: 29929
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 22d81e092d2cc1845b028599a5b3a6820edaa76faa116a3328daf80f8ce87bee
-  size_bytes: 2678
+  sha256: cf2647fbc2d51e1d005a839140aa22156bf951c6a01c39f56c6d359d2c46ec18
+  size_bytes: 2614
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 8f1fb85672201a3e9585346c925a9ab88bed2cdfa544eb92faebec4359d09cd8
@@ -194,8 +194,8 @@ source_inputs:
   size_bytes: 29817
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: d1044eb252c87b9ef08246a59518e9d4b212557a6cd0ec909d6adec192c3140d
-  size_bytes: 2670
+  sha256: cbd8d9717d3c8769bb242612a6ffc851a0e8c70c88eb97b1c73638563cf966f2
+  size_bytes: 2606
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 0497fe790a86713f719ef1016a887aa58ed2bbd93f4fbd886eb11c36dbfd0269
@@ -210,8 +210,8 @@ source_inputs:
   size_bytes: 39124
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: d13c84e4e5b7d1e31290cdc8457bbd25405fedbe006b66197bb60b7bc2d02764
-  size_bytes: 1816
+  sha256: 939ea9b5f657c7bbbe8b5b419cd545b9d69ffc8761b5196b7de579a058ec4da9
+  size_bytes: 1774
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: d0138a079857178981358c6ab9f5398bf05b9206c0d2a23bf8d27241cd664464
@@ -226,8 +226,8 @@ source_inputs:
   size_bytes: 37568
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 6733191f39ca30221e61a2ba2f0125ba31f5e4a3400c4d75fb16e489a01341af
-  size_bytes: 1806
+  sha256: feab3c0fa4d12267668cfcd92db2d38458a2fb45544bdce21db8b2e1e0debf5d
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 0aa223a5d9dac7a9b304e3e350bfb071292f60c85e88de5684260baba4b119db
@@ -242,8 +242,8 @@ source_inputs:
   size_bytes: 39127
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: a2238cb72e38145accc7774e021c5a2cdb837ff7db507ed144fe333d0e45332b
-  size_bytes: 1818
+  sha256: bd736fc07aedba113b3b9290250a10405061607a9eea8c6d4bf98aac82160113
+  size_bytes: 1776
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: deae7b6b8326cfaaa33233eb9af5bb5ba93fddc23d5d618cc58d049a60ce9a10
@@ -258,8 +258,8 @@ source_inputs:
   size_bytes: 37571
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: f34fb9c76b16ad5e05eb0313eae58de22beb9052c2a837aeda2675170888e9f1
-  size_bytes: 1807
+  sha256: c1291d55e54b09bacf536e477e3b4a8fb8eb6061d528399d8ac0bfb448934997
+  size_bytes: 1765
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 50beaed701fc0e87bc7034e9dd4092460720d4044844a39dd76d94cdb3a5081b
@@ -274,8 +274,8 @@ source_inputs:
   size_bytes: 39116
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 116ce1667daff108ca00a102f7d81fc902961ee1488ff7a87623e45ef4cfd746
-  size_bytes: 1814
+  sha256: d1bb0c4efcbf7a0a74a4612fd4811e35f99d6477a28df41bc3404a1b37f982d8
+  size_bytes: 1772
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 9ecc0a1dd7d2e764b21063ac3efe71af5d1fa958be6bc1861d51e1e618443ee3
@@ -290,8 +290,8 @@ source_inputs:
   size_bytes: 37564
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 4c94f8338b6dc8825f8ba27155e60f6f6ce657a8412cc468f3d90c347de96b8c
-  size_bytes: 1807
+  sha256: 1411a08c3943442f4751b8431438010e434c9fab9fec8a1e752ee5294f5e42c3
+  size_bytes: 1765
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: bcc9ba036022b88a87a6a45991833274c46dbed0449391b7b6144c94bcec1545
@@ -306,8 +306,8 @@ source_inputs:
   size_bytes: 39122
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: e6315d2043bc7adb03d9837c374e6817c27e9cf57e94940ac3d9692b4c73fdf3
-  size_bytes: 1816
+  sha256: 44e03153ead51071344e585103fd2002b521cfdc95944dc209dd303895fa29fb
+  size_bytes: 1774
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 9c18dcea3f9ae8e276d7919bfb7ebd369e4bd6cf5cd44b2196c1bff20776b595
@@ -322,8 +322,8 @@ source_inputs:
   size_bytes: 37567
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: b46bb0845ecb54a40fb2e4ff42674335bb2d2dad5d82a490acfedb63d186b52f
-  size_bytes: 1806
+  sha256: cad9ff389c618621cbf757ec603a161d7024e7bbec43b7bcf6b6c8fdc81f35e2
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 9cadd6780bd26899756708393292dd93c782cfe58daf117563408b5430bde87e
@@ -338,8 +338,8 @@ source_inputs:
   size_bytes: 29923
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 47239cca536d594cde9918a8e81cc832eba4870b245595332ebf14a3eacec56a
-  size_bytes: 2676
+  sha256: 7b6f33fa2e9a65c4f71c8c0c4cb8fdea8da3d3d94e8761531349bde4ccde8e67
+  size_bytes: 2612
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 4f0f8261fa5135baf96b305add06d40feba61cf4c0cfc3b195633cdcaf161ea6
@@ -354,8 +354,8 @@ source_inputs:
   size_bytes: 29810
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 89a0442d067f1bf06fd34d260c046afe85a7916b20696e3be2bae6c018d1f2e1
-  size_bytes: 2667
+  sha256: 7ef0739b1a0998bcc8219065b2f0fc5007f14feeb32fc3f02df9a0c25a68ec4d
+  size_bytes: 2603
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: ada8ff79dbfe29f4285eec7eef2367e1690af14cbe26d0485a910a73cb7fc093
@@ -370,8 +370,8 @@ source_inputs:
   size_bytes: 39121
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 95486c8241c36c83c6903d23819161f0f38274b80314d0be4fdcc7c6686a0447
-  size_bytes: 1816
+  sha256: 3897ba8ba3580063eac375232b6709010729cb366cbac599c3b8f086808739b9
+  size_bytes: 1774
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 93bc0359e316de360dfe7db64adfd18a9ac1d9a365c4d6cc6fa8e07821812fc8
@@ -386,8 +386,8 @@ source_inputs:
   size_bytes: 37566
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: e4f723ac81d93327d84e756dc0096720be9d56dc2ab5ed7a7aeb5fbc4ca0d9cb
-  size_bytes: 1806
+  sha256: b71e748317a08017302ca672c2c5d91a23ba427be832ebb9a2044fa09a69a19b
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 888770b60d9983dda098a34b14b252ee48d327e692fa8fff9ce02235d9be1131
@@ -402,8 +402,8 @@ source_inputs:
   size_bytes: 29922
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 7c58bc31075686400998161f89571b810c1721a86a73628d6e96310f5873374e
-  size_bytes: 2679
+  sha256: 30381b652f99b5676843c618710d67b8a17203693bf395abeb43299d0a747168
+  size_bytes: 2615
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 03c18509fa76bf1edb484c845f11c1bf61b26169650578512b91303ecf94d391
@@ -418,8 +418,8 @@ source_inputs:
   size_bytes: 29805
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 64b10cb0abf2e654f71dd842f54531cb606df6830b67521dc94cb2e7165a300a
-  size_bytes: 2666
+  sha256: 1c24f3224bd29ed2028ff1e92840a84ec757de592e8272cc03680da7906f76c0
+  size_bytes: 2602
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 256996c3be87fc4203fcbbb43d92856d5d6e96a98812a4f99565228d312c16b8
@@ -434,8 +434,8 @@ source_inputs:
   size_bytes: 39114
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: d945bd4f5bdff1027edf987866b4ae3c7cc733c678c2128d5ca10f0ff59ab2f0
-  size_bytes: 1817
+  sha256: 0fe2fdbd091620d9cd4aa992bc3d9a3cefa35aaf69ed57e1e7631b15a45dc24d
+  size_bytes: 1775
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 269283e4bd6a734235baaa3eac439fcb43b29b2b4fab7c64fa115f5ab1a6a1e9
@@ -450,8 +450,8 @@ source_inputs:
   size_bytes: 37559
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: b680a66059c851f497f1d523de80a28f3b17bc0fea6c5e4c5beff5cfbe2813e3
-  size_bytes: 1807
+  sha256: 9312f78dfcb16bd635636d8b5089415df18c6cc1b23a4a3707024dd8d948aa84
+  size_bytes: 1765
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: dde63b68e5ec4807ab544ba753f02d14a0a4826283d5956c1658c8e51df52e54
@@ -466,8 +466,8 @@ source_inputs:
   size_bytes: 29928
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 3af58094df042b97ba3537f841cb4dd2c45a0ef9f27008cf3806d2ed84af3e95
-  size_bytes: 2676
+  sha256: c953ac30fabe887433f950e4c5a32ccbbcc5e1e2e3f2fc74c576e0e337f8cda7
+  size_bytes: 2612
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 90b5bae2ffa99c1533609a1e1f9c6cf29fde334a5a52a36ae8545ea0b01650da
@@ -482,8 +482,8 @@ source_inputs:
   size_bytes: 29816
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 3b0d3e591333a2633ca37a4b6f05671577157b0099f7caf03b6cabd6a12e314c
-  size_bytes: 2668
+  sha256: 85b58f3843c479ea0ccba864b1063c55c42db11f7bf1e9c9593bcf5723eb721f
+  size_bytes: 2604
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 446397251d57c3bfbb436b959f0218cd07ecb2555a64805f198b2ff8bff0bb76
@@ -498,8 +498,8 @@ source_inputs:
   size_bytes: 39119
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: fa20eb9f43c825bac0e77c7018032e99a75c6bd12a2313c91a22ece8dcfebbd8
-  size_bytes: 1814
+  sha256: 7d0b4034c0b6caa701e5d51b9e07d3cb1bced1e16fc81b112d39c9a73295a964
+  size_bytes: 1772
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: f879f0bf6f02646ce68b29d3236496a634cd948c82915b40dcfe4e24632997bd
@@ -514,8 +514,8 @@ source_inputs:
   size_bytes: 37566
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 22de8be7755a3663a75bcaaa22e89f52bcfae04bc8b80eb820a2dee7d6ac0bf4
-  size_bytes: 1806
+  sha256: ea0d28925d4f9d9a71e11ef5f20388b61b72492be50d6cf1d4fe606e3fe3d559
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 0a64e69160f8abce0ed1257b0687e84876c4015238b16d5c024c418d432f5c46
@@ -530,8 +530,8 @@ source_inputs:
   size_bytes: 39116
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 081a5802ae6e344ee34f012e5570289c9df7aa36522ac048cd1b28ad9db15d8f
-  size_bytes: 1817
+  sha256: c4c02d60f5b125ccdb0d488b949d5f63a64b0017093c31bc9cc87248debbfc9a
+  size_bytes: 1775
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 23b9c87d9732b5ccb6e4bb82cd0e65f2bc642d47cc2001d8dcf27bb9dd5ef640
@@ -546,8 +546,8 @@ source_inputs:
   size_bytes: 37560
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 2d61c5e3a206b6d5ae9fc390b8fca0b5529d1bb64e8db934dd92cd1ae36c77d1
-  size_bytes: 1806
+  sha256: 24e94230b617622374f94375b2c11dd5b20b3d6eb9da8fd35db23263434486a4
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 2880f45373e5de55153b2446a2c6d59647f0b87450160d7809b69bfc41192a05
@@ -562,8 +562,8 @@ source_inputs:
   size_bytes: 39120
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 0d2de24b8e728c717d0b9589520be0bfa8c8347e1efe8a024e9148e4c151c207
-  size_bytes: 1816
+  sha256: f02379b51b3f2f7ca3552944c76d72d267351fcbd2420147fbb10aac5416a98d
+  size_bytes: 1774
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: ac8ed46e99731eb320d3558cbc8aad66c0b7a460ff8642e302d15df3246b2eb6
@@ -578,8 +578,8 @@ source_inputs:
   size_bytes: 37565
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 1ba46287f147ce5b72bb0d074c1045c93022bd9543d16ab786da4d79956f83f7
-  size_bytes: 1806
+  sha256: fe379c6fb583fdd7ab7818a956291b76d576941321a255a0bfe9c60a6f664a09
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 6052c8566ed96e1f3ac56e86030cd1375ad4bd8cc362125268009ee8976094bd
@@ -594,8 +594,8 @@ source_inputs:
   size_bytes: 29911
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 84f0589811d092415e40745588d991820ecaf7a7b2f944d0cbb096cc7dc4dbfd
-  size_bytes: 2666
+  sha256: b5f2a04e2e9bcdbaf2cb9cacbc1a25bcbc2496c1f1e2501c240d9be1a266ada8
+  size_bytes: 2602
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: d9808359bfac870bafbedbb4c300c63af826d43088300d3fcdb3098d40c2dbf8
@@ -610,8 +610,8 @@ source_inputs:
   size_bytes: 29799
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: df86501bafb62f55dfb08fdea21c66fbceecf5ff9fbb2a628e001c24a5ba0fd3
-  size_bytes: 2656
+  sha256: bdb3aa0841cca26e46c44b6a8802f71d94ef99fd0cd6e8218a518a7a755c7c21
+  size_bytes: 2592
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 535879c3bcb90984d9627c4a0a2f023ff68c628a8f8e9bb237f848d09a204dea
@@ -626,8 +626,8 @@ source_inputs:
   size_bytes: 39107
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 74e7c0dac882d973d640f87e69df8d99d18847fd6755a2a434f17d0edb91659e
-  size_bytes: 1806
+  sha256: 30a463b7b410ecf11ebe082f095c327445f06cc9d57535cb348e4da14ab30827
+  size_bytes: 1764
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: e4441faf9b3cd85b46f4764bc88983e5b82cf6dfcd1ed5c4df7bbd569c30e4ae
@@ -642,8 +642,8 @@ source_inputs:
   size_bytes: 37553
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: f406a11d8a8d22e475cd63339d0428d22d4d2fc49643f04d98323d28c6dc2286
-  size_bytes: 1797
+  sha256: e70132df4126c6a734314bfaec5e80c3a493a5d78dd224c74b5dcde701bf1239
+  size_bytes: 1755
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 384df9bb80b93f7bad505dd3c1d1ddfeb9e5c9eb183592a82891ce0ae69a4d8f
@@ -658,8 +658,8 @@ source_inputs:
   size_bytes: 39143
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: c439f0b3bda7dafa00941710dccd50117ace7d42359c9abe8f4ea33e37e123cf
-  size_bytes: 1817
+  sha256: 3137aefb13da29d0c9d6e79200143029cba93b34106a2e0009294d239bff2754
+  size_bytes: 1775
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 962bec02bedc239d981c2afa40888d6fd9931a2e40476a49c59779b1fe3466a3
@@ -674,8 +674,8 @@ source_inputs:
   size_bytes: 37588
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 19db7c50313b64e022f79e5a30696dd1fc1e6b6cdd892b45b86f61ada86fad45
-  size_bytes: 1807
+  sha256: 0aaf0fc5111c53a9649ba43866c9986054ebd270840c5e126f660a4e40e1f93a
+  size_bytes: 1765
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 7fd3c71dc6b143b07cdab2a6c9b2a41b4f2acd8ef13c5c43989ef76fb07d33fe
@@ -690,8 +690,8 @@ source_inputs:
   size_bytes: 32550
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 43ff0a86e2ffc3191132145d3e2fd4ee6657534f3af756cefa95c4793e3de1d8
-  size_bytes: 1841
+  sha256: 7a2e1d453041ec15f9483f823741b8bda31642b8067be155095853b265cb06aa
+  size_bytes: 1799
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: d172434fcdeb71a052f2c314b04753e08411170f90f5819e0e31cda7ef546f03
@@ -706,8 +706,8 @@ source_inputs:
   size_bytes: 30994
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: e25e9fcc53f81c95ded7ef93f6271216081c571a94a0a594725aabadab3512f3
-  size_bytes: 1830
+  sha256: 9832184f58b9ca3d4a55afeee816af7762dda7676d66a688b94422f8f3929a91
+  size_bytes: 1788
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_001_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 729067030f33724da2d0166cee33febc6faac5f50daacefb3c3f4c7b4346f413
@@ -722,8 +722,8 @@ source_inputs:
   size_bytes: 32572
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: b2fc391dae16b8963c070617f07f3cfdc55bcb117e7f4b36d5f24dfe4d568f2f
-  size_bytes: 1849
+  sha256: a52e06978494f76739ba22983d99cf6da2eceb18eb09cc5e80b531ce2b8f59d2
+  size_bytes: 1807
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 55d9f0c17e562022aa32b465f306aee01439deef6d9e45dfee5ccb417e31a146
@@ -738,8 +738,8 @@ source_inputs:
   size_bytes: 31014
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 645ffe6f1a5898dfe6b6e18930daf83dd8bc6d966751bd029bbd1a57e1590ec8
-  size_bytes: 1836
+  sha256: 5de3b8fce0c702c826ee59a060656eecb423bbec53e61c8910490c84a3a2469a
+  size_bytes: 1794
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_002_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: c399e3b897376c0c574f7684216cc8bb6041d539d88c588b20fdbaeb672df4bf
@@ -754,8 +754,8 @@ source_inputs:
   size_bytes: 30328
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_research_oos_score_band_inverse_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 5cd6b3aa61f412cdb1b18589c661d477c5fc7e1ade80b990d153e52e14636911
-  size_bytes: 2746
+  sha256: b401c2143800efb2dcc77ca1110ff6bc68f0a2f602ffdd97c02165c17d2ba2e3
+  size_bytes: 2682
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_research_oos_score_band_inverse_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 4691b6253c9eb86297bd171df6ff44ec8d2de6469aa813de69d20b2b006f1ba0
@@ -770,8 +770,8 @@ source_inputs:
   size_bytes: 30213
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_validation_score_band_inverse_side_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: b27b4475be1334af7a4b5c9422facb055510787575fb66235b351adec62f94e5
-  size_bytes: 2733
+  sha256: 00252ba132490c28ea3e079e124c776923b8c4b614ba03b713b88197a5da42a8
+  size_bytes: 2669
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_validation_score_band_inverse_side_v0/terminal_run_summary.yaml
   missing: false
   sha256: 923c2ef641284fda1634328ea91faf13948e56c4713f481cdf032789aae9c185
@@ -786,8 +786,8 @@ source_inputs:
   size_bytes: 32561
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 53fe28f1950760a998a6ba798619c23ce6c9641c78cc1ea5835a6a9f896bb5af
-  size_bytes: 1841
+  sha256: 0b82d02a0f091ef7d1532e8045245127eb7d559ad575dec8a3bfcdf00329ea0e
+  size_bytes: 1799
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 942da41d0b083cf2d6f300542c2577fdb2719d02556e56c8324ad75d3aab19b2
@@ -802,8 +802,8 @@ source_inputs:
   size_bytes: 31006
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 04c272e652d38aed5a988bd1a2db3f8f089fa2c496e1c0f9127d5079103a7049
-  size_bytes: 1831
+  sha256: e81e65884ab064ecc689b8850467a6fe0e3b2724dd474c166769c81b4f33615b
+  size_bytes: 1789
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: ee932945e90c0e5b3bf11e851051e22948652f2347f891eec505650211dc1005
@@ -818,8 +818,8 @@ source_inputs:
   size_bytes: 32564
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: ce56506a50c50a142640a77f2511cf1659b27e07ae7d958484b745c5413442ec
-  size_bytes: 1852
+  sha256: 7716cb4688a4fe9ba506ca4d4cb77554ce2aa832cd91885456eab2ff3afae3d2
+  size_bytes: 1810
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 51b62343200fbcf00baca21c6cff13df654da82df90977487fb347f48e9cc381
@@ -834,8 +834,8 @@ source_inputs:
   size_bytes: 31009
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: e79058eac211462af0f2e2ca46ce57ed01b43b698a63170cdfa7a0fc4a6951e0
-  size_bytes: 1842
+  sha256: 7813d20761164fb70b87bbce21133e3a70ff32f444a473048fc0cfaa59fa46dc
+  size_bytes: 1800
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_004_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: dbf309728ae682a6d1150b1089cd457c77ed58904c1d5f7c45b4eec6160702a0
@@ -850,8 +850,8 @@ source_inputs:
   size_bytes: 32551
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 06e33782107220185c8639a2f7212a9620e308452920c0dbe61bed2a517d9460
-  size_bytes: 1840
+  sha256: 8c28e656d9d4b864db9056658702f6d246a9d93b056a8c5f2715adf5999c874c
+  size_bytes: 1798
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: cb63138fb9f0ab52a72260ecafd9b32540877769de117e2ea25f677cd735c863
@@ -866,8 +866,8 @@ source_inputs:
   size_bytes: 30997
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 05473768b44dbb5b3213e790777fa8b266bfcc23a37b7b78f540727879f915ba
-  size_bytes: 1831
+  sha256: 3d731577d45cfb1708128a7958383bd4adb72dffab1d0b5f83e1ddd7ed07e6c8
+  size_bytes: 1789
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: ce09ce5f407cc1b0d63e98d20e27c9c692efba7158ba738c4d43b959d135d476
@@ -882,8 +882,8 @@ source_inputs:
   size_bytes: 32552
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: f6ca8290e1760448aae47631d6d25b99dec5b82a8832b1bbc0455b4915cebc22
-  size_bytes: 1840
+  sha256: d739708225ab2068837bf7388c158c8371f7a42c5f015afedfae1ecbbdc80667
+  size_bytes: 1798
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: d4369f19d92c97fe0a8545ff134d3cd0df26ce6a1a519f546ab48bf582ff72b8
@@ -898,8 +898,8 @@ source_inputs:
   size_bytes: 30996
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: f8cd503a77cb21e9a5fa8eba556eef514cdab212fa61b3182a7bf6adadef5976
-  size_bytes: 1829
+  sha256: 7808db3334e5c6472228cbe03f683491567e24724759be9b5a77213ee809ea0c
+  size_bytes: 1787
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_006_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: bb3263609da0f114f68c78ceca3d74ba7be9bec7d1329be57494dd4713d20b23
@@ -914,8 +914,8 @@ source_inputs:
   size_bytes: 32563
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: e53d172943b0f5032bfc0b9b31e2da2f11932e5bf35b5796ad7b6e1eb2a59a03
-  size_bytes: 1849
+  sha256: 945cc7fd36f72de7a7222d49d7ac43e2a0d59fc30326ebdd58b0cebe98a0c39a
+  size_bytes: 1807
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 920c3d1df8a5758febe0e08e78ed156be8b1502a5f9c9688bf3a1caf8ffd9d43
@@ -930,8 +930,8 @@ source_inputs:
   size_bytes: 31008
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 5c10ce0063b61c97255a13b18e80934e5d38a68ac79e42a33cc96b8cead20857
-  size_bytes: 1839
+  sha256: b002b6fbdbcb98963ba00e369900ec32b96aea4729975d0954f1557f7504aacf
+  size_bytes: 1797
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_007_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: d5c98863a27435603e1dc9296c516552ba0c940c764101e40002362a210a0247
@@ -946,8 +946,8 @@ source_inputs:
   size_bytes: 32552
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 157a0b5fb8de561a4a62d06ca37f10ad1fac6d495f8bbf604c8d89346fc72241
-  size_bytes: 1841
+  sha256: a6b3f0d4c528ff3af51c51c09765709d7c43b78b13c639a7abe192e4879ac737
+  size_bytes: 1799
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: f271f6c6eb08d67f869416ffe8e24b80e843febfd02bc9a50adc6a3656f144cd
@@ -962,8 +962,8 @@ source_inputs:
   size_bytes: 30997
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: a20f467e5551ff102f41c47a13ad3c345d4a3404bffe41140d52508ad069ca7a
-  size_bytes: 1831
+  sha256: 05b04cae3c735551f365ebb1218fa8dd2e7347cbca8cee0d704c695c4231ce25
+  size_bytes: 1789
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_008_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: e7c079e4d99de20053aa119eba271838850f3fc3390be57cd810148a46f75ffa
@@ -978,8 +978,8 @@ source_inputs:
   size_bytes: 32570
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 1dad937e84f09024e97aaa36069b3e28aa369252a193b86c7557f0da622ab8e3
-  size_bytes: 1849
+  sha256: 119b8776a672daa60cff387dfd22c9bfeab65fa7dd5242b4018472029bddb0f3
+  size_bytes: 1807
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: e57358b664e56079618964f7ec187a354d19c637358234a4b133d6a3b6a5fa84
@@ -994,8 +994,8 @@ source_inputs:
   size_bytes: 31015
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 688b7765daddf5ab5e56366678753b2d379dfeb6ddd9839c19636fd34b366ffd
-  size_bytes: 1839
+  sha256: 0b365c4025335acccdf4043e291b697303ab8a789e2495542aab5ce7b289774d
+  size_bytes: 1797
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_009_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 789a22e3b82f35e311c27c4a14e187bc17f8012c77d298b8e2a54e416842e3ce
@@ -1010,8 +1010,8 @@ source_inputs:
   size_bytes: 32568
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 04de5ecc657197f6564f9f0d218417397c242dce17e1096fbed4c81436e4e39f
-  size_bytes: 1833
+  sha256: 459b5539eeb3a9f9a85b37098b2e1289245b61c37ab607360ff5cdeaca697728
+  size_bytes: 1791
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 85e04c5eaf45c34f73a7ef2eaf0b266a27ece0ff1a3c76e82f870fb0c5435065
@@ -1026,8 +1026,8 @@ source_inputs:
   size_bytes: 31022
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 99ab83463a7c85bf4de7240cd2916d67cf62ba9a8709b4940bcee6a3df3f4f9d
-  size_bytes: 1832
+  sha256: 3b248acde047e384d698ceb0e6472b1db32fa6535d4c58c9e7588f23a5f098d6
+  size_bytes: 1790
 - path: runtime/mt5_attempts/attempt_wave01_st_cell_010_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 38086f519e6d51ea9641945dc9d003f696273f699e4bd36a8865da9f049662fa
@@ -1042,8 +1042,8 @@ source_inputs:
   size_bytes: 30635
 - path: runtime/mt5_attempts/attempt_wave0_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 90aebc8d0b4f8a98cbe17f155b587f5d85f38f354d109044d6dc897b2c5beeb6
-  size_bytes: 1447
+  sha256: 5750db3c275300d5bac6c63840e310e08f473bfc7bb2423cff77e3806b0fe45d
+  size_bytes: 1410
 - path: runtime/mt5_attempts/attempt_wave0_cell_001_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 559e204ca810459371ef94927fcd608f8c8d31f1f68faeddd2cea24fad2ccf79
@@ -1058,8 +1058,8 @@ source_inputs:
   size_bytes: 30547
 - path: runtime/mt5_attempts/attempt_wave0_cell_001_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 6e27367649b0d2dccbe99c8016d9b68a85a9af037dad1ee5314a20aa131fca87
-  size_bytes: 1436
+  sha256: 73e17a9dac138133dd6da5715e360835add10c9b20a1cf7435eea6fe262cc537
+  size_bytes: 1399
 - path: runtime/mt5_attempts/attempt_wave0_cell_001_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 7584991adaef55f2830a81d8da8faa196993c18766de92812896a8ffba597943
@@ -1074,8 +1074,8 @@ source_inputs:
   size_bytes: 30698
 - path: runtime/mt5_attempts/attempt_wave0_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 9577e465629f2a79b6acb311eeb541e8df5b7c01c6bf47f0a8cdff8f8bf6cf5a
-  size_bytes: 1472
+  sha256: 262f8088ee087d6b6caf71ff29215c347092421739c022dee892a27d952d21be
+  size_bytes: 1433
 - path: runtime/mt5_attempts/attempt_wave0_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 86b8e7434a0727c5d02361f4703289ebeac58f95cb81e1c239efda1197f34826
@@ -1090,8 +1090,8 @@ source_inputs:
   size_bytes: 30610
 - path: runtime/mt5_attempts/attempt_wave0_cell_002_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 7f99faa4534e6a6103f1bd54880a34f4beb08367753f03fe0fea19661f7ed663
-  size_bytes: 1461
+  sha256: a4c4e9ff2e3e5ae443e698431ecf7269d129ce6e6f3e6b2d6382d1322838b9d9
+  size_bytes: 1422
 - path: runtime/mt5_attempts/attempt_wave0_cell_002_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: a728b0bcd0b83d174989c122c17a8d9398bab46178d72dd8523cb97b6959dc75
@@ -1106,8 +1106,8 @@ source_inputs:
   size_bytes: 30636
 - path: runtime/mt5_attempts/attempt_wave0_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 8e8e7c30e3c4f513b8c8ed422ac0349e11ee9ef0af37aa75e67f316ce1e7285f
-  size_bytes: 1446
+  sha256: 25519952092fee0f5dc0580c3d70be76dabfe7dae4b903afab2d8d25f7599cc6
+  size_bytes: 1409
 - path: runtime/mt5_attempts/attempt_wave0_cell_003_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 57e4c0761ed02f96cdd2322ece26ef8bc063d996695750fac0a7965d49718195
@@ -1122,8 +1122,8 @@ source_inputs:
   size_bytes: 30549
 - path: runtime/mt5_attempts/attempt_wave0_cell_003_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: bdf1b4fd751678831a12b344eb859c8e6b9f7e2891260b4bdbd6750aac12fae3
-  size_bytes: 1436
+  sha256: 7e7e466083fe4ca8b28366fafb146930faa78a47f411d6a754ce3fb05d1f7388
+  size_bytes: 1399
 - path: runtime/mt5_attempts/attempt_wave0_cell_003_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 441e14e0c72018afce719c7f294f9db40d668e2f6ea506c78743f553a3f1b22e
@@ -1138,8 +1138,8 @@ source_inputs:
   size_bytes: 30698
 - path: runtime/mt5_attempts/attempt_wave0_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 3d176372075ef748cc3a1d2d10879c2e7e68c26efd6a8102c4c028e7b319b932
-  size_bytes: 1472
+  sha256: d8d9edcfb2f5c23adcce97bc6820ead4143dfc20d435dc2818db870bd5c14418
+  size_bytes: 1433
 - path: runtime/mt5_attempts/attempt_wave0_cell_004_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 66d2f3457c2ac77aabead5a0ae358e7279b2ae31181df4f6652e9b2f78fc1d0e
@@ -1154,8 +1154,8 @@ source_inputs:
   size_bytes: 30610
 - path: runtime/mt5_attempts/attempt_wave0_cell_004_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: d61b2a3a92e1240db2fd684045d7778d32775419e1f893a13478c4adbdaf12e9
-  size_bytes: 1461
+  sha256: ffc209260413f3401245b2c7b0147d43a09ec62003d614e852005d6ceb5722cd
+  size_bytes: 1422
 - path: runtime/mt5_attempts/attempt_wave0_cell_004_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: e23e8fcb6d555b7712a235745e2a2d004d54f4f77ea5c98215f71eb9be48e736
@@ -1170,8 +1170,8 @@ source_inputs:
   size_bytes: 30703
 - path: runtime/mt5_attempts/attempt_wave0_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: d99e3c1f0475c544af8021fe31340c1867258b5ef4c8d75b283305c037e7732e
-  size_bytes: 1473
+  sha256: bf1db1728a57857d4aec7493362d5795500855da0259fd5524b1fe83d4b906fb
+  size_bytes: 1434
 - path: runtime/mt5_attempts/attempt_wave0_cell_005_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 5bd868e2b67e71649d737fff548ca5693af135466c106e9528022b9482adf7ce
@@ -1186,8 +1186,8 @@ source_inputs:
   size_bytes: 30617
 - path: runtime/mt5_attempts/attempt_wave0_cell_005_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 1738dae370dcd6f190cce54b1467b4d8e87d5ed0b737e45dfa82658e82656559
-  size_bytes: 1464
+  sha256: 58714373a771851ddd7f6510a8ba5bd35ea05a962889510103585ec6d3e7d51c
+  size_bytes: 1425
 - path: runtime/mt5_attempts/attempt_wave0_cell_005_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 2d180d19287ed5d0d5d96baa439181518526fc94793a08fd1a8d11e07b661b30
@@ -1202,8 +1202,8 @@ source_inputs:
   size_bytes: 30635
 - path: runtime/mt5_attempts/attempt_wave0_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 595843224eb800e2daeac93580181cbd5e477062ecd262352915c3715c304975
-  size_bytes: 1444
+  sha256: f655e01d5a31546f55981d72082ea15714dfaeec1a02b3c7cb487c7d56542856
+  size_bytes: 1407
 - path: runtime/mt5_attempts/attempt_wave0_cell_006_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 0b1b6bdda91a8fa83db8f64d55c9d475246c76ec32f77bdd663793271b1c8bae
@@ -1218,8 +1218,8 @@ source_inputs:
   size_bytes: 30547
 - path: runtime/mt5_attempts/attempt_wave0_cell_006_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: ae05d9752fde2739912e9b0b43a3ce12a1086dfe03aa15f214a0cbb65616e748
-  size_bytes: 1433
+  sha256: db51d9b7adb46bf55d491ec1b3ab6546a31e1b7c87a6e31be898b03cd38f691b
+  size_bytes: 1396
 - path: runtime/mt5_attempts/attempt_wave0_cell_006_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 766d9ec6f2fccb61fbaf068ca2ea07735b6531a4339b8b86705a0bf0abfa4eb2
@@ -1234,8 +1234,8 @@ source_inputs:
   size_bytes: 30705
 - path: runtime/mt5_attempts/attempt_wave0_cell_007_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 5c83ae8167aa479935117e282338dd9e1f9e1998ce1fecb88dd344866abe4208
-  size_bytes: 1460
+  sha256: 34c12a2605670ad893dd99455a92c2b3436b7d611a5782a2e1bae5dd8e04d2a5
+  size_bytes: 1422
 - path: runtime/mt5_attempts/attempt_wave0_cell_007_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: d33377926c49dcd5eb07123640d71800793f146f71640e924e883c8898915966
@@ -1250,8 +1250,8 @@ source_inputs:
   size_bytes: 30615
 - path: runtime/mt5_attempts/attempt_wave0_cell_007_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 38a51c4eb0971616e6c8ff999eb3ffc9bc35a0474b57c2dc452865cdc0ebacc2
-  size_bytes: 1447
+  sha256: 53999c1169e3569ffa35255d187eebdd6214b29344546b90f8f5ecca44b281a5
+  size_bytes: 1409
 - path: runtime/mt5_attempts/attempt_wave0_cell_007_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 5894978738f335c9e123142a075072b95c039a9df0170881615c99d37d2bd76f
@@ -1266,8 +1266,8 @@ source_inputs:
   size_bytes: 28716
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 3f19d110616af02f254aee57c94cba6fdd8790f39a3d9182de81ebfe1001206d
-  size_bytes: 2253
+  sha256: 390e058ee7ddf90ae4ff177f67b61177b741b7f00ab38282fcb420a1cb4aa659
+  size_bytes: 2194
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
   missing: false
   sha256: 0e22229037718da79ce066e7c9d1e291eae68886cea49786a3f76b550f149e9b
@@ -1282,8 +1282,8 @@ source_inputs:
   size_bytes: 28599
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 4cf0f2a6c7507467fc70f7ed7cabbd05a03841d9efe8062139bea805e65a9287
-  size_bytes: 2240
+  sha256: 47855644d93e055c561364edba25d364f862d97818bf5e792ab146fbe746fa4c
+  size_bytes: 2181
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
   missing: false
   sha256: a3a522ff73bdb011613c5e63d3164edc143f046f166bfc54555b00ca7a34cf27
@@ -1298,8 +1298,8 @@ source_inputs:
   size_bytes: 30708
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 6a46625aa4b4dcb3bb7c3077d0c0670656ce31c809f3310421885c826d27483c
-  size_bytes: 1460
+  sha256: b7ac2c6cce610e3c793220657e8cdcb0aa2c780e89312c7b4a8e181baf194aea
+  size_bytes: 1422
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 981ba1ea82f291b3b98a1d0de23fcdcc6d18e5a80bb72ce4355ee84fc51dc964
@@ -1314,8 +1314,8 @@ source_inputs:
   size_bytes: 30621
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 930d1c211a1260d42d0a2509e40f2cffec04e14c2cf3643dc121d5b199f14127
-  size_bytes: 1450
+  sha256: bd26ac1b0fd981fa936e3720d496aeb9aee20d9460e2c25b61d47268d5ef2d67
+  size_bytes: 1412
 - path: runtime/mt5_attempts/attempt_wave0_cell_008_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: acbafda193b97aa8f8b2fb4021f47917d5d83009ba7e23411daa2aff80e0178b
@@ -1330,8 +1330,8 @@ source_inputs:
   size_bytes: 30632
 - path: runtime/mt5_attempts/attempt_wave0_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: c05b6f8e54ce665d9e25e7a690499f930cbe82e91cc188da93b1e022557ab9fb
-  size_bytes: 1441
+  sha256: 3c18680fe673f65f8ebd576ab0b98186c3a6bb46744b952b0e765cddac86387f
+  size_bytes: 1404
 - path: runtime/mt5_attempts/attempt_wave0_cell_009_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 5f47076d26ab7f3c7a20f7fb25984ebb4f96c7d236e6f873a40d67a424bf047f
@@ -1346,8 +1346,8 @@ source_inputs:
   size_bytes: 30546
 - path: runtime/mt5_attempts/attempt_wave0_cell_009_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 2fae43b8c9c4fc46f139126c89a6cf729242d1d43136041cb57d9e83dd02cde4
-  size_bytes: 1432
+  sha256: e7a98bb9bdfbf724228c9fc29c6a1ff164ffdccfcad7236118055914c0f880b9
+  size_bytes: 1395
 - path: runtime/mt5_attempts/attempt_wave0_cell_009_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 1d5c382ea476d30fa83693f3301a68c27664f998f8b51a602fffeec817683e5f
@@ -1362,8 +1362,8 @@ source_inputs:
   size_bytes: 30625
 - path: runtime/mt5_attempts/attempt_wave0_cell_010_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: fa571524f38a7b9bc9c674b6f8c78bbbff95d498d85300825cb42450807416a9
-  size_bytes: 1440
+  sha256: 097d519aa601d1a46b11a561f25b9660ce3e8a147ad7fde7ac44e6c82ec711cd
+  size_bytes: 1403
 - path: runtime/mt5_attempts/attempt_wave0_cell_010_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: bed37bb17716fb57e996432f57a03cdceda73ca952be45eba37714e93f52fad5
@@ -1378,8 +1378,8 @@ source_inputs:
   size_bytes: 30538
 - path: runtime/mt5_attempts/attempt_wave0_cell_010_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: ac8c4fe8719c8bae55c6c72714ec23a78d23f582cebe0ee79ca2e1c91156a560
-  size_bytes: 1430
+  sha256: 25db25d5cd1cfe40e747839022a2877efe73cb0c65b086b8ba255139511aece5
+  size_bytes: 1393
 - path: runtime/mt5_attempts/attempt_wave0_cell_010_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 6d0b485bab74b51115bf1fd1eab214ebdab47c9e2140e2a1e044ea00d6c3d909
@@ -1394,8 +1394,8 @@ source_inputs:
   size_bytes: 28716
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: 66f3dc25dc923fda9edd58285fb499a616276685ed10f187781824519f2fd79a
-  size_bytes: 2255
+  sha256: c4772f3ddd87a2caf874972e4b2806cefe54c1e00a2827a1c169a047f52d638f
+  size_bytes: 2196
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
   missing: false
   sha256: aee1e52ffdc56634f99be62bbaefd4e75c645f57fce51d7e54b31172f53345d1
@@ -1410,8 +1410,8 @@ source_inputs:
   size_bytes: 28599
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: c99a8e94ea01b751ebe2f05beb4cca0db2cd31dec9fb7d96bbde3dee7dc6b955
-  size_bytes: 2242
+  sha256: 3e6937b6fc22102644143a6d30dd436c23c381608fdb4ba6dac3daae134603ca
+  size_bytes: 2183
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
   missing: false
   sha256: 6ab32149ab659b08c812a22f5308b382d8dd58ac0c72193d2d8c6fcd3737f60d
@@ -1426,8 +1426,8 @@ source_inputs:
   size_bytes: 30708
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: ab8c0f52b3dc03758c67d22b90bcc4d450274157c18427351980a3c392be4040
-  size_bytes: 1460
+  sha256: b5cf2e66bfc972ff892439e95908ee250fe958ac973b6de61462e97bd38fcf4c
+  size_bytes: 1422
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: ca6aa9a4685e362af7cbd797be9ab1960f306235b5d70e655e66108f593c609e
@@ -1442,8 +1442,8 @@ source_inputs:
   size_bytes: 30621
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 3f5799249e65873a127064d356dae8ce0b7318a735938efb8c83b4f756913ccb
-  size_bytes: 1450
+  sha256: 9ffbf51b9b2407af89f10dbd378ee73bcb0a2fb9ba42741d806a176c6b949439
+  size_bytes: 1412
 - path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: 1fb32a0c4cca92043146bb83429cd99c4a2f814db85c79ba185ad08347acea69
@@ -1458,8 +1458,8 @@ source_inputs:
   size_bytes: 28715
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: bc10351559ecf6de279794525dbc7aefc6e2e092c1240cc3ecf361d964f26868
-  size_bytes: 2252
+  sha256: d10fe23dc5f0d6f8cc018d04b2541b907238d95ae27fed420891e9530b63ccf2
+  size_bytes: 2193
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
   missing: false
   sha256: 54fadad46c69bb3e14005f865b8d09f4e5fbac1b825541960f1af9e3fbe02e7b
@@ -1474,8 +1474,8 @@ source_inputs:
   size_bytes: 28599
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
   missing: false
-  sha256: e9131828fe5551fb4d3a9c038ee5e1a522ce3027e703c5df8762855c14b62d9c
-  size_bytes: 2240
+  sha256: 411801f85458b93f97cf80d8a4c941ccd244c6c4ffb5d5b2b4f0ffa207cca0db
+  size_bytes: 2181
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
   missing: false
   sha256: a269e75780d1c27778b52481e301c05cbe8cd76372aa2d873478217c1c1036c3
@@ -1490,8 +1490,8 @@ source_inputs:
   size_bytes: 30709
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_research_oos_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 20da70d949e58c75398f6c6c4b14e29bb49a1fd7e45063ac0a50e71e05731b8f
-  size_bytes: 1459
+  sha256: e54c840406dadc70c186ec247e1a2c9617e39e7f0bb87d229fdef61d51fef786
+  size_bytes: 1421
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_research_oos_v0/terminal_run_summary.yaml
   missing: false
   sha256: 0e8e86381d1bb0567b752b432780d76989936db58d07827972cfe37a4b99f3fc
@@ -1506,8 +1506,8 @@ source_inputs:
   size_bytes: 30623
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_validation_v0/score_telemetry_summary.yaml
   missing: false
-  sha256: 74dfaf766b57cd736ffb13bfadb5768180a6a1aa480175856c0cade4af0bb8da
-  size_bytes: 1450
+  sha256: 2dc76781d674b4d61d993bd9e6dc1fccbe6e38e62fccffebf72db0b8fc580323
+  size_bytes: 1412
 - path: runtime/mt5_attempts/attempt_wave0_cell_012_l4_validation_v0/terminal_run_summary.yaml
   missing: false
   sha256: bd93d0cb67c2907105797c9715c6905c530916ca27a54d07ec70ceae8fdf1aa7
@@ -1561,16 +1561,16 @@ requirement_audit:
 - requirement: control_plane_operating_proof
   evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_output_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
-  evaluator_file_sha256: 5cd2d1da564aaeea6349fd4be2c45f8468f333ca61000ffac095c16f93d82f18
-  evaluator_result_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
+  evaluator_output_sha256: 6dd8b2b192dc2861a5b9dcd1332c7629800b7a6e08f98b55c92edddd28494406
+  evaluator_file_sha256: e6765d0334b7b41977b685149f78e4caaf24a0188d590ca9a19409b2de6baff6
+  evaluator_result_sha256: 6dd8b2b192dc2861a5b9dcd1332c7629800b7a6e08f98b55c92edddd28494406
   status: failed
 - requirement: research_cycle_closeout
   evaluator_id: research_cycle_closeout_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
-  evaluator_output_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
-  evaluator_file_sha256: 8b1ed1731e5280f48239dd9cb1fc0355a6d82c4a839ec8a4c880f90331c6037c
-  evaluator_result_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
+  evaluator_output_sha256: 4c1d26ba01d990b02052af698e0619d9b1b0d2e025afe4dbfff5efa08944773d
+  evaluator_file_sha256: 13f54ffe51e3095e79748f5e944d0108c94f934a4b674f4f7491cf683454b6ff
+  evaluator_result_sha256: 4c1d26ba01d990b02052af698e0619d9b1b0d2e025afe4dbfff5efa08944773d
   status: passed
 - requirement: routing_behavior_quality
   evaluator_id: routing_quality_evaluator_v1
@@ -1582,9 +1582,9 @@ requirement_audit:
 - requirement: runtime_contract_integrity
   evaluator_id: runtime_contract_evaluator_v2
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
-  evaluator_output_sha256: 12ec3e401229e686d35485be2673b98577458c5ef73e74aede79f4a69aaf125b
-  evaluator_file_sha256: 05d36278274b2ff6d69f54f7e8575958b7fc54a1d31e7171dfc1f11b4a8974af
-  evaluator_result_sha256: 12ec3e401229e686d35485be2673b98577458c5ef73e74aede79f4a69aaf125b
+  evaluator_output_sha256: 79a068cbd51662c1fc85dbf541e38d4733e381b5ed0fbbe2b160fa2a335d3589
+  evaluator_file_sha256: b1a3217aca1d50a7617d27ae454bb7ab7416dd1ce6af1129a8ae69364a1b11f9
+  evaluator_result_sha256: 79a068cbd51662c1fc85dbf541e38d4733e381b5ed0fbbe2b160fa2a335d3589
   status: passed
 evaluation_results:
 - evaluator_id: agent_value_evaluator_v1
@@ -1595,15 +1595,15 @@ evaluation_results:
   status: insufficient_evidence
 - evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_output_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
-  evaluator_file_sha256: 5cd2d1da564aaeea6349fd4be2c45f8468f333ca61000ffac095c16f93d82f18
-  evaluator_result_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
+  evaluator_output_sha256: 6dd8b2b192dc2861a5b9dcd1332c7629800b7a6e08f98b55c92edddd28494406
+  evaluator_file_sha256: e6765d0334b7b41977b685149f78e4caaf24a0188d590ca9a19409b2de6baff6
+  evaluator_result_sha256: 6dd8b2b192dc2861a5b9dcd1332c7629800b7a6e08f98b55c92edddd28494406
   status: failed
 - evaluator_id: research_cycle_closeout_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
-  evaluator_output_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
-  evaluator_file_sha256: 8b1ed1731e5280f48239dd9cb1fc0355a6d82c4a839ec8a4c880f90331c6037c
-  evaluator_result_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
+  evaluator_output_sha256: 4c1d26ba01d990b02052af698e0619d9b1b0d2e025afe4dbfff5efa08944773d
+  evaluator_file_sha256: 13f54ffe51e3095e79748f5e944d0108c94f934a4b674f4f7491cf683454b6ff
+  evaluator_result_sha256: 4c1d26ba01d990b02052af698e0619d9b1b0d2e025afe4dbfff5efa08944773d
   status: passed
 - evaluator_id: routing_quality_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
@@ -1613,9 +1613,9 @@ evaluation_results:
   status: passed
 - evaluator_id: runtime_contract_evaluator_v2
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
-  evaluator_output_sha256: 12ec3e401229e686d35485be2673b98577458c5ef73e74aede79f4a69aaf125b
-  evaluator_file_sha256: 05d36278274b2ff6d69f54f7e8575958b7fc54a1d31e7171dfc1f11b4a8974af
-  evaluator_result_sha256: 12ec3e401229e686d35485be2673b98577458c5ef73e74aede79f4a69aaf125b
+  evaluator_output_sha256: 79a068cbd51662c1fc85dbf541e38d4733e381b5ed0fbbe2b160fa2a335d3589
+  evaluator_file_sha256: b1a3217aca1d50a7617d27ae454bb7ab7416dd1ce6af1129a8ae69364a1b11f9
+  evaluator_result_sha256: 79a068cbd51662c1fc85dbf541e38d4733e381b5ed0fbbe2b160fa2a335d3589
   status: passed
 handoff:
   negative_memory_ids:
@@ -1643,8 +1643,8 @@ runtime_contract_integrity:
   economics_pass: false
   evaluator_id: runtime_contract_evaluator_v2
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
-  evaluator_output_sha256: 12ec3e401229e686d35485be2673b98577458c5ef73e74aede79f4a69aaf125b
-  evaluator_file_sha256: 05d36278274b2ff6d69f54f7e8575958b7fc54a1d31e7171dfc1f11b4a8974af
+  evaluator_output_sha256: 79a068cbd51662c1fc85dbf541e38d4733e381b5ed0fbbe2b160fa2a335d3589
+  evaluator_file_sha256: b1a3217aca1d50a7617d27ae454bb7ab7416dd1ce6af1129a8ae69364a1b11f9
 not_claimed:
 - runtime_authority
 - economics_pass
@@ -1662,4 +1662,4 @@ unresolved_blockers:
 - agent_observation_coverage_below_slo
 - agent_value_slo_failed
 next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
-evaluation_digest: 4a4d65a958998ebb09567de277d9eac50222f2bf3994e730d29f369ef9990495
+evaluation_digest: ee7f3610a0dce10ee4bd6016100333c71b2cfc0ff9d6c7822e068825fb5014fc
