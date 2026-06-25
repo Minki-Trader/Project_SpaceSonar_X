@@ -1,0 +1,70 @@
+version: agentproof_command_results_v1
+work_item_id: work_agentproof_transaction_rollback_v1
+observation_window_id: post_wp08_operating_proof_v1
+result_status: passed
+commands:
+- command: uv run python -m spacesonar.cli agents events --write
+  started_at_utc: '2026-06-25T15:42:56.163487Z'
+  ended_at_utc: '2026-06-25T15:43:00.661529Z'
+  exit_code: 0
+  stdout: 'agent events projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli agents metrics --write
+  started_at_utc: '2026-06-25T15:43:00.661554Z'
+  ended_at_utc: '2026-06-25T15:43:04.391355Z'
+  exit_code: 0
+  stdout: 'agent metrics projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
+    --repo-root . --write
+  started_at_utc: '2026-06-25T15:43:04.391378Z'
+  ended_at_utc: '2026-06-25T15:43:06.730020Z'
+  exit_code: 0
+  stdout: 'artifact registry refresh: rows=951 refreshable=950 changed=2 missing=0
+
+    CHANGE artifact_docs_workspace_agent_operating_events_yaml docs/workspace/agent_operating_events.yaml
+    size 3721->5039 sha256 0a7f7135ea7d1d36bc4172a628755ab448ba5ed603031d25b3f36c62cdc4a1f7->cf34bad6138347de68d485a9df7ce9470af786d1f5483a0cd97068c4ce3e8ad1
+
+    CHANGE artifact_docs_workspace_agent_operating_metrics_yaml docs/workspace/agent_operating_metrics.yaml
+    size 2277->2282 sha256 be8905140f6bb9d9f47972c47b6e6fcf9ae064d6104cf8401807f08bacc2a74c->6c45be4f1955586303f4f10a7e3e4ffacc3f88ecd355d2b0b4d9466f231b043d
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root
+    . --write
+  started_at_utc: '2026-06-25T15:43:06.730068Z'
+  ended_at_utc: '2026-06-25T15:48:37.701963Z'
+  exit_code: 0
+  stdout: 'transaction_id: tx_20260625T154416914075Z_6a6af29e_762c3c7d
+
+    status: committed
+
+    receipt_path: C:/Users/awdse/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/Project_SpaceSonar_X/.spacesonar/transactions/tx_20260625T154416914075Z_6a6af29e_762c3c7d/transaction_receipt.yaml
+
+    errors: []
+
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run pytest tests/control_plane/test_transaction_atomicity.py tests/control_plane/test_transaction_visibility.py
+    -q
+  started_at_utc: '2026-06-25T15:48:37.701979Z'
+  ended_at_utc: '2026-06-25T15:48:40.225448Z'
+  exit_code: 0
+  stdout: '..............................                                           [100%]
+
+    30 passed in 1.62s
+
+    '
+  stderr: ''
+  status: passed
+evidence_files:
+- transaction_rollback_summary.yaml

@@ -1,0 +1,158 @@
+version: agentproof_command_results_v1
+work_item_id: work_agentproof_cold_reentry_v1
+observation_window_id: post_wp08_operating_proof_v1
+result_status: passed
+prior_attempts:
+- version: agentproof_command_results_v1
+  work_item_id: work_agentproof_cold_reentry_v1
+  observation_window_id: post_wp08_operating_proof_v1
+  result_status: failed
+  commands:
+  - command: uv run python -m spacesonar.cli agents events --write
+    started_at_utc: '2026-06-25T15:18:42.853489Z'
+    ended_at_utc: '2026-06-25T15:18:46.789543Z'
+    exit_code: 0
+    stdout: 'agent events projection written
+
+      '
+    stderr: ''
+    status: passed
+  - command: uv run python -m spacesonar.cli agents metrics --write
+    started_at_utc: '2026-06-25T15:18:46.789574Z'
+    ended_at_utc: '2026-06-25T15:18:50.575910Z'
+    exit_code: 0
+    stdout: 'agent metrics projection written
+
+      '
+    stderr: ''
+    status: passed
+  - command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root
+      . --write
+    started_at_utc: '2026-06-25T15:18:50.575964Z'
+    ended_at_utc: '2026-06-25T15:23:57.935715Z'
+    exit_code: 1
+    stdout: "transaction_id: tx_20260625T151958172129Z_6a6af29e_415d7f5d\nstatus:\
+      \ aborted_validation_failed\nreceipt_path: C:/Users/awdse/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/Project_SpaceSonar_X/.spacesonar/transactions/tx_20260625T151958172129Z_6a6af29e_415d7f5d/transaction_receipt.yaml\n\
+      errors:\n- 'artifact_registry.csv artifact_docs_workspace_agent_operating_events_yaml:\
+      \ sha256\n  mismatch docs/workspace/agent_operating_events.yaml expected=94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32\n\
+      \  observed=3b413fce3055511dc1c998612e8a0a0835ae221b98d00ca4c4438cf1b9993e6a'\n\
+      - 'artifact_registry.csv artifact_docs_workspace_agent_operating_events_yaml:\
+      \ size\n  mismatch docs/workspace/agent_operating_events.yaml expected=4896\
+      \ observed=2428'\n- 'artifact_registry.csv artifact_docs_workspace_agent_operating_metrics_yaml:\
+      \ sha256\n  mismatch docs/workspace/agent_operating_metrics.yaml expected=6a331ee07f2760e8a5c6009ca4164a1edb137f64a8526bf583857a1c052aa9cf\n\
+      \  observed=1222976584d5f73cab6aba29c65655600262c565ce54036300896495d993f6cc'\n\
+      - 'artifact_registry.csv artifact_docs_workspace_agent_operating_metrics_yaml:\
+      \ size\n  mismatch docs/workspace/agent_operating_metrics.yaml expected=1364\
+      \ observed=2277'\n- 'artifact registry hash drift: artifact_docs_workspace_agent_operating_events_yaml'\n\
+      - 'artifact registry hash drift: artifact_docs_workspace_agent_operating_metrics_yaml'\n\
+      \n"
+    stderr: ''
+    status: failed
+  - command: uv run python -m spacesonar.cli project workspace --check
+    started_at_utc: '2026-06-25T15:23:57.935752Z'
+    ended_at_utc: '2026-06-25T15:23:58.986079Z'
+    exit_code: 0
+    stdout: 'workspace projection check passed
+
+      '
+    stderr: ''
+    status: passed
+  - command: uv run python foundation/validation/active_record_validator.py --repo-root
+      .
+    started_at_utc: '2026-06-25T15:23:58.986113Z'
+    ended_at_utc: '2026-06-25T15:26:13.562777Z'
+    exit_code: 1
+    stdout: 'ERROR: artifact_registry.csv artifact_docs_workspace_agent_operating_events_yaml:
+      sha256 mismatch docs/workspace/agent_operating_events.yaml expected=94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32
+      observed=3b413fce3055511dc1c998612e8a0a0835ae221b98d00ca4c4438cf1b9993e6a
+
+      ERROR: artifact_registry.csv artifact_docs_workspace_agent_operating_events_yaml:
+      size mismatch docs/workspace/agent_operating_events.yaml expected=4896 observed=2428
+
+      ERROR: artifact_registry.csv artifact_docs_workspace_agent_operating_metrics_yaml:
+      sha256 mismatch docs/workspace/agent_operating_metrics.yaml expected=6a331ee07f2760e8a5c6009ca4164a1edb137f64a8526bf583857a1c052aa9cf
+      observed=1222976584d5f73cab6aba29c65655600262c565ce54036300896495d993f6cc
+
+      ERROR: artifact_registry.csv artifact_docs_workspace_agent_operating_metrics_yaml:
+      size mismatch docs/workspace/agent_operating_metrics.yaml expected=1364 observed=2277
+
+      ERROR: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml:
+      committed evaluator semantic payload does not match fresh recomputation
+
+      ERROR: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml:
+      committed evaluator semantic payload does not match fresh recomputation
+
+      ERROR: committed closeout semantic payload does not match recomputed closeout
+
+      '
+    stderr: ''
+    status: failed
+  evidence_files:
+  - reentry_decision.yaml
+commands:
+- command: uv run python -m spacesonar.cli agents events --write
+  started_at_utc: '2026-06-25T15:27:03.063136Z'
+  ended_at_utc: '2026-06-25T15:27:06.832847Z'
+  exit_code: 0
+  stdout: 'agent events projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli agents metrics --write
+  started_at_utc: '2026-06-25T15:27:06.832881Z'
+  ended_at_utc: '2026-06-25T15:27:10.600347Z'
+  exit_code: 0
+  stdout: 'agent metrics projection written
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
+    --repo-root . --write
+  started_at_utc: '2026-06-25T15:27:10.600378Z'
+  ended_at_utc: '2026-06-25T15:27:13.112251Z'
+  exit_code: 0
+  stdout: 'artifact registry refresh: rows=951 refreshable=950 changed=0 missing=0
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root
+    . --write
+  started_at_utc: '2026-06-25T15:27:13.112268Z'
+  ended_at_utc: '2026-06-25T15:32:20.551930Z'
+  exit_code: 0
+  stdout: 'transaction_id: tx_20260625T152818116261Z_6a6af29e_cbecdc33
+
+    status: committed
+
+    receipt_path: C:/Users/awdse/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/Project_SpaceSonar_X/.spacesonar/transactions/tx_20260625T152818116261Z_6a6af29e_cbecdc33/transaction_receipt.yaml
+
+    errors: []
+
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python -m spacesonar.cli project workspace --check
+  started_at_utc: '2026-06-25T15:32:20.551958Z'
+  ended_at_utc: '2026-06-25T15:32:21.494949Z'
+  exit_code: 0
+  stdout: 'workspace projection check passed
+
+    '
+  stderr: ''
+  status: passed
+- command: uv run python foundation/validation/active_record_validator.py --repo-root
+    .
+  started_at_utc: '2026-06-25T15:32:21.494965Z'
+  ended_at_utc: '2026-06-25T15:35:10.712575Z'
+  exit_code: 0
+  stdout: 'active-record validation passed
+
+    '
+  stderr: ''
+  status: passed
+evidence_files:
+- reentry_decision.yaml

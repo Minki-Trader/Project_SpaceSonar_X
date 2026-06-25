@@ -17,6 +17,10 @@ from spacesonar.control_plane.lifecycle import (
 from spacesonar.control_plane.agent_metrics import (
     agent_operating_events_diff,
     agent_operating_metrics_diff,
+    begin_agent_work,
+    close_agent_observation_window,
+    finalize_agent_work,
+    open_agent_observation_window,
     write_agent_operating_events,
     write_agent_operating_metrics,
 )
@@ -152,6 +156,28 @@ def build_parser() -> argparse.ArgumentParser:
 
     agents = sub.add_parser("agents")
     agents_sub = agents.add_subparsers(dest="action", required=True)
+    window = agents_sub.add_parser("window")
+    window_sub = window.add_subparsers(dest="window_action", required=True)
+    window_open = window_sub.add_parser("open")
+    window_open.add_argument("--window-id", required=True)
+    window_open.add_argument("--minimum-observed-work-items", type=int, required=True)
+    window_open.add_argument("--minimum-distinct-work-families", type=int, required=True)
+    window_close = window_sub.add_parser("close")
+    window_close.add_argument("--window-id", required=True)
+    work = agents_sub.add_parser("work")
+    work_sub = work.add_subparsers(dest="work_action", required=True)
+    work_begin = work_sub.add_parser("begin")
+    work_begin.add_argument("--window-id", required=True)
+    work_begin.add_argument("--work-item-id", required=True)
+    work_begin.add_argument("--primary-family", required=True)
+    work_begin.add_argument("--agent-mode", required=True)
+    work_begin.add_argument("--claim-boundary", required=True)
+    work_begin.add_argument("--planned-command", action="append", default=[])
+    work_begin.add_argument("--input-ref", action="append", default=[])
+    work_finalize = work_sub.add_parser("finalize")
+    work_finalize.add_argument("--work-item-id", required=True)
+    work_finalize.add_argument("--result-status", required=True, choices=["passed", "failed", "aborted"])
+    work_finalize.add_argument("--evidence-ref", action="append", required=True)
     events = agents_sub.add_parser("events")
     events_group = events.add_mutually_exclusive_group(required=True)
     events_group.add_argument("--check", action="store_true")
@@ -245,6 +271,48 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print("agent metrics projection check passed")
         return 0
+    if args.area == "agents" and args.action == "window":
+        if args.window_action == "open":
+            open_agent_observation_window(
+                repo_root,
+                window_id=args.window_id,
+                minimum_observed_work_items=args.minimum_observed_work_items,
+                minimum_distinct_work_families=args.minimum_distinct_work_families,
+                command_argv=tuple(sys.argv),
+            )
+            print(f"agent observation window opened: {args.window_id}")
+            return 0
+        if args.window_action == "close":
+            close_agent_observation_window(repo_root, window_id=args.window_id, command_argv=tuple(sys.argv))
+            print(f"agent observation window closed: {args.window_id}")
+            return 0
+        parser.error("unsupported agents window action")
+    if args.area == "agents" and args.action == "work":
+        if args.work_action == "begin":
+            begin_agent_work(
+                repo_root,
+                window_id=args.window_id,
+                work_item_id=args.work_item_id,
+                primary_family=args.primary_family,
+                agent_mode=args.agent_mode,
+                claim_boundary=args.claim_boundary,
+                planned_commands=list(args.planned_command or []),
+                input_refs=list(args.input_ref or []),
+                command_argv=tuple(sys.argv),
+            )
+            print(f"agent work started: {args.work_item_id}")
+            return 0
+        if args.work_action == "finalize":
+            finalize_agent_work(
+                repo_root,
+                work_item_id=args.work_item_id,
+                result_status=args.result_status,
+                evidence_refs=list(args.evidence_ref or []),
+                command_argv=tuple(sys.argv),
+            )
+            print(f"agent work finalized: {args.work_item_id}")
+            return 0
+        parser.error("unsupported agents work action")
     if args.area == "agents" and args.action == "events":
         if args.write:
             write_agent_operating_events(repo_root, command_argv=tuple(sys.argv))

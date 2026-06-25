@@ -1,0 +1,19 @@
+version: agent_work_start_receipt_v1
+receipt_status: started
+work_item_id: work_agentproof_routing_guard_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: policy_skill_governance
+agent_mode: solo
+consult_ids: []
+started_at_utc: '2026-06-25T15:35:32.965151Z'
+branch: codex/post-wp08-agent-observation-proof-v1
+start_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+claim_boundary: routing_and_protected_claim_guard_validation_only_no_protected_claim_granted
+planned_commands:
+- uv run python foundation/validation/routing_contract_lint.py --repo-root .
+- uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+- uv run pytest tests/test_routing_behavior.py -q
+input_refs: []
+receipt_sha256:
+  algorithm: sha256
+  value: f6b638d6b14749d8733e712af81c22d7f4ff89a31321cbc5efc14af04119ff5d

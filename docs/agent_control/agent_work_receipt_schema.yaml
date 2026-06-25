@@ -1,0 +1,82 @@
+version: agent_work_receipt_schema_v1
+current_versions:
+  start: agent_work_start_receipt_v1
+  finalization: agent_work_finalization_receipt_v1
+legacy_versions:
+  - agent_work_receipt_v1
+
+self_hash_convention:
+  algorithm: sha256
+  blank_field_before_hash: receipt_sha256.value
+  serialization: repository_yaml_canonical_dump
+
+legacy:
+  agent_work_receipt_v1:
+    scope: WP06-only compatibility
+    required_extra_refs:
+      - wp06_batch_receipt_ref
+      - transaction_receipt_ref
+      - finalization_receipt_ref
+
+current:
+  storage_layout: docs/workspace/agent_work_receipts/<work_item_id>/
+  start_receipt:
+    filename: start_receipt.yaml
+    version: agent_work_start_receipt_v1
+    required_fields:
+      - version
+      - receipt_status
+      - work_item_id
+      - observation_window_id
+      - primary_family
+      - agent_mode
+      - consult_ids
+      - started_at_utc
+      - branch
+      - start_commit_sha
+      - claim_boundary
+      - planned_commands
+      - input_refs
+      - receipt_sha256
+  finalization_receipt:
+    filename: finalization_receipt.yaml
+    version: agent_work_finalization_receipt_v1
+    required_fields:
+      - version
+      - receipt_status
+      - work_item_id
+      - observation_window_id
+      - primary_family
+      - agent_mode
+      - consult_ids
+      - evidence_class
+      - start_receipt_ref
+      - ended_at_utc
+      - end_commit_sha
+      - result_status
+      - command_results
+      - evidence_refs
+      - validation_results
+      - claim_boundary
+      - receipt_sha256
+
+ref_schema:
+  required_fields:
+    - path
+    - sha256
+    - size_bytes
+
+validation_rules:
+  - start_receipt_must_exist_before_finalization
+  - finalization_ended_at_utc_must_be_later_than_start_started_at_utc
+  - start_and_final_work_item_id_must_match
+  - start_and_final_observation_window_id_must_match
+  - start_and_final_primary_family_must_match
+  - start_and_final_agent_mode_must_match
+  - receipt_must_belong_to_one_window_only
+  - evidence_class_must_be_contemporaneous_work_receipt_for_current_receipts
+  - result_status_allowed_values_are_passed_failed_aborted
+  - referenced_files_must_exist_and_match_hash_and_size
+  - finalized_receipts_are_immutable
+
+claim_boundary: agent_operation_observation_only_no_reviewed_pass_no_runtime_authority_no_economics_pass

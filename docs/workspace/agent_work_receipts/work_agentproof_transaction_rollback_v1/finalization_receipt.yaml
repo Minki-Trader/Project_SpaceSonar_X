@@ -1,0 +1,46 @@
+version: agent_work_finalization_receipt_v1
+receipt_status: finalized
+work_item_id: work_agentproof_transaction_rollback_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: code_refactor
+agent_mode: solo
+consult_ids: []
+evidence_class: contemporaneous_work_receipt
+start_receipt_ref:
+  path: docs/workspace/agent_work_receipts/work_agentproof_transaction_rollback_v1/start_receipt.yaml
+  sha256: d03afd9ae2749703c0a466db4e867e94364351a014571461100fe53900dc5b71
+  size_bytes: 731
+ended_at_utc: '2026-06-25T15:50:01.947646Z'
+end_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+result_status: passed
+command_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_transaction_rollback_v1/command_results.yaml
+    sha256: 630cf6b6c4c3470db4ce53342a7d0486cc45abd3f3bcf6919ad3d0efe4915048
+    size_bytes: 2592
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_transaction_rollback_v1/transaction_rollback_summary.yaml
+    sha256: 8e6a6cbb67c792d11202197aaf165ee4486f59ff12d43be4e7242924e4cddd39
+    size_bytes: 585
+evidence_refs:
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_transaction_rollback_v1/command_results.yaml
+  sha256: 630cf6b6c4c3470db4ce53342a7d0486cc45abd3f3bcf6919ad3d0efe4915048
+  size_bytes: 2592
+- path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_transaction_rollback_v1/transaction_rollback_summary.yaml
+  sha256: 8e6a6cbb67c792d11202197aaf165ee4486f59ff12d43be4e7242924e4cddd39
+  size_bytes: 585
+validation_results:
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_transaction_rollback_v1/command_results.yaml
+    sha256: 630cf6b6c4c3470db4ce53342a7d0486cc45abd3f3bcf6919ad3d0efe4915048
+    size_bytes: 2592
+  status: passed
+- result_ref:
+    path: lab/operating_proofs/post_wp08_operating_proof_v1/work_agentproof_transaction_rollback_v1/transaction_rollback_summary.yaml
+    sha256: 8e6a6cbb67c792d11202197aaf165ee4486f59ff12d43be4e7242924e4cddd39
+    size_bytes: 585
+  status: passed
+claim_boundary: transaction_atomicity_drill_only_no_canonical_research_mutation
+receipt_sha256:
+  algorithm: sha256
+  value: 5725a8e48bfb5aa8374131ac4b7db17822c2d6071f17abfe48f73be7ef96326a

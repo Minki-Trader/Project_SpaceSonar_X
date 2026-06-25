@@ -1,0 +1,40 @@
+version: agent_operating_metrics_v3
+updated_utc: '2026-06-22T23:53:38Z'
+source_refs:
+- path: docs/workspace/agent_operating_events.yaml
+  sha256: 94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32
+  size_bytes: 4896
+measurement_boundary:
+  start_utc: '2026-06-22T23:53:38Z'
+  end_utc: null
+  boundary_id: control_plane_corrective_v3
+agent_operating_metrics:
+  work_item_count: 8
+  observed_work_item_count: 1
+  solo_work_item_count: 1
+  consult_count: 0
+  one_agent_consult_count: 0
+  two_agent_consult_count: 0
+  three_plus_agent_consult_count: 0
+  total_advice_items: 0
+  duplicate_advice_items: 0
+  unsupported_assertion_count: 0
+  accepted_after_verification_count: 0
+  rejected_after_verification_count: 0
+  rewritten_after_verification_count: 0
+  solo_work_share: 1.0
+  observation_coverage_ratio: 0.125
+  one_agent_consult_share: 0.0
+  two_agent_consult_share: 0.0
+  three_plus_agent_consult_share: 0.0
+  routine_solo_or_single_agent_share: 1.0
+  duplicate_advice_ratio: 0.0
+  accepted_after_verification_ratio: 0.0
+compact_work_default:
+  agent_mode: solo
+  allocation_block_required: false
+  claim_effect: local_codex_execution_only_no_reviewed_pass
+projection:
+  generated_from: docs/workspace/agent_operating_events.yaml
+  generator: python -m spacesonar.cli agents metrics --write
+  manual_edit_policy: manual edits fail projection check

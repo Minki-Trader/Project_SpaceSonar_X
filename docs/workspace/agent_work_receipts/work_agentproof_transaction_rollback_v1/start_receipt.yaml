@@ -1,0 +1,18 @@
+version: agent_work_start_receipt_v1
+receipt_status: started
+work_item_id: work_agentproof_transaction_rollback_v1
+observation_window_id: post_wp08_operating_proof_v1
+primary_family: code_refactor
+agent_mode: solo
+consult_ids: []
+started_at_utc: '2026-06-25T15:42:37.933162Z'
+branch: codex/post-wp08-agent-observation-proof-v1
+start_commit_sha: 9a358e03d1a0393322999e7e288f5408bdde108f
+claim_boundary: transaction_atomicity_drill_only_no_canonical_research_mutation
+planned_commands:
+- uv run pytest tests/control_plane/test_transaction_atomicity.py tests/control_plane/test_transaction_visibility.py
+  -q
+input_refs: []
+receipt_sha256:
+  algorithm: sha256
+  value: 5e0402bcb6d56083a975bd49fd1d7145efe806d9be4f737cd443177a81cd22c4

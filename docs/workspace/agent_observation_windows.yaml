@@ -1,0 +1,100 @@
+version: agent_observation_windows_v1
+active_window_id: null
+windows:
+  control_plane_corrective_v3_historical:
+    status: closed
+    role: historical_preserved
+    start_utc: '2026-06-22T23:53:38Z'
+    end_utc: '2026-06-25T04:13:30Z'
+    event_snapshot_path: docs/workspace/agent_operating_history/control_plane_corrective_v3_events.yaml
+    metric_snapshot_path: docs/workspace/agent_operating_history/control_plane_corrective_v3_metrics.yaml
+    event_snapshot_sha256: 94f02d3fb24f052d4847c874c6a3c6d7bc91767109301a771086348d19d46d32
+    metric_snapshot_sha256: 6a331ee07f2760e8a5c6009ca4164a1edb137f64a8526bf583857a1c052aa9cf
+    observed_work_item_count: 1
+    work_item_count: 8
+    observation_coverage_ratio: 0.125
+    claim_effect: historical_telemetry_preserved_not_reclassified_as_contemporaneous
+  post_wp08_operating_proof_v1:
+    status: closed
+    role: prospective_proof
+    start_utc: '2026-06-25T15:18:09.361050Z'
+    end_utc: '2026-06-25T16:10:01.539960Z'
+    minimum_observed_work_items: 5
+    minimum_distinct_work_families: 4
+    minimum_observation_coverage_ratio: 0.8
+    work_items:
+      work_agentproof_cold_reentry_v1:
+        status: finalized
+        observation_window_id: post_wp08_operating_proof_v1
+        primary_family: workspace_state_sync
+        agent_mode: solo
+        started_at_utc: '2026-06-25T15:18:20.320979Z'
+        start_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_cold_reentry_v1/start_receipt.yaml
+        result_status: passed
+        ended_at_utc: '2026-06-25T15:35:18.892896Z'
+        finalization_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_cold_reentry_v1/finalization_receipt.yaml
+          sha256: 255a9a963ae10197ba5f03bf07422579ca9bac28570440ebf5043b509a4e50f9
+          size_bytes: 2217
+      work_agentproof_routing_guard_v1:
+        status: finalized
+        observation_window_id: post_wp08_operating_proof_v1
+        primary_family: policy_skill_governance
+        agent_mode: solo
+        started_at_utc: '2026-06-25T15:35:32.965151Z'
+        start_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_routing_guard_v1/start_receipt.yaml
+        result_status: passed
+        ended_at_utc: '2026-06-25T15:42:04.964058Z'
+        finalization_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_routing_guard_v1/finalization_receipt.yaml
+          sha256: 21fff5ebedb784b369d6abaae60a9cdb599e809bfd7b832ef5b66fc916059ec1
+          size_bytes: 2237
+      work_agentproof_transaction_rollback_v1:
+        status: finalized
+        observation_window_id: post_wp08_operating_proof_v1
+        primary_family: code_refactor
+        agent_mode: solo
+        started_at_utc: '2026-06-25T15:42:37.933162Z'
+        start_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_transaction_rollback_v1/start_receipt.yaml
+        result_status: passed
+        ended_at_utc: '2026-06-25T15:50:01.947646Z'
+        finalization_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_transaction_rollback_v1/finalization_receipt.yaml
+          sha256: 59e7e207997e5c7a3dfb270f3f462acce0e7e762f52ad89dc6e0939fec39422e
+          size_bytes: 2291
+      work_agentproof_lifecycle_idempotency_v1:
+        status: finalized
+        observation_window_id: post_wp08_operating_proof_v1
+        primary_family: artifact_lineage
+        agent_mode: solo
+        started_at_utc: '2026-06-25T15:50:30.740187Z'
+        start_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_lifecycle_idempotency_v1/start_receipt.yaml
+        result_status: passed
+        ended_at_utc: '2026-06-25T15:57:36.411089Z'
+        finalization_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_lifecycle_idempotency_v1/finalization_receipt.yaml
+          sha256: bbf297ce7b8cb927db6446585a360480c1c1941046377ddc9e3deea49f98b385
+          size_bytes: 2316
+      work_agentproof_provenance_freshness_v1:
+        status: finalized
+        observation_window_id: post_wp08_operating_proof_v1
+        primary_family: publish_handoff
+        agent_mode: solo
+        started_at_utc: '2026-06-25T15:57:48.743771Z'
+        start_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_provenance_freshness_v1/start_receipt.yaml
+        result_status: passed
+        ended_at_utc: '2026-06-25T16:09:52.137014Z'
+        finalization_receipt_ref:
+          path: docs/workspace/agent_work_receipts/work_agentproof_provenance_freshness_v1/finalization_receipt.yaml
+          sha256: b210f0245437420585639f98e346d7ffc2912756dff23abdcf5afb0c234d85bb
+          size_bytes: 2310
+    claim_effect: prospective_contemporaneous_work_receipts_only_no_runtime_authority_no_economics_pass
+    work_item_count: 5
+    observed_work_item_count: 5
+    observed_distinct_work_family_count: 5
+    observation_coverage_ratio: 1.0

@@ -32,24 +32,28 @@ def test_full_suite_runs_complete_pytest() -> None:
     assert "uv run pytest -q" in commands
 
 
-def test_wp08_hygiene_completed_does_not_imply_wave_progression_readiness() -> None:
+def test_post_wp08_agent_observation_proof_updates_wave_progression_readiness() -> None:
     ledger = _load_yaml("docs/migrations/control_plane_corrective_v3.yaml")
     progress = _load_yaml("docs/migrations/control_plane_corrective_v3_progress.yaml")
 
     assert ledger["wp08_final_hygiene"]["status"] == "completed"
-    assert ledger["wave_progression_readiness"]["status"] == "blocked"
     assert progress["wp08_final_hygiene"]["status"] == "completed"
-    assert progress["wave_progression_readiness"]["status"] == "blocked"
-    assert ledger["workflow_status"] == "wp08_hygiene_completed_wave_progression_blocked"
+    assert ledger["post_wp08_agent_observation_proof"]["status"] == "completed"
+    assert progress["post_wp08_agent_observation_proof"]["status"] == "completed"
+    assert ledger["wave_progression_readiness"]["status"] == "ready_for_user_directed_wave02_or_review"
+    assert progress["wave_progression_readiness"]["status"] == "ready_for_user_directed_wave02_or_review"
+    assert ledger["workflow_status"] == "post_wp08_agent_observation_proof_completed_wave_progression_ready_for_user_direction"
+    assert ledger["post_wp08_agent_observation_proof"]["wave02_created"] is False
 
 
-def test_wave_progression_readiness_blocked_when_closeout_requires_repair() -> None:
+def test_wave_progression_readiness_ready_after_closeout_evidence_repair() -> None:
     ledger = _load_yaml("docs/migrations/control_plane_corrective_v3.yaml")
 
-    assert ledger["operating_closeout"]["status"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
-    assert "operating_closeout_evidence_repair_required" in ledger["wave_progression_readiness"]["blockers"]
-    assert "agent_observation_coverage_below_slo" in ledger["wave_progression_readiness"]["blockers"]
-    assert ledger["wave_progression_readiness"]["active_work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
+    assert ledger["operating_closeout"]["status"] == "wave01_control_plane_proof_closed_runtime_contract_complete"
+    assert ledger["operating_closeout"]["agent_value_metrics"] == "passed"
+    assert ledger["operating_closeout"]["control_plane_operating_proof"] == "passed"
+    assert ledger["wave_progression_readiness"]["blockers"] == []
+    assert ledger["wave_progression_readiness"]["active_work_item_id"] == "work_post_wave01_user_directed_wave02_or_review_v0"
 
 
 def test_main_integration_readiness_records_verified_remote_protection() -> None:

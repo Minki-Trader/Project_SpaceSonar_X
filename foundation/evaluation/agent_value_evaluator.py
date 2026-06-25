@@ -22,12 +22,16 @@ def evaluate_agent_value(repo_root: Path) -> dict:
     gates = slo.get("gates") or {}
     findings = []
     required_metrics = (
+        "observation_window_id",
+        "observation_window_status",
         "work_item_count",
         "observed_work_item_count",
+        "observed_distinct_work_family_count",
         "observation_coverage_ratio",
         "routine_solo_or_single_agent_share",
         "duplicate_advice_ratio",
         "unsupported_assertion_count",
+        "receipt_validation_failure_count",
     )
     for metric in required_metrics:
         if metric not in metrics or metrics.get(metric) is None:
@@ -49,7 +53,67 @@ def evaluate_agent_value(repo_root: Path) -> dict:
                 "minimum": coverage_min,
             }
         )
-    insufficient = any(item.get("id") == "agent_observation_coverage_below_slo" for item in findings)
+    observed_min = gates.get("agent_observed_work_item_count_min")
+    if observed_min is None:
+        findings.append({"id": "required_agent_slo_gate_unavailable", "gate": "agent_observed_work_item_count_min"})
+    elif int(metrics.get("observed_work_item_count") or 0) < int(observed_min):
+        findings.append(
+            {
+                "id": "agent_observed_work_item_count_below_slo",
+                "value": metrics.get("observed_work_item_count"),
+                "minimum": observed_min,
+            }
+        )
+    family_min = gates.get("agent_observed_distinct_work_family_count_min")
+    if family_min is None:
+        findings.append({"id": "required_agent_slo_gate_unavailable", "gate": "agent_observed_distinct_work_family_count_min"})
+    elif int(metrics.get("observed_distinct_work_family_count") or 0) < int(family_min):
+        findings.append(
+            {
+                "id": "agent_observed_distinct_work_family_count_below_slo",
+                "value": metrics.get("observed_distinct_work_family_count"),
+                "minimum": family_min,
+            }
+        )
+    closed_required = gates.get("agent_observation_window_closed_required")
+    if closed_required is None:
+        findings.append({"id": "required_agent_slo_gate_unavailable", "gate": "agent_observation_window_closed_required"})
+    elif bool(closed_required) and metrics.get("observation_window_status") != "closed":
+        findings.append(
+            {
+                "id": "agent_observation_window_not_closed",
+                "value": metrics.get("observation_window_status"),
+            }
+        )
+    receipt_failure_max = gates.get("agent_receipt_validation_failure_count_max")
+    if receipt_failure_max is None:
+        findings.append({"id": "required_agent_slo_gate_unavailable", "gate": "agent_receipt_validation_failure_count_max"})
+    elif int(metrics.get("receipt_validation_failure_count") or 0) > int(receipt_failure_max):
+        findings.append(
+            {
+                "id": "agent_receipt_validation_failures",
+                "count": metrics.get("receipt_validation_failure_count"),
+                "maximum": receipt_failure_max,
+            }
+        )
+    if int(metrics.get("failed_or_aborted_work_item_count") or 0) > 0:
+        findings.append(
+            {
+                "id": "agent_observation_window_contains_failed_drill",
+                "count": metrics.get("failed_or_aborted_work_item_count"),
+            }
+        )
+    insufficient = any(
+        item.get("id")
+        in {
+            "agent_observation_coverage_below_slo",
+            "agent_observed_work_item_count_below_slo",
+            "agent_observed_distinct_work_family_count_below_slo",
+            "agent_observation_window_not_closed",
+            "required_agent_slo_gate_unavailable",
+        }
+        for item in findings
+    )
     result = {
         "version": "evaluator_result_v1",
         "evaluator_id": EVALUATOR_ID,
