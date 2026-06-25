@@ -149,22 +149,22 @@ wp08_record_hashes:
   new_sha256: 7975da7fb4b4361c3477d7e70724cc1fd50fd5151e77bef9ca14c9bf343757cb
 - path: docs/workspace/agent_operating_events.yaml
   old_sha256: 54570244989ee37264fa5146bfe340f974f773c91633306d198298c675959ece
-  new_sha256: 5fa627130edb45e355ea23ee6de992e97af1c5cdaa01444fc5dd96b3c54ca808
+  new_sha256: 287ce8554ac4610f0be4c61534300743eb0ab1d9fb9601eaf190e2a2bad7f73c
 - path: docs/workspace/agent_operating_metrics.yaml
   old_sha256: 1b58da53c66b4b43c51a74080558b25ee98621be4926f6c991faaccf22584e87
-  new_sha256: 15ae0a4e236171bf63a7287d666f3bee778ad7443076db8954527a7e51f54940
+  new_sha256: c8c8223b45f663ef18e49acf6e6f83c9c571f7cddb30224e27ecedc8e08db254
 - path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
   old_sha256: 0ac9ffa9fa3affce1a5362539959a21446e7f299ac7f34745451257ab49e5b20
-  new_sha256: 87f70e269cb11d14032cb511fa93628a9a7b91f7f1b2a81db5c3ecf5c2c13017
+  new_sha256: f011942bcfc7d320df96499bc1ec14b3a809fb608f7f9c0533708e2b35e93e2e
 - path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
   old_sha256: d4b77aca8f28dc67e90f3e3b6d70585ce93f879d35270b7684694d96abc6106d
-  new_sha256: e14cfbb963269ad91f5b815fb02fc60ded80a697f48e389de556580c6c93c451
+  new_sha256: 5cd2d1da564aaeea6349fd4be2c45f8468f333ca61000ffac095c16f93d82f18
 - path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
   old_sha256: 91fe8f3e8578b0ff9f43327e43b1fbceda2e359bda7f04be9abf233e2e23d28c
-  new_sha256: 207023ce02f9a814560c8cf170328968f1f78b695454c4c19b9273723e8f5545
+  new_sha256: 8b1ed1731e5280f48239dd9cb1fc0355a6d82c4a839ec8a4c880f90331c6037c
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
   old_sha256: f793136035739da76db50772c4133b4e2dc84911dcda2526c3470f119037f01e
-  new_sha256: 66fa8f000a906ddadc65b3ba691aae635a046769f571ad9b443b0fbc31132fe3
+  new_sha256: e6676f7fdd32281f68f58e3a7a5076da224fed54cf3af8c3ca074448b03c3fdd
 final_validation_commands:
 - uv sync --locked --extra dev --extra onnxlab
 - uv run pytest -q
@@ -184,7 +184,7 @@ final_validation_commands:
 validation_results:
   status: passed
   uv_sync_locked: passed
-  pytest_full: 445 passed in 1524.73s
+  pytest_full: 445 passed in 1381.49s
   policy_duplicate_lint: passed
   routing_contract_lint: passed
   routing_behavior_eval: passed

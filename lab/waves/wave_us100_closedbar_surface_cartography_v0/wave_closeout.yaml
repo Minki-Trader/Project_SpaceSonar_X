@@ -1,7 +1,7 @@
 version: wave_closeout_v2
 closeout_id: wave_us100_closedbar_surface_cartography_v0_operating_closeout_v0
 generated_by: foundation.evaluation.build_operating_closeout
-generated_at_utc: '2026-06-25T05:09:00Z'
+generated_at_utc: '2026-06-25T05:51:50Z'
 status: wave01_evaluator_backed_closeout_requires_evidence_repair
 result:
   control_plane_operating_proof: failed
@@ -26,10 +26,10 @@ wave_id: wave_us100_closedbar_surface_cartography_v0
 source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
 source_inputs:
 - path: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
-  sha256: 425b6af77be9583f865cb941eb37e53e28e93c0fc78f0bf57d4155df3b7fa5fd
+  sha256: 04f06e588029d8bf9e7b29045a8dd8ccf3fba0dce3aa2d007599fec24eddbebd
   size_bytes: 33225
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  sha256: d39d02d958f443cd5cc6a7be10cd49eaf4ab1618a1549969bdfe0312732925f4
+  sha256: 9754bb5a04cf2f8459f22c1a4a4b9cc5113c7bf57747fb73e2f62718e88b8f5f
   size_bytes: 11691
 - path: docs/agent_control/evaluator_registry.yaml
   sha256: 6782ff64d5edeb06a28478553cb5074d5755a18df101dbb66abfdf233e7da0f4
@@ -63,10 +63,10 @@ source_inputs:
   sha256: 33c6ecf57b23e22d19b051540462405ac6ed56f6d36b2bbb99ab030a3d617a30
   size_bytes: 5126
 - path: docs/workspace/agent_operating_metrics.yaml
-  sha256: 15ae0a4e236171bf63a7287d666f3bee778ad7443076db8954527a7e51f54940
+  sha256: c8c8223b45f663ef18e49acf6e6f83c9c571f7cddb30224e27ecedc8e08db254
   size_bytes: 1364
 - path: docs/workspace/workspace_state.yaml
-  sha256: 35fd3590c3eadb0ec52b967c24e361f46c26fb8d1f24ccab1577deebdf6cde63
+  sha256: 46da7bca8939d62864c0a0b96de60c687731c514f90b36136a884e058c2f5f2b
   size_bytes: 1484
 - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
   sha256: ea2c2f14cafcca6085d5357513a4c924aeee0187ff9da5c7eccb9cec8c498a75
@@ -138,7 +138,7 @@ source_inputs:
   sha256: befc06168cc65d43e089107b91573687a06aabeb5362164f4afd6624ef8a4478
   size_bytes: 1634
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  sha256: d39d02d958f443cd5cc6a7be10cd49eaf4ab1618a1549969bdfe0312732925f4
+  sha256: 9754bb5a04cf2f8459f22c1a4a4b9cc5113c7bf57747fb73e2f62718e88b8f5f
   size_bytes: 11691
 - path: runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/attempt_manifest.yaml
   missing: false
@@ -1554,23 +1554,23 @@ requirement_audit:
 - requirement: agent_value_metrics
   evaluator_id: agent_value_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
-  evaluator_output_sha256: bdb57241f97ae38138409504c84707ca9fb0edec98b132e4044bac1d90d9aab7
-  evaluator_file_sha256: 87f70e269cb11d14032cb511fa93628a9a7b91f7f1b2a81db5c3ecf5c2c13017
-  evaluator_result_sha256: bdb57241f97ae38138409504c84707ca9fb0edec98b132e4044bac1d90d9aab7
+  evaluator_output_sha256: a59eb33daace84aaad78e33378b9335799bbe8e8f6db3ebf6ae093d11b3f3899
+  evaluator_file_sha256: f011942bcfc7d320df96499bc1ec14b3a809fb608f7f9c0533708e2b35e93e2e
+  evaluator_result_sha256: a59eb33daace84aaad78e33378b9335799bbe8e8f6db3ebf6ae093d11b3f3899
   status: insufficient_evidence
 - requirement: control_plane_operating_proof
   evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_output_sha256: 3f7ba8aea70b6c1f0bc1003e7048da68aaea25827e900f0c974e123ba46a0759
-  evaluator_file_sha256: e14cfbb963269ad91f5b815fb02fc60ded80a697f48e389de556580c6c93c451
-  evaluator_result_sha256: 3f7ba8aea70b6c1f0bc1003e7048da68aaea25827e900f0c974e123ba46a0759
+  evaluator_output_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
+  evaluator_file_sha256: 5cd2d1da564aaeea6349fd4be2c45f8468f333ca61000ffac095c16f93d82f18
+  evaluator_result_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
   status: failed
 - requirement: research_cycle_closeout
   evaluator_id: research_cycle_closeout_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
-  evaluator_output_sha256: cf6e131954ba2f2134795cead15fb337d893216b0807e1faafef52b88e37d4a8
-  evaluator_file_sha256: 207023ce02f9a814560c8cf170328968f1f78b695454c4c19b9273723e8f5545
-  evaluator_result_sha256: cf6e131954ba2f2134795cead15fb337d893216b0807e1faafef52b88e37d4a8
+  evaluator_output_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
+  evaluator_file_sha256: 8b1ed1731e5280f48239dd9cb1fc0355a6d82c4a839ec8a4c880f90331c6037c
+  evaluator_result_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
   status: passed
 - requirement: routing_behavior_quality
   evaluator_id: routing_quality_evaluator_v1
@@ -1589,21 +1589,21 @@ requirement_audit:
 evaluation_results:
 - evaluator_id: agent_value_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
-  evaluator_output_sha256: bdb57241f97ae38138409504c84707ca9fb0edec98b132e4044bac1d90d9aab7
-  evaluator_file_sha256: 87f70e269cb11d14032cb511fa93628a9a7b91f7f1b2a81db5c3ecf5c2c13017
-  evaluator_result_sha256: bdb57241f97ae38138409504c84707ca9fb0edec98b132e4044bac1d90d9aab7
+  evaluator_output_sha256: a59eb33daace84aaad78e33378b9335799bbe8e8f6db3ebf6ae093d11b3f3899
+  evaluator_file_sha256: f011942bcfc7d320df96499bc1ec14b3a809fb608f7f9c0533708e2b35e93e2e
+  evaluator_result_sha256: a59eb33daace84aaad78e33378b9335799bbe8e8f6db3ebf6ae093d11b3f3899
   status: insufficient_evidence
 - evaluator_id: operating_slo_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
-  evaluator_output_sha256: 3f7ba8aea70b6c1f0bc1003e7048da68aaea25827e900f0c974e123ba46a0759
-  evaluator_file_sha256: e14cfbb963269ad91f5b815fb02fc60ded80a697f48e389de556580c6c93c451
-  evaluator_result_sha256: 3f7ba8aea70b6c1f0bc1003e7048da68aaea25827e900f0c974e123ba46a0759
+  evaluator_output_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
+  evaluator_file_sha256: 5cd2d1da564aaeea6349fd4be2c45f8468f333ca61000ffac095c16f93d82f18
+  evaluator_result_sha256: 1b67a76357c2f06d6a5c4e418b678f2fd700a0c6ce4c448d4bccf4a0de3c65f5
   status: failed
 - evaluator_id: research_cycle_closeout_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
-  evaluator_output_sha256: cf6e131954ba2f2134795cead15fb337d893216b0807e1faafef52b88e37d4a8
-  evaluator_file_sha256: 207023ce02f9a814560c8cf170328968f1f78b695454c4c19b9273723e8f5545
-  evaluator_result_sha256: cf6e131954ba2f2134795cead15fb337d893216b0807e1faafef52b88e37d4a8
+  evaluator_output_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
+  evaluator_file_sha256: 8b1ed1731e5280f48239dd9cb1fc0355a6d82c4a839ec8a4c880f90331c6037c
+  evaluator_result_sha256: b003ce601f736068c5036b39c4d755f501691e7ef99e42593844ff1fb2eeb9eb
   status: passed
 - evaluator_id: routing_quality_evaluator_v1
   evaluator_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
@@ -1662,4 +1662,4 @@ unresolved_blockers:
 - agent_observation_coverage_below_slo
 - agent_value_slo_failed
 next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
-evaluation_digest: 4da63d018c3c1be3c4a225cf5bf4595f4307c5a86c962bb4d0aeb7e4e2a4abd6
+evaluation_digest: 4a4d65a958998ebb09567de277d9eac50222f2bf3994e730d29f369ef9990495
