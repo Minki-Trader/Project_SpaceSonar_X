@@ -31,6 +31,7 @@ REQUIRED_CHECKS = {
     "force_push_disabled",
     "direct_push_restricted",
 }
+MAIN_INTEGRATION_REQUIRED_PROTECTION = "verified"
 
 
 def _now() -> str:
@@ -188,13 +189,47 @@ def validate_record(repo_root: Path) -> list[str]:
     return errors
 
 
-def main() -> int:
+def main_integration_enforcement_errors(record: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if record.get("verification_source") != "github_rest_api":
+        errors.append("main integration requires GitHub API verification")
+    if record.get("remote_branch_protection") != MAIN_INTEGRATION_REQUIRED_PROTECTION:
+        errors.append(
+            "main integration requires remote_branch_protection=verified; "
+            f"observed {record.get('remote_branch_protection')}"
+        )
+    checks = record.get("checks")
+    if not isinstance(checks, dict):
+        return [*errors, "main integration requires a checks mapping"]
+    missing = sorted(REQUIRED_CHECKS - set(checks))
+    if missing:
+        errors.append(f"main integration checks missing {missing}")
+    for key in sorted(REQUIRED_CHECKS):
+        if checks.get(key) is not True:
+            errors.append(f"main integration blocked: checks.{key} is {checks.get(key)!r}")
+    return errors
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--check", action="store_true")
-    args = parser.parse_args()
+    parser.add_argument("--enforce-main-integration", action="store_true")
+    args = parser.parse_args(argv)
     repo_root = Path(args.repo_root).resolve()
+    if args.enforce_main_integration:
+        result = verify_remote_settings(repo_root)
+        errors = main_integration_enforcement_errors(result)
+        if errors:
+            for error in errors:
+                print(f"ERROR: {error}")
+            if result.get("errors"):
+                for error in result["errors"]:
+                    print(f"ERROR: remote verification: {error}")
+            return 1
+        print("remote repository main-integration protection verified")
+        return 0
     if args.write:
         result = verify_remote_settings(repo_root)
         path = repo_root / SETTINGS_PATH

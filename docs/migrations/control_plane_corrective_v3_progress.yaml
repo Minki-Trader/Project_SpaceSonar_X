@@ -1,10 +1,21 @@
 version: corrective_workflow_progress_v1
-workflow_status: completed
+workflow_status: wp08_hygiene_completed_main_integration_blocked
 work_item_id: work_codex_control_plane_corrective_v3
 baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
 branch: codex/control-plane-corrective-v3
-current_claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+current_claim_boundary: wp08_hygiene_completed_main_integration_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
 initialized_at_utc: '2026-06-22T23:53:38Z'
+wp08_final_hygiene:
+  status: completed
+  scope: final_repository_hygiene_validation_only
+main_integration_readiness:
+  status: blocked
+  blockers:
+  - main_branch_protection_missing_or_not_visible
+  - operating_closeout_evidence_repair_required
+  - agent_observation_coverage_below_slo
+  enforcement_command: python foundation/validation/remote_repository_settings_verifier.py --repo-root . --enforce-main-integration
+  claim_boundary: wp08_hygiene_completed_main_integration_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
 invariants:
   locked_final_oos_b_used: false
   runtime_authority: false
@@ -1775,7 +1786,7 @@ work_units:
     status: completed
     started_at_utc: '2026-06-25T04:07:00Z'
     completed_at_utc: '2026-06-25T04:13:30Z'
-    objective: final_integration_delivery_hygiene_and_main_boundary_preparation
+    objective: final_hygiene_completed_main_integration_readiness_blocked
     agent_execution:
       mode: solo
       evidence_class: retrospective_attestation
@@ -1803,6 +1814,17 @@ work_units:
         remote_branch_protection: not_enabled_or_not_visible
         mt5_manual_workflow: .github/workflows/mt5-runtime-manual.yml
         final_migration_ledger: docs/migrations/control_plane_corrective_v3.yaml
+      main_integration_readiness:
+        status: blocked
+        blockers:
+        - main_branch_protection_missing_or_not_visible
+        - operating_closeout_evidence_repair_required
+        - agent_observation_coverage_below_slo
+        required_ci_jobs:
+        - control-plane-fast
+        - unit
+        - evidence-graph-full
+        - full-suite
     validation:
     - command: uv run pytest -q
       status: scheduled_for_wp08_final_validation
@@ -1810,10 +1832,10 @@ work_units:
       status: scheduled_for_wp08_final_validation
     - command: git diff --check
       status: scheduled_for_wp08_final_validation
-    claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    claim_boundary: wp08_hygiene_completed_main_integration_blocked_no_runtime_authority_no_economics_pass_no_live_readiness_no_production_deployment
     handoff:
       next_packet: none
       required_entry_condition: WP08.status completed
-      exact_handoff: Deliver final corrective branch and request remote branch-protection
-        verification plus evidence repair for agent observation coverage before any
-        main integration or Wave02-ready claim.
+      exact_handoff: Final hygiene is complete, but main integration remains blocked
+        until branch protection is verified and operating closeout evidence repair
+        resolves agent observation coverage.
