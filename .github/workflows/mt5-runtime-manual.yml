@@ -1,0 +1,81 @@
+name: mt5-runtime-manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_mode:
+        description: "Manual MT5 runtime mode"
+        required: true
+        default: "portable-preflight"
+        type: choice
+        options:
+          - portable-preflight
+      allow_locked_final_oos:
+        description: "Locked final OOS is forbidden by default and must remain false for corrective validation"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  mt5-runtime-preflight:
+    name: Windows MT5 portable preflight
+    runs-on: [self-hosted, Windows, mt5]
+    if: ${{ inputs.allow_locked_final_oos == false }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install locked dependencies
+        run: uv sync --locked --extra dev --extra onnxlab
+      - name: Confirm locked final OOS remains excluded
+        shell: pwsh
+        run: |
+          $contract = Get-Content -Raw configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+          if ($contract -notmatch "locked_final_excluded_by_default: true") {
+            throw "locked final OOS exclusion was not found"
+          }
+      - name: Confirm MT5 portable runner is explicitly configured
+        shell: pwsh
+        run: |
+          if (-not $env:SPACESONAR_MT5_TERMINAL_EXE) {
+            throw "SPACESONAR_MT5_TERMINAL_EXE must point at a local MT5 terminal64.exe on the self-hosted runner"
+          }
+          if (-not (Test-Path -LiteralPath $env:SPACESONAR_MT5_TERMINAL_EXE)) {
+            throw "SPACESONAR_MT5_TERMINAL_EXE does not exist"
+          }
+      - name: Validate runtime contract and committed evidence
+        run: |
+          uv run python foundation/validation/active_record_validator.py --repo-root .
+          uv run python foundation/evaluation/runtime_contract_evaluator.py --repo-root .
+      - name: Write sanitized manual preflight summary
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifacts\mt5-runtime-manual | Out-Null
+          @"
+          version: mt5_runtime_manual_preflight_v1
+          mode: portable-preflight
+          locked_final_oos: excluded_by_default
+          uploaded_artifact_policy: receipts_summaries_hashes_only_no_secrets
+          claim_boundary: manual_windows_mt5_preflight_only_no_runtime_authority_no_economics_pass
+          "@ | Set-Content -Encoding utf8 artifacts\mt5-runtime-manual\preflight_summary.yaml
+      - name: Upload receipts summaries and hashes only
+        uses: actions/upload-artifact@v4
+        with:
+          name: mt5-runtime-manual-receipts-summaries-hashes
+          path: artifacts/mt5-runtime-manual/
+          if-no-files-found: error
+
+  locked-final-rejected:
+    name: Reject locked-final request
+    runs-on: windows-latest
+    if: ${{ inputs.allow_locked_final_oos != false }}
+    steps:
+      - name: Reject locked final OOS usage
+        shell: pwsh
+        run: |
+          throw "locked_final_oos_b is excluded by default and cannot be used by this manual workflow"

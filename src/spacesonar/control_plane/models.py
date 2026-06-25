@@ -12,6 +12,7 @@ class ExecutionContext:
     claim_boundary: str
     command_argv: tuple[str, ...] = ()
     validation_commands: tuple[str, ...] = ()
+    recover_stale_lock: bool = False
 
 
 @dataclass(frozen=True)
@@ -30,3 +31,6 @@ class TransactionResult:
     receipt_path: Path
     committed_paths: tuple[Path, ...] = ()
     errors: tuple[str, ...] = ()
+
+
+TRANSACTION_SUCCESS_STATUSES = frozenset({"committed", "noop_already_applied"})

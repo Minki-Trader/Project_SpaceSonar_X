@@ -1,0 +1,41 @@
+version: source_snapshot_v1
+batch_id: batch_control_plane_corrective_v3_wp06_provenance_compaction
+tracked_patch_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot/tracked_unstaged.patch
+tracked_patch_sha256: 67c78a7544939abeafb90aff5fb419e71d0090c184a89176877ca2c8035b4295
+staged_patch_path: null
+staged_patch_sha256: null
+untracked_archive_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot/untracked_source.zip
+untracked_archive_sha256: a27dd9501c6f78aafe2316c90b20631d1f4733b9dadf42fb873b9c76e17f1bb4
+untracked_archive_manifest:
+- path: foundation/migrations/compact_historical_execution_provenance_v1.py
+  sha256: ef0f6deb6710a326ade4c266a47744dc8b1158ceaa5eeb523db5b5403852c0fe
+  size_bytes: 25733
+  mode: '100644'
+- path: foundation/validation/execution_provenance_validator.py
+  sha256: 2be6076308d473302285cc0c9837239262efe49cd4104eebaf687491c0b38371
+  size_bytes: 9868
+  mode: '100644'
+untracked_paths:
+- foundation/migrations/compact_historical_execution_provenance_v1.py
+- foundation/validation/execution_provenance_validator.py
+deleted_paths: []
+renamed_paths: []
+binary_source_paths: []
+source_tree_hash: 378e38f83e36f06089de6af3de13e16d6cf4b9ba2c78dff17559c341b5ebbe2d
+source_surface:
+- AGENTS.md
+- pyproject.toml
+- uv.lock
+- sitecustomize.py
+- src/
+- foundation/
+- configs/
+- tests/
+- .agents/
+- .codex/
+- .github/workflows/
+- docs/policies/
+- docs/agent_control/
+- docs/contracts/
+- lab/templates/
+manifest_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot/source_snapshot_manifest.yaml

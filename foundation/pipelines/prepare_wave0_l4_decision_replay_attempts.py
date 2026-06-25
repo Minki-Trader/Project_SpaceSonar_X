@@ -262,7 +262,7 @@ def build_attempt_manifest(
     if not ea_binary_available:
         missing_evidence.insert(0, "score_replay_EA_not_compiled_in_this_preparation_step")
     return {
-        "version": "mt5_attempt_manifest_v1",
+        "version": "mt5_attempt_manifest_v2",
         "attempt_id": attempt_row["attempt_id"],
         "parent_score_attempt_id": attempt_row["source_attempt_id"],
         "adapter_id": ADAPTER_ID,
@@ -301,6 +301,7 @@ def build_attempt_manifest(
             "score_replay_not_onnx_execution": True,
         },
         "runtime_surface_contract": {
+            "completion_surface_scope": "full_period_sparse_decision_surface",
             "surface_scope": "full_period_sparse_decision_surface_from_mt5_score_telemetry",
             "source_score_telemetry_common_path": attempt_row["source_score_telemetry_common_path"],
             "source_score_attempt_manifest": source_attempt["attempt_manifest_path"],
@@ -823,32 +824,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    policies = args.direction_policy or list(DEFAULT_DIRECTION_POLICIES)
-    created_at = utc_now()
-    summary, rows, manifests, configs = build_attempt_rows_manifests_configs(
-        repo_root,
-        direction_policies=policies,
-        write_mode=args.write_records,
-        created_at_utc=created_at,
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    if args.write_records:
-        write_records(repo_root, summary, rows, manifests, configs)
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": SUMMARY_PATH.as_posix(),
-                "prepared_attempt_count": len(rows),
-                "direction_policies": policies,
-                "claim_boundary": summary["claim_boundary"],
-            },
-            indent=2,
-        )
-    )
-    return 0
 
 
 if __name__ == "__main__":

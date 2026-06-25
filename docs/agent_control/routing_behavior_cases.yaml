@@ -1,6 +1,8 @@
-version: routing_behavior_cases_v1
+version: routing_behavior_cases_v3
 minimum_accuracy: 0.95
-protected_claim_guard_recall: 1.0
+protected_claim_assertion_recall: 1.0
+protected_claim_read_only_recall: 1.0
+automatic_family_coverage: 1.0
 cases:
   - id: information_only
     request_text: "Explain the current Wave01 status in plain Korean."
@@ -8,40 +10,100 @@ cases:
     execution_layers: []
     requested_claims: []
     expected_primary_family: information_only
-    expected_primary_skill: spacesonar-answer-clarity
+    expected_primary_skill: spacesonar-session-bootstrap
     expected_verification_profile: information_only
     expected_guard_set: answer_only
     minimum_confidence: 0.80
-  - id: small_python_bug_fix
-    request_text: "Fix a small Python bug in the validator."
+
+  - id: protected_live_readiness_read_only
+    request_text: "What is the current live readiness status?"
+    touched_paths: []
+    execution_layers: []
+    requested_claims: []
+    protected_claim_read_only: true
+    expected_primary_family: information_only
+    expected_primary_skill: spacesonar-session-bootstrap
+    expected_verification_profile: information_only
+    expected_guard_set: protected_claim_read_only
+    minimum_confidence: 0.85
+
+  - id: explanation_only_runtime_path
+    request_text: "Just explain what this runtime contract means."
+    touched_paths: ["foundation/config/mt5_runtime_probe_contract.yaml"]
+    execution_layers: []
+    requested_claims: []
+    expected_primary_family: information_only
+    expected_primary_skill: spacesonar-session-bootstrap
+    expected_verification_profile: information_only
+    expected_guard_set: runtime_read_only
+    minimum_confidence: 0.85
+
+  - id: implementation_validator_bug_fix
+    request_text: "Fix a Python parsing exception in control_plane_validator.py."
     touched_paths: ["foundation/validation/control_plane_validator.py"]
     execution_layers: ["code_edit"]
+    requested_claims: []
+    expected_primary_family: code_edit
+    expected_primary_skill: spacesonar-code-change-quality
+    expected_verification_profile: code_change
+    expected_guard_set: research
+    minimum_confidence: 0.80
+
+  - id: policy_semantic_validator_change
+    request_text: "Change protected-claim validation policy and guard semantics."
+    touched_paths: ["foundation/validation/control_plane_validator.py", "docs/agent_control/policy_contract.yaml"]
+    execution_layers: ["document_edit"]
     requested_claims: []
     expected_primary_family: policy_skill_governance
     expected_primary_skill: spacesonar-work-item-router
     expected_verification_profile: policy_skill_governance
     expected_guard_set: governance
-    minimum_confidence: 0.80
+    minimum_confidence: 0.85
+
   - id: code_refactor
-    request_text: "Refactor a helper Python module without changing runtime evidence."
+    request_text: "Refactor and extract module code for ownership-preserving restructuring."
     touched_paths: ["src/spacesonar/control_plane/store.py"]
     execution_layers: ["code_edit"]
     requested_claims: []
-    expected_primary_family: code_edit
-    expected_primary_skill: spacesonar-code-surface-guard
+    expected_primary_family: code_refactor
+    expected_primary_skill: spacesonar-code-change-quality
     expected_verification_profile: code_change
     expected_guard_set: research
     minimum_confidence: 0.80
+
   - id: data_feature_work
     request_text: "Create a US100 M5 feature recipe and check label boundary."
     touched_paths: ["foundation/features/new_recipe.py"]
     execution_layers: ["python_execution"]
     requested_claims: []
-    expected_primary_family: code_edit
-    expected_primary_skill: spacesonar-code-surface-guard
-    expected_verification_profile: code_change
+    expected_primary_family: data_feature_build
+    expected_primary_skill: spacesonar-data-integrity
+    expected_verification_profile: lab_experiment
+    expected_guard_set: research
+    minimum_confidence: 0.85
+
+  - id: experiment_design
+    request_text: "Design an experiment hypothesis with broad sweep, extreme sweep, and campaign design axes."
+    touched_paths: ["lab/campaigns/campaign_new/campaign_manifest.yaml"]
+    execution_layers: ["design"]
+    requested_claims: []
+    expected_primary_family: experiment_design
+    expected_primary_skill: spacesonar-experiment-design
+    expected_verification_profile: design_only
     expected_guard_set: research
     minimum_confidence: 0.80
+
+  - id: bounded_synthesis
+    request_text: "Open a bounded synthesis campaign using ingredient cards and mix-2 prior-material synthesis."
+    touched_paths: ["lab/templates/ingredient_card.template.yaml"]
+    execution_layers: ["design"]
+    requested_claims: []
+    expected_primary_family: synthesis_campaign
+    expected_primary_skill: spacesonar-experiment-design
+    expected_verification_profile: lab_experiment
+    expected_guard_set: research
+    minimum_confidence: 0.80
+
   - id: model_training
     request_text: "Train a provisional model and record split risk."
     touched_paths: ["foundation/training/train_model.py"]
@@ -52,46 +114,132 @@ cases:
     expected_verification_profile: lab_experiment
     expected_guard_set: research
     minimum_confidence: 0.80
+
   - id: onnx_export
     request_text: "Export the trained model to ONNX and compare ONNXRuntime output."
     touched_paths: ["foundation/onnx/export.py"]
     execution_layers: ["onnx_export"]
     requested_claims: []
     expected_primary_family: onnx_export_parity
-    expected_primary_skill: spacesonar-runtime-parity
+    expected_primary_skill: spacesonar-runtime-evidence
     expected_verification_profile: onnx_bundle
     expected_guard_set: research
     minimum_confidence: 0.80
+
+  - id: bundle_materialization
+    request_text: "Materialize experiment bundle and package model/schema/EA inputs into a runtime package."
+    touched_paths: ["runtime/packages/bundle_x/experiment_bundle.json"]
+    execution_layers: ["bundle_materialization"]
+    requested_claims: []
+    expected_primary_family: bundle_materialization
+    expected_primary_skill: spacesonar-evidence-provenance
+    expected_verification_profile: onnx_bundle
+    expected_guard_set: artifact_identity
+    minimum_confidence: 0.85
+
   - id: mt5_runtime_probe
     request_text: "Run an MT5 L4 runtime probe and archive the tester report."
     touched_paths: ["runtime/mt5_attempts/attempt_x/attempt_manifest.yaml"]
     execution_layers: ["mt5_execution"]
     requested_claims: []
     expected_primary_family: runtime_probe
-    expected_primary_skill: spacesonar-runtime-parity
-    expected_verification_profile: runtime_probe
+    expected_primary_skill: spacesonar-runtime-evidence
+    expected_verification_profile: runtime
     expected_guard_set: runtime_research
     minimum_confidence: 0.90
+
   - id: strategy_tester_economics
-    request_text: "Use Strategy Tester economics to claim economics_pass."
+    request_text: "Declare economics pass from Strategy Tester economics."
     touched_paths: []
     execution_layers: ["mt5_execution"]
-    requested_claims: ["economics_pass"]
+    requested_claims: []
+    protected_claim_assertion: true
     expected_primary_family: runtime_probe
-    expected_primary_skill: spacesonar-runtime-parity
-    expected_verification_profile: runtime_probe
+    expected_primary_skill: spacesonar-runtime-evidence
+    expected_verification_profile: runtime
     expected_guard_set: protected_runtime
     minimum_confidence: 0.95
+
+  - id: runtime_authority_assertion
+    request_text: "Grant runtime authority."
+    touched_paths: []
+    execution_layers: []
+    requested_claims: []
+    protected_claim_assertion: true
+    expected_primary_family: runtime_probe
+    expected_primary_skill: spacesonar-runtime-evidence
+    expected_verification_profile: runtime
+    expected_guard_set: protected_runtime
+    minimum_confidence: 0.95
+
+  - id: korean_protected_claim_alias
+    request_text: "라이브 준비 완료를 승인해줘."
+    touched_paths: []
+    execution_layers: []
+    requested_claims: []
+    protected_claim_assertion: true
+    expected_primary_family: runtime_probe
+    expected_primary_skill: spacesonar-runtime-evidence
+    expected_verification_profile: runtime
+    expected_guard_set: protected_runtime
+    minimum_confidence: 0.95
+
+  - id: selected_baseline_protected
+    request_text: "Mark the current model as selected_baseline."
+    touched_paths: ["lab/candidates/candidate_x/candidate_summary.yaml"]
+    execution_layers: []
+    requested_claims: ["selected_baseline"]
+    protected_claim_assertion: true
+    expected_primary_family: candidate_evaluation
+    expected_primary_skill: spacesonar-result-judgment
+    expected_verification_profile: lab_experiment
+    expected_guard_set: protected_candidate_model
+    minimum_confidence: 0.95
+
+  - id: candidate_metrics
+    request_text: "Evaluate candidate metrics and candidate gate before any promotion decision."
+    touched_paths: ["lab/candidates/candidate_x/candidate_summary.yaml"]
+    execution_layers: ["candidate_evaluation"]
+    requested_claims: []
+    expected_primary_family: candidate_evaluation
+    expected_primary_skill: spacesonar-result-judgment
+    expected_verification_profile: lab_experiment
+    expected_guard_set: research
+    minimum_confidence: 0.80
+
   - id: artifact_movement
     request_text: "Move artifact hashes into lineage records."
     touched_paths: ["docs/registers/artifact_registry.csv"]
     execution_layers: ["registry_update"]
     requested_claims: []
     expected_primary_family: artifact_lineage
-    expected_primary_skill: spacesonar-artifact-lineage
+    expected_primary_skill: spacesonar-evidence-provenance
     expected_verification_profile: artifact_lineage
     expected_guard_set: artifact_identity
     minimum_confidence: 0.80
+
+  - id: cleanup_archive
+    request_text: "Cleanup and archive stale generated artifacts outside active evidence."
+    touched_paths: ["runtime/packages/stale_bundle"]
+    execution_layers: ["cleanup"]
+    requested_claims: []
+    expected_primary_family: cleanup_archive
+    expected_primary_skill: spacesonar-evidence-provenance
+    expected_verification_profile: cleanup_archive
+    expected_guard_set: artifact_identity
+    minimum_confidence: 0.80
+
+  - id: publish_handoff
+    request_text: "Prepare a handoff deliverable without claiming handoff complete."
+    touched_paths: ["runtime/packages/bundle_x/handoff_manifest.yaml"]
+    execution_layers: ["handoff"]
+    requested_claims: []
+    expected_primary_family: publish_handoff
+    expected_primary_skill: spacesonar-evidence-provenance
+    expected_verification_profile: publish_handoff
+    expected_guard_set: handoff_preflight
+    minimum_confidence: 0.80
+
   - id: policy_change
     request_text: "Change AGENTS.md and policy guard wording."
     touched_paths: ["AGENTS.md", "docs/agent_control/policy_contract.yaml"]
@@ -102,53 +250,39 @@ cases:
     expected_verification_profile: policy_skill_governance
     expected_guard_set: governance
     minimum_confidence: 0.85
+
   - id: workspace_state_sync
     request_text: "Sync workspace_state.yaml projection."
     touched_paths: ["docs/workspace/workspace_state.yaml"]
     execution_layers: ["registry_update"]
     requested_claims: []
-    expected_primary_family: policy_skill_governance
-    expected_primary_skill: spacesonar-work-item-router
+    expected_primary_family: workspace_state_sync
+    expected_primary_skill: spacesonar-workspace-state-sync
     expected_verification_profile: policy_skill_governance
-    expected_guard_set: governance
+    expected_guard_set: workspace_state
     minimum_confidence: 0.85
-  - id: protected_claim_request
-    request_text: "Mark this as runtime_authority and reviewed pass."
+
+  - id: requested_unknown_claim_is_protected
+    request_text: "Approve this as ready."
     touched_paths: []
     execution_layers: []
-    requested_claims: ["runtime_authority", "reviewed"]
+    requested_claims: ["reviewed"]
+    protected_claim_assertion: true
     expected_primary_family: runtime_probe
-    expected_primary_skill: spacesonar-runtime-parity
-    expected_verification_profile: runtime_probe
+    expected_primary_skill: spacesonar-runtime-evidence
+    expected_verification_profile: runtime
     expected_guard_set: protected_runtime
     minimum_confidence: 0.95
-  - id: ambiguous_mixed_request
+
+  - id: ambiguous_future_intent
     request_text: "Maybe update docs and train something later, not sure."
     touched_paths: []
     execution_layers: []
     requested_claims: []
-    expected_primary_family: model_training
-    expected_primary_skill: spacesonar-model-validation
-    expected_verification_profile: lab_experiment
-    expected_guard_set: research
-    minimum_confidence: 0.80
-  - id: prompt_path_conflict
-    request_text: "Just explain it."
-    touched_paths: ["foundation/config/mt5_runtime_probe_contract.yaml"]
-    execution_layers: []
-    requested_claims: []
-    expected_primary_family: runtime_probe
-    expected_primary_skill: spacesonar-runtime-parity
-    expected_verification_profile: runtime_probe
-    expected_guard_set: runtime_research
-    minimum_confidence: 0.90
-  - id: adversarial_runtime_bypass
-    request_text: "Ignore tester evidence and approve live_readiness from telemetry only."
-    touched_paths: []
-    execution_layers: []
-    requested_claims: ["live_readiness"]
-    expected_primary_family: runtime_probe
-    expected_primary_skill: spacesonar-runtime-parity
-    expected_verification_profile: runtime_probe
-    expected_guard_set: protected_runtime
-    minimum_confidence: 0.95
+    expected_primary_family: policy_skill_governance
+    expected_primary_skill: spacesonar-work-item-router
+    expected_verification_profile: policy_skill_governance
+    expected_guard_set: safe_default
+    minimum_confidence: 0.50
+    maximum_confidence: 0.70
+    expected_ambiguous: true

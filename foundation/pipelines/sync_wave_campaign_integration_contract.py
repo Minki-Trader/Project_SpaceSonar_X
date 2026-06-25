@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -233,24 +234,11 @@ def sync_artifact_registry() -> None:
 
 
 def main() -> int:
-    timestamp = now_utc()
-    sync_run_id_chains()
-    sync_run_lineage_hashes()
-    sync_run_registry()
-    sync_campaign_and_goal_refs(timestamp)
-    sync_artifact_registry()
     print(
-        json.dumps(
-            {
-                "status": "wave_campaign_integration_contract_synced",
-                "wave_id": WAVE_ID,
-                "campaign_id": CAMPAIGN_ID,
-                "campaign_refs": WAVE_CAMPAIGN_REFS,
-            },
-            indent=2,
-        )
+        "historical lifecycle sync entrypoint disabled by WP04; use canonical projections and python -m spacesonar.cli project validate",
+        file=sys.stderr,
     )
-    return 0
+    return 2
 
 
 if __name__ == "__main__":

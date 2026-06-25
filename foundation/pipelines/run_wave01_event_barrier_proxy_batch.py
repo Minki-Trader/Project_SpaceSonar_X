@@ -671,7 +671,7 @@ def run_manifest_payload(
     axis = spec["axis_values"]
     run_id = spec["planned_run_id"]
     return {
-        "version": "run_manifest_v2",
+        "version": "run_manifest_v3",
         "run_id": run_id,
         "id_chain": {**spec["id_chain"], "artifact_ids": [], "bundle_id": None, "candidate_id": None},
         "trigger_source": WORK_ITEM_ID,
@@ -1288,48 +1288,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> int:
-    args = parse_args()
-    started_at = utc_now()
-    branch = branch_worktree(args.expected_branch)
-    row_manifest_path = REPO_ROOT / args.row_membership_manifest
-    row_manifest = read_yaml(row_manifest_path)
-    row_frame = load_row_membership(row_manifest)
-    run_refs_path = REPO_ROOT / args.run_refs
-    rows = read_csv_rows(run_refs_path)
-    if args.limit is not None:
-        rows = rows[: args.limit]
-    results = [
-        execute_one_spec(
-            spec_path=REPO_ROOT / row["run_spec_path"],
-            row_frame=row_frame,
-            row_manifest_path=row_manifest_path,
-            branch=branch,
-            command_argv=sys.argv[:],
-            started_at=started_at,
-        )
-        for row in rows
-    ]
-    update_run_refs(run_refs_path, results)
-    update_run_registry(REPO_ROOT / "docs/registers/run_registry.csv", results)
-    update_yaml_records(results)
-    write_closeout(results)
-    write_next_work_item(results)
-    update_goal_and_workspace(results)
-    update_resume_cursor(results)
-    print(
-        json.dumps(
-            {
-                "status": "wave01_event_barrier_proxy_batch_executed_l4_required",
-                "run_count": len(results),
-                "result_counts": dict(sorted(Counter(result["result_judgment"] for result in results).items())),
-                "claim_boundary": CLAIM_BOUNDARY,
-                "next_work_item": NEXT_WORK_ITEM_ID,
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0
 
 
 if __name__ == "__main__":

@@ -362,7 +362,7 @@ def run_one(
         "next_action": NEXT_WORK_ITEM_ID,
     }
     manifest = {
-        "version": "run_manifest_v2",
+        "version": "run_manifest_v3",
         **base_record,
         "trigger_source": WORK_ITEM_ID,
         "status": "executed_proxy_observation_l4_required",
@@ -606,32 +606,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> int:
-    args = parse_args()
-    branch = branch_worktree(args.expected_branch)
-    status = git_status_lines()
-    batch_git_state = {
-        "git_sha": git_value(["rev-parse", "HEAD"]),
-        "branch": git_value(["branch", "--show-current"]),
-        "dirty_flag": "dirty" if status else "clean",
-        "changed_files": status,
-    }
-    row_manifest_path = REPO_ROOT / args.row_membership_manifest
-    frame = load_row_membership(read_yaml(row_manifest_path))
-    matrix_rows = read_matrix(REPO_ROOT / args.matrix)
-    run_refs = read_csv_rows(REPO_ROOT / args.run_refs)
-    if args.limit is not None:
-        run_refs = run_refs[: args.limit]
-    results = [
-        run_one(matrix_rows[row["run_spec_id"]], row, frame, row_manifest_path, sys.argv[:], branch, batch_git_state)
-        for row in run_refs
-    ]
-    update_refs(REPO_ROOT / args.run_refs, results)
-    update_refs(REPO_ROOT / args.run_specs_index, results)
-    update_run_registry(REPO_ROOT / "docs/registers/run_registry.csv", results)
-    update_state(results)
-    print(json.dumps({"status": "wave01_session_transition_proxy_batch_executed_l4_required", "run_count": len(results), "result_counts": dict(sorted(Counter(item["result_judgment"] for item in results).items())), "claim_boundary": CLAIM_BOUNDARY, "next_work_item": NEXT_WORK_ITEM_ID}, indent=2))
-    return 0
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
+    )
 
 
 if __name__ == "__main__":

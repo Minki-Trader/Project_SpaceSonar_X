@@ -1,4 +1,42 @@
 version: claim_vocabulary_v1
+protected_claim_aliases:
+  runtime_authority:
+    - runtime_authority
+    - runtime authority
+    - runtime-authority
+    - 런타임 권한
+  economics_pass:
+    - economics_pass
+    - economics pass
+    - economics-pass
+    - 경제성 통과
+  live_readiness:
+    - live_readiness
+    - live readiness
+    - live-readiness
+    - 라이브 준비 완료
+  selected_baseline:
+    - selected_baseline
+    - selected baseline
+    - selected-baseline
+    - 선택 기준선
+  production_deployment:
+    - production_deployment
+    - production deployment
+    - production-deployment
+    - 운영 배포
+protected_claim_assertion_intent_aliases:
+  - approve
+  - mark
+  - declare
+  - claim
+  - promote
+  - set
+  - grant
+  - 인정
+  - 승인
+  - 선언
+  - 설정
 claim_classes:
   completed:
     allowed_when:
@@ -91,9 +129,9 @@ claim_classes:
       - missing_evidence_named
       - next_action_named
 forbidden_substitutions:
-  - "answer_clarity_cannot_replace_runtime_parity"
+  - "answer_clarity_guard_cannot_replace_runtime_evidence"
   - "claim_discipline_cannot_replace_missing_evidence"
-  - "run_evidence_cannot_replace_artifact_lineage"
+  - "evidence_provenance_cannot_replace_missing_source_manifests_or_receipts"
   - "python_structural_result_cannot_replace_mt5_result"
   - "top_k_probe_cannot_replace_full_scope_verification_without_user_quote"
   - "registry_row_cannot_replace_run_local_evidence"

@@ -1,0 +1,30 @@
+agent_mode: solo
+claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+consult_ids: []
+ended_at_utc: '2026-06-24T08:35:59.236261Z'
+evidence_class: contemporaneous_work_receipt
+finalization_receipt_ref:
+  path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+  sha256: 1af01f95f9c46d0176921321dc30230a4545b36dc0f87ea9f546fc3e93d4b1ec
+  size_bytes: 955
+receipt_sha256:
+  algorithm: sha256
+  scope: canonical_yaml_with_value_field_empty
+  value: b062ac3b0a67e04792e2103f0b499548d893009b7732b96a45e780c009633e17
+source_refs:
+- path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+  sha256: 54850d4400b546c039a63bbf6229089ddbfa5fa331478da4bc8f317482ad147c
+  size_bytes: 78548
+started_at_utc: '2026-06-23T15:05:01Z'
+transaction_receipt_ref:
+  path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+  sha256: 2a66f46d40340da0a2ce0dd4d92691270449c313d5a07776701eb985abd8c730
+  size_bytes: 68426
+  transaction_id: tx_20260624T083532777923Z_ec511bc5_c509255b
+version: agent_work_receipt_v1
+work_item_id: WP06
+wp06_batch_receipt_ref:
+  batch_id: batch_control_plane_corrective_v3_wp06_provenance_compaction
+  path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+  sha256: 008c29afb6b8f35a2d11e4df763a4af0bd0e33bbe9323d566e2c07d83517e035
+  size_bytes: 190608

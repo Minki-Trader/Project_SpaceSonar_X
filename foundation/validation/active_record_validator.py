@@ -4,6 +4,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -15,6 +16,8 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+
+from spacesonar.control_plane.store import filesystem_path
 
 LOCAL_USER_PATH_RE = re.compile(r"C:\\Users\\[^\\\s,\"']+", re.IGNORECASE)
 CLAIM_BLOCKING_WORDS = {
@@ -58,16 +61,25 @@ def is_try_first_disposition_token(value: str) -> bool:
 
 
 def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8-sig")
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        return handle.read()
+
+
+def path_exists(path: Path) -> bool:
+    return os.path.exists(filesystem_path(path))
+
+
+def path_is_file(path: Path) -> bool:
+    return os.path.isfile(filesystem_path(path))
 
 
 def load_yaml(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def load_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
 
@@ -82,7 +94,7 @@ def load_structured(path: Path) -> Any:
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(filesystem_path(path), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
@@ -93,7 +105,8 @@ def sha256_bytes(data: bytes) -> str:
 
 
 def text_checkout_sha256_variants(path: Path) -> set[str]:
-    data = path.read_bytes()
+    with open(filesystem_path(path), "rb") as handle:
+        data = handle.read()
     variants = {sha256_bytes(data)}
     if b"\0" in data:
         return variants
@@ -104,7 +117,8 @@ def text_checkout_sha256_variants(path: Path) -> set[str]:
 
 
 def text_checkout_size_variants(path: Path) -> set[int]:
-    data = path.read_bytes()
+    with open(filesystem_path(path), "rb") as handle:
+        data = handle.read()
     variants = {len(data)}
     if b"\0" in data:
         return variants
@@ -1071,8 +1085,13 @@ def validate_active_evidence_graph(repo_root: Path) -> list[str]:
 def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
     errors: list[str] = []
     attempt_root = repo_root / "runtime" / "mt5_attempts"
-    if not attempt_root.exists():
+    if not path_exists(attempt_root):
         return errors
+    inventory_path = repo_root / "docs" / "migrations" / "runtime_graph_target_inventory_v1.yaml"
+    if path_exists(inventory_path):
+        from foundation.migrations.runtime_graph_target_inventory import validate_runtime_graph_target_inventory
+
+        errors.extend(validate_runtime_graph_target_inventory(repo_root))
 
     for path in sorted(attempt_root.glob("*/attempt_manifest.yaml")):
         attempt = load_yaml(path) or {}
@@ -1107,6 +1126,105 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
         if is_l4_runtime_attempt and status.startswith("completed_") and not tester_report_observed:
             errors.append(f"{label}: completed_* status without tester report")
 
+        receipt_path = path.parent / "tester_report_receipt.yaml"
+        terminal_path = path.parent / "terminal_run_summary.yaml"
+        telemetry_candidates = [
+            path.parent / "score_telemetry_summary.yaml",
+            path.parent / "execution_telemetry_summary.yaml",
+        ]
+        telemetry_path = next((candidate for candidate in telemetry_candidates if path_exists(candidate)), None)
+        has_new_receipt_projection = bool(attempt.get("tester_report_receipt"))
+        has_durable_runtime_evidence = (
+            path_exists(receipt_path)
+            or has_new_receipt_projection
+            or path_exists(terminal_path)
+            or telemetry_path is not None
+        )
+        has_new_evidence = (
+            has_durable_runtime_evidence if is_l4_runtime_attempt else (path_exists(receipt_path) or has_new_receipt_projection)
+        )
+        if has_new_evidence:
+            if not path_exists(receipt_path):
+                errors.append(f"{label}: tester_report_receipt.yaml missing from runtime evidence set")
+            if not path_exists(terminal_path):
+                errors.append(f"{label}: terminal_run_summary.yaml missing from runtime evidence set")
+            if telemetry_path is None:
+                errors.append(f"{label}: telemetry summary missing from runtime evidence set")
+            if not (path_exists(receipt_path) and path_exists(terminal_path) and telemetry_path is not None):
+                continue
+            receipt_projection = attempt.get("tester_report_receipt") or {}
+            if isinstance(receipt_projection, dict):
+                expected_receipt_hash = receipt_projection.get("sha256")
+                if expected_receipt_hash and sha256(receipt_path) != expected_receipt_hash:
+                    errors.append(f"{label}: tester_report_receipt.yaml sha256 does not match manifest projection")
+
+            from foundation.mt5.runtime_completion import (
+                RuntimeEvidencePaths,
+                evaluate_runtime_attempt,
+                reconstruct_runtime_attempt,
+            )
+            from foundation.mt5.tester_report_receipt import (
+                load_receipt,
+                tester_report_completed,
+                validate_tester_report_receipt_binding,
+            )
+
+            reconstructed = reconstruct_runtime_attempt(
+                repo_root,
+                RuntimeEvidencePaths(
+                    attempt_manifest=path,
+                    terminal_run_summary=terminal_path,
+                    telemetry_summary=telemetry_path,
+                    tester_report_receipt=receipt_path,
+                ),
+            )
+            receipt = load_receipt(receipt_path)
+            for binding_error in validate_tester_report_receipt_binding(attempt, receipt, receipt_path):
+                errors.append(f"{label}: tester_report_receipt binding failed {binding_error}")
+            if reconstructed.tester_report_completed != tester_report_completed(receipt):
+                errors.append(f"{label}: reconstructed tester_report_completed conflicts with receipt predicate")
+            reconstructed_result = evaluate_runtime_attempt(
+                reconstructed,
+                required_period_roles=["validation", "research_oos"],
+                completion_eligible_surface_scopes=[
+                    "full_period_deterministic",
+                    "full_period_sparse_decision_surface",
+                ],
+            )
+            if runtime_complete != reconstructed_result.runtime_probe_complete:
+                errors.append(
+                    f"{label}: stored runtime_probe_complete projection conflicts with reconstructed runtime evidence"
+                )
+            if status.startswith("runtime_probe_completed") and not reconstructed_result.runtime_probe_complete:
+                errors.append(f"{label}: runtime_probe_completed status conflicts with reconstructed runtime evidence")
+            projected = {
+                "terminal_launched": bool(execution_state.get("terminal_launched")),
+                "telemetry_file_observed": bool(execution_state.get("telemetry_file_observed")),
+                "telemetry_rows_observed": bool(execution_state.get("telemetry_rows_observed")),
+                "tester_report_observed": bool(execution_state.get("tester_report_observed")),
+                "tester_report_completed": bool(execution_state.get("tester_report_completed")),
+                "terminal_mode": str(execution_state.get("terminal_mode") or ""),
+                "runtime_probe_complete": runtime_complete,
+            }
+            reconstructed_projection = {
+                "terminal_launched": reconstructed.terminal_launched,
+                "telemetry_file_observed": reconstructed.telemetry_file_observed,
+                "telemetry_rows_observed": reconstructed.telemetry_rows_observed,
+                "tester_report_observed": reconstructed.tester_report_observed,
+                "tester_report_completed": reconstructed.tester_report_completed,
+                "terminal_mode": reconstructed.terminal_mode,
+                "runtime_probe_complete": reconstructed_result.runtime_probe_complete,
+            }
+            for key, value in projected.items():
+                if value != reconstructed_projection[key]:
+                    errors.append(f"{label}: stored {key} projection conflicts with reconstructed runtime evidence")
+            stored_missing = tuple(str(item) for item in execution_state.get("missing_requirements", []))
+            reconstructed_missing = tuple(str(item) for item in reconstructed_result.missing_requirements)
+            if stored_missing != reconstructed_missing:
+                errors.append(
+                    f"{label}: stored missing_requirements projection conflicts with reconstructed runtime evidence"
+                )
+
     for path in sorted((repo_root / "lab" / "campaigns").glob("**/*runtime_execution_summary.yaml")):
         summary = load_yaml(path) or {}
         label = rel(path, repo_root)
@@ -1121,7 +1239,7 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
                 errors.append(f"{label}: status_counts retains legacy completed_* runtime status {status}")
 
     closeout_path = repo_root / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_closeout.yaml"
-    if closeout_path.exists():
+    if path_exists(closeout_path):
         closeout = load_yaml(closeout_path) or {}
         runtime_integrity = closeout.get("runtime_contract_integrity") or {}
         if runtime_integrity.get("status") == "passed":
@@ -1130,7 +1248,7 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
             runtime_result = evaluate_runtime_contract(repo_root)
             if runtime_result.get("status") != "passed":
                 errors.append(f"{rel(closeout_path, repo_root)}: runtime_contract_integrity passed but runtime evaluator did not pass")
-        if closeout.get("version") == "wave_closeout_v2" and (repo_root / ".git").exists() and (repo_root / "AGENTS.md").exists():
+        if closeout.get("version") == "wave_closeout_v2" and path_exists(repo_root / ".git") and path_exists(repo_root / "AGENTS.md"):
             from foundation.evaluation.build_operating_closeout import validate_committed_closeout
 
             errors.extend(validate_committed_closeout(repo_root))

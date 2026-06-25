@@ -662,35 +662,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = utc_now()
-    command_argv = ["python", "foundation/pipelines/aggregate_wave01_session_transition_l4_pair_judgments.py"]
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    summary, rows = aggregate_pairs(repo_root, started_at_utc=started_at, command_argv=command_argv)
-    write_yaml(repo_root / PAIR_SUMMARY, summary)
-    write_csv(repo_root / PAIR_INDEX, rows, pair_index_fieldnames())
-    write_yaml(repo_root / PAIR_CLOSEOUT, build_closeout(summary))
-    upsert_artifact_registry(repo_root, summary)
-    if args.write_control_records:
-        update_control_records(repo_root, summary)
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": PAIR_SUMMARY.as_posix(),
-                "pair_count": len(rows),
-                "nonempty_telemetry_pair_count": summary["counts"]["nonempty_telemetry_pair_count"],
-                "claim_boundary": summary["claim_boundary"],
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-

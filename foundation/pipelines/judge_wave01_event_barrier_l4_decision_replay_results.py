@@ -762,30 +762,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = utc_now()
-    command_argv = ["python", "foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py"]
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    summary, rows = judge(repo_root, started_at=started_at, command_argv=command_argv)
-    if args.write_control_records:
-        sync_control_records(repo_root, summary)
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": JUDGMENT_SUMMARY.as_posix(),
-                "cell_pair_count": len(rows),
-                "negative_count": summary["counts"]["negative_count"],
-                "candidate_count": summary["counts"]["candidate_count"],
-                "claim_boundary": summary["claim_boundary"],
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0
 
 
 if __name__ == "__main__":

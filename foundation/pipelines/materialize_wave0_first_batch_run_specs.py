@@ -319,7 +319,7 @@ def build_run_records(
         "threshold_policy": row["threshold_policy"],
     }
     manifest = {
-        "version": "run_manifest_v2",
+        "version": "run_manifest_v3",
         "run_id": run_id,
         "id_chain": id_chain,
         "trigger_source": "wave0_first_batch_matrix",
@@ -641,98 +641,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    repo_root = Path.cwd()
-    matrix_path = Path(args.matrix)
-    row_membership_manifest_path = Path(args.row_membership_manifest)
-    campaign_dir = Path(args.campaign_dir)
-    sweep_dir = Path(args.sweep_dir)
-    run_root = Path(args.run_root)
-    created_at = now_utc()
-
-    matrix_rows = read_matrix(matrix_path)
-    if not matrix_rows:
-        raise RuntimeError("first batch matrix has no rows")
-    row_manifest = read_yaml(row_membership_manifest_path)
-    source_inputs = [
-        matrix_path,
-        row_membership_manifest_path,
-        *[repo_root / rel_path for rel_path in RECIPE_PATHS.values()],
-    ]
-    branch = branch_worktree(args.expected_branch)
-    prov = provenance(sys.argv, source_inputs, repo_root)
-
-    anti_selection_path = campaign_dir / "anti_selection_ledger.yaml"
-    write_anti_selection_ledger(
-        path=anti_selection_path,
-        args=args,
-        repo_root=repo_root,
-        matrix_path=matrix_path,
-        row_membership_manifest=row_membership_manifest_path,
-        matrix_rows=matrix_rows,
-        created_at=created_at,
-    )
-
-    run_ref_rows: list[dict[str, str]] = []
-    for row in matrix_rows:
-        manifest, receipt, metrics = build_run_records(
-            row=row,
-            args=args,
-            repo_root=repo_root,
-            row_manifest=row_manifest,
-            branch=branch,
-            prov=prov,
-            created_at=created_at,
-        )
-        run_id = manifest["run_id"]
-        run_dir = run_root / run_id
-        write_json(run_dir / "run_manifest.json", manifest)
-        write_yaml(run_dir / "experiment_receipt.yaml", receipt)
-        write_json(run_dir / "metrics.json", metrics)
-        write_lineage(
-            run_id=run_id,
-            repo_root=repo_root,
-            run_dir=run_dir,
-            args=args,
-            source_inputs=source_inputs,
-        )
-        run_ref_rows.append(
-            {
-                "run_id": run_id,
-                "status": "planned_not_executed",
-                "created_at_utc": created_at,
-                "run_manifest_path": repo_relative(run_dir / "run_manifest.json", repo_root),
-                "claim_boundary": "planned_scout_run_spec_only_no_execution_no_candidate_no_baseline",
-                "result_judgment": "not_evaluated",
-                "notes": row["notes"],
-            }
-        )
-
-    run_refs = sweep_dir / "run_refs.csv"
-    write_run_refs(run_refs, run_ref_rows, repo_root)
-    first_batch_manifest = campaign_dir / "first_batch_run_specs_manifest.yaml"
-    write_first_batch_manifest(
-        path=first_batch_manifest,
-        args=args,
-        repo_root=repo_root,
-        created_at=created_at,
-        run_refs=run_refs,
-        anti_selection_ledger=anti_selection_path,
-        run_ref_rows=run_ref_rows,
-    )
-
+    _repo_root = Path.cwd()
     print(
-        json.dumps(
-            {
-                "status": "planned_run_specs_materialized_not_executed",
-                "run_count": len(run_ref_rows),
-                "run_refs": repo_relative(run_refs, repo_root),
-                "first_batch_manifest": repo_relative(first_batch_manifest, repo_root),
-                "anti_selection_ledger": repo_relative(anti_selection_path, repo_root),
-            },
-            indent=2,
-        )
+        "historical lifecycle entrypoint disabled by WP04; use python -m spacesonar.cli campaign materialize --campaign-id <id>",
+        file=sys.stderr,
     )
-    return 0
+    return 2
 
 
 if __name__ == "__main__":

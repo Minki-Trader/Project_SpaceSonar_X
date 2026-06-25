@@ -1,0 +1,52 @@
+receipt_version: tester_report_receipt_v1
+attempt_id: attempt_wave01_st_cell_005_l4_research_oos_v0
+source_report_sha256: 6f68b4503c77c667fe664e643a1fda7b9f2e1ecdda0d8649210fd30495f15238
+source_report_size_bytes: 27328
+source_report_mtime_utc: '2026-06-22T14:21:57.049767Z'
+source_origin: attempt_archive_path
+source_report_extension: .htm
+launch_started_at_utc: '2026-06-22T14:21:40.203736Z'
+report_observed_at_utc: '2026-06-22T14:21:57.049767Z'
+prelaunch_report_sha256: null
+postlaunch_report_sha256: 6f68b4503c77c667fe664e643a1fda7b9f2e1ecdda0d8649210fd30495f15238
+freshness_reason: historical_archive_window_and_hash_verified
+report_fresh_for_launch: true
+parse_status: parsed
+completion_marker_observed: true
+symbol: US100
+timeframe: M5
+from_date: 2025.04.03
+to_date: 2025.11.21
+model: '4'
+deposit: '500.00'
+leverage: 1:100
+expert: SpaceSonar_ONNX_L4_ScoreProbe
+fatal_error_count: 0
+expected_identity_missing_fields: []
+tester_identity_match: true
+claim_boundary: tester_report_receipt_only_no_runtime_authority_no_economics_pass
+tester_report_completed: true
+missing_requirements: []
+source_report_path: runtime/mt5_attempts/attempt_wave01_st_cell_005_l4_research_oos_v0/reports/tester_report.htm
+stored_report_sha256: 6f68b4503c77c667fe664e643a1fda7b9f2e1ecdda0d8649210fd30495f15238
+stored_report_sha256_match: true
+stored_report_size_bytes: 27328
+stored_report_size_match: true
+launch_ended_at_utc: '2026-06-22T14:21:57.571316Z'
+launch_end_tolerance_seconds: 120
+replace_report_enabled: true
+prelaunch_observation_available: false
+historical_freshness_checks:
+  raw_report_existed_at_materialization: true
+  stored_report_sha256_present: true
+  stored_report_sha256_match: true
+  stored_report_size_present: true
+  stored_report_size_match: true
+  mtime_at_or_after_launch_start: true
+  mtime_at_or_before_launch_end_plus_tolerance: true
+  replace_report_enabled: true
+  source_report_attempt_specific: true
+freshness_evidence_class: historical_archive_window_and_hash_verified
+source_report_attempt_specific: true
+receipt_provenance_class: historical_archive_migration
+migration_id: runtime_graph_revalidation_inventory_bound_v1

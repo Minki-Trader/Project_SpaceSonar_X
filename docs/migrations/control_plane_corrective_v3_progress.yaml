@@ -1,0 +1,1819 @@
+version: corrective_workflow_progress_v1
+workflow_status: completed
+work_item_id: work_codex_control_plane_corrective_v3
+baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
+branch: codex/control-plane-corrective-v3
+current_claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+initialized_at_utc: '2026-06-22T23:53:38Z'
+invariants:
+  locked_final_oos_b_used: false
+  runtime_authority: false
+  economics_pass: false
+  live_readiness: false
+  selected_baseline: false
+baseline_facts:
+  initial_branch: codex/control-plane-corrective-v3
+  initial_head: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
+  initial_dirty_state: clean
+  initial_changed_paths: []
+  python_version: Python 3.13.9
+  uv_lock_sha256: 19836faa417eec98234c4c9297451aa5fdf836de389e09a6d00cb5ddc60d0fc1
+  candidate_count: 0
+  l5_candidate_count: 0
+  locked_final_oos_state:
+    locked_final_period_set_id: split_base_anchor_v0_locked_final
+    locked_final_oos_b_used: false
+    closeout_evidence: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+    contract_evidence: foundation/config/mt5_runtime_probe_contract.yaml
+  current_wave01_runtime_contract_status: passed
+  active_wave_status: wave01_control_plane_proof_closed_runtime_contract_complete
+  workspace_claim_boundary_at_entry: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+  runtime_attempt_directory_count_total: 88
+  runtime_attempt_manifest_count_total: 88
+  runtime_target_attempt_manifest_count: 86
+  runtime_target_definition:
+    wave0_or_wave01_l4_attempt_with_execution_state: true
+work_units:
+  WP00:
+    status: completed
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids:
+      - tf_goal_us100_onnx_forward_boundary_initial_v2
+      source_refs: []
+      started_at_utc: '2026-06-23T00:00:00Z'
+      ended_at_utc: '2026-06-23T00:00:00Z'
+    changed_files:
+    - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - docs/registers/artifact_registry.csv
+    - src/spacesonar/cli.py
+    - tests/control_plane/test_corrective_workstream_wp00.py
+    validation:
+    - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py
+        -q
+      status: passed
+      result: WP00 guard tests passed before fail-closed amendment; amended test count
+        recorded below.
+    - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py
+        -q
+      status: passed
+      result: 14 passed
+    - command: python -m spacesonar.cli campaign materialize --campaign-id campaign_wp00_guard_probe_v0
+      status: passed
+      result: canonical lifecycle CLI rejected with exit code 3 before mutation
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation remained available while lifecycle mutation is blocked
+    - command: git diff --check
+      status: passed
+      result: no whitespace errors
+    - command: yaml parse docs/migrations/control_plane_corrective_v3_progress.yaml
+      status: passed
+      result: progress ledger parsed by WP00 test
+    findings:
+    - id: wp00_entry_head_verified
+      status: passed
+      detail: Repository HEAD matched baseline fbcde1e67221f0618e17388e6617c8dd3ff4c22d
+        before mutation.
+    - id: wp00_lifecycle_cli_guard_required
+      status: passed
+      detail: Canonical campaign and wave lifecycle CLI commands are blocked until
+        WP02 and WP04 complete.
+    - id: wp00_fail_closed_lifecycle_guard_amendment
+      status: passed
+      detail: Corrective branch lifecycle guard must fail closed for missing or invalid
+        progress ledger and release only after WP02 and WP04 are completed.
+    - id: wp00_runtime_target_count_clarified
+      status: passed
+      detail: Runtime manifests are recorded as 88 total, with 86 Wave0/Wave01 L4
+        attempts targeted for hardened runtime migration.
+    - id: wp00_no_wave01_evidence_changed
+      status: passed
+      detail: WP00 changed only the progress ledger, CLI guard, and focused guard
+        tests.
+    commands_executed:
+    - git rev-parse HEAD
+    - git switch -c codex/control-plane-corrective-v3
+    - git status --short --branch
+    - python --version
+    - Get-FileHash -Algorithm SHA256 -LiteralPath uv.lock
+    - uv run pytest tests/control_plane/test_corrective_workstream_wp00.py -q
+    - python -m spacesonar.cli campaign materialize --campaign-id campaign_wp00_guard_probe_v0
+    - uv run python -m spacesonar.cli project validate
+    - git diff --check
+    baseline_facts_ref: baseline_facts
+    amendment:
+      id: wp00_fail_closed_corrective_lifecycle_guard
+      status: completed
+      commit_subject: WP00 fail-closed corrective lifecycle guard
+      commit_sha: 8f9753d1c56956fbf2b335709adee6698b6629af
+      requested_at_utc: '2026-06-23T00:00:00Z'
+      requirements:
+      - corrective branch missing progress ledger blocks with exit code 3
+      - malformed or non-mapping progress ledger blocks with exit code 3
+      - wrong ledger version, work_item_id, or branch blocks with exit code 3
+      - WP02 or WP04 incomplete blocks with exit code 3
+      - WP02 and WP04 completed releases lifecycle command dispatch
+      - blocked lifecycle commands create zero campaign, wave, or transaction artifacts
+    handoff:
+      next_packet: WP01
+      required_entry_condition: WP00.status completed
+      exact_handoff: Build the independent runtime-evidence truth kernel without migrating
+        the 86 historical target attempts yet.
+      key_inputs:
+      - foundation/mt5/runtime_completion.py
+      - foundation/pipelines/run_wave0_l4_mt5_attempts.py
+      - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+      - foundation/validation/active_record_validator.py
+      - foundation/config/mt5_runtime_probe_contract.yaml
+      guard_state: canonical lifecycle CLI mutation remains blocked until WP02 and
+        WP04 complete.
+  WP01:
+    status: completed
+    completed_at_utc: '2026-06-23T01:10:00Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T00:00:00Z'
+      ended_at_utc: '2026-06-23T01:10:00Z'
+    objective: Build independent runtime-evidence truth primitives without migrating
+      historical Wave0/Wave01 attempts.
+    changed_files:
+    - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - foundation/mt5/runtime_completion.py
+    - foundation/mt5/tester_report_receipt.py
+    - foundation/config/mt5_runtime_probe_contract.yaml
+    - foundation/pipelines/prepare_wave0_l4_mt5_attempts.py
+    - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+    - foundation/pipelines/run_wave0_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+    - foundation/validation/active_record_validator.py
+    - tests/fixtures/mt5_strategy_tester_report_minimal.html
+    - tests/test_runtime_evidence_truth_kernel.py
+    truth_primitives:
+    - tester_report_receipt_v1 records report hash, size, origin, extension, freshness,
+      parse status, completion marker, tester identity fields, fatal error count,
+      and claim boundary.
+    - tester_report_completed is true only for fresh parsed reports with a completion
+      marker, matching tester identity, and zero fatal errors.
+    - RuntimeEvidencePaths binds attempt manifest, terminal summary, telemetry summary,
+      and tester report receipt for reconstruction.
+    - reconstruct_runtime_attempt rebuilds RuntimeAttemptState from durable files
+      and does not read stored execution_state.runtime_probe_complete.
+    - active_record_validator compares stored runtime_probe_complete projections against
+      reconstructed evidence when tester_report_receipt.yaml exists.
+    - terminal mode is explicit-only and portable completion requires portable_attempted
+      true with no fallback allowed or used.
+    - canonical identity is read from period_identity and execution_identity before
+      compatibility fields.
+    - completion surface is read from runtime_surface_contract.completion_surface_scope;
+      descriptive surface_scope is not completion-eligible by default.
+    wp03_migration_api_handoff:
+      receipt_builder: foundation.mt5.tester_report_receipt.build_tester_report_receipt
+      receipt_completion_predicate: foundation.mt5.tester_report_receipt.tester_report_completed
+      receipt_writer: foundation.mt5.tester_report_receipt.write_receipt
+      runtime_evidence_paths: foundation.mt5.runtime_completion.RuntimeEvidencePaths
+      runtime_reconstructor: foundation.mt5.runtime_completion.reconstruct_runtime_attempt
+      runtime_evaluator: foundation.mt5.runtime_completion.evaluate_runtime_attempt
+      terminal_mode_reconstructor: foundation.mt5.runtime_completion.terminal_mode_from_summary
+      terminal_launch_reconstructor: foundation.mt5.runtime_completion.terminal_launched_from_summary
+      validator_hook: foundation.validation.active_record_validator.validate_runtime_completion_truth
+      receipt_path_template: runtime/mt5_attempts/<attempt_id>/tester_report_receipt.yaml
+      completion_surface_field: runtime_surface_contract.completion_surface_scope
+      required_terminal_policy_fields:
+      - portable_attempted
+      - main_mode_fallback_allowed
+      - main_mode_fallback_used
+    validation:
+    - command: uv run pytest tests/test_runtime_evidence_truth_kernel.py -q
+      status: passed
+      result: 35 passed
+    - command: uv run pytest tests/test_runtime_completion_contract.py -q
+      status: passed
+      result: 8 passed
+    - command: uv run pytest tests/test_wave0_l4_mt5_attempt_runner.py -q
+      status: passed
+      result: 8 passed
+    - command: uv run pytest tests/test_wave01_event_barrier_l4_mt5_runner.py -q
+      status: passed
+      result: 5 passed
+    - command: uv run pytest tests/test_wave01_session_transition_l4_mt5_runner.py
+        -q
+      status: passed
+      result: 7 passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: python -m compileall foundation/mt5 foundation/pipelines foundation/validation
+      status: passed
+      result: changed Python files compiled successfully
+    - command: git diff --check
+      status: passed
+      result: no whitespace errors
+    mutation_cases:
+    - telemetry_without_report_reconstructs_incomplete
+    - report_without_telemetry_rows_reconstructs_incomplete
+    - main_mode_fallback_reconstructs_incomplete
+    - stale_report_observed_but_not_completed
+    - unparseable_report_not_completed
+    - report_without_completion_marker_not_completed
+    - table_like_report_label_value_lines_can_complete
+    - wrong_symbol_timeframe_dates_or_model_not_completed
+    - launched_terminal_without_explicit_mode_is_not_portable
+    - terminal_summary_mode_is_read_correctly
+    - portable_attempted_false_fails_completion
+    - fallback_allowed_true_fails_completion
+    - nested_period_identity_is_read
+    - nested_execution_identity_is_read
+    - missing_period_profile_runtime_period_execution_profile_or_completion_surface_scope_fails_completion
+    - descriptive_decision_replay_surface_scope_not_completion_eligible
+    - explicit_completion_surface_scope_succeeds
+    - report_mtime_before_launch_is_stale
+    - missing_expected_identity_field_fails
+    - malformed_fatal_error_count_fails_closed
+    - sanitized_real_format_mt5_report_fixture_parses
+    - generic_history_quality_token_alone_does_not_complete
+    - partial_evidence_set_is_rejected
+    - stale_report_does_not_pass_completed_report_gate
+    - runner_next_action_remains_repair_when_report_contract_fails
+    - stored_completion_boolean_true_cannot_override_reconstructed_truth
+    - valid_portable_report_backed_score_attempt_completes
+    - valid_portable_report_backed_decision_replay_attempt_completes
+    amendment:
+      id: wp01_runtime_truth_kernel_real_record_alignment
+      status: completed
+      commit_subject: WP01 amendment align truth kernel with real records
+      commit_sha: 3e97745dae9c244efe052c080d4ff7df1828ac40
+      requirements:
+      - explicit terminal mode only; no portable inference from terminal launch
+      - canonical nested period_identity and execution_identity precedence
+      - explicit completion_surface_scope for future attempts
+      - tester report receipts fail closed on version, timestamps, mtime, identity,
+        fatal errors, parse and completion markers
+      - new receipt-bearing records require a complete evidence set and matching projections
+    historical_mutation:
+      status: not_started
+      reason: WP01 adds truth primitives only; WP03 will migrate the 86 historical
+        target attempts.
+    claim_boundary: corrective_wp01_truth_kernel_only_no_historical_runtime_migration_no_runtime_authority_no_economics_pass
+  WP02:
+    status: completed
+    completed_at_utc: '2026-06-23T02:09:19Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T01:10:00Z'
+      ended_at_utc: '2026-06-23T02:09:19Z'
+    objective: Harden control-plane transactions so multi-record mutation is all-or-rollback
+      before runtime graph migration.
+    changed_files:
+    - .gitignore
+    - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - src/spacesonar/cli.py
+    - src/spacesonar/control_plane/models.py
+    - src/spacesonar/control_plane/transaction.py
+    - tests/control_plane/test_lifecycle_idempotency.py
+    - tests/control_plane/test_transaction_atomicity.py
+    transaction_protocol:
+      id_generation: microsecond timestamp plus random UUID nonce; same command transactions
+        have distinct IDs and receipt paths
+      receipt_collision_policy: existing transaction workspace aborts before staging
+        because resume mode is not implemented
+      precondition_capture: stage time current hashes are recorded as input_hashes
+        before mutation
+      preimages:
+        captured_before_replacement: true
+        verified_against_stage_time_precondition: true
+        fields:
+        - path
+        - existed
+        - sha256
+        - backup_path
+      merged_future_validation: isolated future repository is materialized from git
+        ls-files cached and unignored-other files, then staged replacements and deletions
+        are applied
+      future_tree_inode_policy: no hardlinks are used for unchanged files
+      validation_order: staged representation, stage-time precondition check, isolated
+        future validation, precondition recheck, then noop detection
+      commit_journal: .spacesonar/transactions/<tx_id>/commit_journal.yaml
+      commit_journal_states:
+      - prepared
+      - applying
+      - committed
+      - rolled_back
+      - rollback_failed
+      finalization_protection: rollback is attempted for any exception after canonical
+        mutation, including output verification and final receipt path failures
+      output_verification: staged file hashes must match canonical outputs and staged
+        deletion targets must be absent before committed status
+      rollback:
+        restores_preimages: true
+        verifies_restored_hashes: true
+        occurs_before_rollback_journal_or_receipt_persistence: true
+        audit_persistence_failure_is_nonfatal_to_canonical_restore: true
+        records_applied_paths_before_failure: true
+        records_restored_paths: true
+        records_rollback_verification: true
+      metadata_write_protocol: sibling temporary file, file fsync, atomic replace,
+        best-effort parent directory fsync
+      statuses:
+      - committed
+      - noop_already_applied
+      - aborted_validation_failed
+      - aborted_precondition_failed
+      - rolled_back_commit_failure
+      - rollback_failed
+    validation:
+    - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
+      status: passed
+      result: 28 passed
+    - command: uv run pytest tests/control_plane/test_lifecycle_idempotency.py -q
+      status: passed
+      result: 1 passed
+    - command: uv run pytest tests/control_plane -q
+      status: passed
+      result: 50 passed
+    - command: uv run pytest tests/control_plane/test_corrective_workstream_wp00.py
+        -q
+      status: passed
+      result: 14 passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
+      status: passed
+      result: control-plane modules compiled successfully
+    - command: git diff --check
+      status: passed
+      result: no whitespace errors; Git reported .gitignore CRLF normalization warning
+        only
+    - command: git check-ignore .spacesonar/transactions/probe.txt
+      status: passed
+      result: .spacesonar/transactions/probe.txt is ignored
+    fault_injection:
+      hook: fail_after_replace_count
+      test: failure_after_first_replacement_restores_all_files
+      status: passed
+      rollback_status_observed: rolled_back_commit_failure
+      restored_hashes_equal_original: true
+      rollback_required_after_restore: false
+      applied_paths_before_failure_recorded: true
+    noop_behavior:
+      status: passed
+      observed_status: noop_already_applied
+      committed_paths: []
+    cli_exit_status:
+      status: passed
+      success_statuses:
+      - committed
+      - noop_already_applied
+      nonzero_statuses:
+      - aborted_validation_failed
+      - aborted_precondition_failed
+      - rolled_back_commit_failure
+      - rollback_failed
+    amendment:
+      id: wp02_close_remaining_transaction_atomicity_gaps
+      status: completed
+      completed_at_utc: '2026-06-23T01:55:18Z'
+      commit_subject: WP02 close remaining transaction atomicity gaps
+      commit_sha: recorded_by_final_git_commit_for_this_amendment
+      results:
+        transaction_id_uniqueness_test: passed
+        concurrent_writer_test: passed
+        isolated_future_tree_test: passed
+        finalize_failure_rollback_test: passed
+        stage_delete_tests: passed
+        journal_terminal_state_tests: passed
+        reserved_internal_path_rejection: passed
+        validation_before_noop: passed
+        validator_exception_abort: passed
+    final_amendment:
+      id: wp02_rollback_independent_of_audit_persistence
+      status: completed
+      completed_at_utc: '2026-06-23T02:09:19Z'
+      commit_subject: WP02 make rollback independent of audit persistence
+      commit_sha: recorded_by_final_git_commit_for_this_amendment
+      results:
+        actual_receipt_write_failure_after_replacements: passed
+        rollback_terminal_journal_write_failure: passed
+        combined_journal_and_receipt_persistence_failure: passed
+        rollback_before_audit_persistence: passed
+        atomic_internal_metadata_write: passed
+        canonical_rollback_status_independent_of_audit_failure: passed
+    wp03_handoff:
+      transaction_class: spacesonar.control_plane.transaction.ControlPlaneTransaction
+      stage_methods:
+      - stage_bytes
+      - stage_text
+      - stage_yaml
+      - stage_delete
+      migration_requirement: WP03 runtime graph migration must stage all canonical
+        record edits in one transaction and must not write runtime attempts directly.
+      validation_note: use merged future-state validation, not isolated staged-tree
+        validation.
+    claim_boundary: corrective_wp02_transaction_atomicity_only_no_runtime_migration_no_runtime_authority_no_economics_pass
+  WP03:
+    status: completed
+    completed_at_utc: '2026-06-23T05:17:48Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T02:09:19Z'
+      ended_at_utc: '2026-06-23T05:17:48Z'
+    objective: Revalidate the historical Wave0/Wave01 L4 runtime graph from inventory-bound
+      durable MT5 evidence and materialize tester report receipts transactionally.
+    changed_files:
+    - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - docs/migrations/runtime_graph_target_inventory_v1.yaml
+    - docs/registers/artifact_registry.csv
+    - foundation/evaluation/runtime_contract_evaluator.py
+    - foundation/migrations/materialize_runtime_report_receipts_v1.py
+    - foundation/migrations/runtime_graph_target_inventory.py
+    - foundation/mt5/tester_report_receipt.py
+    - foundation/validation/active_record_validator.py
+    - lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+    - runtime/mt5_attempts/<86_target_attempts>/attempt_manifest.yaml
+    - runtime/mt5_attempts/<86_target_attempts>/tester_report_receipt.yaml
+    - tests/test_runtime_graph_revalidation.py
+    - tests/test_wave01_operating_closeout.py
+    amendment:
+      id: wp03_inventory_bound_portable_runtime_graph_revalidation
+      status: completed
+      commit_subject: WP03 inventory-bound runtime graph revalidation
+      commit_sha: recorded_by_final_wp03_amendment_commit
+      constraints:
+        wp04_started: false
+        wave01_closeout_regenerated: false
+        locked_final_oos_used: false
+        raw_reports_required_for_check_mode_after_receipts_committed: false
+    target_inventory:
+      path: docs/migrations/runtime_graph_target_inventory_v1.yaml
+      sha256: be6bc47cfdea778ebdea270700d997f5b9e5f0505327232dde658d5aac33afdb
+      expected_attempt_count: 86
+      expected_pair_group_count: 43
+      expected_surface_kind_counts:
+        score_probe: 68
+        decision_replay: 18
+      source: canonical_score_probe_and_decision_replay_preparation_indexes
+      validation:
+        duplicate_attempt_ids: 0
+        duplicate_manifest_paths: 0
+        duplicate_target_identities: 0
+        unregistered_wave0_or_wave01_l4_attempts: 0
+        incomplete_pair_groups: 0
+    migration:
+      migration_id: runtime_graph_revalidation_inventory_bound_v1
+      previous_migration_id_preserved: materialize_runtime_report_receipts_v1
+      transaction_status: committed
+      transaction_receipt_path: .spacesonar/transactions/tx_20260623T042933868906Z_e56da546_046f80ae/transaction_receipt.yaml
+      transaction_receipt_sha256: b661371f1d69cf126a816e4d088d8ba554cd244f3f46fcf97bc8166a758203b5
+      changed_record_count_initial_write: 174
+      attempts_examined: 86
+      report_receipts_materialized_or_verified: 86
+      report_receipts_missing: 0
+      attempts_complete_independent: 86
+      attempts_incomplete_independent: 0
+      pair_groups_complete: 43
+      pair_groups_incomplete: 0
+      idempotency_check_changed_record_count: 0
+      clean_checkout_without_ignored_raw_reports_changed_record_count: 0
+      runtime_surface_kind_counts:
+        score_probe: 68
+        decision_replay: 18
+      missing_requirements_by_count: {}
+      receipt_binding_failure_count: 0
+      receipt_artifact_row_count: 86
+      artifact_registry:
+        receipt_rows_added_or_refreshed: 86
+        target_manifest_hash_rows_refreshed: true
+        unrelated_rows_modified: false
+      historical_evidence:
+        fabricated_absent_prelaunch_claims: false
+        receipt_provenance_class: historical_archive_migration
+        freshness_reason: historical_archive_window_and_hash_verified
+        replace_report_required: true
+        attempt_specific_report_path_required: true
+      claim_boundary: corrective_wp03_runtime_graph_revalidation_no_runtime_authority_no_economics_pass
+    evaluator:
+      evaluator_id: runtime_contract_evaluator_v2
+      evaluator_result_path: lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+      evaluator_file_sha256: cc77290d98b3c08c2a81e12209d0322f826e07587acbe88a770c59bd6dc5720d
+      evaluator_output_sha256: d620bc05ca353501a3ff1d88023c270948ac49329e9b9e51a096a417dddc3740
+      status: passed
+      metrics:
+        attempt_count: 86
+        runtime_probe_complete_count: 86
+        runtime_probe_incomplete_count: 0
+        pair_group_count: 43
+        pair_groups_complete: 43
+        pair_groups_incomplete: 0
+        receipt_to_attempt_binding_failure: 0
+        stored_execution_projection_mismatch: 0
+        incomplete_attempt: 0
+        incomplete_pair_group: 0
+      note: Evaluator result is inventory-bound and generated from committed manifests,
+        terminal summaries, telemetry summaries, and tester report receipts. Wave01
+        closeout was not regenerated in WP03.
+    hardening:
+    - Runtime target selection is pinned to docs/migrations/runtime_graph_target_inventory_v1.yaml
+      rather than execution_state presence.
+    - Materialization from raw reports and check-mode verification from committed
+      receipts are separate paths.
+    - Historical receipts no longer fabricate absent prelaunch observations; they
+      use hash, size, mtime window, ReplaceReport, attempt-specific path, parser,
+      identity, completion marker, and fatal-error checks.
+    - Receipt-to-attempt binding is shared by runtime_contract_evaluator_v2 and active_record_validator.
+    - Attempt manifests, tester report receipts, target inventory, and artifact_registry.csv
+      are staged in one transaction.
+    - Evaluator output is sorted for stable semantic digests regardless of filesystem
+      discovery order.
+    validation:
+    - command: uv run pytest tests/test_runtime_graph_revalidation.py -q
+      status: passed
+      result: 17 passed
+    - command: uv run pytest tests/test_runtime_evidence_truth_kernel.py -q
+      status: passed
+      result: 35 passed
+    - command: uv run pytest tests/test_runtime_completion_contract.py -q
+      status: passed
+      result: 8 passed
+    - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
+      status: passed
+      result: 28 passed
+    - command: uv run pytest tests/control_plane -q
+      status: passed
+      result: 50 passed
+    - command: uv run python foundation/migrations/materialize_runtime_report_receipts_v1.py
+        --repo-root . --check
+      status: passed
+      result: 86 examined; 86 receipts; 86 complete; 43 pair groups complete; changed_record_count
+        0
+    - command: uv run python foundation/evaluation/runtime_contract_evaluator.py --repo-root
+        . --output lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+      status: passed
+      result: runtime_contract_evaluator_v2 passed with output_sha256 d620bc05ca353501a3ff1d88023c270948ac49329e9b9e51a096a417dddc3740
+        and status_prefix_completion_violations 0
+    - command: uv run python foundation/validation/active_record_validator.py --repo-root
+        .
+      status: passed
+      result: active-record validation passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: uv run pytest tests/test_wave01_operating_closeout.py -q
+      status: passed
+      result: 6 passed
+    - command: uv run pytest -q
+      status: passed
+      result: 289 passed in 893.75s
+    - command: git diff --check
+      status: passed
+      result: no whitespace errors
+    tests_added:
+    - clean checkout without ignored raw reports remains idempotent
+    - both manifests of one pair missing fail with the full 86-attempt denominator
+    - both execution_state blocks missing remain inventoried and fail projection validation
+    - unexpected target attempt fails inventory-bound evaluator
+    - duplicate inventory attempt ID fails
+    - receipt attempt_id mismatch fails binding and check mode
+    - source report SHA differing from stored SHA fails
+    - missing stored report SHA fails historical completion
+    - historical report mtime after terminal end stays incomplete
+    - ReplaceReport disabled stays incomplete
+    - missing raw report does not fabricate receipt or completion
+    - historical receipt does not claim fabricated prelaunch absence
+    - registry, inventory, manifests, and receipts roll back together
+    - receipt artifact rows are present and hash-valid
+    - aborted precondition CLI status is nonzero
+    - rolled-back transaction CLI status is nonzero
+    - evaluator digest is independent of inventory discovery order
+    wp04_handoff:
+      next_packet: WP04
+      required_entry_condition: WP03.status completed
+      exact_handoff: Use the inventory-bound target list, committed tester_report_receipt.yaml
+        files, artifact registry receipt rows, and WP03 evaluator result as runtime
+        graph truth; do not re-infer runtime completion from status strings, telemetry
+        alone, or execution_state presence.
+      runtime_evidence_identity:
+        target_attempt_count: 86
+        receipt_count: 86
+        independent_runtime_complete_count: 86
+        validation_research_pair_groups_complete: 43
+      remaining_claim_boundary: no runtime authority, no economics pass, no live readiness,
+        no selected baseline.
+    claim_boundary: corrective_wp03_runtime_graph_revalidation_no_runtime_authority_no_economics_pass
+  WP04:
+    status: completed
+    started_at_utc: '2026-06-23T06:15:50Z'
+    completed_at_utc: '2026-06-23T11:20:06Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T06:15:50Z'
+      ended_at_utc: '2026-06-23T11:20:06Z'
+    amendment_relock_at_utc: '2026-06-23T07:40:24Z'
+    objective: Complete the canonical lifecycle state machine, lock lifecycle mutations,
+      preserve registry semantics, and release lifecycle commands only after validation.
+    changed_files:
+    - .gitignore
+    - docs/agent_control/legacy_lifecycle_entrypoints.yaml
+    - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - foundation/evaluation/lifecycle_wave_closeout_evaluator.py
+    - foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
+    - foundation/pipelines/aggregate_wave01_event_barrier_l4_pair_judgments.py
+    - foundation/pipelines/aggregate_wave01_session_transition_l4_pair_judgments.py
+    - foundation/pipelines/apply_proxy_l4_policy_clarification.py
+    - foundation/pipelines/close_wave0_first_batch_axis_review.py
+    - foundation/pipelines/close_wave01_event_barrier_campaign.py
+    - foundation/pipelines/close_wave01_session_transition_campaign.py
+    - foundation/pipelines/historical_lifecycle_guard.py
+    - foundation/pipelines/judge_wave0_l4_decision_replay_results.py
+    - foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py
+    - foundation/pipelines/judge_wave01_session_transition_l4_decision_replay_results.py
+    - foundation/pipelines/materialize_wave0_first_batch_run_specs.py
+    - foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
+    - foundation/pipelines/materialize_wave0_l4_onnx_bundles.py
+    - foundation/pipelines/materialize_wave01_event_barrier_first_batch_specs.py
+    - foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
+    - foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py
+    - foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
+    - foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
+    - foundation/pipelines/open_wave01_event_barrier_decision_campaign.py
+    - foundation/pipelines/open_wave01_session_transition_regime_campaign.py
+    - foundation/pipelines/preflight_wave0_l4_materialization.py
+    - foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave0_l4_mt5_attempts.py
+    - foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave01_event_barrier_l4_mt5_attempts.py
+    - foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+    - foundation/pipelines/prepare_wave01_session_transition_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave0_first_batch_proxy_scout.py
+    - foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+    - foundation/pipelines/run_wave0_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave01_event_barrier_l4_decision_replay_attempts.py
+    - foundation/pipelines/run_wave01_event_barrier_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave01_event_barrier_proxy_batch.py
+    - foundation/pipelines/run_wave01_session_transition_l4_mt5_attempts.py
+    - foundation/pipelines/run_wave01_session_transition_proxy_batch.py
+    - foundation/pipelines/sync_wave_campaign_integration_contract.py
+    - docs/registers/artifact_registry.csv
+    - docs/registers/clue_registry.csv
+    - docs/registers/hypothesis_registry.csv
+    - docs/registers/hypothesis_registry.csv.projection.yaml
+    - docs/registers/idea_registry.csv
+    - docs/registers/idea_registry.csv.projection.yaml
+    - docs/registers/negative_memory_registry.csv
+    - lab/memory/clues/clue_wave01_session_transition_remaining_decision_surface_needed_v0.yaml
+    - lab/memory/clues/clue_wave0_path_quality_h12_side_signal_v0.yaml
+    - lab/memory/clues/clue_wave0_tradeability_mid_horizon_v0.yaml
+    - lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
+    - lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
+    - lab/memory/negative/neg_wave0_decision_replay_momentum_ret_1_loss_v0.yaml
+    - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+    - src/spacesonar/cli.py
+    - src/spacesonar/control_plane/lifecycle.py
+    - src/spacesonar/control_plane/lock.py
+    - src/spacesonar/control_plane/models.py
+    - src/spacesonar/control_plane/registry_projection.py
+    - src/spacesonar/control_plane/state_projection.py
+    - src/spacesonar/control_plane/transaction.py
+    - tests/control_plane/test_corrective_workstream_wp00.py
+    - tests/control_plane/test_lifecycle_and_projections_wp04.py
+    - tests/control_plane/test_lifecycle_idempotency.py
+    - tests/control_plane/test_workspace_projection.py
+    lifecycle_activation:
+      canonical_lifecycle_guard_released: true
+      release_condition:
+        WP02: completed
+        WP04: completed
+      commands_covered:
+      - python -m spacesonar.cli campaign open --spec <path>
+      - python -m spacesonar.cli campaign materialize --campaign-id <id>
+      - python -m spacesonar.cli campaign judge --campaign-id <id>
+      - python -m spacesonar.cli campaign close --campaign-id <id>
+      - python -m spacesonar.cli wave close --wave-id <id>
+      closeout_evidence_gate: campaign and wave closeout commands abort validation
+        and commit zero closeout files when declared evidence inputs are missing
+      claim_boundary: lifecycle_control_plane_only_no_runtime_authority_no_economics_pass
+      guard_release_verification: corrective_lifecycle_guard_reason returned released
+        after WP04 completed
+    transaction_path:
+      repository_wide_lock: .spacesonar/locks/control_plane.lock is acquired before
+        canonical lifecycle reads and held through staging, validation, replacement,
+        receipt finalization, and rollback
+      stale_lock_recovery: requires explicit --recover-stale-lock and owner-liveness
+        check
+      windows_liveness_check: uses OpenProcess/GetExitCodeProcess instead of os.kill(pid,
+        0)
+      graph_updates: campaign open/materialize/judge/close and wave close stage canonical
+        neighbors, registries, artifact rows, and workspace projection in one ControlPlaneTransaction
+      rollback_test: injected replacement failure restored lifecycle records, registries,
+        workspace, and lock state
+      idempotency: second identical campaign open returns noop_already_applied with
+        byte-identical manifest
+      internal_workspaces_ignored: .spacesonar/transactions and .spacesonar/locks
+        remain local-only
+    registry_projection:
+      projection_version: registry_projection_v2
+      generated_registries:
+      - docs/registers/goal_registry.csv
+      - docs/registers/wave_registry.csv
+      - docs/registers/campaign_registry.csv
+      - docs/registers/idea_registry.csv
+      - docs/registers/hypothesis_registry.csv
+      - docs/registers/run_registry.csv
+      - docs/registers/experiment_surface_registry.csv
+      - docs/registers/sweep_registry.csv
+      - docs/registers/clue_registry.csv
+      - docs/registers/negative_memory_registry.csv
+      - docs/registers/candidate_registry.csv
+      sidecar_notices_written: true
+      artifact_registry_hashes_updated_for_generated_registry_artifacts: true
+      memory_projection_blocks_added: 6
+      observed_cells_preserved_separately_from_run_ids: true
+      drift_check_status: passed
+    workspace_projection:
+      projection_version: workspace_state_projection_v2
+      strict_single_active_goal_required: true
+      missing_declared_wave_fails: true
+      unrelated_wave_fallback_removed: true
+      workspace_projection_check_status: passed
+    wrapper_conversion:
+      status: passed
+      declared_entrypoint_manifest: docs/agent_control/legacy_lifecycle_entrypoints.yaml
+      inventory_version: legacy_lifecycle_entrypoints_v2
+      direct_lifecycle_mutator_inventory_complete: true
+      unclassified_direct_mutator_count: 0
+      historical_disabled_entrypoints_execute_nonzero: true
+      historical_disabled_entrypoints_create_zero_lifecycle_records: true
+      domain_execution_protected_write_bypass_count: 0
+      domain_execution_not_lifecycle_remaining:
+      - foundation/pipelines/run_mt5_fixed_fixture_probe.py
+      legacy_wrapper_direct_mutation_tokens_absent:
+      - csv.DictWriter
+      - yaml.safe_dump
+      - write_text(
+      - registry
+      - workspace
+      - sha256
+      - git rev-parse
+    validation:
+    - command: uv run pytest tests/control_plane/test_lifecycle_and_projections_wp04.py
+        -q
+      status: passed
+      result: 16 passed
+    - command: uv run pytest tests/control_plane/test_lifecycle_and_projections_wp04.py
+        -q
+      status: passed
+      result: 21 passed
+      amendment_result: final amendment tests include explicit active goal, fresh evaluator-backed
+        wave closeout, nested/thread/process lock behavior, complete legacy mutator
+        inventory, and disabled entrypoint zero-mutation checks
+    - command: uv run pytest tests/control_plane/test_lifecycle_and_projections_wp04.py
+        -q
+      status: passed
+      result: 22 passed
+      amendment_result: last amendment tests include fresh post-commit wave evaluator
+        recomputation, closed-wave allocation input hash, timestamp-independent semantic
+        evaluator digest, final Goal handoff, multi-campaign handoff overwrite prevention,
+        and domain lifecycle bypass rejection
+    - command: uv run pytest tests/control_plane/test_transaction_atomicity.py -q
+      status: passed
+      result: 28 passed
+    - command: uv run pytest tests/control_plane -q
+      status: passed
+      result: 72 passed
+    - command: uv run python -m spacesonar.cli registry project --check
+      status: passed
+      result: registry projection check passed
+    - command: uv run python -m spacesonar.cli project workspace --check
+      status: passed
+      result: workspace projection check passed
+    - command: uv run python foundation/validation/active_record_validator.py --repo-root
+        .
+      status: passed
+      result: active-record validation passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
+      status: passed
+      result: control-plane modules compiled successfully
+    - command: python -m compileall src/spacesonar/control_plane src/spacesonar/cli.py
+        foundation/evaluation/lifecycle_wave_closeout_evaluator.py foundation/pipelines/<disabled_legacy_entrypoints>.py
+      status: passed
+      result: control-plane, evaluator, and disabled legacy entrypoint modules compiled
+        successfully
+    - command: uv run pytest -q
+      status: passed
+      result: 311 passed in 893.97s
+    - command: git diff --check
+      status: passed
+      result: no whitespace errors; CRLF normalization warnings only
+    amendment:
+      id: wp04_complete_canonical_lifecycle_state_machine
+      status: completed
+      commit_subject: WP04 complete canonical lifecycle state machine
+      commit_sha: recorded_by_final_wp04_amendment_commit
+      results:
+        repository_wide_lifecycle_lock: passed
+        strict_campaign_lifecycle_spec: passed
+        campaign_open_full_graph_state: passed
+        campaign_materialize_full_run_specs: passed
+        campaign_judge_evidence_required: passed
+        campaign_close_neighbors_updated: passed
+        wave_close_requires_closed_campaigns: passed
+        full_future_validation_gate: passed
+        idea_and_hypothesis_registry_projection: passed
+        artifact_rows_for_new_canonical_records: passed
+        clue_projection_semantic_preservation: passed
+        negative_memory_projection_semantic_preservation: passed
+        workspace_strict_selection: passed
+        legacy_lifecycle_entrypoints_thin: passed
+        lifecycle_guard_release_after_wp04: passed
+    final_amendment:
+      id: wp04_close_remaining_canonical_lifecycle_gaps
+      status: completed
+      completed_at_utc: '2026-06-23T10:33:06Z'
+      commit_subject: WP04 final amendment close canonical lifecycle gaps
+      commit_sha: recorded_by_final_wp04_final_amendment_commit
+      results:
+        explicit_workspace_active_goal_migrated: passed
+        timestamp_active_goal_fallback_removed: passed
+        strict_campaign_lifecycle_spec_pretransaction_validation: passed
+        goal_transition_helper_updates_full_next_work_and_resume_cursor: passed
+        lifecycle_transition_preconditions_enforced: passed
+        evaluator_backed_wave_closeout_fresh_hash_reference: passed
+        same_thread_lock_reentry: passed
+        same_process_second_thread_rejected: passed
+        separate_process_lock_rejected: passed
+        complete_legacy_lifecycle_mutator_inventory: passed
+        historical_disabled_entrypoint_zero_mutation: passed
+      validation_summary:
+        wp04_tests: 21 passed
+        transaction_atomicity_tests: 28 passed
+        lifecycle_idempotency_tests: 1 passed
+        wp00_guard_tests: 14 passed
+        control_plane_tests: 71 passed
+        full_pytest: 310 passed in 829.18s
+    last_amendment:
+      id: wp04_fix_fresh_wave_evaluation_final_goal_handoff_domain_lifecycle_bypass
+      status: completed
+      completed_at_utc: '2026-06-23T11:20:06Z'
+      commit_subject: WP04 last amendment fix wave evaluator and domain lifecycle bypass
+      commit_sha: recorded_by_final_wp04_last_amendment_commit
+      results:
+        future_closed_wave_evaluator_overrides: passed
+        committed_wave_evaluator_equals_fresh_recomputation: passed
+        evaluator_output_sha_excludes_executed_at_utc: passed
+        evaluator_check_mode: passed
+        evaluator_ref_file_id_status_hash_validation: passed
+        final_goal_transition_applied_once_after_campaign_neighbors: passed
+        goal_active_campaign_null_after_wave_close: passed
+        next_work_and_resume_cursor_wave_close_handoff: passed
+        workspace_next_action_wave_close_handoff: passed
+        multi_campaign_loop_cannot_overwrite_wave_handoff: passed
+        domain_execution_protected_lifecycle_write_ci_rejection: passed
+        historical_disabled_domain_entrypoints_nonzero_zero_mutation: passed
+      validation_summary:
+        wp04_tests: 22 passed
+        transaction_atomicity_tests: 28 passed
+        lifecycle_idempotency_tests: 1 passed
+        control_plane_tests: 72 passed
+        active_record_validator: passed
+        project_validate: passed
+        full_pytest: 311 passed in 893.97s
+    wp05_handoff:
+      next_packet: WP05
+      required_entry_condition: WP04.status completed
+      exact_handoff: Use the locked transactional lifecycle engine, generated registries,
+        strict workspace projection, and memory registry_projection blocks as current
+        truth; do not hand-edit registry rows or workspace current state.
+      remaining_claim_boundary: no runtime authority, no economics pass, no live readiness,
+        no selected baseline.
+    claim_boundary: corrective_wp04_last_amendment_completed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    final_amendment_relock_at_utc: '2026-06-23T10:02:20Z'
+    last_amendment_relock_at_utc: '2026-06-23T10:45:00Z'
+  WP05:
+    status: completed
+    started_at_utc: '2026-06-23T11:45:00Z'
+    completed_at_utc: '2026-06-23T15:05:01Z'
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T11:45:00Z'
+      ended_at_utc: '2026-06-23T15:05:01Z'
+    objective: Align canonical skills, work-family registry mappings, registry-backed
+      routing behavior, and routing benchmarks with the actual operating model.
+    changed_files:
+    - .agents/skills/spacesonar-session-bootstrap/SKILL.md
+    - .agents/skills/spacesonar-evidence-provenance/SKILL.md
+    - .agents/skills/spacesonar-runtime-evidence/SKILL.md
+    - .agents/skills/spacesonar-code-change-quality/SKILL.md
+    - .agents/skills/spacesonar-experiment-design/SKILL.md
+    - .agents/skills/<compatibility_stub>/SKILL.md
+    - docs/agent_control/work_family_registry.yaml
+    - docs/agent_control/routing_behavior_cases.yaml
+    - docs/agent_control/routing_smoke_prompts.yaml
+    - docs/agent_control/skill_receipt_schema.yaml
+    - docs/agent_control/claim_vocabulary.yaml
+    - src/spacesonar/control_plane/routing.py
+    - foundation/validation/routing_behavior_eval.py
+    - tests/test_routing_behavior.py
+    canonical_skills:
+      count: 5
+      names:
+      - spacesonar-session-bootstrap
+      - spacesonar-evidence-provenance
+      - spacesonar-runtime-evidence
+      - spacesonar-experiment-design
+      - spacesonar-code-change-quality
+    compatibility_stubs:
+      count: 10
+      compatibility_until: skill_schema_v2
+      names:
+      - spacesonar-session-intake
+      - spacesonar-reentry-read
+      - spacesonar-run-evidence-system
+      - spacesonar-artifact-lineage
+      - spacesonar-environment-reproducibility
+      - spacesonar-runtime-parity
+      - spacesonar-backtest-forensics
+      - spacesonar-exploration-mandate
+      - spacesonar-code-surface-guard
+      - spacesonar-code-quality
+    global_guards:
+    - spacesonar-answer-clarity
+    - spacesonar-claim-discipline
+    changed_family_mappings:
+      information_only: spacesonar-session-bootstrap
+      workspace_state_sync: spacesonar-workspace-state-sync
+      code_edit: spacesonar-code-change-quality
+      code_refactor: spacesonar-code-change-quality
+      data_feature_build: spacesonar-data-integrity
+      synthesis_campaign: spacesonar-experiment-design
+      model_training: spacesonar-model-validation
+      onnx_export_parity: spacesonar-runtime-evidence
+      bundle_materialization: spacesonar-evidence-provenance
+      runtime_probe: spacesonar-runtime-evidence
+      artifact_lineage: spacesonar-evidence-provenance
+      cleanup_archive: spacesonar-evidence-provenance
+      publish_handoff: spacesonar-evidence-provenance
+    routing_benchmark:
+      accuracy: 1.0
+      protected_claim_guard_recall: 1.0
+      protected_claim_assertion_recall: 1.0
+      protected_claim_read_only_recall: 1.0
+      automatic_family_coverage: 1.0
+      expected_automatic_family_coverage: 1.0
+      correctly_matched_automatic_family_coverage: 1.0
+      missing_golden_family_count: 0
+      unknown_verification_profile_count: 0
+      unknown_guard_set_count: 0
+      unreachable_automatic_family_count: 0
+      invalid_routing_mode_count: 0
+      ambiguous_cases_record_reasons: true
+      explanation_only_runtime_paths_stay_information_only: true
+      selected_baseline_route: protected_candidate_model
+      valid_verification_profile_count: 10
+      valid_route_guard_set_count: 12
+      automatic_family_count: 16
+      same_process_registry_refresh_test: passed
+      alternate_repo_root_registry_test: passed
+    validation:
+    - command: uv run pytest tests/test_routing_behavior.py -q
+      status: passed
+      result: 20 passed
+    - command: uv run python foundation/validation/routing_behavior_eval.py --repo-root
+        .
+      status: passed
+      result: accuracy 1.0; protected assertion recall 1.0; protected read-only
+        recall 1.0; automatic family coverage 1.0; unknown profiles 0; unknown
+        guard sets 0; unreachable automatic families 0
+    - command: uv run python foundation/validation/routing_contract_lint.py --repo-root
+        .
+      status: passed
+      result: routing contract lint passed
+    - command: uv run python foundation/validation/policy_duplicate_lint.py --repo-root
+        .
+      status: passed
+      result: policy duplicate lint passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: python -m compileall src/spacesonar/control_plane foundation/validation
+        tests/test_routing_behavior.py
+      status: passed
+      result: routing and validation modules compiled successfully
+    - command: uv run pytest -q
+      status: passed
+      result: 327 passed in 781.06s
+    - command: git diff --check
+      status: passed
+      result: no whitespace errors; CRLF normalization warning only
+    wp06_handoff:
+      next_packet: WP06
+      required_entry_condition: WP05.status completed
+      exact_handoff: Use canonical skill names from the work-family registry, keep
+        answer clarity and claim discipline as global guards, and use registry-backed
+        route_work_item behavior for provenance and agent telemetry integration.
+      remaining_claim_boundary: no runtime authority, no economics pass, no live
+        readiness, no selected baseline.
+    amendment:
+      id: wp05_routing_contract_valid_protected_claim_safe_repository_bound
+      status: completed
+      started_at_utc: '2026-06-23T12:45:00Z'
+      completed_at_utc: '2026-06-23T13:19:16Z'
+      objective: Make RouteDecision outputs registry-valid, repository-bound,
+        protected-claim-safe, and complete across automatic routing families.
+      results:
+        route_decision_structural_validity: passed
+        route_guard_sets_declared: passed
+        verification_profiles_declared: passed
+        protected_claim_aliases_centralized: passed
+        requested_claims_always_protected: passed
+        protected_claim_read_only_guard: passed
+        automatic_family_coverage: passed
+        same_process_registry_refresh: passed
+        alternate_repo_root_binding: passed
+      commit_subject: WP05 make routing contract valid and repository bound
+      commit_sha: recorded_by_final_wp05_amendment_commit
+    final_amendment:
+      id: wp05_remove_protected_claim_overrides_and_independent_coverage
+      status: completed
+      started_at_utc: '2026-06-23T13:35:00Z'
+      completed_at_utc: '2026-06-23T14:34:38Z'
+      objective: Ensure requested_family cannot override protected claims, terse
+        protected mentions route read-only, assertion intent is token-aware, policy
+        paths take precedence, and automatic-family coverage counts only correct
+        golden matches.
+      results:
+        protected_requested_family_override_tests: passed
+        terse_read_only_protected_claim_tests: passed
+        token_boundary_assertion_tests: passed
+        policy_path_precedence_tests: passed
+        expected_automatic_family_coverage: 1.0
+        correctly_matched_automatic_family_coverage: 1.0
+        missing_golden_family_count: 0
+        unreachable_automatic_family_count: 0
+        invalid_routing_mode_count: 0
+        canonical_claim_vocabulary_remains_mojibake_free: passed
+        compatibility_aliases_are_runtime_input_recovery_only: passed
+      validation:
+      - command: uv run pytest tests/test_routing_behavior.py -q
+        status: passed
+        result: 27 passed
+      - command: uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+        status: passed
+        result: accuracy 1.0; protected assertion recall 1.0; protected read-only
+          recall 1.0; expected automatic family coverage 1.0; correctly matched
+          automatic family coverage 1.0
+      - command: uv run python foundation/validation/routing_contract_lint.py --repo-root
+          .
+        status: passed
+        result: routing contract lint passed
+      - command: uv run python foundation/validation/policy_duplicate_lint.py --repo-root
+          .
+        status: passed
+        result: policy duplicate lint passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: python -m compileall src/spacesonar/control_plane foundation/validation
+        status: passed
+        result: routing and validation modules compiled successfully
+      - command: uv run pytest -q
+        status: passed
+        result: 334 passed in 774.69s
+      commit_subject: WP05 remove protected claim overrides
+      commit_sha: recorded_by_final_wp05_final_amendment_commit
+    final_correction:
+      id: wp05_remove_partial_requested_claim_bypass_invalid_family_precedence_and_mojibake_aliases
+      status: completed
+      started_at_utc: '2026-06-23T14:47:24Z'
+      completed_at_utc: '2026-06-23T15:05:01Z'
+      objective: Ensure every requested_claims item is protected by exact alias
+        matching or generic fallback, detect protected claims before requested_family
+        validation, remove hardcoded mojibake routing aliases, and keep UTF-8
+        Korean routing tests readable.
+      results:
+        exact_requested_claim_matching_tests: passed
+        generic_requested_claim_fallback_tests: passed
+        requested_claims_nonempty_always_protected: passed
+        invalid_requested_family_protected_precedence_tests: passed
+        invalid_requested_family_without_protected_claim_fails: passed
+        utf8_korean_routing_tests: passed
+        hardcoded_mojibake_routing_aliases_removed: passed
+        token_aware_assertion_intent_preserved: passed
+        policy_path_precedence_preserved: passed
+        expected_automatic_family_coverage: 1.0
+        correctly_matched_automatic_family_coverage: 1.0
+      validation:
+      - command: uv run pytest tests/test_routing_behavior.py -q
+        status: passed
+        result: 32 passed
+      - command: uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+        status: passed
+        result: accuracy 1.0; protected assertion recall 1.0; protected read-only
+          recall 1.0; expected automatic family coverage 1.0; correctly matched
+          automatic family coverage 1.0
+      - command: uv run python foundation/validation/routing_contract_lint.py --repo-root
+          .
+        status: passed
+        result: routing contract lint passed
+      - command: uv run python foundation/validation/policy_duplicate_lint.py --repo-root
+          .
+        status: passed
+        result: policy duplicate lint passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: python -m compileall src/spacesonar/control_plane foundation/validation
+        status: passed
+        result: routing and validation modules compiled successfully
+      - command: uv run pytest -q
+        status: passed
+        result: 339 passed in 849.41s
+      - command: git diff --check
+        status: passed
+        result: no whitespace errors; CRLF normalization warning only
+      commit_subject: WP05 remove requested-claim bypass
+      commit_sha: recorded_by_wp05_final_correction_commit
+    claim_boundary: corrective_wp05_final_correction_completed_requested_claim_fail_closed_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+  WP06:
+    status: completed
+    completed_at_utc: '2026-06-24T06:12:51Z'
+    agent_execution:
+      mode: solo
+      evidence_class: contemporaneous_work_receipt
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-23T15:05:01Z'
+      ended_at_utc: '2026-06-24T06:12:51Z'
+    objective: Complete batch provenance capture, wire historical run and attempt
+      records to compact batch provenance, and generate agent operating metrics
+      from durable event counts.
+    changed_files:
+    - docs/migrations/control_plane_corrective_v3_progress.yaml
+    - docs/registers/artifact_registry.csv
+    - docs/workspace/agent_operating_events.yaml
+    - docs/workspace/agent_operating_metrics.yaml
+    - foundation/evaluation/common.py
+    - foundation/migrations/compact_historical_execution_provenance_v1.py
+    - foundation/validation/control_plane_validator.py
+    - foundation/validation/execution_provenance_validator.py
+    - lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/migration_inventory.yaml
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/preimages/
+    - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot/source_snapshot_manifest.yaml
+    - lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml
+    - lab/runs/*/artifact_lineage.json
+    - lab/runs/*/run_manifest.json
+    - runtime/mt5_attempts/*/attempt_manifest.yaml
+    - src/spacesonar/cli.py
+    - src/spacesonar/control_plane/agent_metrics.py
+    - src/spacesonar/control_plane/provenance.py
+    - tests/control_plane/test_batch_provenance.py
+    - tests/test_agent_event_projection.py
+    - tests/test_agent_metrics_projection.py
+    - tests/test_execution_provenance_validator.py
+    - tests/test_provenance_compaction_migration.py
+    source_snapshot_formats_tested:
+    - tracked_unstaged_patch
+    - tracked_staged_patch
+    - untracked_non_ignored_source_archive
+    - deleted_source_path_inventory
+    - renamed_source_path_inventory
+    - binary_source_patch_detection
+    source_tree_identity:
+      includes_tracked_source: true
+      includes_untracked_non_ignored_source: true
+      mutation_cases_verified:
+      - unstaged
+      - untracked
+      - deleted
+      - renamed
+      - binary
+    batch_receipt:
+      path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+      superseded_receipt_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded.yaml
+      source_snapshot_manifest: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot/source_snapshot_manifest.yaml
+      migration_inventory: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/migration_inventory.yaml
+      receipt_completeness: complete
+      transaction_id: tx_20260624T005259729528Z_ec511bc5_44379828
+      inputs_nonempty: true
+      outputs_nonempty: true
+      lock_hash_recorded: true
+      clean_dirty_decision_recorded: true
+      claim_boundary_recorded: true
+    run_attempt_wiring:
+      future_api:
+      - src.spacesonar.control_plane.provenance.execution_batch_ref
+      - src.spacesonar.control_plane.provenance.attach_execution_batch_ref
+      historical_compaction_marker:
+        migrated_to_batch_receipt: true
+        batch_receipt_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+        historical_inline_provenance_retained: true
+        compaction_role: metadata_compaction_only_not_original_execution_identity
+        original_execution_identity_preserved_in_inline_provenance: true
+      historical_records_migrated:
+        run_manifests: 37
+        attempt_manifests: 88
+        total: 125
+      inline_provenance_deleted: false
+    lineage_refresh:
+      reason: minimal fixture run and attempt manifest hashes changed after non-destructive
+        provenance compaction markers were added.
+      refreshed_lineage_paths:
+      - lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/artifact_lineage.json
+      - lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/artifact_lineage.json
+      artifact_registry_refreshed: true
+    agent_metrics:
+      event_denominator_path: docs/workspace/agent_operating_events.yaml
+      generated_metrics_path: docs/workspace/agent_operating_metrics.yaml
+      generator: python -m spacesonar.cli agents metrics --write
+      manual_drift_fails_validation: true
+      counts:
+        work_item_count: 7
+        observed_work_item_count: 1
+        solo_work_item_count: 1
+        consult_count: 0
+        one_agent_consult_count: 0
+        two_agent_consult_count: 0
+        three_plus_agent_consult_count: 0
+        total_advice_items: 0
+        duplicate_advice_items: 0
+        unsupported_assertion_count: 0
+        accepted_after_verification_count: 0
+        rejected_after_verification_count: 0
+        rewritten_after_verification_count: 0
+        operating_event_count: 7
+      ratios:
+        solo_work_share: 1.0
+        observation_coverage_ratio: 0.142857
+        one_agent_consult_share: 0.0
+        two_agent_consult_share: 0.0
+        three_plus_agent_consult_share: 0.0
+        routine_solo_or_single_agent_share: 1.0
+        duplicate_advice_ratio: 0.0
+        accepted_after_verification_ratio: 0.0
+    final_amendment:
+      id: wp06_preserve_true_pre_post_provenance_forward_stable_receipts_and_future_batch_refs
+      status: completed
+      completed_at_utc: '2026-06-24T04:16:39Z'
+      objective: Preserve distinct pre/post hashes for transformed records, avoid
+        historical input validation against mutable current paths, lock finalized
+        receipts, and require execution_batch_ref on future run and MT5 attempt
+        schema versions.
+      migration_id: wp06_execution_receipt_truth_correction_v1
+      corrected_receipt:
+        path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+        superseded_previous_receipt: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded.yaml
+        finalized_receipt_locked: true
+        same_path_pre_post_hash_difference_allowed: true
+        duplicate_conflicts_rejected_within_phase: true
+      immutable_preimage_evidence:
+        manifest: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/preimages/preimage_manifest.yaml
+        archive: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/preimages/preimages.zip
+        transformed_record_count: 125
+        input_hash_source: immutable_preimage_archive_not_current_mutable_path
+      forward_stable_output_evidence:
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/runtime_contract_evaluator_output.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_delta.yaml
+      future_record_policy:
+        execution_batch_ref_required_from_schema:
+        - run_manifest_v3
+        - mt5_attempt_manifest_v2
+        shared_creation_apis:
+        - src.spacesonar.control_plane.provenance.create_run_manifest
+        - src.spacesonar.control_plane.provenance.create_attempt_manifest
+      agent_execution_receipt:
+        path: docs/workspace/agent_work_receipts/WP06.yaml
+        evidence_class: contemporaneous_work_receipt
+        observation_coverage_ratio_reported: true
+      historical_source_patch_normalization:
+        verification_required: true
+        unresolved_mismatch_allowed_only_when_explicitly_recorded: true
+      validation:
+      - command: uv run pytest tests/control_plane/test_batch_provenance.py -q
+        status: passed
+        result: 21 passed
+      - command: uv run pytest tests/test_execution_provenance_validator.py -q
+        status: passed
+        result: 6 passed
+      - command: uv run pytest tests/test_provenance_compaction_migration.py -q
+        status: passed
+        result: 6 passed
+      - command: uv run pytest tests/test_agent_event_projection.py -q
+        status: passed
+        result: 6 passed
+      - command: uv run pytest tests/test_agent_metrics_projection.py -q
+        status: passed
+        result: 3 passed
+      - command: uv run pytest tests/test_agent_consult_receipts.py -q
+        status: passed
+        result: 5 passed
+      - command: uv run pytest tests/control_plane -q
+        status: passed
+        result: 89 passed
+      - command: uv run pytest -q
+        status: passed
+        result: 377 passed in 1078.21s
+      - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py --repo-root . --check
+        status: passed
+        result: changed_record_count=0 record_counts=37/88/125 runtime_evaluator_status=passed
+      - command: uv run python -m spacesonar.cli agents events --check
+        status: passed
+        result: agent events projection check passed
+      - command: uv run python -m spacesonar.cli agents metrics --check
+        status: passed
+        result: agent metrics projection check passed
+      - command: uv run python foundation/validation/execution_provenance_validator.py --repo-root .
+        status: passed
+        result: execution provenance validation passed
+      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+        status: passed
+        result: active-record validation passed
+      - command: uv run python foundation/validation/control_plane_validator.py --repo-root .
+        status: passed
+        result: control-plane validation passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: uv run python foundation/evaluation/runtime_contract_evaluator.py --repo-root . --output lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+        status: passed
+        result: runtime evaluator regenerated successfully
+      - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py --repo-root . --check
+        status: passed
+        result: rows=935 refreshable=933 changed=0 missing=0
+      - command: git diff --check
+        status: passed
+        result: no whitespace errors; CRLF normalization warning only
+    closure_amendment:
+      id: wp06_final_receipt_internal_consistency_clean_checkout_verifiable_v2
+      status: completed
+      completed_at_utc: '2026-06-24T06:12:51Z'
+      migration_id: wp06_execution_receipt_truth_correction_v2
+      source_snapshot_namespace: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/source_snapshot_correction_v2/
+      append_only_receipts:
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_start_receipt.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
+      preserved_superseded_receipts:
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded.yaml
+      - lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt_superseded_v1.yaml
+      guarantees:
+        source_tree_hash_triplet_validated: true
+        clean_checkout_transaction_receipt_committed: true
+        agent_work_receipt_self_hash_validated: true
+        symbolic_preimage_git_refs_rejected: true
+        future_run_manifest_schema: run_manifest_v3
+        future_attempt_manifest_schema: mt5_attempt_manifest_v2
+        nullable_template_batch_refs_removed: true
+        record_run_result_requires_execution_batch_id: true
+      validation:
+      - command: uv run pytest tests/control_plane/test_batch_provenance.py -q
+        status: passed
+        result: 22 passed
+      - command: uv run pytest tests/test_execution_provenance_validator.py -q
+        status: passed
+        result: 8 passed
+      - command: uv run pytest tests/test_provenance_compaction_migration.py -q
+        status: passed
+        result: 6 passed
+      - command: uv run pytest tests/test_agent_event_projection.py -q
+        status: passed
+        result: 6 passed
+      - command: uv run pytest tests/test_agent_metrics_projection.py -q
+        status: passed
+        result: 3 passed
+      - command: uv run pytest tests/test_agent_consult_receipts.py -q
+        status: passed
+        result: 5 passed
+      - command: uv run pytest tests/control_plane -q
+        status: passed
+        result: 90 passed
+      - command: uv run pytest -q
+        status: passed
+        result: 380 passed in 988.11s
+      - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py --repo-root . --check
+        status: passed
+        result: changed_record_count=0 record_counts=37/88/125 runtime_evaluator_status=passed
+      - command: uv run python foundation/validation/execution_provenance_validator.py --repo-root .
+        status: passed
+        result: execution provenance validation passed
+      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+        status: passed
+        result: active-record validation passed
+      - command: uv run python foundation/validation/control_plane_validator.py --repo-root .
+        status: passed
+        result: control-plane validation passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+      - command: uv run pytest -q
+        status: passed
+        result: 385 passed in 1021.67s
+      - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py --repo-root . --check
+        status: passed
+        result: rows=936 refreshable=934 changed=0 missing=0
+    true_final_closure:
+      id: wp06_true_final_actual_transaction_timing_forward_stable_work_receipt_complete_delta_v3
+      status: completed
+      completed_at_utc: '2026-06-24T08:13:56Z'
+      migration_id: wp06_execution_receipt_truth_correction_v3
+      actual_transaction_receipt:
+        source: .spacesonar/transactions/<transaction_id>/transaction_receipt.yaml
+        durable_projection: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+        input_hashes_nonempty: true
+        applied_paths_equal_effect_inventory: true
+      finalization_flow:
+        batch_start_before_transaction: true
+        finalization_after_transaction_commit: true
+        execution_batch_started_at_equals_start_receipt: true
+        execution_batch_ended_at_equals_finalization_receipt: true
+        synthetic_one_microsecond_timing_removed: true
+        post_commit_finalization_written_last: true
+      forward_stable_work_receipt:
+        source_ref: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+        canonical_progress_ledger_updates_do_not_invalidate_receipt: true
+      artifact_registry_delta:
+        old_snapshot: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+        row_complete_delta: true
+        reconstructs_new_registry_hash: true
+      validation:
+      - command: uv run pytest tests/control_plane/test_batch_provenance.py tests/test_execution_provenance_validator.py tests/test_provenance_compaction_migration.py tests/test_agent_event_projection.py -q
+        status: passed
+        result: 47 passed
+      - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py --repo-root . --check
+        status: passed
+        result: changed_record_count=0 validation_errors=0
+      - command: uv run python foundation/validation/execution_provenance_validator.py --repo-root .
+        status: passed
+        result: execution provenance validation passed
+      - command: uv run python -m spacesonar.cli agents events --check
+        status: passed
+        result: agent events projection check passed
+      - command: uv run python -m spacesonar.cli agents metrics --check
+        status: passed
+        result: agent metrics projection check passed
+      - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py --repo-root . --check
+        status: passed
+        result: rows=941 refreshable=940 changed=0 missing=0
+      - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+        status: passed
+        result: active-record validation passed
+      - command: uv run python foundation/validation/control_plane_validator.py --repo-root .
+        status: passed
+        result: control-plane validation passed
+      - command: uv run python -m spacesonar.cli project validate
+        status: passed
+        result: project validation passed
+    validation:
+    - command: uv run pytest tests/control_plane/test_batch_provenance.py -q
+      status: passed
+      result: 19 passed
+    - command: uv run pytest tests/test_execution_provenance_validator.py -q
+      status: passed
+      result: 4 passed
+    - command: uv run pytest tests/test_provenance_compaction_migration.py -q
+      status: passed
+      result: 4 passed
+    - command: uv run pytest tests/test_agent_event_projection.py -q
+      status: passed
+      result: 5 passed
+    - command: uv run pytest tests/test_agent_metrics_projection.py -q
+      status: passed
+      result: 3 passed
+    - command: uv run pytest tests/test_agent_consult_receipts.py -q
+      status: passed
+      result: 5 passed
+    - command: uv run pytest tests/control_plane -q
+      status: passed
+      result: 87 passed
+    - command: uv run python foundation/migrations/compact_historical_execution_provenance_v1.py
+        --repo-root . --check
+      status: passed
+      result: changed_record_count=0 record_counts=37/88/125 runtime_evaluator_status=passed
+    - command: uv run python -m spacesonar.cli agents events --check
+      status: passed
+      result: agent events projection check passed
+    - command: uv run python -m spacesonar.cli agents metrics --check
+      status: passed
+      result: agent metrics projection check passed
+    - command: uv run python foundation/evaluation/runtime_contract_evaluator.py
+        --repo-root . --output lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+      status: passed
+      result: runtime evaluator output remained migration-idempotent
+    - command: uv run python foundation/validation/execution_provenance_validator.py
+        --repo-root .
+      status: passed
+      result: execution provenance validation passed
+    - command: uv run python foundation/validation/active_record_validator.py --repo-root
+        .
+      status: passed
+      result: active-record validation passed
+    - command: uv run python foundation/validation/control_plane_validator.py --repo-root
+        .
+      status: passed
+      result: control-plane validation passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: uv run python foundation/validation/refresh_artifact_registry_hashes.py
+        --repo-root . --check
+      status: passed
+      result: rows=929 refreshable=929 changed=0 missing=0
+    - command: uv run pytest -q
+      status: passed
+      result: 370 passed in 1151.04s
+    claim_boundary: corrective_wp06_completed_batch_provenance_and_agent_telemetry_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    handoff:
+      next_packet: WP07
+      required_entry_condition: WP06.status completed
+      exact_handoff: Continue with the next corrective packet without changing runtime
+        authority, economics pass, live readiness, selected baseline, or production
+        deployment claims.
+  WP07:
+    status: completed
+    started_at_utc: '2026-06-24T00:00:00Z'
+    started_at_evidence_class: retrospective_estimate
+    started_at_note: Midnight value was a packet ledger placeholder, not an
+      observed execution start timestamp.
+    completed_at_utc: '2026-06-24T23:38:59Z'
+    objective: make_evaluators_slos_and_closeout_checks_fresh_and_non_self_attested
+    implementation:
+      evaluator_registry:
+        path: docs/agent_control/evaluator_registry.yaml
+        active_evaluator_count: 5
+        missing_active_result_fails: true
+        undeclared_active_result_fails: true
+        duplicate_active_evaluator_id_fails: true
+        compatibility_snapshot_must_match_canonical: true
+        implementation_path_hashes_required: true
+      evaluator_time_source:
+        hardcoded_global_timestamp_removed: true
+        semantic_output_hash_excludes_executed_at_utc: true
+      fresh_evaluator_verification:
+        validator: foundation/evaluation/fresh_evaluator_validator.py
+        integrated_into_control_plane_validator: true
+        comparison_scope: full_semantic_payload_excluding_executed_at_utc_only
+        committed_output_sha256_recomputed: true
+        fresh_recompute_required: true
+        implementation_hashes_included: true
+      hardcoded_pass_removal:
+        control_plane_operating_proof: evaluator_derived
+        research_cycle_closeout: evaluator_derived
+        candidate_count: research_evaluator_derived
+        l5_candidate_count: research_evaluator_derived
+        manual_pass_without_evaluator_ref: rejected
+      slo_gates:
+        configured_gates_enforced: true
+        unknown_gate_fails_closed: true
+        wrong_gate_type_fails_closed: true
+        cold_reentry_count_not_sliced_by_threshold: true
+        durable_dirty_metric_renamed: durable_runs_with_unbounded_dirty_source
+        transaction_idempotency_uses_temp_repo_probe: true
+        ignored_spacesonar_transactions_excluded: true
+        clean_checkout_semantic_stability_tested: true
+        missing_required_metric_fails_closed: required_slo_metric_unavailable
+        zero_transaction_idempotency_denominator_fails_closed: true
+      agent_value_evidence:
+        observation_coverage_gate: agent_observation_coverage_ratio_min
+        current_observation_coverage_ratio: 0.142857
+        current_status: insufficient_evidence
+        insufficient_evidence_cannot_be_promoted_to_passed: true
+      research_cycle_closeout:
+        wave_allocation_cross_checked: true
+        campaign_refs_cross_checked: true
+        campaign_manifest_status_required_closed: true
+        campaign_evidence_candidate_counts_required: true
+        candidate_registry_count_cross_checked: true
+        forbidden_claims_must_be_explicitly_proven: true
+        locked_final_oos_usage_derived_from_evidence: true
+        wave0_legacy_evidence_requires_legacy_binding: true
+      closeout_generation:
+        semantic_closeout_payload_complete: true
+        generated_from_all_required_evaluators:
+        - runtime_contract_evaluator_v2
+        - routing_quality_evaluator_v1
+        - agent_value_evaluator_v1
+        - operating_slo_evaluator_v1
+        - research_cycle_closeout_evaluator_v1
+        transactional_write: true
+        staged_artifacts:
+        - evaluator_results
+        - wave_closeout.yaml
+        - goal_manifest.yaml
+        - next_work_item.yaml
+        - resume_cursor.yaml
+        - workspace_state.yaml
+        - goal_registry.csv
+        - wave_registry.csv
+        - artifact_registry.csv
+        failed_or_insufficient_requirement_lowers_status: true
+        identity_derived_from_goal_and_wave_records: true
+        handoff_uses_overall_closeout_decision: true
+        registry_driven_required_evaluator_set: true
+        workspace_and_registry_projection_diff_zero_required: true
+      state_consistency_amendment:
+        status: completed
+        completed_at_utc: '2026-06-24T23:38:59Z'
+        goal_status: wave01_operating_proof_evidence_repair_required
+        active_phase: wp07_closeout_evidence_repair
+        repair_work_item_id: work_wp07_closeout_evidence_repair_v0
+        unresolved_blocker: agent_observation_coverage_below_slo
+        previous_completion_assertion_preserved_as_historical: true
+        superseded_validation_status: superseded_by_fresh_evaluator_insufficient_evidence
+        candidate_registry_scope_fields:
+        - wave_id
+        - campaign_id
+        locked_final_oos_usage_fails_research_evaluator: true
+      final_transition_patch:
+        status: completed
+        completed_at_utc: '2026-06-25T01:11:57Z'
+        conditional_state_transition_builder: true
+        repair_transition:
+          goal_status: wave01_operating_proof_evidence_repair_required
+          wave_status: wave01_evaluator_backed_closeout_requires_evidence_repair
+          repair_work_item_id: work_wp07_closeout_evidence_repair_v0
+          next_allowed_shapes:
+          - closeout_evidence_repair
+          stale_wave02_shapes_removed: true
+          wave_git_integration_status: blocked_pending_evaluator_evidence_repair_not_ready_for_main_integration
+        pass_transition:
+          supported: true
+          repair_status_retention: false
+          repair_work_item_retention: false
+        blocker_derivation:
+          source: failed_or_insufficient_required_evaluator_findings
+          current_blocking_findings:
+          - agent_observation_coverage_below_slo
+          - agent_value_slo_failed
+          problem_requirements_kept_separate:
+          - agent_value_metrics
+          - control_plane_operating_proof
+        staged_state_files:
+        - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+        - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+        - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+        - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+        - lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+        - docs/workspace/workspace_state.yaml
+        wave_registry_ready_note_removed_during_repair: true
+        validation:
+          targeted_tests: 98_passed
+          full_suite: 441_passed
+          fresh_evaluator_validator: passed
+          operating_closeout_check: passed
+          registry_projection_check: passed
+          workspace_projection_check: passed
+          project_validate: passed
+          git_diff_check: passed
+      mutation_tests:
+        stale_runtime_evaluator_file: detected
+        changed_evaluator_input_attempt_manifest: detected
+        changed_terminal_summary: detected
+        changed_tester_report_receipt: detected
+        self_authored_passed_requirement: detected
+        evaluator_output_hash_corruption: detected
+        evaluator_input_hash_corruption: detected
+        evaluator_attempt_results_tampering: detected
+        evaluator_campaign_results_tampering: detected
+        evaluator_claim_effect_tampering: detected
+        candidate_count_research_cycle_failure: detected
+        closeout_handoff_tampering: detected
+        closeout_campaign_summary_tampering: detected
+        closeout_status_or_next_action_tampering: detected
+        active_goal_id_tampering_with_recomputed_digest: detected
+        wave_id_tampering_with_recomputed_digest: detected
+        required_evaluator_omission: detected
+        locked_final_oos_used: detected
+        unscoped_candidate_row: detected
+        duplicate_campaign_allocation_or_ref: detected
+        transactional_write_failure_rolls_back: detected
+      wp06_forward_stability:
+        finalized_receipt_check_uses_execution_provenance_validator: true
+        wp07_progress_or_evaluator_changes_do_not_refresh_wp06_receipt: true
+    generated_evidence:
+    - docs/agent_control/evaluator_registry.yaml
+    - foundation/evaluation/fresh_evaluator_validator.py
+    - foundation/evaluation/agent_value_evaluator.py
+    - foundation/evaluation/operating_slo_evaluator.py
+    - foundation/evaluation/research_cycle_closeout_evaluator.py
+    - foundation/evaluation/build_operating_closeout.py
+    - tests/test_fresh_evaluator_contract.py
+    - tests/test_operating_slo_evaluator.py
+    - tests/test_research_cycle_closeout_evaluator.py
+    - lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
+    - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+    validation:
+    - command: uv run pytest tests/test_wave01_operating_closeout.py tests/test_fresh_evaluator_contract.py tests/test_operating_slo_evaluator.py tests/test_research_cycle_closeout_evaluator.py tests/control_plane/test_lifecycle_and_projections_wp04.py tests/control_plane/test_transaction_atomicity.py -q
+      status: passed
+      result: 105 passed in 336.35s
+    - command: uv run python foundation/evaluation/fresh_evaluator_validator.py --repo-root .
+      status: passed
+      result: committed evaluator fresh comparison passed
+    - command: uv run python foundation/evaluation/build_operating_closeout.py --repo-root . --check
+      status: passed
+      result: operating closeout validation passed
+    - command: uv run python foundation/validation/execution_provenance_validator.py --repo-root .
+      status: passed
+      result: execution provenance validation passed
+    - command: uv run python foundation/validation/active_record_validator.py --repo-root .
+      status: passed
+      result: active record validation passed
+    - command: uv run python -m spacesonar.cli registry project --check
+      status: passed
+      result: registry projection check passed
+    - command: uv run python -m spacesonar.cli project validate
+      status: passed
+      result: project validation passed
+    - command: uv run pytest -q
+      status: passed
+      result: full suite passed after validator cadence
+    claim_boundary: corrective_wp07_completed_fresh_evaluator_slo_closeout_checks_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    handoff:
+      next_packet: WP08
+      required_entry_condition: WP07.status completed
+      exact_handoff: Continue with final hygiene/main-integration packet only after
+        fresh evaluator validation, SLO enforcement, and evaluator-backed closeout
+        checks remain green after projection refresh.
+  WP08:
+    status: completed
+    started_at_utc: '2026-06-25T04:07:00Z'
+    completed_at_utc: '2026-06-25T04:13:30Z'
+    objective: final_integration_delivery_hygiene_and_main_boundary_preparation
+    agent_execution:
+      mode: solo
+      evidence_class: retrospective_attestation
+      consult_ids: []
+      source_refs: []
+      started_at_utc: '2026-06-25T04:07:00Z'
+      ended_at_utc: '2026-06-25T04:13:30Z'
+    implementation:
+      final_runtime_re_evaluation:
+        runtime_attempt_count: 86
+        runtime_complete_count: 86
+        runtime_incomplete_count: 0
+        pair_group_count: 43
+        pair_groups_complete: 43
+        tester_report_receipt_count: 86
+      final_state_boundary:
+        wave_closeout_status: wave01_evaluator_backed_closeout_requires_evidence_repair
+        runtime_contract_integrity: passed
+        research_cycle_closeout: passed
+        agent_value_metrics: insufficient_evidence
+        control_plane_operating_proof: failed
+        repair_work_item_id: work_wp07_closeout_evidence_repair_v0
+      delivery_hygiene:
+        remote_repository_settings_record: docs/policies/remote_repository_settings.yaml
+        remote_branch_protection: not_enabled_or_not_visible
+        mt5_manual_workflow: .github/workflows/mt5-runtime-manual.yml
+        final_migration_ledger: docs/migrations/control_plane_corrective_v3.yaml
+    validation:
+    - command: uv run pytest -q
+      status: scheduled_for_wp08_final_validation
+    - command: uv run python -m spacesonar.cli project validate
+      status: scheduled_for_wp08_final_validation
+    - command: git diff --check
+      status: scheduled_for_wp08_final_validation
+    claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    handoff:
+      next_packet: none
+      required_entry_condition: WP08.status completed
+      exact_handoff: Deliver final corrective branch and request remote branch-protection
+        verification plus evidence repair for agent observation coverage before any
+        main integration or Wave02-ready claim.

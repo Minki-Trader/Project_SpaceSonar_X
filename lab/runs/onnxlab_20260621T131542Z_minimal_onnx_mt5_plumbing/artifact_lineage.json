@@ -64,8 +64,8 @@
     },
     {
       "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json",
-      "sha256": "8440b169c7c361f13cbff5a34c80bdd0f45d85c9409ec3b7639f5f1dcfc5081e",
-      "size_bytes": 10892
+      "sha256": "961d15d57d22e245cccca09e938f062fbb4535b2d9d74748b24ec47038174287",
+      "size_bytes": 12174
     },
     {
       "path": "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/experiment_receipt.yaml",
@@ -89,8 +89,8 @@
     },
     {
       "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml",
-      "sha256": "f2a637db97248f7db124bb871e789b66e00fccbe2963df84dff34e62e589184a",
-      "size_bytes": 15006
+      "sha256": "14f2f0bb243f1d9dc32c7042ea8fe676274b6e46e4dda0280e5eaed2a61506b8",
+      "size_bytes": 16160
     },
     {
       "path": "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/compile_summary.yaml",
@@ -144,20 +144,20 @@
     "a835b8cc7479192cd446b4b4c2fcd53c721f01622e941a412f32e11257ff4b36",
     "c4d277a67f6a893554b9f0901b2cd2fdd3c7a8a834d602d5498f47c9adc89652",
     "d02ffd890ef44f3a0e79b13a88450a39acd3d2287964dab61d9a8e0f733c47d0",
-    "8440b169c7c361f13cbff5a34c80bdd0f45d85c9409ec3b7639f5f1dcfc5081e",
+    "8ee8004726733c1828761bbfdda35222b44690781cbcb923ae3bcb706021f9dc",
     "58e581717e59a4b60cf477242588e5627fca8629b15843ae04aab14f51a22213",
-    "f1852156369fc3ba8a214f9b79ec2e62d03970972255a1c20eed81ed642a0ae7",
-    "2a30cad83ff8be09b7632c4ed6107661eba8e2b2037fb23e3db176c4f945d4a0",
-    "a42e9432b1b1ae3feebcc39a466b1feee3c7850eaba2e8a44a9d410529b270fd",
-    "6fad7c3138fb71cfdb58ecbe288ddfbb1c6838327e396c422510e191570488e0",
-    "b46bdd47b85761dc28356e53b3ff80e7c24426ef452035fc184283399337707c",
-    "7981801780ff848beabe188d45261c175e9b18c06937d7e95467c862593ed824",
-    "20aab2ba0876fa1b729620f425d736794bc54a9539d87749ac31c321d43c7040",
+    "c62b091022fe84a30a013426df1aa9cc173ceb18c3b76e765ef2211e101d4e14",
+    "5a14ed2be87d3503ab7e599f2901b3d38e57e3c649967499edcd09fa4069a7ad",
+    "43984cb5518961622070ff543cd2fde25337d410cef3fedb801f7f1c222ccc25",
+    "d8f640bdca2b496060678353449eb80041476d47b62fb116a919550832622c5c",
+    "f33efd18403139995db60a76ff32a129911be47216f601087aa6668cb05b3db4",
+    "0f60b6022024972213bdd5f1dd5d774ca064a2ab3422cf5bad129ae7257b6f29",
+    "cd2f2b39f86c05480381c5ac71d5093b7b83d03558faf097c26d21c8cea4ed2e",
     "936804dedcb0f73de8e1b93a8bd91186b6a2867ced176122961f5d84c2e6e157",
-    "10e406ca80b5304b441d7549523671beda87c911c857d3138af840ffc772133d",
+    "754396ab5f7a74ab001b11b489faabf5debe6195f18820cefbfd41e6e0dab7f1",
     "b1ff5ca1ddf172174fb9ebcde346fb9045740bea60e93486555e71cb58a6ecc3",
     "c965f621cf8c6c5f0878fcaeda81dcf16ed6fa48fa5ea1264fa8ebd99f0edaf4",
-    "b94002a88ad36ad38e5362ca60d60c4dbdf35f4749be2e5c46f9b5a212c01cb6",
+    "f9de795ecee3cb509aca254bc6079e567baf13e38c0dab53b8948907980d8f8a",
     "fa8b33d01a29d48419e3ae326dbb57c9429719c181949777ca4bddfbd8eb4efb"
   ],
   "artifact_sizes": [
@@ -166,20 +166,20 @@
     14,
     4263,
     1083,
-    10892,
+    11441,
     9480,
-    4434,
-    866,
-    6958,
-    15343,
-    1587,
-    4863,
-    877,
+    4325,
+    846,
+    6788,
+    15574,
+    1555,
+    4760,
+    856,
     254,
-    7847,
+    7941,
     15170,
     3456,
-    1181,
+    1162,
     868182
   ],
   "regeneration_commands": [
@@ -192,5 +192,14 @@
   "availability": "local_generated_artifacts_ignored_by_git_with_hashes",
   "heavy_artifact_policy": "track_by_path_hash_size_command_or_uri",
   "lineage_judgment": "preserved_clue_with_fixed_fixture_boundary",
-  "closeout_status": "fixed_fixture_mt5_closeout_synchronized"
+  "closeout_status": "fixed_fixture_mt5_closeout_synchronized",
+  "provenance_compaction": {
+    "wp06_lineage_hash_refresh": {
+      "reason": "run_and_attempt_manifest_hashes_changed_by_non_destructive_provenance_compaction_marker",
+      "paths": [
+        "lab/runs/onnxlab_20260621T131542Z_minimal_onnx_mt5_plumbing/run_manifest.json",
+        "runtime/mt5_attempts/attempt_20260621T131542Z_mt5_onnx_fixture_v0/attempt_manifest.yaml"
+      ]
+    }
+  }
 }

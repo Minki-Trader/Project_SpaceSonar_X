@@ -1,6 +1,6 @@
 ---
 name: spacesonar-experiment-design
-description: Design ONNX lab experiments: hypothesis, comparison, controls, criteria, evidence, and stop conditions.
+description: "Design ONNX lab experiments: hypothesis, comparison, controls, criteria, evidence, and stop conditions."
 ---
 
 # SpaceSonar Experiment Design
@@ -25,6 +25,12 @@ Use this skill when work creates, changes, compares, packages, or closes a lab e
 - `stop_conditions`
 - `evidence_plan`
 - `claim_boundary`
+- `legacy_relation`
+- `axis_tags`
+- `broad_sweep`
+- `extreme_sweep`
+- `micro_search_gate`
+- `failure_memory`
 
 ## Guardrails
 
@@ -33,4 +39,5 @@ Use this skill when work creates, changes, compares, packages, or closes a lab e
 - Do not let operating gates block exploration unless the claim is operating promotion, runtime authority, economics pass, or handoff complete.
 - Fine search starts only after broad/extreme sweeps expose a repeated surface clue.
 - Every run intended for future reuse needs a manifest, metrics identity, and artifact lineage.
-
+- Keep exploration open without inheriting deleted legacy winners, baselines, promotion history, live readiness, runtime authority, economics pass, or Goal Achieve.
+- Record failed ideas as negative memory instead of erasing them.

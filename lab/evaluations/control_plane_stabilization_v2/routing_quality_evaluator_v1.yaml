@@ -1,17 +1,37 @@
 version: evaluator_result_v1
 evaluator_id: routing_quality_evaluator_v1
-executed_at_utc: '2026-06-22T14:00:00Z'
+executed_at_utc: '2026-06-24T13:27:02Z'
 input_hashes:
 - path: docs/agent_control/routing_behavior_cases.yaml
-  sha256: 7a28f939114f38096ee0acc9c396b811b44fe7494b7707e895079ae41fe01b06
-  size_bytes: 6554
+  sha256: 6d1de70c65151bcc132013290b803ea94e641875b59fb4ad00da48546765d3bf
+  size_bytes: 11596
 - path: docs/agent_control/work_family_registry.yaml
-  sha256: 778cac921b711cdf32551252acf9a2a42696c5c907edd37b829dd3fe6b5d77d5
-  size_bytes: 12370
+  sha256: 84d0105b4539db1ed1af6d7db3e7ce6103c1e411756ce66cf084e10aafaeba28
+  size_bytes: 13292
+implementation_hashes:
+- path: foundation/evaluation/routing_quality_evaluator.py
+  sha256: f1f661ca14679137f4830e4412a71a0ff1943b9dd4a490b7af993bcf3b41e59d
+  size_bytes: 2005
+- path: foundation/validation/routing_behavior_eval.py
+  sha256: bc8f0bd7c91e4be068db4e01a3cd2345161c6456dcb646743dd3d8d2ab2db9f0
+  size_bytes: 9130
+- path: src/spacesonar/control_plane/routing.py
+  sha256: 7f6ee1b0e478f007598357a66bf8b651df0598fffd348c98cf3403e74af4420c
+  size_bytes: 15663
 status: passed
 metrics:
   accuracy: 1.0
   protected_claim_guard_recall: 1.0
+  protected_claim_assertion_recall: 1.0
+  protected_claim_read_only_recall: 1.0
+  automatic_family_coverage: 1.0
+  expected_automatic_family_coverage: 1.0
+  correctly_matched_automatic_family_coverage: 1.0
+  missing_golden_family_count: 0.0
+  unknown_verification_profile_count: 0.0
+  unknown_guard_set_count: 0.0
+  unreachable_automatic_family_count: 0.0
+  invalid_routing_mode_count: 0.0
 findings: []
 claim_effect: routing_behavior_evaluated_no_runtime_or_economics_claim
-output_sha256: e88fb62cddfde4a4a8d5cd3b8b28fab62ddd4912b576bf397d55944270162702
+output_sha256: 64ce32e420836a27b9d9cd2c3ff6f2b28a6abc5c3489ac9b2806f038f54af97d

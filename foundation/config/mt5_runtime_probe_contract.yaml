@@ -70,6 +70,10 @@ completion:
   allowed_surface_scopes_for_completion:
     - full_period_deterministic
     - full_period_sparse_decision_surface
+  completion_surface_scope_field: runtime_surface_contract.completion_surface_scope
+  completion_surface_scope_aliases: {}
+  descriptive_surface_scope_field: runtime_surface_contract.surface_scope
+  descriptive_surface_scope_rule: "Descriptive legacy surface_scope values are not completion-eligible unless explicitly mapped by completion_surface_scope_aliases."
   forbidden_source_artifact_roles_for_completion:
     - diagnostic_sample
     - proxy_score_sample

@@ -1,19 +1,40 @@
-version: agent_operating_metrics_v1
-updated_utc: "2026-06-22T13:40:00Z"
+version: agent_operating_metrics_v3
+updated_utc: '2026-06-22T23:53:38Z'
 source_refs:
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial_v2.yaml
-  - docs/agent_control/codex_task_force_registry.yaml
-measurement_boundary: control_plane_stabilization_local_records_only
+- path: docs/workspace/agent_operating_events.yaml
+  sha256: 287ce8554ac4610f0be4c61534300743eb0ab1d9fb9601eaf190e2a2bad7f73c
+  size_bytes: 4896
+measurement_boundary:
+  start_utc: '2026-06-22T23:53:38Z'
+  end_utc: null
+  boundary_id: control_plane_corrective_v3
 agent_operating_metrics:
-  consult_count: 1
-  solo_work_share: 0.80
-  one_agent_share: 0.0
-  two_agent_share: 0.0
-  three_plus_agent_share: 0.20
-  duplicate_advice_ratio: 0.0
+  work_item_count: 8
+  observed_work_item_count: 1
+  solo_work_item_count: 1
+  consult_count: 0
+  one_agent_consult_count: 0
+  two_agent_consult_count: 0
+  three_plus_agent_consult_count: 0
+  total_advice_items: 0
+  duplicate_advice_items: 0
   unsupported_assertion_count: 0
-  accepted_after_verification_ratio: 0.75
+  accepted_after_verification_count: 0
+  rejected_after_verification_count: 0
+  rewritten_after_verification_count: 0
+  solo_work_share: 1.0
+  observation_coverage_ratio: 0.125
+  one_agent_consult_share: 0.0
+  two_agent_consult_share: 0.0
+  three_plus_agent_consult_share: 0.0
+  routine_solo_or_single_agent_share: 1.0
+  duplicate_advice_ratio: 0.0
+  accepted_after_verification_ratio: 0.0
 compact_work_default:
   agent_mode: solo
   allocation_block_required: false
   claim_effect: local_codex_execution_only_no_reviewed_pass
+projection:
+  generated_from: docs/workspace/agent_operating_events.yaml
+  generator: python -m spacesonar.cli agents metrics --write
+  manual_edit_policy: manual edits fail projection check

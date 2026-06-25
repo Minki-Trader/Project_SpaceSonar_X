@@ -1,0 +1,40 @@
+---
+name: spacesonar-code-change-quality
+description: Guard code ownership, contracts, implementation quality, tests, and artifact side effects.
+---
+
+# SpaceSonar Code Change Quality
+
+Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporters, runtime helpers, report materializers, or reusable package code.
+
+## Required Output
+
+- `owner_surface`
+- `caller`
+- `input_contract`
+- `output_contract`
+- `artifact_effect`
+- `responsibility`
+- `flow`
+- `assumptions`
+- `traceability`
+- `test_or_syntax_check`
+- `migration_effect`
+- `quality_risk`
+
+## Placement Rules
+
+- reusable package code: `src/spacesonar/`
+- reusable feature logic: `foundation/features/`
+- reusable label logic: `foundation/labels/`
+- reusable training logic: `foundation/training/`
+- ONNX export and schema logic: `foundation/onnx/`
+- parity and MT5 reusable logic: `foundation/mt5/` or dedicated reusable modules
+- orchestration entrypoints: `foundation/pipelines/`
+
+## Guardrails
+
+- Do not place reusable logic only inside one-off run scripts.
+- Do not hide generated artifact effects.
+- Do not let passing tests replace explicit input, output, and failure contracts.
+- Make trading, time, data, and runtime assumptions visible when relevant.

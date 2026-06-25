@@ -1,0 +1,220 @@
+version: migration_ledger_v1
+migration_id: control_plane_corrective_v3
+work_item_id: work_codex_control_plane_corrective_v3
+branch: codex/control-plane-corrective-v3
+baseline_commit: fbcde1e67221f0618e17388e6617c8dd3ff4c22d
+wp08_entry_head: 30f55cb449bc11f29947f2f8128a3ce4098d2115
+final_delivery_commit_sha: self_referential_commit_hash_recorded_by_git_and_user_report
+generated_at_utc: '2026-06-25T04:13:30Z'
+claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+workflow_status: completed
+remote_branch_protection: not_enabled_or_not_visible
+remote_branch_protection_record: docs/policies/remote_repository_settings.yaml
+remote_branch_protection_note: GitHub API verification succeeded; main branch protection was missing or not visible, squash merge is enabled, and merge/rebase merge are still enabled.
+migrations:
+- id: WP00
+  status: completed
+  summary: fail_closed_corrective_lifecycle_guard
+- id: WP01
+  status: completed
+  summary: runtime_truth_kernel_fail_closed_against_real_record_shapes
+- id: WP02
+  status: completed
+  summary: transaction_atomicity_rollback_and_isolated_future_tree
+- id: WP03
+  status: completed
+  summary: runtime_graph_revalidation_inventory_receipts_and_binding
+- id: WP04
+  status: completed
+  summary: canonical_lifecycle_state_machine_and_projection_consistency
+- id: WP05
+  status: completed
+  summary: routing_policy_skill_compaction_and_protected_claim_safety
+- id: WP06
+  status: completed
+  summary: provenance_compaction_batch_receipts_and_agent_metrics
+- id: WP07
+  status: completed
+  summary: evaluator_backed_closeout_and_state_consistency
+- id: WP08
+  status: completed
+  summary: final_integration_hygiene_manual_mt5_workflow_remote_settings_record_and_delivery_validation
+runtime_re_evaluation:
+  evaluator_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
+  evaluator_status: passed
+  line_ending_normalization:
+    telemetry_summary_files_normalized_to_lf: 86
+    reason: cross_platform_evaluator_hash_stability_for_linux_ci
+    semantic_runtime_result_changed: false
+  expected_attempt_count: 86
+  attempt_count: 86
+  runtime_probe_complete_count: 86
+  runtime_probe_incomplete_count: 0
+  tester_report_receipt_count: 86
+  expected_pair_group_count: 43
+  pair_group_count: 43
+  pair_groups_complete: 43
+  pair_groups_incomplete: 0
+  terminal_mode_counts:
+    portable_contract_attempt: 86
+  locked_final_oos_used: false
+research_closeout:
+  evaluator_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
+  evaluator_status: passed
+  campaign_count: 3
+  candidate_count: 0
+  l5_candidate_count: 0
+  preserved_clue_count: 1
+  negative_memory_count: 3
+  candidate_registry_count: 0
+operating_closeout:
+  wave_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+  status: wave01_evaluator_backed_closeout_requires_evidence_repair
+  runtime_contract_integrity: passed
+  routing_behavior_quality: passed
+  research_cycle_closeout: passed
+  agent_value_metrics: insufficient_evidence
+  control_plane_operating_proof: failed
+  unresolved_blockers:
+  - agent_observation_coverage_below_slo
+  - agent_value_slo_failed
+  next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
+agent_metrics:
+  expected_after_wp08_projection:
+    observed_work_item_count: 1
+    work_item_count: 8
+    observation_coverage_ratio: 0.125
+    status_effect: insufficient_evidence
+routing_benchmark:
+  evaluator_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
+  evaluator_status: passed
+  accuracy: 1.0
+  protected_claim_guard_recall: 1.0
+  protected_claim_assertion_recall: 1.0
+  protected_claim_read_only_recall: 1.0
+transaction_safety:
+  rollback_fault_injection: passed
+  transaction_atomicity_tests: passed
+  lifecycle_locking: passed
+  durable_transaction_receipt_count: 1
+projections:
+  registry_projection_check: passed
+  workspace_projection_check: passed
+  artifact_registry_row_count_at_wp08_entry: 951
+  generated_registry_files_checked: true
+policy_and_skills:
+  canonical_consolidated_skill_count: 5
+  compatibility_skill_stub_count: 10
+  duplicate_policy_lint: passed
+ci_and_manual_runtime:
+  linux_control_plane_workflow: .github/workflows/control-plane.yml
+  manual_mt5_workflow: .github/workflows/mt5-runtime-manual.yml
+  manual_mt5_runner: self_hosted_windows_mt5
+  locked_final_oos_allowed_by_default: false
+preserved_ids:
+  clues:
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+  - clue_wave0_tradeability_mid_horizon_v0
+  negative_memories:
+  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+  candidates: []
+changed_schema_versions:
+- run_manifest_v3
+- mt5_attempt_manifest_v2
+- tester_report_receipt_v1
+- execution_batch_receipt_v1
+- agent_operating_events_v2
+- agent_operating_metrics_v3
+- evaluator_result_v1
+wp08_record_hashes:
+- path: .gitignore
+  old_sha256: 8aa5eb549441f41f108b4b1b704bf9cb785555e18cd5b32cf2634d12b558d392
+  new_sha256: 2c8d29b201a19d6a50e9034d67419f3ad0aabd4f7df634fbdbff11a76b6172b4
+- path: .github/workflows/control-plane.yml
+  old_sha256: 1772a6d9288ef54cfce7007f98af0019ebfe072b2a7b6116864d0457b9e61381
+  new_sha256: d5d7f0b698131390f99d4617bbfb4ad35267ea3cbe838e2d84469141be942342
+- path: .github/workflows/mt5-runtime-manual.yml
+  old_sha256: null
+  new_sha256: 2c1ec3d5437c8605ebf95d60ba62ee240b21e114d9ad19f245bbc0d9b7c29647
+- path: docs/policies/remote_repository_settings.yaml
+  old_sha256: null
+  new_sha256: a71a19045c8257e977518597c0ebc434a712d54ee6c3a4f6e665037d4054d10f
+- path: foundation/validation/control_plane_validator.py
+  old_sha256: 58a972016b131c85c40cfb056fc702c9b6398a9141cde781a7d604e6f745842c
+  new_sha256: 645231ec81243cb7320124a56bce0ddec065908d71bb77cb8e30ccda55c86796
+- path: foundation/validation/remote_repository_settings_verifier.py
+  old_sha256: null
+  new_sha256: 2f6be7b521823935ba62f25645179801a6d2fd604a991e2b871d64b8aaa8ce70
+- path: tests/test_remote_repository_settings_verifier.py
+  old_sha256: null
+  new_sha256: 7975da7fb4b4361c3477d7e70724cc1fd50fd5151e77bef9ca14c9bf343757cb
+- path: docs/workspace/agent_operating_events.yaml
+  old_sha256: 54570244989ee37264fa5146bfe340f974f773c91633306d198298c675959ece
+  new_sha256: 287ce8554ac4610f0be4c61534300743eb0ab1d9fb9601eaf190e2a2bad7f73c
+- path: docs/workspace/agent_operating_metrics.yaml
+  old_sha256: 1b58da53c66b4b43c51a74080558b25ee98621be4926f6c991faaccf22584e87
+  new_sha256: c8c8223b45f663ef18e49acf6e6f83c9c571f7cddb30224e27ecedc8e08db254
+- path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
+  old_sha256: 05d36278274b2ff6d69f54f7e8575958b7fc54a1d31e7171dfc1f11b4a8974af
+  new_sha256: b1a3217aca1d50a7617d27ae454bb7ab7416dd1ce6af1129a8ae69364a1b11f9
+- path: lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+  old_sha256: 05d36278274b2ff6d69f54f7e8575958b7fc54a1d31e7171dfc1f11b4a8974af
+  new_sha256: b1a3217aca1d50a7617d27ae454bb7ab7416dd1ce6af1129a8ae69364a1b11f9
+- path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
+  old_sha256: 0ac9ffa9fa3affce1a5362539959a21446e7f299ac7f34745451257ab49e5b20
+  new_sha256: f011942bcfc7d320df96499bc1ec14b3a809fb608f7f9c0533708e2b35e93e2e
+- path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
+  old_sha256: d4b77aca8f28dc67e90f3e3b6d70585ce93f879d35270b7684694d96abc6106d
+  new_sha256: 5cd2d1da564aaeea6349fd4be2c45f8468f333ca61000ffac095c16f93d82f18
+- path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
+  old_sha256: 91fe8f3e8578b0ff9f43327e43b1fbceda2e359bda7f04be9abf233e2e23d28c
+  new_sha256: 8b1ed1731e5280f48239dd9cb1fc0355a6d82c4a839ec8a4c880f90331c6037c
+- path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+  old_sha256: f793136035739da76db50772c4133b4e2dc84911dcda2526c3470f119037f01e
+  new_sha256: be93efb5a63ab145aaf1f8846063a11e231485e103bf566e8954757038db2a97
+final_validation_commands:
+- uv sync --locked --extra dev --extra onnxlab
+- uv run pytest -q
+- uv run python foundation/validation/policy_duplicate_lint.py --repo-root .
+- uv run python foundation/validation/routing_contract_lint.py --repo-root .
+- uv run python foundation/validation/routing_behavior_eval.py --repo-root .
+- uv run python foundation/validation/repository_hygiene_validator.py --repo-root .
+- uv run python foundation/validation/control_plane_validator.py --repo-root .
+- uv run python foundation/validation/active_record_validator.py --repo-root .
+- uv run python -m spacesonar.cli registry project --check
+- uv run python -m spacesonar.cli project workspace --check
+- uv run python -m spacesonar.cli agents metrics --check
+- uv run python -m spacesonar.cli project validate
+- uv run python foundation/evaluation/build_operating_closeout.py --repo-root . --check
+- git diff --check
+- git ls-files -ci --exclude-standard
+validation_results:
+  status: passed
+  uv_sync_locked: passed
+  pytest_full: 445 passed in 1506.40s
+  policy_duplicate_lint: passed
+  routing_contract_lint: passed
+  routing_behavior_eval: passed
+  repository_hygiene_validator: passed
+  remote_repository_settings_check: passed_github_api_verified_remote_gap_recorded
+  control_plane_validator: passed
+  active_record_validator: passed
+  registry_projection_check: passed
+  workspace_projection_check: passed
+  agent_metrics_projection_check: passed
+  project_validate: passed
+  operating_closeout_check: passed
+  artifact_registry_hash_check: rows=951 refreshable=950 changed=0 missing=0
+  git_diff_check: passed_with_line_ending_normalization_warning_only
+  tracked_ignored_artifacts: zero
+non_claims:
+  selected_baseline: false
+  runtime_authority: false
+  economics_pass: false
+  live_readiness: false
+  production_deployment: false
+  reviewed_or_verified_pass: false
+  Goal_Achieve_as_profitability: false

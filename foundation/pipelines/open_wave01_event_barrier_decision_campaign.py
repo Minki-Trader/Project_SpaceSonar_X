@@ -1389,9 +1389,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    run(repo_root, args.created_at_utc, args.write_control_records)
-    return 0
+    _repo_root = Path(args.repo_root).resolve()
+    print(
+        "historical lifecycle entrypoint disabled by WP04; use python -m spacesonar.cli campaign open --spec <path>",
+        file=sys.stderr,
+    )
+    return 2
 
 
 if __name__ == "__main__":

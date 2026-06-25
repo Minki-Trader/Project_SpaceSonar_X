@@ -609,28 +609,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = utc_now()
-    command_argv = ["python", "foundation/pipelines/materialize_wave0_l4_ingredient_cards.py"]
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    summary, card_paths = materialize(repo_root, started_at=started_at, command_argv=command_argv)
-    if args.write_control_records:
-        update_control_records(repo_root, summary)
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": SUMMARY_PATH.as_posix(),
-                "ingredient_card_count": len(card_paths),
-                "claim_boundary": summary["claim_boundary"],
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0
 
 
 if __name__ == "__main__":

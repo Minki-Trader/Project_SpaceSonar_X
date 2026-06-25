@@ -30,13 +30,19 @@ from foundation.pipelines.run_mt5_fixed_fixture_probe import (
     run_terminal_sequence,
 )
 from foundation.mt5.runtime_completion import (
-    EXPECTED_EXECUTION_PROFILE_ID,
-    EXPECTED_PERIOD_PROFILE_ID,
-    EXPECTED_RUNTIME_PERIOD_SET_ID,
     RuntimeAttemptState,
     evaluate_runtime_attempt,
     resolve_tester_report_candidates,
     runtime_status,
+    terminal_launched_from_summary,
+    terminal_mode_from_summary,
+)
+from foundation.mt5.tester_report_receipt import (
+    build_tester_report_receipt,
+    snapshot_report_candidate,
+    tester_config_identity,
+    tester_report_completed,
+    write_receipt,
 )
 
 
@@ -506,6 +512,8 @@ def prepare_tester_report_directories(
         return {"status": "no_report_value_configured", "prepared": [], "skipped": []}
     prepared: list[dict[str, str]] = []
     skipped: list[dict[str, str]] = []
+    prelaunch: list[dict[str, Any]] = []
+    seen_prelaunch: set[str] = set()
     for candidate in resolve_tester_report_candidates(
         report_value=stem,
         repo_root=repo_root,
@@ -513,6 +521,10 @@ def prepare_tester_report_directories(
         main_terminal_data_root=main_terminal_data_root,
         attempt_root=attempt_root,
     ):
+        snapshot = snapshot_report_candidate(candidate.path, candidate.origin)
+        if snapshot["path_key"] not in seen_prelaunch:
+            prelaunch.append(snapshot)
+            seen_prelaunch.add(snapshot["path_key"])
         try:
             candidate.path.parent.mkdir(parents=True, exist_ok=True)
             prepared.append({"origin": candidate.origin, "redacted_parent": redact_path(str(candidate.path.parent))})
@@ -524,12 +536,36 @@ def prepare_tester_report_directories(
                     "reason": f"{exc.__class__.__name__}: {exc}",
                 }
             )
+    for path in attempt_root.glob("tester_report*"):
+        snapshot = snapshot_report_candidate(path, "attempt_archive_path")
+        if snapshot["path_key"] not in seen_prelaunch:
+            prelaunch.append(snapshot)
+            seen_prelaunch.add(snapshot["path_key"])
     status = "tester_report_directories_prepared"
     if skipped:
         status = "tester_report_directories_partially_prepared"
     if not prepared and skipped:
         status = "tester_report_directories_not_prepared"
-    return {"status": status, "report_value": stem, "prepared": prepared, "skipped": skipped}
+    return {
+        "status": status,
+        "report_value": stem,
+        "prepared": prepared,
+        "skipped": skipped,
+        "prelaunch_candidates": prelaunch,
+    }
+
+
+def public_report_resolution_summary(summary: dict[str, Any]) -> dict[str, Any]:
+    public = dict(summary)
+    public_candidates: list[dict[str, Any]] = []
+    for candidate in summary.get("prelaunch_candidates", []):
+        item = dict(candidate)
+        path_key_value = item.pop("path_key", "")
+        if path_key_value:
+            item["path_key_sha256"] = hashlib.sha256(str(path_key_value).encode("utf-8")).hexdigest()
+        public_candidates.append(item)
+    public["prelaunch_candidates"] = public_candidates
+    return public
 
 
 def archive_tester_report(
@@ -582,6 +618,71 @@ def archive_tester_report(
         **artifact_ref(archived, repo_root, availability="local_report_hash_recorded_ignored_by_git"),
         "claim_boundary": "tester_report_local_evidence_only_no_economics_pass",
     }
+
+
+def build_tester_report_receipt_for_attempt(
+    *,
+    repo_root: Path,
+    attempt_root: Path,
+    attempt_id: str,
+    tester_config: Path,
+    portable_terminal_root: Path | None,
+    main_terminal_data_root: Path | None,
+    prelaunch_candidates: list[dict[str, Any]],
+    launch_started_at_utc: str | None,
+) -> dict[str, Any]:
+    candidates = candidate_report_paths(
+        repo_root,
+        attempt_root,
+        tester_config,
+        portable_terminal_root=portable_terminal_root,
+        main_terminal_data_root=main_terminal_data_root,
+    )
+    report_path: Path | None = None
+    source_origin: str | None = None
+    if candidates:
+        report_path, source_origin = candidates[0]
+    receipt = build_tester_report_receipt(
+        attempt_id=attempt_id,
+        report_path=report_path,
+        source_origin=source_origin,
+        launch_started_at_utc=launch_started_at_utc,
+        prelaunch_candidates=prelaunch_candidates,
+        expected_identity=tester_config_identity(tester_config),
+    )
+    write_receipt(attempt_root / "tester_report_receipt.yaml", receipt)
+    return receipt
+
+
+def runtime_contract_value(
+    manifest: dict[str, Any],
+    row: dict[str, str],
+    key: str,
+    *contract_keys: str,
+) -> str | None:
+    runtime_contract = manifest.get("runtime_surface_contract") or {}
+    routing = manifest.get("runtime_probe_routing") or {}
+    period_identity = manifest.get("period_identity") or {}
+    execution_identity = manifest.get("execution_identity") or {}
+    for value in [
+        period_identity.get(key),
+        *(period_identity.get(item) for item in contract_keys),
+        execution_identity.get(key),
+        *(execution_identity.get(item) for item in contract_keys),
+        row.get(key),
+        manifest.get(key),
+        *(runtime_contract.get(item) for item in contract_keys),
+        routing.get(key),
+        *(routing.get(item) for item in contract_keys),
+    ]:
+        if value not in (None, ""):
+            return str(value)
+    return None
+
+
+def ensure_completion_surface_scope(manifest: dict[str, Any], completion_surface_scope: str) -> None:
+    runtime_contract = manifest.setdefault("runtime_surface_contract", {})
+    runtime_contract["completion_surface_scope"] = completion_surface_scope
 
 
 def parse_score_telemetry(path: Path) -> dict[str, Any]:
@@ -659,7 +760,13 @@ def normalize_l4_terminal_summary(terminal_summary: dict[str, Any]) -> dict[str,
     return summary
 
 
-def update_coverage(manifest: dict[str, Any], *, telemetry_observed: bool, report_observed: bool) -> None:
+def update_coverage(
+    manifest: dict[str, Any],
+    *,
+    telemetry_observed: bool,
+    report_observed: bool,
+    report_completed: bool,
+) -> None:
     coverage = manifest.setdefault("required_gate_coverage", {})
     passed = coverage.setdefault("passed", [])
     missing = coverage.setdefault("missing", [])
@@ -684,12 +791,27 @@ def update_coverage(manifest: dict[str, Any], *, telemetry_observed: bool, repor
         mark_passed("Strategy_Tester_terminal_execution")
         mark_missing("score_telemetry_csv")
         mark_missing("result_judgment_from_L4")
-    if report_observed:
+    if report_completed:
         mark_passed("L4_period_role_completed_report")
-        mark_passed("tester_report_hash")
     else:
         mark_missing("L4_period_role_completed_report")
+    if report_observed:
+        mark_passed("tester_report_hash")
+    else:
         mark_missing("tester_report_hash")
+
+
+def append_missing_evidence(manifest: dict[str, Any], values: list[str]) -> None:
+    missing = manifest.setdefault("missing_evidence", [])
+    for value in values:
+        if value and value not in missing:
+            missing.append(value)
+
+
+def score_attempt_next_action(runtime_probe_complete: bool) -> str:
+    if runtime_probe_complete:
+        return "aggregate this period role with its paired L4 attempt before L5 decision"
+    return "inspect terminal/EA/report evidence and rerun or repair this attempt before L4 completion claim"
 
 
 def attempt_root(repo_root: Path, attempt_id: str) -> Path:
@@ -717,6 +839,7 @@ def run_one_attempt(
         manifest=manifest,
         tester_config=tester_config,
     )
+    ensure_completion_surface_scope(manifest, "full_period_deterministic")
     report_config_summary = normalize_tester_report_config(tester_config, attempt_id)
     manifest.setdefault("artifact_identity", {})["tester_config"] = artifact_ref(tester_config, repo_root)
     write_yaml(manifest_path, manifest)
@@ -752,7 +875,7 @@ def run_one_attempt(
         "bundle_id": row["bundle_id"],
         "tester_config": artifact_ref(tester_config, repo_root),
         "tester_report_config": report_config_summary,
-        "tester_report_resolution_prelaunch": report_directory_summary,
+        "tester_report_resolution_prelaunch": public_report_resolution_summary(report_directory_summary),
         "common_telemetry_redacted": redact_path(str(common_telemetry)),
         "claim_boundary": "terminal_execution_evidence_only_no_runtime_authority_no_economics_pass",
     }
@@ -825,6 +948,16 @@ def run_one_attempt(
         terminal_summary["empty_telemetry_claim_effect"] = "csv_header_only_no_l4_score_observation"
     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
 
+    report_receipt = build_tester_report_receipt_for_attempt(
+        repo_root=repo_root,
+        attempt_root=root,
+        attempt_id=attempt_id,
+        tester_config=tester_config,
+        portable_terminal_root=portable_terminal_root,
+        main_terminal_data_root=main_data_root,
+        prelaunch_candidates=report_directory_summary.get("prelaunch_candidates", []),
+        launch_started_at_utc=terminal_summary.get("started_at_utc"),
+    )
     report = archive_tester_report(
         repo_root,
         root,
@@ -832,25 +965,31 @@ def run_one_attempt(
         portable_terminal_root=portable_terminal_root,
         main_terminal_data_root=main_data_root,
     )
-    report_observed = bool(report.get("observed"))
-    report_completed = report.get("status") == "tester_report_archived_local_hash_recorded"
+    report_observed = bool(report_receipt.get("source_report_sha256"))
+    report_completed = tester_report_completed(report_receipt)
 
     result_judgment = "runtime_probe" if telemetry_observed else "inconclusive"
-    terminal_mode = (terminal_summary.get("terminal_mode_policy") or {}).get("main_mode_fallback_used")
-    terminal_mode_label = "main_mode_config_fallback" if terminal_mode else "portable_contract_attempt"
+    terminal_mode_policy = terminal_summary.get("terminal_mode_policy") or {}
+    terminal_launched = terminal_launched_from_summary(terminal_summary)
+    terminal_mode_label = terminal_mode_from_summary(terminal_summary)
     completion = evaluate_runtime_attempt(
         RuntimeAttemptState(
-            terminal_launched=True,
+            terminal_launched=terminal_launched,
             telemetry_file_observed=telemetry_file_observed,
             telemetry_rows_observed=telemetry_observed,
             tester_report_observed=report_observed,
             tester_report_completed=report_completed,
             terminal_mode=terminal_mode_label,
             period_role=row["period_role"],
-            period_profile_id=EXPECTED_PERIOD_PROFILE_ID,
-            runtime_period_set_id=row.get("runtime_period_set_id") or EXPECTED_RUNTIME_PERIOD_SET_ID,
-            execution_profile_id=row.get("tester_execution_profile_id") or EXPECTED_EXECUTION_PROFILE_ID,
-            surface_scope="full_period_deterministic",
+            period_profile_id=runtime_contract_value(manifest, row, "period_profile_id", "runtime_period_profile_id"),
+            runtime_period_set_id=runtime_contract_value(manifest, row, "runtime_period_set_id"),
+            execution_profile_id=runtime_contract_value(
+                manifest, row, "tester_execution_profile_id", "execution_profile_id"
+            ),
+            surface_scope=runtime_contract_value(manifest, row, "completion_surface_scope"),
+            portable_attempted=terminal_mode_policy.get("portable_attempted"),
+            main_mode_fallback_allowed=terminal_mode_policy.get("main_mode_fallback_allowed"),
+            main_mode_fallback_used=terminal_mode_policy.get("main_mode_fallback_used"),
         ),
         required_period_roles=["validation", "research_oos"],
         completion_eligible_surface_scopes=["full_period_deterministic", "full_period_sparse_decision_surface"],
@@ -861,7 +1000,7 @@ def run_one_attempt(
     manifest["claim_boundary"] = CLAIM_BOUNDARY if telemetry_observed else str(telemetry_summary["claim_boundary"])
     manifest["result_judgment"] = result_judgment
     manifest["execution_state"] = {
-        "terminal_launched": True,
+        "terminal_launched": terminal_launched,
         "telemetry_file_observed": telemetry_file_observed,
         "telemetry_rows_observed": telemetry_observed,
         "tester_report_observed": report_observed,
@@ -893,8 +1032,16 @@ def run_one_attempt(
     manifest["terminal_run_summary"] = terminal_summary
     manifest["score_telemetry_summary"] = telemetry_summary
     manifest["tester_report"] = report
+    manifest["tester_report_receipt"] = {
+        "path": f"runtime/mt5_attempts/{attempt_id}/tester_report_receipt.yaml",
+        "receipt_version": report_receipt.get("receipt_version"),
+        "tester_report_completed": report_receipt.get("tester_report_completed"),
+        "missing_requirements": report_receipt.get("missing_requirements", []),
+        "claim_boundary": report_receipt.get("claim_boundary"),
+    }
     manifest.setdefault("artifact_identity", {})["terminal_run_summary"] = artifact_ref(root / "terminal_run_summary.yaml", repo_root)
     manifest["artifact_identity"]["score_telemetry_summary"] = artifact_ref(root / "score_telemetry_summary.yaml", repo_root)
+    manifest["artifact_identity"]["tester_report_receipt"] = artifact_ref(root / "tester_report_receipt.yaml", repo_root)
     if telemetry_artifact:
         manifest["artifact_identity"]["telemetry"]["repo_copy"] = telemetry_artifact
     manifest["artifact_identity"]["tester_reports"] = [report]
@@ -907,11 +1054,8 @@ def run_one_attempt(
         )
     if not report_observed:
         manifest["missing_evidence"].append("tester_report_missing_or_not_archived")
-    manifest["next_action"] = (
-        "aggregate this period role with its paired L4 attempt before L5 decision"
-        if telemetry_observed
-        else "inspect terminal/EA logs and rerun this attempt before L4 completion claim"
-    )
+    append_missing_evidence(manifest, list(report_receipt.get("missing_requirements") or []))
+    manifest["next_action"] = score_attempt_next_action(completion.runtime_probe_complete)
     parity = manifest.setdefault("proxy_runtime_parity", {})
     parity["minimum_reconciliation_attempt"] = {
         "status": "terminal_score_probe_observed" if telemetry_observed else "terminal_attempted_score_probe_missing",
@@ -926,7 +1070,12 @@ def run_one_attempt(
     )
     parity["comparison_class"] = "pending_pair_aggregation_after_L4_period_roles"
     parity["follow_up_action"] = manifest["next_action"]
-    update_coverage(manifest, telemetry_observed=telemetry_observed, report_observed=report_observed)
+    update_coverage(
+        manifest,
+        telemetry_observed=telemetry_observed,
+        report_observed=report_observed,
+        report_completed=report_completed,
+    )
     write_yaml(manifest_path, manifest)
 
     execution_row = {
@@ -1442,115 +1591,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = utc_now()
-    command_argv = ["python", "foundation/pipelines/run_wave0_l4_mt5_attempts.py"]
-    for attempt_id in args.attempt_id:
-        command_argv.extend(["--attempt-id", attempt_id])
-    for period_role in args.period_role:
-        command_argv.extend(["--period-role", period_role])
-    command_argv.extend(["--limit", str(args.limit)])
-    if args.include_completed:
-        command_argv.append("--include-completed")
-    if args.force_compile_ea:
-        command_argv.append("--force-compile-ea")
-    if args.skip_compile_ea_if_missing:
-        command_argv.append("--skip-compile-ea-if-missing")
-    if args.terminate_existing_terminal:
-        command_argv.append("--terminate-existing-terminal")
-    if args.allow_main_mode_fallback:
-        command_argv.append("--allow-main-mode-fallback")
-    if args.no_main_mode_fallback:
-        command_argv.append("--no-main-mode-fallback")
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    if args.dry_run:
-        command_argv.append("--dry-run")
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
 
-    rows = read_csv_rows(repo_root / PREP_INDEX)
-    selected = selected_attempt_rows(
-        rows,
-        repo_root=repo_root,
-        attempt_ids=set(args.attempt_id) if args.attempt_id else None,
-        period_roles=set(args.period_role) if args.period_role else None,
-        limit=args.limit if args.limit > 0 else None,
-        include_completed=args.include_completed,
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    if args.dry_run:
-        print(json.dumps({"status": "dry_run", "selected_attempt_ids": [row["attempt_id"] for row in selected]}, indent=2))
-        return 0
-    compile_summary = ensure_ea_binary(
-        repo_root=repo_root,
-        metaeditor=Path(args.metaeditor),
-        force_compile=args.force_compile_ea,
-        skip_compile_if_missing=args.skip_compile_ea_if_missing,
-        timeout_seconds=args.compile_timeout_seconds,
-        started_at_utc=started_at,
-    )
-    if not (repo_root / EA_BINARY).exists():
-        ended_at = utc_now()
-        summary = build_summary(
-            repo_root=repo_root,
-            selected_rows=selected,
-            execution_rows=[],
-            compile_summary=compile_summary,
-            started_at_utc=started_at,
-            ended_at_utc=ended_at,
-            command_argv=command_argv,
-        )
-        summary["status"] = "blocked_ea_binary_missing_after_compile_preflight"
-        summary["failure_disposition"] = compile_summary.get("failure_disposition")
-        write_execution_records(repo_root=repo_root, summary=summary, execution_rows=[], write_control_records=args.write_control_records)
-        print(json.dumps({"status": summary["status"], "summary": RUNTIME_SUMMARY.as_posix()}, indent=2))
-        return 1
-
-    execution_rows: list[dict[str, Any]] = []
-    for row in selected:
-        execution_rows.append(
-            run_one_attempt(
-                repo_root=repo_root,
-                row=row,
-                terminal=Path(args.terminal),
-                timeout_seconds=args.terminal_timeout_seconds,
-                terminate_existing=args.terminate_existing_terminal,
-                allow_main_mode_fallback=args.allow_main_mode_fallback and not args.no_main_mode_fallback,
-                started_at_utc=started_at,
-            )
-        )
-
-    ended_at = utc_now()
-    merged_rows = merge_execution_rows(repo_root, execution_rows)
-    summary = build_summary(
-        repo_root=repo_root,
-        selected_rows=selected,
-        execution_rows=merged_rows,
-        compile_summary=compile_summary,
-        started_at_utc=started_at,
-        ended_at_utc=ended_at,
-        command_argv=command_argv,
-    )
-    write_execution_records(
-        repo_root=repo_root,
-        summary=summary,
-        execution_rows=merged_rows,
-        write_control_records=args.write_control_records,
-    )
-    print(
-        json.dumps(
-            {
-                "status": summary["status"],
-                "summary": RUNTIME_SUMMARY.as_posix(),
-                "current_batch_executed_attempt_count": len(execution_rows),
-                "indexed_execution_count": len(merged_rows),
-                "telemetry_observed_count": summary["counts"]["telemetry_observed_count"],
-                "claim_boundary": summary["claim_boundary"],
-            },
-            indent=2,
-        )
-    )
-    return 0 if all(row["telemetry_observed"] for row in execution_rows) else 1
 
 
 if __name__ == "__main__":

@@ -624,27 +624,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    started_at = utc_now()
-    command_argv = ["python", "foundation/pipelines/preflight_wave0_l4_materialization.py"]
-    if args.write_control_records:
-        command_argv.append("--write-control-records")
-    preflight = build_preflight(repo_root, started_at_utc=started_at, command_argv=command_argv)
-    write_outputs(preflight, repo_root, write_control_records=args.write_control_records)
-    print(
-        json.dumps(
-            {
-                "status": preflight["status"],
-                "preflight": PREFLIGHT_YAML.as_posix(),
-                "direct_l4_ready_runs": preflight["summary"]["direct_l4_ready_runs"],
-                "valid_proxy_runs_requiring_l4": preflight["summary"]["valid_proxy_runs_requiring_l4"],
-            },
-            indent=2,
-        )
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
+
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0
 
 
 if __name__ == "__main__":

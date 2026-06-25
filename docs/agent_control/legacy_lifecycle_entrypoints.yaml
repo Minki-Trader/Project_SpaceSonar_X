@@ -1,0 +1,183 @@
+version: legacy_lifecycle_entrypoints_v2
+classification_contract:
+  allowed_classifications:
+    - shared_lifecycle_wrapper
+    - domain_execution_not_lifecycle
+    - historical_disabled
+  direct_mutator_detection_tokens:
+    - campaign_manifest
+    - wave_allocation
+    - goal_manifest
+    - next_work_item
+    - resume_cursor
+    - workspace_state
+    - campaign_registry
+    - wave_registry
+    - goal_registry
+    - DictWriter
+    - write_text(
+    - safe_dump
+    - yaml.dump
+entrypoints:
+  - path: foundation/pipelines/control_plane_legacy_wrappers.py
+    classification: shared_lifecycle_wrapper
+    lifecycle_actions:
+      - campaign_open
+    wrapper_contract: argument_mapping_and_shared_lifecycle_invocation_only
+  - path: foundation/pipelines/open_wave01_event_barrier_decision_campaign.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_open
+    replacement_command: python -m spacesonar.cli campaign open --spec <path>
+  - path: foundation/pipelines/materialize_wave01_event_barrier_first_batch_specs.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_materialize
+    replacement_command: python -m spacesonar.cli campaign materialize --campaign-id campaign_us100_event_barrier_decision_surface_v0
+  - path: foundation/pipelines/close_wave01_event_barrier_campaign.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_close
+    replacement_command: python -m spacesonar.cli campaign close --campaign-id campaign_us100_event_barrier_decision_surface_v0
+  - path: foundation/pipelines/open_wave01_session_transition_regime_campaign.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_open
+    replacement_command: python -m spacesonar.cli campaign open --spec <path>
+  - path: foundation/pipelines/materialize_wave01_session_transition_first_batch_specs.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_materialize
+    replacement_command: python -m spacesonar.cli campaign materialize --campaign-id campaign_us100_session_transition_regime_surface_v0
+  - path: foundation/pipelines/close_wave01_session_transition_campaign.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_close
+    replacement_command: python -m spacesonar.cli campaign close --campaign-id campaign_us100_session_transition_regime_surface_v0
+  - path: foundation/pipelines/aggregate_wave01_event_barrier_l4_pair_judgments.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
+  - path: foundation/pipelines/aggregate_wave01_session_transition_l4_pair_judgments.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
+  - path: foundation/pipelines/aggregate_wave0_l4_pair_judgments.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical L4 pair judgment aggregation.
+  - path: foundation/pipelines/apply_proxy_l4_policy_clarification.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical policy clarification migration, not an active lifecycle command.
+  - path: foundation/pipelines/close_wave0_first_batch_axis_review.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_close
+    replacement_command: python -m spacesonar.cli campaign close --campaign-id campaign_us100_task_surface_scout_v0
+  - path: foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Decision-replay result judgment, not canonical lifecycle state transition.
+  - path: foundation/pipelines/judge_wave01_session_transition_l4_decision_replay_results.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Decision-replay result judgment, not canonical lifecycle state transition.
+  - path: foundation/pipelines/judge_wave0_l4_decision_replay_results.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical decision-replay result judgment.
+  - path: foundation/pipelines/materialize_wave01_event_barrier_l4_onnx_bundles.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: ONNX bundle materialization for runtime follow-through, not campaign lifecycle materialization.
+  - path: foundation/pipelines/materialize_wave01_session_transition_l4_onnx_bundles.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: ONNX bundle materialization for runtime follow-through, not campaign lifecycle materialization.
+  - path: foundation/pipelines/materialize_wave0_first_batch_run_specs.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - campaign_materialize
+    replacement_command: python -m spacesonar.cli campaign materialize --campaign-id campaign_us100_task_surface_scout_v0
+  - path: foundation/pipelines/materialize_wave0_l4_ingredient_cards.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical L4 ingredient card materialization.
+  - path: foundation/pipelines/materialize_wave0_l4_onnx_bundles.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical ONNX bundle materialization.
+  - path: foundation/pipelines/minimal_onnx_mt5_plumbing_slice.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Plumbing slice/domain probe.
+  - path: foundation/pipelines/preflight_wave0_l4_materialization.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical L4 materialization preflight.
+  - path: foundation/pipelines/prepare_wave01_event_barrier_l4_decision_replay_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Runtime attempt preparation.
+  - path: foundation/pipelines/prepare_wave01_event_barrier_l4_mt5_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Runtime attempt preparation.
+  - path: foundation/pipelines/prepare_wave01_session_transition_l4_decision_replay_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Runtime attempt preparation.
+  - path: foundation/pipelines/prepare_wave01_session_transition_l4_mt5_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Runtime attempt preparation.
+  - path: foundation/pipelines/prepare_wave0_l4_decision_replay_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical runtime attempt preparation.
+  - path: foundation/pipelines/prepare_wave0_l4_mt5_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical runtime attempt preparation.
+  - path: foundation/pipelines/run_mt5_fixed_fixture_probe.py
+    classification: domain_execution_not_lifecycle
+    lifecycle_actions: []
+    reason: Fixed MT5 plumbing/runtime probe.
+  - path: foundation/pipelines/run_wave01_event_barrier_l4_decision_replay_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Runtime execution command.
+  - path: foundation/pipelines/run_wave01_event_barrier_l4_mt5_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Runtime execution command.
+  - path: foundation/pipelines/run_wave01_event_barrier_proxy_batch.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
+  - path: foundation/pipelines/run_wave01_session_transition_l4_mt5_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Runtime execution command.
+  - path: foundation/pipelines/run_wave01_session_transition_proxy_batch.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical command disabled because canonical lifecycle, registry, or workspace mutation must go through locked transactions.
+  - path: foundation/pipelines/run_wave0_first_batch_proxy_scout.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical proxy/domain execution command.
+  - path: foundation/pipelines/run_wave0_l4_decision_replay_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical runtime execution command.
+  - path: foundation/pipelines/run_wave0_l4_mt5_attempts.py
+    classification: historical_disabled
+    lifecycle_actions: []
+    reason: Historical runtime execution command.
+  - path: foundation/pipelines/sync_wave_campaign_integration_contract.py
+    classification: historical_disabled
+    lifecycle_actions:
+      - workspace_sync
+    replacement_command: python -m spacesonar.cli project validate

@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.pytest_tmp/
 .mypy_cache/
 .venv/
 venv/
@@ -9,6 +10,8 @@ venv/
 # Local editor noise
 .vscode/
 .idea/
+.spacesonar/transactions/
+.spacesonar/locks/
 
 # Project-local heavy experiment outputs
 catboost_info/
@@ -62,6 +65,7 @@ runtime/mt5_attempts/*/telemetry/**
 # Runtime / export artifacts
 *.xml
 *.html
+!tests/fixtures/mt5_strategy_tester_report_minimal.html
 *.svg
 *.ex5
 

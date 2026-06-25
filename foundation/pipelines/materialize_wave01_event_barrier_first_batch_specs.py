@@ -1059,56 +1059,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    created_at = args.created_at_utc or now_utc()
-    rows = first_batch_rows()
-    validate_rows(rows)
-
-    current_branch = git_value(repo_root, ["branch", "--show-current"])
-    if current_branch != args.expected_branch:
-        raise RuntimeError(f"branch mismatch: expected {args.expected_branch}, observed {current_branch}")
-
-    matrix = write_matrix(repo_root, rows)
-    _spec_dir, run_specs_index, spec_refs = materialize_run_specs(repo_root, rows, created_at)
-    run_refs = write_run_refs(repo_root, spec_refs, created_at)
-    anti_selection_ledger = write_anti_selection_ledger(repo_root, rows, matrix, created_at)
-    first_batch_manifest = write_first_batch_manifest(
-        repo_root,
-        rows,
-        matrix,
-        run_specs_index,
-        run_refs,
-        anti_selection_ledger,
-        spec_refs,
-        created_at,
-    )
-    outputs = {
-        "matrix": matrix,
-        "run_specs_index": run_specs_index,
-        "run_refs": run_refs,
-        "anti_selection_ledger": anti_selection_ledger,
-        "first_batch_manifest": first_batch_manifest,
-    }
-
-    if args.write_control_records:
-        update_yaml_records(repo_root, created_at, outputs, rows)
-        update_csv_registries(repo_root, created_at, outputs)
-
+    _repo_root = Path(args.repo_root).resolve()
     print(
-        yaml.safe_dump(
-            {
-                "status": "first_batch_specs_materialized_not_executed",
-                "spec_count": len(rows),
-                "claim_boundary": CLAIM_BOUNDARY,
-                "outputs": {key: rel(path, repo_root) for key, path in outputs.items()},
-                "current_branch": current_branch,
-                "changed_files": git_status_lines(repo_root),
-            },
-            sort_keys=False,
-            allow_unicode=False,
-        )
+        "historical lifecycle entrypoint disabled by WP04; use python -m spacesonar.cli campaign materialize --campaign-id <id>",
+        file=sys.stderr,
     )
-    return 0
+    return 2
 
 
 if __name__ == "__main__":

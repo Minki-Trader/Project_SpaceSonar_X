@@ -1,0 +1,54 @@
+version: evaluator_registry_v1
+revision: 2026_06_wp07_closure_amendment
+evaluators:
+  - evaluator_id: runtime_contract_evaluator_v2
+    canonical_result_path: lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml
+    implementation_paths:
+      - foundation/evaluation/runtime_contract_evaluator.py
+      - foundation/mt5/runtime_completion.py
+      - foundation/mt5/tester_report_receipt.py
+      - foundation/migrations/runtime_graph_target_inventory.py
+    required_for_operating_closeout: true
+    closeout_requirement: runtime_contract_integrity
+    role: active
+    allowed_alias_paths:
+      - lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml
+  - evaluator_id: routing_quality_evaluator_v1
+    canonical_result_path: lab/evaluations/control_plane_stabilization_v2/routing_quality_evaluator_v1.yaml
+    implementation_paths:
+      - foundation/evaluation/routing_quality_evaluator.py
+      - foundation/validation/routing_behavior_eval.py
+      - src/spacesonar/control_plane/routing.py
+    required_for_operating_closeout: true
+    closeout_requirement: routing_behavior_quality
+    role: active
+    allowed_alias_paths: []
+  - evaluator_id: agent_value_evaluator_v1
+    canonical_result_path: lab/evaluations/control_plane_stabilization_v2/agent_value_evaluator_v1.yaml
+    implementation_paths:
+      - foundation/evaluation/agent_value_evaluator.py
+      - src/spacesonar/control_plane/agent_metrics.py
+    required_for_operating_closeout: true
+    closeout_requirement: agent_value_metrics
+    role: active
+    allowed_alias_paths: []
+  - evaluator_id: operating_slo_evaluator_v1
+    canonical_result_path: lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml
+    implementation_paths:
+      - foundation/evaluation/operating_slo_evaluator.py
+      - foundation/evaluation/agent_value_evaluator.py
+      - foundation/evaluation/routing_quality_evaluator.py
+      - foundation/evaluation/runtime_contract_evaluator.py
+      - src/spacesonar/control_plane/transaction.py
+    required_for_operating_closeout: true
+    closeout_requirement: control_plane_operating_proof
+    role: active
+    allowed_alias_paths: []
+  - evaluator_id: research_cycle_closeout_evaluator_v1
+    canonical_result_path: lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
+    implementation_paths:
+      - foundation/evaluation/research_cycle_closeout_evaluator.py
+    required_for_operating_closeout: true
+    closeout_requirement: research_cycle_closeout
+    role: active
+    allowed_alias_paths: []

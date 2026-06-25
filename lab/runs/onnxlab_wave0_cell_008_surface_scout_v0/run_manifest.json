@@ -465,5 +465,25 @@
     ],
     "follow_up_action": "work_wave0_first_batch_l4_follow_through_v0",
     "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority"
-  }
+  },
+  "provenance_compaction": {
+    "migrated_to_batch_receipt": true,
+    "batch_receipt_path": "lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml",
+    "historical_inline_provenance_retained": true,
+    "compaction_role": "metadata_compaction_only_not_original_execution_identity",
+    "claim_boundary": "historical_provenance_compaction_only_no_runtime_authority_no_economics_pass",
+    "migration_id": "compact_historical_execution_provenance_v1",
+    "compaction_batch_is_original_execution_identity": false,
+    "original_execution_identity_preserved_in_inline_provenance": true,
+    "previous_batch_receipt_path": "lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml"
+  },
+  "migration_history": [
+    {
+      "migration_id": "compact_historical_execution_provenance_v1",
+      "previous_sha256": "99dc7d80efde66ac6d936f9c0f0e790dbb02b57609015d3cb21839bdb146d761",
+      "reason": "compact_batch_wide_provenance_reference_without_deleting_historical_inline_provenance",
+      "executed_at_utc": "2026-06-24T00:20:51.315991Z",
+      "claim_boundary": "wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline"
+    }
+  ]
 }

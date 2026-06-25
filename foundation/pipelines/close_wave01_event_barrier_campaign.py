@@ -620,25 +620,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
-    closed_at = utc_now()
-    closeout = build_closeout(repo_root, closed_at)
-    if args.write_control_records:
-        closeout = write_records(repo_root, closed_at)
+    _repo_root = Path(args.repo_root).resolve()
     print(
-        yaml.safe_dump(
-            {
-                "status": closeout["status"],
-                "campaign_closeout": CAMPAIGN_CLOSEOUT.as_posix(),
-                "candidate_count": closeout["counts"]["candidate_count"],
-                "l5_candidate_count": closeout["counts"]["l5_candidate_count"],
-                "next_work_item": NEXT_WORK_ID,
-                "claim_boundary": closeout["claim_boundary"],
-            },
-            sort_keys=False,
-        )
+        "historical lifecycle entrypoint disabled by WP04; use python -m spacesonar.cli campaign close --campaign-id <id>",
+        file=sys.stderr,
     )
-    return 0
+    return 2
 
 
 if __name__ == "__main__":

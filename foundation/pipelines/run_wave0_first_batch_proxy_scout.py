@@ -979,49 +979,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> int:
-    args = parse_args()
-    started_at = utc_now()
-    branch = branch_worktree(args.expected_branch)
-    row_manifest_path = REPO_ROOT / args.row_membership_manifest
-    row_manifest = read_yaml(row_manifest_path)
-    row_frame = load_row_membership(row_manifest)
-    run_refs_path = REPO_ROOT / args.run_refs
-    results: list[dict[str, Any]] = []
-    command_argv = sys.argv[:]
-    for row in read_csv_rows(run_refs_path):
-        run_manifest_path = REPO_ROOT / row["run_manifest_path"]
-        result = run_one_cell(
-            run_manifest_path=run_manifest_path,
-            row_frame=row_frame,
-            row_manifest_path=row_manifest_path,
-            row_manifest=row_manifest,
-            started_at=started_at,
-            branch=branch,
-            command_argv=command_argv,
-        )
-        results.append(result)
+def main(*_args: object, **_kwargs: object) -> int:
+    from foundation.pipelines.historical_lifecycle_guard import disabled_lifecycle_entrypoint
 
-    update_run_refs(run_refs_path, results)
-    update_run_registry(REPO_ROOT / "docs/registers/run_registry.csv", results)
-    update_campaign_records(args, results)
-    write_batch_closeout(args, results)
-    write_next_work_item(results)
-    update_resume_cursor()
-    update_goal_manifest_and_workspace(results)
-    print(
-        json.dumps(
-            {
-                "status": "wave0_first_batch_proxy_scout_executed",
-                "run_count": len(results),
-                "result_counts": dict(sorted(Counter(str(item["result_judgment"]) for item in results).items())),
-                "claim_boundary": CLAIM_BOUNDARY,
-                "next_work_item": "work_wave0_first_batch_axis_review_v0",
-            },
-            indent=2,
-        )
+    return disabled_lifecycle_entrypoint(
+        "a run-local/domain evidence command plus locked spacesonar lifecycle transaction for canonical state updates"
     )
-    return 0
 
 
 if __name__ == "__main__":

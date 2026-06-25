@@ -105,6 +105,8 @@ runtime_surface_contract:
   has_low_high_threshold: true
   decision_output: telemetry_only_no_trades
   ea_feature_reconstruction: closed_bar_CopyRates_shift_1_feature_columns_in_bundle_order
+  completion_surface_scope: full_period_deterministic
+  runtime_surface_kind: score_probe
 proxy_runtime_parity:
   status: attempt_prepared_runtime_execution_pending
   shared_contract:
@@ -420,7 +422,8 @@ required_gate_coverage:
   - locked_final_oos_b_access
   - economics_pass
   - runtime_authority
-missing_evidence: []
+missing_evidence:
+- tester_report_receipt_missing:tester_report_receipt_missing
 next_action: aggregate this period role with its paired L4 attempt before L5 decision
 forbidden_claims:
 - selected_baseline
@@ -612,3 +615,35 @@ migration_history:
   previous_status: completed_l4_score_telemetry_observed
   reason: runtime_completion_previously_inferred_from_telemetry_or_status_prefix
   executed_at_utc: '2026-06-22T11:52:40Z'
+- migration_id: materialize_runtime_report_receipts_v1
+  previous_sha256: bd3495af5bf33b42573f928bb92fe7c6e3ac980aecb9500e022a758ff024d6ca
+  previous_status: runtime_probe_completed
+  reason: materialize_report_receipt_and_reconstruct_runtime_completion_from_durable_evidence
+  executed_at_utc: '2026-06-23T02:40:15Z'
+- migration_id: runtime_graph_revalidation_inventory_bound_v1
+  previous_sha256: 415452f798d42ace91c01cf5f21dff6da93263cc1d1ab4106d89be4bcc46a856
+  previous_status: runtime_probe_completed
+  reason: inventory_bound_runtime_graph_revalidation_with_historical_receipt_binding
+  executed_at_utc: '2026-06-23T04:28:59Z'
+  preserves_previous_migration_id: materialize_runtime_report_receipts_v1
+- migration_id: compact_historical_execution_provenance_v1
+  previous_sha256: 4ecd3fbb84543b27ce822ddc787a5b9ddf5848d268927a63a65ec3b898b4b546
+  reason: compact_batch_wide_provenance_reference_without_deleting_historical_inline_provenance
+  executed_at_utc: '2026-06-24T00:20:51.833510Z'
+  claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+tester_report_receipt:
+  path: runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/tester_report_receipt.yaml
+  sha256: 745d31274a53a2221e1a54fd53d2a305e67c85bb0569e7458290e1bce1880544
+  size_bytes: 2134
+  availability: present_hash_recorded
+  migration_id: runtime_graph_revalidation_inventory_bound_v1
+provenance_compaction:
+  migrated_to_batch_receipt: true
+  batch_receipt_path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+  historical_inline_provenance_retained: true
+  compaction_role: metadata_compaction_only_not_original_execution_identity
+  claim_boundary: historical_provenance_compaction_only_no_runtime_authority_no_economics_pass
+  migration_id: compact_historical_execution_provenance_v1
+  compaction_batch_is_original_execution_identity: false
+  original_execution_identity_preserved_in_inline_provenance: true
+  previous_batch_receipt_path: lab/executions/batch_control_plane_stabilization_v2_runtime_revalidation/execution_batch_receipt.yaml

@@ -10,6 +10,14 @@ from typing import Any
 
 import yaml
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+for path in [REPO_ROOT, REPO_ROOT / "src"]:
+    text = str(path)
+    if text not in sys.path:
+        sys.path.insert(0, text)
+
+from spacesonar.control_plane.store import filesystem_path
+
 
 REQUIRED_WORK_ITEM_TOP_LEVEL = {
     "branch_worktree",
@@ -83,16 +91,17 @@ ROUTING_CASE_REQUIRED_KEYS = {
 
 
 def read_text(path: Path) -> str:
-    return path.read_text(encoding="utf-8-sig")
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        return handle.read()
 
 
 def load_yaml(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def load_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
 
@@ -141,7 +150,7 @@ def validate_yaml_json_csv_parse(repo_root: Path) -> list[str]:
                 elif suffix == ".json":
                     load_json(path)
                 elif suffix == ".csv":
-                    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+                    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
                         reader = csv.reader(handle)
                         next(reader, None)
             except Exception as exc:  # noqa: BLE001 - validator reports all parse failures.
@@ -475,6 +484,11 @@ def validate_task_force_registry(repo_root: Path) -> list[str]:
 
 
 def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
+    src_path = str(repo_root / "src")
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
+    from spacesonar.control_plane.agent_metrics import consult_metric_errors
+
     registry = load_yaml(repo_root / "docs" / "agent_control" / "codex_task_force_registry.yaml")
     agents = {item.get("id") for item in registry.get("roster", [])}
     review_policy = registry.get("review_policy") or {}
@@ -525,9 +539,60 @@ def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
                 errors.append(f"{label}: unknown opinion classification {classification}")
             if classification in {"accepted", "rewritten"} and not refs:
                 errors.append(f"{label}: accepted/rewritten advice requires evidence_refs")
+        errors.extend(consult_metric_errors(data, label=label))
         if data.get("claim_effect") != "advisory_only_no_reviewed_pass":
             errors.append(f"{label}: consult claim_effect cannot satisfy reviewed/pass gates")
     return errors
+
+
+def validate_agent_operating_metrics_projection(repo_root: Path) -> list[str]:
+    src_path = str(repo_root / "src")
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
+
+    from spacesonar.control_plane.agent_metrics import agent_operating_events_diff, agent_operating_metrics_diff
+
+    return [*agent_operating_events_diff(repo_root), *agent_operating_metrics_diff(repo_root)]
+
+
+def validate_execution_provenance(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.validation.execution_provenance_validator import validate as validate_execution_provenance_records
+
+    return validate_execution_provenance_records(repo_root)
+
+
+def validate_fresh_evaluators(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.evaluation.fresh_evaluator_validator import validate_committed_evaluators
+
+    return validate_committed_evaluators(repo_root)
+
+
+def validate_remote_repository_settings(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.validation.remote_repository_settings_verifier import validate_record
+
+    return validate_record(repo_root)
+
+
+def validate_operating_closeout(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.evaluation.build_operating_closeout import validate_committed_closeout
+
+    return validate_committed_closeout(repo_root)
 
 
 def validate_routing_smoke_prompts(repo_root: Path) -> list[str]:
@@ -573,6 +638,7 @@ def validate_import_smoke(repo_root: Path) -> list[str]:
         "foundation.validation.active_record_validator",
         "foundation.validation.control_plane_validator",
         "foundation.validation.refresh_artifact_registry_hashes",
+        "foundation.validation.remote_repository_settings_verifier",
     ]:
         try:
             importlib.import_module(module_name)
@@ -606,6 +672,11 @@ def validate(repo_root: Path, *, include_active_records: bool = False) -> list[s
     errors.extend(validate_templates(repo_root))
     errors.extend(validate_task_force_registry(repo_root))
     errors.extend(validate_agent_consult_receipts(repo_root))
+    errors.extend(validate_agent_operating_metrics_projection(repo_root))
+    errors.extend(validate_execution_provenance(repo_root))
+    errors.extend(validate_fresh_evaluators(repo_root))
+    errors.extend(validate_remote_repository_settings(repo_root))
+    errors.extend(validate_operating_closeout(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))
     errors.extend(validate_import_smoke(repo_root))
 

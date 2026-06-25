@@ -1,0 +1,480 @@
+version: artifact_registry_delta_v1
+batch_id: batch_control_plane_corrective_v3_wp06_provenance_compaction
+migration_id: wp06_execution_receipt_truth_correction_v3
+old_registry_snapshot:
+  path: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+  sha256: 42f5051bd4b6ebff1044d96204e50a5f01c5e84e08aaefa2474ae9d7dfeb99b4
+  size_bytes: 948175
+row_deltas:
+- artifact_id: artifact_docs_workspace_agent_operating_events_yaml
+  path_or_uri: docs/workspace/agent_operating_events.yaml
+  old_row:
+    artifact_id: artifact_docs_workspace_agent_operating_events_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: agent_operating_events
+    path_or_uri: docs/workspace/agent_operating_events.yaml
+    sha256: bff185d8b79b9f042d4ec00da389cfd89aa994f7809add52b4cb0b3124a307f9
+    size_bytes: '4486'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: docs/workspace/agent_operating_events.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: Agent event projection derived from durable progress ledger.
+  new_row:
+    artifact_id: artifact_docs_workspace_agent_operating_events_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: agent_operating_events
+    path_or_uri: docs/workspace/agent_operating_events.yaml
+    sha256: 438936598f5a8ccd948d7141700b43b10bd40599f80db085962fa246b0f50b67
+    size_bytes: '4486'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: docs/workspace/agent_operating_events.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: Agent event projection derived from durable progress ledger.
+  old_row_sha256: 94c2bf6e0e0175f608e2159e9e82685a352842ec06f9e169188568c6efc0c02b
+  new_row_sha256: e311e06fe5e5b91334408d01a75693a3d6a1389d0fdf084770f51d0f016906c5
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_docs_workspace_agent_operating_metrics_yaml
+  path_or_uri: docs/workspace/agent_operating_metrics.yaml
+  old_row:
+    artifact_id: artifact_docs_workspace_agent_operating_metrics_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: agent_operating_metrics
+    path_or_uri: docs/workspace/agent_operating_metrics.yaml
+    sha256: d5224d2e808ddb4e651390eabbcf5d80f37b65dd7ce7a0f88669cc67a6eaa059
+    size_bytes: '1367'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: docs/workspace/agent_operating_metrics.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: Agent metrics projection derived from event and opinion records.
+  new_row:
+    artifact_id: artifact_docs_workspace_agent_operating_metrics_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: agent_operating_metrics
+    path_or_uri: docs/workspace/agent_operating_metrics.yaml
+    sha256: 2b48cf61604fdd6d71d9e7bf7cbc4247688e56ae2d2b444bc79f102e202548c6
+    size_bytes: '1367'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: docs/workspace/agent_operating_metrics.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: Agent metrics projection derived from event and opinion records.
+  old_row_sha256: b22ddb8e4b47af49443b98f8efc0eafca51eb89e03a510f64f3fa523dcec43fe
+  new_row_sha256: 7a2d1b8fa1702e374caac1e1496fcccdedfdb068ac0951802724561e0faf6d31
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_docs_workspace_agent_work_receipts_WP06_yaml
+  path_or_uri: docs/workspace/agent_work_receipts/WP06.yaml
+  old_row:
+    artifact_id: artifact_docs_workspace_agent_work_receipts_WP06_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: docs/workspace/agent_work_receipts/WP06.yaml
+    sha256: df90e30496a8b08e53928447208b63015b9f77d1d0d34a3740177d9ccf01e86e
+    size_bytes: '1554'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: docs/workspace/agent_work_receipts/WP06.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_docs_workspace_agent_work_receipts_WP06_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: docs/workspace/agent_work_receipts/WP06.yaml
+    sha256: 0f37e3ec1a44fe5a0eda583796a04d3ed81644f1ff169ca68f5ee645562c3520
+    size_bytes: '1554'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: docs/workspace/agent_work_receipts/WP06.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: b7c718f419f65893ba4a7a48c710519c767882590c8356fcbf23a86ba98585d4
+  new_row_sha256: 0b8783d31e45d9b6ac32aca791754adc0ab37607ca8961ec97e49c13ef693933
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_batch_finalization_receipt_yaml
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_batch_finalization_receipt_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+    sha256: 211febf95a790379706cf08d9e26b07325c9d7d33a74e063e945b8fcf2bfd066
+    size_bytes: '955'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_batch_finalization_receipt_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+    sha256: 1af01f95f9c46d0176921321dc30230a4545b36dc0f87ea9f546fc3e93d4b1ec
+    size_bytes: '955'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/batch_finalization_receipt.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: 52aa32bf292eee2636d1bc7d5ad5ac5f319a59d0e16397d515d40cea7aa401f5
+  new_row_sha256: 1e6ce7bbec78a5a964e64c496e9e290d371672ec9819c4148b98a8b9b436075a
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_effect_inventory_yaml
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_effect_inventory_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
+    sha256: ed8ca6087bd90a016667cb58e1c6fa2584a3ac8295c922359beee77752404e9f
+    size_bytes: '94059'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_effect_inventory_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
+    sha256: c685813429cf399b32d3c9316eb9db2ba5384e8b1f975a48f7c33163c74257ee
+    size_bytes: '94059'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/effect_inventory.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: 4ce185bc372aaf256d43a0d9f1d0b1273d885c82a2080d3a2b7c93818d1b51b5
+  new_row_sha256: 96a713f00dd02862c0a55507f1119e4a3f1b4aa2ea74804e8822f4fed89b1018
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_events_output_yaml
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_events_output_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+    sha256: bff185d8b79b9f042d4ec00da389cfd89aa994f7809add52b4cb0b3124a307f9
+    size_bytes: '4486'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_events_output_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+    sha256: 438936598f5a8ccd948d7141700b43b10bd40599f80db085962fa246b0f50b67
+    size_bytes: '4486'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_events_output.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: e1f421c5bce80e32078df08603231edb789f707ea2756d4bbf80f6591fefa6fc
+  new_row_sha256: 75ae94a50c84778e909e8f56b9f5b032d267d13ea1ae5d5173a7184af023ac46
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_metrics_output_yaml
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_metrics_output_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+    sha256: d5224d2e808ddb4e651390eabbcf5d80f37b65dd7ce7a0f88669cc67a6eaa059
+    size_bytes: '1367'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_metrics_output_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+    sha256: 2b48cf61604fdd6d71d9e7bf7cbc4247688e56ae2d2b444bc79f102e202548c6
+    size_bytes: '1367'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/agent_operating_metrics_output.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: 6ac49e70c738e9021bbcd76366161b22511726eb1c455a06f2ea6ca6bf7b883a
+  new_row_sha256: 5c88ea9faa7908519de2aea9646ae7d11022054a80bddaa0ce61c2d9a62160b4
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_artifact_registry_before_csv
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_artifact_registry_before_csv
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+    sha256: 802ffad3c00827f77bb8f6dd8ee17065f2680e8dba718cf25650652ea57c7a62
+    size_bytes: '948175'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_artifact_registry_before_csv
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+    sha256: 42f5051bd4b6ebff1044d96204e50a5f01c5e84e08aaefa2474ae9d7dfeb99b4
+    size_bytes: '948175'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/artifact_registry_before.csv
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: 8a397b2a6996cf321bf846edba05beb8e17b8c9cf36756ca7fa2f42eb8423839
+  new_row_sha256: 9c023bacb96ae072af03672d2f2168e0d07ae5499cb1c815854613be22998b44
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_progress_ledger_input_yaml
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_progress_ledger_input_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+    sha256: ba867e87eaea8a33c0710220fc9eef7f959a31acce74d310be8e47a08af914a2
+    size_bytes: '78452'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_progress_ledger_input_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+    sha256: 54850d4400b546c039a63bbf6229089ddbfa5fa331478da4bc8f317482ad147c
+    size_bytes: '78548'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/evidence/progress_ledger_input.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: 927a47e07b5fa68a18b1deb00a081c7569424f46b1c1ca8e9919dd11456874bc
+  new_row_sha256: 8f13bdbe6b9c952cb6abc5413b542d66cf9a94e1f09fad524ace405d73c77e0d
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_execution_batch_receipt_yaml
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_execution_batch_receipt_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: execution_batch_receipt
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+    sha256: 4f7068e0fb94827747aa47f47722f20c83c897263628b2dc7e429bf725129dc5
+    size_bytes: '190608'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction batch receipt; hash omitted to avoid receipt/registry
+      self-reference cycle.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_execution_batch_receipt_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: execution_batch_receipt
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+    sha256: 008c29afb6b8f35a2d11e4df763a4af0bd0e33bbe9323d566e2c07d83517e035
+    size_bytes: '190608'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/execution_batch_receipt.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction batch receipt; hash omitted to avoid receipt/registry
+      self-reference cycle.
+  old_row_sha256: ba96b8a6169efaa1be5cf56e53e02473172d26b81d4dab179856b51c0360b17f
+  new_row_sha256: 6d0b938c4b9674ca6162ed62a80d70e1d93d7803347cdb01dabd1a832ed7f426
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+- artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_transaction_receipt_yaml
+  path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+  old_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_transaction_receipt_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+    sha256: 332e974a18ad7a81ea706dfa2ff9c0c5e8d05ffef1edf9a83c011d3d2c70cad8
+    size_bytes: '68426'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  new_row:
+    artifact_id: artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_transaction_receipt_yaml
+    run_id: ''
+    bundle_id: ''
+    attempt_id: ''
+    artifact_type: canonical_record
+    path_or_uri: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+    sha256: 2a66f46d40340da0a2ce0dd4d92691270449c313d5a07776701eb985abd8c730
+    size_bytes: '68426'
+    availability: present_hash_recorded
+    producer_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    regeneration_command: python foundation/migrations/compact_historical_execution_provenance_v1.py
+      --repo-root . --write
+    source_of_truth: lab/executions/batch_control_plane_corrective_v3_wp06_provenance_compaction/transaction_receipt.yaml
+    consumer: work_codex_control_plane_corrective_v3
+    claim_boundary: wp06_provenance_compaction_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+    notes: WP06 provenance compaction output.
+  old_row_sha256: d13296bb83f187fab18e2fc87e43252db5742677d8ba769953bc0618274ddcff
+  new_row_sha256: 94e6efe07a113ca2ddb23ab1a1709443d19f5e22ea2666b1e86847ad9132d93a
+  change_reason: wp06_execution_receipt_truth_correction_v3_row_delta
+affected_artifact_ids:
+- artifact_docs_workspace_agent_operating_events_yaml
+- artifact_docs_workspace_agent_operating_metrics_yaml
+- artifact_docs_workspace_agent_work_receipts_WP06_yaml
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_batch_finalization_receipt_yaml
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_effect_inventory_yaml
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_events_output_yaml
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_agent_operating_metrics_output_yaml
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_artifact_registry_before_csv
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_evidence_progress_ledger_input_yaml
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_execution_batch_receipt_yaml
+- artifact_lab_executions_batch_control_plane_corrective_v3_wp06_provenance_compaction_transaction_receipt_yaml
+affected_row_count: 11
+added_row_count: 0
+modified_row_count: 11
+removed_row_count: 0
+old_registry_sha256: 42f5051bd4b6ebff1044d96204e50a5f01c5e84e08aaefa2474ae9d7dfeb99b4
+new_registry_sha256: d9a1483819ec54463e814f82e2ade28b89942640217fbbd6e2a847c6acccc4e0
+canonical_registry_hash_after_projection: d9a1483819ec54463e814f82e2ade28b89942640217fbbd6e2a847c6acccc4e0
