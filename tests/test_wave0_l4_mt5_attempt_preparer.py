@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+import pytest
 import yaml
 
 from foundation.pipelines.prepare_wave0_l4_mt5_attempts import (
@@ -61,6 +62,12 @@ def test_tester_config_uses_semicolon_feature_delimiter_and_l4_probe_ea() -> Non
 
 
 def test_build_attempt_plan_creates_two_l4_roles_per_exported_bundle_without_writing() -> None:
+    first_model = (
+        REPO_ROOT
+        / "runtime/packages/bundle_wave0_cell_001_l4_onnx_export_v0/artifacts/model.onnx"
+    )
+    if not first_model.exists():
+        pytest.skip(f"exported ONNX bundle artifact is local evidence not present in this checkout: {first_model}")
     before = set((REPO_ROOT / "runtime" / "mt5_attempts").glob("attempt_wave0_cell_*_l4_*_v0/tester_config.ini"))
 
     summary, rows, manifests, configs = build_attempt_rows_and_manifests(
