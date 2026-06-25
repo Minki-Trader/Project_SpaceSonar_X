@@ -49,7 +49,14 @@ REPAIR_WORK_ITEM_ID = "work_wp07_closeout_evidence_repair_v0"
 REPAIR_GOAL_STATUS = "wave01_operating_proof_evidence_repair_required"
 REPAIR_PHASE = "wp07_closeout_evidence_repair"
 REPAIR_WAVE_STATUS = "wave01_evaluator_backed_closeout_requires_evidence_repair"
-REPAIR_BLOCKER = "agent_observation_coverage_below_slo"
+REPAIR_GIT_STATUS = "blocked_pending_evaluator_evidence_repair_not_ready_for_main_integration"
+COMPLETE_WORK_ITEM_ID = "work_post_wave01_user_directed_wave02_or_review_v0"
+COMPLETE_GOAL_STATUS = "complete_wave01_operating_proof_window"
+COMPLETE_GOAL_PHASE = "wave01_operating_closeout_complete"
+COMPLETE_WAVE_STATUS = "wave01_operating_proof_window_closed"
+COMPLETE_WAVE_NEXT_ACTION = COMPLETE_WORK_ITEM_ID
+COMPLETE_GIT_STATUS = "wave_closeout_ready_for_boundary_commit_and_main_integration"
+REPAIR_NEXT_ACTION = "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
 COMPLETE_CLAIM_BOUNDARY = (
     "control_plane_stabilization_validated_standard_l4_runtime_contract_complete_"
     "no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline"
@@ -231,65 +238,200 @@ def _repair_next_work() -> dict[str, Any]:
     }
 
 
-def _state_overrides(
+def _complete_next_work() -> dict[str, Any]:
+    return {
+        "path": NEXT_WORK_ITEM_PATH.as_posix(),
+        "work_item_id": COMPLETE_WORK_ITEM_ID,
+        "summary": "Wave01 evaluator-backed closeout complete; await user-directed Wave02 or review.",
+    }
+
+
+def _finding_ids(value: Any) -> list[str]:
+    ids: list[str] = []
+    if isinstance(value, dict):
+        finding_id = value.get("id")
+        if finding_id:
+            ids.append(str(finding_id))
+        for item in value.values():
+            ids.extend(_finding_ids(item))
+    elif isinstance(value, list):
+        for item in value:
+            ids.extend(_finding_ids(item))
+    return ids
+
+
+def _blocking_finding_ids(required_entries: list[dict[str, Any]], result_payloads: dict[str, dict[str, Any]]) -> list[str]:
+    blockers: list[str] = []
+    for entry in required_entries:
+        evaluator_id = str(entry.get("evaluator_id") or "")
+        result = result_payloads.get(evaluator_id) or {}
+        if result.get("status") == "passed":
+            continue
+        blockers.extend(_finding_ids(result.get("findings") or []))
+        if not blockers:
+            requirement = str(entry.get("closeout_requirement") or evaluator_id or "required_evaluator")
+            blockers.append(f"{requirement}_not_passed")
+    return sorted(set(blockers))
+
+
+def _missing_material_from_blockers(blocking_finding_ids: list[str]) -> list[str]:
+    missing: list[str] = []
+    if "agent_observation_coverage_below_slo" in blocking_finding_ids or "agent_value_slo_failed" in blocking_finding_ids:
+        missing.append("agent_observation_coverage_work_receipts")
+    for finding_id in blocking_finding_ids:
+        if finding_id in {"agent_observation_coverage_below_slo", "agent_value_slo_failed"}:
+            continue
+        missing.append(f"evaluator_finding:{finding_id}")
+    return sorted(set(missing))
+
+
+def _preserve_wave_completion_assertion(wave: dict[str, Any], updated_wave: dict[str, Any]) -> None:
+    if isinstance(updated_wave.get("wave01_operating_completion_assertion"), dict):
+        assertion = dict(updated_wave["wave01_operating_completion_assertion"])
+    else:
+        assertion = {
+            "status": wave.get("status"),
+            "claim_boundary": wave.get("claim_boundary"),
+            "next_action": wave.get("next_action"),
+            "git_integration_status": (wave.get("git_integration") or {}).get("status"),
+            "asserted_at_utc": wave.get("updated_at_utc") or wave.get("created_at_utc"),
+        }
+    assertion["validation_status"] = "superseded_by_fresh_evaluator_insufficient_evidence"
+    updated_wave["wave01_operating_completion_assertion"] = assertion
+
+
+def _state_transition_payloads(
     repo_root: Path,
-    goal: dict[str, Any],
-    closeout: dict[str, Any],
+    *,
+    all_required_passed: bool,
     problem_requirements: list[str],
+    blocking_finding_ids: list[str],
+    generated_at_utc: str,
+    goal: dict[str, Any],
+    wave: dict[str, Any],
+    closeout: dict[str, Any],
 ) -> dict[Path, dict[str, Any]]:
-    next_work_pointer = _repair_next_work()
     next_work = load_yaml(repo_root / NEXT_WORK_ITEM_PATH) if (repo_root / NEXT_WORK_ITEM_PATH).exists() else {}
     cursor = load_yaml(repo_root / RESUME_CURSOR_PATH) if (repo_root / RESUME_CURSOR_PATH).exists() else {}
     updated_goal = dict(goal)
-    updated_goal["status"] = REPAIR_GOAL_STATUS
-    updated_goal["active_phase"] = REPAIR_PHASE
-    updated_goal["claim_boundary"] = REPAIR_CLAIM_BOUNDARY
-    updated_goal["next_work_item"] = next_work_pointer
+    updated_wave = dict(wave)
     active_ids = dict(updated_goal.get("active_ids") or {})
     active_ids["campaign_id"] = None
     updated_goal["active_ids"] = active_ids
-    for historical_key in ["wave01_operating_closeout", "goal_achieve_state"]:
-        if isinstance(updated_goal.get(historical_key), dict):
-            historical = dict(updated_goal[historical_key])
-            historical["validation_status"] = "superseded_by_fresh_evaluator_insufficient_evidence"
-            updated_goal[historical_key] = historical
-
     updated_next_work = dict(next_work)
-    updated_next_work.update(
-        {
-            "version": updated_next_work.get("version", "onnx_lab_work_item_v1"),
-            "work_item_id": REPAIR_WORK_ITEM_ID,
-            "active_goal_id": GOAL_ID,
-            "status": REPAIR_GOAL_STATUS,
-            "claim_boundary": REPAIR_CLAIM_BOUNDARY,
-            "next_action": "repair_closeout_evaluator_evidence_before_wp08_or_main_integration",
-            "next_action_detail": "Repair failed or insufficient evaluator evidence before WP08 or main integration.",
-            "blocking_requirements": problem_requirements,
-        }
-    )
+    updated_cursor = dict(cursor)
+    updated_goal["updated_at_utc"] = generated_at_utc
+    updated_next_work["updated_at_utc"] = generated_at_utc
+    updated_cursor["updated_at_utc"] = generated_at_utc
+    updated_wave["updated_at_utc"] = generated_at_utc
+    if all_required_passed:
+        next_work_pointer = _complete_next_work()
+        updated_goal["status"] = COMPLETE_GOAL_STATUS
+        updated_goal["active_phase"] = COMPLETE_GOAL_PHASE
+        updated_goal["claim_boundary"] = COMPLETE_CLAIM_BOUNDARY
+        updated_goal["next_work_item"] = next_work_pointer
+        for historical_key in ["wave01_operating_closeout", "goal_achieve_state"]:
+            if isinstance(updated_goal.get(historical_key), dict):
+                historical = dict(updated_goal[historical_key])
+                if historical.get("validation_status") == "superseded_by_fresh_evaluator_insufficient_evidence":
+                    historical.pop("validation_status", None)
+                updated_goal[historical_key] = historical
+        updated_next_work.update(
+            {
+                "version": updated_next_work.get("version", "onnx_lab_work_item_v1"),
+                "work_item_id": COMPLETE_WORK_ITEM_ID,
+                "active_goal_id": GOAL_ID,
+                "status": COMPLETE_WAVE_STATUS,
+                "claim_boundary": "post_wave01_handoff_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness",
+                "next_action": COMPLETE_WORK_ITEM_ID,
+                "next_action_detail": "Wave01 evaluator-backed closeout is complete. Continue only with user-directed Wave02, review, or a newly declared surface.",
+                "next_allowed_shapes": [
+                    "user_directed_wave02_open",
+                    "new_unexplored_multi_axis_surface",
+                    "previous_material_only_bounded_synthesis_mix2_then_mix3",
+                    "post_closeout_review",
+                ],
+                "blocking_requirements": [],
+                "blocking_findings": [],
+                "missing_material_if_relevant": [],
+            }
+        )
+        updated_cursor.update(
+            {
+                "version": updated_cursor.get("version", "active_goal_resume_cursor_v1"),
+                "active_goal_id": GOAL_ID,
+                "cursor_state": COMPLETE_GOAL_STATUS,
+                "active_phase": COMPLETE_GOAL_PHASE,
+                "next_work_item": {"work_item_id": COMPLETE_WORK_ITEM_ID, "path": NEXT_WORK_ITEM_PATH.as_posix()},
+            }
+        )
+        updated_wave["status"] = COMPLETE_WAVE_STATUS
+        updated_wave["claim_boundary"] = "active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness"
+        updated_wave["next_action"] = COMPLETE_WAVE_NEXT_ACTION
+        updated_wave["next_action_detail"] = "Await user-directed Wave02, a new unexplored multi-axis campaign, previous-material-only bounded synthesis, or review."
+        updated_wave.pop("wave01_operating_completion_assertion", None)
+        git_integration = dict(updated_wave.get("git_integration") or {})
+        git_integration["status"] = COMPLETE_GIT_STATUS
+        updated_wave["git_integration"] = git_integration
+    else:
+        next_work_pointer = _repair_next_work()
+        updated_goal["status"] = REPAIR_GOAL_STATUS
+        updated_goal["active_phase"] = REPAIR_PHASE
+        updated_goal["claim_boundary"] = REPAIR_CLAIM_BOUNDARY
+        updated_goal["next_work_item"] = next_work_pointer
+        for historical_key in ["wave01_operating_closeout", "goal_achieve_state"]:
+            if isinstance(updated_goal.get(historical_key), dict):
+                historical = dict(updated_goal[historical_key])
+                historical["validation_status"] = "superseded_by_fresh_evaluator_insufficient_evidence"
+                updated_goal[historical_key] = historical
+        updated_next_work.update(
+            {
+                "version": updated_next_work.get("version", "onnx_lab_work_item_v1"),
+                "work_item_id": REPAIR_WORK_ITEM_ID,
+                "active_goal_id": GOAL_ID,
+                "status": REPAIR_GOAL_STATUS,
+                "claim_boundary": REPAIR_CLAIM_BOUNDARY,
+                "next_action": REPAIR_NEXT_ACTION,
+                "next_action_detail": "Repair failed or insufficient evaluator evidence before WP08 or main integration.",
+                "next_allowed_shapes": ["closeout_evidence_repair"],
+                "blocking_requirements": problem_requirements,
+                "blocking_findings": blocking_finding_ids,
+                "missing_material_if_relevant": _missing_material_from_blockers(blocking_finding_ids),
+            }
+        )
+        updated_cursor.update(
+            {
+                "version": updated_cursor.get("version", "active_goal_resume_cursor_v1"),
+                "active_goal_id": GOAL_ID,
+                "cursor_state": REPAIR_GOAL_STATUS,
+                "active_phase": REPAIR_PHASE,
+                "next_work_item": {"work_item_id": REPAIR_WORK_ITEM_ID, "path": NEXT_WORK_ITEM_PATH.as_posix()},
+            }
+        )
+        cursor_active_ids = dict(updated_cursor.get("active_ids") or updated_goal.get("active_ids") or {})
+        cursor_active_ids["campaign_id"] = None
+        updated_cursor["active_ids"] = cursor_active_ids
+        updated_wave["status"] = REPAIR_WAVE_STATUS
+        updated_wave["claim_boundary"] = REPAIR_CLAIM_BOUNDARY
+        updated_wave["next_action"] = REPAIR_WORK_ITEM_ID
+        updated_wave["next_action_detail"] = "Repair evaluator evidence before WP08 or main integration."
+        git_integration = dict(updated_wave.get("git_integration") or {})
+        git_integration["status"] = REPAIR_GIT_STATUS
+        updated_wave["git_integration"] = git_integration
+        _preserve_wave_completion_assertion(wave, updated_wave)
     current_truth = dict(updated_next_work.get("current_truth") or {})
     current_truth.update(
         {
-            "active_goal_status": REPAIR_GOAL_STATUS,
+            "active_goal_status": updated_goal["status"],
             "wave_id": closeout["wave_id"],
             "wave_closeout": closeout["source_of_truth"],
             "candidate_count": closeout["result"]["candidate_count"],
             "l5_candidate_count": closeout["result"]["l5_candidate_count"],
-            "claim_boundary": REPAIR_CLAIM_BOUNDARY,
+            "claim_boundary": updated_goal["claim_boundary"],
         }
     )
     updated_next_work["current_truth"] = current_truth
 
-    updated_cursor = dict(cursor)
-    updated_cursor.update(
-        {
-            "version": updated_cursor.get("version", "active_goal_resume_cursor_v1"),
-            "active_goal_id": GOAL_ID,
-            "cursor_state": REPAIR_GOAL_STATUS,
-            "active_phase": REPAIR_PHASE,
-            "next_work_item": {"work_item_id": REPAIR_WORK_ITEM_ID, "path": NEXT_WORK_ITEM_PATH.as_posix()},
-        }
-    )
     cursor_active_ids = dict(updated_cursor.get("active_ids") or updated_goal.get("active_ids") or {})
     cursor_active_ids["campaign_id"] = None
     updated_cursor["active_ids"] = cursor_active_ids
@@ -298,6 +440,7 @@ def _state_overrides(
         GOAL_MANIFEST_PATH: updated_goal,
         NEXT_WORK_ITEM_PATH: updated_next_work,
         RESUME_CURSOR_PATH: updated_cursor,
+        Path("lab/waves") / str(wave["wave_id"]) / "wave_allocation.yaml": updated_wave,
     }
 
 
@@ -307,6 +450,7 @@ def _handoff(
     *,
     all_required_passed: bool,
     failed_or_insufficient_requirements: list[str],
+    blocking_finding_ids: list[str],
     candidate_count: int | None,
     l5_candidate_count: int | None,
     locked_final_oos_used: bool | None,
@@ -323,7 +467,7 @@ def _handoff(
         next_action = "work_post_wave01_user_directed_wave02_or_review_v0"
         claim_boundary = COMPLETE_CLAIM_BOUNDARY
     else:
-        next_action = "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
+        next_action = REPAIR_NEXT_ACTION
         claim_boundary = REPAIR_CLAIM_BOUNDARY
     return {
         "negative_memory_ids": sorted(negative_ids),
@@ -332,6 +476,7 @@ def _handoff(
         "l5_candidate_count": l5_candidate_count,
         "locked_final_oos_used": locked_final_oos_used,
         "blocking_requirements": list(failed_or_insufficient_requirements),
+        "blocking_findings": list(blocking_finding_ids),
         "next_action": next_action,
         "claim_boundary": claim_boundary,
     }
@@ -462,6 +607,7 @@ def _compose_closeout_evaluation(
     audit = _build_audit(required_entries, result_refs)
     problem_requirements = _required_problem_requirements(audit)
     all_required_passed = not problem_requirements
+    blocking_finding_ids = _blocking_finding_ids(required_entries, result_payloads)
     runtime_passed = runtime["status"] == "passed"
     research_metrics = research.get("metrics") or {}
     candidate_count = research_metrics.get("candidate_count")
@@ -476,7 +622,7 @@ def _compose_closeout_evaluation(
     next_action = (
         "work_post_wave01_user_directed_wave02_or_review_v0"
         if all_required_passed
-        else "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
+        else REPAIR_NEXT_ACTION
     )
     active_goal_id = str(goal.get("active_goal_id") or goal.get("goal_id") or GOAL_ID)
     wave_id = str(wave.get("wave_id") or (goal.get("active_ids") or {}).get("wave_id") or "")
@@ -532,6 +678,7 @@ def _compose_closeout_evaluation(
             research,
             all_required_passed=all_required_passed,
             failed_or_insufficient_requirements=problem_requirements,
+            blocking_finding_ids=blocking_finding_ids,
             candidate_count=candidate_count,
             l5_candidate_count=l5_candidate_count,
             locked_final_oos_used=locked_final_oos_used,
@@ -555,14 +702,24 @@ def _compose_closeout_evaluation(
             "production_deployment",
         ],
         "migration_history": existing.get("migration_history", []),
-        "unresolved_blockers": [] if all_required_passed else [REPAIR_BLOCKER],
+        "unresolved_blockers": [] if all_required_passed else blocking_finding_ids,
         "next_action": next_action,
     }
-    state_yaml_overrides = _state_overrides(repo_root, goal, closeout, problem_requirements)
+    state_yaml_overrides = _state_transition_payloads(
+        repo_root,
+        all_required_passed=all_required_passed,
+        problem_requirements=problem_requirements,
+        blocking_finding_ids=blocking_finding_ids,
+        generated_at_utc=generated_at_utc,
+        goal=goal,
+        wave=wave,
+        closeout=closeout,
+    )
     goal_text = _yaml_text(state_yaml_overrides[GOAL_MANIFEST_PATH])
+    wave_text = _yaml_text(state_yaml_overrides[wave_path])
     closeout["source_inputs"] = [
         _input_hash_for_text(GOAL_MANIFEST_PATH, goal_text),
-        input_hash(repo_root, wave_path.as_posix()),
+        _input_hash_for_text(wave_path, wave_text),
         input_hash(repo_root, EVALUATOR_REGISTRY_PATH.as_posix()),
         *_source_inputs(runtime, routing, agent, operating, research),
     ]
@@ -580,10 +737,9 @@ def _compose_closeout_evaluation(
 
 
 def evaluate_operating_closeout(repo_root: Path, *, write: bool = False) -> CloseoutEvaluation:
-    del write
     repo_root = repo_root.resolve()
-    generated_at_utc = evaluation_time_utc()
     existing = load_yaml(repo_root / WAVE_CLOSEOUT_PATH) or {}
+    generated_at_utc = evaluation_time_utc() if write or not existing.get("generated_at_utc") else str(existing["generated_at_utc"])
     goal_path, goal, wave_path, wave, closeout_path = _load_goal_and_wave(repo_root)
     required_entries = _required_evaluator_entries(repo_root)
     initial_results = _evaluate_registered_evaluators(repo_root, required_entries)
@@ -787,7 +943,7 @@ def write_operating_closeout_transaction(
     *,
     fail_after_replace_count: int | None = None,
 ) -> TransactionResult:
-    evaluation = evaluate_operating_closeout(repo_root, write=False)
+    evaluation = evaluate_operating_closeout(repo_root, write=True)
     context = ExecutionContext(
         repo_root=repo_root.resolve(),
         work_item_id="work_codex_control_plane_corrective_v3",

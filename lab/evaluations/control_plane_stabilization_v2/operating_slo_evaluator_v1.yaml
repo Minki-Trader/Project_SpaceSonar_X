@@ -1,6 +1,6 @@
 version: evaluator_result_v1
 evaluator_id: operating_slo_evaluator_v1
-executed_at_utc: '2026-06-24T23:17:11Z'
+executed_at_utc: '2026-06-25T01:59:36Z'
 input_hashes:
 - path: docs/policies/codex_operating_slo.yaml
   sha256: ed4a664fb956e59520f447fb6d21a04762ef2473d5c1071063acb1b59d9c88be
@@ -9,8 +9,8 @@ input_hashes:
   sha256: 4a75dec8f64a57a161f1be6149fb8bcae738b8ecca57c7647689ad70f8535839
   size_bytes: 5293
 - path: docs/workspace/workspace_state.yaml
-  sha256: 99b0faabfe936a2da2bb10945c9da03d71f4f9837c635a593b790a44ad4c2385
-  size_bytes: 1459
+  sha256: 843bcf24ea575a814f02098956b22fc09d2c8ff8927916f53321496d4a6f7b0b
+  size_bytes: 1484
 - path: docs/agent_control/policy_contract.yaml
   sha256: 34e11b2e31583b92c1d59e42b807fc80dd80c325ecf24cc3aadaa691ff30d5d8
   size_bytes: 2932
@@ -36,7 +36,7 @@ implementation_hashes:
 status: failed
 metrics:
   cold_reentry_truth_files: 4
-  cold_reentry_context_bytes: 22976
+  cold_reentry_context_bytes: 23001
   durable_transaction_receipt_count: 1
   transaction_idempotency_probe_count: 1
   transaction_idempotency_pass_count: 1
@@ -60,4 +60,4 @@ findings:
     value: 0.142857
     minimum: 0.8
 claim_effect: operating_slo_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: 00b9635509dad1b44138346ac7cdfba91b0c3ab274a5cec330e6305fed300073
+output_sha256: b7858c779bdcff677ced1df9962180467c7435b3362b1951652a2f2123e7ec36

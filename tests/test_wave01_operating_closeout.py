@@ -108,7 +108,7 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
     assert cursor["active_phase"] == "wp07_closeout_evidence_repair"
     assert workspace["active_wave"]["status"] == closeout["status"]
     assert workspace["active_work_item"]["work_item_id"] == work_item_id
-    assert workspace["unresolved_blockers"] == ["agent_observation_coverage_below_slo"]
+    assert "agent_observation_coverage_below_slo" in workspace["unresolved_blockers"]
     assert wave_rows[0]["status"] == closeout["status"]
     assert wave_rows[0]["next_action"] == closeout["next_action"]
 
@@ -123,6 +123,7 @@ def test_failed_agent_evaluator_produces_repair_work_item_everywhere() -> None:
     assert goal["next_work_item"]["work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
     assert workspace["active_work_item"]["work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
     assert set(closeout["handoff"]["blocking_requirements"]) == {"control_plane_operating_proof", "agent_value_metrics"}
+    assert "agent_observation_coverage_below_slo" in closeout["handoff"]["blocking_findings"]
 
 
 def test_handoff_cannot_advertise_wave02_when_required_evaluator_is_not_passed() -> None:
@@ -131,6 +132,45 @@ def test_handoff_cannot_advertise_wave02_when_required_evaluator_is_not_passed()
     assert closeout["status"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
     assert closeout["handoff"]["next_action"] == "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
     assert "Wave02" not in closeout["handoff"]["next_action"]
+
+
+def test_repair_state_removes_wave02_from_next_allowed_shapes() -> None:
+    next_work = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "next_work_item.yaml")
+
+    assert next_work["next_allowed_shapes"] == ["closeout_evidence_repair"]
+    assert "user_directed_wave02_open" not in next_work["next_allowed_shapes"]
+    assert "previous_material_only_bounded_synthesis_mix2_then_mix3" not in next_work["next_allowed_shapes"]
+    assert next_work["missing_material_if_relevant"] == ["agent_observation_coverage_work_receipts"]
+
+
+def test_repair_state_updates_wave_allocation_status_next_action_and_git_integration() -> None:
+    wave = load_yaml(ROOT / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_allocation.yaml")
+
+    assert wave["status"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
+    assert wave["next_action"] == "work_wp07_closeout_evidence_repair_v0"
+    assert wave["claim_boundary"] == closeout_builder.REPAIR_CLAIM_BOUNDARY
+    assert wave["git_integration"]["status"] == "blocked_pending_evaluator_evidence_repair_not_ready_for_main_integration"
+    assert wave["wave01_operating_completion_assertion"]["validation_status"] == "superseded_by_fresh_evaluator_insufficient_evidence"
+
+
+def test_wave_registry_contains_no_main_integration_ready_note_during_repair() -> None:
+    wave_rows = read_csv(ROOT / "docs" / "registers" / "wave_registry.csv")
+
+    assert wave_rows[0]["notes"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
+    assert "main_integration" not in wave_rows[0]["notes"]
+
+
+def test_updated_timestamps_change_with_state_transition() -> None:
+    closeout = load_yaml(CLOSEOUT_PATH)
+    goal = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml")
+    next_work = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "next_work_item.yaml")
+    cursor = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "resume_cursor.yaml")
+    wave = load_yaml(ROOT / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_allocation.yaml")
+
+    assert goal["updated_at_utc"] == closeout["generated_at_utc"]
+    assert next_work["updated_at_utc"] == closeout["generated_at_utc"]
+    assert cursor["updated_at_utc"] == closeout["generated_at_utc"]
+    assert wave["updated_at_utc"] == closeout["generated_at_utc"]
 
 
 def test_wave01_closeout_handoff_ids_are_registered() -> None:
@@ -294,6 +334,84 @@ def test_actual_nonzero_candidate_count_appears_in_closeout(monkeypatch: pytest.
     assert evaluation.closeout["campaign_summaries"][0]["candidate_count"] == 2
 
 
+def test_all_evaluators_passed_transitions_state_out_of_repair(monkeypatch: pytest.MonkeyPatch) -> None:
+    research = _evaluator_result("research_cycle_closeout_evaluator_v1", "passed")
+    research["metrics"] = {"candidate_count": 0, "l5_candidate_count": 0, "campaign_count": 3, "locked_final_oos_used": False}
+    research["campaign_results"] = []
+    research = finalize_result(research)
+    _patch_closeout_evaluators(
+        monkeypatch,
+        operating=_evaluator_result("operating_slo_evaluator_v1", "passed"),
+        research=research,
+        runtime=_evaluator_result("runtime_contract_evaluator_v2", "passed"),
+        routing=_evaluator_result("routing_quality_evaluator_v1", "passed"),
+        agent=_evaluator_result("agent_value_evaluator_v1", "passed"),
+    )
+
+    evaluation = evaluate_operating_closeout(ROOT)
+    staged = {
+        path.as_posix(): yaml.safe_load(text)
+        for path, text in evaluation.staged_texts.items()
+        if path.suffix == ".yaml"
+    }
+    goal = staged["lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml"]
+    next_work = staged["lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml"]
+    cursor = staged["lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml"]
+    wave = staged["lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml"]
+    workspace = staged["docs/workspace/workspace_state.yaml"]
+
+    assert goal["status"] == "complete_wave01_operating_proof_window"
+    assert goal["active_phase"] == "wave01_operating_closeout_complete"
+    assert next_work["work_item_id"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+    assert cursor["cursor_state"] == "complete_wave01_operating_proof_window"
+    assert cursor["active_phase"] == "wave01_operating_closeout_complete"
+    assert wave["status"] == "wave01_operating_proof_window_closed"
+    assert wave["git_integration"]["status"] == "wave_closeout_ready_for_boundary_commit_and_main_integration"
+    assert workspace["active_work_item"]["work_item_id"] == "work_post_wave01_user_directed_wave02_or_review_v0"
+    assert workspace["unresolved_blockers"] == []
+
+
+def test_no_repair_work_item_id_remains_after_all_pass_transition(monkeypatch: pytest.MonkeyPatch) -> None:
+    research = _evaluator_result("research_cycle_closeout_evaluator_v1", "passed")
+    research["metrics"] = {"candidate_count": 0, "l5_candidate_count": 0, "campaign_count": 3, "locked_final_oos_used": False}
+    research = finalize_result(research)
+    _patch_closeout_evaluators(
+        monkeypatch,
+        operating=_evaluator_result("operating_slo_evaluator_v1", "passed"),
+        research=research,
+        runtime=_evaluator_result("runtime_contract_evaluator_v2", "passed"),
+        routing=_evaluator_result("routing_quality_evaluator_v1", "passed"),
+        agent=_evaluator_result("agent_value_evaluator_v1", "passed"),
+    )
+
+    evaluation = evaluate_operating_closeout(ROOT)
+    combined = yaml.safe_dump(evaluation.closeout, sort_keys=False) + "\n".join(evaluation.staged_texts.values())
+
+    assert "work_wp07_closeout_evidence_repair_v0" not in combined
+    assert "wp07_closeout_evidence_repair" not in combined
+
+
+def test_research_evaluator_failure_appears_in_workspace_blocker_findings(monkeypatch: pytest.MonkeyPatch) -> None:
+    research = _evaluator_result("research_cycle_closeout_evaluator_v1", "failed")
+    research["findings"] = [{"id": "locked_final_oos_used"}]
+    research = finalize_result(research)
+    _patch_closeout_evaluators(
+        monkeypatch,
+        operating=_evaluator_result("operating_slo_evaluator_v1", "passed"),
+        research=research,
+        runtime=_evaluator_result("runtime_contract_evaluator_v2", "passed"),
+        routing=_evaluator_result("routing_quality_evaluator_v1", "passed"),
+        agent=_evaluator_result("agent_value_evaluator_v1", "passed"),
+    )
+
+    evaluation = evaluate_operating_closeout(ROOT)
+    workspace = yaml.safe_load(evaluation.staged_texts[closeout_builder.WORKSPACE_STATE_PATH])
+    next_work = yaml.safe_load(evaluation.staged_texts[closeout_builder.NEXT_WORK_ITEM_PATH])
+
+    assert "locked_final_oos_used" in workspace["unresolved_blockers"]
+    assert "locked_final_oos_used" in next_work["blocking_findings"]
+
+
 def test_new_required_evaluator_cannot_be_omitted_from_closeout(monkeypatch: pytest.MonkeyPatch) -> None:
     entries = closeout_builder.load_evaluator_registry(ROOT)
     entries.append(
@@ -357,6 +475,7 @@ def test_operating_closeout_write_failure_rolls_back_evaluators_closeout_and_reg
     next_work_path = closeout_builder.NEXT_WORK_ITEM_PATH
     cursor_path = closeout_builder.RESUME_CURSOR_PATH
     workspace_path = closeout_builder.WORKSPACE_STATE_PATH
+    wave_path = Path("lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml")
     originals = {
         evaluator_path: "old evaluator\n",
         closeout_path: "old closeout\n",
@@ -365,6 +484,7 @@ def test_operating_closeout_write_failure_rolls_back_evaluators_closeout_and_reg
         next_work_path: "old next work\n",
         cursor_path: "old cursor\n",
         workspace_path: "old workspace\n",
+        wave_path: "old wave allocation\n",
     }
     for rel_path, text in originals.items():
         target = tmp_path / rel_path
@@ -385,6 +505,7 @@ def test_operating_closeout_write_failure_rolls_back_evaluators_closeout_and_reg
                 next_work_path: "new next work\n",
                 cursor_path: "new cursor\n",
                 workspace_path: "new workspace\n",
+                wave_path: "new wave allocation\n",
                 registry_path: "artifact_id,path_or_uri,sha256,size_bytes\nnew,path,sha,1\n",
             },
         ),

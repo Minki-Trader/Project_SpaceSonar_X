@@ -1661,6 +1661,47 @@ work_units:
         - wave_id
         - campaign_id
         locked_final_oos_usage_fails_research_evaluator: true
+      final_transition_patch:
+        status: completed
+        completed_at_utc: '2026-06-25T01:11:57Z'
+        conditional_state_transition_builder: true
+        repair_transition:
+          goal_status: wave01_operating_proof_evidence_repair_required
+          wave_status: wave01_evaluator_backed_closeout_requires_evidence_repair
+          repair_work_item_id: work_wp07_closeout_evidence_repair_v0
+          next_allowed_shapes:
+          - closeout_evidence_repair
+          stale_wave02_shapes_removed: true
+          wave_git_integration_status: blocked_pending_evaluator_evidence_repair_not_ready_for_main_integration
+        pass_transition:
+          supported: true
+          repair_status_retention: false
+          repair_work_item_retention: false
+        blocker_derivation:
+          source: failed_or_insufficient_required_evaluator_findings
+          current_blocking_findings:
+          - agent_observation_coverage_below_slo
+          - agent_value_slo_failed
+          problem_requirements_kept_separate:
+          - agent_value_metrics
+          - control_plane_operating_proof
+        staged_state_files:
+        - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+        - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+        - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+        - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+        - lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+        - docs/workspace/workspace_state.yaml
+        wave_registry_ready_note_removed_during_repair: true
+        validation:
+          targeted_tests: 98_passed
+          full_suite: 441_passed
+          fresh_evaluator_validator: passed
+          operating_closeout_check: passed
+          registry_projection_check: passed
+          workspace_projection_check: passed
+          project_validate: passed
+          git_diff_check: passed
       mutation_tests:
         stale_runtime_evaluator_file: detected
         changed_evaluator_input_attempt_manifest: detected

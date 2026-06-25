@@ -164,10 +164,7 @@ current_truth:
     result_judgment_counts:
       runtime_probe: 6
 next_allowed_shapes:
-- user_directed_wave02_open
-- new_unexplored_multi_axis_surface
-- previous_material_only_bounded_synthesis_mix2_then_mix3
-- post_closeout_review
+- closeout_evidence_repair
 forbidden_carryover:
 - replay_Wave01_score_band_side_as_candidate_repair
 - replay_Wave01_inverse_score_band_as_candidate_repair
@@ -192,7 +189,11 @@ next_action: repair_closeout_evaluator_evidence_before_wp08_or_main_integration
 next_action_detail: Repair failed or insufficient evaluator evidence before WP08 or
   main integration.
 missing_material_if_relevant:
-- paired_wave01_decision_replay_judgment_pending
+- agent_observation_coverage_work_receipts
 blocking_requirements:
 - agent_value_metrics
 - control_plane_operating_proof
+updated_at_utc: '2026-06-25T01:58:51Z'
+blocking_findings:
+- agent_observation_coverage_below_slo
+- agent_value_slo_failed

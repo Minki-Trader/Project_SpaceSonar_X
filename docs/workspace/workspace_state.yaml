@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-22T15:42:02Z'
+updated_utc: '2026-06-25T01:58:51Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -22,6 +22,7 @@ current_claim_boundary: control_plane_closeout_evidence_repair_required_no_runti
 next_action: Repair evaluator evidence consistency before WP08 or main integration.
 unresolved_blockers:
 - agent_observation_coverage_below_slo
+- agent_value_slo_failed
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml
   runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml

@@ -249,18 +249,24 @@ def wave_registry_projection(
         wave = _read_yaml_view(repo_root, rel_path, yaml_overrides)
         closeout_rel = _closeout_path_for_wave(wave, rel_path)
         closeout = _read_yaml_view(repo_root, Path(closeout_rel), yaml_overrides)
+        closeout_status = str(closeout.get("status") or "")
+        next_action = str(closeout.get("next_action") or wave.get("next_action") or "")
+        if "requires_evidence_repair" in closeout_status or "repair_closeout_evaluator_evidence" in next_action:
+            notes = closeout_status or next_action
+        else:
+            notes = (wave.get("git_integration") or {}).get("status") or wave.get("status")
         rows.append(
             {
                 "wave_id": wave.get("wave_id"),
-                "status": closeout.get("status") or wave.get("status"),
+                "status": closeout_status or wave.get("status"),
                 "created_at_utc": wave.get("created_at_utc"),
                 "wave_path": rel_path.as_posix(),
                 "allocation_goal": _clean_text(wave.get("allocation_goal")),
                 "max_runs": (wave.get("budget") or {}).get("max_runs"),
                 "claim_boundary": closeout.get("claim_boundary") or wave.get("claim_boundary"),
                 "evidence_path": closeout_rel,
-                "next_action": closeout.get("next_action") or wave.get("next_action"),
-                "notes": _clean_text((wave.get("git_integration") or {}).get("status") or wave.get("status")),
+                "next_action": next_action,
+                "notes": _clean_text(notes),
             }
         )
     return dump_csv(fieldnames, rows)
