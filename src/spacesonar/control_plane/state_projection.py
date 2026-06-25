@@ -119,8 +119,8 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
     wave_closeout = _closeout_rel_path(wave, wave_path) if wave and wave_path else None
     return {
         "version": "workspace_state_projection_v2",
-        "updated_utc": closeout.get("generated_at_utc")
-        or goal.get("updated_at_utc")
+        "updated_utc": goal.get("updated_at_utc")
+        or closeout.get("generated_at_utc")
         or closeout.get("closed_at_utc")
         or goal.get("created_at_utc"),
         "project": {

@@ -58,6 +58,7 @@ def _seed_registry(repo: Path, *, duplicate: bool = False) -> None:
             "canonical_result_path": "lab/evaluations/fixture/fixture_evaluator_v1.yaml",
             "implementation_paths": ["foundation/evaluation/fixture.py"],
             "required_for_operating_closeout": True,
+            "closeout_requirement": "fixture_requirement",
             "role": "active",
             "allowed_alias_paths": [],
         }

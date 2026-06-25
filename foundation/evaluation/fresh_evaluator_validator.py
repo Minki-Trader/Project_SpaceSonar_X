@@ -116,6 +116,8 @@ def validate_committed_evaluators(repo_root: Path) -> list[str]:
     for entry in active_entries:
         evaluator_id = str(entry.get("evaluator_id") or "")
         canonical = str(entry.get("canonical_result_path") or "")
+        if entry.get("required_for_operating_closeout") is True and not entry.get("closeout_requirement"):
+            errors.append(f"evaluator_registry: {evaluator_id} missing closeout_requirement")
         if not canonical:
             errors.append(f"evaluator_registry: {evaluator_id} missing canonical_result_path")
             continue

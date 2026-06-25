@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -92,11 +93,19 @@ def _contains_locked_final_usage(value: Any) -> bool:
     if isinstance(value, list):
         return any(_contains_locked_final_usage(item) for item in value)
     if isinstance(value, str):
-        text = value.lower()
-        if "locked_final_oos_b_not_used" in text or "not_used" in text or "do_not_use" in text:
-            return False
-        return "locked_final_oos_b" in text and any(token in text for token in ("used", "consumed", "accessed"))
+        return _string_mentions_locked_final_usage(value)
     return False
+
+
+def _string_mentions_locked_final_usage(value: str) -> bool:
+    text = value.lower()
+    if "locked_final_oos" not in text and "locked final oos" not in text:
+        return False
+    normalized = re.sub(r"[_\-]+", " ", text)
+    if any(phrase in normalized for phrase in ("unused", "not used", "not consumed", "not accessed", "do not use")):
+        return False
+    tokens = set(re.findall(r"[a-z0-9]+", normalized))
+    return bool(tokens & {"used", "consumed", "accessed"})
 
 
 def _forbidden_claims_proven(record: dict[str, Any], *, legacy: bool) -> bool:
@@ -132,7 +141,11 @@ def evaluate_research_cycle_closeout(repo_root: Path) -> dict[str, Any]:
         findings.append({"id": "locked_final_oos_policy_missing"})
 
     ref_rows = _read_csv(repo_root, CAMPAIGN_REFS_PATH)
-    refs_by_campaign = {row.get("campaign_id"): row for row in ref_rows}
+    ref_ids = [str(row.get("campaign_id") or "") for row in ref_rows if row.get("campaign_id")]
+    duplicate_ref_ids = sorted({campaign_id for campaign_id in ref_ids if ref_ids.count(campaign_id) > 1})
+    for campaign_id in duplicate_ref_ids:
+        findings.append({"id": "duplicate_campaign_ref", "campaign_id": campaign_id})
+    refs_by_campaign = {row.get("campaign_id"): row for row in ref_rows if row.get("campaign_id")}
     candidate_rows = _read_csv(repo_root, CANDIDATE_REGISTRY_PATH)
     clue_rows = {row.get("clue_id"): row for row in _read_csv(repo_root, CLUE_REGISTRY_PATH)}
     memory_rows = {row.get("memory_id"): row for row in _read_csv(repo_root, NEGATIVE_MEMORY_REGISTRY_PATH)}
@@ -140,6 +153,15 @@ def evaluate_research_cycle_closeout(repo_root: Path) -> dict[str, Any]:
     allocations = wave.get("campaign_allocations") or []
     if not allocations:
         findings.append({"id": "missing_campaign_allocations"})
+    allocation_ids = [str(item.get("campaign_id") or "") for item in allocations if item.get("campaign_id")]
+    duplicate_allocation_ids = sorted({campaign_id for campaign_id in allocation_ids if allocation_ids.count(campaign_id) > 1})
+    for campaign_id in duplicate_allocation_ids:
+        findings.append({"id": "duplicate_campaign_allocation", "campaign_id": campaign_id})
+    allocation_id_set = set(allocation_ids)
+    for campaign_id in sorted(set(ref_ids) - allocation_id_set):
+        findings.append({"id": "unexpected_campaign_ref", "campaign_id": campaign_id})
+    for campaign_id in sorted(allocation_id_set - set(ref_ids)):
+        findings.append({"id": "allocation_missing_campaign_ref", "campaign_id": campaign_id})
 
     campaign_results: list[dict[str, Any]] = []
     candidate_count = 0
@@ -198,6 +220,18 @@ def evaluate_research_cycle_closeout(repo_root: Path) -> dict[str, Any]:
 
         record_candidate_count = _int_field(record, "candidate_count", findings, campaign_id=campaign_id)
         record_l5_count = _int_field(record, "l5_candidate_count", findings, campaign_id=campaign_id)
+        record_candidate_ids = [str(item) for item in (record.get("candidate_ids") or [])]
+        record_l5_candidate_ids = [str(item) for item in (record.get("l5_candidate_ids") or [])]
+        if record_candidate_count:
+            if not record_candidate_ids:
+                findings.append({"id": "candidate_count_without_candidate_ids", "campaign_id": campaign_id, "count": record_candidate_count})
+            elif len(record_candidate_ids) != record_candidate_count:
+                findings.append({"id": "candidate_count_id_mismatch", "campaign_id": campaign_id, "count": record_candidate_count, "candidate_id_count": len(record_candidate_ids)})
+        if record_l5_count:
+            if not record_l5_candidate_ids:
+                findings.append({"id": "l5_candidate_count_without_l5_candidate_ids", "campaign_id": campaign_id, "count": record_l5_count})
+            elif len(record_l5_candidate_ids) != record_l5_count:
+                findings.append({"id": "l5_candidate_count_id_mismatch", "campaign_id": campaign_id, "count": record_l5_count, "candidate_id_count": len(record_l5_candidate_ids)})
         if record_candidate_count is not None:
             candidate_count += record_candidate_count
             if record_candidate_count:
@@ -229,16 +263,61 @@ def evaluate_research_cycle_closeout(repo_root: Path) -> dict[str, Any]:
                 "evidence_class": "legacy_decision_replay_judgment" if legacy else "campaign_closeout",
                 "candidate_count": record_candidate_count,
                 "l5_candidate_count": record_l5_count,
+                "candidate_ids": record_candidate_ids,
+                "l5_candidate_ids": record_l5_candidate_ids,
                 "forbidden_claims_respected": _forbidden_claims_proven(record, legacy=legacy),
             }
         )
 
-    candidate_registry_count = len([row for row in candidate_rows if row.get("candidate_id")])
+    candidate_ids_seen: list[str] = []
+    scoped_candidate_rows: list[dict[str, str]] = []
+    scoped_l5_rows: list[dict[str, str]] = []
+    for row in candidate_rows:
+        candidate_id = str(row.get("candidate_id") or "")
+        if not candidate_id:
+            continue
+        candidate_ids_seen.append(candidate_id)
+        row_wave_id = str(row.get("wave_id") or "")
+        row_campaign_id = str(row.get("campaign_id") or "")
+        if not row_wave_id or not row_campaign_id:
+            findings.append({"id": "unscoped_candidate_row", "candidate_id": candidate_id})
+            continue
+        if row_wave_id != WAVE_ID:
+            continue
+        if row_campaign_id not in allocation_id_set:
+            findings.append({"id": "candidate_row_unallocated_campaign", "candidate_id": candidate_id, "campaign_id": row_campaign_id})
+            continue
+        scoped_candidate_rows.append(row)
+        status = str(row.get("status") or "").lower()
+        if status.startswith("l5") or "l5" in status:
+            scoped_l5_rows.append(row)
+    duplicate_candidate_ids = sorted({candidate_id for candidate_id in candidate_ids_seen if candidate_ids_seen.count(candidate_id) > 1})
+    for candidate_id in duplicate_candidate_ids:
+        findings.append({"id": "duplicate_candidate_id", "candidate_id": candidate_id})
+    candidate_registry_count = len(scoped_candidate_rows)
     if candidate_registry_count != candidate_count:
         findings.append({"id": "candidate_registry_count_mismatch", "registry_count": candidate_registry_count, "evidence_count": candidate_count})
-    l5_registry_count = len([row for row in candidate_rows if row.get("status", "").startswith("l5") or "l5" in (row.get("status") or "").lower()])
+    l5_registry_count = len(scoped_l5_rows)
     if l5_registry_count != l5_candidate_count:
         findings.append({"id": "l5_candidate_registry_count_mismatch", "registry_count": l5_registry_count, "evidence_count": l5_candidate_count})
+    expected_candidate_ids = sorted(
+        candidate_id
+        for result in campaign_results
+        for candidate_id in (result.get("candidate_ids") or [])
+    )
+    scoped_candidate_ids = sorted(row.get("candidate_id") for row in scoped_candidate_rows if row.get("candidate_id"))
+    if expected_candidate_ids and expected_candidate_ids != scoped_candidate_ids:
+        findings.append({"id": "candidate_id_set_mismatch", "expected": expected_candidate_ids, "registry": scoped_candidate_ids})
+    expected_l5_candidate_ids = sorted(
+        candidate_id
+        for result in campaign_results
+        for candidate_id in (result.get("l5_candidate_ids") or [])
+    )
+    scoped_l5_candidate_ids = sorted(row.get("candidate_id") for row in scoped_l5_rows if row.get("candidate_id"))
+    if expected_l5_candidate_ids and expected_l5_candidate_ids != scoped_l5_candidate_ids:
+        findings.append({"id": "l5_candidate_id_set_mismatch", "expected": expected_l5_candidate_ids, "registry": scoped_l5_candidate_ids})
+    if locked_final_oos_used:
+        findings.append({"id": "locked_final_oos_used"})
 
     for memory_id in sorted(referenced_memory_ids):
         row = memory_rows.get(memory_id)

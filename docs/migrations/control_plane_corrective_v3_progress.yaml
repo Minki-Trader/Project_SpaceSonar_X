@@ -1572,7 +1572,7 @@ work_units:
     started_at_evidence_class: retrospective_estimate
     started_at_note: Midnight value was a packet ledger placeholder, not an
       observed execution start timestamp.
-    completed_at_utc: '2026-06-24T14:08:22Z'
+    completed_at_utc: '2026-06-24T23:38:59Z'
     objective: make_evaluators_slos_and_closeout_checks_fresh_and_non_self_attested
     implementation:
       evaluator_registry:
@@ -1636,8 +1636,31 @@ work_units:
         staged_artifacts:
         - evaluator_results
         - wave_closeout.yaml
+        - goal_manifest.yaml
+        - next_work_item.yaml
+        - resume_cursor.yaml
+        - workspace_state.yaml
+        - goal_registry.csv
+        - wave_registry.csv
         - artifact_registry.csv
         failed_or_insufficient_requirement_lowers_status: true
+        identity_derived_from_goal_and_wave_records: true
+        handoff_uses_overall_closeout_decision: true
+        registry_driven_required_evaluator_set: true
+        workspace_and_registry_projection_diff_zero_required: true
+      state_consistency_amendment:
+        status: completed
+        completed_at_utc: '2026-06-24T23:38:59Z'
+        goal_status: wave01_operating_proof_evidence_repair_required
+        active_phase: wp07_closeout_evidence_repair
+        repair_work_item_id: work_wp07_closeout_evidence_repair_v0
+        unresolved_blocker: agent_observation_coverage_below_slo
+        previous_completion_assertion_preserved_as_historical: true
+        superseded_validation_status: superseded_by_fresh_evaluator_insufficient_evidence
+        candidate_registry_scope_fields:
+        - wave_id
+        - campaign_id
+        locked_final_oos_usage_fails_research_evaluator: true
       mutation_tests:
         stale_runtime_evaluator_file: detected
         changed_evaluator_input_attempt_manifest: detected
@@ -1653,6 +1676,12 @@ work_units:
         closeout_handoff_tampering: detected
         closeout_campaign_summary_tampering: detected
         closeout_status_or_next_action_tampering: detected
+        active_goal_id_tampering_with_recomputed_digest: detected
+        wave_id_tampering_with_recomputed_digest: detected
+        required_evaluator_omission: detected
+        locked_final_oos_used: detected
+        unscoped_candidate_row: detected
+        duplicate_campaign_allocation_or_ref: detected
         transactional_write_failure_rolls_back: detected
       wp06_forward_stability:
         finalized_receipt_check_uses_execution_provenance_validator: true
@@ -1670,9 +1699,9 @@ work_units:
     - lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml
     - lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
     validation:
-    - command: uv run pytest tests/test_wave01_operating_closeout.py tests/test_fresh_evaluator_contract.py tests/test_operating_slo_evaluator.py tests/test_research_cycle_closeout_evaluator.py tests/control_plane/test_transaction_atomicity.py -q
+    - command: uv run pytest tests/test_wave01_operating_closeout.py tests/test_fresh_evaluator_contract.py tests/test_operating_slo_evaluator.py tests/test_research_cycle_closeout_evaluator.py tests/control_plane/test_lifecycle_and_projections_wp04.py tests/control_plane/test_transaction_atomicity.py -q
       status: passed
-      result: 72 passed in 211.32s
+      result: 105 passed in 336.35s
     - command: uv run python foundation/evaluation/fresh_evaluator_validator.py --repo-root .
       status: passed
       result: committed evaluator fresh comparison passed

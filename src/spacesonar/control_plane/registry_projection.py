@@ -747,6 +747,8 @@ def candidate_registry_projection(
     del text_overrides
     fieldnames = [
         "candidate_id",
+        "wave_id",
+        "campaign_id",
         "run_id",
         "bundle_id",
         "surface_id",
@@ -765,6 +767,8 @@ def candidate_registry_projection(
         rows.append(
             {
                 "candidate_id": candidate.get("candidate_id"),
+                "wave_id": candidate.get("wave_id"),
+                "campaign_id": candidate.get("campaign_id"),
                 "run_id": candidate.get("run_id"),
                 "bundle_id": candidate.get("bundle_id"),
                 "surface_id": candidate.get("surface_id"),

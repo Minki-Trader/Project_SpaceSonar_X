@@ -1,10 +1,10 @@
 version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 workspace_active: true
-status: complete_wave01_operating_proof_window
+status: wave01_operating_proof_evidence_repair_required
 created_at_utc: '2026-06-21T15:18:51Z'
 updated_at_utc: '2026-06-22T15:42:02Z'
-claim_boundary: active_goal_complete_wave01_operating_proof_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+claim_boundary: control_plane_closeout_evidence_repair_required_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -60,12 +60,12 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave01_event_barrier_decision_replay_pair_judgment_required_next
+active_phase: wp07_closeout_evidence_repair
 active_ids:
   idea_id: idea_us100_m5_session_transition_regime_surface_v0
   hypothesis_id: hyp_us100_session_transition_regime_surface_v0
   wave_id: wave_us100_closedbar_surface_cartography_v0
-  campaign_id: campaign_us100_session_transition_regime_surface_v0
+  campaign_id: null
   surface_id: surface_us100_session_transition_regime_surface_v0
   sweep_id: sweep_us100_session_transition_broad_v0
 blank_slate_contract:
@@ -379,6 +379,7 @@ goal_achieve_state:
   - economics_pass
   - reviewed_pass_status
   - production_deployment
+  validation_status: superseded_by_fresh_evaluator_insufficient_evidence
 non_complete_stop_states:
 - stopped_no_viable_candidate
 - blocked_missing_local_evidence
@@ -402,9 +403,8 @@ forbidden_claims:
 - business_or_project_goal_achieve
 next_work_item:
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
-  summary: Wave01 operating closeout complete; await user-directed Wave02, new surface,
-    bounded synthesis, or review.
+  work_item_id: work_wp07_closeout_evidence_repair_v0
+  summary: Repair evaluator evidence consistency before WP08 or main integration.
 wave01_operating_closeout:
   status: wave01_operating_proof_window_closed
   closeout_path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
@@ -419,6 +419,7 @@ wave01_operating_closeout:
   - economics_pass
   - reviewed_verified_pass
   - production_deployment
+  validation_status: superseded_by_fresh_evaluator_insufficient_evidence
 event_barrier_campaign:
   campaign_id: campaign_us100_event_barrier_decision_surface_v0
   status: wave01_event_barrier_decision_replay_closed_no_candidate

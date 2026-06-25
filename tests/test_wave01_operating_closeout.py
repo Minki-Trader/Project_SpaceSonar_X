@@ -21,6 +21,7 @@ from foundation.evaluation.fresh_evaluator_validator import compare_committed_ev
 from foundation.evaluation.research_cycle_closeout_evaluator import evaluate_research_cycle_closeout
 from foundation.evaluation.runtime_contract_evaluator import evaluate_runtime_contract
 from foundation.migrations.runtime_graph_target_inventory import INVENTORY_REL_PATH
+from spacesonar.control_plane.state_projection import workspace_projection_diff
 from tests.test_runtime_graph_revalidation import materialize_committed_repo, receipt_path
 
 
@@ -85,6 +86,53 @@ def test_wave01_closeout_result_separates_operating_proof_from_runtime_contract(
     assert summary["agent_value_status"] == "insufficient_evidence"
 
 
+def test_current_workspace_projection_is_not_stale() -> None:
+    assert workspace_projection_diff(ROOT) is False
+
+
+def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> None:
+    closeout = load_yaml(CLOSEOUT_PATH)
+    goal = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml")
+    next_work = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "next_work_item.yaml")
+    cursor = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "resume_cursor.yaml")
+    workspace = load_yaml(ROOT / "docs" / "workspace" / "workspace_state.yaml")
+    wave_rows = read_csv(ROOT / "docs" / "registers" / "wave_registry.csv")
+    work_item_id = "work_wp07_closeout_evidence_repair_v0"
+
+    assert goal["status"] == "wave01_operating_proof_evidence_repair_required"
+    assert goal["active_phase"] == "wp07_closeout_evidence_repair"
+    assert goal["active_ids"]["campaign_id"] is None
+    assert goal["next_work_item"]["work_item_id"] == work_item_id
+    assert next_work["work_item_id"] == work_item_id
+    assert cursor["cursor_state"] == "wave01_operating_proof_evidence_repair_required"
+    assert cursor["active_phase"] == "wp07_closeout_evidence_repair"
+    assert workspace["active_wave"]["status"] == closeout["status"]
+    assert workspace["active_work_item"]["work_item_id"] == work_item_id
+    assert workspace["unresolved_blockers"] == ["agent_observation_coverage_below_slo"]
+    assert wave_rows[0]["status"] == closeout["status"]
+    assert wave_rows[0]["next_action"] == closeout["next_action"]
+
+
+def test_failed_agent_evaluator_produces_repair_work_item_everywhere() -> None:
+    closeout = load_yaml(CLOSEOUT_PATH)
+    goal = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml")
+    workspace = load_yaml(ROOT / "docs" / "workspace" / "workspace_state.yaml")
+
+    assert closeout["result"]["agent_value_metrics"] == "insufficient_evidence"
+    assert closeout["next_action"] == "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
+    assert goal["next_work_item"]["work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
+    assert workspace["active_work_item"]["work_item_id"] == "work_wp07_closeout_evidence_repair_v0"
+    assert set(closeout["handoff"]["blocking_requirements"]) == {"control_plane_operating_proof", "agent_value_metrics"}
+
+
+def test_handoff_cannot_advertise_wave02_when_required_evaluator_is_not_passed() -> None:
+    closeout = load_yaml(CLOSEOUT_PATH)
+
+    assert closeout["status"] == "wave01_evaluator_backed_closeout_requires_evidence_repair"
+    assert closeout["handoff"]["next_action"] == "repair_closeout_evaluator_evidence_before_wp08_or_main_integration"
+    assert "Wave02" not in closeout["handoff"]["next_action"]
+
+
 def test_wave01_closeout_handoff_ids_are_registered() -> None:
     closeout = load_yaml(CLOSEOUT_PATH)
     clue_rows = read_csv(ROOT / "docs" / "registers" / "clue_registry.csv")
@@ -94,6 +142,24 @@ def test_wave01_closeout_handoff_ids_are_registered() -> None:
 
     assert set(closeout["handoff"]["preserved_clue_ids"]) <= clue_ids
     assert set(closeout["handoff"]["negative_memory_ids"]) <= negative_ids
+
+
+@pytest.mark.parametrize("field", ["active_goal_id", "wave_id"])
+def test_closeout_identity_tampering_with_recomputed_digest_fails(monkeypatch: pytest.MonkeyPatch, field: str) -> None:
+    original = load_committed_closeout(ROOT)
+    mutated = copy.deepcopy(original)
+    mutated[field] = f"tampered_{field}"
+    mutated["evaluation_digest"] = closeout_builder._closeout_digest(mutated)
+    monkeypatch.setattr(closeout_builder, "load_committed_closeout", lambda repo_root: mutated)
+    monkeypatch.setattr(
+        closeout_builder,
+        "evaluate_operating_closeout",
+        lambda repo_root, write=False: CloseoutEvaluation(closeout=original, digest=original["evaluation_digest"], requirement_audit=original["requirement_audit"], staged_texts={}),
+    )
+
+    errors = validate_committed_closeout(ROOT)
+
+    assert any("semantic payload" in error for error in errors)
 
 
 def test_self_attested_pass_would_change_closeout_digest() -> None:
@@ -149,6 +215,7 @@ def test_self_authored_pass_is_rejected_even_before_digest(monkeypatch: pytest.M
         lambda repo_root, write=False: CloseoutEvaluation(closeout=closeout, digest="manual", requirement_audit=closeout["requirement_audit"], staged_texts={}),
     )
     monkeypatch.setattr(closeout_builder, "compare_committed_evaluator_file", lambda repo_root, path: [])
+    monkeypatch.setattr(closeout_builder, "_required_evaluator_entries", lambda repo_root: [])
 
     errors = validate_committed_closeout(tmp_path)
 
@@ -158,11 +225,14 @@ def test_self_authored_pass_is_rejected_even_before_digest(monkeypatch: pytest.M
 
 def test_operating_requirement_status_comes_from_evaluator(monkeypatch: pytest.MonkeyPatch) -> None:
     failed_operating = _evaluator_result("operating_slo_evaluator_v1", "failed")
-    monkeypatch.setattr(closeout_builder, "evaluate_operating_slo", lambda repo_root: failed_operating)
-    monkeypatch.setattr(closeout_builder, "evaluate_research_cycle_closeout", lambda repo_root: _evaluator_result("research_cycle_closeout_evaluator_v1", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_runtime_contract", lambda repo_root: _evaluator_result("runtime_contract_evaluator_v2", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_routing_quality", lambda repo_root: _evaluator_result("routing_quality_evaluator_v1", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_agent_value", lambda repo_root: _evaluator_result("agent_value_evaluator_v1", "passed"))
+    _patch_closeout_evaluators(
+        monkeypatch,
+        operating=failed_operating,
+        research=_evaluator_result("research_cycle_closeout_evaluator_v1", "passed"),
+        runtime=_evaluator_result("runtime_contract_evaluator_v2", "passed"),
+        routing=_evaluator_result("routing_quality_evaluator_v1", "passed"),
+        agent=_evaluator_result("agent_value_evaluator_v1", "passed"),
+    )
 
     evaluation = evaluate_operating_closeout(ROOT)
     audit = {item["requirement"]: item for item in evaluation.requirement_audit}
@@ -174,11 +244,14 @@ def test_operating_requirement_status_comes_from_evaluator(monkeypatch: pytest.M
 
 
 def test_research_requirement_status_comes_from_evaluator(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(closeout_builder, "evaluate_operating_slo", lambda repo_root: _evaluator_result("operating_slo_evaluator_v1", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_research_cycle_closeout", lambda repo_root: _evaluator_result("research_cycle_closeout_evaluator_v1", "failed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_runtime_contract", lambda repo_root: _evaluator_result("runtime_contract_evaluator_v2", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_routing_quality", lambda repo_root: _evaluator_result("routing_quality_evaluator_v1", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_agent_value", lambda repo_root: _evaluator_result("agent_value_evaluator_v1", "passed"))
+    _patch_closeout_evaluators(
+        monkeypatch,
+        operating=_evaluator_result("operating_slo_evaluator_v1", "passed"),
+        research=_evaluator_result("research_cycle_closeout_evaluator_v1", "failed"),
+        runtime=_evaluator_result("runtime_contract_evaluator_v2", "passed"),
+        routing=_evaluator_result("routing_quality_evaluator_v1", "passed"),
+        agent=_evaluator_result("agent_value_evaluator_v1", "passed"),
+    )
 
     evaluation = evaluate_operating_closeout(ROOT)
     audit = {item["requirement"]: item for item in evaluation.requirement_audit}
@@ -204,11 +277,14 @@ def test_actual_nonzero_candidate_count_appears_in_closeout(monkeypatch: pytest.
         }
     ]
     research = finalize_result(research)
-    monkeypatch.setattr(closeout_builder, "evaluate_operating_slo", lambda repo_root: _evaluator_result("operating_slo_evaluator_v1", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_research_cycle_closeout", lambda repo_root: research)
-    monkeypatch.setattr(closeout_builder, "evaluate_runtime_contract", lambda repo_root: _evaluator_result("runtime_contract_evaluator_v2", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_routing_quality", lambda repo_root: _evaluator_result("routing_quality_evaluator_v1", "passed"))
-    monkeypatch.setattr(closeout_builder, "evaluate_agent_value", lambda repo_root: _evaluator_result("agent_value_evaluator_v1", "passed"))
+    _patch_closeout_evaluators(
+        monkeypatch,
+        operating=_evaluator_result("operating_slo_evaluator_v1", "passed"),
+        research=research,
+        runtime=_evaluator_result("runtime_contract_evaluator_v2", "passed"),
+        routing=_evaluator_result("routing_quality_evaluator_v1", "passed"),
+        agent=_evaluator_result("agent_value_evaluator_v1", "passed"),
+    )
 
     evaluation = evaluate_operating_closeout(ROOT)
 
@@ -216,6 +292,25 @@ def test_actual_nonzero_candidate_count_appears_in_closeout(monkeypatch: pytest.
     assert evaluation.closeout["result"]["l5_candidate_count"] == 1
     assert evaluation.closeout["wave_summary"]["candidate_count"] == 2
     assert evaluation.closeout["campaign_summaries"][0]["candidate_count"] == 2
+
+
+def test_new_required_evaluator_cannot_be_omitted_from_closeout(monkeypatch: pytest.MonkeyPatch) -> None:
+    entries = closeout_builder.load_evaluator_registry(ROOT)
+    entries.append(
+        {
+            "evaluator_id": "unsupported_required_evaluator_v1",
+            "canonical_result_path": "lab/evaluations/control_plane_stabilization_v2/unsupported_required_evaluator_v1.yaml",
+            "implementation_paths": ["foundation/evaluation/unsupported.py"],
+            "required_for_operating_closeout": True,
+            "closeout_requirement": "unsupported_requirement",
+            "role": "active",
+            "allowed_alias_paths": [],
+        }
+    )
+    monkeypatch.setattr(closeout_builder, "load_evaluator_registry", lambda repo_root: entries)
+
+    with pytest.raises(ValueError, match="unsupported_required_evaluator_v1"):
+        evaluate_operating_closeout(ROOT)
 
 
 @pytest.mark.parametrize(
@@ -243,6 +338,7 @@ def test_closeout_full_semantic_tampering_fails(
         "evaluate_operating_closeout",
         lambda repo_root, write=False: CloseoutEvaluation(closeout=closeout, digest=closeout["evaluation_digest"], requirement_audit=[], staged_texts={}),
     )
+    monkeypatch.setattr(closeout_builder, "_required_evaluator_entries", lambda repo_root: [])
 
     errors = validate_committed_closeout(tmp_path)
 
@@ -257,10 +353,18 @@ def test_operating_closeout_write_failure_rolls_back_evaluators_closeout_and_reg
     evaluator_path = Path("lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml")
     closeout_path = closeout_builder.WAVE_CLOSEOUT_PATH
     registry_path = closeout_builder.ARTIFACT_REGISTRY_PATH
+    goal_path = closeout_builder.GOAL_MANIFEST_PATH
+    next_work_path = closeout_builder.NEXT_WORK_ITEM_PATH
+    cursor_path = closeout_builder.RESUME_CURSOR_PATH
+    workspace_path = closeout_builder.WORKSPACE_STATE_PATH
     originals = {
         evaluator_path: "old evaluator\n",
         closeout_path: "old closeout\n",
         registry_path: "artifact_id,path_or_uri,sha256,size_bytes\n",
+        goal_path: "old goal\n",
+        next_work_path: "old next work\n",
+        cursor_path: "old cursor\n",
+        workspace_path: "old workspace\n",
     }
     for rel_path, text in originals.items():
         target = tmp_path / rel_path
@@ -277,6 +381,10 @@ def test_operating_closeout_write_failure_rolls_back_evaluators_closeout_and_reg
             staged_texts={
                 evaluator_path: "new evaluator\n",
                 closeout_path: "new closeout\n",
+                goal_path: "new goal\n",
+                next_work_path: "new next work\n",
+                cursor_path: "new cursor\n",
+                workspace_path: "new workspace\n",
                 registry_path: "artifact_id,path_or_uri,sha256,size_bytes\nnew,path,sha,1\n",
             },
         ),
@@ -549,6 +657,28 @@ def _evaluator_result(evaluator_id: str, status: str) -> dict[str, Any]:
     )
 
 
+def _patch_closeout_evaluators(
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    operating: dict[str, Any],
+    research: dict[str, Any],
+    runtime: dict[str, Any],
+    routing: dict[str, Any],
+    agent: dict[str, Any],
+) -> None:
+    patched = dict(closeout_builder.EVALUATOR_FUNCTIONS)
+    patched.update(
+        {
+            "operating_slo_evaluator_v1": lambda repo_root: operating,
+            "research_cycle_closeout_evaluator_v1": lambda repo_root: research,
+            "runtime_contract_evaluator_v2": lambda repo_root: runtime,
+            "routing_quality_evaluator_v1": lambda repo_root: routing,
+            "agent_value_evaluator_v1": lambda repo_root: agent,
+        }
+    )
+    monkeypatch.setattr(closeout_builder, "EVALUATOR_FUNCTIONS", patched)
+
+
 class _Completed:
     def __init__(self, *, returncode: int, stdout: str, stderr: str) -> None:
         self.returncode = returncode
@@ -613,7 +743,7 @@ def _seed_research_registries(repo: Path) -> None:
     registers = repo / "docs" / "registers"
     registers.mkdir(parents=True, exist_ok=True)
     (registers / "candidate_registry.csv").write_text(
-        "candidate_id,run_id,bundle_id,surface_id,status,allocation_reason,summary_path,claim_boundary,evidence_path,missing_evidence,risk_notes,next_action\n",
+        "candidate_id,wave_id,campaign_id,run_id,bundle_id,surface_id,status,allocation_reason,summary_path,claim_boundary,evidence_path,missing_evidence,risk_notes,next_action\n",
         encoding="utf-8",
     )
     (registers / "clue_registry.csv").write_text(

@@ -1,10 +1,10 @@
 version: evaluator_result_v1
 evaluator_id: research_cycle_closeout_evaluator_v1
-executed_at_utc: '2026-06-24T13:27:23Z'
+executed_at_utc: '2026-06-24T23:17:11Z'
 input_hashes:
 - path: docs/registers/candidate_registry.csv
-  sha256: 8b188750116c5beced484bb2ca8aebebc63577d168802fcfbff0760b1ed9a699
-  size_bytes: 148
+  sha256: 0096c5deded38cf2319d7ec9d069cc75338e3c1f90d34c4c2f00c105c0812f06
+  size_bytes: 168
 - path: docs/registers/clue_registry.csv
   sha256: 3e4422c99975bac477f15663e38745f40638e7346df36150886c4746c07c3d76
   size_bytes: 3642
@@ -85,8 +85,8 @@ input_hashes:
   size_bytes: 11284
 implementation_hashes:
 - path: foundation/evaluation/research_cycle_closeout_evaluator.py
-  sha256: 20ef9da4049c39ea7ebff4644a8c73117306dd4bd4f5bf35266b5c87a688747b
-  size_bytes: 16605
+  sha256: c5de219e8b7d9f07f9362ba6df32405edeb0efef2656479f3eec6fd99da5492e
+  size_bytes: 21510
 status: passed
 metrics:
   campaign_count: 3
@@ -104,6 +104,8 @@ campaign_results:
   evidence_class: campaign_closeout
   candidate_count: 0
   l5_candidate_count: 0
+  candidate_ids: []
+  l5_candidate_ids: []
   forbidden_claims_respected: true
 - campaign_id: campaign_us100_session_transition_regime_surface_v0
   status: wave01_session_transition_closed_preserved_clues_no_candidate
@@ -112,6 +114,8 @@ campaign_results:
   evidence_class: campaign_closeout
   candidate_count: 0
   l5_candidate_count: 0
+  candidate_ids: []
+  l5_candidate_ids: []
   forbidden_claims_respected: true
 - campaign_id: campaign_us100_task_surface_scout_v0
   status: decision_replay_judgment_closed_no_candidate
@@ -120,7 +124,9 @@ campaign_results:
   evidence_class: legacy_decision_replay_judgment
   candidate_count: 0
   l5_candidate_count: 0
+  candidate_ids: []
+  l5_candidate_ids: []
   forbidden_claims_respected: true
 findings: []
 claim_effect: research_cycle_closeout_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: e442f52fa5f79f55154c14be60d976f80bf2c250d1d3378aef6e2c0241802b27
+output_sha256: cb985285b5decbffb866ce09fe8943159b2c9cceb2365f603398e281d37fbccc
