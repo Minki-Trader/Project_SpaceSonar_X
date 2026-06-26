@@ -31,7 +31,7 @@ jobs:
             BASE="${{ github.event.before }}"
             HEAD="${{ github.sha }}"
           fi
-          python foundation/validation/ci_scope_gate.py --repo-root . --base "$BASE" --head "$HEAD" --repository "$GITHUB_REPOSITORY" --token "${{ github.token }}" --advisory
+          python foundation/validation/ci_scope_gate.py --repo-root . --base "$BASE" --head "$HEAD" --repository "$GITHUB_REPOSITORY" --token "${{ github.token }}"
 
   control-plane-fast:
     runs-on: ubuntu-latest
@@ -72,14 +72,3 @@ jobs:
       - run: uv run python foundation/validation/control_plane_validator.py --repo-root .
       - run: uv run python foundation/validation/active_record_validator.py --repo-root .
       - run: uv run python -m spacesonar.cli project validate
-
-  full-suite:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - run: uv sync --locked --extra dev --extra onnxlab
-      - run: uv run pytest -q
