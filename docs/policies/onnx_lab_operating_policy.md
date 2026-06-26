@@ -113,6 +113,17 @@ The lab is attempt-first, not bureaucracy-first.
 - Use a thin first pass: one fixture, one representative run, one export smoke, one parser smoke, or one MT5 micro-path when that is enough to prove or falsify the path.
 - Scale to broader execution only after the thin path is real, the surface remains useful, or the claim boundary requires it.
 - Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are for shared-contract edits, source-of-truth drift, campaign/wave boundary closeout, or protected runtime/economics/handoff claims.
+- Ordinary campaign-closeout PRs may use scoped partial CI only after the
+  `ci-scope-gate` activation step, and only when changed paths are limited to
+  campaign-local evidence, closeout records, clue memory, negative memory, and
+  approved campaign-local registries.
+- Full regression remains required for shared-control, evaluator, validation,
+  migration, policy, workspace, wave, goal, runtime-truth, dependency, workflow,
+  or protected-claim changes. Protected claims include runtime authority,
+  economics pass, live readiness, selected baseline, production deployment, and
+  reviewed or verified pass.
+- During the bootstrap step, `ci-scope-gate` is advisory and the existing
+  automatic `full-suite` control-plane job remains in place.
 - For ordinary run-local learning, update the local manifest, receipt, lineage, metrics, or campaign-local summary first. Global indexes can wait until the boundary unless the index is the current source of truth.
 - The mandatory L4 rule still stands for every valid proxy/model-bearing run. It may be executed in bounded materialization and probe batches rather than folded into the first proxy or adapter attempt.
 - A minimal adapter is not a shortcut to claim success. It only proves that the path can be tested; stronger claims still need the matching evidence.

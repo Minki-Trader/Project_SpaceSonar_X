@@ -23,6 +23,25 @@ main_integration_policy:
 
 This stabilization patch uses the boundary event `control_plane_stabilization`.
 
+## Scoped CI Bootstrap
+
+Campaign-local closeout PRs may eventually use scoped partial CI when the changed
+paths are limited to campaign evidence, campaign closeout records, clue memory,
+negative memory, and the approved campaign-local registries.
+
+That policy is bootstrapped in two steps:
+
+- PR A adds the manual `full-regression` workflow and the `ci-scope-gate` classifier
+  in advisory mode while keeping the existing `full-suite` control-plane job.
+- PR B may remove the automatic `full-suite` job and make `ci-scope-gate` a
+  required check only after PR A is merged and a same-head manual full regression
+  can be recorded for PR B.
+
+The scope gate must require full regression for shared-control, evaluator,
+policy, registry, workspace, wave, goal, runtime-truth, dependency, workflow, or
+protected-claim changes. A missing manual full-regression run cannot silently
+pass once the gate is active.
+
 ## Worktree Fit Rule
 
 Before file edits, check that the current branch/worktree matches the requested work item.

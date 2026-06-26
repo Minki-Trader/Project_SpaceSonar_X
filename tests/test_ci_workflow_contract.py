@@ -19,7 +19,7 @@ def test_control_plane_workflow_contains_full_suite_job() -> None:
 
     jobs = workflow["jobs"]
 
-    assert {"control-plane-fast", "unit", "evidence-graph-full", "full-suite"} <= set(jobs)
+    assert {"ci-scope-gate", "control-plane-fast", "unit", "evidence-graph-full", "full-suite"} <= set(jobs)
 
 
 def test_full_suite_runs_complete_pytest() -> None:
@@ -30,6 +30,32 @@ def test_full_suite_runs_complete_pytest() -> None:
 
     assert "uv sync --locked --extra dev --extra onnxlab" in commands
     assert "uv run pytest -q" in commands
+
+
+def test_full_regression_workflow_is_manual_and_runs_complete_pytest() -> None:
+    workflow = _load_yaml(".github/workflows/full-regression.yml")
+
+    assert workflow.get("on", workflow.get(True)) == {"workflow_dispatch": None}
+
+    steps = workflow["jobs"]["full-regression"]["steps"]
+    commands = [step.get("run") for step in steps if isinstance(step, dict)]
+
+    assert "uv sync --locked --extra dev --extra onnxlab" in commands
+    assert "uv run pytest -q" in commands
+
+
+def test_ci_scope_gate_is_advisory_during_bootstrap() -> None:
+    workflow = _load_yaml(".github/workflows/control-plane.yml")
+
+    steps = workflow["jobs"]["ci-scope-gate"]["steps"]
+    commands = [step.get("run") for step in steps if isinstance(step, dict)]
+
+    assert any(
+        command
+        and "foundation/validation/ci_scope_gate.py" in command
+        and "--advisory" in command
+        for command in commands
+    )
 
 
 def test_post_wp08_agent_observation_proof_updates_wave_progression_readiness() -> None:
