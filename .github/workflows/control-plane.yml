@@ -13,15 +13,25 @@ permissions:
   pull-requests: read
 
 jobs:
-  pr-regression-gate:
-    if: github.event_name == 'pull_request'
+  ci-scope-gate:
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/codex/'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: python foundation/validation/full_regression_gate.py --repo-root . --event-path "$GITHUB_EVENT_PATH" --repository "$GITHUB_REPOSITORY" --head-sha "${{ github.event.pull_request.head.sha }}" --token "${{ github.token }}"
+      - run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
+          fi
+          python foundation/validation/ci_scope_gate.py --repo-root . --base "$BASE" --head "$HEAD" --repository "$GITHUB_REPOSITORY" --token "${{ github.token }}"
 
   control-plane-fast:
     runs-on: ubuntu-latest

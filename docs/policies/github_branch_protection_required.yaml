@@ -9,18 +9,27 @@ target_branch: main
 required_settings:
   pull_request_required: true
   required_checks:
-    - pr-regression-gate
     - control-plane-fast
     - unit
     - evidence-graph-full
+    - ci-scope-gate
   full_regression:
     workflow: .github/workflows/full-regression.yml
-    classifier: foundation/validation/full_regression_gate.py
+    classifier: foundation/validation/ci_scope_gate.py
     required_for_campaign_closeout_merge: conditional_by_scope_classifier
     trigger: workflow_dispatch
     claim_effect: full_regression_verified_only_after_successful_manual_run
+    override:
+      path: docs/ci/full_regression_override.yaml
+      required_fields:
+        - head_sha
+        - reason
+        - approved_by_user
+        - claim_boundary
     partial_ci_allowed_only_for:
       - campaign_local_evidence_or_closeout_without_protected_claim
+      - lab_memory_clue_or_negative_memory_without_protected_claim
+      - approved_campaign_clue_negative_or_artifact_register_without_protected_claim
     protected_path_scopes:
       - .github/workflows/**
       - AGENTS.md
@@ -30,12 +39,15 @@ required_settings:
       - foundation/evaluation/**
       - foundation/validation/**
       - foundation/migrations/**
+      - foundation/mt5/**
       - docs/agent_control/**
       - docs/policies/**
-      - docs/registers/**
+      - docs/registers/goal_registry.csv
+      - docs/registers/wave_registry.csv
+      - docs/registers/candidate_registry.csv
       - docs/workspace/**
-      - lab/waves/**
       - lab/goals/**
+      - lab/waves/**
       - lab/templates/**
       - runtime/mt5_attempts/**/attempt_manifest.yaml
       - runtime/mt5_attempts/**/tester_report_receipt.yaml

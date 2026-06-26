@@ -7,10 +7,10 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_PR_CHECKS = [
-    "pr-regression-gate",
     "control-plane-fast",
     "unit",
     "evidence-graph-full",
+    "ci-scope-gate",
 ]
 SCOPED_UNIT_COMMAND = (
     "uv run pytest tests/test_runtime_completion_contract.py "
@@ -60,11 +60,11 @@ def test_control_plane_pr_push_path_uses_scoped_pytest_not_full_regression() -> 
 def test_control_plane_pr_path_runs_scope_classifier_gate() -> None:
     workflow = _load_yaml(".github/workflows/control-plane.yml")
 
-    gate = workflow["jobs"]["pr-regression-gate"]
+    gate = workflow["jobs"]["ci-scope-gate"]
     commands = [step.get("run") for step in gate["steps"] if isinstance(step, dict)]
 
-    assert gate["if"] == "github.event_name == 'pull_request'"
-    assert any("foundation/validation/full_regression_gate.py" in command for command in commands if command)
+    assert gate["if"] == "github.event_name == 'pull_request' || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/codex/'))"
+    assert any("foundation/validation/ci_scope_gate.py" in command for command in commands if command)
     assert workflow["permissions"] == {
         "actions": "read",
         "contents": "read",
@@ -127,7 +127,8 @@ def test_main_integration_readiness_records_verified_remote_protection() -> None
     assert branch_protection["required_settings"]["required_checks"] == REQUIRED_PR_CHECKS
     full_regression = branch_protection["required_settings"]["full_regression"]
     assert full_regression["workflow"] == ".github/workflows/full-regression.yml"
-    assert full_regression["classifier"] == "foundation/validation/full_regression_gate.py"
+    assert full_regression["classifier"] == "foundation/validation/ci_scope_gate.py"
     assert full_regression["required_for_campaign_closeout_merge"] == "conditional_by_scope_classifier"
     assert full_regression["trigger"] == "workflow_dispatch"
     assert full_regression["claim_effect"] == "full_regression_verified_only_after_successful_manual_run"
+    assert full_regression["override"]["path"] == "docs/ci/full_regression_override.yaml"
