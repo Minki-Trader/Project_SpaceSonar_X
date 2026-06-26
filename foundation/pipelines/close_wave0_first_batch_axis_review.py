@@ -188,52 +188,7 @@ def build_records(now: str, run_rows: list[dict], counts: dict[str, int]) -> tup
     ]
     pathq_runs = [row["run_id"] for row in preserved if row["cell_id"] == "wave0_cell_008"]
 
-    agent_dispositions = [
-        {
-            "agent": "agent_05_data_feature_contract",
-            "role_mode": "data_feature_contract_adversarial_check",
-            "opinion_classification": "accepted_with_boundary",
-            "accepted_points": [
-                "preserve tradeability h6/h12 as strongest repeated clue",
-                "treat session_calendar h3 as diagnostic/control until repaired",
-                "require effective event count and split-boundary purge in next spec",
-            ],
-            "unresolved_material_objections": [],
-        },
-        {
-            "agent": "agent_06_quant_research",
-            "role_mode": "quant_research_design",
-            "opinion_classification": "accepted",
-            "accepted_points": [
-                "next axis should rotate plus mix, not select or promote",
-                "second batch should be tradeability-centered multi-axis surface rotation",
-                "weak direct return and ATR surfaces are memory with reopen conditions, not permanent rejection",
-            ],
-            "unresolved_material_objections": [],
-        },
-        {
-            "agent": "agent_07_model_validation_risk",
-            "role_mode": "model_validation_risk_check",
-            "opinion_classification": "accepted",
-            "accepted_points": [
-                "011 h6 causal_regime logistic is lower-complexity anchor",
-                "012 h12 multiscale boosted is paired challenger",
-                "predeclare threshold bands and adjacent-threshold sensitivity before next evaluation",
-            ],
-            "unresolved_material_objections": [],
-        },
-        {
-            "agent": "agent_04_evidence_control_plane",
-            "role_mode": "evidence_closeout_check",
-            "opinion_classification": "accepted",
-            "accepted_points": [
-                "write one sweep-level axis review source record",
-                "write clue memory records but no candidate records",
-                "reconcile stale registry statuses and write exactly one next_work_item",
-            ],
-            "unresolved_material_objections": [],
-        },
-    ]
+    advisory_dispositions: list[dict[str, object]] = []
 
     axis_review = {
         "version": "axis_review_v1",
@@ -313,11 +268,11 @@ def build_records(now: str, run_rows: list[dict], counts: dict[str, int]) -> tup
             },
         ],
         "agent_consultation": {
-            "selected_agents": [item["agent"] for item in agent_dispositions],
-            "why_not_smaller": "axis rotation after preserved clues is material and opens a new bounded design item",
-            "why_not_larger": "no protected claim, runtime authority, candidate closeout, or policy change",
-            "claim_effect": "advisory_only_no_reviewed_pass",
-            "dispositions": agent_dispositions,
+            "selected_agents": [],
+            "why_not_smaller": "Codex solo is the only active allocation after Task Force/sub-agent decommissioning.",
+            "why_not_larger": "Task Force/sub-agent spawning is disabled by docs/policies/agent_allocation_policy.md.",
+            "claim_effect": "solo_execution_only_no_task_force_review_claim",
+            "dispositions": advisory_dispositions,
         },
         "data_integrity": {
             "data_source": "dataset_raw_us100_m5_wave0_export_20260621T152827Z via row_membership_manifest",

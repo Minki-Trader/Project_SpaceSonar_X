@@ -9,6 +9,7 @@ from foundation.pipelines.run_wave0_l4_mt5_attempts import (
     normalize_l4_terminal_summary,
     parse_args,
     parse_score_telemetry,
+    runtime_contract_value,
     selected_attempt_rows,
     upsert_ini_line,
 )
@@ -102,6 +103,19 @@ def test_parse_score_telemetry_empty_csv_is_not_observed(tmp_path: Path) -> None
     parsed = parse_score_telemetry(telemetry)
 
     assert parsed == {"row_count": 0, "status": "empty_telemetry"}
+
+
+def test_runtime_contract_value_reads_completion_surface_scope_from_runtime_contract() -> None:
+    manifest = {
+        "runtime_surface_contract": {"completion_surface_scope": "full_period_deterministic"},
+        "period_identity": {},
+        "execution_identity": {},
+        "runtime_probe_routing": {},
+    }
+
+    value = runtime_contract_value(manifest, {}, "completion_surface_scope")
+
+    assert value == "full_period_deterministic"
 
 
 def test_l4_terminal_summary_normalization_removes_fixed_fixture_claim_text() -> None:

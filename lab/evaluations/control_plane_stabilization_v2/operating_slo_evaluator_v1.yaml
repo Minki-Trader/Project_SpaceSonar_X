@@ -1,6 +1,6 @@
 version: evaluator_result_v1
 evaluator_id: operating_slo_evaluator_v1
-executed_at_utc: '2026-06-25T16:48:43Z'
+executed_at_utc: '2026-06-26T18:26:24Z'
 input_hashes:
 - path: docs/policies/codex_operating_slo.yaml
   sha256: 568e17e3ee836f4f69f39af236ecfd15590757043507fc1e5c34eb9d142db4df
@@ -9,14 +9,14 @@ input_hashes:
   sha256: 4a75dec8f64a57a161f1be6149fb8bcae738b8ecca57c7647689ad70f8535839
   size_bytes: 5293
 - path: docs/workspace/workspace_state.yaml
-  sha256: 32b1c72409a9601bc86e4a58598b5c893d6a2a6b287980ad6b53b54a214686f9
+  sha256: 840f2a77eacca9cc51ec46155a0a3f4c28734b182f3e6213bd98ec61656de3b3
   size_bytes: 1469
 - path: docs/agent_control/policy_contract.yaml
   sha256: 34e11b2e31583b92c1d59e42b807fc80dd80c325ecf24cc3aadaa691ff30d5d8
   size_bytes: 2932
 - path: docs/agent_control/work_family_registry.yaml
-  sha256: 84d0105b4539db1ed1af6d7db3e7ce6103c1e411756ce66cf084e10aafaeba28
-  size_bytes: 13292
+  sha256: 9b7a3ead30465565ea706ea5cdc0b8322299350caff54724e0b494a884bbafa7
+  size_bytes: 13207
 implementation_hashes:
 - path: foundation/evaluation/agent_value_evaluator.py
   sha256: 9dea77a2cc7dda9a142ccaffb328450bfc7687a233bec9d468af62451c1ae06e
@@ -36,7 +36,7 @@ implementation_hashes:
 status: passed
 metrics:
   cold_reentry_truth_files: 4
-  cold_reentry_context_bytes: 22986
+  cold_reentry_context_bytes: 22901
   durable_transaction_receipt_count: 1
   transaction_idempotency_probe_count: 1
   transaction_idempotency_pass_count: 1
@@ -59,4 +59,4 @@ metrics:
   tracked_ignored_artifact_count: 0
 findings: []
 claim_effect: operating_slo_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: f7f6d510f00e7ab00181ad0068026b793b9119ba7e023e481ffe830914d2a02f
+output_sha256: d189cce3d7c60d739c2b3147f511833a26797d5ac2463deabe32b6a9e241b4ef

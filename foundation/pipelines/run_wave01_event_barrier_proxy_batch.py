@@ -21,6 +21,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from foundation.features.wave01_event_barrier_features import FeatureSchema, build_wave01_features
+from foundation.evaluation.kpi_ledger_builder import upsert_proxy_kpi_for_run
 from foundation.labels.wave01_event_barrier_labels import LabelSchema, build_wave01_labels
 from foundation.training.wave01_event_barrier_models import (
     ProxyFit,
@@ -1031,6 +1032,16 @@ def update_registry_row(path: Path, key_field: str, key: str, updates: dict[str,
     write_csv(path, rows, fieldnames)
 
 
+def write_proxy_kpi_records(results: list[dict[str, Any]]) -> None:
+    for result in results:
+        upsert_proxy_kpi_for_run(
+            REPO_ROOT,
+            campaign_id=CAMPAIGN_ID,
+            run_id=str(result["run_id"]),
+            l4_pair_id=str(result.get("run_spec_id") or result["run_id"]),
+        )
+
+
 def update_yaml_records(results: list[dict[str, Any]]) -> None:
     result_counts = dict(sorted(Counter(result["result_judgment"] for result in results).items()))
     campaign_dir = REPO_ROOT / "lab/campaigns/campaign_us100_event_barrier_decision_surface_v0"
@@ -1094,6 +1105,7 @@ def update_yaml_records(results: list[dict[str, Any]]) -> None:
             "notes": "first proxy observations executed; L4 missing by design and required next",
         },
     )
+    write_proxy_kpi_records(results)
 
 
 def write_closeout(results: list[dict[str, Any]]) -> None:

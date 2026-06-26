@@ -400,6 +400,30 @@ def test_report_mtime_before_launch_is_stale(tmp_path: Path) -> None:
     assert report_is_completed(receipt) is False
 
 
+def test_same_hash_report_with_mtime_changed_after_launch_is_fresh(tmp_path: Path) -> None:
+    report = tmp_path / "attempt_wave01_fixture_l4_validation_v0_tester_report.html"
+    report.write_text(report_text(), encoding="utf-8")
+    before_launch = utc_timestamp("2020-01-01T00:00:00Z")
+    os.utime(report, (before_launch, before_launch))
+    prelaunch = [snapshot_report_candidate(report, "portable_terminal_root")]
+    after_launch = utc_timestamp("2020-01-01T00:00:02Z")
+    os.utime(report, (after_launch, after_launch))
+
+    receipt = build_tester_report_receipt(
+        attempt_id="attempt_wave01_fixture_l4_validation_v0",
+        report_path=report,
+        source_origin="portable_terminal_root",
+        launch_started_at_utc="2020-01-01T00:00:01Z",
+        prelaunch_candidates=prelaunch,
+        expected_identity=expected_identity(),
+    )
+
+    assert receipt["source_report_sha256"] == receipt["prelaunch_report_sha256"]
+    assert receipt["freshness_reason"] == "mtime_changed_after_launch_same_hash"
+    assert receipt["report_fresh_for_launch"] is True
+    assert report_is_completed(receipt) is True
+
+
 def test_missing_expected_identity_field_fails(tmp_path: Path) -> None:
     expected = expected_identity()
     expected["expert"] = ""

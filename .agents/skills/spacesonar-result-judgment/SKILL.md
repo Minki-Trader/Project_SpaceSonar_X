@@ -13,6 +13,10 @@ Use this skill when a run, model, bundle, package, backtest, PR, or user-facing 
 - `evidence_paths`
 - `metric_identity`
 - `comparison_baseline`
+- `tested_factor`
+- `kpi_interpretation`
+- `directional_effect_hypothesis`
+- `attribution_confidence`
 - `judgment_label`
 - `claim_boundary`
 - `missing_evidence`
@@ -37,6 +41,9 @@ Use this skill when a run, model, bundle, package, backtest, PR, or user-facing 
 ## Guardrails
 
 - Negative is interpretable evidence.
+- KPI-bearing judgments must include a performance-attribution pass: tested factor, observed KPI movement, likely effect hypothesis, confidence, and next probe.
+- Do not close a KPI result with only the headline outcome; name what experimental item was changed and what effect it appears to have under the stated boundary.
+- Effect language is exploratory unless controls, matched scope, sufficient samples, and proxy/runtime evidence support a stronger claim.
 - Invalid means the setup cannot be interpreted after a repair or reinterpretation attempt, or the attempt blocker is recorded.
 - Try-first disposition: before blocked, deferred, invalid, or discarded, identify why the attempt failed, reproduce the failing layer, try the smallest credible fix/fallback under repo control, and record evidence plus reopen condition.
 - Explanation-only closeout is forbidden: diagnosis text, advisory notes, missing-helper observations, or agent consensus do not count as repair/fallback attempts.

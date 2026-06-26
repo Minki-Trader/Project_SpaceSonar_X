@@ -14,6 +14,10 @@
 ## Rules
 
 - A judgment must include claim boundary, evidence path, and missing evidence.
+- A KPI-bearing judgment must include KPI interpretation, not just KPI values.
+- KPI interpretation must connect tested factor, observed KPI movement, comparison baseline, likely effect hypothesis, attribution confidence, evidence limits, and next probe.
+- If the changed variable, data scope, or comparison baseline is unclear, the KPI interpretation is low-confidence or inconclusive.
+- Do not state a causal effect unless controls, matched sample scope, enough observations, and matching proxy/runtime evidence support it. Otherwise phrase the effect as an exploratory hypothesis.
 - `negative` is reusable evidence when the setup is valid.
 - `invalid` is not interpreted until the broken condition is repaired.
 - Missing required verification lowers the claim to `inconclusive`, `blocked`, or a narrower boundary.

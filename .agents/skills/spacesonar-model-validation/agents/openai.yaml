@@ -1,6 +1,6 @@
 interface:
   display_name: "SpaceSonar Model Validation"
-  short_description: "Validate model, threshold, calibration, split, WFO, overfit, and selection claims."
-  default_prompt: "Use $spacesonar-model-validation for model training, threshold selection, ranking, calibration, split, WFO, overfit, or model comparison claims."
+  short_description: "Validate model, threshold, calibration, split, WFO, overfit, selection bias, and runtime-boundary claims."
+  default_prompt: "Use $spacesonar-model-validation for model training, threshold selection, ranking, calibration, split, WFO, overfit, model comparison, top-N selection, regime concentration, proxy/runtime, or promotion claims."
 policy:
   allow_implicit_invocation: true

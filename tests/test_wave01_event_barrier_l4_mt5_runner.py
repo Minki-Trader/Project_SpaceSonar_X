@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 
+import yaml
+
 import foundation.pipelines.run_wave0_l4_mt5_attempts as base
+from foundation.validation.kpi_ledger_validator import validate as validate_kpi_ledgers
 from foundation.pipelines.run_wave01_event_barrier_l4_mt5_attempts import (
+    CAMPAIGN_ID,
     CLAIM_BOUNDARY,
     OUTPUT_DIR,
     PREP_INDEX,
@@ -13,6 +18,7 @@ from foundation.pipelines.run_wave01_event_barrier_l4_mt5_attempts import (
     normalize_attempt_outputs,
     normalize_summary,
     parse_args,
+    write_mt5_kpi_records,
 )
 
 
@@ -122,3 +128,68 @@ def test_l4_score_probe_adapter_declares_wave01_base_features() -> None:
         assert f'column == "{feature_name}"' in source
     assert "TrueRangeAt" in source
     assert "MeanTrueRange" in source
+
+
+def write_yaml(path: Path, payload: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+
+
+def test_wave01_runner_keeps_score_probe_out_of_mt5_kpi_records(tmp_path: Path) -> None:
+    attempt_id = "attempt_wave01_eb_cell_001_l4_validation_v0"
+    run_id = "onnxlab_wave01_eb_cell_001_event_barrier_surface_v0"
+    write_yaml(
+        tmp_path / "lab" / "campaigns" / CAMPAIGN_ID / "campaign_manifest.yaml",
+        {
+            "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
+            "wave_ids": ["wave_us100_closedbar_surface_cartography_v0"],
+            "experiment_design": {
+                "surface_id": "surface_us100_event_barrier_decision_surface_v0",
+                "sweep_id": "sweep_us100_event_barrier_broad_v0",
+            },
+        },
+    )
+    write_yaml(
+        tmp_path / "runtime" / "mt5_attempts" / attempt_id / "attempt_manifest.yaml",
+        {
+            "attempt_id": attempt_id,
+            "run_id": run_id,
+            "bundle_id": "bundle_demo_v0",
+            "period_identity": {"period_role": "validation"},
+            "execution_identity": {"non_trading_probe": True},
+            "runtime_surface_contract": {"runtime_surface_kind": "score_probe"},
+        },
+    )
+    write_yaml(
+        tmp_path / "runtime" / "mt5_attempts" / attempt_id / "score_telemetry_summary.yaml",
+        {
+            "attempt_id": attempt_id,
+            "run_id": run_id,
+            "bundle_id": "bundle_demo_v0",
+            "period_role": "validation",
+            "stats": {"row_count": 42},
+        },
+    )
+    contract = Path("docs/contracts/kpi_ledger_contract.yaml").read_text(encoding="utf-8")
+    (tmp_path / "docs" / "contracts").mkdir(parents=True)
+    (tmp_path / "docs" / "contracts" / "kpi_ledger_contract.yaml").write_text(contract, encoding="utf-8")
+
+    write_mt5_kpi_records(
+        repo_root=tmp_path,
+        execution_rows=[{"attempt_id": attempt_id, "cell_id": "wave01_eb_cell_001"}],
+        created_at_utc="2026-06-26T00:00:00Z",
+    )
+
+    errors = validate_kpi_ledgers(tmp_path)
+    assert errors == []
+    rows = list(
+        csv.DictReader(
+            (tmp_path / "lab" / "campaigns" / CAMPAIGN_ID / "kpi" / "mt5_runtime_kpi_records.csv").open(encoding="utf-8")
+        )
+    )
+    assert rows == []
+    summary = yaml.safe_load(
+        (tmp_path / "lab" / "campaigns" / CAMPAIGN_ID / "kpi" / "kpi_summary.yaml").read_text(encoding="utf-8")
+    )
+    assert summary["kpi_policy"]["non_trading_score_probe_excluded_from_kpi_ledger"] is True
+    assert summary["record_counts"]["mt5_runtime_kpi_records"] == 0

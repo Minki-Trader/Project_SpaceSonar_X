@@ -23,6 +23,13 @@ budget:
   max_wallclock_hours: null
   max_repairs_per_surface: 1
   max_total_repairs_fraction: 0.15
+  l4_pair_budget: null
+  l4_budget_unit: validation_research_oos_pair
+  l4_required_period_roles:
+    - validation
+    - research_oos
+  l4_physical_attempt_count_policy: period_role_strategy_tester_executions_are_evidence_counts_not_budget_units
+  decision_replay_pair_budget: null
   repair_budget_policy: bounded_surface_or_parity_repair_only_not_single_candidate_extension
   repair_carryover_policy: forbidden_without_prior_new_surface_or_divergence_record
   neighborhood_perturbation_policy: meaningful_adjacent_variables_only

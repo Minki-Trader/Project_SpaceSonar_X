@@ -49,6 +49,7 @@ PROTECTED_PREFIXES = (
     "foundation/migrations/",
     "foundation/mt5/",
     "docs/agent_control/",
+    "docs/contracts/",
     "docs/policies/",
     "docs/workspace/",
     "lab/goals/",
@@ -245,12 +246,26 @@ def resolve_revision(repo_root: Path, revision: str) -> str:
     return _run_git(repo_root, ["rev-parse", "--verify", revision])
 
 
+def _revision_exists(repo_root: Path, revision: str) -> bool:
+    try:
+        _run_git(repo_root, ["rev-parse", "--verify", f"{revision}^{{commit}}"])
+    except RuntimeError:
+        return False
+    return True
+
+
+def _merge_base_against_main(repo_root: Path, head: str) -> str:
+    try:
+        return _run_git(repo_root, ["merge-base", "origin/main", head])
+    except RuntimeError:
+        return f"{head}^"
+
+
 def normalize_base_revision(repo_root: Path, base: str, head: str) -> str:
     if re.fullmatch(r"0+", base):
-        try:
-            return _run_git(repo_root, ["merge-base", "origin/main", head])
-        except RuntimeError:
-            return f"{head}^"
+        return _merge_base_against_main(repo_root, head)
+    if not _revision_exists(repo_root, base):
+        return _merge_base_against_main(repo_root, head)
     return base
 
 

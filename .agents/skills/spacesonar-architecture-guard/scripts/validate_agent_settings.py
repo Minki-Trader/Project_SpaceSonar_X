@@ -14,14 +14,12 @@ REQUIRED_PATHS = [
     "docs/workspace/lab_profile.yaml",
     "docs/agent_control/work_family_registry.yaml",
     "docs/agent_control/work_item.schema.yaml",
-    "docs/agent_control/codex_task_force_registry.yaml",
     "docs/agent_control/surface_registry.yaml",
     "docs/contracts/onnx_lab_contract.yaml",
     "docs/registers/run_registry.csv",
     "docs/registers/artifact_registry.csv",
     ".agents/skills",
     ".codex/config.toml",
-    ".codex/agents",
 ]
 
 OPENAI_YAML_REQUIRED_SECTIONS = {"interface", "policy"}
@@ -114,7 +112,10 @@ def check_openai_yaml(repo_root: Path, path: Path) -> list[str]:
 
 def check_toml(repo_root: Path) -> list[str]:
     errors: list[str] = []
-    for path in sorted((repo_root / ".codex" / "agents").glob("*.toml")):
+    agents_dir = repo_root / ".codex" / "agents"
+    if agents_dir.exists() and list(agents_dir.glob("*.toml")):
+        errors.append(".codex/agents must not contain custom agent TOML files because Task Force/sub-agents are disabled")
+    for path in sorted(agents_dir.glob("*.toml")) if agents_dir.exists() else []:
         try:
             data = tomllib.loads(read_text(path))
         except tomllib.TOMLDecodeError as exc:

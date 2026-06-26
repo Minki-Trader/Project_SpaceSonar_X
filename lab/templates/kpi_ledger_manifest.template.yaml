@@ -1,0 +1,48 @@
+version: kpi_ledger_manifest_v1
+ledger_id: kpi_ledger_<campaign_id>_v0
+ledger_scope: campaign
+schema_ref:
+  path: docs/contracts/kpi_ledger_contract.yaml
+  version: kpi_ledger_contract_v1
+scope_identity:
+  active_goal_id: <goal_id>
+  wave_id: <wave_id>
+  campaign_id: <campaign_id>
+  stage_kind: campaign_closeout
+source_artifacts: {}
+record_files:
+  proxy_kpi_records:
+    path: lab/campaigns/<campaign_id>/kpi/proxy_kpi_records.csv
+    sha256: <sha256>
+    row_count: 0
+  mt5_runtime_kpi_records:
+    path: lab/campaigns/<campaign_id>/kpi/mt5_runtime_kpi_records.csv
+    sha256: <sha256>
+    row_count: 0
+  proxy_mt5_comparison_records:
+    path: lab/campaigns/<campaign_id>/kpi/proxy_mt5_comparison_records.csv
+    sha256: <sha256>
+    row_count: 0
+summary:
+  path: lab/campaigns/<campaign_id>/kpi/kpi_summary.yaml
+  sha256: <sha256>
+  proxy_run_count: 0
+  mt5_attempt_count: 0
+  comparison_pair_count: 0
+  proxy_only_excluded_from_comparison_count: 0
+  missing_value_reason_counts: {}
+  authority_counts: {}
+kpi_policy:
+  fixed_schema: true
+  mt5_missing_is_repair_trigger_before_na: true
+  proxy_only_runs_excluded_from_comparison_ledger: true
+claim_boundary: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
+forbidden_claims:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - handoff_complete
+  - reviewed_verified_pass
+  - goal_achieve
+

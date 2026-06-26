@@ -74,6 +74,12 @@ def test_docs_policies_change_requires_full_regression(tmp_path: Path) -> None:
     assert decision.classification == FULL_REGRESSION_REQUIRED
 
 
+def test_docs_contracts_change_requires_full_regression(tmp_path: Path) -> None:
+    decision = _decision(tmp_path, {"docs/contracts/kpi_ledger_contract.yaml": "version: kpi_ledger_contract_v1\n"})
+
+    assert decision.classification == FULL_REGRESSION_REQUIRED
+
+
 def test_workflow_change_requires_full_regression(tmp_path: Path) -> None:
     decision = _decision(tmp_path, {".github/workflows/control-plane.yml": "name: control-plane\n"})
 
@@ -203,3 +209,20 @@ def test_stale_full_regression_evidence_from_another_sha_fails() -> None:
     runs = [{"head_sha": "other-sha", "conclusion": "success"}]
 
     assert not workflow_runs_include_success(runs, "head-sha")
+
+
+def test_missing_push_before_sha_falls_back_to_main_merge_base(tmp_path: Path, monkeypatch) -> None:
+    def fake_run_git(_repo_root: Path, args: list[str]) -> str:
+        if args == ["rev-parse", "--verify", "missing-base^{commit}"]:
+            raise RuntimeError("fatal: bad object missing-base")
+        if args == ["merge-base", "origin/main", "head-sha"]:
+            return "merge-base-sha"
+        if args == ["diff", "--name-only", "merge-base-sha", "head-sha"]:
+            return "foundation/validation/ci_scope_gate.py\n"
+        raise AssertionError(args)
+
+    monkeypatch.setattr(ci_scope_gate, "_run_git", fake_run_git)
+
+    assert ci_scope_gate.changed_files_between(tmp_path, "missing-base", "head-sha") == [
+        "foundation/validation/ci_scope_gate.py"
+    ]

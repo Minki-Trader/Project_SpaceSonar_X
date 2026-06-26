@@ -1,37 +1,29 @@
-# Agent Allocation Policy
+# Solo Execution Policy
 
-Purpose: keep Task Force usage active and phase-driven without treating agent agreement as evidence.
+Purpose: remove active Codex Task Force / sub-agent consultation from the lab workflow.
+
+## Current Rule
+
+- Codex works solo by default and for protected work.
+- Sub-agent / Task Force spawning is disabled.
+- There is no active Task Force roster, formal review mode, role-mode escalation, or consult receipt requirement.
+- Historical consult receipts remain historical evidence only. They do not create current review, pass, verification, or operating authority.
 
 ## Capacity
 
-`.codex/config.toml` `max_threads` is capacity only. It is not an instruction to fill all available threads, and it is not evidence.
+`.codex/config.toml` `max_threads` is capacity only. It is not an instruction to spawn agents, fill all available threads, or treat parallel advice as evidence.
 
-## Default Allocation
+## Review Replacement
 
-- Codex alone: default for direct edits and local verification.
-- One agent: narrow micro-consult for one specialized remit.
-- Two agents: two-remit checks, such as routing plus evidence or data plus runtime.
-- Three to four agents: policy, runtime, data, or architecture intersections where smaller routing would miss a material surface.
-- Full roster: major direction change, protected claim preparation, or user-requested deep full-team review only.
+Use repo-controlled checks instead of Task Force review:
 
-## Role Modes
+- selected project skills
+- source-of-truth manifests
+- validators and focused tests
+- KPI/evidence ledgers
+- claim-boundary rules
+- user review
 
-- `scout`: find experiment or design options without creating a claim.
-- `design`: shape implementation, interfaces, or evidence before edits.
-- `preflight`: check branch, scope, stale truth, and stop conditions before execution.
-- `adversarial_check`: look for counterarguments, leakage, missing evidence, or claim laundering.
-- `evidence_check`: specify receipts, manifests, hashes, and storage-contract requirements.
-- `runtime_check`: check ONNX/EA/MT5 meaning boundaries and probe requirements.
-- `closeout_check`: classify result boundary and forbidden claims after local evidence exists.
+## Claim Boundary
 
-## Receipt Requirements
-
-Agent receipts must record selected agents, role modes, selection reason, why the route was not smaller, why it was not larger, critical agents not selected, not-selected claim effect, and claim boundary.
-
-Agent output is advisory only. Codex owns final direction after local verification.
-
-## Acceptance Gate
-
-Parent Codex must not accept agent advice verbatim. Before using it, Codex records whether repo source-of-truth files, selected skill rules, active workspace state, and user constraints were checked.
-
-If advice conflicts with active project definitions, Codex rejects or rewrites the advice and records the conflict boundary. Agent consensus cannot override source-of-truth files.
+Agent consensus, old Task Force notes, or historical consult receipts cannot satisfy reviewed, verified, pass, runtime authority, economics pass, handoff, live readiness, or selected baseline claims.

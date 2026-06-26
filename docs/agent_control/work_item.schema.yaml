@@ -72,14 +72,7 @@ branch_actions_allowed:
   - create_or_use_worktree
   - block_and_report_mismatch
 
-agent_role_modes_allowed:
-  - scout
-  - design
-  - preflight
-  - adversarial_check
-  - evidence_check
-  - runtime_check
-  - closeout_check
+agent_role_modes_allowed: []
 
 fields:
   work_item_id:
@@ -186,7 +179,7 @@ fields:
       - user_constraints_checked
       - owner_accept_reject_or_rewrite_decision
       - claim_effect
-    rule: "Agent use is phase-driven and advisory unless a protected formal review is explicitly required. Parent Codex must source-check advice before adoption and must reject or rewrite conflicting advice."
+    rule: "Task Force/sub-agent spawning is disabled. Keep selected_agents and role_modes empty; use local skills, validators, source-of-truth files, and user review instead."
 
   execution_provenance:
     required_fields:

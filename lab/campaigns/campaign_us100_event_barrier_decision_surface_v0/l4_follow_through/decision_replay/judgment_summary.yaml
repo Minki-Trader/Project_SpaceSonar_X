@@ -5,8 +5,8 @@ parent_work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_event_barrier_decision_surface_v0
 sweep_id: sweep_us100_event_barrier_broad_v0
-created_at_utc: '2026-06-22T00:37:54Z'
-ended_at_utc: '2026-06-22T00:37:54Z'
+created_at_utc: '2026-06-26T14:15:00Z'
+ended_at_utc: '2026-06-26T14:16:31Z'
 status: wave01_decision_replay_judgment_completed_no_l5_candidates
 claim_boundary: wave01_event_barrier_decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
 counts:
@@ -15,12 +15,13 @@ counts:
   candidate_count: 0
   l5_candidate_count: 0
   tester_log_pair_observed_count: 5
-  tester_report_pair_observed_count: 0
+  tester_report_pair_observed_count: 5
+  tester_report_kpi_pair_observed_count: 5
   loss_in_both_periods_count: 5
   open_action_count: 48439
   close_action_count: 48347
   open_failed_count: 174
-  terminal_timeout_pair_count: 1
+  terminal_timeout_pair_count: 0
   decision_family_counts:
     breakout_entry_abstain_timeout_exit: 1
     fast_event_abstain_timeout_exit: 1
@@ -37,14 +38,11 @@ judgment:
   result_subject: Wave01 preserved-clue score-band decision replay over validation
     and research_oos
   judgment_label: negative
-  metric_identity: MT5 tester-log final_balance from score-band decision replay probes;
-    no tester report/equity/PF/DD claim
+  metric_identity: MT5 tester-log final_balance plus parsed Strategy Tester report
+    trades/PF/net/DD; observation only, no economics pass
   comparison_baseline: 500 USD initial deposit under us100_m5_fpmarkets_tester_execution_v0
   claim_boundary: wave01_event_barrier_decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
   missing_evidence:
-  - tester_reports_missing_for_all_decision_replay_pairs
-  - equity_curve_missing
-  - pf_dd_trade_list_metrics_missing
   - locked_final_oos_b_not_used
   - open_failed_actions_observed_requires_execution_audit_before_L5
   next_action: Record negative memory, keep candidate count at zero, and rotate to
@@ -57,7 +55,7 @@ runtime_contract_effect:
   required_period_roles:
   - validation
   - research_oos
-  standard_l4_completion: not_claimed_tester_reports_missing
+  standard_l4_completion: runtime_probe_completed_with_tester_report_kpis_no_runtime_authority
   l5_continuation: not_opened_loss_observed_and_no_candidate_evidence
   locked_final_oos_b: not_used
 prevention_memory:
@@ -65,8 +63,8 @@ prevention_memory:
   replay.
 - All direct-trade eligible Wave01 decision replay pairs lost in both validation and
   research_oos tester-log final balances.
-- Tester log final_balance may support negative memory, but report/equity evidence
-  is required before PF/DD/economics claims.
+- Parsed tester report PF/DD/trade metrics are observation evidence only and do not
+  create economics pass.
 - Open-failed actions are runtime friction evidence and must be audited before any
   future L5 review.
 - Do not carry this losing decision replay forward as a new campaign without a genuinely
@@ -82,22 +80,94 @@ artifact_outputs:
 environment:
   command_argv:
   - python
-  - foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py
-  - --write-control-records
+  - -c
+  - repair wave01 decision replay KPI/judgment projection
   cwd: .
-  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_executable: ${USERPROFILE}\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\.venv\Scripts\python.exe
   python_version: 3.13.9
   dependency_summary:
     python: 3.13.9
     yaml: 6.0.3
-  git_sha: 5b81b6df62a924132a591466140bddb4097f55ca
-  branch: codex/l4-pair-judgment-closeout
+  git_sha: e9748cac36de4b2c0d25ab9a909bbd73ed273441
+  branch: codex/l4-pair-budget-semantics
   dirty_flag: true
   changed_files:
-  - ?? foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py
-  - ?? tests/test_wave01_event_barrier_l4_decision_replay_judgment.py
-  started_at_utc: '2026-06-22T00:37:54Z'
-  ended_at_utc: '2026-06-22T00:37:54Z'
+  - M docs/policies/onnx_lab_operating_policy.md
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/workspace/lab_profile.yaml'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M foundation/config/mt5_runtime_probe_contract.yaml'
+  - ' M foundation/mt5/tester_report_receipt.py'
+  - ' M foundation/pipelines/judge_wave01_event_barrier_l4_decision_replay_results.py'
+  - ' M foundation/pipelines/open_wave01_event_barrier_decision_campaign.py'
+  - ' M foundation/pipelines/run_wave01_event_barrier_l4_mt5_attempts.py'
+  - ' M foundation/pipelines/run_wave01_event_barrier_proxy_batch.py'
+  - ' M foundation/pipelines/run_wave0_l4_mt5_attempts.py'
+  - ' M foundation/validation/ci_scope_gate.py'
+  - ' M foundation/validation/control_plane_validator.py'
+  - ' M lab/evaluations/control_plane_corrective_v3/runtime_contract_evaluator_v2.yaml'
+  - ' M lab/evaluations/control_plane_stabilization_v2/operating_slo_evaluator_v1.yaml'
+  - ' M lab/evaluations/control_plane_stabilization_v2/research_cycle_closeout_evaluator_v1.yaml'
+  - ' M lab/evaluations/control_plane_stabilization_v2/runtime_contract_evaluator_v2.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ' M lab/templates/wave_allocation.template.yaml'
+  - ' M lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml'
+  - ' M lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml'
+  - ' M tests/test_ci_scope_gate.py'
+  - ' M tests/test_runtime_evidence_truth_kernel.py'
+  - ' M tests/test_wave01_event_barrier_l4_decision_replay_judgment.py'
+  - ' M tests/test_wave01_event_barrier_l4_mt5_runner.py'
+  - ' M tests/test_wave0_l4_mt5_attempt_runner.py'
+  - ?? docs/contracts/kpi_ledger_contract.yaml
+  - ?? docs/policies/l4_budget_accounting_policy.md
+  - ?? foundation/evaluation/kpi_ledger_builder.py
+  - ?? foundation/evaluation/kpi_record_model.py
+  - ?? foundation/mt5/include/SpaceSonar_TradeShapeKpi.mqh
+  - ?? foundation/mt5/tester_report_kpi.py
+  - ?? foundation/validation/kpi_ledger_validator.py
+  - ?? lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/
+  - ?? lab/templates/kpi_ledger_manifest.template.yaml
+  - ?? lab/waves/wave_us100_closedbar_surface_cartography_v0/l4_budget_accounting_amendment.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_001_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_003_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_004_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_005_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_009_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_010_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_research_oos_v0/tester_report_kpi_summary.yaml
+  - ?? runtime/mt5_attempts/attempt_wave01_eb_cell_012_l4_validation_v0/tester_report_kpi_summary.yaml
+  - ?? tests/test_kpi_ledger_validator.py
+  - ?? tests/test_l4_budget_accounting_policy.py
+  started_at_utc: '2026-06-26T14:15:00Z'
+  ended_at_utc: '2026-06-26T14:16:31Z'
 forbidden_claims:
 - selected_baseline
 - runtime_authority
