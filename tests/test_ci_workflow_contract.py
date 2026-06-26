@@ -14,22 +14,38 @@ def _load_yaml(rel_path: str) -> dict:
     return data
 
 
-def test_control_plane_workflow_contains_full_suite_job() -> None:
+def test_control_plane_workflow_uses_scoped_gate_without_full_suite_job() -> None:
     workflow = _load_yaml(".github/workflows/control-plane.yml")
 
     jobs = workflow["jobs"]
 
-    assert {"ci-scope-gate", "control-plane-fast", "unit", "evidence-graph-full", "full-suite"} <= set(jobs)
+    assert {"ci-scope-gate", "control-plane-fast", "unit", "evidence-graph-full"} <= set(jobs)
+    assert "full-suite" not in jobs
 
 
-def test_full_suite_runs_complete_pytest() -> None:
+def test_ci_scope_gate_is_active_after_bootstrap() -> None:
     workflow = _load_yaml(".github/workflows/control-plane.yml")
 
-    steps = workflow["jobs"]["full-suite"]["steps"]
+    steps = workflow["jobs"]["ci-scope-gate"]["steps"]
     commands = [step.get("run") for step in steps if isinstance(step, dict)]
 
-    assert "uv sync --locked --extra dev --extra onnxlab" in commands
-    assert "uv run pytest -q" in commands
+    assert any(
+        command
+        and "foundation/validation/ci_scope_gate.py" in command
+        and "--advisory" not in command
+        for command in commands
+    )
+
+
+def test_branch_protection_required_checks_use_ci_scope_gate() -> None:
+    policy = _load_yaml("docs/policies/github_branch_protection_required.yaml")
+
+    assert policy["required_settings"]["required_checks"] == [
+        "control-plane-fast",
+        "unit",
+        "evidence-graph-full",
+        "ci-scope-gate",
+    ]
 
 
 def test_full_regression_workflow_is_manual_and_runs_complete_pytest() -> None:
@@ -42,20 +58,6 @@ def test_full_regression_workflow_is_manual_and_runs_complete_pytest() -> None:
 
     assert "uv sync --locked --extra dev --extra onnxlab" in commands
     assert "uv run pytest -q" in commands
-
-
-def test_ci_scope_gate_is_advisory_during_bootstrap() -> None:
-    workflow = _load_yaml(".github/workflows/control-plane.yml")
-
-    steps = workflow["jobs"]["ci-scope-gate"]["steps"]
-    commands = [step.get("run") for step in steps if isinstance(step, dict)]
-
-    assert any(
-        command
-        and "foundation/validation/ci_scope_gate.py" in command
-        and "--advisory" in command
-        for command in commands
-    )
 
 
 def test_post_wp08_agent_observation_proof_updates_wave_progression_readiness() -> None:

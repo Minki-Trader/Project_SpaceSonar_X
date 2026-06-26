@@ -23,24 +23,22 @@ main_integration_policy:
 
 This stabilization patch uses the boundary event `control_plane_stabilization`.
 
-## Scoped CI Bootstrap
+## Scoped Campaign Closeout CI
 
-Campaign-local closeout PRs may eventually use scoped partial CI when the changed
+Campaign-local closeout PRs may use scoped partial CI when the changed
 paths are limited to campaign evidence, campaign closeout records, clue memory,
 negative memory, and the approved campaign-local registries.
 
-That policy is bootstrapped in two steps:
+The CI policy uses two layers:
 
-- PR A adds the manual `full-regression` workflow and the `ci-scope-gate` classifier
-  in advisory mode while keeping the existing `full-suite` control-plane job.
-- PR B may remove the automatic `full-suite` job and make `ci-scope-gate` a
-  required check only after PR A is merged and a same-head manual full regression
-  can be recorded for PR B.
+- `ci-scope-gate` is a required check for pull requests and `codex/**` pushes.
+- `full-regression` remains a manual `workflow_dispatch` workflow for protected
+  changes that need a complete `uv run pytest -q` record.
 
 The scope gate must require full regression for shared-control, evaluator,
 policy, registry, workspace, wave, goal, runtime-truth, dependency, workflow, or
 protected-claim changes. A missing manual full-regression run cannot silently
-pass once the gate is active.
+pass.
 
 ## Worktree Fit Rule
 
