@@ -6,6 +6,16 @@ import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+REQUIRED_PR_CHECKS = [
+    "control-plane-fast",
+    "unit",
+    "evidence-graph-full",
+]
+SCOPED_UNIT_COMMAND = (
+    "uv run pytest tests/test_runtime_completion_contract.py "
+    "tests/test_wave01_runtime_truth_migration.py tests/control_plane "
+    "tests/test_routing_behavior.py -q"
+)
 
 
 def _load_yaml(rel_path: str) -> dict:
@@ -14,20 +24,46 @@ def _load_yaml(rel_path: str) -> dict:
     return data
 
 
-def test_control_plane_workflow_contains_full_suite_job() -> None:
+def _workflow_triggers(workflow: dict) -> dict:
+    triggers = workflow.get("on", workflow.get(True))
+    assert isinstance(triggers, dict)
+    return triggers
+
+
+def _job_commands(workflow: dict) -> list[str]:
+    commands: list[str] = []
+    for job in workflow["jobs"].values():
+        steps = job.get("steps", [])
+        commands.extend(step.get("run") for step in steps if isinstance(step, dict) and step.get("run"))
+    return commands
+
+
+def test_control_plane_workflow_contains_required_partial_gate_jobs() -> None:
     workflow = _load_yaml(".github/workflows/control-plane.yml")
 
     jobs = workflow["jobs"]
 
-    assert {"control-plane-fast", "unit", "evidence-graph-full", "full-suite"} <= set(jobs)
+    assert set(REQUIRED_PR_CHECKS) <= set(jobs)
+    assert "full-suite" not in jobs
 
 
-def test_full_suite_runs_complete_pytest() -> None:
+def test_control_plane_pr_push_path_uses_scoped_pytest_not_full_regression() -> None:
     workflow = _load_yaml(".github/workflows/control-plane.yml")
 
-    steps = workflow["jobs"]["full-suite"]["steps"]
-    commands = [step.get("run") for step in steps if isinstance(step, dict)]
+    commands = _job_commands(workflow)
 
+    assert SCOPED_UNIT_COMMAND in commands
+    assert "uv run pytest -q" not in commands
+
+
+def test_full_regression_workflow_is_manual_and_runs_complete_pytest() -> None:
+    workflow = _load_yaml(".github/workflows/full-regression.yml")
+    triggers = _workflow_triggers(workflow)
+    commands = _job_commands(workflow)
+
+    assert "workflow_dispatch" in triggers
+    assert "pull_request" not in triggers
+    assert "push" not in triggers
     assert "uv sync --locked --extra dev --extra onnxlab" in commands
     assert "uv run pytest -q" in commands
 
@@ -59,6 +95,7 @@ def test_wave_progression_readiness_ready_after_closeout_evidence_repair() -> No
 def test_main_integration_readiness_records_verified_remote_protection() -> None:
     ledger = _load_yaml("docs/migrations/control_plane_corrective_v3.yaml")
     remote_settings = _load_yaml("docs/policies/remote_repository_settings.yaml")
+    branch_protection = _load_yaml("docs/policies/github_branch_protection_required.yaml")
 
     assert ledger["remote_branch_protection"] == "verified"
     assert remote_settings["remote_branch_protection"] == "verified"
@@ -71,9 +108,10 @@ def test_main_integration_readiness_records_verified_remote_protection() -> None
         "force_push_disabled": True,
         "direct_push_restricted": True,
     }
-    assert ledger["main_integration_readiness"]["required_checks"] == [
-        "control-plane-fast",
-        "unit",
-        "evidence-graph-full",
-        "full-suite",
-    ]
+    assert branch_protection["required_settings"]["required_checks"] == REQUIRED_PR_CHECKS
+    assert branch_protection["required_settings"]["full_regression"] == {
+        "workflow": ".github/workflows/full-regression.yml",
+        "required_for_campaign_closeout_merge": False,
+        "trigger": "workflow_dispatch",
+        "claim_effect": "full_regression_verified_only_after_successful_manual_run",
+    }

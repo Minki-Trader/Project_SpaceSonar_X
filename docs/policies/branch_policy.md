@@ -52,6 +52,8 @@ At each boundary, prepare a coherent integration commit from the active `codex/`
 
 Main push cadence follows the same boundary events. A main update must represent the whole boundary state, not a partial run fragment. Intermediate run work can remain branch-local, dirty, or branch-committed when useful, but it should not be treated as main-integrated evidence until the boundary commit/push is complete.
 
+For campaign-closeout PRs, the default required merge checks are the scoped control-plane checks recorded in `docs/policies/github_branch_protection_required.yaml`. The complete pytest regression is not a default campaign-closeout merge gate; run it through the full-regression workflow or locally only when the closeout also needs wave-closeout, shared-contract, source-of-truth drift, or protected runtime/economics/handoff evidence.
+
 This cadence does not override the worktree fit rule. If the current branch/worktree does not match the boundary being opened or closed, resolve the mismatch before committing or pushing.
 
 ## Examples

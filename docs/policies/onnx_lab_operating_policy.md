@@ -112,7 +112,7 @@ The lab is attempt-first, not bureaucracy-first.
 - Start each new surface, repair, adapter, or runtime glue path with the smallest execution that can answer the immediate question.
 - Use a thin first pass: one fixture, one representative run, one export smoke, one parser smoke, or one MT5 micro-path when that is enough to prove or falsify the path.
 - Scale to broader execution only after the thin path is real, the surface remains useful, or the claim boundary requires it.
-- Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are for shared-contract edits, source-of-truth drift, campaign/wave boundary closeout, or protected runtime/economics/handoff claims.
+- Keep project-wide synchronization proportional. Scoped campaign closeout PRs default to relevant partial pytest and validators. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are for shared-contract edits, source-of-truth drift, wave closeout, user-directed full regression, or protected runtime/economics/handoff claims; campaign closeout escalates only when one of those conditions applies.
 - For ordinary run-local learning, update the local manifest, receipt, lineage, metrics, or campaign-local summary first. Global indexes can wait until the boundary unless the index is the current source of truth.
 - The mandatory L4 rule still stands for every valid proxy/model-bearing run. It may be executed in bounded materialization and probe batches rather than folded into the first proxy or adapter attempt.
 - A minimal adapter is not a shortcut to claim success. It only proves that the path can be tested; stronger claims still need the matching evidence.

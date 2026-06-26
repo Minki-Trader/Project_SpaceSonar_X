@@ -12,6 +12,11 @@ required_settings:
     - control-plane-fast
     - unit
     - evidence-graph-full
+  full_regression:
+    workflow: .github/workflows/full-regression.yml
+    required_for_campaign_closeout_merge: false
+    trigger: workflow_dispatch
+    claim_effect: full_regression_verified_only_after_successful_manual_run
   squash_merge_only: true
   direct_push: forbidden
   force_push: disabled
