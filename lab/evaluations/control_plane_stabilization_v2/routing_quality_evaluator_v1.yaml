@@ -1,13 +1,13 @@
 version: evaluator_result_v1
 evaluator_id: routing_quality_evaluator_v1
-executed_at_utc: '2026-06-24T13:27:02Z'
+executed_at_utc: '2026-06-26T18:01:16Z'
 input_hashes:
 - path: docs/agent_control/routing_behavior_cases.yaml
   sha256: 6d1de70c65151bcc132013290b803ea94e641875b59fb4ad00da48546765d3bf
   size_bytes: 11596
 - path: docs/agent_control/work_family_registry.yaml
-  sha256: 84d0105b4539db1ed1af6d7db3e7ce6103c1e411756ce66cf084e10aafaeba28
-  size_bytes: 13292
+  sha256: 9b7a3ead30465565ea706ea5cdc0b8322299350caff54724e0b494a884bbafa7
+  size_bytes: 13207
 implementation_hashes:
 - path: foundation/evaluation/routing_quality_evaluator.py
   sha256: f1f661ca14679137f4830e4412a71a0ff1943b9dd4a490b7af993bcf3b41e59d
@@ -34,4 +34,4 @@ metrics:
   invalid_routing_mode_count: 0.0
 findings: []
 claim_effect: routing_behavior_evaluated_no_runtime_or_economics_claim
-output_sha256: 64ce32e420836a27b9d9cd2c3ff6f2b28a6abc5c3489ac9b2806f038f54af97d
+output_sha256: e77dc491af9a74a1c44b5127551eed31ace05874ac90f14c08dd0083356fab9d

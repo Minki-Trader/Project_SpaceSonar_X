@@ -1,6 +1,4 @@
 from __future__ import annotations
-
-import shutil
 from pathlib import Path
 
 import yaml
@@ -12,15 +10,6 @@ from spacesonar.control_plane.agent_metrics import (
     write_agent_operating_events,
     write_agent_operating_metrics,
 )
-
-
-def _copy_registry(repo_root: Path, source_root: Path) -> None:
-    target = repo_root / "docs" / "agent_control"
-    target.mkdir(parents=True)
-    shutil.copyfile(
-        source_root / "docs" / "agent_control" / "codex_task_force_registry.yaml",
-        target / "codex_task_force_registry.yaml",
-    )
 
 
 def _write_progress(repo_root: Path, *, consult_created_at: str = "2026-06-24T00:30:00Z") -> None:
@@ -106,8 +95,6 @@ def _write_receipt(repo_root: Path, *, created_at_utc: str = "2026-06-24T00:30:0
 
 
 def test_agent_ratios_are_reproducible_from_progress_and_consult_items(tmp_path: Path) -> None:
-    source_root = Path(__file__).resolve().parents[1]
-    _copy_registry(tmp_path, source_root)
     _write_progress(tmp_path)
     _write_receipt(tmp_path)
     write_agent_operating_events(tmp_path)
@@ -131,8 +118,6 @@ def test_agent_ratios_are_reproducible_from_progress_and_consult_items(tmp_path:
 
 
 def test_out_of_boundary_consultation_is_excluded(tmp_path: Path) -> None:
-    source_root = Path(__file__).resolve().parents[1]
-    _copy_registry(tmp_path, source_root)
     _write_progress(tmp_path)
     _write_receipt(tmp_path, created_at_utc="2026-06-23T23:59:59Z")
     write_agent_operating_events(tmp_path)
@@ -145,8 +130,6 @@ def test_out_of_boundary_consultation_is_excluded(tmp_path: Path) -> None:
 
 
 def test_manually_edited_agent_metric_fails_projection_check(tmp_path: Path) -> None:
-    source_root = Path(__file__).resolve().parents[1]
-    _copy_registry(tmp_path, source_root)
     _write_progress(tmp_path)
     _write_receipt(tmp_path)
     write_agent_operating_events(tmp_path)

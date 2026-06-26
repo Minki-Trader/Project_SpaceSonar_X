@@ -27,6 +27,21 @@ exploration_coverage:
     - repair_only_wave_or_campaign
   single_axis_exception_policy: control_fixture_plumbing_runtime_micro_probe_or_bug_repair_only_with_lowered_claim_boundary
   novelty_claim: must_name_untried_or_underexplored_surface_before_opening
+kpi_interpretation_policy:
+  required_for_closeout: true
+  required_for_kpi_bearing_results: true
+  outcome_only_closeout_is_complete: false
+  required_chain:
+    - tested_factor_or_changed_variable
+    - kpi_scope
+    - observed_kpi_movement
+    - comparison_baseline
+    - directional_effect_hypothesis
+    - segment_checks
+    - evidence_limits
+    - attribution_confidence
+    - next_probe
+  claim_effect: exploratory_hypothesis_only_until_controls_and_runtime_evidence_support_stronger_claim
 bounded_synthesis:
   enabled: false
   source_scope: previous_material_only

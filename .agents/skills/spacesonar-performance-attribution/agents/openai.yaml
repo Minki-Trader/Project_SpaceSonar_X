@@ -1,7 +1,7 @@
 interface:
   display_name: "SpaceSonar Performance Attribution"
   short_description: "Decompose KPI changes by time, sample, tier, model, threshold, trade shape, drawdown, regime."
-  default_prompt: "Use $spacesonar-performance-attribution when KPI or behavior changes. Record observed change, baseline, likely drivers, segment checks, alternatives, confidence, and next probe."
+  default_prompt: "Use $spacesonar-performance-attribution whenever a KPI-bearing result is judged or a closeout is written. Record tested factor, observed KPI change, exploratory effect hypothesis, segment checks, alternatives, confidence, and next probe."
 policy:
-  allow_implicit_invocation: false
-  invocation_boundary: "explicit KPI delta, candidate comparison, segment attribution, or performance-driver analysis request only"
+  allow_implicit_invocation: true
+  invocation_boundary: "KPI-bearing result judgment, campaign/wave closeout, candidate comparison, segment attribution, or performance-driver analysis"

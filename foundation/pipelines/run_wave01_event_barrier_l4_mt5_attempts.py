@@ -13,6 +13,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 import foundation.pipelines.run_wave0_l4_mt5_attempts as base
+from foundation.evaluation.kpi_ledger_builder import upsert_mt5_kpi_for_attempt  # noqa: E402
 
 
 GOAL_ID = "goal_us100_onnx_forward_boundary_v0"
@@ -476,8 +477,25 @@ def write_execution_records(
     base.write_csv(repo_root / RUNTIME_INDEX, execution_rows, base.execution_index_fieldnames())
     base.write_yaml(repo_root / CLOSEOUT_PATH, build_closeout(summary))
     upsert_artifact_registry(repo_root, summary, execution_rows)
+    write_mt5_kpi_records(repo_root=repo_root, execution_rows=execution_rows, created_at_utc=summary.get("ended_at_utc"))
     if write_control_records:
         update_control_records(repo_root, summary)
+
+
+def write_mt5_kpi_records(
+    *,
+    repo_root: Path,
+    execution_rows: list[dict[str, Any]],
+    created_at_utc: str | None = None,
+) -> None:
+    for row in execution_rows:
+        upsert_mt5_kpi_for_attempt(
+            repo_root,
+            campaign_id=CAMPAIGN_ID,
+            attempt_id=str(row["attempt_id"]),
+            l4_pair_id=str(row.get("cell_id") or row["attempt_id"]),
+            created_at_utc=created_at_utc,
+        )
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

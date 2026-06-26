@@ -806,7 +806,13 @@ def update_wave(repo_root: Path, created_at: str) -> None:
     wave["claim_boundary"] = "wave01_campaign_002_open_no_candidate_no_baseline_no_runtime_authority"
     wave["next_action"] = NEXT_WORK_ID
     budget = wave.get("budget") or {}
-    budget["formal_mt5_strategy_tester_runs"] = 30
+    budget["formal_mt5_strategy_tester_runs"] = "superseded_by_l4_pair_budget"
+    budget["l4_pair_budget"] = budget.get("max_runs")
+    budget["l4_budget_unit"] = "validation_research_oos_pair"
+    budget["l4_required_period_roles"] = ["validation", "research_oos"]
+    budget["l4_physical_attempt_count_policy"] = (
+        "period_role_strategy_tester_executions_are_evidence_counts_not_budget_units"
+    )
     budget["runtime_probe_budget"] = "L4 mandatory for all valid proxy/model-bearing runs; L5 only when L4 remains promising"
     wave["budget"] = budget
 

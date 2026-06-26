@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import hashlib
-import os
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -9,6 +8,18 @@ from typing import Any
 import yaml
 
 from spacesonar.control_plane.store import filesystem_path
+
+
+TEXT_INPUT_HASH_SUFFIXES = {
+    ".csv",
+    ".json",
+    ".md",
+    ".py",
+    ".toml",
+    ".txt",
+    ".yaml",
+    ".yml",
+}
 
 
 def evaluation_time_utc() -> str:
@@ -43,12 +54,20 @@ def file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def evaluator_input_bytes(path: Path) -> bytes:
+    payload = Path(filesystem_path(path)).read_bytes()
+    if path.suffix.lower() in TEXT_INPUT_HASH_SUFFIXES:
+        return payload.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return payload
+
+
 def input_hash(repo_root: Path, rel_path: str) -> dict[str, Any]:
     path = repo_root / rel_path
+    payload = evaluator_input_bytes(path)
     return {
         "path": rel_path,
-        "sha256": file_sha256(path),
-        "size_bytes": os.stat(filesystem_path(path)).st_size,
+        "sha256": hashlib.sha256(payload).hexdigest(),
+        "size_bytes": len(payload),
     }
 
 

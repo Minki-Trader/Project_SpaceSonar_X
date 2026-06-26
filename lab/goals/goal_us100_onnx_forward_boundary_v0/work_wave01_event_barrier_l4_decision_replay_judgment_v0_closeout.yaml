@@ -2,7 +2,7 @@ version: work_closeout_v1
 work_item_id: work_wave01_event_barrier_l4_decision_replay_judgment_v0
 parent_work_item_id: work_wave01_event_barrier_l4_materialization_preflight_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-closed_at_utc: '2026-06-22T00:37:54Z'
+closed_at_utc: '2026-06-26T14:16:31Z'
 result_judgment: negative
 status: wave01_decision_replay_judgment_completed_no_l5_candidates
 claim_boundary: wave01_event_barrier_decision_replay_judgment_log_balance_only_no_runtime_authority_no_economics_pass_no_candidate
@@ -18,12 +18,13 @@ counts:
   candidate_count: 0
   l5_candidate_count: 0
   tester_log_pair_observed_count: 5
-  tester_report_pair_observed_count: 0
+  tester_report_pair_observed_count: 5
+  tester_report_kpi_pair_observed_count: 5
   loss_in_both_periods_count: 5
   open_action_count: 48439
   close_action_count: 48347
   open_failed_count: 174
-  terminal_timeout_pair_count: 1
+  terminal_timeout_pair_count: 0
   decision_family_counts:
     breakout_entry_abstain_timeout_exit: 1
     fast_event_abstain_timeout_exit: 1
@@ -37,9 +38,6 @@ counts:
   final_balance_pair_class_counts:
     loss_in_validation_and_research_oos: 5
 missing_evidence:
-- tester_reports_missing_for_all_decision_replay_pairs
-- equity_curve_missing
-- pf_dd_trade_list_metrics_missing
 - locked_final_oos_b_not_used
 - open_failed_actions_observed_requires_execution_audit_before_L5
 next_action: Record negative memory, keep candidate count at zero, and rotate to a

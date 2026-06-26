@@ -61,6 +61,18 @@ completion:
   required_period_roles:
     - validation
     - research_oos
+  l4_budget_accounting:
+    budget_unit: validation_research_oos_pair
+    required_period_roles_per_pair:
+      - validation
+      - research_oos
+    pair_identity_fields:
+      - campaign_id
+      - cell_id
+      - runtime_surface_kind
+    physical_attempt_count_meaning: one Strategy Tester execution for one required period role
+    pair_count_meaning: one declared L4 target observed across both validation and research_oos
+    budget_count_preference: use l4_pair_count or pair_group_count for L4 budget; use runtime_probe_complete_count only for physical execution coverage
   required_report_status: completed
   runtime_probe_completed_requires_all_required_period_roles: true
   runtime_probe_completed_requires_period_profile_id: true

@@ -1,0 +1,46 @@
+version: l4_budget_accounting_amendment_v1
+amendment_id: wave01_l4_pair_budget_accounting_v0
+created_at_utc: '2026-06-26T00:00:00Z'
+status: active_budget_interpretation
+claim_boundary: budget_accounting_interpretation_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+applies_to:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  wave_allocation: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  runtime_inventory: docs/migrations/runtime_graph_target_inventory_v1.yaml
+policy_refs:
+  - docs/policies/l4_budget_accounting_policy.md
+  - docs/policies/onnx_lab_operating_policy.md
+  - foundation/config/mt5_runtime_probe_contract.yaml
+decision:
+  l4_budget_unit: validation_research_oos_pair
+  required_period_roles_per_pair:
+    - validation
+    - research_oos
+  pair_identity_fields:
+    - campaign_id
+    - cell_id
+    - runtime_surface_kind
+  physical_attempt_count_meaning: one Strategy Tester execution for one required period role
+  pair_count_meaning: one declared L4 target observed across both validation and research_oos
+  budget_count_preference: use pair counts for budget; use attempt counts only for physical execution coverage
+wave01_accounting:
+  wave_max_proxy_run_budget: 48
+  standard_l4_pair_count: 34
+  standard_l4_physical_attempt_count: 68
+  decision_replay_pair_count: 9
+  decision_replay_physical_attempt_count: 18
+  total_l4_pair_count_including_decision_replay: 43
+  total_physical_mt5_attempt_count: 86
+  remaining_l4_pair_budget_if_decision_replay_included: 5
+  budget_judgment_if_decision_replay_included: under_by_5_pairs
+compatibility_notes:
+  closed_wave_allocation_formal_mt5_strategy_tester_runs: historical_soft_estimate_not_hard_l4_budget_cap
+  closed_source_inputs_policy: do_not_rewrite_closed_wave_allocation_or_goal_manifest_for_this_interpretation
+  future_wave_policy: new wave allocations must use l4_pair_budget and l4_budget_unit for L4 budget semantics
+not_claimed:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - reviewed_verified_pass

@@ -1,0 +1,187 @@
+version: kpi_ledger_contract_v1
+purpose: >
+  Fixed KPI ledger contract for SpaceSonar proxy and MT5 runtime proof records.
+  KPI records are observation evidence only. They do not create selected baseline,
+  runtime authority, economics pass, handoff, live readiness, or Goal Achieve.
+
+fixed_schema_policy:
+  rule: every KPI record uses the same field list for every run, wave, campaign,
+    and synthesis stage
+  missing_value_rule: missing or non-observed values must keep the row shape and
+    record value_status, n_a_reason, authority, and parser_diagnostic when relevant
+  mt5_parse_failure_rule: MT5 n/a is a repair trigger first, not an immediate
+    accepted absence; parser, source artifact, report format, and fallback
+    extraction must be checked before a true n/a is accepted
+  non_trading_probe_rule: non-trading MT5 score probes are runtime/telemetry
+    lineage evidence only and must not be recorded in campaign KPI ledgers
+
+ledger_manifest:
+  version: kpi_ledger_manifest_v1
+  required_top_level:
+    - version
+    - ledger_id
+    - ledger_scope
+    - scope_identity
+    - schema_ref
+    - source_artifacts
+    - record_files
+    - summary
+    - kpi_policy
+    - claim_boundary
+    - forbidden_claims
+
+record_files:
+  proxy_kpi_records:
+    record_family: proxy_experiment
+    path_pattern: lab/campaigns/<campaign_id>/kpi/proxy_kpi_records.csv
+  mt5_runtime_kpi_records:
+    record_family: mt5_runtime
+    path_pattern: lab/campaigns/<campaign_id>/kpi/mt5_runtime_kpi_records.csv
+    inclusion_rule: trading runtime execution only; non-trading score_probe
+      attempts are excluded from this KPI ledger
+  proxy_mt5_comparison_records:
+    record_family: proxy_mt5_comparison
+    path_pattern: lab/campaigns/<campaign_id>/kpi/proxy_mt5_comparison_records.csv
+    inclusion_rule: mt5_attempt_required
+
+common_record_fields:
+  - record_id
+  - schema_version
+  - record_family
+  - stage_kind
+  - goal_id
+  - wave_id
+  - campaign_id
+  - synthesis_stage_id
+  - surface_id
+  - sweep_id
+  - run_id
+  - l4_pair_id
+  - bundle_id
+  - attempt_id
+  - period_role
+  - proxy_record_id
+  - mt5_record_id
+  - metric_id
+  - metric_namespace
+  - metric_value
+  - value_type
+  - unit
+  - value_status
+  - n_a_reason
+  - authority
+  - authority_path
+  - authority_sha256
+  - source_artifact_refs_json
+  - parser_diagnostic
+  - claim_effect
+  - claim_boundary
+  - created_at_utc
+
+allowed:
+  record_family:
+    - proxy_experiment
+    - mt5_runtime
+    - proxy_mt5_comparison
+  stage_kind:
+    - campaign
+    - campaign_closeout
+    - wave_closeout
+    - special_mixing
+  metric_namespace:
+    - proxy
+    - mt5_runtime
+    - mt5_tester_report
+    - mt5_trade_shape
+    - comparison
+    - closeout_projection
+  value_status:
+    - observed
+    - not_applicable
+    - missing_source
+    - parser_failed
+    - parser_unavailable
+    - source_incomplete
+    - undefined_by_math
+    - not_collected
+    - unparseable
+  authority:
+    - proxy_metrics_json
+    - proxy_report
+    - experiment_receipt
+    - mt5_attempt_manifest
+    - mt5_execution_telemetry_summary
+    - mt5_tester_log_summary
+    - mt5_tester_report_receipt
+    - mt5_trade_shape_summary
+    - campaign_kpi_projection
+    - wave_closeout_projection
+    - absence_recorded_by_attempt_manifest
+    - absence_recorded_by_runtime_contract
+    - none_not_authoritative
+  n_a_reason:
+    - proxy_only_no_mt5_attempt
+    - decision_replay_not_direct_onnx_runtime
+    - tester_report_missing
+    - tester_report_receipt_missing
+    - tester_report_not_completed
+    - tester_report_parse_failed
+    - tester_report_format_unknown
+    - tester_report_parse_unavailable
+    - metric_not_present_in_report
+    - no_closed_trades
+    - gross_loss_zero_pf_undefined
+    - trade_shape_telemetry_not_instrumented
+    - trade_shape_telemetry_empty_no_closed_trades
+    - runtime_probe_incomplete
+    - metric_not_defined_for_stage
+    - locked_final_oos_excluded
+    - claim_boundary_not_authorized
+    - source_artifact_missing_or_uncommitted_hash_only
+
+claim_boundary:
+  default: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
+  forbidden_claims:
+    - selected_baseline
+    - runtime_authority
+    - economics_pass
+    - live_readiness
+    - handoff_complete
+    - reviewed_verified_pass
+    - goal_achieve
+
+authority_rules:
+  proxy_metric_requires:
+    namespaces:
+      - proxy
+    allowed_authorities:
+      - proxy_metrics_json
+      - proxy_report
+      - experiment_receipt
+  mt5_runtime_metric_requires:
+    namespaces:
+      - mt5_runtime
+      - mt5_tester_report
+      - mt5_trade_shape
+    allowed_authorities:
+      - mt5_attempt_manifest
+      - mt5_execution_telemetry_summary
+      - mt5_tester_log_summary
+      - mt5_tester_report_receipt
+      - mt5_trade_shape_summary
+      - absence_recorded_by_attempt_manifest
+      - absence_recorded_by_runtime_contract
+  economics_metric_requires:
+    metric_prefixes:
+      - mt5.tester_report.
+    observed_allowed_authorities:
+      - mt5_tester_report_receipt
+    non_observed_allowed_authorities:
+      - mt5_tester_report_receipt
+      - absence_recorded_by_attempt_manifest
+      - absence_recorded_by_runtime_contract
+  trade_shape_metric_requires:
+    metric_prefixes:
+      - mt5.trade_shape.
+    observed_allowed_authorities:
+      - mt5_trade_shape_summary

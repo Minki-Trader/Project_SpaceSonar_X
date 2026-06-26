@@ -105,6 +105,23 @@ Git integration cadence:
 - Parity is not forced equality. When proxy and MT5 disagree, make at least one explicit reconciliation attempt, then either repair the contract or record the accepted difference with a prevention rule.
 - Failed hypotheses become `negative_memory`, `invalid_setup`, `blocked_retry`, or `inconclusive` records with salvage value and reopen conditions.
 
+## KPI Interpretation
+
+KPI-bearing results, campaign closeouts, wave closeouts, and candidate comparisons must interpret what was tested, not only report what number appeared.
+
+Required interpretation chain:
+
+- tested factor or changed variable
+- KPI scope: proxy, MT5 runtime, proxy-vs-MT5 comparison, or mixed
+- observed KPI movement versus the declared comparison baseline
+- exploratory effect hypothesis: what the tested factor appears to do
+- segment checks performed or missing
+- evidence limits and alternative explanations
+- attribution confidence
+- smallest next probe that can confirm or reject the explanation
+
+Outcome-only closeout is incomplete. If the changed variable, baseline, sample scope, or runtime evidence is missing, lower the interpretation to low-confidence or inconclusive. Do not claim a causal effect unless controls, matched scope, sufficient samples, and matching proxy/runtime evidence support it.
+
 ## Execution Weight
 
 The lab is attempt-first, not bureaucracy-first.
@@ -125,6 +142,10 @@ The lab is attempt-first, not bureaucracy-first.
   `full-regression` evidence is needed for the head commit.
 - For ordinary run-local learning, update the local manifest, receipt, lineage, metrics, or campaign-local summary first. Global indexes can wait until the boundary unless the index is the current source of truth.
 - The mandatory L4 rule still stands for every valid proxy/model-bearing run. It may be executed in bounded materialization and probe batches rather than folded into the first proxy or adapter attempt.
+- L4 budget accounting uses the `validation_research_oos_pair` unit. One L4 budget unit means the same declared cell/surface/runtime-surface has both required period roles: `validation` and `research_oos`.
+- `prepared_attempt_count`, `executed_attempt_count`, and `runtime_probe_complete_count` count physical Strategy Tester period-role executions. They are coverage and evidence counts, not the wave L4 budget burn.
+- A standard L4 pair normally creates two physical MT5 executions. Decision replay uses the same period-role pair shape, but it must be counted in its own declared decision-replay pair ledger unless a wave explicitly budgets it together with standard L4.
+- Historical fields named like `formal_mt5_strategy_tester_runs` are not hard L4 budget caps when an active `l4_budget_unit` or wave budget accounting amendment exists. Prefer `l4_pair_budget`, `l4_pair_count`, and `l4_pair_budget_usage` for new records.
 - A minimal adapter is not a shortcut to claim success. It only proves that the path can be tested; stronger claims still need the matching evidence.
 
 ## Attempt Before Disposition
@@ -213,7 +234,7 @@ Allowed states:
 
 `probe_candidate` means runtime observation target. It is not runtime authority.
 
-`advisory_queue` means waiting for Codex/Task Force advice. It is not reviewed, verified, pass, or selected.
+`advisory_queue` means waiting for local Codex/user review or repo-controlled evidence. It is not reviewed, verified, pass, or selected. Task Force/sub-agent review is no longer an active workflow.
 
 ## Stop Conditions
 

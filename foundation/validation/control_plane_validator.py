@@ -63,22 +63,6 @@ REQUIRED_PROVENANCE_FIELDS = {
     "output_hashes",
     "unknown_git_claim_effect",
 }
-REQUIRED_TASK_FORCE_RECEIPT_FIELDS = {
-    "role_modes",
-    "why_not_smaller",
-    "why_not_larger",
-    "critical_agents_not_selected",
-    "not_selected_claim_effect",
-}
-EXPECTED_AGENT_ROLE_MODES = {
-    "scout",
-    "design",
-    "preflight",
-    "adversarial_check",
-    "evidence_check",
-    "runtime_check",
-    "closeout_check",
-}
 ROUTING_CASE_REQUIRED_KEYS = {
     "id",
     "prompt",
@@ -201,13 +185,9 @@ def validate_work_item_schema(repo_root: Path) -> list[str]:
             "claim_effect",
         },
     )
-    role_modes = set(data.get("agent_role_modes_allowed", []))
-    add_missing(
-        errors,
-        label="work_item.schema.yaml agent_role_modes_allowed",
-        observed=role_modes,
-        required=EXPECTED_AGENT_ROLE_MODES,
-    )
+    role_modes = list(data.get("agent_role_modes_allowed", []))
+    if role_modes:
+        errors.append("work_item.schema.yaml agent_role_modes_allowed must be empty because Task Force/sub-agents are disabled")
     return errors
 
 
@@ -268,13 +248,8 @@ def validate_skill_receipt_schema(repo_root: Path) -> list[str]:
             "not_selected_claim_effect",
         },
     )
-    task_force = set((data.get("skill_specific", {}).get("spacesonar-task-force-review") or {}).get("required_fields", []))
-    add_missing(
-        errors,
-        label="skill_receipt_schema.yaml spacesonar-task-force-review",
-        observed=task_force,
-        required={"role_modes"},
-    )
+    if "spacesonar-task-force-review" in (data.get("skill_specific") or {}):
+        errors.append("skill_receipt_schema.yaml must not define spacesonar-task-force-review because Task Force/sub-agents are disabled")
     failure_disposition = data.get("conditional_required_fields", {}).get("failure_disposition") or {}
     failure_required_when = set(failure_disposition.get("required_when", []))
     add_missing(
@@ -434,114 +409,33 @@ def validate_templates(repo_root: Path) -> list[str]:
     return errors
 
 
-def validate_task_force_registry(repo_root: Path) -> list[str]:
-    path = repo_root / "docs" / "agent_control" / "codex_task_force_registry.yaml"
-    data = load_yaml(path)
+def validate_task_force_decommissioned(repo_root: Path) -> list[str]:
     errors: list[str] = []
-    review_policy = data.get("review_policy", {})
-    if review_policy.get("max_threads_capacity_rule") is None:
-        errors.append("codex_task_force_registry.yaml: missing max_threads_capacity_rule")
-    add_missing(
-        errors,
-        label="codex_task_force_registry.yaml role_modes",
-        observed=set(review_policy.get("role_modes", {})),
-        required=EXPECTED_AGENT_ROLE_MODES,
-    )
-    if not review_policy.get("allocation_shapes"):
-        errors.append("codex_task_force_registry.yaml: missing allocation_shapes")
-    profiles = review_policy.get("allocation_profiles") or {}
-    for profile in ["solo", "micro_specialist", "micro_adversarial", "formal_protected_review", "full_roster"]:
-        if profile not in profiles:
-            errors.append(f"codex_task_force_registry.yaml: missing allocation profile {profile}")
-    if review_policy.get("max_depth") != 1:
-        errors.append("codex_task_force_registry.yaml: max_depth must be 1")
-    receipt_fields = set((data.get("micro_consult_receipt_schema") or {}).get("required_fields", []))
-    add_missing(
-        errors,
-        label="codex_task_force_registry.yaml micro_consult_receipt_schema",
-        observed=receipt_fields,
-        required=REQUIRED_TASK_FORCE_RECEIPT_FIELDS,
-    )
-    v2_fields = set((data.get("consult_receipt_v2_schema") or {}).get("required_fields", []))
-    add_missing(
-        errors,
-        label="codex_task_force_registry.yaml consult_receipt_v2_schema",
-        observed=v2_fields,
-        required={
-            "consult_id",
-            "profile",
-            "question_digest",
-            "selected_agent_ids",
-            "source_refs",
-            "opinions",
-            "owner_decision",
-            "verification_refs",
-            "claim_effect",
-            "metrics",
-        },
-    )
+    forbidden_paths = [
+        repo_root / "docs" / "agent_control" / "codex_task_force_registry.yaml",
+        repo_root / ".agents" / "skills" / "spacesonar-task-force-review" / "SKILL.md",
+    ]
+    for path in forbidden_paths:
+        if path.exists():
+            errors.append(f"{rel(path, repo_root)} must not exist because Task Force/sub-agents are disabled")
+    policy_path = repo_root / "docs" / "policies" / "agent_allocation_policy.md"
+    text = read_text(policy_path) if policy_path.exists() else ""
+    required_phrases = ["Sub-agent / Task Force spawning is disabled", "There is no active Task Force roster"]
+    for phrase in required_phrases:
+        if phrase not in text:
+            errors.append(f"docs/policies/agent_allocation_policy.md missing decommission phrase: {phrase}")
     return errors
 
 
 def validate_agent_consult_receipts(repo_root: Path) -> list[str]:
-    src_path = str(repo_root / "src")
-    if src_path not in sys.path:
-        sys.path.insert(0, src_path)
-    from spacesonar.control_plane.agent_metrics import consult_metric_errors
-
-    registry = load_yaml(repo_root / "docs" / "agent_control" / "codex_task_force_registry.yaml")
-    agents = {item.get("id") for item in registry.get("roster", [])}
-    review_policy = registry.get("review_policy") or {}
-    profiles = review_policy.get("allocation_profiles") or {}
-    role_modes_allowed = set(review_policy.get("role_modes") or {})
-    classifications_allowed = set((registry.get("consult_receipt_v2_schema") or {}).get("allowed_opinion_classifications") or [])
     errors: list[str] = []
     for path in sorted(repo_root.glob("lab/**/*consult*.yaml")):
         data = load_yaml(path)
         if data.get("version") != "agent_consult_receipt_v2":
             continue
         label = rel(path, repo_root)
-        selected = data.get("selected_agent_ids") or []
-        profile = data.get("profile")
-        if profile not in profiles:
-            errors.append(f"{label}: unknown consult profile {profile}")
-            continue
-        if len(selected) < int(profiles[profile].get("min_agents", 0)) or len(selected) > int(profiles[profile].get("max_agents", 0)):
-            errors.append(f"{label}: selected_agent_ids count does not fit profile {profile}")
-        unknown = sorted(set(selected) - agents)
-        if unknown:
-            errors.append(f"{label}: unknown registry agent ids {unknown}")
-        role_modes = data.get("role_modes") or {}
-        if isinstance(role_modes, dict):
-            role_values = set(role_modes.values())
-            role_agent_ids = set(role_modes)
-            unknown_role_agents = sorted(role_agent_ids - set(selected))
-            if unknown_role_agents:
-                errors.append(f"{label}: role_modes include agents not selected {unknown_role_agents}")
-        else:
-            role_values = set(role_modes)
-        unknown_modes = sorted(role_values - role_modes_allowed)
-        if unknown_modes:
-            errors.append(f"{label}: unknown role modes {unknown_modes}")
-        if len(selected) >= 3 and not data.get("escalation_reason"):
-            errors.append(f"{label}: 3 or more agents require escalation_reason")
-        if len(selected) >= 5:
-            if not data.get("why_not_smaller"):
-                errors.append(f"{label}: 5 or more agents require why_not_smaller")
-            trigger = data.get("full_roster_trigger")
-            allowed = set(profiles["full_roster"].get("allowed_only_when") or [])
-            if trigger not in allowed:
-                errors.append(f"{label}: full roster trigger is not allowed")
-        for opinion in data.get("opinions") or []:
-            classification = opinion.get("classification")
-            refs = opinion.get("evidence_refs") or []
-            if classification not in classifications_allowed:
-                errors.append(f"{label}: unknown opinion classification {classification}")
-            if classification in {"accepted", "rewritten"} and not refs:
-                errors.append(f"{label}: accepted/rewritten advice requires evidence_refs")
-        errors.extend(consult_metric_errors(data, label=label))
-        if data.get("claim_effect") != "advisory_only_no_reviewed_pass":
-            errors.append(f"{label}: consult claim_effect cannot satisfy reviewed/pass gates")
+        if not label.startswith("lab/goals/goal_us100_onnx_forward_boundary_v0/task_force_consultation_initial"):
+            errors.append(f"{label}: active agent consult receipts are disabled; keep only archived historical receipts")
     return errors
 
 
@@ -581,6 +475,16 @@ def validate_fresh_evaluators(repo_root: Path) -> list[str]:
     from foundation.evaluation.fresh_evaluator_validator import validate_committed_evaluators
 
     return validate_committed_evaluators(repo_root)
+
+
+def validate_kpi_ledgers(repo_root: Path) -> list[str]:
+    for path in [repo_root, repo_root / "src"]:
+        text = str(path)
+        if text not in sys.path:
+            sys.path.insert(0, text)
+    from foundation.validation.kpi_ledger_validator import validate as validate_kpi_ledger_records
+
+    return validate_kpi_ledger_records(repo_root)
 
 
 def validate_remote_repository_settings(repo_root: Path) -> list[str]:
@@ -645,6 +549,7 @@ def validate_import_smoke(repo_root: Path) -> list[str]:
         "foundation.collectors.raw_m5_inventory",
         "foundation.validation.active_record_validator",
         "foundation.validation.control_plane_validator",
+        "foundation.validation.kpi_ledger_validator",
         "foundation.validation.refresh_artifact_registry_hashes",
         "foundation.validation.remote_repository_settings_verifier",
     ]:
@@ -678,11 +583,12 @@ def validate(repo_root: Path, *, include_active_records: bool = False) -> list[s
     errors.extend(validate_policy_contract_and_context_slo(repo_root))
     errors.extend(validate_skill_receipt_schema(repo_root))
     errors.extend(validate_templates(repo_root))
-    errors.extend(validate_task_force_registry(repo_root))
+    errors.extend(validate_task_force_decommissioned(repo_root))
     errors.extend(validate_agent_consult_receipts(repo_root))
     errors.extend(validate_agent_operating_metrics_projection(repo_root))
     errors.extend(validate_execution_provenance(repo_root))
     errors.extend(validate_fresh_evaluators(repo_root))
+    errors.extend(validate_kpi_ledgers(repo_root))
     errors.extend(validate_remote_repository_settings(repo_root))
     errors.extend(validate_operating_closeout(repo_root))
     errors.extend(validate_routing_smoke_prompts(repo_root))

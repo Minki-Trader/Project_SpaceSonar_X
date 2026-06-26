@@ -535,7 +535,7 @@ def test_control_plane_validator_invokes_closeout_validation(monkeypatch: pytest
         "validate_policy_contract_and_context_slo",
         "validate_skill_receipt_schema",
         "validate_templates",
-        "validate_task_force_registry",
+        "validate_task_force_decommissioned",
         "validate_agent_consult_receipts",
         "validate_agent_operating_metrics_projection",
         "validate_execution_provenance",

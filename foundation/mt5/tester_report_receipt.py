@@ -263,6 +263,14 @@ def report_freshness(
             }
         prelaunch_hash = snapshot.get("sha256")
         changed = bool(prelaunch_hash and prelaunch_hash != current_hash)
+        prelaunch_mtime_ns = snapshot.get("mtime_ns")
+        mtime_changed = isinstance(prelaunch_mtime_ns, int) and report_path.stat().st_mtime_ns != prelaunch_mtime_ns
+        if not changed and mtime_changed and report_mtime >= launch_started:
+            return {
+                "prelaunch_report_sha256": prelaunch_hash,
+                "report_fresh_for_launch": True,
+                "freshness_reason": "mtime_changed_after_launch_same_hash",
+            }
         return {
             "prelaunch_report_sha256": prelaunch_hash,
             "report_fresh_for_launch": changed,

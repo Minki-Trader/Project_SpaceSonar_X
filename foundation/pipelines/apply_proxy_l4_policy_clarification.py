@@ -448,7 +448,7 @@ def update_yaml_state(now: str) -> None:
             "role_modes": [],
             "selection_reason": "User clarified execution policy; Codex applies record correction before runtime execution.",
             "why_not_smaller": "Codex alone is the smallest allocation for deterministic policy-record sync.",
-            "why_not_larger": "No formal Task Force protected claim is being made; actual L4 execution can allocate agents in the next work item if needed.",
+            "why_not_larger": "Task Force/sub-agent allocation is disabled; runtime execution uses Codex, skills, validators, and source-of-truth records.",
             "max_threads_is_capacity_only": True,
             "claim_effect": "no_new_advisory_claim",
         },

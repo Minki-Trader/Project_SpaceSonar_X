@@ -1,6 +1,6 @@
 version: evaluator_result_v1
 evaluator_id: research_cycle_closeout_evaluator_v1
-executed_at_utc: '2026-06-25T16:48:43Z'
+executed_at_utc: '2026-06-26T18:26:24Z'
 input_hashes:
 - path: docs/registers/candidate_registry.csv
   sha256: 0096c5deded38cf2319d7ec9d069cc75338e3c1f90d34c4c2f00c105c0812f06
@@ -9,8 +9,8 @@ input_hashes:
   sha256: 3e4422c99975bac477f15663e38745f40638e7346df36150886c4746c07c3d76
   size_bytes: 3642
 - path: docs/registers/negative_memory_registry.csv
-  sha256: 33c6ecf57b23e22d19b051540462405ac6ed56f6d36b2bbb99ab030a3d617a30
-  size_bytes: 5126
+  sha256: 9db92805fe34a66e5f626435b14611ae44248bb4f00cb70f3e1f799418597f2d
+  size_bytes: 4891
 - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/campaign_closeout.yaml
   sha256: ea2c2f14cafcca6085d5357513a4c924aeee0187ff9da5c7eccb9cec8c498a75
   size_bytes: 5781
@@ -21,11 +21,11 @@ input_hashes:
   sha256: 6d40428f082f8c3e31cf210110aa4ea23678c88ee0f223c5c9451a2729ca31e7
   size_bytes: 6505
 - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_index.csv
-  sha256: 214e9fd37d24e9bcdb20dddfe4085f44f574b80f387727117c0082f98873a5f0
-  size_bytes: 13703
+  sha256: 2da86fa9e43243a120be7341f9ff9b54de36ee74eba2b826b1681a4d04286043
+  size_bytes: 15162
 - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/judgment_summary.yaml
-  sha256: 475b527eeadf8ff694872821113ecfadcc25a9419f409bf26cafefd384db073b
-  size_bytes: 4995
+  sha256: 2904d9a9ac070df080aff9e9683b12273133ba8bea5de32a777c0ea6729b6f5c
+  size_bytes: 11191
 - path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
   sha256: 297cc1b4306ea3ff9bae64fb4595ff2907a3811757558cf4dcb7741636402fab
   size_bytes: 8862
@@ -60,8 +60,8 @@ input_hashes:
   sha256: 351f92be43c5976a4fa15da40180421754c2cfca0a3b7f4d1fcc65c8b9cad9ae
   size_bytes: 12019
 - path: lab/campaigns/campaign_us100_task_surface_scout_v0/campaign_manifest.yaml
-  sha256: 2d82623fb33d9fa78a200bda0c08c39363638f497749a401bf24c0fb49a698be
-  size_bytes: 11679
+  sha256: 1cae1e098147927acbeea5907917b3a334eec54616e87e2ba2b230cd4ee3f55a
+  size_bytes: 11688
 - path: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_judgment_summary.yaml
   sha256: 13ead9885f8c2ea741582d78eecc38cd28bb85143188217d0291c0448971c5b2
   size_bytes: 4733
@@ -69,8 +69,8 @@ input_hashes:
   sha256: 05c33cc5a886a647b658596c858f8fea091256f378b2b4336c96d56249755f14
   size_bytes: 2987
 - path: lab/memory/negative/neg_wave01_event_barrier_score_band_decision_replay_loss_v0.yaml
-  sha256: 97c654940b935817c0f3ce0b8b3b4641b99bda4d6cdcbb7b76503cc399090602
-  size_bytes: 3779
+  sha256: 2f2a24973441b1dd284bd80a557adc1803d8e28b1c6806de27758dda6ddc1e92
+  size_bytes: 2049
 - path: lab/memory/negative/neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0.yaml
   sha256: 2fd5d7e259d6d29b60986ace32660ad79358d34b2a24bfa828f09cfec438f231
   size_bytes: 2932
@@ -81,7 +81,7 @@ input_hashes:
   sha256: befc06168cc65d43e089107b91573687a06aabeb5362164f4afd6624ef8a4478
   size_bytes: 1634
 - path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
-  sha256: f49db0b46b5a4d9d388ae271020bd479e855e7e934e83199bfc8094e5604c3c9
+  sha256: f27eb7ba26ea3f91e5a40f55620f4afb7814218585eb842e6373b2557bd4fd50
   size_bytes: 11235
 implementation_hashes:
 - path: foundation/evaluation/research_cycle_closeout_evaluator.py
@@ -129,4 +129,4 @@ campaign_results:
   forbidden_claims_respected: true
 findings: []
 claim_effect: research_cycle_closeout_evaluated_no_runtime_authority_no_economics_pass
-output_sha256: bf04b52e91a611f9ce65363d80a0a4c9ec29d8156ec41f60665dfceca61990bf
+output_sha256: a1c374066579cd84515b3ab1f917e8d4f20f843e0a8fa4167ae7a70e50f09294

@@ -20,6 +20,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from foundation.mt5.tester_report_kpi import parse_tester_report_kpis  # noqa: E402
+
 
 GOAL_ID = "goal_us100_onnx_forward_boundary_v0"
 PARENT_WORK_ITEM_ID = "work_wave01_event_barrier_l4_materialization_preflight_v0"
@@ -171,6 +173,28 @@ def balance_delta(final_balance: float | None, *, initial_deposit: float = INITI
     return round(final_balance - initial_deposit, 2)
 
 
+def tester_report_metrics(repo_root: Path, row: dict[str, str]) -> dict[str, str]:
+    report_value = row.get("tester_report_path")
+    if not report_value:
+        return {}
+    report_path = repo_root / report_value
+    if not report_path.exists():
+        return {}
+    parsed = parse_tester_report_kpis(report_path)
+    metrics = parsed.get("metrics") or {}
+
+    def value(metric_id: str) -> str:
+        metric = metrics.get(metric_id) or {}
+        return str(metric.get("metric_value", ""))
+
+    return {
+        "total_trades": value("mt5.tester_report.total_trades"),
+        "profit_factor": value("mt5.tester_report.profit_factor"),
+        "total_net_profit": value("mt5.tester_report.total_net_profit"),
+        "equity_drawdown_maximal_pct": value("mt5.tester_report.equity_drawdown_maximal_pct"),
+    }
+
+
 def classify_decision_pair(
     validation_final_balance: float | None,
     research_oos_final_balance: float | None,
@@ -245,6 +269,9 @@ def evidence_paths_for(validation: dict[str, str], research: dict[str, str]) -> 
             value = row.get(key)
             if value:
                 paths.append(value)
+        report_value = row.get("tester_report_path")
+        if report_value:
+            paths.append(report_value)
     return paths
 
 
@@ -265,24 +292,30 @@ def build_judgment_rows(repo_root: Path) -> list[dict[str, Any]]:
         tester_report_pair_observed = boolish(validation.get("tester_report_observed")) and boolish(
             research.get("tester_report_observed")
         )
+        validation_report = tester_report_metrics(repo_root, validation)
+        research_report = tester_report_metrics(repo_root, research)
+        tester_report_kpi_pair_observed = bool(
+            validation_report.get("total_trades") and research_report.get("total_trades")
+        )
         classification = classify_decision_pair(
             validation_balance,
             research_balance,
             tester_report_pair_observed=tester_report_pair_observed,
             open_failed_count=total_open_failed,
         )
-        missing = [
-            "tester_report_missing",
-            "equity_curve_missing",
-            "pf_dd_metrics_missing",
-            "locked_final_oos_b_not_used",
-        ]
+        missing = ["locked_final_oos_b_not_used"]
+        if not tester_report_pair_observed:
+            missing.append("tester_report_missing")
+        if tester_report_pair_observed and not tester_report_kpi_pair_observed:
+            missing.append("tester_report_kpi_parse_missing")
+        if not tester_report_pair_observed or not tester_report_kpi_pair_observed:
+            missing.append("pf_dd_trade_list_metrics_missing")
         if total_open_failed:
             missing.append("open_failed_actions_observed_requires_execution_audit_before_L5")
         prevention = [
             "preserved score-band clue does not imply tradeability under direct score-band replay",
             "score_band_side decision mapping produced validation/research_oos loss for this Wave01 direct-trade subset",
-            "tester log final_balance can support negative memory but cannot create economics pass without report/equity metrics",
+            "tester report PF/DD/trade metrics can support observation but cannot create economics pass without a separate review boundary",
             "open_failed actions are runtime friction evidence and must be audited before any future L5 review",
         ]
         rows.append(
@@ -312,6 +345,14 @@ def build_judgment_rows(repo_root: Path) -> list[dict[str, Any]]:
                 "research_oos_tester_log_observed": str(boolish(research.get("tester_log_observed"))).lower(),
                 "validation_tester_report_observed": str(boolish(validation.get("tester_report_observed"))).lower(),
                 "research_oos_tester_report_observed": str(boolish(research.get("tester_report_observed"))).lower(),
+                "validation_report_total_trades": validation_report.get("total_trades", ""),
+                "research_oos_report_total_trades": research_report.get("total_trades", ""),
+                "validation_report_profit_factor": validation_report.get("profit_factor", ""),
+                "research_oos_report_profit_factor": research_report.get("profit_factor", ""),
+                "validation_report_total_net_profit": validation_report.get("total_net_profit", ""),
+                "research_oos_report_total_net_profit": research_report.get("total_net_profit", ""),
+                "validation_report_equity_dd_max_pct": validation_report.get("equity_drawdown_maximal_pct", ""),
+                "research_oos_report_equity_dd_max_pct": research_report.get("equity_drawdown_maximal_pct", ""),
                 "validation_terminal_timed_out": str(boolish(validation.get("terminal_timed_out"))).lower(),
                 "research_oos_terminal_timed_out": str(boolish(research.get("terminal_timed_out"))).lower(),
                 "both_period_roles_observed": str(bool(validation and research)).lower(),
@@ -361,6 +402,14 @@ def judgment_index_fieldnames() -> list[str]:
         "research_oos_tester_log_observed",
         "validation_tester_report_observed",
         "research_oos_tester_report_observed",
+        "validation_report_total_trades",
+        "research_oos_report_total_trades",
+        "validation_report_profit_factor",
+        "research_oos_report_profit_factor",
+        "validation_report_total_net_profit",
+        "research_oos_report_total_net_profit",
+        "validation_report_equity_dd_max_pct",
+        "research_oos_report_equity_dd_max_pct",
         "validation_terminal_timed_out",
         "research_oos_terminal_timed_out",
         "both_period_roles_observed",
@@ -422,9 +471,20 @@ def build_summary(repo_root: Path, rows: list[dict[str, Any]], *, started_at: st
     l5_counts = Counter(str(row["l5_routing_status"]) for row in rows)
     balance_counts = Counter(str(row["final_balance_pair_class"]) for row in rows)
     family_counts = Counter(str(row["decision_family"]) for row in rows)
+    missing_counts = Counter(
+        item
+        for row in rows
+        for item in str(row.get("missing_evidence", "")).split(";")
+        if item
+    )
+    tester_report_kpi_pair_observed_count = sum(
+        bool(row.get("validation_report_total_trades")) and bool(row.get("research_oos_report_total_trades"))
+        for row in rows
+    )
     total_open = sum(int(row["validation_open_action_count"] or 0) + int(row["research_oos_open_action_count"] or 0) for row in rows)
     total_close = sum(int(row["validation_close_action_count"] or 0) + int(row["research_oos_close_action_count"] or 0) for row in rows)
     total_open_failed = sum(int(row["total_open_failed_count"] or 0) for row in rows)
+    all_report_kpis_observed = bool(rows) and tester_report_kpi_pair_observed_count == len(rows)
     return {
         "version": "wave01_event_barrier_decision_replay_judgment_summary_v1",
         "summary_id": "wave01_event_barrier_l4_decision_replay_judgment_summary_v0",
@@ -444,6 +504,7 @@ def build_summary(repo_root: Path, rows: list[dict[str, Any]], *, started_at: st
             "l5_candidate_count": 0,
             "tester_log_pair_observed_count": sum(row["both_tester_logs_observed"] == "true" for row in rows),
             "tester_report_pair_observed_count": sum(row["tester_report_pair_observed"] == "true" for row in rows),
+            "tester_report_kpi_pair_observed_count": tester_report_kpi_pair_observed_count,
             "loss_in_both_periods_count": balance_counts.get("loss_in_validation_and_research_oos", 0),
             "open_action_count": total_open,
             "close_action_count": total_close,
@@ -460,16 +521,15 @@ def build_summary(repo_root: Path, rows: list[dict[str, Any]], *, started_at: st
         "judgment": {
             "result_subject": "Wave01 preserved-clue score-band decision replay over validation and research_oos",
             "judgment_label": "negative",
-            "metric_identity": "MT5 tester-log final_balance from score-band decision replay probes; no tester report/equity/PF/DD claim",
+            "metric_identity": (
+                "MT5 tester-log final_balance plus parsed Strategy Tester report trades/PF/net/DD; "
+                "observation only, no economics pass"
+                if all_report_kpis_observed
+                else "MT5 tester-log final_balance from score-band decision replay probes; tester report KPI parse incomplete"
+            ),
             "comparison_baseline": "500 USD initial deposit under us100_m5_fpmarkets_tester_execution_v0",
             "claim_boundary": CLAIM_BOUNDARY,
-            "missing_evidence": [
-                "tester_reports_missing_for_all_decision_replay_pairs",
-                "equity_curve_missing",
-                "pf_dd_trade_list_metrics_missing",
-                "locked_final_oos_b_not_used",
-                "open_failed_actions_observed_requires_execution_audit_before_L5",
-            ],
+            "missing_evidence": sorted(missing_counts),
             "next_action": (
                 "Record negative memory, keep candidate count at zero, and rotate to a new multi-axis surface or "
                 "a genuinely new decision-policy question. Do not continue score_band_side replay to L5."
@@ -480,14 +540,18 @@ def build_summary(repo_root: Path, rows: list[dict[str, Any]], *, started_at: st
             "period_profile_id": "period_profile_split_set_v0",
             "runtime_period_set_id": "split_base_anchor_v0_research_l4",
             "required_period_roles": ["validation", "research_oos"],
-            "standard_l4_completion": "not_claimed_tester_reports_missing",
+            "standard_l4_completion": (
+                "runtime_probe_completed_with_tester_report_kpis_no_runtime_authority"
+                if all_report_kpis_observed
+                else "runtime_probe_observed_tester_report_kpis_incomplete_no_runtime_authority"
+            ),
             "l5_continuation": "not_opened_loss_observed_and_no_candidate_evidence",
             "locked_final_oos_b": "not_used",
         },
         "prevention_memory": [
             "Preserved score-band proxy clues did not become tradeable under direct score_band_side replay.",
             "All direct-trade eligible Wave01 decision replay pairs lost in both validation and research_oos tester-log final balances.",
-            "Tester log final_balance may support negative memory, but report/equity evidence is required before PF/DD/economics claims.",
+            "Parsed tester report PF/DD/trade metrics are observation evidence only and do not create economics pass.",
             "Open-failed actions are runtime friction evidence and must be audited before any future L5 review.",
             "Do not carry this losing decision replay forward as a new campaign without a genuinely new decision/risk/holding surface.",
         ],

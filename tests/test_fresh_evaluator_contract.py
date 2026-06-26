@@ -7,7 +7,19 @@ from typing import Any
 import pytest
 
 import foundation.evaluation.fresh_evaluator_validator as validator
-from foundation.evaluation.common import finalize_result, write_yaml
+from foundation.evaluation.common import finalize_result, input_hash, write_yaml
+
+
+def test_evaluator_input_hash_normalizes_text_line_endings(tmp_path: Path) -> None:
+    path = tmp_path / "docs" / "fixture.yaml"
+    path.parent.mkdir(parents=True)
+    path.write_bytes(b"version: test\r\nvalue: 1\r\n")
+    crlf_hash = input_hash(tmp_path, "docs/fixture.yaml")
+
+    path.write_bytes(b"version: test\nvalue: 1\n")
+    lf_hash = input_hash(tmp_path, "docs/fixture.yaml")
+
+    assert crlf_hash == lf_hash
 
 
 def test_missing_evaluator_file_fails(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

@@ -671,6 +671,7 @@ def runtime_contract_value(
         *(execution_identity.get(item) for item in contract_keys),
         row.get(key),
         manifest.get(key),
+        runtime_contract.get(key),
         *(runtime_contract.get(item) for item in contract_keys),
         routing.get(key),
         *(routing.get(item) for item in contract_keys),

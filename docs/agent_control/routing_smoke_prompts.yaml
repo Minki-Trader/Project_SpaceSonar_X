@@ -69,7 +69,7 @@ cases:
     expected_primary_skill: spacesonar-experiment-design
     expected_support_skills:
       - spacesonar-evidence-provenance
-      - spacesonar-result-judgment
+      - spacesonar-performance-attribution
     expected_required_gates:
       - synthesis_source_lineage_check
       - ingredient_card_lineage_check
@@ -117,7 +117,7 @@ cases:
     expected_primary_skill: spacesonar-runtime-evidence
     expected_support_skills:
       - spacesonar-evidence-provenance
-      - spacesonar-result-judgment
+      - spacesonar-performance-attribution
     expected_required_gates:
       - runtime_learning_probe_decision
       - mt5_runtime_probe_contract_audit
@@ -132,7 +132,7 @@ cases:
     expected_primary_skill: spacesonar-runtime-evidence
     expected_support_skills:
       - spacesonar-evidence-provenance
-      - spacesonar-result-judgment
+      - spacesonar-performance-attribution
     expected_required_gates:
       - runtime_learning_probe_decision
       - mt5_runtime_probe_contract_audit
@@ -219,8 +219,8 @@ cases:
       - final_claim_guard
     expected_claim_boundary: evidence_only
 
-  - id: route_smoke_016_task_force
-    prompt: "Ask agents for a policy-risk consultation before changing runtime claim rules."
+  - id: route_smoke_016_policy_governance
+    prompt: "Update policy-risk rules before changing runtime claim boundaries, using local validators instead of Task Force review."
     expected_primary_family: policy_skill_governance
     expected_primary_skill: spacesonar-work-item-router
     expected_support_skills:
