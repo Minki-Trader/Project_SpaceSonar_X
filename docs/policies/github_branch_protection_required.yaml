@@ -9,14 +9,36 @@ target_branch: main
 required_settings:
   pull_request_required: true
   required_checks:
+    - pr-regression-gate
     - control-plane-fast
     - unit
     - evidence-graph-full
   full_regression:
     workflow: .github/workflows/full-regression.yml
-    required_for_campaign_closeout_merge: false
+    classifier: foundation/validation/full_regression_gate.py
+    required_for_campaign_closeout_merge: conditional_by_scope_classifier
     trigger: workflow_dispatch
     claim_effect: full_regression_verified_only_after_successful_manual_run
+    partial_ci_allowed_only_for:
+      - campaign_local_evidence_or_closeout_without_protected_claim
+    protected_path_scopes:
+      - .github/workflows/**
+      - AGENTS.md
+      - pyproject.toml
+      - uv.lock
+      - src/spacesonar/control_plane/**
+      - foundation/evaluation/**
+      - foundation/validation/**
+      - foundation/migrations/**
+      - docs/agent_control/**
+      - docs/policies/**
+      - docs/registers/**
+      - docs/workspace/**
+      - lab/waves/**
+      - lab/goals/**
+      - lab/templates/**
+      - runtime/mt5_attempts/**/attempt_manifest.yaml
+      - runtime/mt5_attempts/**/tester_report_receipt.yaml
   squash_merge_only: true
   direct_push: forbidden
   force_push: disabled

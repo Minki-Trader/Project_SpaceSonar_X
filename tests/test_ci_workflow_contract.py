@@ -7,6 +7,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_PR_CHECKS = [
+    "pr-regression-gate",
     "control-plane-fast",
     "unit",
     "evidence-graph-full",
@@ -54,6 +55,21 @@ def test_control_plane_pr_push_path_uses_scoped_pytest_not_full_regression() -> 
 
     assert SCOPED_UNIT_COMMAND in commands
     assert "uv run pytest -q" not in commands
+
+
+def test_control_plane_pr_path_runs_scope_classifier_gate() -> None:
+    workflow = _load_yaml(".github/workflows/control-plane.yml")
+
+    gate = workflow["jobs"]["pr-regression-gate"]
+    commands = [step.get("run") for step in gate["steps"] if isinstance(step, dict)]
+
+    assert gate["if"] == "github.event_name == 'pull_request'"
+    assert any("foundation/validation/full_regression_gate.py" in command for command in commands if command)
+    assert workflow["permissions"] == {
+        "actions": "read",
+        "contents": "read",
+        "pull-requests": "read",
+    }
 
 
 def test_full_regression_workflow_is_manual_and_runs_complete_pytest() -> None:
@@ -109,9 +125,9 @@ def test_main_integration_readiness_records_verified_remote_protection() -> None
         "direct_push_restricted": True,
     }
     assert branch_protection["required_settings"]["required_checks"] == REQUIRED_PR_CHECKS
-    assert branch_protection["required_settings"]["full_regression"] == {
-        "workflow": ".github/workflows/full-regression.yml",
-        "required_for_campaign_closeout_merge": False,
-        "trigger": "workflow_dispatch",
-        "claim_effect": "full_regression_verified_only_after_successful_manual_run",
-    }
+    full_regression = branch_protection["required_settings"]["full_regression"]
+    assert full_regression["workflow"] == ".github/workflows/full-regression.yml"
+    assert full_regression["classifier"] == "foundation/validation/full_regression_gate.py"
+    assert full_regression["required_for_campaign_closeout_merge"] == "conditional_by_scope_classifier"
+    assert full_regression["trigger"] == "workflow_dispatch"
+    assert full_regression["claim_effect"] == "full_regression_verified_only_after_successful_manual_run"

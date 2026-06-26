@@ -7,7 +7,22 @@ on:
       - main
       - "codex/**"
 
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
 jobs:
+  pr-regression-gate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python foundation/validation/full_regression_gate.py --repo-root . --event-path "$GITHUB_EVENT_PATH" --repository "$GITHUB_REPOSITORY" --head-sha "${{ github.event.pull_request.head.sha }}" --token "${{ github.token }}"
+
   control-plane-fast:
     runs-on: ubuntu-latest
     steps:
