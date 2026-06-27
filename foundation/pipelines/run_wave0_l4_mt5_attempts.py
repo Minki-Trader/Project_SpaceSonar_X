@@ -256,6 +256,7 @@ def execution_index_fieldnames() -> list[str]:
         "terminal_timed_out",
         "terminal_run_summary_path",
         "score_telemetry_summary_path",
+        "score_diagnostic_summary_path",
         "repo_telemetry_path",
         "tester_report_path",
         "claim_boundary",
@@ -284,6 +285,7 @@ def execution_row_from_manifest(
     attempt_root = repo_root / "runtime" / "mt5_attempts" / attempt_id
     terminal_path = attempt_root / "terminal_run_summary.yaml"
     telemetry_summary_path = attempt_root / "score_telemetry_summary.yaml"
+    diagnostic_summary_path = attempt_root / "score_diagnostic_summary.yaml"
     terminal_summary = load_yaml(terminal_path) if terminal_path.exists() else {}
     telemetry_summary = load_yaml(telemetry_summary_path) if telemetry_summary_path.exists() else {}
     telemetry_artifact = telemetry_summary.get("telemetry") or {}
@@ -312,6 +314,9 @@ def execution_row_from_manifest(
             "terminal_timed_out": terminal_summary.get("timed_out", row.get("terminal_timed_out", "")),
             "terminal_run_summary_path": repo_relative(terminal_path, repo_root),
             "score_telemetry_summary_path": repo_relative(telemetry_summary_path, repo_root),
+            "score_diagnostic_summary_path": repo_relative(diagnostic_summary_path, repo_root)
+            if diagnostic_summary_path.exists()
+            else row.get("score_diagnostic_summary_path", ""),
             "repo_telemetry_path": telemetry_artifact.get("path") or row.get("repo_telemetry_path", ""),
             "tester_report_path": tester_report.get("path") or row.get("tester_report_path", ""),
             "claim_boundary": manifest.get("claim_boundary", row.get("claim_boundary", "")),
@@ -435,6 +440,45 @@ def normalize_tester_report_config(tester_config: Path, attempt_id: str) -> dict
 
 def feature_columns_common_relative(bundle_id: str) -> str:
     return f"{COMMON_REL_ROOT}\\{bundle_id}\\feature_columns.txt"
+
+
+def score_diagnostics_common_relative(attempt_id: str) -> str:
+    return f"{COMMON_REL_ROOT}\\{attempt_id}\\score_diagnostics.csv"
+
+
+def ensure_score_diagnostic_transport(
+    *,
+    manifest: dict[str, Any],
+    tester_config: Path,
+    attempt_id: str,
+) -> dict[str, Any]:
+    common_relative = score_diagnostics_common_relative(attempt_id)
+    common_path = common_relative_to_path(common_relative)
+    common_path.parent.mkdir(parents=True, exist_ok=True)
+
+    config_text = tester_config.read_text(encoding="utf-8-sig")
+    updated = upsert_ini_line(
+        config_text,
+        "InpDiagnosticPath",
+        common_relative,
+        after_key="InpOutputPath",
+    )
+    if updated != config_text:
+        tester_config.write_text(updated, encoding="utf-8")
+
+    diagnostic_ref = {
+        "common_relative_path": common_relative,
+        "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\" + common_relative,
+        "durable_identity": "common_relative_path_plus_attempt_id",
+        "path_boundary": "redacted_local_context_only",
+        "copy_status": "configured_for_mt5_common_files",
+        "transport_reason": "capture EA-level score-probe path diagnostics without turning diagnostics into runtime proof",
+    }
+    manifest.setdefault("artifact_identity", {}).setdefault("diagnostics", {})["score_diagnostics.csv"] = diagnostic_ref
+    runtime_contract = manifest.setdefault("runtime_surface_contract", {})
+    runtime_contract["score_diagnostic_transport"] = "common_file_observation_only"
+    runtime_contract["score_diagnostics_common_relative_path"] = common_relative
+    return manifest
 
 
 def ensure_feature_columns_transport(
@@ -778,6 +822,60 @@ def parse_score_telemetry(path: Path) -> dict[str, Any]:
     }
 
 
+def parse_score_diagnostics(path: Path) -> dict[str, Any]:
+    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+        rows = list(csv.DictReader(handle))
+    if not rows:
+        return {"status": "empty_diagnostic", "event_count": 0, "event_counts": {}}
+
+    event_counts: Counter[str] = Counter()
+    last_rows: list[dict[str, Any]] = []
+    maxima = {
+        "max_rows_written": 0,
+        "max_ticks_seen": 0,
+        "max_closed_bar_candidates": 0,
+        "max_feature_failures": 0,
+        "max_onnx_failures": 0,
+    }
+    counter_fields = {
+        "rows_written": "max_rows_written",
+        "ticks_seen": "max_ticks_seen",
+        "closed_bar_candidates": "max_closed_bar_candidates",
+        "feature_failures": "max_feature_failures",
+        "onnx_failures": "max_onnx_failures",
+    }
+    for row in rows:
+        event_counts[str(row.get("event", ""))] += 1
+        for field, target in counter_fields.items():
+            try:
+                value = int(float(row.get(field, "0") or 0))
+            except ValueError:
+                value = 0
+            maxima[target] = max(maxima[target], value)
+        last_rows.append(
+            {
+                "event_time": row.get("event_time", ""),
+                "event": row.get("event", ""),
+                "bar_time": row.get("bar_time", ""),
+                "detail": row.get("detail", ""),
+                "last_error": row.get("last_error", ""),
+                "rows_written": row.get("rows_written", ""),
+                "ticks_seen": row.get("ticks_seen", ""),
+                "closed_bar_candidates": row.get("closed_bar_candidates", ""),
+                "feature_failures": row.get("feature_failures", ""),
+                "onnx_failures": row.get("onnx_failures", ""),
+            }
+        )
+
+    return {
+        "status": "diagnostic_observed",
+        "event_count": len(rows),
+        "event_counts": dict(sorted(event_counts.items())),
+        **maxima,
+        "last_events": last_rows[-10:],
+    }
+
+
 def normalize_l4_terminal_summary(terminal_summary: dict[str, Any]) -> dict[str, Any]:
     summary = dict(terminal_summary)
     mode = summary.get("mode")
@@ -875,6 +973,11 @@ def run_one_attempt(
         manifest=manifest,
         tester_config=tester_config,
     )
+    manifest = ensure_score_diagnostic_transport(
+        manifest=manifest,
+        tester_config=tester_config,
+        attempt_id=attempt_id,
+    )
     ensure_completion_surface_scope(manifest, "full_period_deterministic")
     report_config_summary = normalize_tester_report_config(tester_config, attempt_id)
     manifest.setdefault("artifact_identity", {})["tester_config"] = artifact_ref(tester_config, repo_root)
@@ -883,6 +986,10 @@ def run_one_attempt(
     common_telemetry = common_relative_to_path(telemetry_rel)
     if common_telemetry.exists():
         common_telemetry.unlink()
+    diagnostic_rel = manifest["artifact_identity"]["diagnostics"]["score_diagnostics.csv"]["common_relative_path"]
+    common_diagnostic = common_relative_to_path(diagnostic_rel)
+    if common_diagnostic.exists():
+        common_diagnostic.unlink()
     portable_terminal_root = terminal.parent if terminal else DEFAULT_TERMINAL.parent
     main_data_root = terminal_data_root(repo_root)
     report_directory_summary = prepare_tester_report_directories(
@@ -913,6 +1020,7 @@ def run_one_attempt(
         "tester_report_config": report_config_summary,
         "tester_report_resolution_prelaunch": public_report_resolution_summary(report_directory_summary),
         "common_telemetry_redacted": redact_path(str(common_telemetry)),
+        "common_diagnostic_redacted": redact_path(str(common_diagnostic)),
         "claim_boundary": "terminal_execution_evidence_only_no_runtime_authority_no_economics_pass",
     }
     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
@@ -975,11 +1083,69 @@ def run_one_attempt(
             "claim_boundary": "terminal_attempt_no_score_telemetry_no_l4_completion",
         }
     write_yaml(root / "score_telemetry_summary.yaml", telemetry_summary)
+    diagnostic_file_observed = common_diagnostic.exists()
+    diagnostic_artifact: dict[str, Any] | None = None
+    if diagnostic_file_observed:
+        repo_diagnostic = root / "telemetry" / "score_diagnostics.csv"
+        repo_diagnostic.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(common_diagnostic, repo_diagnostic)
+        diagnostic_stats = parse_score_diagnostics(repo_diagnostic)
+        diagnostic_artifact = artifact_ref(
+            repo_diagnostic,
+            repo_root,
+            availability="local_diagnostic_hash_recorded_ignored_by_git",
+        )
+        diagnostic_summary = {
+            "version": "wave0_l4_score_diagnostic_summary_v1",
+            "summary_path": f"runtime/mt5_attempts/{attempt_id}/score_diagnostic_summary.yaml",
+            "attempt_id": attempt_id,
+            "run_id": row["run_id"],
+            "bundle_id": row["bundle_id"],
+            "period_role": row["period_role"],
+            "diagnostic": diagnostic_artifact,
+            "common_diagnostic_redacted": redact_path(str(common_diagnostic)),
+            "stats": diagnostic_stats,
+            "claim_boundary": "ea_score_probe_diagnostic_observation_only_no_runtime_authority",
+        }
+    else:
+        diagnostic_summary = {
+            "version": "wave0_l4_score_diagnostic_summary_v1",
+            "summary_path": f"runtime/mt5_attempts/{attempt_id}/score_diagnostic_summary.yaml",
+            "attempt_id": attempt_id,
+            "run_id": row["run_id"],
+            "bundle_id": row["bundle_id"],
+            "period_role": row["period_role"],
+            "diagnostic": {
+                "path": None,
+                "availability": "missing_after_terminal_execution",
+            },
+            "common_diagnostic_redacted": redact_path(str(common_diagnostic)),
+            "stats": {"status": "diagnostic_missing", "event_count": 0, "event_counts": {}},
+            "failure_disposition": {
+                "reproduction": "MT5 terminal was launched with InpDiagnosticPath configured in tester_config.ini",
+                "exact_failing_layer": "mt5_strategy_tester_score_probe_diagnostic_file",
+                "bounded_repair_or_fallback_attempt": "runner inserted diagnostic common-file path before terminal launch",
+                "evidence_path": f"runtime/mt5_attempts/{attempt_id}/terminal_run_summary.yaml",
+                "remaining_blocker": "EA diagnostic CSV was not observed after terminal execution",
+                "reopen_condition": "inspect EA init/journal capture or terminal tester attachment before rerun",
+            },
+            "claim_boundary": "ea_score_probe_diagnostic_missing_no_runtime_authority",
+        }
+    write_yaml(root / "score_diagnostic_summary.yaml", diagnostic_summary)
+    telemetry_summary["diagnostic_evidence"] = {
+        "summary_path": diagnostic_summary["summary_path"],
+        "status": (diagnostic_summary.get("stats") or {}).get("status"),
+        "event_counts": (diagnostic_summary.get("stats") or {}).get("event_counts", {}),
+        "claim_boundary": diagnostic_summary["claim_boundary"],
+    }
+    write_yaml(root / "score_telemetry_summary.yaml", telemetry_summary)
     row_count = ((telemetry_summary.get("stats") or {}).get("row_count")) or 0
     terminal_summary["telemetry_observed"] = telemetry_observed
     terminal_summary["telemetry_file_observed_after_attempt"] = telemetry_file_observed
     terminal_summary["telemetry_rows_observed_after_attempt"] = telemetry_observed
     terminal_summary["telemetry_row_count"] = row_count
+    terminal_summary["score_diagnostic_file_observed_after_attempt"] = diagnostic_file_observed
+    terminal_summary["score_diagnostic_event_count"] = (diagnostic_summary.get("stats") or {}).get("event_count", 0)
     if telemetry_file_observed and not telemetry_observed:
         terminal_summary["empty_telemetry_claim_effect"] = "csv_header_only_no_l4_score_observation"
     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
@@ -1068,6 +1234,7 @@ def run_one_attempt(
     }
     manifest["terminal_run_summary"] = terminal_summary
     manifest["score_telemetry_summary"] = telemetry_summary
+    manifest["score_diagnostic_summary"] = diagnostic_summary
     manifest["tester_report"] = report
     manifest["tester_report_receipt"] = {
         "path": f"runtime/mt5_attempts/{attempt_id}/tester_report_receipt.yaml",
@@ -1078,6 +1245,7 @@ def run_one_attempt(
     }
     manifest.setdefault("artifact_identity", {})["terminal_run_summary"] = artifact_ref(root / "terminal_run_summary.yaml", repo_root)
     manifest["artifact_identity"]["score_telemetry_summary"] = artifact_ref(root / "score_telemetry_summary.yaml", repo_root)
+    manifest["artifact_identity"]["score_diagnostic_summary"] = artifact_ref(root / "score_diagnostic_summary.yaml", repo_root)
     manifest["artifact_identity"]["tester_report_receipt"] = ensure_tester_report_receipt_artifact_ref(
         receipt_path,
         report_receipt,
@@ -1085,6 +1253,8 @@ def run_one_attempt(
     )
     if telemetry_artifact:
         manifest["artifact_identity"]["telemetry"]["repo_copy"] = telemetry_artifact
+    if diagnostic_artifact:
+        manifest["artifact_identity"].setdefault("diagnostics", {})["repo_copy"] = diagnostic_artifact
     manifest["artifact_identity"]["tester_reports"] = [report]
     manifest["missing_evidence"] = []
     if not telemetry_observed:
@@ -1093,6 +1263,8 @@ def run_one_attempt(
             if telemetry_file_observed
             else "score_telemetry_csv_missing_after_terminal_execution"
         )
+    if not diagnostic_file_observed:
+        manifest["missing_evidence"].append("score_diagnostic_csv_missing_after_terminal_execution")
     if not report_observed:
         manifest["missing_evidence"].append("tester_report_missing_or_not_archived")
     append_missing_evidence(manifest, list(report_receipt.get("missing_requirements") or []))
@@ -1138,6 +1310,7 @@ def run_one_attempt(
         "terminal_timed_out": terminal_summary.get("timed_out"),
         "terminal_run_summary_path": terminal_summary["summary_path"],
         "score_telemetry_summary_path": telemetry_summary["summary_path"],
+        "score_diagnostic_summary_path": diagnostic_summary["summary_path"],
         "repo_telemetry_path": telemetry_artifact["path"] if telemetry_artifact else "",
         "tester_report_path": report.get("path") or "",
         "claim_boundary": manifest["claim_boundary"],
@@ -1483,7 +1656,19 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                 "present_hash_recorded",
                 "summary of local score telemetry",
             ),
+            (
+                "score_diagnostic_summary",
+                "score_diagnostic_summary",
+                row.get("score_diagnostic_summary_path") or f"runtime/mt5_attempts/{row['attempt_id']}/score_diagnostic_summary.yaml",
+                "present_hash_recorded",
+                "EA score-probe diagnostic summary; observation only, not runtime authority",
+            ),
         ]:
+            artifact_claim_boundary = (
+                "ea_score_probe_diagnostic_observation_only_no_runtime_authority"
+                if suffix == "score_diagnostic_summary"
+                else row["claim_boundary"]
+            )
             put(
                 {
                     "artifact_id": f"artifact_{row['attempt_id']}_{suffix}_v0",
@@ -1497,7 +1682,7 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                     "regeneration_command": regen,
                     "source_of_truth": f"runtime/mt5_attempts/{row['attempt_id']}/attempt_manifest.yaml",
                     "consumer": WORK_ITEM_ID,
-                    "claim_boundary": row["claim_boundary"],
+                    "claim_boundary": artifact_claim_boundary,
                     "notes": note,
                 }
             )
@@ -1521,6 +1706,27 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
             )
         else:
             by_id.pop(f"artifact_{row['attempt_id']}_score_telemetry_csv_v0", None)
+        diagnostic_csv = f"runtime/mt5_attempts/{row['attempt_id']}/telemetry/score_diagnostics.csv"
+        if (repo_root / diagnostic_csv).exists():
+            put(
+                {
+                    "artifact_id": f"artifact_{row['attempt_id']}_score_diagnostics_csv_v0",
+                    "run_id": row["run_id"],
+                    "bundle_id": row["bundle_id"],
+                    "attempt_id": row["attempt_id"],
+                    "artifact_type": "score_diagnostics_csv",
+                    "path_or_uri": diagnostic_csv,
+                    "availability": "local_diagnostic_hash_recorded_ignored_by_git",
+                    "producer_command": producer,
+                    "regeneration_command": regen,
+                    "source_of_truth": f"runtime/mt5_attempts/{row['attempt_id']}/score_diagnostic_summary.yaml",
+                    "consumer": WORK_ITEM_ID,
+                    "claim_boundary": "ea_score_probe_diagnostic_observation_only_no_runtime_authority",
+                    "notes": "raw EA diagnostic events are local/generated and ignored; summary is committed",
+                }
+            )
+        else:
+            by_id.pop(f"artifact_{row['attempt_id']}_score_diagnostics_csv_v0", None)
         if row.get("tester_report_path"):
             put(
                 {

@@ -1,46 +1,46 @@
 version: wave02_tradeability_l4_score_telemetry_summary_v1
-summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/score_telemetry_summary.yaml
-attempt_id: attempt_wave02_td_cell_001_l4_validation_v0
+summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml
+attempt_id: attempt_wave02_td_cell_001_l4_research_oos_v0
 run_id: onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0
 bundle_id: bundle_wave02_td_cell_001_l4_onnx_export_v0
-period_role: validation
+period_role: research_oos
 telemetry:
-  path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/telemetry/score_telemetry.csv
-  sha256: e49b085bfc91606e7cc39ded903469b36ab29208d9aebbab932bfe59afcc04ce
-  size_bytes: 8589165
+  path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_research_oos_v0/telemetry/score_telemetry.csv
+  sha256: 409211af65b05ab859076700eb17f5b4ce7c8fedef964df08199644c73ab8b63
+  size_bytes: 7263193
   availability: local_telemetry_hash_recorded_ignored_by_git
-common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_001_l4_validation_v0\score_telemetry.csv
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_001_l4_research_oos_v0\score_telemetry.csv
 stats:
   status: telemetry_observed
-  row_count: 53554
-  first_bar_close_time: 2024.06.05 00:00:00
-  last_bar_close_time: 2025.03.07 23:50:00
+  row_count: 45281
+  first_bar_close_time: 2025.04.03 00:00:00
+  last_bar_close_time: 2025.11.20 23:55:00
   symbol_counts:
-    US100: 53554
+    US100: 45281
   period_counts:
-    PERIOD_M5: 53554
+    PERIOD_M5: 45281
   feature_count_values:
-    '30': 53554
+    '30': 45281
   decision_counts:
-    flat: 42803
-    tradeable: 10751
+    flat: 36393
+    tradeable: 8888
   score_stats:
-    finite_count: 53554
-    min: 0.1122138798
-    max: 0.9036897421
-    mean: 0.5096778109009356
+    finite_count: 45281
+    min: 0.015647471
+    max: 0.979806602
+    mean: 0.5105929142700338
   spread_points_stats:
-    finite_count: 53554
+    finite_count: 45281
     min: 0.0
-    max: 140.0
-    mean: 130.46745341150987
-  tick_volume_nonzero_count: 53554
+    max: 150.0
+    mean: 134.04525076743005
+  tick_volume_nonzero_count: 45281
 claim_boundary: wave02_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 diagnostic_evidence:
-  summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/score_diagnostic_summary.yaml
+  summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_research_oos_v0/score_diagnostic_summary.yaml
   status: diagnostic_observed
   event_counts:
-    closed_bar_candidate: 73
+    closed_bar_candidate: 65
     deinit_complete: 1
     deinit_start: 1
     feature_columns_loaded: 1
@@ -49,8 +49,8 @@ diagnostic_evidence:
     onnx_created: 1
     onnx_released: 1
     onnx_shapes_set: 1
-    row_written: 73
-    tick_seen: 6326
+    row_written: 65
+    tick_seen: 5468
   claim_boundary: wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority
 work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
 subwork_item_id: work_wave02_tradeability_l4_strategy_tester_execution_v0

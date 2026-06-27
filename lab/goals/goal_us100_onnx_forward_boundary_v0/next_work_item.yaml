@@ -42,27 +42,28 @@ current_truth:
   l4_runtime_execution_status: partial_l4_terminal_execution_started
   l4_runtime_execution_counts:
     prepared_attempt_count: 16
-    selected_attempt_count: 1
-    indexed_execution_count: 1
-    executed_attempt_count: 1
+    selected_attempt_count: 2
+    indexed_execution_count: 2
+    executed_attempt_count: 2
     completed_manifest_count: 0
-    touched_manifest_count: 1
-    telemetry_observed_count: 0
-    telemetry_missing_count: 1
-    tester_report_observed_count: 0
-    tester_report_missing_count: 1
-    terminal_execution_count: 1
-    telemetry_observation_count: 0
-    tester_report_observation_count: 0
-    portable_contract_count: 1
+    touched_manifest_count: 2
+    telemetry_observed_count: 2
+    telemetry_missing_count: 0
+    tester_report_observed_count: 2
+    tester_report_missing_count: 0
+    terminal_execution_count: 2
+    telemetry_observation_count: 2
+    tester_report_observation_count: 2
+    portable_contract_count: 0
     runtime_probe_complete_count: 0
-    runtime_probe_incomplete_count: 1
+    runtime_probe_incomplete_count: 2
     period_role_counts:
+      research_oos: 1
       validation: 1
     status_counts:
-      terminal_executed_no_telemetry: 1
+      telemetry_adapter_observed_runtime_contract_incomplete: 2
     result_judgment_counts:
-      inconclusive: 1
+      runtime_probe: 2
 unresolved_blockers:
 - L4_split_runtime_probe_terminal_execution_pending
 reopen_conditions:

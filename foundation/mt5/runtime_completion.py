@@ -99,10 +99,14 @@ def evaluate_runtime_attempt(
         missing.append("portable_terminal_contract")
     if attempt.portable_attempted is not True:
         missing.append("portable_attempted")
-    if attempt.main_mode_fallback_allowed is not False:
-        missing.append("main_mode_fallback_not_allowed")
-    if attempt.main_mode_fallback_used is not False:
-        missing.append("main_mode_fallback_not_used")
+    if attempt.main_mode_fallback_allowed is True:
+        missing.append("main_mode_fallback_allowed_diagnostic_only")
+    elif attempt.main_mode_fallback_allowed is not False:
+        missing.append("main_mode_fallback_policy_unknown")
+    if attempt.main_mode_fallback_used is True:
+        missing.append("main_mode_fallback_used_diagnostic_only")
+    elif attempt.main_mode_fallback_used is not False:
+        missing.append("main_mode_fallback_usage_unknown")
 
     period_contract_satisfied = True
     if attempt.period_role not in required_roles:

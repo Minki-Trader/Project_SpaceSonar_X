@@ -82,6 +82,7 @@ def normalize_attempt_outputs(repo_root: Path, row: dict[str, str], execution_ro
     manifest_path = repo_root / row["attempt_manifest_path"]
 
     terminal_path = root / "terminal_run_summary.yaml"
+    terminal: dict[str, Any] | None = None
     if terminal_path.exists():
         terminal = base.load_yaml(terminal_path)
         terminal["version"] = "wave02_tradeability_l4_terminal_run_summary_v1"
@@ -93,6 +94,7 @@ def normalize_attempt_outputs(repo_root: Path, row: dict[str, str], execution_ro
         base.write_yaml(terminal_path, terminal)
 
     score_path = root / "score_telemetry_summary.yaml"
+    score: dict[str, Any] | None = None
     if score_path.exists():
         score = base.load_yaml(score_path)
         score["version"] = "wave02_tradeability_l4_score_telemetry_summary_v1"
@@ -101,9 +103,25 @@ def normalize_attempt_outputs(repo_root: Path, row: dict[str, str], execution_ro
         score["active_goal_id"] = GOAL_ID
         score["campaign_id"] = CAMPAIGN_ID
         score["sweep_id"] = SWEEP_ID
+        diagnostic_evidence = score.setdefault("diagnostic_evidence", {})
+        if diagnostic_evidence:
+            diagnostic_evidence["claim_boundary"] = "wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority"
         if execution_row.get("telemetry_observed"):
             score["claim_boundary"] = CLAIM_BOUNDARY
         base.write_yaml(score_path, score)
+
+    diagnostic_path = root / "score_diagnostic_summary.yaml"
+    diagnostic: dict[str, Any] | None = None
+    if diagnostic_path.exists():
+        diagnostic = base.load_yaml(diagnostic_path)
+        diagnostic["version"] = "wave02_tradeability_l4_score_diagnostic_summary_v1"
+        diagnostic["work_item_id"] = WORK_ITEM_ID
+        diagnostic["subwork_item_id"] = SUBWORK_ID
+        diagnostic["active_goal_id"] = GOAL_ID
+        diagnostic["campaign_id"] = CAMPAIGN_ID
+        diagnostic["sweep_id"] = SWEEP_ID
+        diagnostic["claim_boundary"] = "wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority"
+        base.write_yaml(diagnostic_path, diagnostic)
 
     manifest = base.load_yaml(manifest_path)
     manifest["terminal_execution_subwork_item_id"] = SUBWORK_ID
@@ -111,6 +129,12 @@ def normalize_attempt_outputs(repo_root: Path, row: dict[str, str], execution_ro
     manifest["sweep_id"] = SWEEP_ID
     if execution_row.get("telemetry_observed"):
         manifest["claim_boundary"] = CLAIM_BOUNDARY
+    if terminal is not None:
+        manifest["terminal_run_summary"] = terminal
+    if score is not None:
+        manifest["score_telemetry_summary"] = score
+    if diagnostic is not None:
+        manifest["score_diagnostic_summary"] = diagnostic
     routing = manifest.setdefault("runtime_probe_routing", {})
     routing["primary_family"] = "runtime_probe"
     routing["primary_skill"] = "spacesonar-runtime-evidence"
@@ -132,6 +156,8 @@ def normalize_attempt_outputs(repo_root: Path, row: dict[str, str], execution_ro
     parity["follow_up_action"] = manifest.get("next_action", "continue Wave02 L4 period-role execution")
     manifest.setdefault("artifact_identity", {})["terminal_run_summary"] = base.artifact_ref(terminal_path, repo_root)
     manifest["artifact_identity"]["score_telemetry_summary"] = base.artifact_ref(score_path, repo_root)
+    if diagnostic_path.exists():
+        manifest["artifact_identity"]["score_diagnostic_summary"] = base.artifact_ref(diagnostic_path, repo_root)
     receipt_path = root / "tester_report_receipt.yaml"
     if receipt_path.exists():
         manifest["artifact_identity"]["tester_report_receipt"] = base.artifact_ref(receipt_path, repo_root)
@@ -143,6 +169,8 @@ def normalize_attempt_outputs(repo_root: Path, row: dict[str, str], execution_ro
 
     execution_row["claim_boundary"] = manifest.get("claim_boundary", CLAIM_BOUNDARY)
     execution_row["tester_report_receipt_path"] = (root / "tester_report_receipt.yaml").relative_to(repo_root).as_posix()
+    if diagnostic_path.exists():
+        execution_row["score_diagnostic_summary_path"] = diagnostic_path.relative_to(repo_root).as_posix()
     return execution_row
 
 
@@ -325,8 +353,20 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
             ("tester_config", "tester_config", attempt_root / "tester_config.ini", "present_hash_recorded", "Wave02 tester config used for terminal execution"),
             ("terminal_summary", "terminal_run_summary", Path(row["terminal_run_summary_path"]), "present_hash_recorded", "Wave02 terminal launch and mode evidence"),
             ("score_telemetry_summary", "score_telemetry_summary", Path(row["score_telemetry_summary_path"]), "present_hash_recorded", "Wave02 score telemetry summary"),
+            (
+                "score_diagnostic_summary",
+                "score_diagnostic_summary",
+                Path(row.get("score_diagnostic_summary_path") or attempt_root / "score_diagnostic_summary.yaml"),
+                "present_hash_recorded" if (repo_root / attempt_root / "score_diagnostic_summary.yaml").exists() else "missing_after_runtime_writer",
+                "Wave02 EA score-probe diagnostic summary; observation only, not runtime authority",
+            ),
             ("tester_report_receipt", "tester_report_receipt", receipt_path, receipt_availability, "Wave02 tester report receipt; records missing report requirements when no report is observed"),
         ]:
+            artifact_claim_boundary = (
+                "wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority"
+                if suffix == "score_diagnostic_summary"
+                else row["claim_boundary"]
+            )
             put(
                 {
                     "artifact_id": f"artifact_{row['attempt_id']}_{suffix}_v0",
@@ -340,7 +380,7 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                     "regeneration_command": producer,
                     "source_of_truth": (attempt_root / "attempt_manifest.yaml").as_posix(),
                     "consumer": WORK_ITEM_ID,
-                    "claim_boundary": row["claim_boundary"],
+                    "claim_boundary": artifact_claim_boundary,
                     "notes": notes,
                 }
             )
@@ -364,6 +404,27 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
             )
         else:
             by_id.pop(f"artifact_{row['attempt_id']}_score_telemetry_csv_v0", None)
+        diagnostic_csv = attempt_root / "telemetry" / "score_diagnostics.csv"
+        if (repo_root / diagnostic_csv).exists():
+            put(
+                {
+                    "artifact_id": f"artifact_{row['attempt_id']}_score_diagnostics_csv_v0",
+                    "run_id": row["run_id"],
+                    "bundle_id": row["bundle_id"],
+                    "attempt_id": row["attempt_id"],
+                    "artifact_type": "score_diagnostics_csv",
+                    "path_or_uri": diagnostic_csv.as_posix(),
+                    "availability": "local_diagnostic_hash_recorded_ignored_by_git",
+                    "producer_command": producer,
+                    "regeneration_command": producer,
+                    "source_of_truth": (attempt_root / "score_diagnostic_summary.yaml").as_posix(),
+                    "consumer": WORK_ITEM_ID,
+                    "claim_boundary": "wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority",
+                    "notes": "raw Wave02 EA diagnostic events are local/generated; committed summary is the indexable evidence",
+                }
+            )
+        else:
+            by_id.pop(f"artifact_{row['attempt_id']}_score_diagnostics_csv_v0", None)
         if row.get("tester_report_path"):
             put(
                 {

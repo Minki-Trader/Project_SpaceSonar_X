@@ -8,6 +8,7 @@
 
 input string InpOnnxPath       = "SpaceSonar\\l4_score_probe\\bundle\\model.onnx";
 input string InpOutputPath     = "SpaceSonar\\l4_score_probe\\attempt\\score_telemetry.csv";
+input string InpDiagnosticPath = "";
 input string InpFeatureColumns = "";
 input string InpFeatureColumnsPath = "";
 input int    InpFeatureCount   = 0;
@@ -26,9 +27,78 @@ input int    InpBarTimeToUtcOffsetHours = 0;
 
 long     ExtOnnxHandle = INVALID_HANDLE;
 int      ExtOutputHandle = INVALID_HANDLE;
+int      ExtDiagnosticHandle = INVALID_HANDLE;
 datetime ExtLastClosedBarTime = 0;
 int      ExtRowsWritten = 0;
+int      ExtTicksSeen = 0;
+int      ExtClosedBarCandidates = 0;
+int      ExtFeatureFailureCount = 0;
+int      ExtOnnxFailureCount = 0;
+bool     ExtMaxRowsReachedLogged = false;
 string   ExtColumns[];
+
+string DiagnosticTime(const datetime value)
+{
+   if(value <= 0)
+      return "";
+   return TimeToString(value, TIME_DATE | TIME_SECONDS);
+}
+
+bool ShouldLogSample(const int count)
+{
+   return (count <= 20 || (count % 1000) == 0);
+}
+
+void WriteDiagnosticEvent(const string event_name, const datetime bar_time, const string detail)
+{
+   if(ExtDiagnosticHandle == INVALID_HANDLE)
+      return;
+
+   const int last_error = GetLastError();
+   FileWrite(ExtDiagnosticHandle,
+             TimeToString(TimeCurrent(), TIME_DATE | TIME_SECONDS),
+             event_name,
+             DiagnosticTime(bar_time),
+             _Symbol,
+             EnumToString(_Period),
+             detail,
+             last_error,
+             ExtRowsWritten,
+             ExtTicksSeen,
+             ExtClosedBarCandidates,
+             ExtFeatureFailureCount,
+             ExtOnnxFailureCount);
+   FileFlush(ExtDiagnosticHandle);
+}
+
+void OpenDiagnosticLog()
+{
+   if(StringLen(InpDiagnosticPath) <= 0)
+      return;
+
+   const int common_flag = (InpUseCommonFiles ? FILE_COMMON : 0);
+   ResetLastError();
+   ExtDiagnosticHandle = FileOpen(InpDiagnosticPath, FILE_WRITE | FILE_CSV | FILE_ANSI | common_flag, ',');
+   if(ExtDiagnosticHandle == INVALID_HANDLE)
+   {
+      PrintFormat("SpaceSonar L4 diagnostic open failed path=%s err=%d", InpDiagnosticPath, GetLastError());
+      return;
+   }
+   FileWrite(ExtDiagnosticHandle,
+             "event_time",
+             "event",
+             "bar_time",
+             "symbol",
+             "period",
+             "detail",
+             "last_error",
+             "rows_written",
+             "ticks_seen",
+             "closed_bar_candidates",
+             "feature_failures",
+             "onnx_failures");
+   FileFlush(ExtDiagnosticHandle);
+}
 
 double SafeDiv(const double numerator, const double denominator)
 {
@@ -763,10 +833,18 @@ bool BuildFeatureMatrix(matrixf &features, MqlRates &current_bar)
    const int need = MathMax(InpHistoryBars, 600);
    const int copied = CopyRates(_Symbol, PERIOD_M5, 1, need, rates);
    if(copied <= 0)
+   {
+      ExtFeatureFailureCount++;
+      WriteDiagnosticEvent("feature_matrix_failed", 0, StringFormat("CopyRates copied=%d need=%d", copied, need));
       return false;
+   }
    const int index = copied - 1;
    if(copied < MathMin(need, InpHistoryBars))
+   {
+      ExtFeatureFailureCount++;
+      WriteDiagnosticEvent("feature_matrix_failed", 0, StringFormat("insufficient_rates copied=%d need=%d history=%d", copied, need, InpHistoryBars));
       return false;
+   }
    current_bar = rates[index];
 
    features.Init(1, InpFeatureCount);
@@ -775,7 +853,9 @@ bool BuildFeatureMatrix(matrixf &features, MqlRates &current_bar)
       double value = 0.0;
       if(!FeatureValue(ExtColumns[i], rates, index, value))
       {
+         ExtFeatureFailureCount++;
          PrintFormat("SpaceSonar feature failed column=%s", ExtColumns[i]);
+         WriteDiagnosticEvent("feature_value_failed", rates[index].time + PeriodSeconds(PERIOD_M5), ExtColumns[i]);
          return false;
       }
       if(!IsFinite(value))
@@ -796,14 +876,19 @@ bool RunOneClosedBar()
    ResetLastError();
    if(!OnnxRun(ExtOnnxHandle, ONNX_NO_CONVERSION | ONNX_LOGLEVEL_INFO, features, score_vector))
    {
+      ExtOnnxFailureCount++;
       PrintFormat("SpaceSonar L4 OnnxRun failed err=%d", GetLastError());
+      WriteDiagnosticEvent("onnx_run_failed", current_bar.time + PeriodSeconds(PERIOD_M5), "OnnxRun returned false");
       return false;
    }
 
    const double score = (double)score_vector[0];
    const string decision = DecisionFromScore(score);
    WriteTelemetryRow(current_bar.time + PeriodSeconds(PERIOD_M5), score, decision, current_bar);
+   FileFlush(ExtOutputHandle);
    ExtRowsWritten++;
+   if(ShouldLogSample(ExtRowsWritten))
+      WriteDiagnosticEvent("row_written", current_bar.time + PeriodSeconds(PERIOD_M5), decision);
    return true;
 }
 
@@ -838,13 +923,21 @@ bool LoadFeatureColumns()
 
 int OnInit()
 {
+   OpenDiagnosticLog();
+   WriteDiagnosticEvent("init_start", 0, "score_probe_init");
+
    if(InpFeatureCount <= 0)
    {
       Print("InpFeatureCount must be positive.");
+      WriteDiagnosticEvent("init_failed", 0, "feature_count_non_positive");
       return INIT_FAILED;
    }
    if(!LoadFeatureColumns())
+   {
+      WriteDiagnosticEvent("init_failed", 0, "feature_columns_load_failed");
       return INIT_FAILED;
+   }
+   WriteDiagnosticEvent("feature_columns_loaded", 0, StringFormat("count=%d", ArraySize(ExtColumns)));
 
    const uint onnx_flags = (uint)((InpUseCommonFiles ? ONNX_COMMON_FOLDER : 0) | ONNX_LOGLEVEL_INFO | ONNX_USE_CPU_ONLY);
    ResetLastError();
@@ -852,8 +945,11 @@ int OnInit()
    if(ExtOnnxHandle == INVALID_HANDLE || ExtOnnxHandle == 0)
    {
       PrintFormat("SpaceSonar L4 OnnxCreate failed path=%s err=%d", InpOnnxPath, GetLastError());
+      ExtOnnxFailureCount++;
+      WriteDiagnosticEvent("onnx_create_failed", 0, InpOnnxPath);
       return INIT_FAILED;
    }
+   WriteDiagnosticEvent("onnx_created", 0, InpOnnxPath);
 
    ulong input_shape[2];
    input_shape[0] = 1;
@@ -863,13 +959,16 @@ int OnInit()
    if(!OnnxSetInputShape(ExtOnnxHandle, 0, input_shape))
    {
       PrintFormat("SpaceSonar L4 OnnxSetInputShape failed err=%d", GetLastError());
+      WriteDiagnosticEvent("onnx_input_shape_failed", 0, StringFormat("feature_count=%d", InpFeatureCount));
       return INIT_FAILED;
    }
    if(!OnnxSetOutputShape(ExtOnnxHandle, 0, output_shape))
    {
       PrintFormat("SpaceSonar L4 OnnxSetOutputShape failed err=%d", GetLastError());
+      WriteDiagnosticEvent("onnx_output_shape_failed", 0, "output_shape=1");
       return INIT_FAILED;
    }
+   WriteDiagnosticEvent("onnx_shapes_set", 0, StringFormat("feature_count=%d", InpFeatureCount));
 
    const int common_flag = (InpUseCommonFiles ? FILE_COMMON : 0);
    ResetLastError();
@@ -877,14 +976,18 @@ int OnInit()
    if(ExtOutputHandle == INVALID_HANDLE)
    {
       PrintFormat("SpaceSonar L4 output open failed path=%s err=%d", InpOutputPath, GetLastError());
+      WriteDiagnosticEvent("output_open_failed", 0, InpOutputPath);
       return INIT_FAILED;
    }
    WriteHeader();
+   FileFlush(ExtOutputHandle);
+   WriteDiagnosticEvent("init_succeeded", 0, "output_header_written");
    return INIT_SUCCEEDED;
 }
 
 void OnDeinit(const int reason)
 {
+   WriteDiagnosticEvent("deinit_start", 0, StringFormat("reason=%d", reason));
    if(ExtOutputHandle != INVALID_HANDLE)
    {
       FileClose(ExtOutputHandle);
@@ -896,18 +999,47 @@ void OnDeinit(const int reason)
       const bool released = OnnxRelease(ExtOnnxHandle);
       PrintFormat("SpaceSonar L4 ONNX release released=%s last_error=%d rows=%d",
                   (released ? "true" : "false"), GetLastError(), ExtRowsWritten);
+      WriteDiagnosticEvent("onnx_released", 0, StringFormat("released=%s", (released ? "true" : "false")));
       ExtOnnxHandle = INVALID_HANDLE;
+   }
+   WriteDiagnosticEvent("deinit_complete", 0, "score_probe_deinit");
+   if(ExtDiagnosticHandle != INVALID_HANDLE)
+   {
+      FileClose(ExtDiagnosticHandle);
+      ExtDiagnosticHandle = INVALID_HANDLE;
    }
 }
 
 void OnTick()
 {
+   ExtTicksSeen++;
+   if(ExtTicksSeen <= 5 || (ExtTicksSeen % 10000) == 0)
+      WriteDiagnosticEvent("tick_seen", 0, "");
+
    if(InpMaxRows > 0 && ExtRowsWritten >= InpMaxRows)
+   {
+      if(!ExtMaxRowsReachedLogged)
+      {
+         WriteDiagnosticEvent("max_rows_reached", 0, StringFormat("InpMaxRows=%d", InpMaxRows));
+         ExtMaxRowsReachedLogged = true;
+      }
       return;
+   }
 
    const datetime closed_time = iTime(_Symbol, PERIOD_M5, 1);
-   if(closed_time <= 0 || closed_time == ExtLastClosedBarTime)
+   if(closed_time <= 0)
+   {
+      if(ExtTicksSeen <= 5)
+         WriteDiagnosticEvent("closed_time_missing", 0, "iTime shift=1 returned <=0");
       return;
+   }
+   if(closed_time == ExtLastClosedBarTime)
+      return;
+
+   ExtClosedBarCandidates++;
+   if(ShouldLogSample(ExtClosedBarCandidates))
+      WriteDiagnosticEvent("closed_bar_candidate", closed_time, "");
    ExtLastClosedBarTime = closed_time;
-   RunOneClosedBar();
+   if(!RunOneClosedBar())
+      WriteDiagnosticEvent("closed_bar_no_row", closed_time, "RunOneClosedBar returned false");
 }
