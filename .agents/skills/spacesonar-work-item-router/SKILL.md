@@ -66,6 +66,7 @@ Internal receipts are not user reports.
 - For touched run evidence, use `python -m spacesonar.cli project writer-smoke --run-refs <run_refs.csv> --campaign-id <campaign_id> --summary <summary.yaml> --pre-runtime` before considering broader validation.
 - Do not route a first plumbing attempt as full-project reconciliation. Add broader validation only after the thin path is real or the claim requires it.
 - For session start/resume, route the first executable step as one narrow fixture/run/probe/smoke path. Broad materializers, global sync, full validators, or full pytest require an explicit boundary/claim/drift reason.
+- If the user asks why progress is slow or asks for experiments, route to the active work item's next executable writer, runner, probe, adapter, or materializer. Validation-only work is allowed only when the source-of-truth record itself is the task.
 
 ## Do Not
 
@@ -74,6 +75,7 @@ Internal receipts are not user reports.
 - treat advisory micro-consult as formal review
 - make internal receipts tutorial-like
 - use whole-tree scans, repeated folder passes, or CI success as proof of operating stability
+- scan volatile local trees such as `.pytest_tmp`, `.spacesonar/transactions`, runtime reports/telemetry, or package artifacts as a routine current-truth source
 - claim completion/review/pass without required gate coverage
 - route a non-trivial item without a storage contract
 - skip a runtime learning probe decision when runtime behavior, economics, EA/ONNX meaning, or handoff is in scope

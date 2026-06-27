@@ -40,4 +40,6 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 - Do not let passing tests replace explicit input, output, and failure contracts.
 - Do not default to pytest for ordinary code or policy edits. Prefer direct parse, compile, import, schema, lint, or command-level smoke for the touched surface; escalate to pytest only for boundary, shared-contract, protected-claim, or explicit user-requested validation.
 - When skipping pytest, record the narrower smoke and why it covers the touched contract.
+- If a bug repeats because validation finds it late, move the check into the writer, parser, adapter, or manifest contract so the next run fails before broad validation.
+- Exclude local volatile dirs from fallback scans and copy operations unless the task explicitly targets those dirs.
 - Make trading, time, data, and runtime assumptions visible when relevant.

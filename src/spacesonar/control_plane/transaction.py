@@ -48,8 +48,10 @@ SKIP_FUTURE_DIRS = {
     ".venv",
     "__pycache__",
     ".pytest_cache",
+    ".pytest_tmp",
     ".mypy_cache",
     "catboost_info",
+    "temp_policy_drafts",
 }
 SKIP_FUTURE_SUFFIXES = {
     ".pyc",

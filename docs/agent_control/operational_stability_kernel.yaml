@@ -4,6 +4,57 @@ claim_boundary: operational_control_policy_only_no_runtime_authority_no_economic
 
 default_validation_depth: writer_scope_smoke
 
+routine_inspection_scope:
+  current_truth_first:
+    - AGENTS.md
+    - docs/workspace/workspace_state.yaml
+    - docs/agent_control/work_family_registry.yaml
+    - docs/agent_control/operational_stability_kernel.yaml
+    - current_work_item
+    - touched_source_of_truth_manifests
+  exclude_volatile_local_surfaces:
+    - .git/**
+    - .venv/**
+    - .pytest_cache/**
+    - .pytest_tmp/**
+    - .spacesonar/transactions/**
+    - .spacesonar/tx/**
+    - runtime/mt5_attempts/*/reports/**
+    - runtime/mt5_attempts/*/telemetry/**
+    - runtime/packages/*/artifacts/**
+    - lab/runs/*/artifacts/**
+    - lab/runs/*/reports/**
+    - temp_policy_drafts/**
+  rule: inspect canonical source-of-truth records, not volatile local workspaces, when deciding operational state
+
+experiment_first_loop:
+  applies_when:
+    - user_asks_progress
+    - user_asks_experiment
+    - active_work_item_has_next_executable_probe_or_writer
+  required_order:
+    - read_current_truth
+    - identify_next_executable_writer_or_probe
+    - repair_missing_repo_controlled_glue_if_needed
+    - execute_or_materialize_the_thinnest_real_step
+    - write_manifest_receipt_hash_claim_boundary
+    - run_touched_surface_smoke_only_if_it_changes_the_claim
+  forbidden_response_shape:
+    - validation_only_loop_without_executing_pending_writer_or_probe
+    - ci_or_full_graph_wait_before_attempting_repo_controlled_next_step
+    - folder_inventory_report_without_source_of_truth_contract_change
+
+growth_policy:
+  tests_may_grow_without_slowing_default_loop: true
+  reason: default loop does not execute pytest
+  default_time_driver: touched_writer_or_probe_scope
+  escalation_time_driver: boundary_or_shared_contract_claim_scope
+
+hash_and_line_ending_policy:
+  hash_identity_mode: bytes_from_final_written_file
+  writer_rule: compute hash after final newline and encoding are fixed
+  proof_rule: do not repair hash drift by broad resync before checking the touched manifest or receipt writer
+
 start_order:
   - read_boot_kernel
   - read_workspace_state_if_current_truth_matters
@@ -55,6 +106,7 @@ forbidden_default_commands:
   - broad_hash_resync
   - global_registry_regeneration
   - whole_tree_scan_as_proof
+  - volatile_local_tree_scan_as_proof
 
 allowed_non_pytest_smokes:
   - parse_touched_yaml_json_toml_csv
@@ -140,11 +192,14 @@ protected_claim_surfaces:
 
 operator_failure_modes_to_avoid:
   - running_full_tests_before_identifying_owned_surface
+  - validation_only_loop_when_executable_work_is_pending
   - using_folder_inventory_as_substitute_for_policy_reasoning
+  - scanning_volatile_local_workspaces_as_operational_evidence
   - closing_missing_adapter_without_smallest_repo_controlled_attempt
   - pushing_run_fragments_as_boundary_evidence
   - updating_registry_without_manifest_or_receipt_backing
   - claiming_stability_from_ci_success_only
+  - repairing_hash_newline_drift_with_global_resync_first
 
 machine_output_fields:
   - primary_family

@@ -90,3 +90,23 @@ surfaces:
       - python_onnx_parity
       - bundle_integrity_hash
       - mt5_runtime_probe_contract_audit
+
+  local_volatile_generated:
+    paths:
+      - .pytest_cache/**
+      - .pytest_tmp/**
+      - .spacesonar/transactions/**
+      - .spacesonar/tx/**
+      - temp_policy_drafts/**
+      - runtime/mt5_attempts/*/reports/**
+      - runtime/mt5_attempts/*/telemetry/**
+      - runtime/packages/*/artifacts/**
+      - lab/runs/*/reports/**
+      - lab/runs/*/artifacts/**
+    risks:
+      - stale_local_workspace_noise
+      - recursive_scan_churn
+      - false_operational_proof
+    gates: []
+    source_of_truth: false
+    rule: use paired manifests, receipts, summaries, and hashes instead of scanning these trees for routine operating truth

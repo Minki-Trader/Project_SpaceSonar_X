@@ -28,7 +28,9 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 - Manifests and receipts are proof-bearing; registries are projections and indexes.
 - Use repo-relative paths plus IDs and hashes for durable identity.
 - For no-pytest operation, prefer writer-time manifest/receipt/hash checks over broad retrospective validation.
+- Compute hashes from the final written bytes after newline and encoding decisions are complete; do not use broad hash resync to mask a writer contract bug.
 - For touched run evidence, run writer-scope smoke through `python -m spacesonar.cli project writer-smoke ...`; do not substitute full active-record validation as the default proof path.
+- Treat telemetry/report/artifact directories as raw evidence locations, not traversal roots for routine operating truth; consume their paired manifests, summaries, receipts, and hashes.
 - Do not commit heavy artifacts just to close a gap.
 - Do not call a run reviewed, selected, runtime-ready, economics-pass, or handoff-complete without matching durable evidence.
 - Missing repo-controlled evidence glue is implementation work before a blocked, deferred, invalid, or discarded disposition.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -10,11 +11,14 @@ NORMATIVE_RE = re.compile(r"\b(MUST|MUST NOT|SHOULD|SHOULD NOT|FORBIDDEN|require
 SENTENCE_RE = re.compile(r"(?<=[.!?])\s+|\n+")
 SKIP_PARTS = {
     ".git",
+    ".venv",
     "__pycache__",
     ".pytest_cache",
+    ".pytest_tmp",
     ".spacesonar",
     "runtime",
     "lab",
+    "temp_policy_drafts",
 }
 SKIP_FILES = {
     "docs/agent_control/policy_contract.yaml",
@@ -51,8 +55,13 @@ def should_scan(path: Path, repo_root: Path) -> bool:
 
 def lint(repo_root: Path) -> list[str]:
     occurrences: dict[str, list[str]] = defaultdict(list)
-    for path in sorted(repo_root.rglob("*")):
-        if path.is_file() and should_scan(path, repo_root):
+    for root, dirs, files in os.walk(repo_root):
+        dirs[:] = [dirname for dirname in dirs if dirname not in SKIP_PARTS]
+        root_path = Path(root)
+        for filename in sorted(files):
+            path = root_path / filename
+            if not should_scan(path, repo_root):
+                continue
             for sentence in candidate_sentences(path):
                 occurrences[sentence].append(path.relative_to(repo_root).as_posix())
     errors: list[str] = []
