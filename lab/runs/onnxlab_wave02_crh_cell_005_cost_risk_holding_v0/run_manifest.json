@@ -1,0 +1,76 @@
+{
+  "version": "run_manifest_v2",
+  "run_id": "onnxlab_wave02_crh_cell_005_cost_risk_holding_v0",
+  "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
+  "wave_id": "wave_us100_wave02_tradeability_decision_surface_v0",
+  "campaign_id": "campaign_us100_wave02_cost_risk_holding_surface_v0",
+  "idea_id": "idea_us100_wave02_cost_risk_holding_surface_v0",
+  "hypothesis_id": "hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0",
+  "surface_id": "surface_us100_wave02_cost_risk_holding_v0",
+  "sweep_id": "sweep_us100_wave02_cost_risk_holding_broad_v0",
+  "created_at_utc": "2026-06-27T22:14:35Z",
+  "status": "spec_materialized_not_executed",
+  "claim_boundary": "wave02_cost_risk_holding_first_batch_specs_only_no_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve",
+  "primary_family": "experiment_design",
+  "primary_skill": "spacesonar-experiment-design",
+  "support_skills": [
+    "spacesonar-evidence-provenance"
+  ],
+  "cell_id": "wave02_crh_cell_005",
+  "recipes": {
+    "feature_recipe_id": "feature_wave02_us100_cost_risk_holding_v0",
+    "label_recipe_id": "label_wave02_cost_adjusted_tradeability_v0",
+    "model_recipe_id": "model_wave02_cost_risk_onnx_scout_v0",
+    "decision_recipe_id": "decision_wave02_cost_risk_holding_abstain_v0",
+    "eval_recipe_id": "eval_wave02_cost_risk_runtime_v0",
+    "split_recipe_id": "split_set_v0"
+  },
+  "axis_values": {
+    "cell": "005",
+    "label_variant": "session_cost_gate_h8",
+    "feature_variant": "session_cost_risk_context",
+    "model_variant": "linear_rank_scout",
+    "decision_variant": "session_abstain_timeout",
+    "risk_variant": "session_cost_cap_proxy",
+    "holding_variant": "timeout_8"
+  },
+  "changed_variables": [
+    "label_variant=session_cost_gate_h8",
+    "feature_variant=session_cost_risk_context",
+    "model_variant=linear_rank_scout",
+    "decision_variant=session_abstain_timeout",
+    "risk_variant=session_cost_cap_proxy",
+    "holding_variant=timeout_8"
+  ],
+  "held_fixed_axes": [
+    "FPMarkets US100 M5 closed-bar base frame",
+    "split_set_v0 validation and research_oos roles",
+    "locked final OOS excluded",
+    "no inherited thresholds, candidates, selected baseline, or runtime authority"
+  ],
+  "sample_scope": "split_set_v0_validation_and_research_oos_only_locked_final_oos_excluded",
+  "runtime_follow_through_plan": {
+    "proxy_model_bearing": true,
+    "required_follow_through": "L4_split_runtime_probe_if_proxy_valid_then_L5_candidate_runtime_evidence_if_promising",
+    "main_mode_fallback": "diagnostic_only"
+  },
+  "storage_contract": {
+    "source_of_truth": "lab/runs/onnxlab_wave02_crh_cell_005_cost_risk_holding_v0/run_manifest.json",
+    "receipt": "lab/runs/onnxlab_wave02_crh_cell_005_cost_risk_holding_v0/experiment_receipt.yaml",
+    "campaign_run_refs": "lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv",
+    "durable_identity_policy": "repo_relative_paths_only"
+  },
+  "forbidden_claims": [
+    "selected_baseline",
+    "operating_reference",
+    "operating_promotion",
+    "runtime_authority",
+    "economics_pass",
+    "materialization_ready",
+    "handoff_complete",
+    "live_readiness",
+    "reviewed_verified_pass",
+    "goal_achieve"
+  ],
+  "next_action": "work_wave02_cost_risk_holding_execute_proxy_batch_v0"
+}

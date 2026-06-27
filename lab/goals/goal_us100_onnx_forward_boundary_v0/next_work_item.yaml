@@ -1,36 +1,30 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_cost_risk_holding_first_batch_spec_v0
-parent_work_item_id: work_wave02_open_cost_risk_holding_campaign_v0
-primary_family: experiment_design
-primary_skill: spacesonar-experiment-design
-verification_profile: writer_scope_first_batch_spec
+work_item_id: work_wave02_cost_risk_holding_execute_proxy_batch_v0
+parent_work_item_id: work_wave02_cost_risk_holding_first_batch_spec_v0
+primary_family: model_training
+primary_skill: spacesonar-model-validation
+verification_profile: lab_experiment
 targets:
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
 acceptance_criteria:
-- materialize first batch run manifests for the cost/risk/holding surface
-- each run declares changed_variables, feature/label/model/decision/eval recipes,
-  and split roles
-- no selected baseline, runtime authority, economics pass, live readiness, or Goal
-  Achieve claim
-created_at_utc: '2026-06-27T22:09:35Z'
-status: wave02_cost_risk_holding_first_batch_spec_pending
-claim_boundary: wave02_cost_risk_holding_first_batch_spec_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: materialize first broad batch run specs for Wave02 cost/risk/holding
-  campaign
+- execute the six materialized proxy specs without changing the pre-execution matrix
+- write run metrics, receipts, and result judgment under the stated claim boundary
+- route valid proxy/model-bearing outputs to L4 follow-through instead of proxy-only
+  closure
+created_at_utc: '2026-06-27T22:14:35Z'
+status: wave02_cost_risk_holding_proxy_batch_execution_pending
+claim_boundary: wave02_cost_risk_holding_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: execute Wave02 cost/risk/holding first proxy batch
 current_truth:
-  campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
-  surface_manifest: lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
-  sweep_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
+  first_batch_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
   run_refs: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+  anti_selection_ledger: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/anti_selection_ledger.yaml
 unresolved_blockers:
-- Wave02_cost_risk_holding_first_batch_specs_not_materialized
-reopen_conditions:
-- rerun campaign open writer if campaign registry or wave allocation is manually edited
+- Wave02_cost_risk_holding_proxy_batch_not_executed
 missing_material_if_relevant:
-- run_manifests_not_materialized
 - proxy_results_absent
+- onnx_exports_absent
 - l4_runtime_follow_through_absent
 - candidate_evidence_absent
 - operational_validation_not_started

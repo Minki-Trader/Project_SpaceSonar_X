@@ -1,0 +1,52 @@
+version: experiment_receipt_v1
+run_id: onnxlab_wave02_crh_cell_003_cost_risk_holding_v0
+created_at_utc: '2026-06-27T22:14:35Z'
+status: spec_materialized_not_executed
+claim_boundary: wave02_cost_risk_holding_first_batch_specs_only_no_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+source_inputs:
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+- lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
+- configs/onnx_lab/feature_recipes/feature_wave02_us100_cost_risk_holding_v0.yaml
+- configs/onnx_lab/label_recipes/label_wave02_cost_adjusted_tradeability_v0.yaml
+- configs/onnx_lab/model_recipes/model_wave02_cost_risk_onnx_scout_v0.yaml
+- configs/onnx_lab/decision_recipes/decision_wave02_cost_risk_holding_abstain_v0.yaml
+- configs/onnx_lab/eval_recipes/eval_wave02_cost_risk_runtime_v0.yaml
+- configs/onnx_lab/split_recipes/split_set_v0.yaml
+producer: python foundation/pipelines/materialize_wave02_cost_risk_holding_first_batch_specs.py
+  --write-control-records
+consumer: work_wave02_cost_risk_holding_execute_proxy_batch_v0
+artifact_paths:
+- lab/runs/onnxlab_wave02_crh_cell_003_cost_risk_holding_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_crh_cell_003_cost_risk_holding_v0/experiment_receipt.yaml
+artifact_hashes:
+  run_manifest: d382cb86fa1ad778a1ff4f0ed292e44f658d6f6445f4da9603a47bebc92cf809
+artifact_sizes:
+  run_manifest: 3372
+availability: manifest_present_receipt_written_after_manifest
+lineage_judgment: spec_only_no_execution_evidence
+environment_summary:
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  platform: Windows-11-10.0.26200-SP0
+  git_sha: 6bfff2145e0c411d4976a57b7317fdb7d85c3275
+  branch: main
+  dirty_flag: true
+  changed_files:
+  - ' M .codex/config.toml'
+  - ?? foundation/pipelines/materialize_wave02_cost_risk_holding_first_batch_specs.py
+  - ?? lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/
+  - ?? lab/runs/onnxlab_wave02_crh_cell_002_cost_risk_holding_v0/
+  - ?? lab/runs/onnxlab_wave02_crh_cell_003_cost_risk_holding_v0/
+  - ?? package.json
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

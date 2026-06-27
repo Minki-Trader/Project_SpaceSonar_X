@@ -2,7 +2,7 @@ version: sweep_manifest_v1
 sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
 campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
 surface_id: surface_us100_wave02_cost_risk_holding_v0
-status: open_no_runs_materialized
+status: wave02_cost_risk_holding_first_batch_specs_materialized_not_executed
 created_at_utc: '2026-06-27T22:09:35Z'
 sweep_type: broad_cost_risk_holding_surface_scout
 axis_count: 7
@@ -21,5 +21,7 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
-next_action: work_wave02_cost_risk_holding_first_batch_spec_v0
+next_action: work_wave02_cost_risk_holding_execute_proxy_batch_v0
 notes: Empty run_refs index until first batch specs are materialized.
+updated_at_utc: '2026-06-27T22:14:35Z'
+materialized_run_count: 6

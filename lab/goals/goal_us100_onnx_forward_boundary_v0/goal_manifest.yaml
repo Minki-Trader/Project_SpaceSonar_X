@@ -3,7 +3,7 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 workspace_active: true
 status: active_wave02_pre_operational_research
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-27T22:09:35Z'
+updated_at_utc: '2026-06-27T22:14:35Z'
 claim_boundary: active_goal_wave02_campaign_002_open_not_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
@@ -60,7 +60,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave02_cost_risk_holding_first_batch_spec_pending
+active_phase: wave02_cost_risk_holding_proxy_batch_execution_pending
 active_ids:
   idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
   hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
@@ -993,4 +993,6 @@ wave02_cost_risk_holding_campaign:
   campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
   status: wave02_cost_risk_holding_campaign_opened_planning_scaffold
   claim_boundary: wave02_cost_risk_holding_campaign_open_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-  next_work_item: work_wave02_cost_risk_holding_first_batch_spec_v0
+  next_work_item: work_wave02_cost_risk_holding_execute_proxy_batch_v0
+  first_batch_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
+  materialized_run_count: 6

@@ -1,0 +1,16 @@
+version: anti_selection_ledger_v1
+ledger_id: wave02_cost_risk_holding_first_batch_anti_selection_v0
+created_at_utc: '2026-06-27T22:14:35Z'
+campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+status: pre_execution_locked_first_batch_spec
+claim_boundary: wave02_cost_risk_holding_first_batch_specs_only_no_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+locked_before_execution: true
+selection_controls:
+- first batch fixed at six cells before proxy result observation
+- locked final OOS excluded
+- no previous Wave02 candidate promoted or inherited
+- momentum_ret_1 replay negative memory is reference-only
+forbidden_adaptations_before_execution:
+- drop cells after previewing proxy metrics
+- change labels after viewing validation result
+- open L5 candidate from spec-only evidence
