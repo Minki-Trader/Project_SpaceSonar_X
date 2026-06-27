@@ -19,7 +19,9 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 ## Guardrails
 
 - Verify repo-relative paths before acting on remembered names.
+- Verify the responsible source-of-truth path and writer contract before invoking broad validators.
 - Do not use adjacent guessing when artifact names vary.
+- Do not treat repeated folder scans, whole-tree inventory, or CI success as proof that the operating rule is correct.
 - Do not revive legacy routing/review meanings from deleted archive paths.
 - If a legacy file is absent, treat that evidence as unavailable unless the user explicitly restores it from backup.
 - Do not turn "not found", "unsupported", or "missing adapter/glue" into a final disposition from memory alone.

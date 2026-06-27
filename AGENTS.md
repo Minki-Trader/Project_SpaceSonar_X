@@ -22,6 +22,7 @@ Read this file first, then stop. Load more only when task-relevant:
 
 - current lab truth: `docs/workspace/workspace_state.yaml`
 - non-trivial routing: `docs/agent_control/work_family_registry.yaml`
+- operational stability/no-pytest cadence: `docs/agent_control/operational_stability_kernel.yaml`
 - canonical policy: `docs/agent_control/policy_contract.yaml`
 - ONNX bundle/schema/export: `docs/contracts/onnx_lab_contract.yaml`
 - split/eval: `configs/onnx_lab/split_recipes/split_set_v0.yaml`

@@ -72,6 +72,7 @@ failure_disposition_policy:
   not_yet_attempted_claim_effect: investigation_in_progress_no_disposition
 execution_weight_policy:
   posture: attempt_first_not_heavy_first
+  operational_stability_kernel: docs/agent_control/operational_stability_kernel.yaml
   default_first_pass: thinnest_execution_that_answers_current_question
   session_start_resume_default: current_truth_then_one_narrow_path_before_broad_reconciliation
   broad_reconciliation_requires:

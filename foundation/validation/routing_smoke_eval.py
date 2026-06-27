@@ -26,6 +26,21 @@ def evaluate(repo_root: Path) -> list[str]:
     work_families = registry.get("work_families", {})
     errors: list[str] = []
 
+    kernel_rel = "docs/agent_control/operational_stability_kernel.yaml"
+    kernel_path = repo_root / kernel_rel
+    if not kernel_path.exists():
+        errors.append(f"missing operational stability kernel: {kernel_rel}")
+    elif (registry.get("global_rules") or {}).get("operational_stability_kernel") != kernel_rel:
+        errors.append("work_family_registry.yaml global_rules.operational_stability_kernel mismatch")
+    else:
+        kernel = load_yaml(kernel_path)
+        if kernel.get("default_validation_depth") != "writer_scope_smoke":
+            errors.append("operational_stability_kernel default_validation_depth must be writer_scope_smoke")
+        forbidden = set(kernel.get("forbidden_default_commands") or [])
+        for command_id in ["pytest", "active_record_validator_full_graph", "spacesonar_project_validate_full"]:
+            if command_id not in forbidden:
+                errors.append(f"operational_stability_kernel forbidden_default_commands missing {command_id}")
+
     cases = prompts.get("cases", [])
     if not 12 <= len(cases) <= 20:
         errors.append(f"expected 12-20 smoke cases, found {len(cases)}")

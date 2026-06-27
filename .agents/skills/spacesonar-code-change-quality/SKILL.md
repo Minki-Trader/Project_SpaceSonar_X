@@ -19,6 +19,7 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 - `assumptions`
 - `traceability`
 - `test_or_syntax_check`
+- `no_pytest_reason`
 - `migration_effect`
 - `quality_risk`
 
@@ -37,4 +38,6 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 - Do not place reusable logic only inside one-off run scripts.
 - Do not hide generated artifact effects.
 - Do not let passing tests replace explicit input, output, and failure contracts.
+- Do not default to pytest for ordinary code or policy edits. Prefer direct parse, compile, import, schema, lint, or command-level smoke for the touched surface; escalate to pytest only for boundary, shared-contract, protected-claim, or explicit user-requested validation.
+- When skipping pytest, record the narrower smoke and why it covers the touched contract.
 - Make trading, time, data, and runtime assumptions visible when relevant.

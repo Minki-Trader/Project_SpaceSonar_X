@@ -11,6 +11,8 @@ Use after session intake for non-trivial work.
 
 Read `docs/agent_control/work_family_registry.yaml`.
 
+Read `docs/agent_control/operational_stability_kernel.yaml` when the task asks to operate without pytest/full graph validation, reduce heavy checks, change validation cadence, or harden Codex operating behavior.
+
 Read selected skill `SKILL.md` files only after selecting:
 
 1. one `primary_family`
@@ -36,6 +38,8 @@ Emit compact internal fields:
 - `failure_disposition_policy`
 - `execution_weight`
 - `validation_depth`
+- `non_pytest_smokes`
+- `skipped_broad_validations`
 - `phase_plan`
 - `stop_conditions`
 - `claim_boundary`
@@ -58,6 +62,7 @@ Internal receipts are not user reports.
 ## Execution Weight
 
 - Default `execution_weight=thin_first_pass` unless the work is already at a campaign/wave boundary, protected runtime/economics/handoff claim, shared-contract mutation, or known source-of-truth drift repair.
+- Default `validation_depth=writer_scope_smoke`; pytest, full active-record graph, full project validate, evidence-graph-full, broad hash sync, and global registry regeneration are not default run-loop actions.
 - Do not route a first plumbing attempt as full-project reconciliation. Add broader validation only after the thin path is real or the claim requires it.
 - For session start/resume, route the first executable step as one narrow fixture/run/probe/smoke path. Broad materializers, global sync, full validators, or full pytest require an explicit boundary/claim/drift reason.
 
@@ -67,6 +72,7 @@ Internal receipts are not user reports.
 - create numbered legacy routing rules
 - treat advisory micro-consult as formal review
 - make internal receipts tutorial-like
+- use whole-tree scans, repeated folder passes, or CI success as proof of operating stability
 - claim completion/review/pass without required gate coverage
 - route a non-trivial item without a storage contract
 - skip a runtime learning probe decision when runtime behavior, economics, EA/ONNX meaning, or handoff is in scope

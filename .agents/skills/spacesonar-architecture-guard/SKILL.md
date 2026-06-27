@@ -27,6 +27,7 @@ Read only touched policy/skill/control files plus:
 
 - `AGENTS.md`
 - `docs/agent_control/work_family_registry.yaml` when routing changes
+- `docs/agent_control/operational_stability_kernel.yaml` when validation cadence or no-pytest operation changes
 - `docs/agent_control/surface_registry.yaml` when path ownership changes
 - `docs/workspace/workspace_state.yaml` when current truth changes
 
@@ -53,6 +54,7 @@ Read only touched policy/skill/control files plus:
 - Prefer manifests and hashes over committing heavy generated artifacts.
 - Keep registry rows as indexes; source-of-truth manifests live in the run, bundle, candidate, campaign, or MT5 attempt folder.
 - Missing repo-controlled support is a repair trigger, not a final architecture blocker.
+- Stable operation is enforced at writer/source-of-truth boundaries first; broad validators are boundary evidence, not the normal design mechanism.
 - Before blocked, deferred, invalid, or discarded architecture disposition, reproduce the failing layer, try the smallest repo-controlled implementation, adapter, fixture, parser, or fallback, and record evidence plus reopen condition.
 - If a converter, conversion adapter, export adapter, EA adapter, parser, runner, or runtime glue does not exist, create the smallest explicit translation layer needed to test the hypothesis unless a narrow exception applies.
 - Narrow exceptions are user secrets, unavailable external state, destructive or unsafe action, or project-policy violation; record the exception as the attempt blocker.

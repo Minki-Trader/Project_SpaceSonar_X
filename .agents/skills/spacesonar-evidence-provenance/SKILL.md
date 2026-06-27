@@ -27,6 +27,7 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 
 - Manifests and receipts are proof-bearing; registries are projections and indexes.
 - Use repo-relative paths plus IDs and hashes for durable identity.
+- For no-pytest operation, prefer writer-time manifest/receipt/hash checks over broad retrospective validation.
 - Do not commit heavy artifacts just to close a gap.
 - Do not call a run reviewed, selected, runtime-ready, economics-pass, or handoff-complete without matching durable evidence.
 - Missing repo-controlled evidence glue is implementation work before a blocked, deferred, invalid, or discarded disposition.

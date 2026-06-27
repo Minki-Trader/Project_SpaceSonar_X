@@ -9,10 +9,12 @@ guard_sets:
     - GUARD_004_ARTIFACT_IDENTITY
     - GUARD_005_LOCKED_OOS
     - GUARD_006_BRANCH_WORKTREE
+    - GUARD_007_OPERATIONAL_STABILITY
   governance:
     - GUARD_003_CLAIM_BOUNDARY
     - GUARD_004_ARTIFACT_IDENTITY
     - GUARD_006_BRANCH_WORKTREE
+    - GUARD_007_OPERATIONAL_STABILITY
 
 guards:
   GUARD_001_ATTEMPT_BEFORE_DISPOSITION:
@@ -64,6 +66,17 @@ guards:
     rule: Work on main by default under the current user override, create branches only on explicit user request, preserve user changes, and push origin/main only at approved campaign closeout, wave closeout, or user-approved stabilization boundaries.
     validator: foundation.validation.control_plane_validator.validate_work_item_schema
 
+  GUARD_007_OPERATIONAL_STABILITY:
+    applies_to:
+      - work_items
+      - skills
+      - policies
+      - manifests
+      - receipts
+      - commands
+    rule: Use writer-scope smoke and source-of-truth guards by default; do not use pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans as routine proof unless a boundary, drift, shared-contract change, protected claim, or explicit user request requires it.
+    validator: docs/agent_control/operational_stability_kernel.yaml
+
 policy_binding_template:
   revision: policy_contract_v2
   guard_set: runtime_research
@@ -72,3 +85,4 @@ policy_binding_template:
     - GUARD_002_RUNTIME_COMPLETION_TRUTH
     - GUARD_003_CLAIM_BOUNDARY
     - GUARD_004_ARTIFACT_IDENTITY
+    - GUARD_007_OPERATIONAL_STABILITY

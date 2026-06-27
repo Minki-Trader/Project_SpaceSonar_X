@@ -1,0 +1,104 @@
+version: operational_stability_kernel_v1
+purpose: codex_operates_stably_without_routine_pytest_or_full_graph_validation
+claim_boundary: operational_control_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+
+default_validation_depth: writer_scope_smoke
+
+start_order:
+  - read_boot_kernel
+  - read_workspace_state_if_current_truth_matters
+  - read_work_family_registry_for_non_trivial_work
+  - classify_primary_family_and_primary_skill
+  - identify_owned_source_of_truth_paths
+  - identify_writer_or_manifest_responsible_for_the_change
+  - mutate_smallest_owned_surface
+  - record_claim_boundary_and_provenance_effect
+  - run_non_pytest_smoke_for_touched_surfaces
+  - defer_global_reconciliation_until_boundary_or_drift
+
+required_before_action:
+  branch_worktree_fit: true
+  preserve_user_changes: true
+  primary_family_count: 1
+  primary_skill_count: 1
+  source_of_truth_paths_named: true
+  claim_boundary_named: true
+  forbidden_claims_named_when_status_changes: true
+  registry_rows_treated_as_indexes: true
+
+strong_writer_guards:
+  manifests:
+    - id_chain_present_when_applicable
+    - repo_relative_paths_only
+    - claim_boundary_present
+    - forbidden_claims_present_for_runtime_or_candidate_surfaces
+    - missing_evidence_and_next_action_present_when_incomplete
+  receipts:
+    - input_paths_hashes_or_reason_present
+    - output_paths_hashes_or_reason_present
+    - producer_command_present
+    - environment_or_lock_reference_present_when_reproducibility_matters
+  registries:
+    - generated_or_index_only
+    - never_source_of_truth_without_manifest
+  runtime:
+    - proxy_model_bearing_requires_onnx_ea_mt5_follow_through_plan
+    - runtime_claim_requires_mt5_contract_evidence
+    - main_mode_fallback_is_diagnostic_only
+
+forbidden_default_commands:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - broad_hash_resync
+  - global_registry_regeneration
+  - whole_tree_scan_as_proof
+
+allowed_non_pytest_smokes:
+  - parse_touched_yaml_json_toml_csv
+  - compile_touched_python_modules
+  - import_touched_python_module_when_safe
+  - run_policy_or_routing_lint_when_policy_or_routing_changed
+  - run_repository_setting_check_when_git_policy_changed
+  - run_registry_projection_check_when_registry_projection_changed
+  - inspect_manifest_receipt_lineage_hash_fields_for_touched_records
+
+escalate_to_manual_boundary_validation_when:
+  - campaign_closeout
+  - wave_closeout
+  - source_of_truth_drift_detected
+  - shared_contract_or_validator_semantics_changed
+  - dependency_lock_or_workflow_changed
+  - protected_claim_surface_changed
+  - user_explicitly_requests_full_validation
+
+protected_claim_surfaces:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - production_deployment
+  - handoff_complete
+  - reviewed_verified_pass
+  - goal_achieve
+
+operator_failure_modes_to_avoid:
+  - running_full_tests_before_identifying_owned_surface
+  - using_folder_inventory_as_substitute_for_policy_reasoning
+  - closing_missing_adapter_without_smallest_repo_controlled_attempt
+  - pushing_run_fragments_as_boundary_evidence
+  - updating_registry_without_manifest_or_receipt_backing
+  - claiming_stability_from_ci_success_only
+
+machine_output_fields:
+  - primary_family
+  - primary_skill
+  - touched_source_of_truth_paths
+  - validation_depth
+  - non_pytest_smokes
+  - skipped_broad_validations
+  - claim_boundary
+  - unresolved_blockers
+  - next_action
