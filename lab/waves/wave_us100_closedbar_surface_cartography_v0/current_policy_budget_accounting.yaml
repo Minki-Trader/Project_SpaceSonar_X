@@ -1,0 +1,103 @@
+version: wave_current_policy_budget_accounting_v1
+accounting_id: wave01_current_policy_budget_accounting_v0
+created_at_utc: '2026-06-27T00:00:00Z'
+status: current_policy_accounted_closed
+claim_boundary: wave01_budget_accounting_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+applies_to:
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  legacy_wave_allocation: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  legacy_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+  current_policy_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/current_policy_closeout_amendment.yaml
+policy_basis:
+  source_refs:
+    - docs/workspace/lab_profile.yaml
+    - docs/policies/onnx_lab_operating_policy.md
+    - lab/waves/wave_us100_closedbar_surface_cartography_v0/l4_budget_accounting_amendment.yaml
+  budget_units:
+    proxy_model_bearing_run_slot: counted from docs/registers/run_registry.csv campaign rows
+    campaign_slot: counted from wave campaign_refs.csv
+    l4_pair: validation_research_oos_pair
+    physical_mt5_attempt: evidence_count_not_budget_burn
+current_policy_budget:
+  budget_profile: wave01_retrofit_actualized_content_budget
+  budget_profile_role: current_policy_reclose_budget_for_legacy_wave01_only
+  standard_wave_reference:
+    budget_profile: standard_wave
+    proxy_model_bearing_run_slots: 72
+    campaign_slots: 3
+    standard_l4_pair_budget: 36
+    applicability: future_wave_default_reference_not_wave01_retrofit_spend_target
+  proxy_model_bearing_run_slots: 34
+  campaign_slots: 3
+  standard_l4_pair_budget: 34
+  budget_set_by: materialized_wave01_content_inventory_after_current_policy_reclose
+  budget_truth_rule: no_retired_or_unspent_slots_allowed_in_current_policy_complete_closeout
+observed_usage:
+  proxy_model_bearing_run_count: 34
+  campaign_slot_count: 3
+  standard_score_probe_l4_pair_count: 34
+  decision_replay_l4_pair_count: 9
+  total_l4_pair_count_if_unified: 43
+  physical_mt5_attempt_count: 86
+  physical_mt5_attempt_counts_by_surface:
+    score_probe: 68
+    decision_replay: 18
+  complete_l4_pair_counts_by_surface:
+    score_probe: 34
+    decision_replay: 9
+judgment:
+  proxy_model_bearing_run_slots: exactly_closed_34_of_34
+  campaign_slots: exactly_closed_3_of_3
+  standard_score_probe_l4_pair_budget: exactly_closed_34_of_34
+  decision_replay_l4_pairs: separate_evidence_ledger_9_pairs
+  future_standard_wave_reference_gap: >
+    Wave01 is a retrofitted legacy wave and is not claiming the future
+    standard_wave 72/36 envelope was spent. Future waves must declare their
+    pre-open budget and close against that budget without retired leftovers.
+  unified_l4_view_for_compatibility_only: over_by_9_pairs_if_decision_replay_is_forced_into_standard_l4_budget
+  physical_mt5_attempts: evidence_count_only_not_budget_burn
+  closeout_budget_resolution: >
+    Wave01 current-policy reclose no longer carries unused active budget.
+    The active retrofit budget is the materialized Wave01 content inventory:
+    34 proxy/model-bearing runs, 3 campaign slots, and 34 standard score-probe
+    L4 pairs. Closeout repair, KPI ledger completion, segment materialization,
+    trade-shape reconstruction, EA telemetry instrumentation for future reruns,
+    and L4/runtime evidence follow-through are accounted as closeout work.
+    The future standard_wave 72/36 envelope remains a reference for Wave02+
+    pre-open planning, not an unspent Wave01 budget.
+campaign_usage:
+  - campaign_id: campaign_us100_task_surface_scout_v0
+    proxy_model_bearing_run_count: 12
+    mt5_runtime_kpi_record_count: 1086
+    comparison_pair_count: 3
+    complete_l4_pairs:
+      score_probe: 12
+      decision_replay: 3
+  - campaign_id: campaign_us100_event_barrier_decision_surface_v0
+    proxy_model_bearing_run_count: 12
+    mt5_runtime_kpi_record_count: 2105
+    comparison_pair_count: 5
+    complete_l4_pairs:
+      score_probe: 12
+      decision_replay: 5
+  - campaign_id: campaign_us100_session_transition_regime_surface_v0
+    proxy_model_bearing_run_count: 10
+    mt5_runtime_kpi_record_count: 402
+    comparison_pair_count: 1
+    complete_l4_pairs:
+      score_probe: 10
+      decision_replay: 1
+legacy_reconciliation:
+  old_wave_max_runs_field: compatibility_only_48_not_current_standard_budget
+  old_campaign_allocation_sum: compatibility_only_soft_allocation_not_active_comparison_surface
+  old_formal_mt5_strategy_tester_runs: compatibility_only_physical_estimate_not_l4_budget_cap
+  active_comparison_surface: current_policy_budget_accounting
+not_claimed:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - production_deployment
+  - handoff_complete
+  - goal_achieve

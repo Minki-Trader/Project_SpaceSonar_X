@@ -119,6 +119,7 @@ def build_tester_config_text(
     sizing = execution_profile["position_sizing_boundary"]
     report_name = f"Project_SpaceSonar_X\\runtime\\mt5_attempts\\{attempt_id}\\tester_report"
     execution_telemetry = f"{COMMON_DECISION_ROOT}\\{attempt_id}\\execution_telemetry.csv"
+    trade_shape_telemetry = f"{COMMON_DECISION_ROOT}\\{attempt_id}\\trade_shape_telemetry.csv"
     lines = [
         "; SpaceSonar Wave01 session-transition L4 decision replay probe.",
         "; Replays MT5 score telemetry into sparse tester trades; not ONNX runtime authority.",
@@ -146,6 +147,9 @@ def build_tester_config_text(
         "[TesterInputs]",
         f"InpScoreTelemetryPath={source_score_telemetry_common_path}",
         f"InpExecutionTelemetryPath={execution_telemetry}",
+        f"InpTradeShapeTelemetryPath={trade_shape_telemetry}",
+        f"InpAttemptId={attempt_id}",
+        "InpEmitTradeShapeTelemetry=true",
         "InpUseCommonFiles=true",
         f"InpDecisionFamily={decision_family}",
         f"InpDirectionPolicy={direction_policy}",
@@ -179,6 +183,7 @@ def attempt_index_fieldnames() -> list[str]:
         "tester_config_path",
         "source_score_telemetry_common_path",
         "execution_telemetry_common_path",
+        "trade_shape_telemetry_common_path",
         "decision_family",
         "decision_execution_kind",
         "decision_output",
@@ -401,6 +406,7 @@ def build_records(
                     "tester_config_path": (attempt_dir / "tester_config.ini").as_posix(),
                     "source_score_telemetry_common_path": source_attempt["telemetry_common_path"],
                     "execution_telemetry_common_path": f"{COMMON_DECISION_ROOT}\\{attempt_id}\\execution_telemetry.csv",
+                    "trade_shape_telemetry_common_path": f"{COMMON_DECISION_ROOT}\\{attempt_id}\\trade_shape_telemetry.csv",
                     "decision_family": pair["decision_family"],
                     "decision_execution_kind": policy.execution_kind,
                     "decision_output": policy.decision_output,

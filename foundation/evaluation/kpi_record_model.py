@@ -5,6 +5,27 @@ KPI_LEDGER_MANIFEST_VERSION = "kpi_ledger_manifest_v1"
 KPI_RECORD_SCHEMA_VERSION = "kpi_ledger_record_v1"
 KPI_SUMMARY_VERSION = "kpi_summary_v1"
 
+REQUIRED_KPI_SEGMENT_AXES = [
+    "overall",
+    "period_role",
+    "time_window",
+    "session",
+    "direction",
+    "score_or_threshold_bucket",
+    "trade_shape_bucket",
+    "runtime_surface",
+]
+OPTIONAL_KPI_SEGMENT_AXES = [
+    "volatility_regime",
+    "drawdown_cluster",
+    "holding_period_bucket",
+    "feature_family",
+    "target_family",
+    "model_family",
+    "spread_or_cost_bucket",
+]
+KPI_SEGMENT_CLAIM_POLICY = "segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass"
+
 KPI_RECORD_FIELDNAMES = [
     "record_id",
     "schema_version",

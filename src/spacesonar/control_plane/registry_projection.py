@@ -15,6 +15,7 @@ from .transaction import ControlPlaneTransaction
 
 GENERATOR_ID = "spacesonar.control_plane.registry_projection"
 REGISTRY_PROJECTION_VERSION = "registry_projection_v2"
+CURRENT_POLICY_CLOSEOUT_NAME = "current_policy_closeout_amendment.yaml"
 YamlOverrides = dict[Path, dict[str, Any]]
 TextOverrides = dict[Path, str]
 ARTIFACT_REGISTRY_PATH = Path("docs/registers/artifact_registry.csv")
@@ -186,6 +187,36 @@ def _closeout_path_for_wave(wave: dict[str, Any], wave_rel_path: Path) -> str:
     return (wave_rel_path.parent / "wave_closeout.yaml").as_posix()
 
 
+def _active_closeout_path_for_wave(
+    repo_root: Path,
+    wave: dict[str, Any],
+    wave_rel_path: Path,
+    *,
+    yaml_overrides: YamlOverrides | None = None,
+    text_overrides: TextOverrides | None = None,
+) -> str:
+    legacy_closeout_path = Path(_closeout_path_for_wave(wave, wave_rel_path))
+    if _exists_view(
+        repo_root,
+        legacy_closeout_path,
+        yaml_overrides=yaml_overrides,
+        text_overrides=text_overrides,
+    ) and (
+        (yaml_overrides and legacy_closeout_path in yaml_overrides)
+        or (text_overrides and legacy_closeout_path in text_overrides)
+    ):
+        return legacy_closeout_path.as_posix()
+    current_policy_path = wave_rel_path.parent / CURRENT_POLICY_CLOSEOUT_NAME
+    if _exists_view(
+        repo_root,
+        current_policy_path,
+        yaml_overrides=yaml_overrides,
+        text_overrides=text_overrides,
+    ):
+        return current_policy_path.as_posix()
+    return _closeout_path_for_wave(wave, wave_rel_path)
+
+
 def goal_registry_projection(
     repo_root: Path,
     *,
@@ -231,7 +262,6 @@ def wave_registry_projection(
     yaml_overrides: YamlOverrides | None = None,
     text_overrides: TextOverrides | None = None,
 ) -> str:
-    del text_overrides
     fieldnames = [
         "wave_id",
         "status",
@@ -247,7 +277,13 @@ def wave_registry_projection(
     rows = []
     for rel_path in _glob_view(repo_root, "lab/waves/*/wave_allocation.yaml", yaml_overrides):
         wave = _read_yaml_view(repo_root, rel_path, yaml_overrides)
-        closeout_rel = _closeout_path_for_wave(wave, rel_path)
+        closeout_rel = _active_closeout_path_for_wave(
+            repo_root,
+            wave,
+            rel_path,
+            yaml_overrides=yaml_overrides,
+            text_overrides=text_overrides,
+        )
         closeout = _read_yaml_view(repo_root, Path(closeout_rel), yaml_overrides)
         closeout_status = str(closeout.get("status") or "")
         next_action = str(closeout.get("next_action") or wave.get("next_action") or "")

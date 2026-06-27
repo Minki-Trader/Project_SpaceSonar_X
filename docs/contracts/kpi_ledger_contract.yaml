@@ -14,6 +14,38 @@ fixed_schema_policy:
     extraction must be checked before a true n/a is accepted
   non_trading_probe_rule: non-trading MT5 score probes are runtime/telemetry
     lineage evidence only and must not be recorded in campaign KPI ledgers
+  segment_breakdown_rule: >
+    KPI summaries must include overall KPI coverage and required segment
+    breakdown entries. Missing segment sources must be explicit not_collected or
+    missing_source records in the summary, not silent omission. Placeholder
+    segment entries are forbidden: observed and partial segments must name their
+    metric/count basis, while not_collected segments must name the next
+    materialization step before they can be accepted in closeout evidence.
+
+segment_breakdown_policy:
+  overall_required: true
+  required_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
+  optional_axes:
+    - volatility_regime
+    - drawdown_cluster
+    - holding_period_bucket
+    - feature_family
+    - target_family
+    - model_family
+    - spread_or_cost_bucket
+  missing_segment_record_required: true
+  fake_segment_placeholder_forbidden: true
+  observed_segment_requires_metric_or_count_basis: true
+  missing_segment_requires_next_materialization_step: true
+  segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
 
 ledger_manifest:
   version: kpi_ledger_manifest_v1

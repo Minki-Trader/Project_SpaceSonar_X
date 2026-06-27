@@ -15,6 +15,13 @@ do_not_repeat: ""
 evidence_paths: []
 evidence_hashes: {}
 selection_eligibility: eligible_for_mix
+ingredient_lifecycle:
+  synthesis_use_status: available_for_first_synthesis
+  consumed_by_synthesis_campaign_id: ""
+  consumed_by_mix_item_id: ""
+  carry_forward_from_synthesis_campaign_id: ""
+  reopened_ingredient_exception_reason: ""
+  raw_reuse_policy: forbidden_after_consumed_by_completed_synthesis_unless_carry_forward_or_reopened_exception
 forbidden_uses:
   - selected_baseline
   - next_wave_direction

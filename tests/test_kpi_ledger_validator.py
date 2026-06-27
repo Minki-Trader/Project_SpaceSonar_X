@@ -8,6 +8,7 @@ import yaml
 
 from foundation.evaluation.kpi_ledger_builder import (
     build_campaign_kpi_ledger,
+    build_campaign_kpi_ledger_from_existing_evidence,
     sha256,
     upsert_mt5_kpi_for_attempt,
     write_csv,
@@ -129,6 +130,151 @@ def seed_decision_replay_attempt(tmp_path: Path, *, run_id: str, attempt_id: str
             "claim_boundary": "tester_report_receipt_only_no_runtime_authority_no_economics_pass",
         },
     )
+    telemetry_path = attempt_root / "telemetry" / "execution_telemetry.csv"
+    telemetry_path.parent.mkdir(parents=True, exist_ok=True)
+    telemetry_path.write_text(
+        "\n".join(
+            [
+                "bar_close_time,symbol,period,decision_family,direction_policy,score,source_decision,execution_signal,action,spread_points",
+                "2024.06.05 00:00:00,US100,PERIOD_M5,demo,score_band_side,0.20,unknown,short,open_short,125",
+                "2024.06.05 14:00:00,US100,PERIOD_M5,demo,score_band_side,0.50,unknown,flat,no_trade_flat,125",
+                "2024.06.05 21:00:00,US100,PERIOD_M5,demo,score_band_side,0.80,unknown,long,open_long,125",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    write_yaml(
+        attempt_root / "trade_shape_summary.yaml",
+        {
+            "version": "mt5_trade_shape_reconstruction_summary_v1",
+            "attempt_id": attempt_id,
+            "run_id": run_id,
+            "campaign_id": "campaign_demo_v0",
+            "period_role": "validation",
+            "formula_version": "trade_shape_reconstruction_v1",
+            "method": "fixture_trade_shape_summary",
+            "price_basis": "bar_open_at_recorded_bar_close_time_from_retained_ohlc_not_tester_deal_fill",
+            "point": 0.01,
+            "stats": {
+                "source_execution_rows": 3,
+                "open_count": 2,
+                "closed_trade_count": 1,
+                "explicit_close_count": 0,
+                "implicit_reversal_close_count": 1,
+                "unclosed_position_count": 1,
+                "missing_bar_count": 0,
+                "direction_trade_counts": {"short": 1},
+                "trade_shape_bucket_count": 1,
+            },
+            "overall": {
+                "trade_count": 1,
+                "gross_points_sum": 12.0,
+                "gross_points_avg": 12.0,
+                "win_count": 1,
+                "loss_count": 0,
+                "flat_count": 0,
+                "win_rate": 1.0,
+                "avg_mfe_points": 20.0,
+                "avg_mae_points": 5.0,
+                "avg_hold_bars": 12.0,
+                "avg_exit_efficiency": 0.6,
+            },
+            "by_direction": {
+                "long": {
+                    "trade_count": 0,
+                    "gross_points_sum": 0.0,
+                    "gross_points_avg": 0.0,
+                    "win_count": 0,
+                    "loss_count": 0,
+                    "flat_count": 0,
+                    "win_rate": 0.0,
+                    "avg_mfe_points": 0.0,
+                    "avg_mae_points": 0.0,
+                    "avg_hold_bars": 0.0,
+                    "avg_exit_efficiency": 0.0,
+                },
+                "short": {
+                    "trade_count": 1,
+                    "gross_points_sum": 12.0,
+                    "gross_points_avg": 12.0,
+                    "win_count": 1,
+                    "loss_count": 0,
+                    "flat_count": 0,
+                    "win_rate": 1.0,
+                    "avg_mfe_points": 20.0,
+                    "avg_mae_points": 5.0,
+                    "avg_hold_bars": 12.0,
+                    "avg_exit_efficiency": 0.6,
+                },
+            },
+            "by_trade_shape_bucket": {
+                "short_hold_7_12_partial_win": {
+                    "trade_count": 1,
+                    "gross_points_sum": 12.0,
+                    "gross_points_avg": 12.0,
+                    "win_count": 1,
+                    "loss_count": 0,
+                    "flat_count": 0,
+                    "win_rate": 1.0,
+                    "avg_mfe_points": 20.0,
+                    "avg_mae_points": 5.0,
+                    "avg_hold_bars": 12.0,
+                    "avg_exit_efficiency": 0.6,
+                }
+            },
+            "source_artifacts": {
+                "attempt_manifest": {"path": f"runtime/mt5_attempts/{attempt_id}/attempt_manifest.yaml"},
+                "execution_telemetry": {"path": f"runtime/mt5_attempts/{attempt_id}/telemetry/execution_telemetry.csv"},
+            },
+            "claim_boundary": (
+                "trade_shape_reconstruction_observation_only_no_tester_deal_ledger_no_runtime_authority_"
+                "no_economics_pass_no_selected_baseline"
+            ),
+        },
+    )
+
+
+def seed_run_registry(tmp_path: Path, *, campaign_id: str, run_id: str) -> None:
+    registry_path = tmp_path / "docs" / "registers" / "run_registry.csv"
+    registry_path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "run_id",
+        "wave_id",
+        "campaign_id",
+        "idea_id",
+        "hypothesis_id",
+        "surface_id",
+        "sweep_id",
+        "status",
+        "created_at_utc",
+        "primary_family",
+        "primary_skill",
+        "manifest_path",
+        "receipt_path",
+        "lineage_path",
+        "metrics_path",
+        "claim_boundary",
+        "result_judgment",
+        "required_gates",
+        "evidence_path",
+        "next_action",
+        "notes",
+    ]
+    with registry_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        writer.writerow(
+            {
+                "run_id": run_id,
+                "wave_id": "wave_demo_v0",
+                "campaign_id": campaign_id,
+                "manifest_path": f"lab/runs/{run_id}/run_manifest.json",
+                "metrics_path": f"lab/runs/{run_id}/metrics.json",
+                "claim_boundary": "fixture_no_runtime_authority",
+                "result_judgment": "inconclusive",
+            }
+        )
 
 
 def test_builder_excludes_non_trading_score_probe_from_mt5_kpi(tmp_path: Path) -> None:
@@ -160,6 +306,74 @@ def test_builder_excludes_non_trading_score_probe_from_mt5_kpi(tmp_path: Path) -
     assert mt5_rows == []
     assert summary["kpi_policy"]["non_trading_score_probe_excluded_from_kpi_ledger"] is True
     assert comparison_rows == []
+
+
+def test_builder_records_available_regression_proxy_metric_when_auc_absent(tmp_path: Path) -> None:
+    campaign_id, run_id, attempt_id = seed_minimal_repo(tmp_path)
+    write_json(
+        tmp_path / "lab" / "runs" / run_id / "metrics.json",
+        {"model_metrics": {"validation": {"spearman_corr": 0.031, "rmse": 0.44}}},
+    )
+
+    build_campaign_kpi_ledger(
+        tmp_path,
+        campaign_id=campaign_id,
+        run_id=run_id,
+        attempt_id=attempt_id,
+        l4_pair_id="cell_001",
+        write=True,
+        created_at_utc="2026-06-26T00:00:00Z",
+    )
+
+    errors = validate(tmp_path)
+    assert errors == []
+
+    proxy_rows = list(
+        csv.DictReader(
+            (tmp_path / "lab" / "campaigns" / campaign_id / "kpi" / "proxy_kpi_records.csv").open(
+                encoding="utf-8",
+            )
+        )
+    )
+    assert proxy_rows[0]["metric_id"] == "proxy.validation.spearman_corr"
+    assert proxy_rows[0]["metric_value"] == "0.031"
+    assert proxy_rows[0]["parser_diagnostic"] == "proxy_metrics_json_key:model_metrics.validation.spearman_corr"
+
+
+def test_builder_marks_bounded_synthesis_kpi_as_special_mixing(tmp_path: Path) -> None:
+    campaign_id, run_id, attempt_id = seed_minimal_repo(tmp_path)
+    campaign_path = tmp_path / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign = yaml.safe_load(campaign_path.read_text(encoding="utf-8"))
+    campaign["campaign_type"] = "bounded_synthesis"
+    campaign["bounded_synthesis"] = {
+        "enabled": True,
+        "synthesis_stage_id": "synthesis_stage_demo_v0",
+    }
+    write_yaml(campaign_path, campaign)
+
+    build_campaign_kpi_ledger(
+        tmp_path,
+        campaign_id=campaign_id,
+        run_id=run_id,
+        attempt_id=attempt_id,
+        l4_pair_id="cell_001",
+        write=True,
+        created_at_utc="2026-06-26T00:00:00Z",
+    )
+
+    errors = validate(tmp_path)
+    assert errors == []
+
+    kpi_root = tmp_path / "lab" / "campaigns" / campaign_id / "kpi"
+    proxy_rows = list(csv.DictReader((kpi_root / "proxy_kpi_records.csv").open(encoding="utf-8")))
+    summary = yaml.safe_load((kpi_root / "kpi_summary.yaml").read_text(encoding="utf-8"))
+    manifest = yaml.safe_load((kpi_root / "kpi_ledger_manifest.yaml").read_text(encoding="utf-8"))
+
+    assert proxy_rows[0]["stage_kind"] == "special_mixing"
+    assert proxy_rows[0]["synthesis_stage_id"] == "synthesis_stage_demo_v0"
+    assert summary["stage_kind"] == "special_mixing"
+    assert manifest["scope_identity"]["stage_kind"] == "special_mixing"
+    assert manifest["scope_identity"]["synthesis_stage_id"] == "synthesis_stage_demo_v0"
 
 
 def test_builder_upserts_without_overwriting_existing_records(tmp_path: Path) -> None:
@@ -218,6 +432,37 @@ def test_builder_upserts_without_overwriting_existing_records(tmp_path: Path) ->
     assert len(open_action_records) == 2
     assert proxy_rows[-1]["metric_value"] == "0.73"
     assert open_action_records[-1]["metric_value"] == "7"
+
+
+def test_builder_rebuilds_campaign_kpi_from_existing_evidence_with_comparison_and_segments(tmp_path: Path) -> None:
+    campaign_id, run_id, _score_attempt = seed_minimal_repo(tmp_path)
+    decision_attempt = "attempt_demo_l4_decision_replay_validation_v0"
+    seed_decision_replay_attempt(tmp_path, run_id=run_id, attempt_id=decision_attempt)
+    seed_run_registry(tmp_path, campaign_id=campaign_id, run_id=run_id)
+
+    build_campaign_kpi_ledger_from_existing_evidence(
+        tmp_path,
+        campaign_id=campaign_id,
+        write=True,
+        created_at_utc="2026-06-26T00:00:00Z",
+    )
+
+    errors = validate(tmp_path)
+    assert errors == []
+
+    kpi_root = tmp_path / "lab" / "campaigns" / campaign_id / "kpi"
+    proxy_rows = list(csv.DictReader((kpi_root / "proxy_kpi_records.csv").open(encoding="utf-8")))
+    mt5_rows = list(csv.DictReader((kpi_root / "mt5_runtime_kpi_records.csv").open(encoding="utf-8")))
+    comparison_rows = list(csv.DictReader((kpi_root / "proxy_mt5_comparison_records.csv").open(encoding="utf-8")))
+    summary = yaml.safe_load((kpi_root / "kpi_summary.yaml").read_text(encoding="utf-8"))
+
+    assert len(proxy_rows) == 1
+    assert mt5_rows
+    assert comparison_rows
+    assert summary["segment_breakdowns"]["session"]["status"] == "observed"
+    assert summary["segment_breakdowns"]["time_window"]["status"] == "observed"
+    assert summary["segment_breakdowns"]["score_or_threshold_bucket"]["status"] == "observed"
+    assert summary["comparison_pair_count"] == 1
 
 
 def test_tester_report_kpi_parser_handles_english_fixture() -> None:
@@ -396,9 +641,128 @@ def test_summary_records_trade_execution_only_policy(tmp_path: Path) -> None:
     assert summary["mt5_surface_kind_counts"] == {"decision_replay": 1}
     assert summary["trade_execution_attempt_count"] == 1
     assert summary["kpi_policy"]["non_trading_score_probe_excluded_from_kpi_ledger"] is True
+    assert summary["kpi_policy"]["overall_and_segment_breakdowns_required"] is True
+    assert summary["segment_coverage"]["missing_axes"] == []
+    assert summary["segment_coverage"]["materialized_axes"]
+    assert "session" in summary["segment_coverage"]["materialized_axes"]
+    assert set(summary["segment_coverage"]["required_axes"]) == {
+        "overall",
+        "period_role",
+        "time_window",
+        "session",
+        "direction",
+        "score_or_threshold_bucket",
+        "trade_shape_bucket",
+        "runtime_surface",
+    }
+    assert summary["segment_breakdowns"]["overall"]["status"] == "observed"
+    assert summary["segment_breakdowns"]["overall"]["analysis_status"] == "materialized"
+    assert summary["segment_breakdowns"]["overall"]["metric_basis"]
+    assert summary["segment_breakdowns"]["runtime_surface"]["counts"] == {"decision_replay": 1}
+    assert summary["segment_breakdowns"]["session"]["status"] == "observed"
+    assert summary["segment_breakdowns"]["session"]["analysis_status"] == "materialized"
+    assert summary["segment_breakdowns"]["session"]["counts"]
+    assert summary["segment_breakdowns"]["direction"]["analysis_status"] == "materialized"
+    assert summary["segment_breakdowns"]["direction"]["trade_shape_pnl_by_direction"]["short"]["gross_points_sum"] == "12.0"
+    assert summary["segment_breakdowns"]["trade_shape_bucket"]["analysis_status"] == "materialized"
+    assert "short_hold_7_12_partial_win" in summary["segment_breakdowns"]["trade_shape_bucket"]["bucket_breakdown"]
     trade_execution_ids = summary["sample_record_ids"]["mt5_runtime_trade_execution"]
     assert trade_execution_ids
     assert all("decision_replay" in record_id for record_id in trade_execution_ids)
+
+
+def test_validator_rejects_kpi_summary_missing_required_segment_axis(tmp_path: Path) -> None:
+    campaign_id, run_id, _attempt_id = seed_minimal_repo(tmp_path)
+    decision_attempt = "attempt_demo_l4_decision_replay_validation_v0"
+    seed_decision_replay_attempt(tmp_path, run_id=run_id, attempt_id=decision_attempt)
+    build_campaign_kpi_ledger(
+        tmp_path,
+        campaign_id=campaign_id,
+        run_id=run_id,
+        attempt_id=decision_attempt,
+        l4_pair_id="cell_001",
+        write=True,
+        created_at_utc="2026-06-26T00:00:00Z",
+    )
+    summary_path = tmp_path / "lab" / "campaigns" / campaign_id / "kpi" / "kpi_summary.yaml"
+    summary = yaml.safe_load(summary_path.read_text(encoding="utf-8"))
+    summary["segment_breakdowns"].pop("session")
+    write_yaml(summary_path, summary)
+
+    manifest_path = tmp_path / "lab" / "campaigns" / campaign_id / "kpi" / "kpi_ledger_manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["summary"]["sha256"] = sha256(summary_path)
+    write_yaml(manifest_path, manifest)
+
+    errors = validate(tmp_path)
+
+    assert any("segment_breakdowns missing required axis session" in error for error in errors)
+
+
+def test_validator_rejects_observed_segment_without_metric_or_count_basis(tmp_path: Path) -> None:
+    campaign_id, run_id, _attempt_id = seed_minimal_repo(tmp_path)
+    decision_attempt = "attempt_demo_l4_decision_replay_validation_v0"
+    seed_decision_replay_attempt(tmp_path, run_id=run_id, attempt_id=decision_attempt)
+    build_campaign_kpi_ledger(
+        tmp_path,
+        campaign_id=campaign_id,
+        run_id=run_id,
+        attempt_id=decision_attempt,
+        l4_pair_id="cell_001",
+        write=True,
+        created_at_utc="2026-06-26T00:00:00Z",
+    )
+    summary_path = tmp_path / "lab" / "campaigns" / campaign_id / "kpi" / "kpi_summary.yaml"
+    summary = yaml.safe_load(summary_path.read_text(encoding="utf-8"))
+    summary["segment_breakdowns"]["runtime_surface"] = {
+        "status": "observed",
+        "analysis_status": "materialized",
+        "claim_effect": "segment_breakdown_learning_only_no_selection_or_pass_claim",
+    }
+    write_yaml(summary_path, summary)
+
+    manifest_path = tmp_path / "lab" / "campaigns" / campaign_id / "kpi" / "kpi_ledger_manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["summary"]["sha256"] = sha256(summary_path)
+    write_yaml(manifest_path, manifest)
+
+    errors = validate(tmp_path)
+
+    assert any("observed segment lacks metric/count basis" in error for error in errors)
+
+
+def test_validator_rejects_missing_segment_without_next_materialization_step(tmp_path: Path) -> None:
+    campaign_id, run_id, _attempt_id = seed_minimal_repo(tmp_path)
+    decision_attempt = "attempt_demo_l4_decision_replay_validation_v0"
+    seed_decision_replay_attempt(tmp_path, run_id=run_id, attempt_id=decision_attempt)
+    build_campaign_kpi_ledger(
+        tmp_path,
+        campaign_id=campaign_id,
+        run_id=run_id,
+        attempt_id=decision_attempt,
+        l4_pair_id="cell_001",
+        write=True,
+        created_at_utc="2026-06-26T00:00:00Z",
+    )
+    summary_path = tmp_path / "lab" / "campaigns" / campaign_id / "kpi" / "kpi_summary.yaml"
+    summary = yaml.safe_load(summary_path.read_text(encoding="utf-8"))
+    summary["segment_coverage"]["pending_materialization_axes"] = ["session"]
+    summary["segment_breakdowns"]["session"] = {
+        "status": "not_collected",
+        "analysis_status": "not_materialized",
+        "missing_reason": "fixture_missing_session",
+        "claim_effect": "segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim",
+    }
+    write_yaml(summary_path, summary)
+
+    manifest_path = tmp_path / "lab" / "campaigns" / campaign_id / "kpi" / "kpi_ledger_manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["summary"]["sha256"] = sha256(summary_path)
+    write_yaml(manifest_path, manifest)
+
+    errors = validate(tmp_path)
+
+    assert any("requires next_materialization_step when not collected" in error for error in errors)
 
 
 def test_validator_rejects_mt5_missing_without_parser_diagnostic(tmp_path: Path) -> None:

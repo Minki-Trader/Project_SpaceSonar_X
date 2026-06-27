@@ -9,67 +9,133 @@ scope_identity:
   wave_id: wave_us100_closedbar_surface_cartography_v0
   campaign_id: campaign_us100_event_barrier_decision_surface_v0
   stage_kind: campaign
+  synthesis_stage_id: ''
 source_artifacts:
   proxy_authorities:
   - lab/runs/onnxlab_wave01_eb_cell_001_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_002_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_003_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_004_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_005_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_006_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_007_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_008_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_009_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_010_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_011_event_barrier_surface_v0/metrics.json
+  - lab/runs/onnxlab_wave01_eb_cell_012_event_barrier_surface_v0/metrics.json
   mt5_authorities:
   - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_research_oos_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_research_oos_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_006_l4_decision_replay_validation_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_research_oos_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_007_l4_decision_replay_validation_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_research_oos_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_008_l4_decision_replay_validation_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_research_oos_score_band_side_v0/trade_shape_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
   - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave01_eb_cell_011_l4_decision_replay_validation_score_band_side_v0/trade_shape_summary.yaml
 record_files:
   proxy_kpi_records:
     path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/proxy_kpi_records.csv
-    sha256: 8e5f041e1849784e13655cf3b2945a9eb68b25ac14cc29915f2e7ee1a9681ec1
-    row_count: 1
+    sha256: 71c995a125e3cac000dc480d3e66d6b83399127b7727c24beca7dddbf76a1bd0
+    row_count: 12
   mt5_runtime_kpi_records:
     path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/mt5_runtime_kpi_records.csv
-    sha256: 11a87b45f261bb0c2e6530986b2be9c45af3a83a35e0ba3c80dbe29fbae128a3
-    row_count: 280
+    sha256: 6df6b9d1f23b4e92df9ffd972842cb4c524db12309d3e70cced4642fc66ab5d7
+    row_count: 2105
   proxy_mt5_comparison_records:
     path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/proxy_mt5_comparison_records.csv
-    sha256: 455c420a61ba72324c8e1db5a80a12fc0b6e0190ae5bed9e7a5aa33698304bdf
-    row_count: 0
+    sha256: 0559ace4202c00b6189ee763e7ba5d51e08a2f71aa66f58bc5abff632c6d1c24
+    row_count: 25
 summary:
   path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/kpi_summary.yaml
-  sha256: 9165b1d53c0e5f3a104b35219a28264a5958de10e8c4881b679c524e9aca109b
-  proxy_run_count: 1
+  sha256: 9c5d0e677866fa0248ff3ebf4866a9ebf37005ea29e2c3f92a130ff66674008e
+  proxy_run_count: 12
   mt5_attempt_count: 10
   trade_execution_attempt_count: 10
-  comparison_pair_count: 0
+  comparison_pair_count: 5
   proxy_only_excluded_from_comparison_count: 0
+  segment_breakdown_required: true
+  required_segment_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  segment_materialization:
+    materialized_axes:
+    - direction
+    - overall
+    - period_role
+    - runtime_surface
+    - score_or_threshold_bucket
+    - session
+    - time_window
+    - trade_shape_bucket
+    partial_materialized_axes: []
+    pending_materialization_axes: []
 kpi_policy:
   fixed_schema: true
   mt5_missing_is_repair_trigger_before_na: true
   proxy_only_runs_excluded_from_comparison_ledger: true
   non_trading_score_probe_excluded_from_kpi_ledger: true
   score_probe_retained_only_in_runtime_evidence_not_kpi: true
+  overall_and_segment_breakdowns_required: true
+  fake_segment_placeholder_forbidden: true
+  observed_segment_requires_metric_or_count_basis: true
+  missing_segment_requires_next_materialization_step: true
+  required_segment_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  optional_segment_axes:
+  - volatility_regime
+  - drawdown_cluster
+  - holding_period_bucket
+  - feature_family
+  - target_family
+  - model_family
+  - spread_or_cost_bucket
+  segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
 claim_boundary: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
 forbidden_claims:
 - selected_baseline

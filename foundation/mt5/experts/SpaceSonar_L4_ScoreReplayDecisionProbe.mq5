@@ -7,9 +7,13 @@
 #property description "Score-telemetry replay EA for sparse decision-execution probing."
 
 #include <Trade/Trade.mqh>
+#include "..\include\SpaceSonar_TradeShapeKpi.mqh"
 
 input string InpScoreTelemetryPath      = "SpaceSonar\\l4_score_probe\\attempt\\score_telemetry.csv";
 input string InpExecutionTelemetryPath  = "SpaceSonar\\l4_decision_replay\\attempt\\execution_telemetry.csv";
+input string InpTradeShapeTelemetryPath = "SpaceSonar\\l4_decision_replay\\attempt\\trade_shape_telemetry.csv";
+input string InpAttemptId               = "";
+input bool   InpEmitTradeShapeTelemetry = true;
 input bool   InpUseCommonFiles          = true;
 input string InpDecisionFamily          = "";
 input string InpDirectionPolicy         = "momentum_ret_1";
@@ -23,15 +27,26 @@ input int    InpDeviationPoints         = 20;
 input int    InpMagicNumber             = 260621;
 
 CTrade  ExtTrade;
+CSpaceSonarTradeShapeKpi ExtTradeShape;
 int     ExtExecutionHandle = INVALID_HANDLE;
 datetime ExtLastClosedBarTime = 0;
 datetime ExtEntryCloseTime = 0;
 int     ExtRowsLoaded = 0;
 int     ExtRowsObserved = 0;
 int     ExtOrdersAttempted = 0;
+int     ExtReplayBarIndex = 0;
 datetime ExtTelemetryTimes[];
 double  ExtTelemetryScores[];
 string  ExtTelemetryDecisions[];
+bool    ExtTrackedPosition = false;
+bool    ExtTrackedIsLong = false;
+datetime ExtTrackedEntryTime = 0;
+int     ExtTrackedEntryBarIndex = 0;
+double  ExtTrackedEntryPrice = 0.0;
+double  ExtTrackedMaxFavorable = 0.0;
+double  ExtTrackedMaxAdverse = 0.0;
+double  ExtTrackedSpreadEntry = 0.0;
+ulong   ExtTrackedTicket = 0;
 
 bool IsFinite(const double value)
 {
@@ -213,21 +228,110 @@ bool HasOurPosition(ENUM_POSITION_TYPE &position_type)
    return true;
 }
 
-bool CloseOurPosition()
+void ResetTrackedPosition()
+{
+   ExtTrackedPosition = false;
+   ExtTrackedIsLong = false;
+   ExtTrackedEntryTime = 0;
+   ExtTrackedEntryBarIndex = 0;
+   ExtTrackedEntryPrice = 0.0;
+   ExtTrackedMaxFavorable = 0.0;
+   ExtTrackedMaxAdverse = 0.0;
+   ExtTrackedSpreadEntry = 0.0;
+   ExtTrackedTicket = 0;
+}
+
+void TrackOpenedPosition(const string signal, const datetime close_time, const int bar_index)
+{
+   ENUM_POSITION_TYPE position_type;
+   if(!HasOurPosition(position_type))
+      return;
+
+   ExtTrackedPosition = true;
+   ExtTrackedIsLong = (position_type == POSITION_TYPE_BUY);
+   ExtTrackedEntryTime = close_time;
+   ExtTrackedEntryBarIndex = bar_index;
+   ExtTrackedEntryPrice = PositionGetDouble(POSITION_PRICE_OPEN);
+   ExtTrackedMaxFavorable = 0.0;
+   ExtTrackedMaxAdverse = 0.0;
+   ExtTrackedSpreadEntry = (double)SymbolInfoInteger(_Symbol, SYMBOL_SPREAD);
+   ExtTrackedTicket = (ulong)PositionGetInteger(POSITION_TICKET);
+   if(ExtTrackedEntryPrice <= 0.0)
+      ExtTrackedEntryPrice = (signal == "long" ? SymbolInfoDouble(_Symbol, SYMBOL_ASK) : SymbolInfoDouble(_Symbol, SYMBOL_BID));
+}
+
+void UpdateTrackedExcursion()
+{
+   if(!ExtTrackedPosition || ExtTrackedEntryPrice <= 0.0)
+      return;
+
+   const double point_value = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+   if(point_value <= 0.0)
+      return;
+   const double high_value = iHigh(_Symbol, PERIOD_M5, 1);
+   const double low_value = iLow(_Symbol, PERIOD_M5, 1);
+   if(high_value <= 0.0 || low_value <= 0.0)
+      return;
+
+   double favorable = 0.0;
+   double adverse = 0.0;
+   if(ExtTrackedIsLong)
+   {
+      favorable = (high_value - ExtTrackedEntryPrice) / point_value;
+      adverse = (ExtTrackedEntryPrice - low_value) / point_value;
+   }
+   else
+   {
+      favorable = (ExtTrackedEntryPrice - low_value) / point_value;
+      adverse = (high_value - ExtTrackedEntryPrice) / point_value;
+   }
+   ExtTrackedMaxFavorable = MathMax(ExtTrackedMaxFavorable, favorable);
+   ExtTrackedMaxAdverse = MathMax(ExtTrackedMaxAdverse, adverse);
+}
+
+void EmitTrackedClose(const string exit_reason, const datetime close_time, const int bar_index, const double exit_price)
+{
+   if(!ExtTrackedPosition || !InpEmitTradeShapeTelemetry || !ExtTradeShape.IsOpen())
+      return;
+
+   ExtTradeShape.RecordClosedTrade(
+      ExtTrackedTicket,
+      ExtTrackedIsLong,
+      ExtTrackedEntryTime,
+      ExtTrackedEntryBarIndex,
+      ExtTrackedEntryPrice,
+      close_time,
+      bar_index,
+      exit_price,
+      exit_reason,
+      ExtTrackedMaxFavorable,
+      ExtTrackedMaxAdverse,
+      0.0,
+      ExtTrackedSpreadEntry,
+      (double)SymbolInfoInteger(_Symbol, SYMBOL_SPREAD)
+   );
+}
+
+bool CloseOurPosition(const string exit_reason, const datetime close_time, const int bar_index)
 {
    ENUM_POSITION_TYPE position_type;
    if(!HasOurPosition(position_type))
       return true;
+   const double exit_price = (position_type == POSITION_TYPE_BUY ? SymbolInfoDouble(_Symbol, SYMBOL_BID) : SymbolInfoDouble(_Symbol, SYMBOL_ASK));
    ResetLastError();
    const bool closed = ExtTrade.PositionClose(_Symbol);
    if(!closed)
       PrintFormat("Score replay close failed err=%d", GetLastError());
    if(closed)
+   {
+      EmitTrackedClose(exit_reason, close_time, bar_index, exit_price);
       ExtEntryCloseTime = 0;
+      ResetTrackedPosition();
+   }
    return closed;
 }
 
-string ApplySignal(const datetime close_time, const string signal)
+string ApplySignal(const datetime close_time, const string signal, const int bar_index)
 {
    ENUM_POSITION_TYPE position_type;
    const bool has_position = HasOurPosition(position_type);
@@ -236,7 +340,7 @@ string ApplySignal(const datetime close_time, const string signal)
       const int elapsed = (int)((close_time - ExtEntryCloseTime) / PeriodSeconds(PERIOD_M5));
       if(elapsed >= InpHoldBars)
       {
-         CloseOurPosition();
+         CloseOurPosition("close_hold_elapsed", close_time, bar_index);
          return "close_hold_elapsed";
       }
    }
@@ -245,7 +349,7 @@ string ApplySignal(const datetime close_time, const string signal)
    {
       if(InpCloseOnFlat && has_position)
       {
-         CloseOurPosition();
+         CloseOurPosition("close_flat", close_time, bar_index);
          return "close_flat";
       }
       return "no_trade_flat";
@@ -263,7 +367,7 @@ string ApplySignal(const datetime close_time, const string signal)
       if((signal == "long" && position_type == POSITION_TYPE_BUY) ||
          (signal == "short" && position_type == POSITION_TYPE_SELL))
          return "hold_same_direction";
-      CloseOurPosition();
+      CloseOurPosition("implicit_reversal", close_time, bar_index);
    }
 
    ResetLastError();
@@ -280,6 +384,7 @@ string ApplySignal(const datetime close_time, const string signal)
       return "open_failed";
    }
    ExtEntryCloseTime = close_time;
+   TrackOpenedPosition(signal, close_time, bar_index);
    return (signal == "long" ? "open_long" : "open_short");
 }
 
@@ -335,6 +440,12 @@ int OnInit()
       PrintFormat("Score replay output open failed path=%s err=%d", InpExecutionTelemetryPath, GetLastError());
       return INIT_FAILED;
    }
+   if(InpEmitTradeShapeTelemetry)
+   {
+      const string attempt_id = (StringLen(InpAttemptId) > 0 ? InpAttemptId : InpTradeShapeTelemetryPath);
+      if(!ExtTradeShape.Open(attempt_id, InpTradeShapeTelemetryPath, InpUseCommonFiles))
+         return INIT_FAILED;
+   }
    WriteExecutionHeader();
    return INIT_SUCCEEDED;
 }
@@ -346,6 +457,7 @@ void OnDeinit(const int reason)
       FileClose(ExtExecutionHandle);
       ExtExecutionHandle = INVALID_HANDLE;
    }
+   ExtTradeShape.Close();
    PrintFormat("SpaceSonar score replay deinit reason=%d rows_loaded=%d rows_observed=%d orders_attempted=%d",
                reason, ExtRowsLoaded, ExtRowsObserved, ExtOrdersAttempted);
 }
@@ -365,7 +477,9 @@ void OnTick()
    const double score = ExtTelemetryScores[index];
    const string source_decision = ExtTelemetryDecisions[index];
    const string signal = ExecutionSignal(source_decision, score);
-   const string action = ApplySignal(close_time, signal);
+   ExtReplayBarIndex++;
+   UpdateTrackedExcursion();
+   const string action = ApplySignal(close_time, signal, ExtReplayBarIndex);
    WriteExecutionRow(close_time, score, source_decision, signal, action);
    ExtRowsObserved++;
 }

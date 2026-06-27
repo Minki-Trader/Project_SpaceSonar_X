@@ -1,0 +1,139 @@
+version: wave_current_policy_closeout_amendment_v1
+closeout_id: wave01_current_policy_closeout_amendment_v0
+created_at_utc: '2026-06-27T00:00:00Z'
+closed_at_utc: '2026-06-27T00:00:00Z'
+status: wave01_current_policy_closed_complete
+claim_boundary: wave01_current_policy_closeout_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_closedbar_surface_cartography_v0
+source_of_truth: lab/waves/wave_us100_closedbar_surface_cartography_v0/current_policy_closeout_amendment.yaml
+legacy_source_evidence:
+  legacy_wave_allocation: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_allocation.yaml
+  legacy_wave_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+  l4_budget_accounting_amendment: lab/waves/wave_us100_closedbar_surface_cartography_v0/l4_budget_accounting_amendment.yaml
+current_policy_sources:
+  budget_accounting: lab/waves/wave_us100_closedbar_surface_cartography_v0/current_policy_budget_accounting.yaml
+  segment_materialization_repair_note: lab/waves/wave_us100_closedbar_surface_cartography_v0/segment_materialization_repair_note.yaml
+  campaign_refs: lab/waves/wave_us100_closedbar_surface_cartography_v0/campaign_refs.csv
+result:
+  current_policy_closeout: passed
+  budget_accounting: passed_exact_actualized_wave01_budget_no_retired_slots
+  kpi_ledger_completeness: passed
+  segment_kpi_materialization: passed_all_required_axes_materialized
+  proxy_mt5_comparison: passed_observation_only
+  candidate_count: 0
+  l5_candidate_count: 0
+  selected_baseline: not_claimed
+  runtime_authority: not_claimed
+  economics_pass: not_claimed
+  live_readiness: not_claimed
+  goal_achieve: not_claimed
+runtime_contract_integrity:
+  status: passed
+  source: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
+budget_usage_judgment:
+  proxy_model_bearing_run_slots: exactly_closed_34_of_34
+  campaign_slots: exactly_closed_3_of_3
+  standard_l4_pair_budget: exactly_closed_34_of_34
+  decision_replay_l4_pairs: separate_evidence_ledger_9_pairs
+  physical_mt5_attempts: 86_evidence_counts_not_budget_units
+  future_standard_wave_reference: >
+    The standard_wave 72 proxy-slot and 36 L4-pair envelope is retained as
+    the Wave02+ pre-open reference. Wave01 current-policy reclose uses the
+    actualized materialized-content budget so no active Wave01 budget remains
+    unspent or retired.
+  closeout_resolution: >
+    Wave01 current-policy closeout budget now matches the actual materialized
+    content. No remaining run or L4 pair budget is carried as retired. Closeout
+    repair and evidence projection covered KPI ledgers, segment extraction,
+    proxy metric compatibility repair, trade-shape reconstruction, EA telemetry
+    instrumentation for future reruns, and proxy-vs-MT5 comparison.
+kpi_ledger_completeness:
+  fixed_schema: true
+  ledgers_separated:
+    proxy_kpi: true
+    mt5_runtime_kpi: true
+    proxy_mt5_comparison: true
+  non_trading_score_probe_rows_excluded_from_campaign_kpi_ledgers: true
+  campaigns:
+    - campaign_id: campaign_us100_task_surface_scout_v0
+      proxy_kpi_records: 12
+      mt5_runtime_kpi_records: 1086
+      proxy_mt5_comparison_records: 15
+      comparison_pair_count: 3
+      summary_path: lab/campaigns/campaign_us100_task_surface_scout_v0/kpi/kpi_summary.yaml
+      manifest_path: lab/campaigns/campaign_us100_task_surface_scout_v0/kpi/kpi_ledger_manifest.yaml
+    - campaign_id: campaign_us100_event_barrier_decision_surface_v0
+      proxy_kpi_records: 12
+      mt5_runtime_kpi_records: 2105
+      proxy_mt5_comparison_records: 25
+      comparison_pair_count: 5
+      summary_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/kpi_summary.yaml
+      manifest_path: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/kpi_ledger_manifest.yaml
+    - campaign_id: campaign_us100_session_transition_regime_surface_v0
+      proxy_kpi_records: 10
+      mt5_runtime_kpi_records: 402
+      proxy_mt5_comparison_records: 5
+      comparison_pair_count: 1
+      summary_path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/kpi/kpi_summary.yaml
+      manifest_path: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/kpi/kpi_ledger_manifest.yaml
+segment_kpi_materialization_status:
+  required_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
+  materialized_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
+  partial_materialized_axes: []
+  missing_axes: []
+  materialization_source: lab/waves/wave_us100_closedbar_surface_cartography_v0/segment_materialization_repair_note.yaml
+  closed_trade_reconstruction:
+    attempt_count: 18
+    closed_trade_count: 98027
+    missing_bar_count: 0
+    campaign_closed_trade_counts:
+      campaign_us100_task_surface_scout_v0: 39598
+      campaign_us100_event_barrier_decision_surface_v0: 48430
+      campaign_us100_session_transition_regime_surface_v0: 9999
+    output_pattern: runtime/mt5_attempts/<attempt_id>/trade_shape_summary.yaml
+    price_basis: bar_open_at_recorded_bar_close_time_from_retained_ohlc_not_tester_deal_fill
+proxy_vs_mt5_comparison_status:
+  status: materialized_observation_only
+  total_comparison_pairs: 9
+  comparison_record_count: 45
+  interpretation_boundary: comparison_explains_proxy_runtime_gap_only_no_candidate_or_pass_claim
+preserved_learning:
+  negative_memory_ids:
+    - neg_wave0_decision_replay_momentum_ret_1_loss_v0
+    - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
+    - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
+  preserved_clue_ids:
+    - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+technical_or_environmental_blockers: []
+registries_and_projection:
+  active_comparison_surface: current_policy_closeout_amendment
+  registry_projection_rule: prefer_current_policy_closeout_amendment_when_present
+  legacy_artifacts_preserved_as_source_evidence_only: true
+next_action: work_post_wave01_user_directed_wave02_or_review_v0
+unresolved_blockers: []
+not_claimed:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - production_deployment
+  - handoff_complete
+  - reviewed_verified_pass
+  - goal_achieve

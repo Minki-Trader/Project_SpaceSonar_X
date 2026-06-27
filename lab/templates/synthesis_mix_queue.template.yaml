@@ -2,6 +2,12 @@ version: synthesis_mix_queue_v1
 campaign_id: campaign_synthesis_short_slug
 queue_id: synthesis_mix_queue_short_slug
 source_scope: previous_material_only
+cadence:
+  trigger: after_5_standard_campaign_closeouts
+  standard_campaign_closeout_count_required: 5
+  counting_scope: since_last_bounded_synthesis_campaign
+  counted_standard_campaign_ids: []
+  early_open_exception_reason: ""
 default_sequence:
   - mix-2
   - mix-3
@@ -10,12 +16,29 @@ mix_depth_policy:
   mix3: default_completion_depth
   mix4: exception_only_with_recorded_reason
   mix5_plus: forbidden
+ingredient_lifecycle_policy:
+  raw_reuse_default: forbidden_after_consumed_by_completed_synthesis
+  allowed_reuse_statuses:
+    - carry_forward_ingredient
+    - reopened_ingredient_exception
+  carry_forward_requires_source_synthesis: true
+  reopened_exception_requires_reason: true
 mix_items: []
 selection_policy:
   pf_only_selection_forbidden: true
   require_axis_diversity: true
   require_source_lineage: true
   require_l4_for_valid_proxy_model_bearing_mix: true
+kpi_policy:
+  ledger_required: true
+  ledger_path: lab/campaigns/<campaign_id>/kpi/
+  stage_kind: special_mixing
+  same_fixed_schema_as_campaign_wave: true
+  overall_and_segment_breakdowns_required: true
+  fake_segment_placeholder_forbidden: true
+  observed_segment_requires_metric_or_count_basis: true
+  missing_segment_requires_next_materialization_step: true
+  closeout_requires_kpi_interpretation: true
 next_wave_influence: forbidden_reference_only
 storage_contract:
   source_of_truth: lab/campaigns/<campaign_id>/synthesis/mix_queue.yaml

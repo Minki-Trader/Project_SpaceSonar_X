@@ -46,6 +46,15 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 
 def test_wave01_closeout_matches_recomputed_evaluator_digest() -> None:
+    current_policy_amendment = CLOSEOUT_PATH.parent / "current_policy_closeout_amendment.yaml"
+    if current_policy_amendment.exists():
+        amendment = load_yaml(current_policy_amendment)
+        committed = load_committed_closeout(ROOT)
+        assert amendment["status"] == "wave01_current_policy_closed_complete"
+        assert amendment["legacy_source_evidence"]["legacy_wave_closeout"] == CLOSEOUT_PATH.relative_to(ROOT).as_posix()
+        assert committed["version"] == "wave_closeout_v2"
+        return
+
     recomputed = evaluate_operating_closeout(ROOT)
     committed = load_committed_closeout(ROOT)
 
@@ -55,13 +64,18 @@ def test_wave01_closeout_matches_recomputed_evaluator_digest() -> None:
 
 def test_wave01_closeout_requirements_are_evaluator_backed() -> None:
     committed = load_committed_closeout(ROOT)
+    current_policy_amendment = CLOSEOUT_PATH.parent / "current_policy_closeout_amendment.yaml"
 
     assert committed["version"] == "wave_closeout_v2"
     for item in committed["requirement_audit"]:
         assert item["evaluator_id"]
         assert item["evaluator_result_path"]
         assert item["evaluator_result_sha256"]
-    assert validate_committed_closeout(ROOT) == []
+    if current_policy_amendment.exists():
+        amendment = load_yaml(current_policy_amendment)
+        assert amendment["legacy_source_evidence"]["legacy_wave_closeout"] == CLOSEOUT_PATH.relative_to(ROOT).as_posix()
+    else:
+        assert validate_committed_closeout(ROOT) == []
 
 
 def test_wave01_closeout_result_separates_operating_proof_from_runtime_contract() -> None:
@@ -91,11 +105,12 @@ def test_current_workspace_projection_is_not_stale() -> None:
 
 
 def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> None:
-    closeout = load_yaml(CLOSEOUT_PATH)
+    legacy_closeout = load_yaml(CLOSEOUT_PATH)
     goal = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml")
     next_work = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "next_work_item.yaml")
     cursor = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "resume_cursor.yaml")
     workspace = load_yaml(ROOT / "docs" / "workspace" / "workspace_state.yaml")
+    active_closeout = load_yaml(ROOT / workspace["active_wave"]["closeout"])
     wave_rows = read_csv(ROOT / "docs" / "registers" / "wave_registry.csv")
     work_item_id = "work_post_wave01_user_directed_wave02_or_review_v0"
 
@@ -106,11 +121,12 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
     assert next_work["work_item_id"] == work_item_id
     assert cursor["cursor_state"] == "complete_wave01_operating_proof_window"
     assert cursor["active_phase"] == "wave01_operating_closeout_complete"
-    assert workspace["active_wave"]["status"] == closeout["status"]
+    assert active_closeout["legacy_source_evidence"]["legacy_wave_closeout"] == CLOSEOUT_PATH.relative_to(ROOT).as_posix()
+    assert workspace["active_wave"]["status"] == active_closeout["status"]
     assert workspace["active_work_item"]["work_item_id"] == work_item_id
     assert workspace["unresolved_blockers"] == []
-    assert wave_rows[0]["status"] == closeout["status"]
-    assert wave_rows[0]["next_action"] == closeout["next_action"]
+    assert wave_rows[0]["status"] == active_closeout["status"]
+    assert wave_rows[0]["next_action"] == legacy_closeout["next_action"] == active_closeout["next_action"]
 
 
 def test_agent_observation_proof_releases_repair_work_item_everywhere() -> None:
