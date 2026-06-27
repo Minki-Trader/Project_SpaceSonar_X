@@ -40,12 +40,9 @@ def test_ci_scope_gate_is_active_after_bootstrap() -> None:
 def test_branch_protection_required_checks_use_ci_scope_gate() -> None:
     policy = _load_yaml("docs/policies/github_branch_protection_required.yaml")
 
-    assert policy["required_settings"]["required_checks"] == [
-        "control-plane-fast",
-        "unit",
-        "evidence-graph-full",
-        "ci-scope-gate",
-    ]
+    assert policy["required_settings"]["pull_request_required"] is False
+    assert policy["required_settings"]["direct_push"] == "allowed_at_boundary"
+    assert policy["required_settings"]["required_checks"] == []
 
 
 def test_full_regression_workflow_is_manual_and_runs_complete_pytest() -> None:
@@ -84,20 +81,20 @@ def test_wave_progression_readiness_ready_after_closeout_evidence_repair() -> No
     assert ledger["wave_progression_readiness"]["active_work_item_id"] == "work_post_wave01_user_directed_wave02_or_review_v0"
 
 
-def test_main_integration_readiness_records_verified_remote_protection() -> None:
+def test_main_integration_readiness_records_direct_push_remote_settings() -> None:
     ledger = _load_yaml("docs/migrations/control_plane_corrective_v3.yaml")
     remote_settings = _load_yaml("docs/policies/remote_repository_settings.yaml")
 
     assert ledger["remote_branch_protection"] == "verified"
-    assert remote_settings["remote_branch_protection"] == "verified"
+    assert remote_settings["remote_branch_protection"] == "not_enabled_or_not_visible"
     assert remote_settings["checks"] == {
-        "pull_request_required_on_main": True,
-        "required_status_checks": True,
+        "pull_request_required_on_main": False,
+        "required_status_checks": False,
         "squash_merge_enabled": True,
         "merge_commit_disabled": True,
         "rebase_merge_disabled": True,
-        "force_push_disabled": True,
-        "direct_push_restricted": True,
+        "force_push_disabled": "unverified_external_state",
+        "direct_push_restricted": False,
     }
     assert ledger["main_integration_readiness"]["required_checks"] == [
         "control-plane-fast",

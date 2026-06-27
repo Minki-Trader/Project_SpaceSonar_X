@@ -1,17 +1,17 @@
 version: remote_repository_settings_verification_v1
-executed_at_utc: '2026-06-25T11:27:17Z'
+executed_at_utc: '2026-06-27T18:40:58Z'
 repository: Minki-Trader/Project_SpaceSonar_X
 remote_url: https://github.com/Minki-Trader/Project_SpaceSonar_X.git
 default_branch: main
 verification_source: github_rest_api
-remote_branch_protection: verified
+remote_branch_protection: not_enabled_or_not_visible
 claim_boundary: remote_repository_settings_observation_only_no_runtime_authority_no_production_deployment
 checks:
-  pull_request_required_on_main: true
-  required_status_checks: true
-  squash_merge_enabled: true
+  direct_push_restricted: false
+  force_push_disabled: unverified_external_state
   merge_commit_disabled: true
+  pull_request_required_on_main: false
   rebase_merge_disabled: true
-  force_push_disabled: true
-  direct_push_restricted: true
+  required_status_checks: false
+  squash_merge_enabled: true
 errors: []

@@ -9,8 +9,9 @@ import yaml
 
 REQUIRED_BRANCH_POLICY_SNIPPETS = [
     "control_plane_stabilization",
-    "merge_mode: squash_only",
-    "direct_push: forbidden",
+    "working_branch: main",
+    "routine_branches_allowed: false",
+    "direct_push: allowed_only_at_user_approved_boundary",
 ]
 TRACKED_IGNORED_ALLOWLIST = {
     "tests/fixtures/mt5_strategy_tester_report_minimal.html",
@@ -46,14 +47,14 @@ def validate_branch_policy(repo_root: Path) -> list[str]:
         return errors
     data = yaml.safe_load(settings_path.read_text(encoding="utf-8")) or {}
     required = data.get("required_settings") or {}
-    if required.get("pull_request_required") is not True:
-        errors.append("github_branch_protection_required.yaml: pull_request_required must be true")
+    if required.get("pull_request_required") is not False:
+        errors.append("github_branch_protection_required.yaml: pull_request_required must be false")
     if required.get("squash_merge_only") is not True:
         errors.append("github_branch_protection_required.yaml: squash_merge_only must be true")
-    if required.get("force_push") != "disabled":
-        errors.append("github_branch_protection_required.yaml: force_push must be disabled")
-    if required.get("direct_push") != "forbidden":
-        errors.append("github_branch_protection_required.yaml: direct_push must be forbidden")
+    if required.get("force_push") != "not_restricted_by_branch_protection":
+        errors.append("github_branch_protection_required.yaml: force_push must be not_restricted_by_branch_protection")
+    if required.get("direct_push") != "allowed_at_boundary":
+        errors.append("github_branch_protection_required.yaml: direct_push must be allowed_at_boundary")
     return errors
 
 

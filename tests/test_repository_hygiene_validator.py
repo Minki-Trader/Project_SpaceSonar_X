@@ -16,8 +16,10 @@ def _write_policy_files(repo_root: Path) -> None:
 main_integration_policy:
   allowed_boundary_events:
     - control_plane_stabilization
-  merge_mode: squash_only
-  direct_push: forbidden
+  working_branch: main
+  direct_push: allowed_only_at_user_approved_boundary
+codex_branch_policy:
+  routine_branches_allowed: false
 ```
 """,
         encoding="utf-8",
@@ -27,10 +29,10 @@ main_integration_policy:
             {
                 "version": "github_branch_protection_required_v1",
                 "required_settings": {
-                    "pull_request_required": True,
+                    "pull_request_required": False,
                     "squash_merge_only": True,
-                    "force_push": "disabled",
-                    "direct_push": "forbidden",
+                    "force_push": "not_restricted_by_branch_protection",
+                    "direct_push": "allowed_at_boundary",
                 },
             },
             sort_keys=False,

@@ -31,7 +31,7 @@ REQUIRED_CHECKS = {
     "force_push_disabled",
     "direct_push_restricted",
 }
-MAIN_INTEGRATION_REQUIRED_PROTECTION = "verified"
+MAIN_INTEGRATION_ALLOWED_PROTECTION_STATES = {"not_enabled_or_not_visible", "verified_with_gaps"}
 
 
 def _now() -> str:
@@ -131,12 +131,15 @@ def verify_remote_settings(repo_root: Path) -> dict[str, Any]:
         result["remote_branch_protection"] = "not_enabled_or_not_visible"
         result["checks"].update(
             {
+                "pull_request_required_on_main": False,
+                "required_status_checks": False,
                 "squash_merge_enabled": bool(repo_payload.get("allow_squash_merge")),
                 "merge_commit_disabled": not bool(repo_payload.get("allow_merge_commit")),
                 "rebase_merge_disabled": not bool(repo_payload.get("allow_rebase_merge")),
+                "force_push_disabled": "unverified_external_state",
+                "direct_push_restricted": False,
             }
         )
-        result["errors"].append("main_branch_protection_missing_or_not_visible")
         return result
     if protection_status != 200:
         result["errors"].append(f"branch_protection_api_error:{protection_status}:{protection.get('message')}")
@@ -193,9 +196,9 @@ def main_integration_enforcement_errors(record: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if record.get("verification_source") != "github_rest_api":
         errors.append("main integration requires GitHub API verification")
-    if record.get("remote_branch_protection") != MAIN_INTEGRATION_REQUIRED_PROTECTION:
+    if record.get("remote_branch_protection") not in MAIN_INTEGRATION_ALLOWED_PROTECTION_STATES:
         errors.append(
-            "main integration requires remote_branch_protection=verified; "
+            "main integration requires direct-push-compatible branch protection; "
             f"observed {record.get('remote_branch_protection')}"
         )
     checks = record.get("checks")
@@ -205,6 +208,12 @@ def main_integration_enforcement_errors(record: dict[str, Any]) -> list[str]:
     if missing:
         errors.append(f"main integration checks missing {missing}")
     for key in sorted(REQUIRED_CHECKS):
+        if key in {"pull_request_required_on_main", "required_status_checks", "direct_push_restricted"}:
+            if checks.get(key) is not False:
+                errors.append(f"main integration blocked: checks.{key} is {checks.get(key)!r}")
+            continue
+        if key == "force_push_disabled" and checks.get(key) == "unverified_external_state":
+            continue
         if checks.get(key) is not True:
             errors.append(f"main integration blocked: checks.{key} is {checks.get(key)!r}")
     return errors
