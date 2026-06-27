@@ -144,13 +144,13 @@ def read_yaml(path: Path) -> dict[str, Any]:
 
 def write_yaml(path: Path, payload: dict[str, Any]) -> None:
     os.makedirs(filesystem_path(path.parent), exist_ok=True)
-    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
         handle.write(dump_yaml(_jsonable(payload)))
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     os.makedirs(filesystem_path(path.parent), exist_ok=True)
-    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(_jsonable(payload), indent=2, ensure_ascii=True) + "\n")
 
 
@@ -301,7 +301,7 @@ def write_prediction_sample(path: Path, frame: pd.DataFrame, labels: pd.DataFram
     )
     sample = sample.replace([np.inf, -np.inf], np.nan).dropna(subset=["score"]).head(200)
     os.makedirs(filesystem_path(path.parent), exist_ok=True)
-    sample.to_csv(filesystem_path(path), index=False)
+    sample.to_csv(filesystem_path(path), index=False, lineterminator="\n")
 
 
 def routing() -> dict[str, Any]:

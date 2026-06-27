@@ -138,7 +138,7 @@ def _write_bytes(path: Path, payload: bytes) -> None:
 
 def _write_text(path: Path, text: str) -> None:
     _mkdir(path.parent)
-    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
         handle.write(text)
 
 
@@ -307,7 +307,7 @@ class ControlPlaneTransaction:
         _mkdir(path.parent)
         temp_path = path.with_name(f".{path.name}.{uuid.uuid4().hex}.tmp")
         try:
-            with open(filesystem_path(temp_path), "w", encoding="utf-8") as handle:
+            with open(filesystem_path(temp_path), "w", encoding="utf-8", newline="\n") as handle:
                 handle.write(dump_yaml(payload))
                 handle.flush()
                 if self._metadata_fsync_required():

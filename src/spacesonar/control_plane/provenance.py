@@ -188,7 +188,7 @@ def _write_text_if_nonempty(repo_root: Path, rel_path: Path, text: str) -> tuple
         return None, None
     path = repo_root / rel_path
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text, encoding="utf-8", newline="\n")
     return rel_path.as_posix(), sha256_file(path)
 
 
@@ -396,7 +396,7 @@ def _parse_utc(value: str) -> datetime:
 def _write_atomic_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    temp.write_text(text, encoding="utf-8")
+    temp.write_text(text, encoding="utf-8", newline="\n")
     os.replace(temp, path)
 
 
@@ -700,11 +700,11 @@ def add_provenance_compaction_marker(path: Path, batch_receipt_path: str) -> boo
         data["provenance_compaction"] = provenance_compaction_marker(batch_receipt_path)
         import json
 
-        path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         return True
     data = read_yaml(path)
     if data.get("provenance_compaction") == provenance_compaction_marker(batch_receipt_path):
         return False
     data["provenance_compaction"] = provenance_compaction_marker(batch_receipt_path)
-    path.write_text(dump_yaml(data), encoding="utf-8")
+    path.write_text(dump_yaml(data), encoding="utf-8", newline="\n")
     return True

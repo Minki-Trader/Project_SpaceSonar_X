@@ -249,6 +249,29 @@ def test_batch_receipt_has_nonempty_inputs_and_outputs(tmp_path: Path) -> None:
     assert receipt["git"]["source_snapshot"]["manifest_sha256"]
 
 
+def test_batch_receipt_files_are_lf_normalized(tmp_path: Path) -> None:
+    seed_git_repo(tmp_path)
+    (tmp_path / "src/module.py").write_text("VALUE = 13\n", encoding="utf-8")
+
+    receipt = build_execution_batch_receipt(
+        tmp_path,
+        batch_id="batch_lf",
+        work_item_id="work_a",
+        command_argv=["run"],
+        allow_exploratory_dirty=True,
+    )
+
+    paths = [
+        tmp_path / "lab/executions/batch_lf/execution_batch_receipt.yaml",
+        tmp_path / receipt["git"]["source_snapshot"]["manifest_path"],
+        tmp_path / receipt["git"]["source_snapshot"]["tracked_patch_path"],
+    ]
+    for path in paths:
+        data = path.read_bytes()
+        assert b"\r\n" not in data
+        assert b"\n" in data
+
+
 def test_missing_input_or_output_hash_fails_receipt_validation() -> None:
     receipt = {
         "version": "execution_batch_receipt_v1",
