@@ -377,6 +377,45 @@ def _full_next_work(existing: dict[str, Any], spec: CampaignLifecycleSpec) -> di
     return payload
 
 
+def _full_resume_cursor(existing: dict[str, Any], spec: CampaignLifecycleSpec, next_work: dict[str, Any]) -> dict[str, Any]:
+    payload = dict(spec.payload.get("resume_cursor") or {})
+    payload.setdefault("version", "active_goal_resume_cursor_v1")
+    payload.setdefault("active_goal_id", spec.goal_id)
+    payload["updated_at_utc"] = spec.payload.get("updated_at_utc") or spec.payload["created_at_utc"]
+    payload["cursor_state"] = spec.payload.get("goal_status", "active")
+    payload["active_phase"] = spec.payload.get("active_phase", "campaign_open")
+    payload["active_work_item_id"] = next_work["work_item_id"]
+    payload["campaign_id"] = spec.campaign_id
+    payload["claim_boundary"] = spec.payload.get("claim_boundary", "")
+    payload["next_action"] = spec.payload.get("next_action", next_work.get("next_action", ""))
+    payload.setdefault("unresolved_blockers", [])
+    payload["active_ids"] = {
+        "idea_id": spec.idea_id,
+        "hypothesis_id": spec.hypothesis_id,
+        "wave_id": spec.wave_id,
+        "campaign_id": spec.campaign_id,
+        "surface_id": spec.surface_id,
+        "sweep_id": spec.sweep_id,
+    }
+    payload.setdefault(
+        "current_truth_sources",
+        [
+            f"lab/goals/{spec.goal_id}/goal_manifest.yaml",
+            f"lab/goals/{spec.goal_id}/next_work_item.yaml",
+            f"lab/waves/{spec.wave_id}/wave_allocation.yaml",
+            f"lab/waves/{spec.wave_id}/campaign_refs.csv",
+            f"lab/campaigns/{spec.campaign_id}/campaign_manifest.yaml",
+            f"lab/surfaces/{spec.surface_id}/surface_manifest.yaml",
+            f"lab/campaigns/{spec.campaign_id}/sweeps/{spec.sweep_id}/sweep_manifest.yaml",
+            "docs/workspace/workspace_state.yaml",
+            "docs/registers/goal_registry.csv",
+            "docs/registers/wave_registry.csv",
+            "docs/registers/campaign_registry.csv",
+        ],
+    )
+    return payload
+
+
 def _next_work_pointer(next_work: dict[str, Any]) -> dict[str, str]:
     return {
         "work_item_id": str(next_work["work_item_id"]),
@@ -768,12 +807,12 @@ def _open_campaign_plan(spec_path: Path, context: ExecutionContext) -> Lifecycle
         }
     )
     if (context.repo_root / Path("lab/goals") / spec.goal_id / "resume_cursor.yaml").exists() or spec.payload.get("resume_cursor"):
-        yaml_updates[Path("lab/goals") / spec.goal_id / "resume_cursor.yaml"] = {
-            **_read_yaml_if_exists(context.repo_root / Path("lab/goals") / spec.goal_id / "resume_cursor.yaml"),
-            **(spec.payload.get("resume_cursor") or {}),
-            "active_work_item_id": next_work["work_item_id"],
-            "campaign_id": spec.campaign_id,
-        }
+        resume_cursor_path = Path("lab/goals") / spec.goal_id / "resume_cursor.yaml"
+        yaml_updates[resume_cursor_path] = _full_resume_cursor(
+            _read_yaml_if_exists(context.repo_root / resume_cursor_path),
+            spec,
+            next_work,
+        )
     campaign_refs_path = Path("lab/waves") / spec.wave_id / "campaign_refs.csv"
     run_refs_path = Path("lab/campaigns") / spec.campaign_id / "sweeps" / spec.sweep_id / "run_refs.csv"
     text_updates[campaign_refs_path] = _campaign_refs_csv(context.repo_root, campaign_refs_path, wave, spec)

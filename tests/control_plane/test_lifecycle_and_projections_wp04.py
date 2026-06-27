@@ -224,6 +224,17 @@ def test_campaign_open_preserves_non_target_fields_and_updates_graph_neighbors(t
             "provenance": {"source": "previous_work_item"},
         },
     )
+    write_yaml(
+        tmp_path / "lab/goals/goal_wave02_fixture_v0/resume_cursor.yaml",
+        {
+            "version": "active_goal_resume_cursor_v1",
+            "active_goal_id": "goal_wave02_fixture_v0",
+            "cursor_state": "complete_previous_wave",
+            "active_phase": "previous_wave_closeout",
+            "active_work_item_id": "stale_wave01_work_v0",
+            "active_ids": {"wave_id": "wave01_old_v0"},
+        },
+    )
 
     result = open_campaign(write_spec(tmp_path), context(tmp_path))
 
@@ -252,6 +263,12 @@ def test_campaign_open_preserves_non_target_fields_and_updates_graph_neighbors(t
         "source": "test_fixture",
         "source_campaign_spec": "spec.yaml",
     }
+    cursor = load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/resume_cursor.yaml")
+    assert cursor["cursor_state"] == "active"
+    assert cursor["active_phase"] == "campaign_open"
+    assert cursor["active_work_item_id"] == "work_wave02_materialize_fixture_v0"
+    assert cursor["campaign_id"] == "campaign_wave02_surface_probe_v0"
+    assert cursor["active_ids"]["wave_id"] == "wave_wave02_fixture_v0"
     assert projection_diffs(tmp_path) == []
     assert "surface_wave02_fixture_v0" in (tmp_path / "docs/registers/experiment_surface_registry.csv").read_text(encoding="utf-8")
     assert "idea_wave02_fixture_v0" in (tmp_path / "docs/registers/idea_registry.csv").read_text(encoding="utf-8")

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 import shutil
 from pathlib import Path
@@ -555,16 +556,103 @@ def test_active_validator_rejects_wave_campaign_ref_status_drift(tmp_path: Path)
 
 def test_active_validator_rejects_active_wave_run_missing_goal_id(tmp_path: Path) -> None:
     repo = copy_evidence_repo(tmp_path)
-    run_id = "onnxlab_wave0_cell_001_surface_scout_v0"
+    source_run_id = "onnxlab_wave0_cell_001_surface_scout_v0"
+    run_id = "onnxlab_wave02_active_missing_goal_fixture_v0"
+    source_run_dir = repo / "lab" / "runs" / source_run_id
     run_dir = repo / "lab" / "runs" / run_id
+    shutil.copytree(filesystem_path(source_run_dir), filesystem_path(run_dir))
 
     manifest = load_json(run_dir / "run_manifest.json")
+    manifest["run_id"] = run_id
+    manifest["id_chain"].update(
+        {
+            "goal_id": "goal_us100_onnx_forward_boundary_v0",
+            "wave_id": "wave_us100_wave02_tradeability_decision_surface_v0",
+            "campaign_id": "campaign_us100_wave02_tradeability_decision_surface_v0",
+            "idea_id": "idea_us100_wave02_tradeability_side_abstain_surface_v0",
+            "hypothesis_id": "hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0",
+            "surface_id": "surface_us100_wave02_tradeability_side_abstain_v0",
+            "sweep_id": "sweep_us100_wave02_tradeability_side_abstain_broad_v0",
+        }
+    )
     manifest["id_chain"].pop("goal_id", None)
     write_json(run_dir / "run_manifest.json", manifest)
 
     receipt = load_yaml(run_dir / "experiment_receipt.yaml")
+    receipt["run_id"] = run_id
+    receipt["id_chain"].update(
+        {
+            "goal_id": "goal_us100_onnx_forward_boundary_v0",
+            "wave_id": "wave_us100_wave02_tradeability_decision_surface_v0",
+            "campaign_id": "campaign_us100_wave02_tradeability_decision_surface_v0",
+            "idea_id": "idea_us100_wave02_tradeability_side_abstain_surface_v0",
+            "hypothesis_id": "hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0",
+            "surface_id": "surface_us100_wave02_tradeability_side_abstain_v0",
+            "sweep_id": "sweep_us100_wave02_tradeability_side_abstain_broad_v0",
+        }
+    )
     receipt["id_chain"].pop("goal_id", None)
     write_yaml(run_dir / "experiment_receipt.yaml", receipt)
+    lineage = load_json(run_dir / "artifact_lineage.json")
+    lineage["run_id"] = run_id
+    write_json(run_dir / "artifact_lineage.json", lineage)
+
+    registry_path = repo / "docs" / "registers" / "run_registry.csv"
+    with registry_path.open("r", newline="", encoding="utf-8-sig") as handle:
+        rows = list(csv.DictReader(handle))
+    fieldnames = list(rows[0].keys()) if rows else [
+        "run_id",
+        "wave_id",
+        "campaign_id",
+        "idea_id",
+        "hypothesis_id",
+        "surface_id",
+        "sweep_id",
+        "status",
+        "created_at_utc",
+        "primary_family",
+        "primary_skill",
+        "manifest_path",
+        "receipt_path",
+        "lineage_path",
+        "metrics_path",
+        "claim_boundary",
+        "result_judgment",
+        "required_gates",
+        "evidence_path",
+        "next_action",
+        "notes",
+    ]
+    rows.append(
+        {
+            **{field: "" for field in fieldnames},
+            "run_id": run_id,
+            "wave_id": "wave_us100_wave02_tradeability_decision_surface_v0",
+            "campaign_id": "campaign_us100_wave02_tradeability_decision_surface_v0",
+            "idea_id": "idea_us100_wave02_tradeability_side_abstain_surface_v0",
+            "hypothesis_id": "hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0",
+            "surface_id": "surface_us100_wave02_tradeability_side_abstain_v0",
+            "sweep_id": "sweep_us100_wave02_tradeability_side_abstain_broad_v0",
+            "status": "fixture_active_wave_goal_id_missing",
+            "created_at_utc": "2026-06-27T12:15:00Z",
+            "primary_family": manifest["skill_routing"]["primary_family"],
+            "primary_skill": manifest["skill_routing"]["primary_skill"],
+            "manifest_path": f"lab/runs/{run_id}/run_manifest.json",
+            "receipt_path": f"lab/runs/{run_id}/experiment_receipt.yaml",
+            "lineage_path": f"lab/runs/{run_id}/artifact_lineage.json",
+            "metrics_path": f"lab/runs/{run_id}/metrics.json",
+            "claim_boundary": manifest["claim_boundary"],
+            "result_judgment": manifest["result_judgment"],
+            "required_gates": "fixture_gate",
+            "evidence_path": f"lab/runs/{run_id}/",
+            "next_action": "fixture_only",
+            "notes": "fixture active-wave missing goal_id",
+        }
+    )
+    with registry_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
 
     errors = validate(repo)
 

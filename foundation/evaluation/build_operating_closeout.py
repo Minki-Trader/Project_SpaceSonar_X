@@ -38,6 +38,7 @@ from spacesonar.control_plane.transaction import ControlPlaneTransaction
 
 
 WAVE_CLOSEOUT_PATH = Path("lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml")
+WAVE_ID = WAVE_CLOSEOUT_PATH.parent.name
 ARTIFACT_REGISTRY_PATH = Path("docs/registers/artifact_registry.csv")
 EVALUATOR_REGISTRY_PATH = Path("docs/agent_control/evaluator_registry.yaml")
 GOAL_ID = "goal_us100_onnx_forward_boundary_v0"
@@ -213,10 +214,7 @@ def _load_goal_and_wave(repo_root: Path) -> tuple[Path, dict[str, Any], Path, di
     active_goal_id = str(goal.get("active_goal_id") or goal.get("goal_id") or "")
     if active_goal_id != GOAL_ID:
         raise ValueError(f"unexpected active goal id {active_goal_id!r}; expected {GOAL_ID!r}")
-    active_ids = goal.get("active_ids") or {}
-    wave_id = active_ids.get("wave_id") or (goal.get("objective_revision") or {}).get("internal_active_wave_id")
-    if not wave_id:
-        raise ValueError("goal manifest does not declare an active wave_id")
+    wave_id = WAVE_ID
     wave_path = Path("lab/waves") / str(wave_id) / "wave_allocation.yaml"
     wave = load_yaml(repo_root / wave_path) or {}
     if wave.get("wave_id") != wave_id:
@@ -224,6 +222,11 @@ def _load_goal_and_wave(repo_root: Path) -> tuple[Path, dict[str, Any], Path, di
     storage = wave.get("storage_contract") or {}
     closeout_path = Path(str(storage.get("wave_closeout") or wave.get("wave_closeout") or (wave_path.parent / "wave_closeout.yaml").as_posix()))
     return goal_path, goal, wave_path, wave, closeout_path
+
+
+def _goal_still_points_to_wave01(goal: dict[str, Any], wave: dict[str, Any]) -> bool:
+    active_ids = goal.get("active_ids") or {}
+    return (active_ids.get("wave_id") or (goal.get("objective_revision") or {}).get("internal_active_wave_id")) == wave.get("wave_id")
 
 
 def _derived_closeout_id(wave: dict[str, Any]) -> str:
@@ -705,18 +708,22 @@ def _compose_closeout_evaluation(
         "unresolved_blockers": [] if all_required_passed else blocking_finding_ids,
         "next_action": next_action,
     }
-    state_yaml_overrides = _state_transition_payloads(
-        repo_root,
-        all_required_passed=all_required_passed,
-        problem_requirements=problem_requirements,
-        blocking_finding_ids=blocking_finding_ids,
-        generated_at_utc=generated_at_utc,
-        goal=goal,
-        wave=wave,
-        closeout=closeout,
+    state_yaml_overrides = (
+        _state_transition_payloads(
+            repo_root,
+            all_required_passed=all_required_passed,
+            problem_requirements=problem_requirements,
+            blocking_finding_ids=blocking_finding_ids,
+            generated_at_utc=generated_at_utc,
+            goal=goal,
+            wave=wave,
+            closeout=closeout,
+        )
+        if _goal_still_points_to_wave01(goal, wave)
+        else {}
     )
-    goal_text = _yaml_text(state_yaml_overrides[GOAL_MANIFEST_PATH])
-    wave_text = _yaml_text(state_yaml_overrides[wave_path])
+    goal_text = _yaml_text(state_yaml_overrides.get(GOAL_MANIFEST_PATH, goal))
+    wave_text = _yaml_text(state_yaml_overrides.get(wave_path, wave))
     closeout["source_inputs"] = [
         _input_hash_for_text(GOAL_MANIFEST_PATH, goal_text),
         _input_hash_for_text(wave_path, wave_text),
@@ -731,8 +738,9 @@ def _compose_closeout_evaluation(
         closeout_path: closeout,
         **state_yaml_overrides,
     }
-    workspace_text = workspace_projection_text(repo_root, yaml_overrides=yaml_overrides)
-    staged_texts[WORKSPACE_STATE_PATH] = workspace_text
+    if state_yaml_overrides:
+        workspace_text = workspace_projection_text(repo_root, yaml_overrides=yaml_overrides)
+        staged_texts[WORKSPACE_STATE_PATH] = workspace_text
     return CloseoutEvaluation(closeout=closeout, digest=closeout["evaluation_digest"], requirement_audit=audit, staged_texts=staged_texts)
 
 
