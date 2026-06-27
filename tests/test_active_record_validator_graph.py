@@ -7,6 +7,7 @@ from typing import Any
 
 import yaml
 
+from spacesonar.control_plane.store import filesystem_path
 from foundation.validation.active_record_validator import FIXTURE_GATE, validate
 
 
@@ -32,15 +33,19 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 def copy_evidence_repo(tmp_path: Path) -> Path:
     repo = tmp_path / "repo"
     for name in ["docs", "lab"]:
-        shutil.copytree(ROOT / name, repo / name, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+        shutil.copytree(
+            filesystem_path(ROOT / name),
+            filesystem_path(repo / name),
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+        )
     shutil.copytree(
-        ROOT / "runtime",
-        repo / "runtime",
+        filesystem_path(ROOT / "runtime"),
+        filesystem_path(repo / "runtime"),
         ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "telemetry", "reports"),
     )
     shutil.copytree(
-        ROOT / "foundation" / "mt5",
-        repo / "foundation" / "mt5",
+        filesystem_path(ROOT / "foundation" / "mt5"),
+        filesystem_path(repo / "foundation" / "mt5"),
         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
     )
     return repo

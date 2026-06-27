@@ -1,0 +1,17 @@
+version: hypothesis_record_v1
+hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
+status: campaign_opened
+hypothesis: 'A surface that predicts tradeability plus direction/abstain state should
+  be more runtime-testable than reusing Wave01 scalar score bands, because the decision
+  head directly declares side, no-trade, and holding/exit semantics.
+
+  '
+decision_use: side_abstain_tradeability_gate
+comparison_baseline:
+- no_trade_baseline
+- Wave01 preserved clues as questions only
+claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+evidence_path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+next_action: materialize_wave02_tradeability_initial_specs
+notes: Hypothesis opened by lifecycle engine.

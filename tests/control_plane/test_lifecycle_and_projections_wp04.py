@@ -214,6 +214,16 @@ def test_campaign_open_preserves_non_target_fields_and_updates_graph_neighbors(t
             "hypothesis_ids": ["hyp_existing_v0"],
         },
     )
+    write_yaml(
+        tmp_path / "lab/goals/goal_wave02_fixture_v0/next_work_item.yaml",
+        {
+            "version": "work_item_lite_v1",
+            "work_item_id": "stale_wave01_work_v0",
+            "status": "complete_previous_wave",
+            "current_truth": {"wave_id": "wave01_old_v0"},
+            "provenance": {"source": "previous_work_item"},
+        },
+    )
 
     result = open_campaign(write_spec(tmp_path), context(tmp_path))
 
@@ -230,7 +240,18 @@ def test_campaign_open_preserves_non_target_fields_and_updates_graph_neighbors(t
     assert (tmp_path / "lab/campaigns/campaign_wave02_surface_probe_v0/sweeps/sweep_wave02_fixture_v0/run_refs.csv").exists()
     assert "campaign_wave02_surface_probe_v0" in (tmp_path / "lab/waves/wave_wave02_fixture_v0/campaign_refs.csv").read_text(encoding="utf-8")
     assert load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/goal_manifest.yaml")["active_ids"]["campaign_id"] == "campaign_wave02_surface_probe_v0"
-    assert "acceptance_criteria" in load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/next_work_item.yaml")
+    next_work = load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/next_work_item.yaml")
+    assert "acceptance_criteria" in next_work
+    assert next_work["work_item_id"] == "work_wave02_materialize_fixture_v0"
+    assert next_work["status"] == "pending"
+    assert next_work["active_goal_id"] == "goal_wave02_fixture_v0"
+    assert next_work["wave_id"] == "wave_wave02_fixture_v0"
+    assert next_work["campaign_id"] == "campaign_wave02_surface_probe_v0"
+    assert "current_truth" not in next_work
+    assert next_work["provenance"] == {
+        "source": "test_fixture",
+        "source_campaign_spec": "spec.yaml",
+    }
     assert projection_diffs(tmp_path) == []
     assert "surface_wave02_fixture_v0" in (tmp_path / "docs/registers/experiment_surface_registry.csv").read_text(encoding="utf-8")
     assert "idea_wave02_fixture_v0" in (tmp_path / "docs/registers/idea_registry.csv").read_text(encoding="utf-8")

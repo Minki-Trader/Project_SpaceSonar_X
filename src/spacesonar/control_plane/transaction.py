@@ -4,6 +4,7 @@ import hashlib
 import os
 import shutil
 import subprocess
+import tempfile
 import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -25,6 +26,10 @@ def transaction_id(seed: str) -> str:
     return f"tx_{stamp}_{digest}_{nonce}"
 
 
+def short_workspace_id(tx_id: str) -> str:
+    return hashlib.sha256(tx_id.encode("utf-8")).hexdigest()[:12]
+
+
 ValidationHook = Callable[[Path], list[str]]
 ALLOWED_STATUSES = {
     "committed",
@@ -35,6 +40,8 @@ ALLOWED_STATUSES = {
     "rollback_failed",
 }
 RESERVED_MUTATION_ROOTS = {".git", ".spacesonar", ".venv"}
+SHORT_WORKSPACE_ROOT = ".spacesonar/tx"
+SHORT_FUTURE_ROOT = "ssx_tx"
 SKIP_FUTURE_DIRS = {
     ".git",
     ".spacesonar",
@@ -146,14 +153,19 @@ class ControlPlaneTransaction:
         seed = "|".join([context.work_item_id, *context.command_argv])
         self.transaction_id = tx_id or transaction_id(seed)
         self.tx_root = context.repo_root / ".spacesonar" / "transactions" / self.transaction_id
+        self.work_root = context.repo_root / SHORT_WORKSPACE_ROOT / short_workspace_id(self.transaction_id)
         if _exists(self.tx_root):
             raise FileExistsError(
                 f"transaction workspace already exists; resume mode is not implemented: {self.tx_root}"
             )
-        self.staged_root = self.tx_root / "staged"
-        self.future_root = self.tx_root / "future"
-        self.preimage_root = self.tx_root / "preimages"
-        self.temp_root = self.tx_root / "temps"
+        if _exists(self.work_root):
+            raise FileExistsError(
+                f"transaction short workspace already exists; resume mode is not implemented: {self.work_root}"
+            )
+        self.staged_root = self.work_root / "s"
+        self.future_root = Path(tempfile.gettempdir()) / SHORT_FUTURE_ROOT / short_workspace_id(self.transaction_id) / "f"
+        self.preimage_root = self.work_root / "p"
+        self.temp_root = self.work_root / "t"
         self.receipt_path = self.tx_root / "transaction_receipt.yaml"
         self.commit_journal_path = self.tx_root / "commit_journal.yaml"
         self.started_at_utc = utc_now()

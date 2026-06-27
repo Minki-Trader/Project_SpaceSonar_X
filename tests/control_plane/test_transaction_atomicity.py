@@ -367,6 +367,29 @@ def test_two_same_command_transactions_created_in_one_second_are_distinct(
     assert first.receipt_path.read_text(encoding="utf-8") == first_receipt
 
 
+def test_long_transaction_id_uses_short_internal_workspace(tmp_path: Path) -> None:
+    long_tx_id = f"tx_{'x' * 80}"
+    tx = ControlPlaneTransaction(ctx(tmp_path), tx_id=long_tx_id)
+    legacy_future_root = tmp_path / ".spacesonar" / "transactions" / long_tx_id / "future"
+
+    assert tx.receipt_path.parent == tmp_path / ".spacesonar" / "transactions" / long_tx_id
+    assert transaction_module.short_workspace_id(long_tx_id) in tx.future_root.parts
+    assert tx.future_root.name == "f"
+    assert len(str(tx.future_root)) < len(str(legacy_future_root))
+
+    tx.stage_text("docs/current.txt", "current\n")
+    observed: list[Path] = []
+
+    def validate(future_root: Path) -> list[str]:
+        observed.append(future_root)
+        return [] if (future_root / "docs/current.txt").exists() else ["staged file missing"]
+
+    result = tx.commit(validate=validate)
+
+    assert result.status == "committed"
+    assert observed == [tx.future_root]
+
+
 def test_explicit_transaction_id_with_existing_directory_fails_before_staging(tmp_path: Path) -> None:
     existing = tmp_path / ".spacesonar/transactions/tx_existing"
     existing.mkdir(parents=True)
