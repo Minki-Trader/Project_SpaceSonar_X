@@ -8,8 +8,8 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
 sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
 created_at_utc: '2026-06-27T22:46:42Z'
-status: prepared_pending_terminal_execution
-claim_boundary: wave02_cost_risk_holding_l4_strategy_tester_attempt_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+status: runtime_probe_completed
+claim_boundary: wave02_cost_risk_holding_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 source_of_truth: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/attempt_manifest.yaml
 work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
 preparation_work_item_id: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
@@ -94,7 +94,7 @@ runtime_surface_contract:
   feature_order_hash: 0cc9058f548a38dfd6aa2645b0176ec24c23ddfd2fd39262dc012b201f2cdaca
   feature_columns_delimiter: semicolon
   feature_columns_transport: common_file_with_inline_fallback
-  feature_columns_common_relative_path: SpaceSonar\wave02_cost_risk_holding_l4_score_probe\bundle_wave02_crh_cell_002_l4_onnx_export_v0\feature_columns.txt
+  feature_columns_common_relative_path: SpaceSonar\l4_score_probe\bundle_wave02_crh_cell_002_l4_onnx_export_v0\feature_columns.txt
   output_name: score
   output_contract: single_float_score_vector_shape_1_for_single_row_inference
   decision_family: abstain_timeout_h12
@@ -103,6 +103,9 @@ runtime_surface_contract:
   has_low_high_threshold: true
   decision_output: telemetry_only_no_trades
   ea_feature_reconstruction: closed_bar_CopyRates_shift_1_feature_columns_in_bundle_order
+  score_diagnostic_transport: common_file_observation_only
+  score_diagnostics_common_relative_path: SpaceSonar\l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_diagnostics.csv
+  portable_ea_stage_status: staged
 proxy_runtime_parity:
   status: attempt_prepared_runtime_execution_pending
   shared_contract:
@@ -119,6 +122,8 @@ proxy_runtime_parity:
   - Strategy Tester spread/tick availability can differ from exported proxy data.
   - Economics and live-like execution remain forbidden until a trading decision EA
     and terminal evidence exist.
+  - MT5 tester input strings can truncate long semicolon feature lists; runtime uses
+    feature_columns.txt common-file transport.
   interpretation_drift_risks:
   - bar_close_timing
   - feature_reconstruction_in_EA
@@ -127,39 +132,45 @@ proxy_runtime_parity:
   - cost_risk_holding_label_context_not_available_to_score_only_EA
   - non_trading_score_observation_vs_trade_execution
   minimum_reconciliation_attempt:
-    status: prepared
-    attempt: single_score_output_ONNX_contract_plus_feature_order_hash_plus_EA_feature_reconstruction
+    status: terminal_score_probe_observed
+    attempt: MT5 Strategy Tester executed the prepared ONNX score EA against the declared
+      period role
     forced_equality_required: false
+    evidence_path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
   unit_semantics:
     features: float32 closed-bar values in bundle feature order
     score: single model score from sklearn-to-ONNX adapter
     price_units: MT5 price values from MqlRates
     spread: MqlRates.spread raw points scaled only where feature contract says spread_scaled
     lot: fixed_lot_profile_recorded_but_EA_non_trading
-  comparison_class: pending_L4_terminal_execution
-  divergence_judgment: pending_L4_terminal_execution
+  comparison_class: pending_pair_aggregation_after_wave02_l4_period_roles
+  divergence_judgment: runtime_score_telemetry_observed_pending_proxy_row_comparison
   prevention_memory:
   - Use common-file feature column transport for long Wave02 feature lists.
   - Do not treat prepared tester configs as completed L4 evidence.
   - Do not infer cost/risk/holding economics from non-trading score telemetry.
-  follow_up_action: run Strategy Tester for this attempt and record telemetry/report
-    hashes
+  - Use Common Files feature_columns.txt transport for long feature lists to avoid
+    MT5 tester input truncation.
+  - Wave02 cost/risk/holding L4 runner normalizes reused score-probe helper outputs
+    to prevent Wave0/Wave01 identity drift.
+  follow_up_action: aggregate this period role with its paired L4 attempt before L5
+    decision
   claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
 artifact_identity:
   ea_entrypoint:
     path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
-    sha256: c45ab2998983a63f79f6364575bc7c4f764bdd479a61d7a490084864af34706a
-    size_bytes: 36739
+    sha256: 580f4c9256ec7970d925caef4dc763b101ccebb31c19036f1a2b3c1a6459b1d1
+    size_bytes: 39125
     availability: present_hash_recorded
   ea_binary:
     path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
-    sha256: 158c0a405347b16139ebea7f7cca99d5f51e6f6fa60f2c6b59ed7a660a752127
-    size_bytes: 41844
+    sha256: 3778dd6aa5bb478613c8d14ce87b8550da2680dc2f1c417872d32977d310ef16
+    size_bytes: 43564
     availability: local_binary_hash_recorded_ignored_by_git
   tester_config:
     path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/tester_config.ini
-    sha256: cbde453380e797632df0a7645e24181edd09ea4509842f167e4b6fd4986f355f
-    size_bytes: 1714
+    sha256: 97913cb6052fde4359209529af61dcf610d8188fd60f3c16db0c7f8c7aaae61f
+    size_bytes: 1780
     availability: present_hash_recorded
   bundle:
     path: runtime/packages/bundle_wave02_crh_cell_002_l4_onnx_export_v0/experiment_bundle.json
@@ -182,27 +193,84 @@ artifact_identity:
       copy_status: copied_to_mt5_common_files
       copied_sha256: c2342750c4e1c0c56121d911b7b7b3c2da175b8cb7af0b4c469f62de66202ab2
     feature_columns.txt:
-      common_relative_path: SpaceSonar\wave02_cost_risk_holding_l4_score_probe\bundle_wave02_crh_cell_002_l4_onnx_export_v0\feature_columns.txt
-      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\wave02_cost_risk_holding_l4_score_probe\bundle_wave02_crh_cell_002_l4_onnx_export_v0\feature_columns.txt
+      common_relative_path: SpaceSonar\l4_score_probe\bundle_wave02_crh_cell_002_l4_onnx_export_v0\feature_columns.txt
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\bundle_wave02_crh_cell_002_l4_onnx_export_v0\feature_columns.txt
       sha256: 1d12fb580ffce4f6fe29cead5407a1e8a9dbad50894a8bd6352402d88c12519e
       size_bytes: 409
+      feature_count: 28
       durable_identity: common_relative_path_plus_sha256
       path_boundary: redacted_local_context_only
       copy_status: copied_to_mt5_common_files
-      feature_count: 28
-      copied_sha256: 1d12fb580ffce4f6fe29cead5407a1e8a9dbad50894a8bd6352402d88c12519e
       transport_reason: avoid_MT5_tester_input_string_truncation_for_long_feature_lists
   tester_reports:
-  - path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/tester_report.htm
-    status: pending_terminal_execution
-    claim_boundary: not_evidence_until_file_exists_and_hash_recorded
+  - observed: true
+    status: tester_report_archived_local_hash_recorded
+    origin: portable_terminal_root
+    source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0\tester_report.htm
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/reports/tester_report.htm
+    sha256: 85bc4f0afef63ef34f4bd64f69e854536532c3582094d7ea068f4f04016d12f9
+    size_bytes: 27902
+    availability: local_report_hash_recorded_ignored_by_git
+    claim_boundary: tester_report_local_evidence_only_no_economics_pass
   telemetry:
     common_relative_path: SpaceSonar\wave02_cost_risk_holding_l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_telemetry.csv
     redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\wave02_cost_risk_holding_l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_telemetry.csv
     status: pending_terminal_execution
     repo_copy:
       path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/telemetry/score_telemetry.csv
-      status: pending_terminal_execution
+      sha256: 0d6ee4064486f3ebc24726e6b1e1e4ff385f356222c3d3e0d7036fd91c076bcf
+      size_bytes: 5950885
+      availability: local_telemetry_hash_recorded_ignored_by_git
+  diagnostics:
+    score_diagnostics.csv:
+      common_relative_path: SpaceSonar\l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_diagnostics.csv
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_diagnostics.csv
+      durable_identity: common_relative_path_plus_attempt_id
+      path_boundary: redacted_local_context_only
+      copy_status: configured_for_mt5_common_files
+      transport_reason: capture EA-level score-probe path diagnostics without turning
+        diagnostics into runtime proof
+    repo_copy:
+      path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/telemetry/score_diagnostics.csv
+      sha256: 7b9b2f80065b1a528750557402e3b4e6bda96c164aa3e94475f5718a69ce018f
+      size_bytes: 424701
+      availability: local_diagnostic_hash_recorded_ignored_by_git
+  portable_runtime_root:
+    ea_binary:
+      status: staged
+      copy_status: already_current
+      tester_expert_value: Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+      portable_terminal_root_redacted: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract
+      portable_ex5_redacted: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+      source:
+        path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+        sha256: 3778dd6aa5bb478613c8d14ce87b8550da2680dc2f1c417872d32977d310ef16
+        size_bytes: 43564
+        availability: local_binary_hash_recorded_ignored_by_git
+      portable_sha256: 3778dd6aa5bb478613c8d14ce87b8550da2680dc2f1c417872d32977d310ef16
+      portable_size_bytes: 43564
+      durable_identity: tester_config_expert_value_plus_source_binary_sha256
+      claim_boundary: portable_ea_stage_preflight_only_no_runtime_authority
+  terminal_run_summary:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
+    sha256: 714970ba90d2d5b3a654c86684665d0f7be0db025cc36911926d8de63d189919
+    size_bytes: 12029
+    availability: present_hash_recorded
+  score_telemetry_summary:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
+    sha256: 9952bd458bb713e6ba5a408c6f1c92446aa93b09c0a1b8c045f2b8d470dbeea0
+    size_bytes: 2434
+    availability: present_hash_recorded
+  score_diagnostic_summary:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/score_diagnostic_summary.yaml
+    sha256: 01b8541340500b6be9d201f36218c6f00f4f05fd8f4d4dafaedec1822ea16afb
+    size_bytes: 4342
+    availability: present_hash_recorded
+  tester_report_receipt:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/tester_report_receipt.yaml
+    sha256: e62ef506f6ad76ff34a1deaf3c94b9fb3ee0cf728813142793e54b14b7911859
+    size_bytes: 1109
+    availability: present_hash_recorded
 provenance:
   command_argv:
   - foundation/pipelines/materialize_wave02_cost_risk_holding_l4_preflight.py
@@ -251,6 +319,11 @@ required_gate_coverage:
   - runtime_surface_contract
   - proxy_runtime_parity_record
   - final_claim_guard
+  - Strategy_Tester_terminal_execution
+  - score_telemetry_csv
+  - result_judgment_from_L4
+  - L4_period_role_completed_report
+  - tester_report_hash
   missing:
   - terminal_execution
   - telemetry_rows
@@ -258,13 +331,10 @@ required_gate_coverage:
   - L4_split_runtime_probe_completion
   not_applicable:
   - locked_final_oos_b_access
-missing_evidence:
-- Strategy_Tester_terminal_execution_pending
-- score_telemetry_csv_pending
-- tester_report_pending
+missing_evidence: []
 reopen_condition: run prepared portable Strategy Tester attempt and record telemetry/report
   hashes
-next_action: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+next_action: aggregate this period role with its paired L4 attempt before L5 decision
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -276,3 +346,466 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
+result_judgment: runtime_probe
+execution_state:
+  terminal_launched: true
+  telemetry_file_observed: true
+  telemetry_rows_observed: true
+  tester_report_observed: true
+  tester_report_completed: true
+  terminal_mode: portable_contract_attempt
+  portable_contract_satisfied: true
+  report_contract_satisfied: true
+  period_contract_satisfied: true
+  surface_contract_satisfied: true
+  runtime_probe_complete: true
+  missing_requirements: []
+  completion_claim_boundary: standard_l4_runtime_probe_complete_no_runtime_authority_no_economics_pass
+runtime_probe_routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-evidence
+  support_skills:
+  - spacesonar-evidence-provenance
+  - spacesonar-claim-discipline
+  routing_scope: wave02_cost_risk_holding_l4_split_runtime_score_probe_execution
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: research_oos
+  claim_boundary: wave02_cost_risk_holding_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+terminal_run_summary:
+  command_argv_redacted:
+  - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_002_l4_research_oos_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-27T23:00:54.045390Z'
+  ended_at_utc: '2026-06-27T23:01:08.440395Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  telemetry_exists_after_attempt: true
+  terminal_attempts:
+  - command_argv_redacted:
+    - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+    - /portable
+    - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_002_l4_research_oos_v0\tester_config.ini
+    cwd: .
+    started_at_utc: '2026-06-27T23:00:54.045390Z'
+    ended_at_utc: '2026-06-27T23:01:08.440395Z'
+    exit_code: 0
+    timed_out: false
+    stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stdout_tail: ''
+    stderr_tail: ''
+    mode: portable_contract_attempt
+    attempt_claim_boundary: standard_contract_attempt_only
+    telemetry_exists_after_attempt: true
+  terminal_cleanup_actions: []
+  terminal_cleanup_policy:
+    default_terminate_existing: false
+    explicit_termination_requested: false
+    allowed_scope: explicit_user_requested_only
+    formal_runtime_claim_effect: no_global_cleanup_used
+  terminal_mode_policy:
+    standard_contract_terminal_mode: portable_required
+    portable_attempted: true
+    main_mode_fallback_allowed: false
+    main_mode_fallback_used: false
+    fallback_reason: null
+    claim_effect: l4_standard_portable_attempt_observation
+  selected_attempt_index: 0
+  telemetry_observed: true
+  version: wave02_cost_risk_holding_l4_terminal_run_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
+  attempt_id: attempt_wave02_crh_cell_002_l4_research_oos_v0
+  run_id: onnxlab_wave02_crh_cell_002_cost_risk_holding_v0
+  bundle_id: bundle_wave02_crh_cell_002_l4_onnx_export_v0
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/tester_config.ini
+    sha256: 97913cb6052fde4359209529af61dcf610d8188fd60f3c16db0c7f8c7aaae61f
+    size_bytes: 1780
+    availability: present_hash_recorded
+  tester_report_config:
+    status: tester_report_config_normalized
+    changed: true
+    report_value: reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0\tester_report
+    report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
+  tester_report_resolution_prelaunch:
+    status: tester_report_directories_partially_prepared
+    report_value: reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0\tester_report
+    prepared:
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+    skipped:
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_002_l4_research_oos_v0\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+      reason: "FileNotFoundError: [WinError 206] \uD30C\uC77C \uC774\uB984\uC774\uB098\
+        \ \uD655\uC7A5\uBA85\uC774 \uB108\uBB34 \uAE41\uB2C8\uB2E4: 'C:\\\\Users\\\
+        \\awdse\\\\AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_crh_cell_002_l4_research_oos_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave02_crh_cell_002_l4_research_oos_v0'"
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_002_l4_research_oos_v0\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+      reason: "FileNotFoundError: [WinError 206] \uD30C\uC77C \uC774\uB984\uC774\uB098\
+        \ \uD655\uC7A5\uBA85\uC774 \uB108\uBB34 \uAE41\uB2C8\uB2E4: 'C:\\\\Users\\\
+        \\awdse\\\\AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_crh_cell_002_l4_research_oos_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave02_crh_cell_002_l4_research_oos_v0'"
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_002_l4_research_oos_v0\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0
+      reason: "FileNotFoundError: [WinError 206] \uD30C\uC77C \uC774\uB984\uC774\uB098\
+        \ \uD655\uC7A5\uBA85\uC774 \uB108\uBB34 \uAE41\uB2C8\uB2E4: 'C:\\\\Users\\\
+        \\awdse\\\\AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_crh_cell_002_l4_research_oos_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave02_crh_cell_002_l4_research_oos_v0'"
+    prelaunch_candidates:
+    - origin: repository_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 693cb49834bad979bd5fc6c97beda3e852c063cfb5c9146aa2ccea144c5e9283
+    - origin: repository_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: df92c50a44b4f929d6eaae46eb92967a2a05bb1ec59891ba4649e991639fc83b
+    - origin: repository_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: cfcb8da5cb248cae39d74af3ccdd9b6f621bb456f62756cc8b3cac93ab1a2b77
+    - origin: portable_terminal_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 571e43a73ed5a8a6ca2bf94887a320a723e768b5725698e77be17183f7d2f86c
+    - origin: portable_terminal_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 2c5bdd00ab63b866d4f72096cf6e7b206cd8a500ca12592a6d0e3431d13258d9
+    - origin: portable_terminal_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: f5c5488e61a2f5ad9adf5bc99f530b0177d9af1fab18020fddd48a564df34fbc
+    - origin: main_terminal_data_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 007555edbabfcf0bcd82743960f3a04c4f8a1102eae4d66fa2503ecc8aa6f1cb
+    - origin: main_terminal_data_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: f30580ea9f63b57973158eaf3e37e908d883311d4143d9bcc970efe9dc9ed001
+    - origin: main_terminal_data_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: e9756540132cc375cc55d1fef1d1502eb4a911e3f7dc59915cb11b2155d71281
+    - origin: attempt_archive_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: a137b5a714e132c28271c0a1df67d02750890ebcd01ca335bf7ce770ab88adb7
+    - origin: attempt_archive_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 477f0217df31ebab987304f1b2965a403d2c654af679458c048715af294bf199
+    - origin: attempt_archive_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: e5db00790c8509e8fbb25c57e707f88e2cb2aee5421a86cf7669bf01853ae48b
+  common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_cost_risk_holding_l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_telemetry.csv
+  common_diagnostic_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_diagnostics.csv
+  portable_ea_stage:
+    status: staged
+    copy_status: already_current
+    tester_expert_value: Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+    portable_terminal_root_redacted: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract
+    portable_ex5_redacted: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+    source:
+      path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+      sha256: 3778dd6aa5bb478613c8d14ce87b8550da2680dc2f1c417872d32977d310ef16
+      size_bytes: 43564
+      availability: local_binary_hash_recorded_ignored_by_git
+    portable_sha256: 3778dd6aa5bb478613c8d14ce87b8550da2680dc2f1c417872d32977d310ef16
+    portable_size_bytes: 43564
+    durable_identity: tester_config_expert_value_plus_source_binary_sha256
+    claim_boundary: portable_ea_stage_preflight_only_no_runtime_authority
+  claim_boundary: terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
+  telemetry_file_observed_after_attempt: true
+  telemetry_rows_observed_after_attempt: true
+  telemetry_row_count: 45281
+  score_diagnostic_file_observed_after_attempt: true
+  score_diagnostic_event_count: 5606
+  work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+  subwork_item_id: work_wave02_cost_risk_holding_l4_strategy_tester_execution_v0
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+score_telemetry_summary:
+  version: wave02_cost_risk_holding_l4_score_telemetry_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
+  attempt_id: attempt_wave02_crh_cell_002_l4_research_oos_v0
+  run_id: onnxlab_wave02_crh_cell_002_cost_risk_holding_v0
+  bundle_id: bundle_wave02_crh_cell_002_l4_onnx_export_v0
+  period_role: research_oos
+  telemetry:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/telemetry/score_telemetry.csv
+    sha256: 0d6ee4064486f3ebc24726e6b1e1e4ff385f356222c3d3e0d7036fd91c076bcf
+    size_bytes: 5950885
+    availability: local_telemetry_hash_recorded_ignored_by_git
+  common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_cost_risk_holding_l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_telemetry.csv
+  stats:
+    status: telemetry_observed
+    row_count: 45281
+    first_bar_close_time: 2025.04.03 00:00:00
+    last_bar_close_time: 2025.11.20 23:55:00
+    symbol_counts:
+      US100: 45281
+    period_counts:
+      PERIOD_M5: 45281
+    feature_count_values:
+      '28': 45281
+    decision_counts:
+      unknown: 45281
+    score_stats:
+      finite_count: 45281
+      min: 0.3284705281
+      max: 0.8948634267
+      mean: 0.7103516748200327
+    spread_points_stats:
+      finite_count: 45281
+      min: 0.0
+      max: 150.0
+      mean: 134.04525076743005
+    tick_volume_nonzero_count: 45281
+  claim_boundary: wave02_cost_risk_holding_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  diagnostic_evidence:
+    summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/score_diagnostic_summary.yaml
+    status: diagnostic_observed
+    event_counts:
+      closed_bar_candidate: 65
+      deinit_complete: 1
+      deinit_start: 1
+      feature_columns_loaded: 1
+      init_start: 1
+      init_succeeded: 1
+      onnx_created: 1
+      onnx_released: 1
+      onnx_shapes_set: 1
+      row_written: 65
+      tick_seen: 5468
+    claim_boundary: wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority
+  work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+  subwork_item_id: work_wave02_cost_risk_holding_l4_strategy_tester_execution_v0
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+score_diagnostic_summary:
+  version: wave02_cost_risk_holding_l4_score_diagnostic_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/score_diagnostic_summary.yaml
+  attempt_id: attempt_wave02_crh_cell_002_l4_research_oos_v0
+  run_id: onnxlab_wave02_crh_cell_002_cost_risk_holding_v0
+  bundle_id: bundle_wave02_crh_cell_002_l4_onnx_export_v0
+  period_role: research_oos
+  diagnostic:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/telemetry/score_diagnostics.csv
+    sha256: 7b9b2f80065b1a528750557402e3b4e6bda96c164aa3e94475f5718a69ce018f
+    size_bytes: 424701
+    availability: local_diagnostic_hash_recorded_ignored_by_git
+  common_diagnostic_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_crh_cell_002_l4_research_oos_v0\score_diagnostics.csv
+  stats:
+    status: diagnostic_observed
+    event_count: 5606
+    event_counts:
+      closed_bar_candidate: 65
+      deinit_complete: 1
+      deinit_start: 1
+      feature_columns_loaded: 1
+      init_start: 1
+      init_succeeded: 1
+      onnx_created: 1
+      onnx_released: 1
+      onnx_shapes_set: 1
+      row_written: 65
+      tick_seen: 5468
+    max_rows_written: 45281
+    max_ticks_seen: 54636569
+    max_closed_bar_candidates: 45281
+    max_feature_failures: 0
+    max_onnx_failures: 0
+    last_events:
+    - event_time: 2025.11.20 21:03:28
+      event: tick_seen
+      bar_time: ''
+      detail: ''
+      last_error: '0'
+      rows_written: '45246'
+      ticks_seen: '54570000'
+      closed_bar_candidates: '45246'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 21:25:06
+      event: tick_seen
+      bar_time: ''
+      detail: ''
+      last_error: '0'
+      rows_written: '45251'
+      ticks_seen: '54580000'
+      closed_bar_candidates: '45251'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 21:47:05
+      event: tick_seen
+      bar_time: ''
+      detail: ''
+      last_error: '0'
+      rows_written: '45255'
+      ticks_seen: '54590000'
+      closed_bar_candidates: '45255'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 22:09:05
+      event: tick_seen
+      bar_time: ''
+      detail: ''
+      last_error: '0'
+      rows_written: '45259'
+      ticks_seen: '54600000'
+      closed_bar_candidates: '45259'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 22:31:46
+      event: tick_seen
+      bar_time: ''
+      detail: ''
+      last_error: '0'
+      rows_written: '45264'
+      ticks_seen: '54610000'
+      closed_bar_candidates: '45264'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 22:53:39
+      event: tick_seen
+      bar_time: ''
+      detail: ''
+      last_error: '0'
+      rows_written: '45268'
+      ticks_seen: '54620000'
+      closed_bar_candidates: '45268'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 23:23:39
+      event: tick_seen
+      bar_time: ''
+      detail: ''
+      last_error: '0'
+      rows_written: '45274'
+      ticks_seen: '54630000'
+      closed_bar_candidates: '45274'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 23:59:58
+      event: deinit_start
+      bar_time: ''
+      detail: reason=1
+      last_error: '0'
+      rows_written: '45281'
+      ticks_seen: '54636569'
+      closed_bar_candidates: '45281'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 23:59:58
+      event: onnx_released
+      bar_time: ''
+      detail: released=true
+      last_error: '0'
+      rows_written: '45281'
+      ticks_seen: '54636569'
+      closed_bar_candidates: '45281'
+      feature_failures: '0'
+      onnx_failures: '0'
+    - event_time: 2025.11.20 23:59:58
+      event: deinit_complete
+      bar_time: ''
+      detail: score_probe_deinit
+      last_error: '0'
+      rows_written: '45281'
+      ticks_seen: '54636569'
+      closed_bar_candidates: '45281'
+      feature_failures: '0'
+      onnx_failures: '0'
+  claim_boundary: wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority
+  work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+  subwork_item_id: work_wave02_cost_risk_holding_l4_strategy_tester_execution_v0
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+tester_report:
+  observed: true
+  status: tester_report_archived_local_hash_recorded
+  origin: portable_terminal_root
+  source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_002_l4_research_oos_v0\tester_report.htm
+  path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/reports/tester_report.htm
+  sha256: 85bc4f0afef63ef34f4bd64f69e854536532c3582094d7ea068f4f04016d12f9
+  size_bytes: 27902
+  availability: local_report_hash_recorded_ignored_by_git
+  claim_boundary: tester_report_local_evidence_only_no_economics_pass
+tester_report_receipt:
+  path: runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/tester_report_receipt.yaml
+  receipt_version: tester_report_receipt_v1
+  tester_report_completed: true
+  missing_requirements: []
+  claim_boundary: tester_report_receipt_only_no_runtime_authority_no_economics_pass
+terminal_execution_subwork_item_id: work_wave02_cost_risk_holding_l4_strategy_tester_execution_v0

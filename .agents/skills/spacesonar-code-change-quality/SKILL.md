@@ -43,6 +43,7 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 - Do not replace pytest with full project validation by habit. `python -m spacesonar.cli project validate` is also broad validation and follows the same boundary/drift/shared-contract/user-request escalation rule.
 - If a bug repeats because validation finds it late, move the check into the writer, parser, adapter, or manifest contract so the next run fails before broad validation.
 - For artifact writers, add an existence/hash guard at the write site before `artifact_ref` or registry projection. Missing optional raw artifacts should become explicit availability records; missing proof summaries/receipts should be written or fail with a writer-local error.
+- For YAML-producing writers, prevent PyYAML identity leakage: use `NoAliasDumper` / `dump_yaml`, avoid reusing the same mutable dict/list object across multiple output branches, and include touched YAML alias lint in the writer-scope smoke when control or evidence YAML changed.
 - Avoid unbounded recursive workspace reads for code understanding. Use `rg --files` and exclude volatile/generated trees before targeted reads.
 - Exclude local volatile dirs from fallback scans and copy operations unless the task explicitly targets those dirs.
 - Make trading, time, data, and runtime assumptions visible when relevant.

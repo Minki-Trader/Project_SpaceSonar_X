@@ -70,15 +70,23 @@ def write_registry(path: Path, fieldnames: list[str], rows: list[dict[str, str]]
         writer.writerows(rows)
 
 
-def refresh_registry_rows(repo_root: Path, rows: list[dict[str, str]]) -> RefreshReport:
+def refresh_registry_rows(
+    repo_root: Path,
+    rows: list[dict[str, str]],
+    *,
+    path_filter: set[str] | None = None,
+) -> RefreshReport:
     changed: list[RegistryChange] = []
     missing: list[str] = []
     refreshable_count = 0
     for row in rows:
         if not is_refreshable_row(row):
             continue
-        refreshable_count += 1
         rel_path = (row.get("path_or_uri") or "").strip()
+        normalized = rel_path.replace("\\", "/")
+        if path_filter is not None and normalized not in path_filter:
+            continue
+        refreshable_count += 1
         artifact_path = repo_root / rel_path
         if not artifact_path.exists():
             if (row.get("availability") or "") in HASH_REQUIRED_AVAILABILITY:
@@ -109,9 +117,15 @@ def refresh_registry_rows(repo_root: Path, rows: list[dict[str, str]]) -> Refres
     )
 
 
-def refresh_registry(repo_root: Path, registry_path: Path, *, write: bool) -> RefreshReport:
+def refresh_registry(
+    repo_root: Path,
+    registry_path: Path,
+    *,
+    write: bool,
+    path_filter: set[str] | None = None,
+) -> RefreshReport:
     fieldnames, rows = read_registry(registry_path)
-    report = refresh_registry_rows(repo_root, rows)
+    report = refresh_registry_rows(repo_root, rows, path_filter=path_filter)
     if write and report.changed_rows:
         write_registry(registry_path, fieldnames, rows)
     return report
@@ -138,6 +152,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", default=str(REPO_ROOT))
     parser.add_argument("--registry", default=str(REGISTRY_REL_PATH))
+    parser.add_argument(
+        "--path",
+        action="append",
+        default=[],
+        help="Limit refresh/check to rows whose path_or_uri matches this repo-relative path.",
+    )
     parser.add_argument("--write", action="store_true")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
@@ -145,7 +165,8 @@ def main(argv: list[str] | None = None) -> int:
     repo_root = Path(args.repo_root).resolve()
     registry_arg = Path(args.registry)
     registry_path = registry_arg if registry_arg.is_absolute() else repo_root / registry_arg
-    report = refresh_registry(repo_root, registry_path, write=args.write)
+    path_filter = {path.replace("\\", "/") for path in args.path} if args.path else None
+    report = refresh_registry(repo_root, registry_path, write=args.write, path_filter=path_filter)
     print_report(report)
     if args.check and (report.changed_rows or report.missing_paths):
         return 1

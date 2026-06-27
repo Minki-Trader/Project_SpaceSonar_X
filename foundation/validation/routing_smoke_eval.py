@@ -44,11 +44,24 @@ def evaluate(repo_root: Path) -> list[str]:
             "active_record_validator_full_graph",
             "spacesonar_project_validate_full",
             "spacesonar_cli_project_validate_as_progress_default",
+            "broad_hash_resync",
             "global_registry_regeneration",
             "whole_tree_scan_as_proof",
+            "volatile_local_tree_scan_as_proof",
         ]:
             if command_id not in forbidden:
                 errors.append(f"operational_stability_kernel forbidden_default_commands missing {command_id}")
+        hash_policy = kernel.get("hash_and_line_ending_policy") or {}
+        if hash_policy.get("yaml_identity_mode") != "no_aliases_no_anchors_utf8_lf":
+            errors.append("operational_stability_kernel hash_and_line_ending_policy.yaml_identity_mode mismatch")
+        allowed_smokes = set(kernel.get("allowed_non_pytest_smokes") or [])
+        if "scan_touched_yaml_for_alias_tokens" not in allowed_smokes:
+            errors.append("operational_stability_kernel allowed_non_pytest_smokes missing scan_touched_yaml_for_alias_tokens")
+        writer_commands = kernel.get("writer_scope_commands") or {}
+        if "machine_yaml_identity_lint" not in writer_commands:
+            errors.append("operational_stability_kernel writer_scope_commands missing machine_yaml_identity_lint")
+        if "targeted_artifact_hash_refresh" not in writer_commands:
+            errors.append("operational_stability_kernel writer_scope_commands missing targeted_artifact_hash_refresh")
         command_selection = kernel.get("default_command_selection") or {}
         if command_selection.get("project_validate_default") is not False:
             errors.append("operational_stability_kernel default_command_selection.project_validate_default must be false")
@@ -60,6 +73,8 @@ def evaluate(repo_root: Path) -> list[str]:
         for enforcement_id in ["writer_before_write", "writer_after_write", "boundary_before_main_push"]:
             if not enforcement.get(enforcement_id):
                 errors.append(f"operational_stability_kernel hard_enforcement_points missing {enforcement_id}")
+        if "machine_yaml_has_no_aliases_or_anchors" not in set(enforcement.get("writer_after_write") or []):
+            errors.append("operational_stability_kernel writer_after_write missing machine_yaml_has_no_aliases_or_anchors")
         ci_policy = kernel.get("ci_scope_gate_policy") or {}
         if ci_policy.get("default_behavior") != "non_blocking_boundary_classifier":
             errors.append("operational_stability_kernel ci_scope_gate_policy.default_behavior mismatch")

@@ -105,10 +105,13 @@ execution_weight_policy:
         - experiment_receipt_or_batch_receipt
         - artifact_lineage_hashes_when_outputs_exist
         - claim_boundary_and_forbidden_claims
+        - machine_yaml_no_aliases_or_anchors
       forbidden_default_checks:
         - full_pytest
         - full_active_record_graph
         - full_project_validate
+        - broad_hash_resync
+        - global_registry_regeneration
     boundary_default:
       profile: source_of_truth_boundary_review_manual
       trigger_events:

@@ -30,6 +30,7 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 - For no-pytest operation, prefer writer-time manifest/receipt/hash checks over broad retrospective validation.
 - Compute hashes from the final written bytes after newline and encoding decisions are complete; do not use broad hash resync to mask a writer contract bug.
 - A writer that records `artifact_identity` must first ensure the referenced summary/receipt exists on the same filesystem path it will hash. Optional raw local artifacts may be marked missing or local-only; proof-bearing summaries and receipts must not be missing after writer close.
+- Machine YAML proof/control records must be dumped without aliases or anchors. Use the repo `NoAliasDumper` / `dump_yaml` helper, deep-copy reused nested objects before assigning them into multiple branches, and run touched YAML identity lint when manual or control-record rewrites are involved.
 - For touched run evidence, run writer-scope smoke through `python -m spacesonar.cli project writer-smoke ...`; do not substitute full active-record validation as the default proof path.
 - Do not substitute `python -m spacesonar.cli project validate` for writer-local evidence proof during ordinary progress work. If project validate is needed, record the boundary, drift, shared-contract, or explicit user-request reason.
 - Treat telemetry/report/artifact directories as raw evidence locations, not traversal roots for routine operating truth; consume their paired manifests, summaries, receipts, and hashes.

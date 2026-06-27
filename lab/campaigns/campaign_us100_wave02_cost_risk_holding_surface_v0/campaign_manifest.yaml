@@ -2,9 +2,9 @@ version: campaign_manifest_v2
 campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_next
+status: wave02_cost_risk_holding_l4_runtime_execution_completed_pair_judgment_next
 created_at_utc: '2026-06-27T22:09:35Z'
-updated_at_utc: '2026-06-27T22:46:42Z'
+updated_at_utc: '2026-06-27T23:03:15Z'
 wave_ids:
 - wave_us100_wave02_tradeability_decision_surface_v0
 idea_ids:
@@ -72,7 +72,7 @@ required_gates:
 - exploration_coverage_check
 - proxy_runtime_parity_policy
 - final_claim_guard
-claim_boundary: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_cost_risk_holding_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -210,7 +210,8 @@ previous_campaign_boundary:
   closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
   negative_memory: lab/memory/negative/neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0.yaml
   carry_forward_rule: do_not_reopen_momentum_ret_1_replay_as_candidate_repair
-next_action: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+next_action: aggregate paired Wave02 cost/risk/holding validation/research_oos L4
+  telemetry before any L5 candidate routing
 first_batch_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
 run_refs: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
 proxy_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
@@ -241,10 +242,45 @@ l4_follow_through:
       validation: 6
     common_copy_status_counts:
       copied_to_mt5_common_files: 12
+  runtime_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  runtime_execution_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+  runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
+  runtime_execution_counts:
+    prepared_attempt_count: 12
+    selected_attempt_count: 11
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    telemetry_observed_count: 12
+    telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
+  runtime_probe_complete: true
 evidence_paths:
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_index.csv
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
 missing_evidence:
-- L4_split_runtime_probe_terminal_execution_pending
+- paired_L4_period_aggregation_pending
+unresolved_blockers:
+- Wave02_cost_risk_holding_L4_pair_judgment_pending
+reopen_conditions:
+- write Wave02 cost/risk/holding l4_pair_judgment_summary and l4_pair_judgment_index
+  before L5 routing

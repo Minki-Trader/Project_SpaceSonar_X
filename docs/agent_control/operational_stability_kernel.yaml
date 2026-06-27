@@ -82,7 +82,9 @@ growth_policy:
 
 hash_and_line_ending_policy:
   hash_identity_mode: bytes_from_final_written_file
+  yaml_identity_mode: no_aliases_no_anchors_utf8_lf
   writer_rule: compute hash after final newline and encoding are fixed
+  yaml_writer_rule: use NoAliasDumper or shared dump_yaml helpers; deep-copy reused nested mappings before assigning them into multiple output branches
   proof_rule: do not repair hash drift by broad resync before checking the touched manifest or receipt writer
 
 start_order:
@@ -124,6 +126,7 @@ strong_writer_guards:
     - after_write_existence_check_before_artifact_ref
     - failure_path_still_writes_summary_receipt_claim_boundary
     - missing_optional_local_artifact_records_availability_instead_of_crashing
+    - machine_yaml_has_no_aliases_or_anchors
   registries:
     - generated_or_index_only
     - never_source_of_truth_without_manifest
@@ -153,6 +156,7 @@ allowed_non_pytest_smokes:
   - run_repository_setting_check_when_git_policy_changed
   - run_registry_projection_check_when_registry_projection_changed
   - inspect_manifest_receipt_lineage_hash_fields_for_touched_records
+  - scan_touched_yaml_for_alias_tokens
 
 hard_enforcement_points:
   writer_before_write:
@@ -169,6 +173,7 @@ hard_enforcement_points:
     - repo_relative_paths_only
     - hashes_match_written_outputs_or_hash_only_availability_declared
     - registry_rows_link_to_manifest_not_to_claim_authority
+    - machine_yaml_has_no_aliases_or_anchors
     - dirty_worktree_effect_recorded_if_reproducibility_matters
   boundary_before_main_push:
     - no_unresolved_writer_errors
@@ -195,6 +200,8 @@ ci_scope_gate_policy:
 writer_scope_commands:
   run_evidence: "python -m spacesonar.cli project writer-smoke --run-refs <repo-relative-run_refs.csv> --campaign-id <campaign_id> --summary <repo-relative-summary.yaml> --pre-runtime"
   direct_validator: "python foundation/validation/writer_scope_evidence_smoke.py --run-id <run_id> --pre-runtime"
+  machine_yaml_identity_lint: "python foundation/validation/machine_yaml_identity_lint.py --path <repo-relative-yaml>"
+  targeted_artifact_hash_refresh: "python foundation/validation/refresh_artifact_registry_hashes.py --path <repo-relative-artifact> --write"
 
 transaction_validation_policy:
   lifecycle_default_validation_depth: writer_scope_smoke
@@ -238,6 +245,7 @@ operator_failure_modes_to_avoid:
   - updating_registry_without_manifest_or_receipt_backing
   - claiming_stability_from_ci_success_only
   - repairing_hash_newline_drift_with_global_resync_first
+  - letting_yaml_aliases_enter_machine_records
 
 machine_output_fields:
   - primary_family

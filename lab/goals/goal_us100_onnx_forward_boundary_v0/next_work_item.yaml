@@ -11,7 +11,7 @@ acceptance_criteria:
 - record telemetry/report hashes before any L4 completion claim
 - keep runtime_authority, economics_pass, candidate, live_readiness, and goal_achieve
   forbidden
-claim_boundary: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_cost_risk_holding_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
@@ -24,7 +24,8 @@ outputs:
 - runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
 - runtime/mt5_attempts/<attempt_id>/telemetry/score_telemetry.csv
 - runtime/mt5_attempts/<attempt_id>/reports/tester_report.htm
-next_action: execute_prepared_wave02_cost_risk_holding_l4_strategy_tester_attempts
+next_action: aggregate paired Wave02 cost/risk/holding validation/research_oos L4
+  telemetry before any L5 candidate routing
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
 summary: Execute Wave02 cost/risk/holding prepared L4 Strategy Tester score-probe
   attempts.
@@ -36,10 +37,40 @@ current_truth:
   onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
   attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
   prepared_attempt_count: 12
-  runtime_probe_completed: false
+  runtime_probe_completed: true
   candidate_count: 0
   l5_candidate_count: 0
+  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
+  l4_runtime_execution_counts:
+    prepared_attempt_count: 12
+    selected_attempt_count: 11
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    telemetry_observed_count: 12
+    telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
 unresolved_blockers:
-- L4_split_runtime_probe_terminal_execution_pending
+- Wave02_cost_risk_holding_L4_pair_judgment_pending
 reopen_conditions:
-- portable Strategy Tester execution records telemetry and completed report hashes
+- write Wave02 cost/risk/holding l4_pair_judgment_summary and l4_pair_judgment_index
+  before L5 routing
+status: l4_strategy_tester_execution_completed_for_prepared_attempts
+missing_material_if_relevant:
+- paired_L4_period_aggregation_pending
