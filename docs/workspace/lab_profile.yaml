@@ -110,18 +110,24 @@ execution_weight_policy:
         - full_active_record_graph
         - full_project_validate
     boundary_default:
-      profile: evidence_graph_full_manual
+      profile: source_of_truth_boundary_review_manual
       trigger_events:
         - campaign_closeout
         - wave_closeout
         - source_of_truth_drift
         - protected_claim_change
+      default_evidence:
+        - owned_manifest_receipt_hash_review
+        - writer_scope_smoke
+        - scoped_parse_compile_import
+        - registry_projection_check_only_when_registry_changed
     archive_default:
-      profile: full_regression_manual
+      profile: full_regression_manual_user_requested_or_archive_only
       trigger_events:
         - shared_source_or_dependency_change_with_broad_blast_radius
         - validator_or_policy_semantics_change
         - user_requested_full_archive_recheck
+      explicit_acknowledgement_required: true
   missing_adapter_first_action: smallest_explicit_translation_layer_to_test_path
   l4_policy_effect: valid_proxy_model_bearing_runs_still_require_L4_but_may_progress_in_bounded_batches
   l4_budget_accounting:

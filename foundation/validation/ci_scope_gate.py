@@ -15,6 +15,7 @@ from typing import Any
 
 
 CAMPAIGN_CLOSEOUT_SCOPED = "campaign_closeout_scoped"
+BOUNDARY_VALIDATION_RECOMMENDED = "boundary_validation_recommended"
 FULL_REGRESSION_REQUIRED = "full_regression_required"
 FULL_REGRESSION_WORKFLOW = "full-regression.yml"
 OVERRIDE_PATH = Path("docs/ci/full_regression_override.yaml")
@@ -125,6 +126,10 @@ class ScopeDecision:
     def full_regression_required(self) -> bool:
         return self.classification == FULL_REGRESSION_REQUIRED
 
+    @property
+    def boundary_validation_recommended(self) -> bool:
+        return self.classification in {BOUNDARY_VALIDATION_RECOMMENDED, FULL_REGRESSION_REQUIRED}
+
 
 def normalize_path(path: str) -> str:
     rel = path.replace("\\", "/")
@@ -225,7 +230,7 @@ def classify_changed_paths(
         if text:
             reasons.extend(protected_claim_reasons_from_text(path, text))
 
-    classification = FULL_REGRESSION_REQUIRED if reasons else CAMPAIGN_CLOSEOUT_SCOPED
+    classification = BOUNDARY_VALIDATION_RECOMMENDED if reasons else CAMPAIGN_CLOSEOUT_SCOPED
     return ScopeDecision(classification=classification, reasons=tuple(reasons))
 
 
@@ -393,7 +398,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--advisory",
         action="store_true",
-        help="Report the scope decision but do not block when full regression evidence is missing.",
+        help="Backward-compatible no-op: scope decisions are non-blocking by default.",
+    )
+    parser.add_argument(
+        "--enforce-full-regression",
+        action="store_true",
+        help="Opt-in archive gate: require full-regression workflow or an explicit override for this head SHA.",
     )
     args = parser.parse_args(argv)
 
@@ -418,7 +428,16 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     print_decision(decision)
-    if not decision.full_regression_required:
+    if not decision.boundary_validation_recommended:
+        return 0
+
+    if not args.enforce_full_regression:
+        print(
+            "::notice::ci scope gate: boundary validation is recommended for this change set, "
+            "but default operation is non-blocking writer-scope smoke. "
+            "Run manual archive validation only for campaign/wave closeout, source-of-truth drift, "
+            "shared-contract changes, protected claims, or explicit user request."
+        )
         return 0
 
     evidence_ok, evidence_reason = full_regression_evidence_exists(
@@ -431,15 +450,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ci scope gate: full regression evidence accepted: {evidence_reason}")
         return 0
 
-    if args.advisory:
-        print(
-            "::warning::ci scope gate advisory: full_regression_required but not blocking yet. "
-            f"Evidence status: {evidence_reason}"
-        )
-        return 0
-
     _error(
-        "full_regression_required: run the manual full-regression workflow for this head SHA "
+        "archive_full_regression_required: run the manual full-regression workflow for this head SHA "
         f"({head_sha}) or add {OVERRIDE_PATH.as_posix()} with matching head_sha, reason, "
         f"approved_by_user: true, and claim_boundary. Evidence status: {evidence_reason}"
     )

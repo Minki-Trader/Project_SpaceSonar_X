@@ -1,0 +1,278 @@
+version: mt5_attempt_manifest_v2
+attempt_id: attempt_wave02_td_cell_004_l4_research_oos_v0
+run_id: onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0
+cell_id: wave02_td_cell_004
+surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+bundle_id: bundle_wave02_td_cell_004_l4_onnx_export_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+created_at_utc: '2026-06-27T19:49:42Z'
+status: prepared_pending_terminal_execution
+claim_boundary: wave02_l4_strategy_tester_attempt_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+source_of_truth: runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+preparation_work_item_id: work_wave02_tradeability_l4_materialization_preflight_v0
+routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-evidence
+  support_skills:
+  - spacesonar-evidence-provenance
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  required_runtime_level: L4_split_runtime_probe
+  reason: Every valid Wave02 proxy/model-bearing run requires L4 MT5 follow-through.
+  forbidden_skip_reasons_checked:
+  - probe_is_heavy
+  - probe_is_expensive
+  - proxy_result_is_weak
+  - trade_count_is_low
+  - candidate_is_ambiguous
+  - setup_might_fail
+  lowered_claim_if_not_run: attempt_preparation_only_no_L4_runtime_evidence
+period_identity:
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: research_oos
+  split_role: oos_a
+  from_date: 2025.04.03
+  to_date: 2025.11.21
+  locked_final_oos_b: excluded_forbidden_by_default
+execution_identity:
+  execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  broker_server: FPMarketsSC-Live
+  symbol: US100
+  timeframe: M5
+  tester_model: 4
+  deposit:
+    value: 500
+    currency: USD
+    rationale: Small-account stress baseline and current local tester convention;
+      not an optimization result.
+  leverage: 1:100
+  spread:
+    mode: floating_from_tester_or_broker_feed
+    fixed_spread_points: null
+    note: Do not hard-code the probe spread as a permanent cost.
+  commission_policy:
+    default_value: 0.0
+    currency: USD
+    source: BROKER_COST_NOTE.md observed US100 report history
+    boundary: Re-check specific Strategy Tester report before economics claims.
+  swap_policy:
+    default_mode: tester_report_when_available
+    estimated_long: -3.94
+    estimated_short: 1.34
+    swap_mode: 2
+    rollover_3_days: 5
+    boundary: Only relevant when holding can cross rollover.
+  slippage_policy:
+    default_points: null
+    rule: EA or experiment must declare slippage/skip policy before performance comparison.
+  sizing_policy:
+    default_lot: 0.02
+    default_sizing_mode: fixed_lot
+    risk_per_trade: null
+    rationale: Initial US100 M5 exploration default for 500 USD tester balance; less
+      noisy than 0.01 lot and less aggressive than 0.10 lot.
+    stress_lot: 0.1
+    rule: Compare primary MT5 results with fixed_lot 0.02 unless a run explicitly
+      declares another sizing profile.
+  non_trading_probe: true
+runtime_surface_contract:
+  completion_surface_scope: full_period_deterministic
+  runtime_surface_kind: score_probe
+  base_frame: US100_M5_closed_bar
+  row_key: us100_bar_close_time
+  input_name: features
+  input_dtype: float32
+  input_shape:
+  - 1
+  - 31
+  feature_count: 31
+  feature_order_hash: 2ccbdaece3e436583e1964a21644f0a98ce62f98c882d7d99aab4d419ed2ebf9
+  feature_columns_delimiter: semicolon
+  feature_columns_transport: common_file_with_inline_fallback
+  feature_columns_common_relative_path: SpaceSonar\l4_score_probe\bundle_wave02_td_cell_004_l4_onnx_export_v0\feature_columns.txt
+  output_name: score
+  output_contract: single_float_score_vector_shape_1_for_single_row_inference
+  decision_family: abstain_capable_direction_agnostic_tradeability
+  score_low_threshold: 0.45861343624329215
+  score_high_threshold: 0.5513332472088733
+  has_low_high_threshold: true
+  decision_output: telemetry_only_no_trades
+  ea_feature_reconstruction: closed_bar_CopyRates_shift_1_feature_columns_in_bundle_order
+proxy_runtime_parity:
+  status: attempt_prepared_runtime_execution_pending
+  shared_contract:
+  - US100_M5_closed_bar_base_frame
+  - feature_order_hash
+  - single_score_output
+  - period_profile_split_set_v0
+  - us100_m5_fpmarkets_tester_execution_v0
+  known_differences:
+  - Python proxy row membership uses exported MT5 history; EA reconstructs features
+    from Strategy Tester closed bars.
+  - Wave02 proxy decision recipes may use side labels; this L4 score probe records
+    non-trading score telemetry only.
+  - Strategy Tester spread/tick availability can differ from exported proxy data.
+  - Economics and live-like execution remain forbidden until a trading decision EA
+    and terminal evidence exist.
+  interpretation_drift_risks:
+  - bar_close_timing
+  - feature_reconstruction_in_EA
+  - spread_field_semantics
+  - score_threshold_translation
+  - side_label_not_available_to_score_only_EA
+  - non_trading_score_observation_vs_trade_execution
+  minimum_reconciliation_attempt:
+    status: prepared
+    attempt: single_score_output_ONNX_contract_plus_feature_order_hash_plus_EA_feature_reconstruction
+    forced_equality_required: false
+  unit_semantics:
+    features: float32 closed-bar values in bundle feature order
+    score: single model score from sklearn-to-ONNX adapter
+    price_units: MT5 price values from MqlRates
+    spread: MqlRates.spread raw points scaled only where feature contract says spread_scaled
+    lot: fixed_lot_profile_recorded_but_EA_non_trading
+  comparison_class: pending_L4_terminal_execution
+  divergence_judgment: pending_L4_terminal_execution
+  prevention_memory:
+  - Use common-file feature column transport for long Wave02 feature lists.
+  - Do not treat prepared tester configs as completed L4 evidence.
+  - Do not infer side/abstain economics from non-trading score telemetry.
+  follow_up_action: run Strategy Tester for this attempt and record telemetry/report
+    hashes
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+artifact_identity:
+  ea_entrypoint:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+    sha256: 3084759e4c78d0586ca7519096df12ed10a3539dd580d76bb57c58bb002d0320
+    size_bytes: 31881
+    availability: present_hash_recorded
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+    sha256: 638da23cc53bbb6886756969aa51dc318e9706ba1fcfc7b1a888d3b692b2cf14
+    size_bytes: 33564
+    availability: local_binary_hash_recorded_ignored_by_git
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/tester_config.ini
+    sha256: 70dc1a1ad2b7ba2e9ffa190136ecbb5b025042ec56c8fd9ea36bf8e37fa327bd
+    size_bytes: 1713
+    availability: present_hash_recorded
+  bundle:
+    path: runtime/packages/bundle_wave02_td_cell_004_l4_onnx_export_v0/experiment_bundle.json
+    sha256: 755a30dc6c9f3700d261b8b577c93c3ec07d92e74c54e8105bcaf4be913ce319
+    size_bytes: 18888
+    availability: present_hash_recorded
+  onnx_model:
+    path: runtime/packages/bundle_wave02_td_cell_004_l4_onnx_export_v0/artifacts/model.onnx
+    sha256: 692e3d7ae3ea22661da7ec73c4a05635d98c43f3dd2247c457297c98489ba3a9
+    size_bytes: 1444
+    availability: local_artifact_hash_recorded
+  common_files:
+    model.onnx:
+      common_relative_path: SpaceSonar\l4_score_probe\bundle_wave02_td_cell_004_l4_onnx_export_v0\model.onnx
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\bundle_wave02_td_cell_004_l4_onnx_export_v0\model.onnx
+      sha256: 692e3d7ae3ea22661da7ec73c4a05635d98c43f3dd2247c457297c98489ba3a9
+      size_bytes: 1444
+      durable_identity: common_relative_path_plus_sha256
+      path_boundary: redacted_local_context_only
+      copy_status: copied_to_mt5_common_files
+      copied_sha256: 692e3d7ae3ea22661da7ec73c4a05635d98c43f3dd2247c457297c98489ba3a9
+    feature_columns.txt:
+      common_relative_path: SpaceSonar\l4_score_probe\bundle_wave02_td_cell_004_l4_onnx_export_v0\feature_columns.txt
+      redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\bundle_wave02_td_cell_004_l4_onnx_export_v0\feature_columns.txt
+      sha256: 9ed7c843d197cdee42886077420058a2bfa696c2d754aa68437aac2d6ed04f88
+      size_bytes: 495
+      durable_identity: common_relative_path_plus_sha256
+      path_boundary: redacted_local_context_only
+      copy_status: copied_to_mt5_common_files
+      feature_count: 31
+      copied_sha256: 9ed7c843d197cdee42886077420058a2bfa696c2d754aa68437aac2d6ed04f88
+      transport_reason: avoid_MT5_tester_input_string_truncation_for_long_feature_lists
+  tester_reports:
+  - path: runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/tester_report.htm
+    status: pending_terminal_execution
+    claim_boundary: not_evidence_until_file_exists_and_hash_recorded
+  telemetry:
+    common_relative_path: SpaceSonar\l4_score_probe\attempt_wave02_td_cell_004_l4_research_oos_v0\score_telemetry.csv
+    redacted_absolute_path: ${MT5_COMMONDATA}\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_004_l4_research_oos_v0\score_telemetry.csv
+    status: pending_terminal_execution
+    repo_copy:
+      path: runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/telemetry/score_telemetry.csv
+      status: pending_terminal_execution
+provenance:
+  command_argv:
+  - foundation\pipelines\materialize_wave02_tradeability_l4_preflight.py
+  - --copy-common-files
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  started_at_utc: '2026-06-27T19:49:42Z'
+  ended_at_utc: '2026-06-27T19:50:09Z'
+  git_sha: a4940aa577725b13d1321b78fd62648ab161e873
+  branch: main
+  input_hashes:
+  - path: runtime/packages/bundle_wave02_td_cell_004_l4_onnx_export_v0/experiment_bundle.json
+    sha256: 755a30dc6c9f3700d261b8b577c93c3ec07d92e74c54e8105bcaf4be913ce319
+    size_bytes: 18888
+    availability: present_hash_recorded
+  - path: foundation/config/mt5_runtime_probe_contract.yaml
+    sha256: 31dd303d5fcd46824a63d5dce7aff660c3d34bfefbaf4efb5a07d25a988b52ee
+    size_bytes: 8515
+    availability: present_hash_recorded
+  - path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+    sha256: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
+    size_bytes: 2691
+    availability: present_hash_recorded
+  - path: configs/mt5/tester_execution_profile_v0.yaml
+    sha256: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
+    size_bytes: 3036
+    availability: present_hash_recorded
+  - path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+    sha256: 3084759e4c78d0586ca7519096df12ed10a3539dd580d76bb57c58bb002d0320
+    size_bytes: 31881
+    availability: present_hash_recorded
+  output_hashes:
+  - path: runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/tester_config.ini
+    sha256: 70dc1a1ad2b7ba2e9ffa190136ecbb5b025042ec56c8fd9ea36bf8e37fa327bd
+    size_bytes: 1713
+    availability: present_hash_recorded
+required_gate_coverage:
+  passed:
+  - attempt_manifest
+  - period_profile_binding
+  - tester_execution_profile_binding
+  - feature_schema_contract
+  - bundle_integrity_hash
+  - runtime_surface_contract
+  - proxy_runtime_parity_record
+  - final_claim_guard
+  missing:
+  - terminal_execution
+  - telemetry_rows
+  - tester_report
+  - L4_split_runtime_probe_completion
+  not_applicable:
+  - locked_final_oos_b_access
+missing_evidence:
+- Strategy_Tester_terminal_execution_pending
+- score_telemetry_csv_pending
+- tester_report_pending
+reopen_condition: run prepared portable Strategy Tester attempt and record telemetry/report
+  hashes
+next_action: work_wave02_tradeability_l4_runtime_execution_v0
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

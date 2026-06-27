@@ -136,7 +136,14 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
     goal_path, goal = select_active_goal(repo_root, yaml_overrides)
     wave_path, wave, closeout = _select_wave_for_goal(repo_root, goal, yaml_overrides)
     closeout_result = closeout.get("result") or {}
-    next_work_item = goal.get("next_work_item") or {}
+    next_work_item_ref = goal.get("next_work_item") or {}
+    next_work_item_path = Path(str(next_work_item_ref.get("path") or "")) if next_work_item_ref.get("path") else None
+    next_work_item_doc = (
+        _read_yaml_view(repo_root, next_work_item_path, yaml_overrides)
+        if next_work_item_path is not None
+        else {}
+    )
+    next_work_item = next_work_item_doc or next_work_item_ref
     active_ids = goal.get("active_ids") or {}
     goal_manifest = goal_path.as_posix() if goal_path else None
     wave_allocation = wave_path.as_posix() if wave_path else None
@@ -172,7 +179,7 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
         },
         "current_claim_boundary": closeout.get("claim_boundary") or goal.get("claim_boundary"),
         "next_action": next_work_item.get("summary") or wave.get("next_action"),
-        "unresolved_blockers": closeout.get("unresolved_blockers") or [],
+        "unresolved_blockers": closeout.get("unresolved_blockers") or next_work_item.get("unresolved_blockers") or [],
         "source_of_truth_pointers": {
             "policy_contract": "docs/agent_control/policy_contract.yaml",
             "runtime_contract": "foundation/config/mt5_runtime_probe_contract.yaml",

@@ -2,9 +2,20 @@ name: full-regression
 
 on:
   workflow_dispatch:
+    inputs:
+      archive_reason:
+        description: "Why archive-level pytest evidence is needed"
+        required: true
+        type: string
+      acknowledge_not_default:
+        description: "Confirm this is not routine run-loop validation"
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   full-regression:
+    if: ${{ inputs.acknowledge_not_default == true }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -99,6 +99,35 @@ bool MeanRange(const MqlRates &rates[], const int index, const int window, const
    return true;
 }
 
+bool MeanStdRange(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean, double &std_value)
+{
+   double values[];
+   ArrayResize(values, 0);
+   for(int i = MathMax(0, index - window + 1); i <= index; i++)
+   {
+      const int size = ArraySize(values);
+      ArrayResize(values, size + 1);
+      values[size] = RangePctAt(rates, i);
+   }
+   const int count = ArraySize(values);
+   if(count < min_count)
+      return false;
+   double sum = 0.0;
+   for(int i = 0; i < count; i++)
+      sum += values[i];
+   mean = sum / (double)count;
+   if(count < 2)
+   {
+      std_value = 0.0;
+      return true;
+   }
+   double ss = 0.0;
+   for(int i = 0; i < count; i++)
+      ss += MathPow(values[i] - mean, 2.0);
+   std_value = MathSqrt(ss / (double)(count - 1));
+   return true;
+}
+
 bool MeanTrueRange(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean)
 {
    double sum = 0.0;
@@ -171,6 +200,35 @@ bool MeanAbsRet(const MqlRates &rates[], const int index, const int window, cons
    if(count < min_count)
       return false;
    mean = sum / (double)count;
+   return true;
+}
+
+bool MeanStdAbsRet(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean, double &std_value)
+{
+   double values[];
+   ArrayResize(values, 0);
+   for(int i = MathMax(1, index - window + 1); i <= index; i++)
+   {
+      const int size = ArraySize(values);
+      ArrayResize(values, size + 1);
+      values[size] = MathAbs(RetAt(rates, i, 3));
+   }
+   const int count = ArraySize(values);
+   if(count < min_count)
+      return false;
+   double sum = 0.0;
+   for(int i = 0; i < count; i++)
+      sum += values[i];
+   mean = sum / (double)count;
+   if(count < 2)
+   {
+      std_value = 0.0;
+      return true;
+   }
+   double ss = 0.0;
+   for(int i = 0; i < count; i++)
+      ss += MathPow(values[i] - mean, 2.0);
+   std_value = MathSqrt(ss / (double)(count - 1));
    return true;
 }
 
@@ -328,19 +386,19 @@ bool SessionTransitionFeature(const string column, const datetime close_time, do
    const double cash_close = 16.0 * 60.0;
    const double midday = 12.5 * 60.0;
 
-   if(column == "ny_minute_sin") { value = MathSin(2.0 * SPACESONAR_PI * minute / 1440.0); return true; }
-   if(column == "ny_minute_cos") { value = MathCos(2.0 * SPACESONAR_PI * minute / 1440.0); return true; }
-   if(column == "ny_dow_sin") { value = MathSin(2.0 * SPACESONAR_PI * dow / 7.0); return true; }
-   if(column == "ny_dow_cos") { value = MathCos(2.0 * SPACESONAR_PI * dow / 7.0); return true; }
-   if(column == "minutes_from_cash_open_scaled") { value = (minute - cash_open) / 390.0; return true; }
-   if(column == "minutes_to_cash_close_scaled") { value = (cash_close - minute) / 390.0; return true; }
+   if(column == "ny_minute_sin" || column == "session_minute_sin") { value = MathSin(2.0 * SPACESONAR_PI * minute / 1440.0); return true; }
+   if(column == "ny_minute_cos" || column == "session_minute_cos") { value = MathCos(2.0 * SPACESONAR_PI * minute / 1440.0); return true; }
+   if(column == "ny_dow_sin" || column == "session_dow_sin") { value = MathSin(2.0 * SPACESONAR_PI * dow / 7.0); return true; }
+   if(column == "ny_dow_cos" || column == "session_dow_cos") { value = MathCos(2.0 * SPACESONAR_PI * dow / 7.0); return true; }
+   if(column == "minutes_from_cash_open_scaled" || column == "session_minutes_from_cash_open") { value = (minute - cash_open) / 390.0; return true; }
+   if(column == "minutes_to_cash_close_scaled" || column == "session_minutes_to_cash_close") { value = (cash_close - minute) / 390.0; return true; }
    if(column == "minutes_from_midday_scaled") { value = (minute - midday) / 390.0; return true; }
-   if(column == "is_pre_cash") { value = (minute >= 4.0 * 60.0 && minute < cash_open ? 1.0 : 0.0); return true; }
-   if(column == "is_cash_session") { value = (minute >= cash_open && minute <= cash_close ? 1.0 : 0.0); return true; }
-   if(column == "is_after_cash") { value = (minute > cash_close && minute <= 20.0 * 60.0 ? 1.0 : 0.0); return true; }
-   if(column == "is_cash_open_transition") { value = (MathAbs(minute - cash_open) <= 60.0 ? 1.0 : 0.0); return true; }
-   if(column == "is_cash_close_transition") { value = (MathAbs(minute - cash_close) <= 60.0 ? 1.0 : 0.0); return true; }
-   if(column == "is_midday_block") { value = (MathAbs(minute - midday) <= 90.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_pre_cash" || column == "session_is_pre_cash") { value = (minute >= 4.0 * 60.0 && minute < cash_open ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_session" || column == "session_is_cash") { value = (minute >= cash_open && minute <= cash_close ? 1.0 : 0.0); return true; }
+   if(column == "is_after_cash" || column == "session_is_after_cash") { value = (minute > cash_close && minute <= 20.0 * 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_open_transition" || column == "transition_cash_open_60m") { value = (MathAbs(minute - cash_open) <= 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_close_transition" || column == "transition_cash_close_60m") { value = (MathAbs(minute - cash_close) <= 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_midday_block" || column == "transition_midday_90m") { value = (MathAbs(minute - midday) <= 90.0 ? 1.0 : 0.0); return true; }
    if(column == "is_monday") { value = (python_dow == 0 ? 1.0 : 0.0); return true; }
    if(column == "is_friday") { value = (python_dow == 4 ? 1.0 : 0.0); return true; }
    return false;
@@ -439,6 +497,18 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       return true;
    }
    if(column == "spread_scaled") { value = ((double)rates[index].spread) / 1000.0; return true; }
+   if(column == "range_pct") { value = RangePctAt(rates, index); return true; }
+   if(column == "range_body_pct") { value = SafeDiv(MathAbs(rates[index].close - rates[index].open), rates[index].close); return true; }
+   if(column == "range_upper_wick_pct")
+   {
+      value = SafeDiv(rates[index].high - MathMax(rates[index].open, rates[index].close), rates[index].close);
+      return true;
+   }
+   if(column == "range_lower_wick_pct")
+   {
+      value = SafeDiv(MathMin(rates[index].open, rates[index].close) - rates[index].low, rates[index].close);
+      return true;
+   }
    if(column == "tick_volume_log1p") { value = MathLog(1.0 + MathMax(0.0, (double)rates[index].tick_volume)); return true; }
    if(column == "rolling_ret_mean_12")
    {
@@ -490,6 +560,21 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
    if(ParseWindowSuffix(column, "range_mean_", window))
    {
       if(!MeanRange(rates, index, window, MinPeriodsForWindow(window, false), mean)) return false;
+      value = mean;
+      return true;
+   }
+   if(ParseWindowSuffix(column, "range_std_", window))
+   {
+      if(!MeanStdRange(rates, index, window, MinPeriodsForWindow(window, false), mean, std_value)) return false;
+      value = std_value;
+      return true;
+   }
+   if(ParseWindowSuffix(column, "path_abs_ret_mean_", window))
+   {
+      int min_periods = window / 4;
+      if(min_periods < 2)
+         min_periods = 2;
+      if(!MeanAbsRet(rates, index, window, min_periods, mean)) return false;
       value = mean;
       return true;
    }
@@ -549,6 +634,64 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       if(!MeanRange(rates, index, 48, MinPeriodsForWindow(48, true), range48)) return false;
       if(!MeanRange(rates, index, 288, MinPeriodsForWindow(288, true), range288)) return false;
       value = SafeDiv(range48, range288);
+      return true;
+   }
+   if(column == "compression_range_12_vs_48")
+   {
+      double range12 = 0.0, range48 = 0.0;
+      if(!MeanRange(rates, index, 12, MinPeriodsForWindow(12, false), range12)) return false;
+      if(!MeanRange(rates, index, 48, MinPeriodsForWindow(48, false), range48)) return false;
+      value = SafeDiv(range12, range48);
+      return true;
+   }
+   if(column == "compression_range_48_vs_144")
+   {
+      double range48 = 0.0, range144 = 0.0;
+      if(!MeanRange(rates, index, 48, MinPeriodsForWindow(48, false), range48)) return false;
+      if(!MeanRange(rates, index, 144, MinPeriodsForWindow(144, false), range144)) return false;
+      value = SafeDiv(range48, range144);
+      return true;
+   }
+   if(column == "volume_z_48")
+   {
+      return TickVolumeZ(rates, index, 48, 12, value);
+   }
+   if(column == "position_close_in_48_range")
+   {
+      double high48 = 0.0, low48 = 0.0;
+      if(!MaxHigh(rates, index, 48, 12, high48)) return false;
+      if(!MinLow(rates, index, 48, 12, low48)) return false;
+      value = SafeDiv(rates[index].close - low48, high48 - low48);
+      return true;
+   }
+   if(column == "breakout_up_48")
+   {
+      double high48_prev = 0.0, atr48 = 0.0;
+      if(index <= 0) return false;
+      if(!MaxHigh(rates, index - 1, 48, 12, high48_prev)) return false;
+      if(!MeanTrueRange(rates, index, 48, 12, atr48)) return false;
+      value = SafeDiv(rates[index].close - high48_prev, atr48);
+      return true;
+   }
+   if(column == "breakout_down_48")
+   {
+      double low48_prev = 0.0, atr48 = 0.0;
+      if(index <= 0) return false;
+      if(!MinLow(rates, index - 1, 48, 12, low48_prev)) return false;
+      if(!MeanTrueRange(rates, index, 48, 12, atr48)) return false;
+      value = SafeDiv(low48_prev - rates[index].close, atr48);
+      return true;
+   }
+   if(column == "event_abs_ret_3_z_96")
+   {
+      if(!MeanStdAbsRet(rates, index, 96, 24, mean, std_value)) return false;
+      value = SafeDiv(MathAbs(RetAt(rates, index, 3)) - mean, std_value);
+      return true;
+   }
+   if(column == "event_range_z_96")
+   {
+      if(!MeanStdRange(rates, index, 96, 24, mean, std_value)) return false;
+      value = SafeDiv(RangePctAt(rates, index) - mean, std_value);
       return true;
    }
    if(column == "trend_ratio_48_288")

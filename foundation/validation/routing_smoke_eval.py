@@ -40,6 +40,13 @@ def evaluate(repo_root: Path) -> list[str]:
         for command_id in ["pytest", "active_record_validator_full_graph", "spacesonar_project_validate_full"]:
             if command_id not in forbidden:
                 errors.append(f"operational_stability_kernel forbidden_default_commands missing {command_id}")
+        enforcement = kernel.get("hard_enforcement_points") or {}
+        for enforcement_id in ["writer_before_write", "writer_after_write", "boundary_before_main_push"]:
+            if not enforcement.get(enforcement_id):
+                errors.append(f"operational_stability_kernel hard_enforcement_points missing {enforcement_id}")
+        ci_policy = kernel.get("ci_scope_gate_policy") or {}
+        if ci_policy.get("default_behavior") != "non_blocking_boundary_classifier":
+            errors.append("operational_stability_kernel ci_scope_gate_policy.default_behavior mismatch")
 
     cases = prompts.get("cases", [])
     if not 12 <= len(cases) <= 20:

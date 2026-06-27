@@ -30,25 +30,26 @@ remote churn.
 ## Boundary Validation Cadence
 
 The normal main loop is not full-regression-first. Main push runs the fast
-control-plane checks and a non-pytest smoke set. It also runs `ci-scope-gate` in
-advisory mode so the commit records whether a heavier boundary check would be
-needed, without blocking routine experiment throughput.
+control-plane checks and a non-pytest smoke set. It also runs `ci-scope-gate` as
+a non-blocking boundary classifier so the commit records whether a boundary
+review is recommended, without requiring pytest or evidence-graph validation.
 
 The CI policy uses three layers:
 
 - `control-plane-fast` plus `non-pytest-smoke` run on main pushes as the default remote
   smoke layer.
-- `evidence-graph-full` is a manual `workflow_dispatch` boundary check for
-  campaign closeout, wave closeout, source-of-truth drift, or protected claim
-  escalation.
-- `full-regression` remains a manual `workflow_dispatch` workflow for complete
-  `uv run pytest -q` evidence when shared source, dependencies, validators, or
-  policy semantics changed enough to need the whole suite.
+- Boundary review is a source-of-truth review step, not a default CI job. Use
+  writer receipts, manifests, bundle manifests, attempt manifests, and scoped
+  parse/compile/smoke commands first.
+- `full-regression` remains a manual archive workflow only. It requires an
+  explicit reason and acknowledgement, and is reserved for user-requested
+  archive validation or broad shared-contract/dependency/validator semantics
+  changes.
 
 The strong guard is the writer and source-of-truth layer: run manifests,
 receipts, lineage, workspace projection, registry projection, and transaction
-receipts must be correct when written. The broad validators confirm boundary
-consistency; they should not be the normal way to discover routine run-local
+receipts must be correct when written. Broad validators may confirm archive
+consistency, but they are not the normal way to discover routine run-local
 mistakes.
 
 ## Worktree Fit Rule

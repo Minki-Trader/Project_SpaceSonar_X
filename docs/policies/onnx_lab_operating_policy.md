@@ -149,20 +149,20 @@ The lab is attempt-first, not bureaucracy-first.
 - Start each new surface, repair, adapter, or runtime glue path with the smallest execution that can answer the immediate question.
 - Use a thin first pass: one fixture, one representative run, one export smoke, one parser smoke, or one MT5 micro-path when that is enough to prove or falsify the path.
 - Scale to broader execution only after the thin path is real, the surface remains useful, or the claim boundary requires it.
-- Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are for shared-contract edits, source-of-truth drift, campaign/wave boundary closeout, or protected runtime/economics/handoff claims.
+- Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are not routine run-loop proof. Use them only for explicit archive validation, severe source-of-truth drift, or broad shared-contract/dependency/validator changes that focused checks cannot cover.
 - Main push defaults to a fast remote smoke layer: policy/routing lints,
   repository setting check, registry projection check, whitespace check, and a
   non-pytest compile/parse smoke set.
-- `ci-scope-gate` classifies changed paths on main push in advisory mode. It is
-  allowed to say that a manual boundary check is needed, but it must not turn
-  every run-local update into a blocking full-regression wait.
-- `evidence-graph-full` is manual `workflow_dispatch` evidence for campaign
-  closeout, wave closeout, source-of-truth drift, or protected runtime,
-  economics, handoff, reviewed/pass, selected-baseline, production, or live
-  readiness claim changes.
-- Full regression remains manual `workflow_dispatch` evidence for shared source,
+- `ci-scope-gate` classifies changed paths on main push as a non-blocking
+  boundary classifier. It may recommend boundary review, but it must not turn
+  protected path edits into a blocking full-regression wait.
+- Boundary review is source-of-truth scoped by default: inspect owned
+  manifests, receipts, bundle manifests, attempt manifests, hashes, claim
+  boundaries, and only the registry projections touched by the writer.
+- Full regression remains a manual archive exception for shared source,
   dependency, validator, policy, workflow, or protected-claim changes when the
-  focused checks do not cover the blast radius.
+  focused checks do not cover the blast radius and the user or archive process
+  explicitly requests it.
 - For ordinary run-local learning, update the local manifest, receipt, lineage, metrics, or campaign-local summary first. Global indexes can wait until the boundary unless the index is the current source of truth.
 - The mandatory L4 rule still stands for every valid proxy/model-bearing run. It may be executed in bounded materialization and probe batches rather than folded into the first proxy or adapter attempt.
 - L4 budget accounting uses the `validation_research_oos_pair` unit. One L4 budget unit means the same declared cell/surface/runtime-surface has both required period roles: `validation` and `research_oos`.

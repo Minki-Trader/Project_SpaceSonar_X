@@ -66,6 +66,43 @@ allowed_non_pytest_smokes:
   - run_registry_projection_check_when_registry_projection_changed
   - inspect_manifest_receipt_lineage_hash_fields_for_touched_records
 
+hard_enforcement_points:
+  writer_before_write:
+    - source_of_truth_path_declared
+    - primary_family_and_skill_declared
+    - id_chain_present_or_not_applicable_reason
+    - claim_boundary_declared
+    - forbidden_claims_declared_for_runtime_candidate_or_closeout_surfaces
+    - missing_evidence_declared_when_incomplete
+    - next_action_or_reopen_condition_declared_when_incomplete
+  writer_after_write:
+    - all_declared_source_of_truth_paths_exist
+    - repo_relative_paths_only
+    - hashes_match_written_outputs_or_hash_only_availability_declared
+    - registry_rows_link_to_manifest_not_to_claim_authority
+    - dirty_worktree_effect_recorded_if_reproducibility_matters
+  boundary_before_main_push:
+    - no_unresolved_writer_errors
+    - control_plane_state_names_current_source_of_truth
+    - active_record_status_does_not_exceed_manifest_evidence
+    - protected_claims_absent_or_evidence_bound
+    - unresolved_blockers_and_reopen_conditions_named
+
+ci_scope_gate_policy:
+  default_behavior: non_blocking_boundary_classifier
+  never_default:
+    - require_pytest_for_main_push
+    - require_full_regression_for_protected_path_change
+    - require_evidence_graph_full_for_routine_run_loop
+  may_recommend_boundary_review_when:
+    - protected_path_changed
+    - protected_claim_text_changed
+    - unscoped_path_changed
+  archive_full_regression_requires:
+    - explicit_user_or_archive_reason
+    - manual_workflow_acknowledgement
+    - claim_boundary_recorded
+
 writer_scope_commands:
   run_evidence: "python -m spacesonar.cli project writer-smoke --run-refs <repo-relative-run_refs.csv> --campaign-id <campaign_id> --summary <repo-relative-summary.yaml> --pre-runtime"
   direct_validator: "python foundation/validation/writer_scope_evidence_smoke.py --run-id <run_id> --pre-runtime"

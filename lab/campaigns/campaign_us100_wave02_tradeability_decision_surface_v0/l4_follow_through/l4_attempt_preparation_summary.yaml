@@ -1,0 +1,176 @@
+version: wave02_l4_attempt_preparation_summary_v1
+summary_id: wave02_l4_attempt_preparation_summary_v0
+work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+preparation_work_item_id: work_wave02_tradeability_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+created_at_utc: '2026-06-27T19:49:42Z'
+status: prepared_attempts_pending_terminal_execution
+claim_boundary: wave02_l4_strategy_tester_attempt_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+source_inputs:
+  onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  onnx_materialization_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/onnx_materialization_index.csv
+  runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
+  period_profile: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  tester_execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+counts:
+  exported_bundle_count: 8
+  required_period_role_count: 2
+  prepared_attempt_count: 16
+  period_role_counts:
+    research_oos: 8
+    validation: 8
+  common_copy_status_counts:
+    copied_to_mt5_common_files: 16
+runtime_contract_binding:
+  required_runtime_level: L4_split_runtime_probe
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  locked_final_oos_b: excluded_forbidden_by_default
+artifact_outputs:
+  index_csv: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+  attempt_manifest_paths:
+  - runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_007_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_007_l4_research_oos_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_validation_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_research_oos_v0/attempt_manifest.yaml
+  tester_config_paths:
+  - runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_research_oos_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_research_oos_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_research_oos_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_research_oos_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_research_oos_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_007_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_007_l4_research_oos_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_validation_v0/tester_config.ini
+  - runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_research_oos_v0/tester_config.ini
+  ea_source: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  ea_binary: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+compile_smoke:
+  ea_source:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+    sha256: 3084759e4c78d0586ca7519096df12ed10a3539dd580d76bb57c58bb002d0320
+    size_bytes: 31881
+    availability: present_hash_recorded
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+    sha256: 638da23cc53bbb6886756969aa51dc318e9706ba1fcfc7b1a888d3b692b2cf14
+    size_bytes: 33564
+    availability: local_binary_hash_recorded_ignored_by_git
+  claim_boundary: compile_smoke_only_not_strategy_tester_output
+judgment:
+  judgment_class: runtime_attempt_preparation
+  runtime_probe_completed: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: Execute prepared portable Strategy Tester attempts for validation and
+    research_oos, then record telemetry/report hashes.
+prevention_memory:
+- Feature-column strings use semicolon delimiter and common-file transport.
+- Single-score ONNX output is required before MT5 L4 score probe consumption.
+- Prepared attempt manifests are not L4 completion evidence until terminal telemetry/report
+  hashes are recorded.
+- Wave02 side/abstain proxy semantics require a later decision-execution adapter before
+  economics can be discussed.
+environment:
+  command: foundation\pipelines\materialize_wave02_tradeability_l4_preflight.py --copy-common-files
+    --write-control-records
+  command_argv:
+  - foundation\pipelines\materialize_wave02_tradeability_l4_preflight.py
+  - --copy-common-files
+  - --write-control-records
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    onnx: 1.20.1
+    onnxruntime: 1.24.3
+    skl2onnx: 1.20.0
+    yaml: 6.0.3
+  started_at_utc: '2026-06-27T19:49:42Z'
+  ended_at_utc: '2026-06-27T19:50:12Z'
+  git_sha: a4940aa577725b13d1321b78fd62648ab161e873
+  branch: main
+  changed_files:
+  - M .codex/config.toml
+  - M .github/workflows/control-plane.yml
+  - M .github/workflows/full-regression.yml
+  - M docs/agent_control/operational_stability_kernel.yaml
+  - M docs/agent_control/work_family_registry.yaml
+  - M docs/policies/branch_policy.md
+  - M docs/policies/onnx_lab_operating_policy.md
+  - M docs/registers/artifact_registry.csv
+  - M docs/workspace/lab_profile.yaml
+  - M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  - M foundation/validation/ci_scope_gate.py
+  - M foundation/validation/routing_smoke_eval.py
+  - ?? foundation/pipelines/materialize_wave02_tradeability_l4_preflight.py
+  - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_materialization_preflight_v0_closeout.yaml
+  - ?? package.json
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_007_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_007_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_validation_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_001_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_002_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_003_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_004_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_005_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_006_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_007_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave02_td_cell_008_l4_onnx_export_v0/
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
