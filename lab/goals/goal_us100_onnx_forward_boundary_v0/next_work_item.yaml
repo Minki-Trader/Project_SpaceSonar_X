@@ -1,17 +1,23 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+work_item_id: work_wave02_cost_risk_holding_l5_routing_decision_v0
+parent_work_item_id: work_wave02_cost_risk_holding_l4_pair_judgment_v0
 primary_family: runtime_probe
 primary_skill: spacesonar-runtime-evidence
-verification_profile: runtime_preflight_terminal_execution
+support_skills:
+- spacesonar-result-judgment
+- spacesonar-evidence-provenance
+verification_profile: writer_scope_smoke
 targets:
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
 acceptance_criteria:
-- execute prepared validation and research_oos MT5 cost/risk/holding score-probe attempts
-- record telemetry/report hashes before any L4 completion claim
-- keep runtime_authority, economics_pass, candidate, live_readiness, and goal_achieve
+- decide whether Wave02 cost/risk/holding score-observation pairs justify bounded
+  decision-execution adapter work
+- keep candidate_count and l5_candidate_count at zero until candidate-specific L5
+  manifest exists
+- keep runtime_authority, economics_pass, selected_baseline, live_readiness, and goal_achieve
   forbidden
-claim_boundary: wave02_cost_risk_holding_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_cost_risk_holding_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
@@ -21,56 +27,135 @@ policy_binding:
   - GUARD_004_ARTIFACT_IDENTITY
   - GUARD_007_OPERATIONAL_STABILITY
 outputs:
-- runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
-- runtime/mt5_attempts/<attempt_id>/telemetry/score_telemetry.csv
-- runtime/mt5_attempts/<attempt_id>/reports/tester_report.htm
-next_action: aggregate paired Wave02 cost/risk/holding validation/research_oos L4
-  telemetry before any L5 candidate routing
+- decision-execution adapter work item or candidate summary only if L5 is explicitly
+  opened later
+- runtime/packages/<bundle_id>/experiment_bundle.json only if candidate-specific L5
+  materialization is opened later
+next_action: decide whether Wave02 cost/risk/holding pairs justify a bounded decision-execution
+  adapter before any L5 candidate manifest
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-summary: Execute Wave02 cost/risk/holding prepared L4 Strategy Tester score-probe
-  attempts.
+summary: Route Wave02 CRH pair judgment outcomes without promoting score probes to
+  candidates.
 provenance:
-  source: wave02_cost_risk_holding_l4_materialization_preflight
+  source: work_wave02_cost_risk_holding_l4_pair_judgment_v0
   campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
-  source_of_truth: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  source_of_truth: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
 current_truth:
-  onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
-  attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
-  prepared_attempt_count: 12
-  runtime_probe_completed: true
+  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  l4_pair_judgment_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  l4_pair_judgment_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  l4_pair_judgment_status: wave02_cost_risk_holding_l4_pair_judgment_completed_l5_routing_decision_pending
+  l4_pair_judgment_counts:
+    cell_pair_count: 6
+    runtime_probe_pair_complete_count: 6
+    both_period_roles_observed_count: 6
+    nonempty_telemetry_pair_count: 6
+    tester_report_pair_observed_count: 6
+    decision_execution_pending_pair_count: 6
+    l5_routing_review_required_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      preserved_clue: 6
+    result_judgment_counts:
+      runtime_probe: 6
+    l5_status_counts:
+      l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+    comparison_class_counts:
+      proxy_preserved_clue_runtime_score_observed_decision_execution_pending: 6
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 11
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      telemetry_observed_count: 12
+      telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
   candidate_count: 0
   l5_candidate_count: 0
-  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
-  l4_runtime_execution_counts:
-    prepared_attempt_count: 12
-    selected_attempt_count: 11
-    indexed_execution_count: 12
-    executed_attempt_count: 12
-    completed_manifest_count: 12
-    touched_manifest_count: 12
-    telemetry_observed_count: 12
-    telemetry_missing_count: 0
-    tester_report_observed_count: 12
-    tester_report_missing_count: 0
-    terminal_execution_count: 12
-    telemetry_observation_count: 12
-    tester_report_observation_count: 12
-    portable_contract_count: 12
-    runtime_probe_complete_count: 12
-    runtime_probe_incomplete_count: 0
-    period_role_counts:
-      research_oos: 6
-      validation: 6
-    status_counts:
-      runtime_probe_completed: 12
-    result_judgment_counts:
-      runtime_probe: 12
 unresolved_blockers:
-- Wave02_cost_risk_holding_L4_pair_judgment_pending
+- Wave02_cost_risk_holding_L5_routing_decision_pending
 reopen_conditions:
-- write Wave02 cost/risk/holding l4_pair_judgment_summary and l4_pair_judgment_index
-  before L5 routing
-status: l4_strategy_tester_execution_completed_for_prepared_attempts
+- rerun pair aggregation if a Wave02 CRH L4 runtime attempt manifest, score telemetry
+  summary, or tester report receipt changes
+- open L5 only with candidate-specific manifest and decision-execution adapter evidence
+  plan
+status: wave02_cost_risk_holding_l5_routing_decision_pending
 missing_material_if_relevant:
-- paired_L4_period_aggregation_pending
+- decision_execution_adapter_not_yet_applied
+- candidate_specific_L5_manifest_not_opened
+- economics_metrics_not_available_from_non_trading_score_probe
+- row_level_proxy_vs_MT5_score_alignment_not_performed
+execution_provenance:
+  git_sha: abfc7dc11a67fd963124913e3f0e45fadabc82b0
+  branch: main
+  dirty_flag: true
+  changed_files:
+  - M .codex/config.toml
+  - ' M docs/agent_control/operational_stability_kernel.yaml'
+  - ' M docs/registers/artifact_registry.csv'
+  - ' M docs/registers/goal_registry.csv'
+  - ' M docs/workspace/workspace_state.yaml'
+  - ' M lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+  - ?? foundation/pipelines/aggregate_wave02_cost_risk_holding_l4_pair_judgments.py
+  - ?? foundation/validation/active_pointer_smoke.py
+  - ?? lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - ?? lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_pair_judgment_v0_closeout.yaml
+  - ?? package.json
+  command_argv:
+  - python.exe foundation/pipelines/aggregate_wave02_cost_risk_holding_l4_pair_judgments.py
+    --write-control-records
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    python: 3.13.9
+    yaml: 6.0.3
+  started_at_utc: '2026-06-27T23:33:04Z'
+  ended_at_utc: '2026-06-27T23:33:04Z'
+  input_hashes:
+  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+    sha256: cfa19230340596c684925ded3c6fc43972603272111ae124c55ff9bdc3df8d2c
+    size_bytes: 15076
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+    sha256: 0afc6004f042f4194c29e8e5530b21d6fafad4e1db5575c84ee57a88a1b77181
+    size_bytes: 12162
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+    sha256: cd8e3ff894f8ea545ed74144f7dd5c9b26b959fa3942f0172f07a60753322f90
+    size_bytes: 4006
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+    sha256: 13436fdf4af5218664fb5b4e8c4a4f55fb1df752db9a34eb4cdf2226a09f8a44
+    size_bytes: 9653
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+    sha256: bf2f8db9e51cc43739ec5c98e92a8f6b87c8a987ee2b0a098d6f76476fb3e548
+    size_bytes: 7339
+    availability: present_hash_recorded
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_pair_judgment_v0_closeout.yaml
+    sha256: 4befee107f41becfd53d9fb8b37e161adde5a9e476e8219fb2a2bb749916fd86
+    size_bytes: 3472
+    availability: present_hash_recorded
+  unknown_git_claim_effect: dirty_worktree_recorded_claim_lowered_no_candidate_runtime_authority_or_economics_pass

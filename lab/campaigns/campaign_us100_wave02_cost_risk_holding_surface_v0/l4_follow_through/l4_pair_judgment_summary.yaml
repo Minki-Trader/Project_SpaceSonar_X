@@ -1,0 +1,184 @@
+version: wave02_cost_risk_holding_l4_pair_judgment_summary_v1
+summary_id: wave02_cost_risk_holding_l4_pair_judgment_summary_v0
+work_item_id: work_wave02_cost_risk_holding_l4_pair_judgment_v0
+parent_work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+idea_id: idea_us100_wave02_cost_risk_holding_surface_v0
+hypothesis_id: hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0
+surface_id: surface_us100_wave02_cost_risk_holding_v0
+sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+created_at_utc: '2026-06-27T23:33:04Z'
+ended_at_utc: '2026-06-27T23:33:04Z'
+status: wave02_cost_risk_holding_l4_pair_judgment_completed_l5_routing_decision_pending
+claim_boundary: wave02_cost_risk_holding_l4_pair_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+support_skills:
+- spacesonar-result-judgment
+- spacesonar-evidence-provenance
+validation_depth: writer_scope_smoke
+runtime_contract_binding:
+  required_runtime_level: L4_split_runtime_probe
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  locked_final_oos_b: excluded_forbidden_by_default
+counts:
+  cell_pair_count: 6
+  runtime_probe_pair_complete_count: 6
+  both_period_roles_observed_count: 6
+  nonempty_telemetry_pair_count: 6
+  tester_report_pair_observed_count: 6
+  decision_execution_pending_pair_count: 6
+  l5_routing_review_required_count: 6
+  candidate_count: 0
+  l5_candidate_count: 0
+  proxy_judgment_counts:
+    preserved_clue: 6
+  result_judgment_counts:
+    runtime_probe: 6
+  l5_status_counts:
+    l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+  comparison_class_counts:
+    proxy_preserved_clue_runtime_score_observed_decision_execution_pending: 6
+  runtime_execution_counts:
+    prepared_attempt_count: 12
+    selected_attempt_count: 11
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    telemetry_observed_count: 12
+    telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
+judgment:
+  result_subject: Wave02 cost/risk/holding paired validation/research_oos L4 score
+    runtime observations
+  judgment_label: runtime_probe
+  metric_identity: paired MT5 score telemetry summaries and completed tester-report
+    receipts; proxy PF/trade-density values are proxy context only
+  comparison_baseline: source proxy preserved_clue judgment plus paired MT5 score-observation
+    presence
+  tested_factor: cost/risk/holding score-probe runtime follow-through for six preserved
+    proxy clues
+  kpi_interpretation: score-probe confirms ONNX/EA/MT5 observation coverage, but the
+    EA did not execute trades; therefore economics, PF pass, drawdown pass, and runtime
+    authority remain unclaimed
+  directional_effect_hypothesis: cost/risk/holding semantics remain runtime-testable
+    enough to justify a decision-execution adapter review, not a candidate claim
+  attribution_confidence: low_to_medium_observation_only_non_trading_runtime_surface
+  claim_boundary: wave02_cost_risk_holding_l4_pair_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  missing_evidence:
+  - decision_execution_adapter_not_yet_applied
+  - candidate_specific_L5_manifest_not_opened
+  - economics_metrics_not_available_from_non_trading_score_probe
+  - row_level_proxy_vs_MT5_score_alignment_not_performed
+  next_action: decide whether Wave02 cost/risk/holding pairs justify a bounded decision-execution
+    adapter before any L5 candidate manifest
+runtime_contract_effect:
+  l4_score_runtime_observation: completed_for_all_pairs
+  standard_l4_score_probe_completion: completed_with_telemetry_and_report_receipts
+  decision_execution: pending_adapter_or_routing_decision
+  l5_continuation: routing_decision_pending_no_candidate_claim
+  locked_final_oos_b: not_used
+  runtime_authority: false
+  economics_pass: false
+  candidate: false
+  goal_achieve: false
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+  producer: python.exe foundation/pipelines/aggregate_wave02_cost_risk_holding_l4_pair_judgments.py
+    --write-control-records
+  consumer: work_wave02_cost_risk_holding_l5_routing_decision_v0
+  artifact_paths:
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_pair_judgment_v0_closeout.yaml
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_pair_judgment_v0_closeout.yaml
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    yaml: 6.0.3
+    git_sha: abfc7dc11a67fd963124913e3f0e45fadabc82b0
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - M .codex/config.toml
+    - ' M docs/agent_control/operational_stability_kernel.yaml'
+    - ' M docs/registers/artifact_registry.csv'
+    - ' M docs/registers/goal_registry.csv'
+    - ' M docs/workspace/workspace_state.yaml'
+    - ' M lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+    - ?? foundation/pipelines/aggregate_wave02_cost_risk_holding_l4_pair_judgments.py
+    - ?? foundation/validation/active_pointer_smoke.py
+    - ?? lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+    - ?? lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_pair_judgment_v0_closeout.yaml
+    - ?? package.json
+  regeneration_commands:
+  - python.exe foundation/pipelines/aggregate_wave02_cost_risk_holding_l4_pair_judgments.py
+    --write-control-records
+  registry_links:
+  - docs/registers/artifact_registry.csv
+  availability: present_hash_recorded_after_write
+  lineage_judgment: pair_summary_index_and_closeout_written_from_runtime_execution_summary_and_score_telemetry_summaries
+  claim_boundary: wave02_cost_risk_holding_l4_pair_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+artifact_outputs:
+  pair_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  pair_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  pair_closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_pair_judgment_v0_closeout.yaml
+  runtime_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  runtime_execution_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+prevention_memory:
+- Wave02 cost/risk/holding score-probe pair judgment must precede any L5 routing decision.
+- Non-trading score probes can preserve a runtime-testable clue but cannot create
+  economics pass, runtime authority, selected baseline, live readiness, or Goal Achieve.
+- A preserved CRH score clue needs decision-execution adapter evidence before any
+  candidate-specific L5 manifest.
+unresolved_blockers:
+- Wave02_cost_risk_holding_L5_routing_decision_pending
+reopen_conditions:
+- rerun pair aggregation if a Wave02 CRH L4 runtime attempt manifest, score telemetry
+  summary, or tester report receipt changes
+- open L5 only with candidate-specific manifest and decision-execution adapter evidence
+  plan
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

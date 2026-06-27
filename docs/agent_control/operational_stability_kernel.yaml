@@ -57,6 +57,21 @@ routine_inspection_scope:
       - raw_runtime_artifact_tree_inventory
     reason: volatile generated trees can be stale, missing, huge, or intentionally ignored; they are not proof of operating state
 
+active_record_authority:
+  authoritative_pointer_fields:
+    - active_goal
+    - active_wave
+    - active_campaign
+    - active_work_item
+    - current_claim_boundary
+    - next_action
+    - unresolved_blockers
+  current_truth_record_rule: active_work_item.path points to the only next_work_item record used for next action routing
+  summary_counts_role: cumulative_reference_not_active_pointer
+  rule: summary_counts may retain older campaign evidence and must not decide current status, next action, candidate state, or claim boundary without matching active_work_item and next_work_item evidence
+  writer_rule: every writer that mutates workspace_state.yaml must align workspace active pointers, next_work_item.yaml, goal_manifest.yaml, campaign_manifest.yaml, and goal_registry.csv
+  default_smoke: "python foundation/validation/active_pointer_smoke.py"
+
 experiment_first_loop:
   applies_when:
     - user_asks_progress
@@ -151,6 +166,7 @@ allowed_non_pytest_smokes:
   - parse_touched_yaml_json_toml_csv
   - compile_touched_python_modules
   - import_touched_python_module_when_safe
+  - active_pointer_smoke
   - run_writer_scope_evidence_smoke_for_touched_runs
   - run_policy_or_routing_lint_when_policy_or_routing_changed
   - run_repository_setting_check_when_git_policy_changed
@@ -169,6 +185,7 @@ hard_enforcement_points:
     - next_action_or_reopen_condition_declared_when_incomplete
   writer_after_write:
     - all_declared_source_of_truth_paths_exist
+    - active_pointer_smoke_passes_when_workspace_or_next_work_changes
     - receipt_and_summary_files_exist_before_artifact_ref
     - repo_relative_paths_only
     - hashes_match_written_outputs_or_hash_only_availability_declared

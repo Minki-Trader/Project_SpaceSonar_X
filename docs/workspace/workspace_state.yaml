@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-27T23:03:15Z'
+updated_utc: '2026-06-27T23:33:04Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -15,16 +15,16 @@ active_wave:
   closeout: null
 active_campaign:
   campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
-  status: wave02_cost_risk_holding_l4_runtime_execution_completed_pair_judgment_next
+  status: wave02_cost_risk_holding_l4_pair_judgment_completed_l5_routing_decision_pending
   manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
 active_work_item:
-  work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+  work_item_id: work_wave02_cost_risk_holding_l5_routing_decision_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_cost_risk_holding_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
-next_action: aggregate paired Wave02 cost/risk/holding validation/research_oos L4
-  telemetry before any L5 candidate routing
+current_claim_boundary: wave02_cost_risk_holding_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+next_action: decide whether Wave02 cost/risk/holding pairs justify a bounded decision-execution
+  adapter before any L5 candidate manifest
 unresolved_blockers:
-- Wave02_cost_risk_holding_L4_pair_judgment_pending
+- Wave02_cost_risk_holding_L5_routing_decision_pending
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml
   runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
@@ -271,10 +271,52 @@ summary_counts:
       runtime_probe: 12
     candidate_count: 0
     l5_candidate_count: 0
+  wave02_cost_risk_holding_l4_pair_judgment:
+    cell_pair_count: 6
+    runtime_probe_pair_complete_count: 6
+    both_period_roles_observed_count: 6
+    nonempty_telemetry_pair_count: 6
+    tester_report_pair_observed_count: 6
+    decision_execution_pending_pair_count: 6
+    l5_routing_review_required_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      preserved_clue: 6
+    result_judgment_counts:
+      runtime_probe: 6
+    l5_status_counts:
+      l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+    comparison_class_counts:
+      proxy_preserved_clue_runtime_score_observed_decision_execution_pending: 6
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 11
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      telemetry_observed_count: 12
+      telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
 wave02_cost_risk_holding_l4_materialization:
   campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
-  status: wave02_cost_risk_holding_l4_runtime_execution_completed_pair_judgment_next
-  claim_boundary: wave02_cost_risk_holding_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  status: wave02_cost_risk_holding_l4_pair_judgment_completed_l5_routing_decision_pending
+  claim_boundary: wave02_cost_risk_holding_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
   onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
   attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
   prepared_attempt_count: 12
@@ -308,3 +350,61 @@ wave02_cost_risk_holding_l4_materialization:
     result_judgment_counts:
       runtime_probe: 12
   runtime_probe_complete: true
+  l4_pair_judgment_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  l4_pair_judgment_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  l4_pair_judgment_status: wave02_cost_risk_holding_l4_pair_judgment_completed_l5_routing_decision_pending
+  l4_pair_judgment_counts:
+    cell_pair_count: 6
+    runtime_probe_pair_complete_count: 6
+    both_period_roles_observed_count: 6
+    nonempty_telemetry_pair_count: 6
+    tester_report_pair_observed_count: 6
+    decision_execution_pending_pair_count: 6
+    l5_routing_review_required_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      preserved_clue: 6
+    result_judgment_counts:
+      runtime_probe: 6
+    l5_status_counts:
+      l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+    comparison_class_counts:
+      proxy_preserved_clue_runtime_score_observed_decision_execution_pending: 6
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 11
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      telemetry_observed_count: 12
+      telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
+active_record_authority:
+  authoritative_fields:
+  - active_goal
+  - active_wave
+  - active_campaign
+  - active_work_item
+  - current_claim_boundary
+  - next_action
+  - unresolved_blockers
+  current_truth_record: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  summary_counts_role: cumulative_reference_not_active_pointer
+  rule: select next action from active_work_item plus next_work_item; never from summary_counts
+    alone

@@ -1,0 +1,86 @@
+version: work_closeout_v1
+work_item_id: work_wave02_cost_risk_holding_l4_pair_judgment_v0
+parent_work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+next_work_item_id: work_wave02_cost_risk_holding_l5_routing_decision_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-27T23:33:04Z'
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+support_skills:
+- spacesonar-result-judgment
+- spacesonar-evidence-provenance
+result_judgment: runtime_probe
+status: wave02_cost_risk_holding_l4_pair_judgment_completed_l5_routing_decision_pending
+claim_boundary: wave02_cost_risk_holding_l4_pair_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+counts:
+  cell_pair_count: 6
+  runtime_probe_pair_complete_count: 6
+  both_period_roles_observed_count: 6
+  nonempty_telemetry_pair_count: 6
+  tester_report_pair_observed_count: 6
+  decision_execution_pending_pair_count: 6
+  l5_routing_review_required_count: 6
+  candidate_count: 0
+  l5_candidate_count: 0
+  proxy_judgment_counts:
+    preserved_clue: 6
+  result_judgment_counts:
+    runtime_probe: 6
+  l5_status_counts:
+    l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+  comparison_class_counts:
+    proxy_preserved_clue_runtime_score_observed_decision_execution_pending: 6
+  runtime_execution_counts:
+    prepared_attempt_count: 12
+    selected_attempt_count: 11
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    telemetry_observed_count: 12
+    telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
+missing_evidence:
+- decision_execution_adapter_not_yet_applied
+- candidate_specific_L5_manifest_not_opened
+- economics_metrics_not_available_from_non_trading_score_probe
+- row_level_proxy_vs_MT5_score_alignment_not_performed
+next_action: decide whether Wave02 cost/risk/holding pairs justify a bounded decision-execution
+  adapter before any L5 candidate manifest
+unresolved_blockers:
+- Wave02_cost_risk_holding_L5_routing_decision_pending
+reopen_conditions:
+- rerun pair aggregation if a Wave02 CRH L4 runtime attempt manifest, score telemetry
+  summary, or tester report receipt changes
+- open L5 only with candidate-specific manifest and decision-execution adapter evidence
+  plan
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
