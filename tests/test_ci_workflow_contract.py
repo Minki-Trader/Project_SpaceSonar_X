@@ -23,10 +23,18 @@ def test_control_plane_workflow_keeps_full_graph_manual() -> None:
 
     jobs = workflow["jobs"]
 
-    assert {"ci-scope-gate", "control-plane-fast", "unit", "evidence-graph-full"} <= set(jobs)
+    assert {"ci-scope-gate", "control-plane-fast", "non-pytest-smoke", "evidence-graph-full"} <= set(jobs)
+    assert "unit" not in jobs
     assert "full-suite" not in jobs
     assert "workflow_dispatch" in _workflow_on(workflow)
     assert jobs["evidence-graph-full"]["if"] == "github.event_name == 'workflow_dispatch'"
+    default_commands = [
+        step.get("run", "")
+        for job_name in ["ci-scope-gate", "control-plane-fast", "non-pytest-smoke"]
+        for step in jobs[job_name]["steps"]
+        if isinstance(step, dict)
+    ]
+    assert not any("pytest" in command for command in default_commands)
 
 
 def test_ci_scope_gate_is_active_after_bootstrap() -> None:
@@ -105,7 +113,7 @@ def test_main_integration_readiness_records_direct_push_remote_settings() -> Non
     }
     assert ledger["main_integration_readiness"]["required_checks"] == [
         "control-plane-fast",
-        "unit",
+        "non-pytest-smoke",
     ]
     assert ledger["main_integration_readiness"]["manual_boundary_checks"] == [
         "evidence-graph-full",

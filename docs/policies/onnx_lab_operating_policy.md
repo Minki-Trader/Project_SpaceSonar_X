@@ -152,7 +152,7 @@ The lab is attempt-first, not bureaucracy-first.
 - Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are for shared-contract edits, source-of-truth drift, campaign/wave boundary closeout, or protected runtime/economics/handoff claims.
 - Main push defaults to a fast remote smoke layer: policy/routing lints,
   repository setting check, registry projection check, whitespace check, and a
-  focused unit set.
+  non-pytest compile/parse smoke set.
 - `ci-scope-gate` classifies changed paths on main push in advisory mode. It is
   allowed to say that a manual boundary check is needed, but it must not turn
   every run-local update into a blocking full-regression wait.

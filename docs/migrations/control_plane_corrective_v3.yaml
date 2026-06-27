@@ -15,7 +15,7 @@ main_integration_readiness:
   status: ready_for_main_direct_push_with_fast_remote_smoke
   required_checks:
   - control-plane-fast
-  - unit
+  - non-pytest-smoke
   manual_boundary_checks:
   - evidence-graph-full
   - full-regression

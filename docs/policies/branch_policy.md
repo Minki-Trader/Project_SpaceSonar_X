@@ -30,13 +30,13 @@ remote churn.
 ## Boundary Validation Cadence
 
 The normal main loop is not full-regression-first. Main push runs the fast
-control-plane checks and the scoped unit set. It also runs `ci-scope-gate` in
+control-plane checks and a non-pytest smoke set. It also runs `ci-scope-gate` in
 advisory mode so the commit records whether a heavier boundary check would be
 needed, without blocking routine experiment throughput.
 
 The CI policy uses three layers:
 
-- `control-plane-fast` plus `unit` run on main pushes as the default remote
+- `control-plane-fast` plus `non-pytest-smoke` run on main pushes as the default remote
   smoke layer.
 - `evidence-graph-full` is a manual `workflow_dispatch` boundary check for
   campaign closeout, wave closeout, source-of-truth drift, or protected claim

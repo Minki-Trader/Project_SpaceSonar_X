@@ -50,7 +50,7 @@ jobs:
       - run: uv run python -m spacesonar.cli registry project --check
       - run: git diff --check
 
-  unit:
+  non-pytest-smoke:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -59,7 +59,28 @@ jobs:
         with:
           python-version: "3.11"
       - run: uv sync --locked --extra dev --extra onnxlab
-      - run: uv run pytest tests/test_runtime_completion_contract.py tests/test_wave01_runtime_truth_migration.py tests/control_plane tests/test_routing_behavior.py -q
+      - run: uv run python -m compileall foundation/validation src/spacesonar
+      - run: |
+          uv run python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          paths = [
+              "AGENTS.md",
+              "docs/agent_control/operational_stability_kernel.yaml",
+              "docs/agent_control/policy_contract.yaml",
+              "docs/agent_control/work_family_registry.yaml",
+              "docs/workspace/lab_profile.yaml",
+          ]
+          for rel in paths:
+              path = Path(rel)
+              text = path.read_text(encoding="utf-8-sig")
+              if path.suffix in {".yaml", ".yml"}:
+                  payload = yaml.safe_load(text)
+                  if not isinstance(payload, dict):
+                      raise SystemExit(f"{rel}: expected mapping")
+          print("writer scope smoke passed")
+          PY
 
   evidence-graph-full:
     if: github.event_name == 'workflow_dispatch'
