@@ -1,0 +1,70 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave02_crh_cell_001_cost_risk_holding_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/run_manifest.json",
+      "sha256": "243925675ee21e9622506219835bc4998e293a693a937bbb97f9409301a8b131",
+      "size_bytes": 3332,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave02_cost_risk_holding_proxy_batch.py",
+    "command": "python foundation/pipelines/run_wave02_cost_risk_holding_proxy_batch.py --write-control-records"
+  },
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/artifacts/feature_schema.json",
+      "sha256": "a5189400304de4047a65c48d5ba871eaeb7e22b273e23921a18b7ba9657a07d9",
+      "size_bytes": 1614,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/artifacts/label_schema.json",
+      "sha256": "8fbcc159fe12bf4732a355391d7b243979a189a27416b2589797446047f2ff7b",
+      "size_bytes": 835,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/artifacts/model_summary.json",
+      "sha256": "c2d08456defd55939b141ed45f10bffa61f14f974509d527f565b298b0da6a1e",
+      "size_bytes": 794,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/artifacts/split_profile.json",
+      "sha256": "67a431213ac26a1ec5de8d6d426a8f3f4ddcaeacbeeba5693c0548c84be9a1f5",
+      "size_bytes": 248,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "88cb1eb6353f7b2a2150eec5e23b9798127c8259b59755ea5a1bcaebc49f177f",
+      "size_bytes": 26432,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "fe0e104b21c076a7eb5ca5ba4b7a3e9302a08109a1b6be89ddcfd1c7a6203479",
+      "size_bytes": 27251,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/reports/proxy_cost_risk_holding_report.json",
+      "sha256": "8465351444b81f5885e7aee70b1883c3200024a33db990b75cdcb0fc0f34db21",
+      "size_bytes": 5050,
+      "availability": "local_generated_hash_recorded"
+    }
+  ],
+  "availability": "present_hash_recorded",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing",
+  "claim_boundary": "wave02_cost_risk_holding_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve"
+}

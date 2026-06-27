@@ -126,13 +126,14 @@ campaign_allocations:
     - no inherited Wave01 or Wave02 thresholds or candidates
     why_this_campaign_needs_more_or_less_than_default: uses default Wave02 campaign
       budget with smaller first batch before L4 follow-through spend
-  status: wave02_cost_risk_holding_first_batch_specs_materialized_not_executed
+  status: wave02_cost_risk_holding_proxy_batch_executed_l4_required
   campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
   claim_boundary: wave02_cost_risk_holding_campaign_open_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-  next_action: work_wave02_cost_risk_holding_execute_proxy_batch_v0
-  notes: First six cost/risk/holding run specs materialized; proxy execution pending.
+  next_action: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
+  notes: Proxy batch executed; L4 materialization required next.
   materialized_run_count: 6
-next_action: work_wave02_cost_risk_holding_execute_proxy_batch_v0
-updated_at_utc: '2026-06-27T22:14:35Z'
+  executed_proxy_run_count: 6
+next_action: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
+updated_at_utc: '2026-06-27T22:23:34Z'

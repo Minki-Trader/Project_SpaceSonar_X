@@ -1,30 +1,28 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_cost_risk_holding_execute_proxy_batch_v0
-parent_work_item_id: work_wave02_cost_risk_holding_first_batch_spec_v0
-primary_family: model_training
-primary_skill: spacesonar-model-validation
-verification_profile: lab_experiment
+work_item_id: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
+parent_work_item_id: work_wave02_cost_risk_holding_execute_proxy_batch_v0
+primary_family: onnx_export_parity
+primary_skill: spacesonar-runtime-evidence
+verification_profile: onnx_bundle
 targets:
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_index.csv
 acceptance_criteria:
-- execute the six materialized proxy specs without changing the pre-execution matrix
-- write run metrics, receipts, and result judgment under the stated claim boundary
-- route valid proxy/model-bearing outputs to L4 follow-through instead of proxy-only
-  closure
-created_at_utc: '2026-06-27T22:14:35Z'
-status: wave02_cost_risk_holding_proxy_batch_execution_pending
-claim_boundary: wave02_cost_risk_holding_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: execute Wave02 cost/risk/holding first proxy batch
+- materialize ONNX/runtime-follow-through prep for executed cost/risk/holding proxy
+  runs
+- do not claim candidate, runtime authority, economics pass, live readiness, or Goal
+  Achieve
+- prepare L4 split runtime probe only for valid model-bearing proxy outputs
+status: wave02_cost_risk_holding_l4_materialization_preflight_pending
+claim_boundary: wave02_cost_risk_holding_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: prepare Wave02 cost/risk/holding L4 materialization and runtime attempts
 current_truth:
-  first_batch_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
-  run_refs: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
-  anti_selection_ledger: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/anti_selection_ledger.yaml
+  proxy_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
+  proxy_execution_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_index.csv
 unresolved_blockers:
-- Wave02_cost_risk_holding_proxy_batch_not_executed
+- Wave02_cost_risk_holding_L4_materialization_not_prepared
 missing_material_if_relevant:
-- proxy_results_absent
-- onnx_exports_absent
-- l4_runtime_follow_through_absent
+- ONNX_exports_absent
+- MT5_L4_split_runtime_probe_absent
 - candidate_evidence_absent
 - operational_validation_not_started
