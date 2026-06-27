@@ -1,27 +1,28 @@
 command_argv_redacted:
-- ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+- ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+- /portable
 - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_research_oos_v0\tester_config.ini
 cwd: .
-started_at_utc: '2026-06-27T20:45:00.074299Z'
-ended_at_utc: '2026-06-27T20:45:17.427019Z'
+started_at_utc: '2026-06-27T20:50:42.542958Z'
+ended_at_utc: '2026-06-27T20:50:57.094087Z'
 exit_code: 0
 timed_out: false
 stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 stdout_tail: ''
 stderr_tail: ''
-mode: main_mode_config_fallback
-attempt_claim_boundary: local_l4_main_mode_fallback_only_no_runtime_authority
+mode: portable_contract_attempt
+attempt_claim_boundary: standard_contract_attempt_only
 telemetry_exists_after_attempt: true
 terminal_attempts:
 - command_argv_redacted:
-  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
   - /portable
   - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_research_oos_v0\tester_config.ini
   cwd: .
-  started_at_utc: '2026-06-27T20:44:56.708152Z'
-  ended_at_utc: '2026-06-27T20:45:00.073863Z'
-  exit_code: 3294954941
+  started_at_utc: '2026-06-27T20:50:42.542958Z'
+  ended_at_utc: '2026-06-27T20:50:57.094087Z'
+  exit_code: 0
   timed_out: false
   stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
   stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
@@ -29,21 +30,6 @@ terminal_attempts:
   stderr_tail: ''
   mode: portable_contract_attempt
   attempt_claim_boundary: standard_contract_attempt_only
-  telemetry_exists_after_attempt: false
-- command_argv_redacted:
-  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
-  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_research_oos_v0\tester_config.ini
-  cwd: .
-  started_at_utc: '2026-06-27T20:45:00.074299Z'
-  ended_at_utc: '2026-06-27T20:45:17.427019Z'
-  exit_code: 0
-  timed_out: false
-  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-  stdout_tail: ''
-  stderr_tail: ''
-  mode: main_mode_config_fallback
-  attempt_claim_boundary: local_l4_main_mode_fallback_only_no_runtime_authority
   telemetry_exists_after_attempt: true
 terminal_cleanup_actions: []
 terminal_cleanup_policy:
@@ -54,11 +40,11 @@ terminal_cleanup_policy:
 terminal_mode_policy:
   standard_contract_terminal_mode: portable_required
   portable_attempted: true
-  main_mode_fallback_allowed: true
-  main_mode_fallback_used: true
-  fallback_reason: portable_attempt_did_not_produce_l4_score_telemetry
-  claim_effect: l4_local_main_mode_fallback_observation_only_no_standard_portable_completion_claim
-selected_attempt_index: 1
+  main_mode_fallback_allowed: false
+  main_mode_fallback_used: false
+  fallback_reason: null
+  claim_effect: l4_standard_portable_attempt_observation
+selected_attempt_index: 0
 telemetry_observed: true
 version: wave02_tradeability_l4_terminal_run_summary_v1
 summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_research_oos_v0/terminal_run_summary.yaml
@@ -85,6 +71,12 @@ tester_report_resolution_prelaunch:
     redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
   - origin: repository_path
     redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
   - origin: main_terminal_data_root
     redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
   - origin: main_terminal_data_root
@@ -92,18 +84,6 @@ tester_report_resolution_prelaunch:
   - origin: main_terminal_data_root
     redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
   skipped:
-  - origin: portable_terminal_root
-    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
-    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
-      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
-  - origin: portable_terminal_root
-    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
-    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
-      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
-  - origin: portable_terminal_root
-    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
-    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
-      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
   - origin: attempt_archive_path
     redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_research_oos_v0\reports\spacesonar\attempt_wave02_td_cell_001_l4_research_oos_v0
     reason: "FileNotFoundError: [WinError 206] \uD30C\uC77C \uC774\uB984\uC774\uB098\
@@ -153,27 +133,27 @@ tester_report_resolution_prelaunch:
     size_bytes: null
     mtime_ns: null
     mtime_utc: null
-    path_key_sha256: cadf48ffabdff0dd1a11fbb62a34cd06ee7dd50c4d23bb6134ee366fb83ffb7c
+    path_key_sha256: 1846c2b87dddda7e46eb7193188e86621d920ad0832b460395edf1e33b9b4143
   - origin: portable_terminal_root
     existed: false
     sha256: null
     size_bytes: null
     mtime_ns: null
     mtime_utc: null
-    path_key_sha256: 9bf4173678043d3c5080fa210991b2f558a96015e84232fd25c1f91f6e9aefd6
+    path_key_sha256: a765eb392e7953a31e283db5a90fb4b33bc1e05ce79de3b47e33be4b027c3f2b
   - origin: portable_terminal_root
     existed: false
     sha256: null
     size_bytes: null
     mtime_ns: null
     mtime_utc: null
-    path_key_sha256: 82bdc291cd349071bb79d44234cac1f033e0bb1473efe0f1860a7b85fb48eb0b
+    path_key_sha256: cb880197289f93f31bbefd6415b8065d0a59a5f2aad8ed7698442d463b037a1f
   - origin: main_terminal_data_root
     existed: true
     sha256: 8d9002aa1f3eba755bc5a05f14010e3cf6215d6b87d97ed258af34358f77a066
     size_bytes: 27858
-    mtime_ns: 1782592998873348600
-    mtime_utc: '2026-06-27T20:43:18.873349Z'
+    mtime_ns: 1782593116888575700
+    mtime_utc: '2026-06-27T20:45:16.888576Z'
     path_key_sha256: 6c367eb111da3e00c1410f352686e9a50ce1bb7bc5eb710682bbb7c3c1595d0d
   - origin: main_terminal_data_root
     existed: false

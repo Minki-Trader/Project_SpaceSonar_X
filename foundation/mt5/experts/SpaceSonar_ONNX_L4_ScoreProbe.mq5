@@ -644,6 +644,8 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       int min_periods = window / 4;
       if(min_periods < 2)
          min_periods = 2;
+      if(min_periods > window)
+         min_periods = window;
       if(!MeanAbsRet(rates, index, window, min_periods, mean)) return false;
       value = mean;
       return true;

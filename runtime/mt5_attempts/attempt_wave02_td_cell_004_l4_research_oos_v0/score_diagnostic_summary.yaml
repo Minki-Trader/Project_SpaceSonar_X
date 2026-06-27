@@ -1,0 +1,139 @@
+version: wave02_tradeability_l4_score_diagnostic_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/score_diagnostic_summary.yaml
+attempt_id: attempt_wave02_td_cell_004_l4_research_oos_v0
+run_id: onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0
+bundle_id: bundle_wave02_td_cell_004_l4_onnx_export_v0
+period_role: research_oos
+diagnostic:
+  path: runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_research_oos_v0/telemetry/score_diagnostics.csv
+  sha256: a598afb98003d01bcc95be7dd2abdd1fed417e4d120874743496ded98123111e
+  size_bytes: 424785
+  availability: local_diagnostic_hash_recorded_ignored_by_git
+common_diagnostic_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_004_l4_research_oos_v0\score_diagnostics.csv
+stats:
+  status: diagnostic_observed
+  event_count: 5606
+  event_counts:
+    closed_bar_candidate: 65
+    deinit_complete: 1
+    deinit_start: 1
+    feature_columns_loaded: 1
+    init_start: 1
+    init_succeeded: 1
+    onnx_created: 1
+    onnx_released: 1
+    onnx_shapes_set: 1
+    row_written: 65
+    tick_seen: 5468
+  max_rows_written: 45281
+  max_ticks_seen: 54636569
+  max_closed_bar_candidates: 45281
+  max_feature_failures: 0
+  max_onnx_failures: 0
+  last_events:
+  - event_time: 2025.11.20 21:03:28
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '45246'
+    ticks_seen: '54570000'
+    closed_bar_candidates: '45246'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 21:25:06
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '45251'
+    ticks_seen: '54580000'
+    closed_bar_candidates: '45251'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 21:47:05
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '45255'
+    ticks_seen: '54590000'
+    closed_bar_candidates: '45255'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 22:09:05
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '45259'
+    ticks_seen: '54600000'
+    closed_bar_candidates: '45259'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 22:31:46
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '45264'
+    ticks_seen: '54610000'
+    closed_bar_candidates: '45264'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 22:53:39
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '45268'
+    ticks_seen: '54620000'
+    closed_bar_candidates: '45268'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 23:23:39
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '45274'
+    ticks_seen: '54630000'
+    closed_bar_candidates: '45274'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 23:59:58
+    event: deinit_start
+    bar_time: ''
+    detail: reason=1
+    last_error: '0'
+    rows_written: '45281'
+    ticks_seen: '54636569'
+    closed_bar_candidates: '45281'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 23:59:58
+    event: onnx_released
+    bar_time: ''
+    detail: released=true
+    last_error: '0'
+    rows_written: '45281'
+    ticks_seen: '54636569'
+    closed_bar_candidates: '45281'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.11.20 23:59:58
+    event: deinit_complete
+    bar_time: ''
+    detail: score_probe_deinit
+    last_error: '0'
+    rows_written: '45281'
+    ticks_seen: '54636569'
+    closed_bar_candidates: '45281'
+    feature_failures: '0'
+    onnx_failures: '0'
+claim_boundary: wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority
+work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+subwork_item_id: work_wave02_tradeability_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0

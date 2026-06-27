@@ -465,6 +465,16 @@ def update_control_records(repo_root: Path, summary: dict[str, Any]) -> None:
         if summary["status"] == base.PARTIAL_STATUS
         else ["paired_L4_period_aggregation_pending"]
     )
+    next_work["unresolved_blockers"] = (
+        ["L4_split_runtime_probe_terminal_execution_pending"]
+        if summary["status"] == base.PARTIAL_STATUS
+        else ["Wave02_L4_pair_judgment_pending"]
+    )
+    next_work["reopen_conditions"] = (
+        ["portable Strategy Tester execution records telemetry and completed report hashes"]
+        if summary["status"] == base.PARTIAL_STATUS
+        else ["write Wave02 l4_pair_judgment_summary and l4_pair_judgment_index before L5 routing"]
+    )
     next_work["next_action"] = summary["judgment"]["next_action"]
     base.write_yaml(repo_root / NEXT_WORK_ITEM, next_work)
 

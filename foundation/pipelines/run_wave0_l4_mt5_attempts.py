@@ -392,6 +392,13 @@ def parse_tester_config_report_stem(path: Path) -> str | None:
     return None
 
 
+def parse_tester_config_expert(path: Path) -> str | None:
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        if line.strip().lower().startswith("expert="):
+            return line.split("=", 1)[1].strip().strip('"')
+    return None
+
+
 def terminal_data_root(repo_root: Path) -> Path:
     for parent in [repo_root, *repo_root.parents]:
         if parent.name.lower() == "mql5":
@@ -436,6 +443,67 @@ def normalize_tester_report_config(tester_config: Path, attempt_id: str) -> dict
         "report_value": report_stem,
         "report_value_policy": "terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive",
     }
+
+
+def ensure_portable_ea_stage(
+    *,
+    repo_root: Path,
+    tester_config: Path,
+    portable_terminal_root: Path,
+    manifest: dict[str, Any],
+) -> dict[str, Any]:
+    expert_value = parse_tester_config_expert(tester_config)
+    stage: dict[str, Any] = {
+        "status": "not_configured",
+        "tester_expert_value": expert_value,
+        "claim_boundary": "portable_ea_stage_preflight_only_no_runtime_authority",
+    }
+    if not expert_value:
+        manifest.setdefault("runtime_surface_contract", {})["portable_ea_stage_status"] = "not_configured"
+        manifest.setdefault("artifact_identity", {}).setdefault("portable_runtime_root", {})["ea_binary"] = stage
+        return manifest
+
+    expert_relative = Path(expert_value.replace("\\", "/"))
+    destination = portable_terminal_root / "MQL5" / "Experts" / expert_relative
+    source_binary = repo_root / EA_BINARY
+    source_mq5 = repo_root / EA_SOURCE
+    try:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        copy_status = "already_current"
+        if not destination.exists() or sha256(destination) != sha256(source_binary):
+            shutil.copy2(source_binary, destination)
+            copy_status = "copied_to_portable_mql5_experts"
+        source_destination = destination.with_suffix(".mq5")
+        if source_mq5.exists():
+            if not source_destination.exists() or sha256(source_destination) != sha256(source_mq5):
+                shutil.copy2(source_mq5, source_destination)
+        stage = {
+            "status": "staged",
+            "copy_status": copy_status,
+            "tester_expert_value": expert_value,
+            "portable_terminal_root_redacted": redact_path(str(portable_terminal_root)),
+            "portable_ex5_redacted": redact_path(str(destination)),
+            "source": artifact_ref(source_binary, repo_root, availability="local_binary_hash_recorded_ignored_by_git"),
+            "portable_sha256": sha256(destination),
+            "portable_size_bytes": destination.stat().st_size,
+            "durable_identity": "tester_config_expert_value_plus_source_binary_sha256",
+            "claim_boundary": "portable_ea_stage_preflight_only_no_runtime_authority",
+        }
+    except OSError as exc:
+        stage = {
+            "status": "stage_failed",
+            "tester_expert_value": expert_value,
+            "portable_terminal_root_redacted": redact_path(str(portable_terminal_root)),
+            "portable_ex5_redacted": redact_path(str(destination)),
+            "error_class": exc.__class__.__name__,
+            "error_message": str(exc),
+            "remaining_blocker": "required_ex5_not_staged_under_portable_mql5_experts_path",
+            "claim_boundary": "portable_ea_stage_failed_no_runtime_completion_claim",
+        }
+
+    manifest.setdefault("artifact_identity", {}).setdefault("portable_runtime_root", {})["ea_binary"] = stage
+    manifest.setdefault("runtime_surface_contract", {})["portable_ea_stage_status"] = stage["status"]
+    return manifest
 
 
 def feature_columns_common_relative(bundle_id: str) -> str:
@@ -980,6 +1048,13 @@ def run_one_attempt(
     )
     ensure_completion_surface_scope(manifest, "full_period_deterministic")
     report_config_summary = normalize_tester_report_config(tester_config, attempt_id)
+    portable_terminal_root = terminal.parent if terminal else DEFAULT_TERMINAL.parent
+    manifest = ensure_portable_ea_stage(
+        repo_root=repo_root,
+        tester_config=tester_config,
+        portable_terminal_root=portable_terminal_root,
+        manifest=manifest,
+    )
     manifest.setdefault("artifact_identity", {})["tester_config"] = artifact_ref(tester_config, repo_root)
     write_yaml(manifest_path, manifest)
     telemetry_rel = manifest["artifact_identity"]["telemetry"]["common_relative_path"]
@@ -990,7 +1065,6 @@ def run_one_attempt(
     common_diagnostic = common_relative_to_path(diagnostic_rel)
     if common_diagnostic.exists():
         common_diagnostic.unlink()
-    portable_terminal_root = terminal.parent if terminal else DEFAULT_TERMINAL.parent
     main_data_root = terminal_data_root(repo_root)
     report_directory_summary = prepare_tester_report_directories(
         repo_root=repo_root,
@@ -1021,6 +1095,7 @@ def run_one_attempt(
         "tester_report_resolution_prelaunch": public_report_resolution_summary(report_directory_summary),
         "common_telemetry_redacted": redact_path(str(common_telemetry)),
         "common_diagnostic_redacted": redact_path(str(common_diagnostic)),
+        "portable_ea_stage": (manifest.get("artifact_identity") or {}).get("portable_runtime_root", {}).get("ea_binary"),
         "claim_boundary": "terminal_execution_evidence_only_no_runtime_authority_no_economics_pass",
     }
     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)

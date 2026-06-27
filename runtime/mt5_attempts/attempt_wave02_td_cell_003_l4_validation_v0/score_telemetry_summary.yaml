@@ -1,0 +1,59 @@
+version: wave02_tradeability_l4_score_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_validation_v0/score_telemetry_summary.yaml
+attempt_id: attempt_wave02_td_cell_003_l4_validation_v0
+run_id: onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0
+bundle_id: bundle_wave02_td_cell_003_l4_onnx_export_v0
+period_role: validation
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_validation_v0/telemetry/score_telemetry.csv
+  sha256: 62dc132f248af83e551d9559ff925f881f4a669b42771b6b0f16272584797992
+  size_bytes: 8534536
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_003_l4_validation_v0\score_telemetry.csv
+stats:
+  status: telemetry_observed
+  row_count: 53554
+  first_bar_close_time: 2024.06.05 00:00:00
+  last_bar_close_time: 2025.03.07 23:50:00
+  symbol_counts:
+    US100: 53554
+  period_counts:
+    PERIOD_M5: 53554
+  feature_count_values:
+    '23': 53554
+  decision_counts:
+    flat: 43018
+    tradeable: 10536
+  score_stats:
+    finite_count: 53554
+    min: 0.0091937482
+    max: 0.9999962449
+    mean: 0.6820716296051761
+  spread_points_stats:
+    finite_count: 53554
+    min: 0.0
+    max: 140.0
+    mean: 130.46745341150987
+  tick_volume_nonzero_count: 53554
+claim_boundary: wave02_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+diagnostic_evidence:
+  summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_validation_v0/score_diagnostic_summary.yaml
+  status: diagnostic_observed
+  event_counts:
+    closed_bar_candidate: 73
+    deinit_complete: 1
+    deinit_start: 1
+    feature_columns_loaded: 1
+    init_start: 1
+    init_succeeded: 1
+    onnx_created: 1
+    onnx_released: 1
+    onnx_shapes_set: 1
+    row_written: 73
+    tick_seen: 6326
+  claim_boundary: wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority
+work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+subwork_item_id: work_wave02_tradeability_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0

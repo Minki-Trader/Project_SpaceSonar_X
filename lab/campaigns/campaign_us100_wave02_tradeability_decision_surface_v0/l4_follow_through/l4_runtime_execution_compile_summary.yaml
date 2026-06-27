@@ -1,18 +1,39 @@
 version: wave0_l4_runtime_execution_compile_summary_v1
 summary_path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
-created_at_utc: '2026-06-27T20:44:34Z'
+created_at_utc: '2026-06-27T20:57:51Z'
 ea_source:
   path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
-  sha256: 8bd1b8e5e4cc9f67dd99e31c72f503ecfa5b4ddc59494b6767e1e32427b6dc47
-  size_bytes: 36677
+  sha256: c45ab2998983a63f79f6364575bc7c4f764bdd479a61d7a490084864af34706a
+  size_bytes: 36739
   availability: present_hash_recorded
 ea_binary:
   path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
-  sha256: 6a95152ce5a95e222880c04b93ae84cc68cb9c1e295d3a29c770ee32c236510c
-  size_bytes: 41134
+  sha256: 158c0a405347b16139ebea7f7cca99d5f51e6f6fa60f2c6b59ed7a660a752127
+  size_bytes: 41844
   availability: local_binary_hash_recorded_ignored_by_git
-compile_attempted: false
-compile_process: null
-compile_log: null
-status: ea_binary_available
+compile_attempted: true
+compile_process:
+  command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\MetaEditor64.exe
+  - /portable
+  - /compile:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  - /log:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\lab\campaigns\campaign_us100_wave02_tradeability_decision_surface_v0\l4_follow_through\l4_runtime_execution_compile.log
+  cwd: .
+  started_at_utc: '2026-06-27T20:57:51.263434Z'
+  ended_at_utc: '2026-06-27T20:57:53.549659Z'
+  exit_code: 1
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+compile_log:
+  path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_compile.log
+  exists: true
+  sha256: 3861b1f68f75100839a3c55fa42d4e8a3e996265c759f1aa5681f3c754887950
+  size_bytes: 3460
+  compile_errors: 0
+  compile_warnings: 0
+status: ea_compiled_for_runtime_execution
 claim_boundary: ea_compile_or_binary_preflight_only_not_strategy_tester_output
+compile_success_derived_from_log_and_binary: true
