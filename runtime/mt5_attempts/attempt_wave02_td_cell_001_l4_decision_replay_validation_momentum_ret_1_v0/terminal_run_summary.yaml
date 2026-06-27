@@ -1,0 +1,218 @@
+command_argv_redacted:
+- ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+- /portable
+- /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\tester_config.ini
+cwd: .
+started_at_utc: '2026-06-27T21:30:00.658798Z'
+ended_at_utc: '2026-06-27T21:30:29.105211Z'
+exit_code: 0
+timed_out: false
+stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stdout_tail: ''
+stderr_tail: ''
+mode: portable_contract_attempt
+attempt_claim_boundary: standard_contract_attempt_only
+telemetry_exists_after_attempt: true
+terminal_attempts:
+- command_argv_redacted:
+  - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-27T21:30:00.658798Z'
+  ended_at_utc: '2026-06-27T21:30:29.105211Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  telemetry_exists_after_attempt: true
+terminal_cleanup_actions:
+- action: terminate_existing_terminal_processes_explicit
+  method: taskkill_by_image_name_explicit_request
+  image_name: terminal64.exe
+  scope: explicit_user_requested_image_name_cleanup
+  started_at_utc: '2026-06-27T21:30:00.398345Z'
+  ended_at_utc: '2026-06-27T21:30:00.658753Z'
+  exit_code: 128
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: 145d83ae1b5593100359b1e065e0959d534f74a5de8c63e7aadb1403e5f035ff
+  stdout_tail: ''
+  stderr_tail: 'ERROR: The process "terminal64.exe" not found.
+
+    '
+  no_process_exit_codes:
+  - 128
+  claim_boundary: terminal_preflight_evidence_only
+  safety_boundary: not_default_behavior_do_not_use_for_formal_runtime_authority
+terminal_cleanup_policy:
+  default_terminate_existing: false
+  explicit_termination_requested: true
+  allowed_scope: explicit_user_requested_only
+  formal_runtime_claim_effect: lowered_claim_if_explicit_global_cleanup_used
+terminal_mode_policy:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  main_mode_fallback_allowed: false
+  main_mode_fallback_used: false
+  fallback_reason: null
+  claim_effect: decision_replay_standard_portable_attempt_observation
+selected_attempt_index: 0
+telemetry_observed: true
+version: wave02_tradeability_decision_replay_terminal_run_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+attempt_id: attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+source_attempt_id: attempt_wave02_td_cell_001_l4_validation_v0
+run_id: onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0
+bundle_id: bundle_wave02_td_cell_001_l4_onnx_export_v0
+tester_config:
+  path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/tester_config.ini
+  sha256: ca95193defcd809da297875cb239bdfd710e062867d1765582006704eb609779
+  size_bytes: 1509
+  availability: present_hash_recorded
+tester_report_config:
+  status: tester_report_config_normalized
+  changed: false
+  report_value: reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\tester_report
+  report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
+tester_report_resolution_prelaunch:
+  status: tester_report_directories_partially_prepared
+  report_value: reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\tester_report
+  prepared:
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  skipped:
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+    reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+      \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\AppData\\\
+      \\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\\\
+      MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\\\
+      \\reports\\\\spacesonar\\\\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0'"
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+    reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+      \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\AppData\\\
+      \\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\\\
+      MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\\\
+      \\reports\\\\spacesonar\\\\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0'"
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\reports\spacesonar\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+    reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+      \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\AppData\\\
+      \\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\\\
+      MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\\\
+      \\reports\\\\spacesonar\\\\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0'"
+  prelaunch_candidates:
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: a198ddee4ba5bf82cca185befe4bf126057b7e01e46c4eabe78f2dcf5d6947a5
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 2dcd58d4d50536dcdff86ac08dfd565e9d46aa3cbf131aa54bfadc5a67949b48
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 544aef935c148ec2212bdd9210b996ed07e46959ebd34b53e1c58b7ab70ffa18
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 05f213a328bdb776659783f361be40d7f8be1683171ea7bcd2c229a278550f5c
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: ec20f329929ca8967bc38d05bae0a6eae1d69d90b1225aab2a56c289b7d4a0ca
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 7bba246283a863d3ca0da0c3a26dde92763de8a0999480202976938920efc484
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: a3eae504aa88312bc90008c1d89d6712151ab45f05d366d36daf05683a7e3fa5
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: cb560f3fe4589f71fc5150469c5795b08c3046a2b07b9ed75eac54c168563de6
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 67fea3471b7fb526e417b33414707ca954fc28fc34af9cb7633728da9d088cf8
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 09b37a8fe9f01c72ef7ff704a115b42399bfe5470e19df4982d1b1164bcf6cab
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 62ec7dd25a8ad211b5ad2ea0417959961dfbe7dbb81e3d6b5ae68c49af2b92d1
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 9abaa0e04481bc39a7cccc3ab8e9fa01d68d5779be10df859b78f8a322c90842
+source_score_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_001_l4_validation_v0\score_telemetry.csv
+execution_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_tradeability_l4_decision_replay\attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\execution_telemetry.csv
+claim_boundary: wave02_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+work_item_id: work_wave02_tradeability_decision_replay_runtime_execution_v0
+subwork_item_id: work_wave02_tradeability_decision_replay_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0

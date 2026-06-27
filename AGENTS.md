@@ -75,6 +75,7 @@ Policy meaning lives in `docs/agent_control/policy_contract.yaml`; manifests bin
 - `GUARD_004_ARTIFACT_IDENTITY`: durable identity uses repo-relative paths plus IDs/hashes; registries are indexes, not proof.
 - `GUARD_005_LOCKED_OOS`: locked final OOS is excluded unless an explicit unlock contract exists.
 - `GUARD_006_BRANCH_WORKTREE`: check branch/worktree fit before mutation; never revert user changes unless explicitly asked.
+- `GUARD_007_OPERATIONAL_STABILITY`: default to writer-scope smoke and source-of-truth checks; routine pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans are forbidden unless a boundary, drift, shared-contract change, protected claim, or explicit user request requires them.
 
 ## Runtime And Parity
 

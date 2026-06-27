@@ -1,0 +1,76 @@
+version: candidate_l5_runtime_evidence_summary_v1
+candidate_id: candidate_wave02_td_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+created_at_utc: '2026-06-27T21:53:48Z'
+status: negative_runtime_evidence_no_l5_candidate
+claim_boundary: wave02_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+period_rows:
+- candidate_id: candidate_wave02_td_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+  run_id: onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0
+  bundle_id: bundle_wave02_td_cell_002_l4_onnx_export_v0
+  cell_id: wave02_td_cell_002
+  period_role: validation
+  attempt_id: attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0
+  report_parse_status: parsed
+  missing_metric_count: 0
+  total_net_profit: -217.35
+  gross_profit: 812.08
+  gross_loss: -1029.43
+  profit_factor: 0.79
+  total_trades: 6283
+  balance_drawdown_maximal_pct: 44.46
+  equity_drawdown_maximal_pct: 44.47
+  period_judgment: negative_runtime_evidence
+  judgment_reasons: non_positive_total_net_profit|profit_factor_below_1|drawdown_above_10pct_reference
+  tester_report_kpi_summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_kpi_summary.yaml
+  claim_boundary: wave02_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+- candidate_id: candidate_wave02_td_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+  run_id: onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0
+  bundle_id: bundle_wave02_td_cell_002_l4_onnx_export_v0
+  cell_id: wave02_td_cell_002
+  period_role: research_oos
+  attempt_id: attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0
+  report_parse_status: parsed
+  missing_metric_count: 0
+  total_net_profit: -73.47
+  gross_profit: 726.84
+  gross_loss: -800.31
+  profit_factor: 0.91
+  total_trades: 5165
+  balance_drawdown_maximal_pct: 21.46
+  equity_drawdown_maximal_pct: 22.44
+  period_judgment: negative_runtime_evidence
+  judgment_reasons: non_positive_total_net_profit|profit_factor_below_1|drawdown_above_10pct_reference
+  tester_report_kpi_summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_kpi_summary.yaml
+  claim_boundary: wave02_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+result_judgment: negative
+economics_pass: false
+runtime_authority: false
+selected_baseline: false
+live_readiness: false
+goal_achieve: false
+l5_candidate: false
+judgment_reasons:
+- drawdown_above_10pct_reference
+- non_positive_total_net_profit
+- profit_factor_below_1
+source_evidence:
+  routing_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  routing_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  campaign_l5_evidence_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  campaign_l5_evidence_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+next_action: 'decide Wave02 campaign boundary: close/rotate or repair open_failed
+  semantics in a new bounded work item'
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true

@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-27T21:19:41Z'
+updated_utc: '2026-06-27T21:59:21Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -15,20 +15,22 @@ active_wave:
   closeout: null
 active_campaign:
   campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+  status: wave02_tradeability_campaign_closed_negative_l5_evidence_no_l5_candidate
+  closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
 active_work_item:
-  work_item_id: work_wave02_tradeability_decision_replay_runtime_execution_v0
+  work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_decision_replay_runtime_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
-next_action: execute prepared Wave02 decision replay MT5 attempts with portable terminal
-  only, then judge paired validation/research_oos results
+current_claim_boundary: wave02_next_campaign_or_wave_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: decide whether Wave02 opens a new campaign or closes the wave; do not
+  repair momentum_ret_1 replay as a candidate
 unresolved_blockers:
-- Wave02_decision_replay_terminal_execution_pending
+- Wave02_next_campaign_or_wave_boundary_decision_pending
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml
   runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
   routing_registry: docs/agent_control/work_family_registry.yaml
 summary_counts:
-  candidate_count: 0
+  candidate_count: 2
   l5_candidate_count: 0
   wave02_l4_pair_judgment:
     cell_pair_count: 8
@@ -95,3 +97,129 @@ summary_counts:
       label_recipe_id_horizon_suffix: 4
     eligibility_reason_counts:
       eligible_direction_agnostic_tradeability_momentum_ret_1_adapter: 7
+  wave02_decision_replay_runtime_execution:
+    prepared_attempt_count: 14
+    selected_attempt_count: 14
+    indexed_execution_count: 14
+    executed_attempt_count: 14
+    completed_manifest_count: 14
+    touched_manifest_count: 14
+    source_score_telemetry_observed_count: 14
+    execution_telemetry_observed_count: 14
+    execution_telemetry_missing_count: 0
+    tester_report_observed_count: 14
+    tester_report_missing_count: 0
+    tester_log_observed_count: 14
+    terminal_execution_count: 14
+    telemetry_observation_count: 14
+    tester_report_observation_count: 14
+    portable_contract_count: 14
+    runtime_probe_complete_count: 14
+    runtime_probe_incomplete_count: 0
+    open_action_count: 105767
+    close_action_count: 22067
+    open_failed_count: 22595
+    period_role_counts:
+      research_oos: 7
+      validation: 7
+    direction_policy_counts:
+      momentum_ret_1: 14
+    status_counts:
+      runtime_probe_completed: 14
+    result_judgment_counts:
+      runtime_probe: 14
+    candidate_count: 0
+    l5_candidate_count: 0
+  runtime_contract_integrity:
+    runtime_probe_complete_count: 14
+    prepared_attempt_count: 14
+    runtime_probe_complete: true
+  wave02_decision_replay_pair_judgment:
+    cell_pair_count: 7
+    runtime_probe_pair_complete_count: 7
+    both_period_roles_observed_count: 7
+    nonempty_execution_pair_count: 7
+    tester_report_pair_observed_count: 7
+    decision_action_pair_count: 7
+    l5_routing_review_required_count: 7
+    l5_routing_review_repair_first_count: 1
+    candidate_count: 0
+    l5_candidate_count: 0
+    source_proxy_judgment_counts:
+      preserved_clue: 7
+    result_judgment_counts:
+      runtime_probe: 7
+    l5_status_counts:
+      l5_routing_review_required_no_candidate_claim: 2
+      l5_routing_review_required_with_open_failed_note_no_candidate_claim: 4
+      l5_routing_review_requires_execution_repair_no_candidate_claim: 1
+    decision_replay_comparison_class_counts:
+      decision_replay_actions_observed: 6
+      decision_replay_actions_observed_with_high_open_failed: 1
+    runtime_execution_counts:
+      prepared_attempt_count: 14
+      selected_attempt_count: 14
+      indexed_execution_count: 14
+      executed_attempt_count: 14
+      completed_manifest_count: 14
+      touched_manifest_count: 14
+      source_score_telemetry_observed_count: 14
+      execution_telemetry_observed_count: 14
+      execution_telemetry_missing_count: 0
+      tester_report_observed_count: 14
+      tester_report_missing_count: 0
+      tester_log_observed_count: 14
+      terminal_execution_count: 14
+      telemetry_observation_count: 14
+      tester_report_observation_count: 14
+      portable_contract_count: 14
+      runtime_probe_complete_count: 14
+      runtime_probe_incomplete_count: 0
+      open_action_count: 105767
+      close_action_count: 22067
+      open_failed_count: 22595
+      period_role_counts:
+        research_oos: 7
+        validation: 7
+      direction_policy_counts:
+        momentum_ret_1: 14
+      status_counts:
+        runtime_probe_completed: 14
+      result_judgment_counts:
+        runtime_probe: 14
+      candidate_count: 0
+      l5_candidate_count: 0
+  wave02_decision_replay_l5_routing_decision:
+    evaluated_pair_count: 7
+    candidate_manifest_opened_count: 2
+    candidate_count: 2
+    l5_candidate_count: 0
+    held_for_open_failed_caveat_count: 4
+    repair_first_count: 1
+    routing_decision_counts:
+      hold_for_open_failed_caveat_review: 4
+      open_l5_candidate_manifest: 2
+      repair_execution_semantics_before_l5_manifest: 1
+    source_l5_status_counts:
+      l5_routing_review_required_no_candidate_claim: 2
+      l5_routing_review_required_with_open_failed_note_no_candidate_claim: 4
+      l5_routing_review_requires_execution_repair_no_candidate_claim: 1
+  wave02_l5_candidate_runtime_evidence:
+    candidate_count: 2
+    candidate_runtime_evidence_count: 2
+    l5_candidate_count: 0
+    period_evidence_row_count: 4
+    negative_candidate_count: 2
+    period_judgment_counts:
+      negative_runtime_evidence: 4
+    candidate_result_counts:
+      negative_runtime_evidence_no_l5_candidate: 2
+  wave02_campaign_closeout:
+    l4_score_pair_count: 8
+    decision_replay_pair_count: 7
+    candidate_count: 2
+    candidate_runtime_evidence_count: 2
+    negative_candidate_count: 2
+    l5_candidate_count: 0
+    held_for_open_failed_caveat_count: 4
+    repair_first_count: 1

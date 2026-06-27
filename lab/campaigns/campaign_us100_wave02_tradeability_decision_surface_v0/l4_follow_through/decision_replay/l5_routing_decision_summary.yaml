@@ -1,0 +1,198 @@
+version: wave02_tradeability_decision_replay_l5_routing_decision_summary_v1
+summary_id: wave02_tradeability_decision_replay_l5_routing_decision_summary_v0
+work_item_id: work_wave02_tradeability_decision_replay_l5_routing_decision_v0
+parent_work_item_id: work_wave02_tradeability_decision_replay_judgment_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+created_at_utc: '2026-06-27T21:46:14Z'
+ended_at_utc: '2026-06-27T21:46:14Z'
+status: wave02_l5_candidate_manifest_opened_runtime_evidence_preparation_pending
+claim_boundary: wave02_decision_replay_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+support_skills:
+- spacesonar-evidence-provenance
+- spacesonar-claim-discipline
+validation_depth: writer_scope_smoke
+counts:
+  evaluated_pair_count: 7
+  candidate_manifest_opened_count: 2
+  candidate_count: 2
+  l5_candidate_count: 0
+  held_for_open_failed_caveat_count: 4
+  repair_first_count: 1
+  routing_decision_counts:
+    hold_for_open_failed_caveat_review: 4
+    open_l5_candidate_manifest: 2
+    repair_execution_semantics_before_l5_manifest: 1
+  source_l5_status_counts:
+    l5_routing_review_required_no_candidate_claim: 2
+    l5_routing_review_required_with_open_failed_note_no_candidate_claim: 4
+    l5_routing_review_requires_execution_repair_no_candidate_claim: 1
+opened_candidate_ids:
+- candidate_wave02_td_cell_001_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_td_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+held_cell_ids:
+- wave02_td_cell_003
+- wave02_td_cell_005
+- wave02_td_cell_006
+- wave02_td_cell_008
+repair_first_cell_ids:
+- wave02_td_cell_004
+judgment:
+  judgment_label: candidate_manifest_opened_runtime_evidence_pending
+  candidate_count: 2
+  l5_candidate_count: 0
+  claim_boundary: wave02_decision_replay_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  decision_rule: Open L5 runtime-evidence target manifests only for paired decision
+    replay cells with zero open_failed in both validation and research_oos.
+  missing_evidence:
+  - candidate_specific_L5_runtime_evidence_not_prepared
+  - candidate_specific_L5_runtime_evidence_not_executed
+  - economics_metrics_not_parsed_or_claimable
+  - locked_final_oos_b_not_used
+  next_action: prepare candidate-specific L5 runtime evidence for opened Wave02 decision
+    replay targets
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+  producer: python foundation/pipelines/decide_wave02_tradeability_decision_replay_l5_routing.py
+    --write-control-records
+  consumer: work_wave02_tradeability_l5_candidate_runtime_evidence_preparation_v0
+  artifact_paths:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_decision_replay_l5_routing_decision_v0_closeout.yaml
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    git_sha: 6b3ad167fdd9392e98fd59f746dd6c6ede151d60
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - M .codex/config.toml
+    - ' M docs/registers/artifact_registry.csv'
+    - ' M docs/registers/goal_registry.csv'
+    - ' M docs/workspace/workspace_state.yaml'
+    - ' M lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml'
+    - ?? foundation/pipelines/aggregate_wave02_tradeability_decision_replay_pair_judgments.py
+    - ?? foundation/pipelines/decide_wave02_tradeability_decision_replay_l5_routing.py
+    - ?? foundation/pipelines/run_wave02_tradeability_l4_decision_replay_attempts.py
+    - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+    - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+    - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
+    - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+    - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_decision_replay_judgment_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_decision_replay_strategy_tester_execution_v0_closeout.yaml
+    - ?? package.json
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/tester_log_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+  regeneration_commands:
+  - python foundation/pipelines/decide_wave02_tradeability_decision_replay_l5_routing.py
+    --write-control-records
+  claim_boundary: wave02_decision_replay_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+artifact_outputs:
+  routing_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  routing_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  routing_closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_decision_replay_l5_routing_decision_v0_closeout.yaml
+  candidate_summaries:
+  - lab/candidates/candidate_wave02_td_cell_001_decision_replay_momentum_ret_1_l5_target_v0/candidate_summary.yaml
+  - lab/candidates/candidate_wave02_td_cell_002_decision_replay_momentum_ret_1_l5_target_v0/candidate_summary.yaml
+prevention_memory:
+- Candidate manifests are runtime-evidence targets, not selected baselines or operating
+  promotions.
+- L5 candidate count remains zero until candidate-specific L5 runtime evidence exists.
+- Open-failed caveat cells are held outside candidate manifests until execution semantics
+  are repaired or bounded.
+unresolved_blockers:
+- Wave02_candidate_specific_L5_runtime_evidence_preparation_pending
+reopen_conditions:
+- rerun routing decision if decision replay pair judgment index changes
+- do not claim runtime authority or economics pass without candidate-specific L5 evidence
+  and final claim guard
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

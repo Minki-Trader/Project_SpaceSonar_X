@@ -2,9 +2,9 @@ version: campaign_manifest_v2
 campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: wave02_decision_replay_adapter_prepared_terminal_execution_pending
+status: wave02_tradeability_campaign_closed_negative_l5_evidence_no_l5_candidate
 created_at_utc: '2026-06-27T12:15:00Z'
-updated_at_utc: '2026-06-27T21:19:41Z'
+updated_at_utc: '2026-06-27T21:59:21Z'
 wave_ids:
 - wave_us100_wave02_tradeability_decision_surface_v0
 idea_ids:
@@ -82,7 +82,7 @@ required_gates:
 - exploration_coverage_check
 - proxy_runtime_parity_policy
 - final_claim_guard
-claim_boundary: wave02_decision_replay_runtime_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_tradeability_campaign_closed_negative_l5_evidence_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -296,8 +296,7 @@ provenance:
   - open
   - --spec
   - lab/goals/goal_us100_onnx_forward_boundary_v0/wave02_tradeability_decision_campaign_spec.yaml
-next_action: execute prepared Wave02 decision replay MT5 attempts with portable terminal
-  only, then judge paired validation/research_oos results
+next_action: work_wave02_next_campaign_or_wave_boundary_decision_v0
 notes: Wave02 proxy observations executed; L4 follow-through required next. No candidate
   or runtime authority claim.
 run_specs_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
@@ -306,7 +305,7 @@ result_counts:
   preserved_clue: 7
 executed_proxy_run_count: 8
 valid_proxy_model_bearing_run_count: 8
-candidate_count: 0
+candidate_count: 2
 l5_candidate_count: 0
 evidence_paths:
 - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/evidence/proxy_execution_summary.yaml
@@ -420,3 +419,144 @@ l4_follow_through:
         label_recipe_id_horizon_suffix: 4
       eligibility_reason_counts:
         eligible_direction_agnostic_tradeability_momentum_ret_1_adapter: 7
+runtime_follow_through:
+  decision_replay_runtime_execution:
+    summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+    index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+    status: wave02_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+    counts:
+      prepared_attempt_count: 14
+      selected_attempt_count: 14
+      indexed_execution_count: 14
+      executed_attempt_count: 14
+      completed_manifest_count: 14
+      touched_manifest_count: 14
+      source_score_telemetry_observed_count: 14
+      execution_telemetry_observed_count: 14
+      execution_telemetry_missing_count: 0
+      tester_report_observed_count: 14
+      tester_report_missing_count: 0
+      tester_log_observed_count: 14
+      terminal_execution_count: 14
+      telemetry_observation_count: 14
+      tester_report_observation_count: 14
+      portable_contract_count: 14
+      runtime_probe_complete_count: 14
+      runtime_probe_incomplete_count: 0
+      open_action_count: 105767
+      close_action_count: 22067
+      open_failed_count: 22595
+      period_role_counts:
+        research_oos: 7
+        validation: 7
+      direction_policy_counts:
+        momentum_ret_1: 14
+      status_counts:
+        runtime_probe_completed: 14
+      result_judgment_counts:
+        runtime_probe: 14
+      candidate_count: 0
+      l5_candidate_count: 0
+    claim_boundary: wave02_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  decision_replay_pair_judgment:
+    summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+    index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+    status: wave02_decision_replay_pair_judgment_completed_l5_routing_decision_pending
+    counts:
+      cell_pair_count: 7
+      runtime_probe_pair_complete_count: 7
+      both_period_roles_observed_count: 7
+      nonempty_execution_pair_count: 7
+      tester_report_pair_observed_count: 7
+      decision_action_pair_count: 7
+      l5_routing_review_required_count: 7
+      l5_routing_review_repair_first_count: 1
+      candidate_count: 0
+      l5_candidate_count: 0
+      source_proxy_judgment_counts:
+        preserved_clue: 7
+      result_judgment_counts:
+        runtime_probe: 7
+      l5_status_counts:
+        l5_routing_review_required_no_candidate_claim: 2
+        l5_routing_review_required_with_open_failed_note_no_candidate_claim: 4
+        l5_routing_review_requires_execution_repair_no_candidate_claim: 1
+      decision_replay_comparison_class_counts:
+        decision_replay_actions_observed: 6
+        decision_replay_actions_observed_with_high_open_failed: 1
+      runtime_execution_counts:
+        prepared_attempt_count: 14
+        selected_attempt_count: 14
+        indexed_execution_count: 14
+        executed_attempt_count: 14
+        completed_manifest_count: 14
+        touched_manifest_count: 14
+        source_score_telemetry_observed_count: 14
+        execution_telemetry_observed_count: 14
+        execution_telemetry_missing_count: 0
+        tester_report_observed_count: 14
+        tester_report_missing_count: 0
+        tester_log_observed_count: 14
+        terminal_execution_count: 14
+        telemetry_observation_count: 14
+        tester_report_observation_count: 14
+        portable_contract_count: 14
+        runtime_probe_complete_count: 14
+        runtime_probe_incomplete_count: 0
+        open_action_count: 105767
+        close_action_count: 22067
+        open_failed_count: 22595
+        period_role_counts:
+          research_oos: 7
+          validation: 7
+        direction_policy_counts:
+          momentum_ret_1: 14
+        status_counts:
+          runtime_probe_completed: 14
+        result_judgment_counts:
+          runtime_probe: 14
+        candidate_count: 0
+        l5_candidate_count: 0
+    claim_boundary: wave02_decision_replay_pair_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  l5_routing_decision:
+    summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+    index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+    status: wave02_l5_candidate_manifest_opened_runtime_evidence_preparation_pending
+    counts:
+      evaluated_pair_count: 7
+      candidate_manifest_opened_count: 2
+      candidate_count: 2
+      l5_candidate_count: 0
+      held_for_open_failed_caveat_count: 4
+      repair_first_count: 1
+      routing_decision_counts:
+        hold_for_open_failed_caveat_review: 4
+        open_l5_candidate_manifest: 2
+        repair_execution_semantics_before_l5_manifest: 1
+      source_l5_status_counts:
+        l5_routing_review_required_no_candidate_claim: 2
+        l5_routing_review_required_with_open_failed_note_no_candidate_claim: 4
+        l5_routing_review_requires_execution_repair_no_candidate_claim: 1
+    claim_boundary: wave02_decision_replay_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  l5_candidate_runtime_evidence:
+    summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+    index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+    status: wave02_l5_candidate_runtime_evidence_observed_no_l5_candidates_boundary_decision_pending
+    counts:
+      candidate_count: 2
+      candidate_runtime_evidence_count: 2
+      l5_candidate_count: 0
+      period_evidence_row_count: 4
+      negative_candidate_count: 2
+      period_judgment_counts:
+        negative_runtime_evidence: 4
+      candidate_result_counts:
+        negative_runtime_evidence_no_l5_candidate: 2
+    claim_boundary: wave02_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+candidate_ids:
+- candidate_wave02_td_cell_001_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_td_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+l5_candidate_ids: []
+campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
+negative_memory_ids:
+- neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0

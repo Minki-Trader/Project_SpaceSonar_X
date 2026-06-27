@@ -1,0 +1,65 @@
+version: wave02_tradeability_decision_replay_execution_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+attempt_id: attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0
+source_attempt_id: attempt_wave02_td_cell_008_l4_research_oos_v0
+run_id: onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0
+bundle_id: bundle_wave02_td_cell_008_l4_onnx_export_v0
+period_role: research_oos
+direction_policy: momentum_ret_1
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/execution_telemetry.csv
+  sha256: 0fcd35086858d05916c8c639a45f6c1ba4f20c3abe93823116e3b91cbe47f6c1
+  size_bytes: 6436586
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_tradeability_l4_decision_replay\attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0\execution_telemetry.csv
+stats:
+  status: execution_telemetry_observed
+  row_count: 45281
+  first_bar_close_time: 2025.04.03 00:00:00
+  last_bar_close_time: 2025.11.20 23:55:00
+  symbol_counts:
+    US100: 45281
+  period_counts:
+    PERIOD_M5: 45281
+  decision_family_counts:
+    abstain_capable_direction_agnostic_tradeability: 45281
+  direction_policy_counts:
+    momentum_ret_1: 45281
+  source_decision_counts:
+    flat: 36205
+    tradeable: 9076
+  execution_signal_counts:
+    flat: 36205
+    long: 4950
+    short: 4126
+  action_counts:
+    close_flat: 1119
+    close_hold_elapsed: 207
+    hold_same_direction: 3758
+    no_trade_flat: 35075
+    open_failed: 82
+    open_long: 2631
+    open_short: 2409
+  trade_action_counts:
+    open_action_count: 5040
+    close_action_count: 1326
+    open_failed_count: 82
+    skip_spread_count: 0
+    no_trade_flat_count: 35075
+    hold_same_direction_count: 3758
+  score_stats:
+    finite_count: 45281
+    min: 0.0309447944
+    max: 0.973674655
+    mean: 0.48639726201992667
+  spread_points_stats:
+    finite_count: 45281
+    min: 120.0
+    max: 1275.0
+    mean: 135.15823413793865
+claim_boundary: wave02_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+work_item_id: work_wave02_tradeability_decision_replay_runtime_execution_v0
+subwork_item_id: work_wave02_tradeability_decision_replay_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0

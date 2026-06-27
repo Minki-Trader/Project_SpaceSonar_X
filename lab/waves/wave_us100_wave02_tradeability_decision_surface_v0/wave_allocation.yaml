@@ -87,13 +87,14 @@ campaign_allocations:
     - no inherited Wave01 thresholds or candidates
     why_this_campaign_needs_more_or_less_than_default: initial broad Wave02 surface
       uses non-default budget before rotation
-  status: wave02_proxy_observation_l4_required
+  status: wave02_tradeability_campaign_closed_negative_l5_evidence_no_l5_candidate
   campaign_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_wave02_tradeability_side_abstain_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/sweep_manifest.yaml
   campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
-  claim_boundary: wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-  next_action: work_wave02_tradeability_l4_materialization_preflight_v0
-  notes: Wave02 proxy observations executed; L4 follow-through required next. No candidate
-    or runtime authority claim.
-next_action: work_wave02_tradeability_l4_materialization_preflight_v0
+  claim_boundary: wave02_tradeability_campaign_closed_negative_l5_evidence_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_next_campaign_or_wave_boundary_decision_v0
+  notes: Campaign closed negative after candidate-specific L5 tester report evidence;
+    no L5 candidate.
+next_action: work_wave02_next_campaign_or_wave_boundary_decision_v0
+updated_at_utc: '2026-06-27T21:59:21Z'

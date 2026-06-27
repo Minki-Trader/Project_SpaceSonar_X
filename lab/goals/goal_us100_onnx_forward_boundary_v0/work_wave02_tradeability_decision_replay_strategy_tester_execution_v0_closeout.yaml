@@ -1,0 +1,77 @@
+version: work_closeout_v1
+work_item_id: work_wave02_tradeability_decision_replay_strategy_tester_execution_v0
+parent_work_item_id: work_wave02_tradeability_decision_replay_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-27T21:37:07Z'
+result_judgment: runtime_probe
+status: wave02_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+claim_boundary: wave02_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
+counts:
+  prepared_attempt_count: 14
+  selected_attempt_count: 14
+  indexed_execution_count: 14
+  executed_attempt_count: 14
+  completed_manifest_count: 14
+  touched_manifest_count: 14
+  source_score_telemetry_observed_count: 14
+  execution_telemetry_observed_count: 14
+  execution_telemetry_missing_count: 0
+  tester_report_observed_count: 14
+  tester_report_missing_count: 0
+  tester_log_observed_count: 14
+  terminal_execution_count: 14
+  telemetry_observation_count: 14
+  tester_report_observation_count: 14
+  portable_contract_count: 14
+  runtime_probe_complete_count: 14
+  runtime_probe_incomplete_count: 0
+  open_action_count: 105767
+  close_action_count: 22067
+  open_failed_count: 22595
+  period_role_counts:
+    research_oos: 7
+    validation: 7
+  direction_policy_counts:
+    momentum_ret_1: 14
+  status_counts:
+    runtime_probe_completed: 14
+  result_judgment_counts:
+    runtime_probe: 14
+  candidate_count: 0
+  l5_candidate_count: 0
+required_gate_coverage:
+  passed:
+  - mt5_runtime_probe_contract_audit
+  - runtime_surface_contract
+  - terminal_execution_attempt_record
+  - execution_telemetry_summary
+  - result_judgment
+  - final_claim_guard
+  - writer_scope_self_check
+  missing:
+  - paired_Wave02_decision_replay_period_judgment_pending
+  not_applicable:
+  - runtime_authority
+  - economics_pass
+  - selected_baseline
+  - goal_achieve
+  - live_readiness
+try_first_disposition:
+  policy_applied: missing Wave02 decision replay runtime entrypoint was repaired before
+    blocked/deferred/invalid disposition
+next_action: judge paired Wave02 decision replay validation/research_oos results before
+  any L5 candidate claim
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true

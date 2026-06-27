@@ -137,11 +137,11 @@ def metric_value(raw_value: str, metric: TesterReportMetric) -> str | None:
             return None
         number = match.group(1)
     else:
-        match = re.search(r"[-+]?\d[\d,]*(?:\.\d+)?", raw_value)
+        match = re.search(r"[-+]?\d[\d,\s]*(?:\.\d+)?", raw_value)
         if not match:
             return None
         number = match.group(0)
-    normalized = number.replace(",", "")
+    normalized = re.sub(r"[\s,]+", "", number)
     if metric.value_type == "int":
         return str(int(float(normalized)))
     if metric.value_type == "float":
