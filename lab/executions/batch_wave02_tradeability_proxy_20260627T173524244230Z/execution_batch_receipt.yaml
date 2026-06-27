@@ -1,0 +1,142 @@
+version: execution_batch_receipt_v1
+batch_id: batch_wave02_tradeability_proxy_20260627T173524244230Z
+work_item_id: execute_materialized_run_specs
+command_argv:
+- foundation/pipelines/run_wave02_tradeability_proxy_batch.py
+cwd: .
+started_at_utc: '2026-06-27T17:35:27.362003Z'
+ended_at_utc: '2026-06-27T17:35:27.729196Z'
+exit_status: 0
+result_status: completed
+receipt_status: finalized
+git:
+  sha: 0e4c456d91581307d126098735fc51069a989e62
+  branch: codex/wave02-execute-materialized-run-specs
+  source_dirty: true
+  generated_output_dirty: true
+  source_tree_hash: fdf60e783b0d0cb1593ce4afd957b25c71cf32dea6fbb4523731c9e6c25f501e
+  source_tree_hash_at_start: fdf60e783b0d0cb1593ce4afd957b25c71cf32dea6fbb4523731c9e6c25f501e
+  source_tree_hash_at_end: fdf60e783b0d0cb1593ce4afd957b25c71cf32dea6fbb4523731c9e6c25f501e
+  source_tree_drift_during_execution: false
+  source_diff:
+    path: lab/executions/batch_wave02_tradeability_proxy_20260627T173524244230Z/source_snapshot/tracked_unstaged.patch
+    sha256: 32111f1213b9ee1815c05216d051c4d94870134dc514fed0213f8ee30d43c09a
+  source_snapshot:
+    version: source_snapshot_v1
+    batch_id: batch_wave02_tradeability_proxy_20260627T173524244230Z
+    tracked_patch_path: lab/executions/batch_wave02_tradeability_proxy_20260627T173524244230Z/source_snapshot/tracked_unstaged.patch
+    tracked_patch_sha256: 32111f1213b9ee1815c05216d051c4d94870134dc514fed0213f8ee30d43c09a
+    staged_patch_path: lab/executions/batch_wave02_tradeability_proxy_20260627T173524244230Z/source_snapshot/staged.patch
+    staged_patch_sha256: 4373c6cd074d55ba6154b88614cda6238cc2b205e8d896c8eebd43f073249cd4
+    untracked_archive_path: null
+    untracked_archive_sha256: null
+    untracked_archive_manifest: []
+    untracked_paths: []
+    deleted_paths: []
+    renamed_paths: []
+    binary_source_paths: []
+    source_tree_hash: fdf60e783b0d0cb1593ce4afd957b25c71cf32dea6fbb4523731c9e6c25f501e
+    source_surface:
+    - AGENTS.md
+    - pyproject.toml
+    - uv.lock
+    - sitecustomize.py
+    - src/
+    - foundation/
+    - configs/
+    - tests/
+    - .agents/
+    - .github/workflows/
+    - docs/policies/
+    - docs/agent_control/
+    - docs/contracts/
+    - lab/templates/
+    manifest_path: lab/executions/batch_wave02_tradeability_proxy_20260627T173524244230Z/source_snapshot/source_snapshot_manifest.yaml
+    manifest_sha256: 5a4200a648253002c9299226f830e544f58d016d9505eb09d511f0d37526d6d9
+  changed_files_summary:
+    source_files:
+    - foundation/features/wave02_tradeability_features.py
+    - foundation/labels/wave02_tradeability_labels.py
+    - foundation/pipelines/run_wave02_tradeability_proxy_batch.py
+    - src/spacesonar/cli.py
+    - src/spacesonar/control_plane/lifecycle.py
+    - src/spacesonar/control_plane/provenance.py
+    - tests/test_wave01_operating_closeout.py
+    - tests/test_wave02_tradeability_proxy_components.py
+    generated_files:
+    - docs/registers/artifact_registry.csv
+    - docs/registers/campaign_registry.csv
+    - docs/registers/goal_registry.csv
+    - docs/registers/run_registry.csv
+    - docs/registers/sweep_registry.csv
+    - docs/registers/wave_registry.csv
+    - docs/workspace/workspace_state.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/evidence/proxy_execution_summary.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_006_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_007_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0.yaml
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
+    - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/sweep_manifest.yaml
+    - lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/run_manifest.json
+    - lab/runs/onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0/run_manifest.json
+    - lab/runs/onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0/run_manifest.json
+    - lab/runs/onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0/run_manifest.json
+    - lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/run_manifest.json
+    - lab/runs/onnxlab_wave02_td_cell_006_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_006_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_006_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_006_tradeability_side_abstain_v0/run_manifest.json
+    - lab/runs/onnxlab_wave02_td_cell_007_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_007_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_007_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_007_tradeability_side_abstain_v0/run_manifest.json
+    - lab/runs/onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0/artifact_lineage.json
+    - lab/runs/onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0/experiment_receipt.yaml
+    - lab/runs/onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0/metrics.json
+    - lab/runs/onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0/run_manifest.json
+    other_files:
+    - .codex/config.toml
+    - lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+    - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+    - lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+    - lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/campaign_refs.csv
+    - lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
+    - package.json
+environment:
+  python_executable_redacted: ${PYTHON}
+  python_version: 3.13.9
+  platform: Windows-11-10.0.26200-SP0
+  lock_file: uv.lock
+  lock_file_sha256: 19836faa417eec98234c4c9297451aa5fdf836de389e09a6d00cb5ddc60d0fc1
+inputs:
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  sha256: 915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c
+  size_bytes: 4857
+outputs:
+- path: lab/executions/batch_wave02_tradeability_proxy_20260627T173524244230Z/source_snapshot/source_snapshot_manifest.yaml
+  sha256: 5a4200a648253002c9299226f830e544f58d016d9505eb09d511f0d37526d6d9
+  size_bytes: 1119
+claim_boundary: wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+receipt_completeness: complete
+final_receipt_status: valid

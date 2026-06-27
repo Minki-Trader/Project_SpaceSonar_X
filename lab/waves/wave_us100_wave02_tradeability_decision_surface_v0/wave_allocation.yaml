@@ -3,7 +3,7 @@ wave_id: wave_us100_wave02_tradeability_decision_surface_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 status: wave_open
 created_at_utc: '2026-06-27T12:15:00Z'
-claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+claim_boundary: wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 allocation_goal: 'Spend the first Wave02 campaign on a new decision/tradeability surface,
   then rotate instead of repairing one weak cell unless a reusable divergence or prevention-memory
   question appears.
@@ -87,16 +87,13 @@ campaign_allocations:
     - no inherited Wave01 thresholds or candidates
     why_this_campaign_needs_more_or_less_than_default: initial broad Wave02 surface
       uses non-default budget before rotation
-  status: run_specs_materialized
+  status: wave02_proxy_observation_l4_required
   campaign_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_wave02_tradeability_side_abstain_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/sweep_manifest.yaml
   campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
-  claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
-  next_action: execute_materialized_run_specs
-  notes: 'Wave02 campaign-open scaffold only. Declared run specs are not executed,
-    selected, or runtime-authoritative until manifests, receipts, lineage, and runtime
-    evidence exist.
-
-    '
-next_action: execute_materialized_run_specs
+  claim_boundary: wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_tradeability_l4_materialization_preflight_v0
+  notes: Wave02 proxy observations executed; L4 follow-through required next. No candidate
+    or runtime authority claim.
+next_action: work_wave02_tradeability_l4_materialization_preflight_v0

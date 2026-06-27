@@ -1,0 +1,1615 @@
+diff --git a/foundation/features/wave02_tradeability_features.py b/foundation/features/wave02_tradeability_features.py
+new file mode 100644
+index 0000000..e99dba6
+--- /dev/null
++++ b/foundation/features/wave02_tradeability_features.py
+@@ -0,0 +1,186 @@
++from __future__ import annotations
++
++import hashlib
++import json
++from dataclasses import dataclass
++from zoneinfo import ZoneInfo
++
++import numpy as np
++import pandas as pd
++
++
++NY_TZ = ZoneInfo("America/New_York")
++
++
++@dataclass(frozen=True)
++class FeatureSchema:
++    feature_recipe_id: str
++    feature_family: str
++    feature_columns: list[str]
++    feature_order_hash: str
++    feature_schema_hash: str
++    boundary: str
++
++
++FEATURE_FAMILY_BY_RECIPE = {
++    "feature_wave02_session_range_tradeability_v0": "session_range_tradeability",
++    "feature_wave02_range_compression_release_v0": "range_compression_release",
++    "feature_wave02_session_transition_range_v0": "session_transition_range",
++    "feature_wave02_multiscale_path_quality_v0": "multiscale_path_quality",
++    "feature_wave02_event_session_range_v0": "event_session_range",
++}
++
++
++FEATURE_GROUPS = {
++    "session_range_tradeability": [
++        "session_",
++        "ret_",
++        "range_",
++        "atr_",
++        "volume_",
++        "spread_",
++        "position_",
++    ],
++    "range_compression_release": [
++        "ret_",
++        "range_",
++        "atr_",
++        "compression_",
++        "breakout_",
++        "position_",
++    ],
++    "session_transition_range": [
++        "session_",
++        "transition_",
++        "range_",
++        "atr_",
++        "ret_",
++        "position_",
++    ],
++    "multiscale_path_quality": [
++        "ret_",
++        "path_",
++        "range_",
++        "atr_",
++        "position_",
++        "volume_",
++    ],
++    "event_session_range": [
++        "event_",
++        "session_",
++        "transition_",
++        "ret_",
++        "range_",
++        "atr_",
++        "volume_",
++    ],
++}
++
++
++def _hash_json(value: object) -> str:
++    return hashlib.sha256(json.dumps(value, sort_keys=True).encode("utf-8")).hexdigest()
++
++
++def _safe_div(numerator: pd.Series, denominator: pd.Series) -> pd.Series:
++    return numerator.astype(float) / denominator.replace(0.0, np.nan).astype(float)
++
++
++def _true_range(frame: pd.DataFrame) -> pd.Series:
++    high = frame["high"].astype(float)
++    low = frame["low"].astype(float)
++    close = frame["close"].astype(float)
++    prev_close = close.shift(1)
++    return pd.concat([high - low, (high - prev_close).abs(), (low - prev_close).abs()], axis=1).max(axis=1)
++
++
++def _ny_timestamp(frame: pd.DataFrame) -> pd.Series:
++    if "us100_bar_close_time_utc_rendered" not in frame.columns:
++        raise ValueError("missing us100_bar_close_time_utc_rendered for Wave02 features")
++    return pd.to_datetime(frame["us100_bar_close_time_utc_rendered"], utc=True).dt.tz_convert(NY_TZ)
++
++
++def _session_features(frame: pd.DataFrame) -> pd.DataFrame:
++    timestamp = _ny_timestamp(frame)
++    minute = timestamp.dt.hour.astype(float) * 60.0 + timestamp.dt.minute.astype(float)
++    dow = timestamp.dt.dayofweek.astype(float)
++    cash_open = 9.5 * 60.0
++    cash_close = 16.0 * 60.0
++    midday = 12.5 * 60.0
++    result = pd.DataFrame(index=frame.index)
++    result["session_minute_sin"] = np.sin(2.0 * np.pi * minute / 1440.0)
++    result["session_minute_cos"] = np.cos(2.0 * np.pi * minute / 1440.0)
++    result["session_dow_sin"] = np.sin(2.0 * np.pi * dow / 7.0)
++    result["session_dow_cos"] = np.cos(2.0 * np.pi * dow / 7.0)
++    result["session_minutes_from_cash_open"] = (minute - cash_open) / 390.0
++    result["session_minutes_to_cash_close"] = (cash_close - minute) / 390.0
++    result["session_is_pre_cash"] = ((minute >= 4.0 * 60.0) & (minute < cash_open)).astype(float)
++    result["session_is_cash"] = ((minute >= cash_open) & (minute <= cash_close)).astype(float)
++    result["session_is_after_cash"] = ((minute > cash_close) & (minute <= 20.0 * 60.0)).astype(float)
++    result["transition_cash_open_60m"] = (minute.sub(cash_open).abs() <= 60.0).astype(float)
++    result["transition_cash_close_60m"] = (minute.sub(cash_close).abs() <= 60.0).astype(float)
++    result["transition_midday_90m"] = (minute.sub(midday).abs() <= 90.0).astype(float)
++    return result
++
++
++def _base_features(frame: pd.DataFrame) -> pd.DataFrame:
++    close = frame["close"].astype(float)
++    high = frame["high"].astype(float)
++    low = frame["low"].astype(float)
++    open_ = frame["open"].astype(float)
++    tick_volume = frame["tick_volume"].astype(float)
++    spread = frame["spread_points"].astype(float)
++    true_range = _true_range(frame)
++    atr_48 = true_range.rolling(48, min_periods=12).mean()
++
++    result = pd.DataFrame(index=frame.index)
++    for window in [1, 3, 6, 12, 24, 48, 96]:
++        result[f"ret_{window}"] = close.pct_change(window)
++        min_periods = min(window, max(1, max(2, window // 4)))
++        result[f"path_abs_ret_mean_{window}"] = result["ret_1"].abs().rolling(window, min_periods=min_periods).mean()
++    result["range_pct"] = _safe_div(high - low, close)
++    result["range_body_pct"] = _safe_div((close - open_).abs(), close)
++    result["range_upper_wick_pct"] = _safe_div(high - pd.concat([open_, close], axis=1).max(axis=1), close)
++    result["range_lower_wick_pct"] = _safe_div(pd.concat([open_, close], axis=1).min(axis=1) - low, close)
++    for window in [12, 48, 144]:
++        result[f"range_mean_{window}"] = result["range_pct"].rolling(window, min_periods=max(3, window // 4)).mean()
++        result[f"range_std_{window}"] = result["range_pct"].rolling(window, min_periods=max(3, window // 4)).std()
++    result["atr_48_pct"] = _safe_div(atr_48, close)
++    result["compression_range_12_vs_48"] = _safe_div(result["range_mean_12"], result["range_mean_48"])
++    result["compression_range_48_vs_144"] = _safe_div(result["range_mean_48"], result["range_mean_144"])
++    result["volume_z_48"] = _safe_div(tick_volume - tick_volume.rolling(48, min_periods=12).mean(), tick_volume.rolling(48, min_periods=12).std())
++    result["spread_scaled"] = spread / 1000.0
++    high_48 = high.rolling(48, min_periods=12).max()
++    low_48 = low.rolling(48, min_periods=12).min()
++    result["position_close_in_48_range"] = _safe_div(close - low_48, high_48 - low_48)
++    result["breakout_up_48"] = _safe_div(close - high_48.shift(1), atr_48)
++    result["breakout_down_48"] = _safe_div(low_48.shift(1) - close, atr_48)
++    result["event_abs_ret_3_z_96"] = _safe_div(result["ret_3"].abs() - result["ret_3"].abs().rolling(96, min_periods=24).mean(), result["ret_3"].abs().rolling(96, min_periods=24).std())
++    result["event_range_z_96"] = _safe_div(result["range_pct"] - result["range_pct"].rolling(96, min_periods=24).mean(), result["range_pct"].rolling(96, min_periods=24).std())
++    return result
++
++
++def build_wave02_tradeability_features(frame: pd.DataFrame, feature_recipe_id: str) -> tuple[pd.DataFrame, FeatureSchema]:
++    feature_family = FEATURE_FAMILY_BY_RECIPE.get(feature_recipe_id)
++    if not feature_family:
++        raise ValueError(f"unsupported Wave02 feature_recipe_id: {feature_recipe_id}")
++    features = pd.concat([_base_features(frame), _session_features(frame)], axis=1)
++    prefixes = FEATURE_GROUPS[feature_family]
++    columns = [column for column in features.columns if any(column.startswith(prefix) for prefix in prefixes)]
++    features = features[columns].replace([np.inf, -np.inf], np.nan)
++    boundary = "right_aligned_closed_bar_us100_wave02_tradeability_features_no_aux_symbols"
++    payload = {
++        "feature_recipe_id": feature_recipe_id,
++        "feature_family": feature_family,
++        "feature_columns": columns,
++        "boundary": boundary,
++        "feature_count_policy": "declared_per_run_no_fixed_legacy_count",
++    }
++    schema = FeatureSchema(
++        feature_recipe_id=feature_recipe_id,
++        feature_family=feature_family,
++        feature_columns=columns,
++        feature_order_hash=hashlib.sha256("|".join(columns).encode("utf-8")).hexdigest(),
++        feature_schema_hash=_hash_json(payload),
++        boundary=boundary,
++    )
++    return features, schema
+diff --git a/foundation/labels/wave02_tradeability_labels.py b/foundation/labels/wave02_tradeability_labels.py
+new file mode 100644
+index 0000000..325c3a8
+--- /dev/null
++++ b/foundation/labels/wave02_tradeability_labels.py
+@@ -0,0 +1,209 @@
++from __future__ import annotations
++
++import hashlib
++import json
++from dataclasses import dataclass
++from zoneinfo import ZoneInfo
++
++import numpy as np
++import pandas as pd
++
++
++NY_TZ = ZoneInfo("America/New_York")
++
++
++@dataclass(frozen=True)
++class LabelSchema:
++    label_recipe_id: str
++    label_family: str
++    horizon_bars: int
++    target_columns: list[str]
++    label_schema_hash: str
++    boundary: str
++
++
++LABEL_CONFIGS = {
++    "label_wave02_tradeability_side_abstain_h6_v0": ("side_abstain_tradeability", 6, 0.65),
++    "label_wave02_tradeability_side_abstain_h12_v0": ("side_abstain_tradeability", 12, 0.85),
++    "label_wave02_range_break_tradeability_v0": ("range_break_tradeability", 12, 0.90),
++    "label_wave02_session_open_tradeability_v0": ("session_open_tradeability", 6, 0.60),
++    "label_wave02_no_trade_filter_v0": ("no_trade_filter", 6, 0.35),
++    "label_wave02_side_quality_v0": ("side_quality", 12, 0.75),
++    "label_wave02_event_continuation_tradeability_v0": ("event_continuation_tradeability", 12, 0.45),
++    "label_wave02_adverse_move_avoidance_v0": ("adverse_move_avoidance", 6, 0.50),
++}
++
++
++def _hash_json(value: object) -> str:
++    return hashlib.sha256(json.dumps(value, sort_keys=True).encode("utf-8")).hexdigest()
++
++
++def _safe_div(numerator: pd.Series, denominator: pd.Series) -> pd.Series:
++    return numerator.astype(float) / denominator.replace(0.0, np.nan).astype(float)
++
++
++def _true_range(frame: pd.DataFrame) -> pd.Series:
++    high = frame["high"].astype(float)
++    low = frame["low"].astype(float)
++    close = frame["close"].astype(float)
++    prev_close = close.shift(1)
++    return pd.concat([high - low, (high - prev_close).abs(), (low - prev_close).abs()], axis=1).max(axis=1)
++
++
++def _future_extreme(series: pd.Series, horizon_bars: int, reducer: str) -> pd.Series:
++    future = pd.concat([series.shift(-step) for step in range(1, horizon_bars + 1)], axis=1)
++    if reducer == "max":
++        return future.max(axis=1)
++    if reducer == "min":
++        return future.min(axis=1)
++    raise ValueError(f"unsupported reducer: {reducer}")
++
++
++def _ny_timestamp(frame: pd.DataFrame) -> pd.Series:
++    if "us100_bar_close_time_utc_rendered" not in frame.columns:
++        raise ValueError("missing us100_bar_close_time_utc_rendered for Wave02 labels")
++    return pd.to_datetime(frame["us100_bar_close_time_utc_rendered"], utc=True).dt.tz_convert(NY_TZ)
++
++
++def same_role_horizon_mask(frame: pd.DataFrame, horizon_bars: int) -> pd.Series:
++    if "primary_split_role" not in frame.columns:
++        raise ValueError("missing primary_split_role for Wave02 label boundary")
++    role = frame["primary_split_role"].astype(str)
++    return role.shift(-horizon_bars).eq(role)
++
++
++def _session_open_mask(frame: pd.DataFrame) -> pd.Series:
++    timestamp = _ny_timestamp(frame)
++    minute = timestamp.dt.hour.astype(float) * 60.0 + timestamp.dt.minute.astype(float)
++    cash_open = 9.5 * 60.0
++    return minute.sub(cash_open).abs() <= 60.0
++
++
++def _event_mask(frame: pd.DataFrame) -> pd.Series:
++    close = frame["close"].astype(float)
++    high = frame["high"].astype(float)
++    low = frame["low"].astype(float)
++    ret_3 = close.pct_change(3).abs()
++    range_pct = _safe_div(high - low, close)
++    return (ret_3 >= ret_3.rolling(96, min_periods=24).quantile(0.70)) | (
++        range_pct >= range_pct.rolling(96, min_periods=24).quantile(0.70)
++    )
++
++
++def _targets(
++    label_family: str,
++    threshold: float,
++    *,
++    future_return: pd.Series,
++    future_abs_return_atr: pd.Series,
++    up_progress: pd.Series,
++    down_progress: pd.Series,
++    any_touch: pd.Series,
++    no_touch: pd.Series,
++    current_event_side: pd.Series,
++) -> tuple[pd.Series, pd.Series, str]:
++    direction_score = up_progress - down_progress
++    if label_family == "side_abstain_tradeability":
++        continuous = future_abs_return_atr
++        binary = (future_abs_return_atr >= threshold).astype(float)
++        boundary = "future_abs_return_atr_tradeability_same_split_role"
++    elif label_family == "range_break_tradeability":
++        continuous = pd.concat([up_progress, down_progress], axis=1).max(axis=1)
++        binary = any_touch.astype(float)
++        boundary = "future_range_break_touch_same_split_role"
++    elif label_family == "session_open_tradeability":
++        continuous = future_abs_return_atr
++        binary = (future_abs_return_atr >= threshold).astype(float)
++        boundary = "cash_open_future_tradeability_same_split_role"
++    elif label_family == "no_trade_filter":
++        continuous = -future_abs_return_atr
++        binary = no_touch.astype(float)
++        boundary = "low_future_movement_no_trade_filter_same_split_role"
++    elif label_family == "side_quality":
++        continuous = direction_score.abs()
++        binary = ((direction_score.abs() >= threshold) & any_touch).astype(float)
++        boundary = "future_side_quality_progress_same_split_role"
++    elif label_family == "event_continuation_tradeability":
++        continuous = current_event_side * future_return
++        binary = ((current_event_side * future_return > 0.0) & (future_abs_return_atr >= threshold)).astype(float)
++        boundary = "event_direction_continuation_same_split_role"
++    elif label_family == "adverse_move_avoidance":
++        continuous = -pd.concat([up_progress, down_progress], axis=1).min(axis=1)
++        binary = (future_abs_return_atr <= threshold).astype(float)
++        boundary = "adverse_move_avoidance_same_split_role"
++    else:
++        raise ValueError(f"unsupported Wave02 label family: {label_family}")
++    return continuous.astype(float), binary.astype(float), boundary
++
++
++def build_wave02_tradeability_labels(frame: pd.DataFrame, label_recipe_id: str) -> tuple[pd.DataFrame, LabelSchema]:
++    config = LABEL_CONFIGS.get(label_recipe_id)
++    if not config:
++        raise ValueError(f"unsupported Wave02 label_recipe_id: {label_recipe_id}")
++    label_family, horizon_bars, threshold = config
++    close = frame["close"].astype(float)
++    high = frame["high"].astype(float)
++    low = frame["low"].astype(float)
++    atr = _true_range(frame).rolling(48, min_periods=12).mean()
++    future_close = close.shift(-horizon_bars)
++    future_return = future_close / close - 1.0
++    future_high = _future_extreme(high, horizon_bars, "max")
++    future_low = _future_extreme(low, horizon_bars, "min")
++    up_progress = _safe_div(future_high - close, atr)
++    down_progress = _safe_div(close - future_low, atr)
++    future_abs_return_atr = _safe_div(future_return.abs(), _safe_div(atr, close))
++    any_touch = (up_progress >= 1.0) | (down_progress >= 1.0)
++    no_touch = ~any_touch
++    current_event_side = np.sign(close.pct_change(3)).replace(0.0, np.nan).fillna(1.0)
++    same_role = same_role_horizon_mask(frame, horizon_bars)
++    active_mask = pd.Series(True, index=frame.index)
++    if label_family == "session_open_tradeability":
++        active_mask = _session_open_mask(frame)
++    elif label_family == "event_continuation_tradeability":
++        active_mask = _event_mask(frame)
++    eligible = same_role & active_mask
++    continuous, binary, boundary = _targets(
++        label_family,
++        threshold,
++        future_return=future_return,
++        future_abs_return_atr=future_abs_return_atr,
++        up_progress=up_progress,
++        down_progress=down_progress,
++        any_touch=any_touch,
++        no_touch=no_touch,
++        current_event_side=current_event_side,
++    )
++    side_label = np.sign(future_return).replace(0.0, np.nan)
++    result = pd.DataFrame(index=frame.index)
++    result["future_return"] = future_return
++    result["future_abs_return"] = future_return.abs()
++    result["future_abs_return_atr"] = future_abs_return_atr
++    result["up_barrier_progress"] = up_progress
++    result["down_barrier_progress"] = down_progress
++    result["any_barrier_touch"] = any_touch.astype(float)
++    result["no_touch"] = no_touch.astype(float)
++    result["side_label"] = side_label
++    result["label_active_mask"] = active_mask.astype(float)
++    result["target_continuous"] = continuous.where(eligible, np.nan)
++    result["target_binary_raw"] = binary.where(eligible, np.nan)
++    result["same_role_horizon_ok"] = eligible.astype(bool)
++    result["label_end_primary_split_role"] = frame["primary_split_role"].shift(-horizon_bars)
++    result = result.replace([np.inf, -np.inf], np.nan)
++    columns = list(result.columns)
++    payload = {
++        "label_recipe_id": label_recipe_id,
++        "label_family": label_family,
++        "horizon_bars": horizon_bars,
++        "target_columns": columns,
++        "boundary": boundary,
++        "threshold": threshold,
++    }
++    schema = LabelSchema(
++        label_recipe_id=label_recipe_id,
++        label_family=label_family,
++        horizon_bars=horizon_bars,
++        target_columns=columns,
++        label_schema_hash=_hash_json(payload),
++        boundary=boundary,
++    )
++    return result[columns], schema
+diff --git a/foundation/pipelines/run_wave02_tradeability_proxy_batch.py b/foundation/pipelines/run_wave02_tradeability_proxy_batch.py
+new file mode 100644
+index 0000000..3598322
+--- /dev/null
++++ b/foundation/pipelines/run_wave02_tradeability_proxy_batch.py
+@@ -0,0 +1,667 @@
++from __future__ import annotations
++
++import argparse
++import csv
++import hashlib
++import json
++import math
++import os
++import platform
++import subprocess
++import sys
++from collections import Counter
++from datetime import datetime, timezone
++from pathlib import Path
++from typing import Any
++
++import numpy as np
++import pandas as pd
++import yaml
++
++
++REPO_ROOT = Path(__file__).resolve().parents[2]
++if str(REPO_ROOT) not in sys.path:
++    sys.path.insert(0, str(REPO_ROOT))
++
++from foundation.features.wave02_tradeability_features import build_wave02_tradeability_features  # noqa: E402
++from foundation.labels.wave02_tradeability_labels import build_wave02_tradeability_labels  # noqa: E402
++from spacesonar.control_plane.provenance import begin_execution_batch, execution_batch_ref, finalize_execution_batch  # noqa: E402
++from spacesonar.control_plane.store import dump_yaml, filesystem_path  # noqa: E402
++from foundation.training.wave01_event_barrier_models import (  # noqa: E402
++    decision_metrics,
++    diagnostic_metrics,
++    fit_proxy_model,
++    judge_proxy_result,
++    score_model,
++)
++
++
++UTC = timezone.utc
++WORK_ITEM_ID = "execute_materialized_run_specs"
++NEXT_WORK_ITEM_ID = "work_wave02_tradeability_l4_materialization_preflight_v0"
++CAMPAIGN_ID = "campaign_us100_wave02_tradeability_decision_surface_v0"
++WAVE_ID = "wave_us100_wave02_tradeability_decision_surface_v0"
++SURFACE_ID = "surface_us100_wave02_tradeability_side_abstain_v0"
++SWEEP_ID = "sweep_us100_wave02_tradeability_side_abstain_broad_v0"
++CLAIM_BOUNDARY = "wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve"
++STATUS = "wave02_proxy_observation_l4_required"
++RUN_STATUS = "executed_proxy_observation_l4_required"
++ENTRYPOINT = "foundation/pipelines/run_wave02_tradeability_proxy_batch.py"
++RUN_REFS = Path("lab/campaigns") / CAMPAIGN_ID / "sweeps" / SWEEP_ID / "run_refs.csv"
++CAMPAIGN_DIR = Path("lab/campaigns") / CAMPAIGN_ID
++ROW_MEMBERSHIP_MANIFEST = Path("lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml")
++FORBIDDEN_CLAIMS = [
++    "selected_baseline",
++    "operating_reference",
++    "operating_promotion",
++    "runtime_authority",
++    "economics_pass",
++    "materialization_ready",
++    "handoff_complete",
++    "live_readiness",
++    "reviewed_verified_pass",
++    "goal_achieve",
++]
++REQUIRED_GATES = [
++    "branch_worktree_fit",
++    "time_axis_check",
++    "feature_label_boundary_check",
++    "split_boundary_check",
++    "selection_bias_check",
++    "run_manifest",
++    "experiment_receipt",
++    "storage_contract_check",
++    "runtime_learning_probe_decision",
++    "proxy_runtime_parity_decision",
++    "final_claim_guard",
++    "L4_split_runtime_probe_for_valid_proxy_run",
++]
++MODEL_FAMILY_BY_RECIPE = {
++    "model_wave02_logistic_tradeability_v0": "logistic_or_linear_rank_scout",
++    "model_wave02_tree_tradeability_v0": "tree_or_boosted_onnx_feasible_scout",
++    "model_wave02_interpretable_tradeability_v0": "logistic_or_linear_rank_scout",
++}
++
++
++def utc_now() -> datetime:
++    return datetime.now(tz=UTC)
++
++
++def iso_z(value: datetime) -> str:
++    return value.isoformat().replace("+00:00", "Z")
++
++
++def mask_local_path(value: str) -> str:
++    home = Path.home()
++    text = str(value)
++    for variant in (str(home), home.as_posix()):
++        text = text.replace(variant, "${USERPROFILE}")
++    return text
++
++
++def repo_relative(path: Path) -> str:
++    try:
++        return path.resolve().relative_to(REPO_ROOT.resolve()).as_posix()
++    except ValueError:
++        return mask_local_path(str(path.resolve()))
++
++
++def durable_arg(value: str) -> str:
++    try:
++        path = Path(value)
++        if path.is_absolute():
++            return repo_relative(path)
++    except OSError:
++        return mask_local_path(value)
++    return mask_local_path(value)
++
++
++def file_sha256(path: Path) -> str:
++    digest = hashlib.sha256()
++    with open(filesystem_path(path), "rb") as handle:
++        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
++            digest.update(chunk)
++    return digest.hexdigest()
++
++
++def artifact_ref(path: Path, *, availability: str = "present_hash_recorded") -> dict[str, Any]:
++    stat = os.stat(filesystem_path(path))
++    return {
++        "path": repo_relative(path),
++        "sha256": file_sha256(path),
++        "size_bytes": stat.st_size,
++        "availability": availability,
++    }
++
++
++def read_yaml(path: Path) -> dict[str, Any]:
++    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
++        payload = yaml.safe_load(handle)
++    if not isinstance(payload, dict):
++        raise ValueError(f"{path} is not a YAML mapping")
++    return payload
++
++
++def write_yaml(path: Path, payload: dict[str, Any]) -> None:
++    os.makedirs(filesystem_path(path.parent), exist_ok=True)
++    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
++        handle.write(dump_yaml(_jsonable(payload)))
++
++
++def write_json(path: Path, payload: dict[str, Any]) -> None:
++    os.makedirs(filesystem_path(path.parent), exist_ok=True)
++    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
++        handle.write(json.dumps(_jsonable(payload), indent=2, ensure_ascii=True) + "\n")
++
++
++def read_csv_rows(path: Path) -> list[dict[str, str]]:
++    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
++        return list(csv.DictReader(handle))
++
++
++def _jsonable(value: Any) -> Any:
++    if isinstance(value, dict):
++        return {str(key): _jsonable(item) for key, item in value.items()}
++    if isinstance(value, list):
++        return [_jsonable(item) for item in value]
++    if isinstance(value, tuple):
++        return [_jsonable(item) for item in value]
++    if isinstance(value, (np.integer,)):
++        return int(value)
++    if isinstance(value, (np.floating,)):
++        value = float(value)
++    if isinstance(value, float):
++        return value if math.isfinite(value) else None
++    if isinstance(value, (np.bool_,)):
++        return bool(value)
++    return value
++
++
++def git_value(args: list[str]) -> str:
++    result = subprocess.run(["git", *args], cwd=REPO_ROOT, text=True, capture_output=True, check=False)
++    if result.returncode != 0:
++        return "unknown"
++    return result.stdout.strip() or "unknown"
++
++
++def git_status_lines() -> list[str]:
++    result = subprocess.run(["git", "status", "--short"], cwd=REPO_ROOT, text=True, capture_output=True, check=False)
++    if result.returncode != 0:
++        return []
++    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
++
++
++def dependency_summary() -> dict[str, str]:
++    versions: dict[str, str] = {"python": platform.python_version(), "platform": platform.platform()}
++    for package in ["numpy", "pandas", "sklearn", "yaml"]:
++        try:
++            module = __import__(package)
++            versions[package] = str(getattr(module, "__version__", "unknown"))
++        except Exception as exc:  # noqa: BLE001 - environment evidence.
++            versions[package] = f"unavailable:{exc}"
++    return versions
++
++
++def branch_worktree(expected_branch: str) -> dict[str, str]:
++    current = git_value(["branch", "--show-current"])
++    if current != expected_branch:
++        raise RuntimeError(f"branch mismatch before Wave02 execution: current={current!r} expected={expected_branch!r}")
++    return {
++        "current_branch": current,
++        "requested_branch": expected_branch,
++        "branch_worktree_fit": "fit",
++        "branch_action": "keep_current_branch",
++        "policy_reference": "docs/policies/branch_policy.md",
++        "mismatch_claim_effect": "not_applicable",
++    }
++
++
++def provenance(command_argv: list[str], input_paths: list[Path], output_paths: list[Path], started_at: datetime) -> dict[str, Any]:
++    status = git_status_lines()
++    return {
++        "git_sha": git_value(["rev-parse", "HEAD"]),
++        "branch": git_value(["branch", "--show-current"]),
++        "dirty_flag": "dirty" if status else "clean",
++        "changed_files": status,
++        "command_argv": [durable_arg(arg) for arg in command_argv],
++        "python_executable": mask_local_path(sys.executable),
++        "python_version": platform.python_version(),
++        "key_package_versions": dependency_summary(),
++        "started_at_utc": iso_z(started_at),
++        "ended_at_utc": iso_z(utc_now()),
++        "input_hashes": [artifact_ref(path) for path in input_paths if os.path.exists(filesystem_path(path))],
++        "output_hashes": [artifact_ref(path) for path in output_paths if os.path.exists(filesystem_path(path))],
++        "dirty_worktree_claim_effect": "proxy_observation_only_no_reproducible_candidate_bundle_runtime_or_goal_achieve_claim",
++    }
++
++
++def load_row_membership(path: Path) -> pd.DataFrame:
++    manifest = read_yaml(path)
++    csv_info = manifest["row_membership"]["full_csv"]
++    csv_path = REPO_ROOT / csv_info["path"]
++    if not os.path.exists(filesystem_path(csv_path)):
++        raise FileNotFoundError(f"row membership CSV missing: {csv_info['path']}")
++    observed = file_sha256(csv_path)
++    if observed != csv_info["sha256"]:
++        raise RuntimeError(f"row membership hash mismatch expected={csv_info['sha256']} observed={observed}")
++    frame = pd.read_csv(filesystem_path(csv_path))
++    for column in ["open", "high", "low", "close", "tick_volume", "spread_points", "real_volume", "row_seq", "time_open_unix", "time_close_unix"]:
++        if column in frame.columns:
++            frame[column] = pd.to_numeric(frame[column], errors="coerce")
++    return frame
++
++
++def split_masks(frame: pd.DataFrame, labels: pd.DataFrame) -> dict[str, pd.Series]:
++    eligible = labels["same_role_horizon_ok"].astype(bool)
++    role = frame["primary_split_role"].astype(str)
++    return {
++        "train": eligible & role.eq("train"),
++        "validation": eligible & role.eq("validation"),
++        "research_oos_a": eligible & role.eq("research_oos_a"),
++        "locked_final_oos_b_withheld": eligible & role.eq("locked_final_oos_b"),
++    }
++
++
++def usable_feature_columns(features: pd.DataFrame, train_mask: pd.Series) -> list[str]:
++    columns = [column for column in features.columns if features.loc[train_mask, column].notna().any()]
++    if not columns:
++        raise ValueError("no usable Wave02 feature columns")
++    return columns
++
++
++def build_model_target(labels: pd.DataFrame, train_mask: pd.Series) -> tuple[pd.Series, str, str, float | None]:
++    raw = labels["target_binary_raw"].astype(float)
++    train_raw = raw.loc[train_mask].dropna()
++    if len(set(train_raw.astype(int).tolist())) >= 2:
++        return raw, "classification", "target_binary_raw", None
++    continuous = labels["target_continuous"].astype(float)
++    threshold = float(continuous.loc[train_mask].quantile(0.60))
++    return (continuous >= threshold).astype(float), "classification", "target_continuous_train_q60", threshold
++
++
++def model_family_for_recipe(model_recipe_id: str) -> str:
++    model_family = MODEL_FAMILY_BY_RECIPE.get(model_recipe_id)
++    if not model_family:
++        raise ValueError(f"unsupported Wave02 model_recipe_id: {model_recipe_id}")
++    return model_family
++
++
++def write_prediction_sample(path: Path, frame: pd.DataFrame, labels: pd.DataFrame, scores: pd.Series, target: pd.Series) -> None:
++    sample = pd.DataFrame(
++        {
++            "model_row_key": frame["model_row_key"],
++            "primary_split_role": frame["primary_split_role"],
++            "close": frame["close"],
++            "future_return": labels["future_return"],
++            "future_abs_return_atr": labels["future_abs_return_atr"],
++            "target": target,
++            "side_label": labels["side_label"],
++            "score": scores,
++        }
++    )
++    sample = sample.replace([np.inf, -np.inf], np.nan).dropna(subset=["score"]).head(200)
++    os.makedirs(filesystem_path(path.parent), exist_ok=True)
++    sample.to_csv(filesystem_path(path), index=False)
++
++
++def routing() -> dict[str, Any]:
++    support_skills = ["spacesonar-data-integrity", "spacesonar-evidence-provenance", "spacesonar-runtime-evidence"]
++    primary_skill = "spacesonar-model-validation"
++    return {
++        "primary_family": "model_training",
++        "primary_skill": primary_skill,
++        "support_skills": support_skills,
++        "skills_selected": [primary_skill, *support_skills],
++        "skills_not_used": [],
++        "critical_skills_not_selected": [],
++        "not_selected_claim_effect": "all declared primary and support skills selected for this run",
++        "required_gates": REQUIRED_GATES,
++    }
++
++
++def runtime_decision(run_id: str) -> dict[str, Any]:
++    return {
++        "required": True,
++        "decision": "run_required_next",
++        "target_level": "L4_split_runtime_probe",
++        "runtime_period_profile_id": "period_profile_split_set_v0",
++        "required_period_roles": ["validation", "research_oos"],
++        "lowered_claim_if_not_run": "proxy_observation_only_no_runtime_authority_no_economics_pass_no_candidate",
++        "follow_up_work_item_id": NEXT_WORK_ITEM_ID,
++        "run_id": run_id,
++    }
++
++
++def proxy_runtime_parity(decision_recipe_id: str) -> dict[str, Any]:
++    return {
++        "shared_contract": "US100_M5_closed_bar_wave02_tradeability_score_and_side_abstain_semantics",
++        "decision_recipe_id": decision_recipe_id,
++        "known_differences": [
++            "proxy uses gross future return labels without spread, fill, slippage, swap, or execution timing",
++            "MT5 follow-through must implement side, abstain, timeout, and session gates before runtime authority can be discussed",
++        ],
++        "minimum_reconciliation_attempt": {"required": True, "status": "pending_L4_materialization"},
++        "comparison_class": "pending_L4",
++        "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority",
++        "follow_up_action": NEXT_WORK_ITEM_ID,
++    }
++
++
++def model_validation_summary(
++    *,
++    run_spec: dict[str, Any],
++    model_family: str,
++    target_name: str,
++    target_threshold: float | None,
++    decision_recipe_id: str,
++    validation_judgment: str,
++) -> dict[str, Any]:
++    refs = run_spec["recipe_refs"]
++    return {
++        "model_family": {"model_recipe_id": refs["model_recipe_id"], "proxy_model_family": model_family, "training_script": ENTRYPOINT},
++        "target_and_label": {"label_recipe_id": refs["label_recipe_id"], "target_name": target_name, "target_threshold": target_threshold},
++        "split_method": "split_set_v0_train_validation_research_oos_a_locked_final_oos_b_withheld",
++        "selection_metric": "none_selected_broad_proxy_observation",
++        "secondary_metrics": ["roc_auc", "average_precision", "balanced_accuracy", "gross_proxy_profit_factor", "trade_count"],
++        "threshold_policy": "train_quantile_score_thresholds_for_proxy_decision_only",
++        "overfit_risk": "broad_surface_multiple_testing_risk_no_selection_allowed",
++        "calibration_risk": "scores_are_rank_or_classifier_outputs_not_calibrated_probabilities",
++        "top_n_selection_bias_check": "no_top_n_selection_or_baseline_promotion",
++        "threshold_knife_edge_check": "thresholds recorded_for_L4_follow_through_not_used_for_selection",
++        "segment_or_regime_stability_check": "validation_and_research_oos_a_recorded_separately",
++        "trade_concentration_check": "trade_count_and_density_recorded_no_economics_claim",
++        "wfo_or_window_dispersion": "split_set_v0_primary_windows_only_WFO_missing_claim_lowered",
++        "proxy_runtime_laundering_check": "proxy_only_L4_required_no_runtime_authority",
++        "risk_stop_check": "runtime_stop_hold_execution_missing_until_L4",
++        "comparison_baseline": ["no_trade_baseline_reference_only", "Wave01 clues_as_questions_only_no_inheritance"],
++        "anti_authority_laundering_judgment": "exploratory_proxy_observation_only",
++        "decision_recipe_id": decision_recipe_id,
++        "validation_judgment": validation_judgment,
++    }
++
++
++def run_one(
++    run_spec: dict[str, Any],
++    frame: pd.DataFrame,
++    command_argv: list[str],
++    branch: dict[str, str],
++    batch_git_state: dict[str, Any],
++) -> dict[str, str]:
++    run_id = str(run_spec["run_id"])
++    refs = run_spec["recipe_refs"]
++    root = REPO_ROOT / "lab" / "runs" / run_id
++    artifacts = root / "artifacts"
++    reports = root / "reports"
++    started = utc_now()
++    features, feature_schema = build_wave02_tradeability_features(frame, refs["feature_recipe_id"])
++    labels, label_schema = build_wave02_tradeability_labels(frame, refs["label_recipe_id"])
++    masks = split_masks(frame, labels)
++    train_mask = masks["train"]
++    validation_mask = masks["validation"]
++    research_mask = masks["research_oos_a"]
++    target, task_kind, target_name, target_threshold = build_model_target(labels, train_mask)
++    target_ok = target.notna()
++    train_mask &= target_ok
++    validation_mask &= target_ok
++    research_mask &= target_ok
++    if int(train_mask.sum()) < 1000 or int(validation_mask.sum()) < 300 or int(research_mask.sum()) < 300:
++        raise ValueError(f"{run_id} insufficient split rows train={int(train_mask.sum())} validation={int(validation_mask.sum())} research={int(research_mask.sum())}")
++    columns = usable_feature_columns(features, train_mask)
++    model_family = model_family_for_recipe(refs["model_recipe_id"])
++    x = features[columns]
++    fit = fit_proxy_model(
++        x,
++        target,
++        train_mask,
++        model_family=model_family,
++        task_kind=task_kind,
++        target_name=target_name,
++        threshold_policy="train_quantile_proxy_threshold",
++        target_threshold=target_threshold,
++    )
++    scores = {
++        "train": score_model(fit.model, x.loc[train_mask], task_kind),
++        "validation": score_model(fit.model, x.loc[validation_mask], task_kind),
++        "research_oos_a": score_model(fit.model, x.loc[research_mask], task_kind),
++    }
++    model_metrics = {
++        "train": diagnostic_metrics(target.loc[train_mask], scores["train"], task_kind),
++        "validation": diagnostic_metrics(target.loc[validation_mask], scores["validation"], task_kind),
++        "research_oos_a": diagnostic_metrics(target.loc[research_mask], scores["research_oos_a"], task_kind),
++    }
++    decision = {
++        "validation": decision_metrics(decision_family=refs["decision_recipe_id"], score=scores["validation"], labels=labels.loc[validation_mask], fit=fit),
++        "research_oos_a": decision_metrics(decision_family=refs["decision_recipe_id"], score=scores["research_oos_a"], labels=labels.loc[research_mask], fit=fit),
++    }
++    judgment, reasons = judge_proxy_result(
++        model_metrics["validation"],
++        model_metrics["research_oos_a"],
++        decision["validation"],
++        decision["research_oos_a"],
++        task_kind,
++    )
++    split_profile = {
++        "raw_rows": int(len(frame)),
++        "train_label_eligible_rows": int(train_mask.sum()),
++        "validation_label_eligible_rows": int(validation_mask.sum()),
++        "research_oos_a_label_eligible_rows": int(research_mask.sum()),
++        "locked_final_oos_b_withheld_rows": int(masks["locked_final_oos_b_withheld"].sum()),
++        "locked_final_oos_b_use": "withheld_not_used",
++    }
++    feature_schema_path = artifacts / "feature_schema.json"
++    label_schema_path = artifacts / "label_schema.json"
++    model_summary_path = artifacts / "model_summary.json"
++    split_profile_path = artifacts / "split_profile.json"
++    validation_sample_path = artifacts / "prediction_sample_validation.csv"
++    research_sample_path = artifacts / "prediction_sample_research_oos_a.csv"
++    report_path = reports / "proxy_tradeability_report.json"
++    outputs = [feature_schema_path, label_schema_path, model_summary_path, split_profile_path, validation_sample_path, research_sample_path, report_path]
++    write_json(feature_schema_path, {**feature_schema.__dict__, "used_feature_columns": columns, "used_feature_count": len(columns)})
++    write_json(label_schema_path, {**label_schema.__dict__, "target_name_used_for_model": target_name, "target_threshold": target_threshold})
++    write_json(model_summary_path, {"run_id": run_id, "model_recipe_id": refs["model_recipe_id"], "proxy_model_family": model_family, "task_kind": task_kind, "model_summary": fit.model_summary, "train_score_summary": fit.train_score_summary})
++    write_json(split_profile_path, split_profile)
++    write_prediction_sample(validation_sample_path, frame.loc[validation_mask], labels.loc[validation_mask], pd.Series(scores["validation"], index=labels.loc[validation_mask].index), target.loc[validation_mask])
++    write_prediction_sample(research_sample_path, frame.loc[research_mask], labels.loc[research_mask], pd.Series(scores["research_oos_a"], index=labels.loc[research_mask].index), target.loc[research_mask])
++    validation_summary = model_validation_summary(
++        run_spec=run_spec,
++        model_family=model_family,
++        target_name=target_name,
++        target_threshold=target_threshold,
++        decision_recipe_id=refs["decision_recipe_id"],
++        validation_judgment=judgment,
++    )
++    report = {
++        "version": "wave02_tradeability_proxy_report_v1",
++        "run_id": run_id,
++        "run_spec_path": repo_relative(REPO_ROOT / CAMPAIGN_DIR / "run_specs" / f"{run_id}.yaml"),
++        "recipe_refs": refs,
++        "target_and_label": validation_summary["target_and_label"],
++        "split_method": validation_summary["split_method"],
++        "model_metrics": model_metrics,
++        "decision_metrics": decision,
++        "judgment_reasons": reasons,
++        "model_validation": validation_summary,
++        "validation_judgment": judgment,
++        "claim_boundary": CLAIM_BOUNDARY,
++    }
++    write_json(report_path, report)
++    output_refs = [artifact_ref(path) for path in outputs]
++    input_paths = [REPO_ROOT / ROW_MEMBERSHIP_MANIFEST, REPO_ROOT / CAMPAIGN_DIR / "run_specs" / f"{run_id}.yaml"]
++    prov = provenance(command_argv, input_paths, outputs, started)
++    prov.update(batch_git_state)
++    prov["git_state_capture_policy"] = "batch_start_before_generated_outputs"
++    storage = {
++        "source_of_truth": f"lab/runs/{run_id}/run_manifest.json",
++        "receipt": f"lab/runs/{run_id}/experiment_receipt.yaml",
++        "lineage": f"lab/runs/{run_id}/artifact_lineage.json",
++        "metrics": f"lab/runs/{run_id}/metrics.json",
++        "registry_rows": ["docs/registers/run_registry.csv"],
++    }
++    coverage = {"passed": REQUIRED_GATES[:-1], "missing": ["L4_split_runtime_probe_for_valid_proxy_run"], "not_applicable": ["locked_final_oos_access"]}
++    missing_evidence = ["ONNX_export_not_materialized_for_L4_yet", "MT5_L4_split_runtime_probe_not_run_yet", "candidate_selection_forbidden_before_L4"]
++    base = {
++        "run_id": run_id,
++        "id_chain": run_spec["id_chain"],
++        "skill_routing": routing(),
++        "branch_worktree": branch,
++        "provenance": prov,
++        "storage_contract": storage,
++        "runtime_learning_probe_decision": runtime_decision(run_id),
++        "proxy_runtime_parity": proxy_runtime_parity(refs["decision_recipe_id"]),
++        "required_gate_coverage": coverage,
++        "result_judgment": judgment,
++        "model_validation": validation_summary,
++        "missing_evidence": missing_evidence,
++        "claim_boundary": CLAIM_BOUNDARY,
++        "forbidden_claims": FORBIDDEN_CLAIMS,
++        "next_action": NEXT_WORK_ITEM_ID,
++        "evidence_path": repo_relative(report_path),
++        "notes": "Wave02 proxy observation only; L4 follow-through required before runtime claims.",
++    }
++    manifest = {
++        "version": "run_manifest_v3",
++        **base,
++        "trigger_source": WORK_ITEM_ID,
++        "status": RUN_STATUS,
++        "created_at_utc": iso_z(utc_now()),
++        "entrypoint": ENTRYPOINT,
++        "command": " ".join(durable_arg(arg) for arg in command_argv),
++        "task_surface": {
++            "task_type": "tradeability_side_abstain_proxy",
++            "target_or_label": refs["label_recipe_id"],
++            "output_head": "tradeability_score_with_side_abstain_decision_recipe",
++        },
++    }
++    receipt = {
++        "version": "experiment_receipt_v2",
++        **base,
++        "hypothesis": "Explicit tradeability plus side/abstain semantics may expose runtime-testable Wave02 surfaces.",
++        "decision_use": refs["decision_recipe_id"],
++        "sample_scope": split_profile,
++        "evidence_plan": list(storage.values()),
++    }
++    metrics = {
++        "version": "metrics_v2",
++        "run_id": run_id,
++        "status": RUN_STATUS,
++        "sample_counts": split_profile,
++        "model_metrics": model_metrics,
++        "trading_proxy_metrics": decision,
++        "runtime_metrics": {},
++        "judgment_label": judgment,
++        "claim_boundary": CLAIM_BOUNDARY,
++        "missing_evidence": missing_evidence,
++    }
++    lineage = {
++        "version": "artifact_lineage_v2",
++        "run_id": run_id,
++        "source_inputs": [artifact_ref(path) for path in input_paths if os.path.exists(filesystem_path(path))],
++        "producer": {"type": "script", "identity": ENTRYPOINT, "command": " ".join(durable_arg(arg) for arg in command_argv)},
++        "source_of_truth_paths": [storage["source_of_truth"]],
++        "artifact_paths": output_refs,
++        "artifact_hashes": [{item["path"]: item["sha256"]} for item in output_refs],
++        "availability": "present_hash_recorded",
++        "lineage_judgment": "usable_proxy_observation_lineage_L4_missing",
++    }
++    write_json(root / "run_manifest.json", manifest)
++    write_yaml(root / "experiment_receipt.yaml", receipt)
++    write_json(root / "metrics.json", metrics)
++    write_json(root / "artifact_lineage.json", lineage)
++    return {
++        "run_id": run_id,
++        "status": RUN_STATUS,
++        "result_judgment": judgment,
++        "run_manifest_path": repo_relative(root / "run_manifest.json"),
++        "receipt_path": repo_relative(root / "experiment_receipt.yaml"),
++        "lineage_path": repo_relative(root / "artifact_lineage.json"),
++        "metrics_path": repo_relative(root / "metrics.json"),
++        "report_path": repo_relative(report_path),
++        "claim_boundary": CLAIM_BOUNDARY,
++        "next_action": NEXT_WORK_ITEM_ID,
++        "notes": ";".join(reasons),
++    }
++
++
++def attach_execution_batch_refs(results: list[dict[str, str]], *, batch_id: str, command_argv: list[str], input_paths: list[Path]) -> None:
++    receipt = begin_execution_batch(
++        REPO_ROOT,
++        batch_id=batch_id,
++        work_item_id=WORK_ITEM_ID,
++        command_argv=[durable_arg(arg) for arg in command_argv],
++        input_paths=[repo_relative(path) for path in input_paths],
++        allow_exploratory_dirty=True,
++        claim_boundary=CLAIM_BOUNDARY,
++        write=True,
++    )
++    finalize_execution_batch(
++        REPO_ROOT,
++        batch_id=batch_id,
++        output_paths=[f"lab/executions/{batch_id}/source_snapshot/source_snapshot_manifest.yaml"],
++        exit_status=0,
++        result_status="completed",
++        receipt=receipt,
++        write=True,
++    )
++    ref = execution_batch_ref(REPO_ROOT, batch_id)
++    for item in results:
++        manifest_path = REPO_ROOT / item["run_manifest_path"]
++        manifest = _read_json_file(manifest_path)
++        manifest["execution_batch_ref"] = ref
++        manifest.setdefault("provenance", {})["execution_batch_id"] = batch_id
++        write_json(manifest_path, manifest)
++
++        receipt_path = REPO_ROOT / item["receipt_path"]
++        receipt = read_yaml(receipt_path)
++        receipt["execution_batch_ref"] = ref
++        receipt.setdefault("provenance", {})["execution_batch_id"] = batch_id
++        write_yaml(receipt_path, receipt)
++
++
++def _read_json_file(path: Path) -> dict[str, Any]:
++    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
++        payload = json.load(handle)
++    if not isinstance(payload, dict):
++        raise ValueError(f"{path} is not a JSON mapping")
++    return payload
++
++
++def parse_args() -> argparse.Namespace:
++    parser = argparse.ArgumentParser(description="Execute Wave02 tradeability prepared proxy run specs.")
++    parser.add_argument("--row-membership-manifest", default=ROW_MEMBERSHIP_MANIFEST.as_posix())
++    parser.add_argument("--run-refs", default=RUN_REFS.as_posix())
++    parser.add_argument("--expected-branch", default="codex/wave02-execute-materialized-run-specs")
++    parser.add_argument("--limit", type=int, default=None)
++    return parser.parse_args()
++
++
++def main() -> int:
++    args = parse_args()
++    command_argv = sys.argv[:]
++    branch = branch_worktree(args.expected_branch)
++    batch_git_state = {
++        "batch_start_git_status": git_status_lines(),
++        "batch_start_git_sha": git_value(["rev-parse", "HEAD"]),
++        "batch_start_branch": git_value(["branch", "--show-current"]),
++    }
++    frame = load_row_membership(REPO_ROOT / args.row_membership_manifest)
++    run_refs = read_csv_rows(REPO_ROOT / args.run_refs)
++    if args.limit is not None:
++        run_refs = run_refs[: args.limit]
++    results = []
++    for row in run_refs:
++        spec_path = REPO_ROOT / row["run_spec_path"]
++        spec = read_yaml(spec_path)
++        results.append(run_one(spec, frame, command_argv, branch, batch_git_state))
++    batch_id = f"batch_wave02_tradeability_proxy_{utc_now().strftime('%Y%m%dT%H%M%S%fZ')}"
++    attach_execution_batch_refs(
++        results,
++        batch_id=batch_id,
++        command_argv=command_argv,
++        input_paths=[REPO_ROOT / args.row_membership_manifest],
++    )
++    print(json.dumps({"status": STATUS, "executed_proxy_run_count": len(results), "result_counts": dict(Counter(item["result_judgment"] for item in results))}, sort_keys=True))
++    return 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/src/spacesonar/cli.py b/src/spacesonar/cli.py
+index e7dd955..572e09e 100644
+--- a/src/spacesonar/cli.py
++++ b/src/spacesonar/cli.py
+@@ -13,6 +13,7 @@ from spacesonar.control_plane.lifecycle import (
+     judge_campaign,
+     materialize_run_specs,
+     open_campaign,
++    record_proxy_execution,
+ )
+ from spacesonar.control_plane.agent_metrics import (
+     agent_operating_events_diff,
+@@ -125,6 +126,8 @@ def build_parser() -> argparse.ArgumentParser:
+     open_p.add_argument("--spec", required=True)
+     materialize_p = campaign_sub.add_parser("materialize")
+     materialize_p.add_argument("--campaign-id", required=True)
++    record_proxy_p = campaign_sub.add_parser("record-proxy-execution")
++    record_proxy_p.add_argument("--campaign-id", required=True)
+     judge_p = campaign_sub.add_parser("judge")
+     judge_p.add_argument("--campaign-id", required=True)
+     close_p = campaign_sub.add_parser("close")
+@@ -204,6 +207,8 @@ def main(argv: list[str] | None = None) -> int:
+             result = open_campaign(Path(args.spec), ctx)
+         elif args.action == "materialize":
+             result = materialize_run_specs(args.campaign_id, ctx)
++        elif args.action == "record-proxy-execution":
++            result = record_proxy_execution(args.campaign_id, ctx)
+         elif args.action == "judge":
+             result = judge_campaign(args.campaign_id, ctx)
+         elif args.action == "close":
+diff --git a/src/spacesonar/control_plane/lifecycle.py b/src/spacesonar/control_plane/lifecycle.py
+index e7e1dd0..88e2825 100644
+--- a/src/spacesonar/control_plane/lifecycle.py
++++ b/src/spacesonar/control_plane/lifecycle.py
+@@ -1,7 +1,9 @@
+ from __future__ import annotations
+ 
++from collections import Counter
+ from dataclasses import dataclass
+ import hashlib
++import json
+ from pathlib import Path
+ from typing import Any, Callable
+ 
+@@ -1221,6 +1223,270 @@ def _require_evidence(repo_root: Path, evidence_inputs: list[str], label: str) -
+         raise LifecycleInputError(f"{label} missing evidence inputs: {', '.join(missing)}")
+ 
+ 
++PROXY_EXECUTION_STATUS = "wave02_proxy_observation_l4_required"
++PROXY_RUN_STATUS = "executed_proxy_observation_l4_required"
++PROXY_EXECUTION_NEXT_WORK_ITEM_ID = "work_wave02_tradeability_l4_materialization_preflight_v0"
++PROXY_EXECUTION_MISSING_EVIDENCE = ["L4_split_runtime_probe_not_yet_materialized"]
++
++
++def _read_json_file(path: Path) -> dict[str, Any]:
++    if not _path_exists(path):
++        raise LifecycleInputError(f"required JSON evidence missing: {path.as_posix()}")
++    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
++        payload = json.load(handle)
++    if not isinstance(payload, dict):
++        raise LifecycleInputError(f"JSON evidence is not a mapping: {path.as_posix()}")
++    return payload
++
++
++def _require_proxy_run_evidence(repo_root: Path, run_id: str, campaign_id: str) -> dict[str, Any]:
++    manifest_rel = Path("lab/runs") / run_id / "run_manifest.json"
++    manifest = _read_json_file(repo_root / manifest_rel)
++    if manifest.get("version") != "run_manifest_v3":
++        raise LifecycleInputError(f"{manifest_rel.as_posix()}: expected run_manifest_v3")
++    if manifest.get("status") != PROXY_RUN_STATUS:
++        raise LifecycleInputError(f"{manifest_rel.as_posix()}: status is not {PROXY_RUN_STATUS}")
++    id_chain = manifest.get("id_chain") or {}
++    if id_chain.get("campaign_id") != campaign_id:
++        raise LifecycleInputError(f"{manifest_rel.as_posix()}: id_chain.campaign_id mismatch")
++    for forbidden in ("candidate_id", "bundle_id"):
++        if id_chain.get(forbidden):
++            raise LifecycleInputError(f"{manifest_rel.as_posix()}: {forbidden} must be empty before L4")
++    storage = manifest.get("storage_contract") or {}
++    required_storage = {
++        "source_of_truth": manifest_rel.as_posix(),
++        "receipt": f"lab/runs/{run_id}/experiment_receipt.yaml",
++        "lineage": f"lab/runs/{run_id}/artifact_lineage.json",
++        "metrics": f"lab/runs/{run_id}/metrics.json",
++    }
++    for key, expected in required_storage.items():
++        observed = str(storage.get(key) or "")
++        if observed != expected:
++            raise LifecycleInputError(f"{manifest_rel.as_posix()}: storage_contract.{key} expected {expected}, observed {observed}")
++        if not _path_exists(repo_root / expected):
++            raise LifecycleInputError(f"{manifest_rel.as_posix()}: storage_contract.{key} path missing: {expected}")
++    if "L4_split_runtime_probe_for_valid_proxy_run" not in (manifest.get("required_gate_coverage") or {}).get("missing", []):
++        raise LifecycleInputError(f"{manifest_rel.as_posix()}: missing L4 gate must remain explicit")
++    claim_boundary = str(manifest.get("claim_boundary") or "")
++    for blocked in ["runtime_authority", "economics_pass", "live_readiness", "goal_achieve"]:
++        if blocked not in claim_boundary:
++            raise LifecycleInputError(f"{manifest_rel.as_posix()}: claim boundary does not block {blocked}")
++    return manifest
++
++
++def _proxy_execution_result_from_manifest(run_id: str, manifest: dict[str, Any]) -> dict[str, str]:
++    storage = manifest.get("storage_contract") or {}
++    return {
++        "run_id": run_id,
++        "status": str(manifest.get("status") or PROXY_RUN_STATUS),
++        "result_judgment": str(manifest.get("result_judgment") or "inconclusive"),
++        "run_manifest_path": str(storage.get("source_of_truth") or f"lab/runs/{run_id}/run_manifest.json"),
++        "receipt_path": str(storage.get("receipt") or f"lab/runs/{run_id}/experiment_receipt.yaml"),
++        "lineage_path": str(storage.get("lineage") or f"lab/runs/{run_id}/artifact_lineage.json"),
++        "metrics_path": str(storage.get("metrics") or f"lab/runs/{run_id}/metrics.json"),
++        "report_path": str(manifest.get("evidence_path") or ""),
++        "claim_boundary": str(manifest.get("claim_boundary") or ""),
++        "next_action": str(manifest.get("next_action") or PROXY_EXECUTION_NEXT_WORK_ITEM_ID),
++        "notes": str(manifest.get("notes") or "Wave02 proxy observation only; L4 follow-through required before runtime claims."),
++    }
++
++
++def _proxy_execution_next_work(goal_id: str, campaign: dict[str, Any], counts: dict[str, int], run_count: int) -> dict[str, Any]:
++    next_work = _complete_transition_next_work(
++        goal_id=goal_id,
++        campaign=campaign,
++        next_action=PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
++        targets=[
++            str(campaign.get("run_specs_index") or ""),
++            f"lab/campaigns/{campaign.get('campaign_id')}/evidence/proxy_execution_summary.yaml",
++        ],
++    )
++    next_work["next_action"] = "materialize_wave02_l4_follow_through"
++    next_work["summary"] = "Materialize Wave02 L4 follow-through for executed proxy observations."
++    next_work["current_truth"] = {
++        "executed_proxy_run_count": run_count,
++        "result_counts": counts,
++        "candidate_count": 0,
++        "l5_candidate_count": 0,
++    }
++    next_work["provenance"] = {"source": "canonical_proxy_execution_record", "campaign_id": campaign.get("campaign_id")}
++    return next_work
++
++
++def _record_proxy_execution_plan(campaign_id: str, context: ExecutionContext) -> LifecyclePlan:
++    campaign_path = Path("lab/campaigns") / campaign_id / "campaign_manifest.yaml"
++    campaign = _require_existing(context.repo_root / campaign_path, "campaign manifest")
++    if campaign.get("campaign_id") != campaign_id:
++        raise LifecycleInputError(f"{campaign_path.as_posix()}: campaign_id mismatch")
++    goal_id = str(campaign.get("active_goal_id") or "")
++    if not goal_id:
++        raise LifecycleInputError(f"{campaign_path.as_posix()}: missing active_goal_id")
++    sweep_id = str((campaign.get("experiment_design") or {}).get("sweep_id") or "")
++    if not sweep_id:
++        raise LifecycleInputError(f"{campaign_path.as_posix()}: missing experiment_design.sweep_id")
++    run_refs_path = Path(str(campaign.get("run_specs_index") or f"lab/campaigns/{campaign_id}/sweeps/{sweep_id}/run_refs.csv"))
++    run_refs = read_csv_rows(context.repo_root / run_refs_path)
++    if not run_refs:
++        raise LifecycleInputError(f"{run_refs_path.as_posix()}: no run refs")
++
++    results: list[dict[str, str]] = []
++    claim_boundaries: set[str] = set()
++    for row in run_refs:
++        run_id = str(row.get("run_id") or "")
++        if not run_id:
++            raise LifecycleInputError(f"{run_refs_path.as_posix()}: row missing run_id")
++        manifest = _require_proxy_run_evidence(context.repo_root, run_id, campaign_id)
++        result = _proxy_execution_result_from_manifest(run_id, manifest)
++        results.append(result)
++        claim_boundaries.add(result["claim_boundary"])
++    if len(claim_boundaries) != 1:
++        raise LifecycleInputError(f"{campaign_path.as_posix()}: proxy run claim boundaries disagree")
++    claim_boundary = next(iter(claim_boundaries))
++    counts = dict(sorted(Counter(item["result_judgment"] for item in results).items()))
++    now = utc_now()
++    summary_path = Path("lab/campaigns") / campaign_id / "evidence" / "proxy_execution_summary.yaml"
++    summary = {
++        "version": "wave02_proxy_execution_summary_v1",
++        "campaign_id": campaign_id,
++        "status": PROXY_EXECUTION_STATUS,
++        "created_at_utc": now,
++        "claim_boundary": claim_boundary,
++        "executed_proxy_run_count": len(results),
++        "result_counts": counts,
++        "candidate_count": 0,
++        "l5_candidate_count": 0,
++        "runtime_authority": "not_claimed",
++        "economics_pass": "not_claimed",
++        "live_readiness": "not_claimed",
++        "next_work_item": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
++        "evidence_paths": [run_refs_path.as_posix(), *[item["run_manifest_path"] for item in results]],
++        "reopen_conditions": ["rerun a cell only if manifest, receipt, lineage, or metrics fail validation"],
++        "unresolved_blockers": PROXY_EXECUTION_MISSING_EVIDENCE,
++    }
++
++    yaml_updates: dict[Path, dict[str, Any]] = {summary_path: summary}
++    text_updates: dict[Path, str] = {}
++
++    extra_fields = ["run_manifest_path", "receipt_path", "lineage_path", "metrics_path", "report_path", "result_judgment", "notes"]
++    fieldnames = list(run_refs[0].keys())
++    for field in extra_fields:
++        if field not in fieldnames:
++            fieldnames.append(field)
++    by_run = {item["run_id"]: item for item in results}
++    updated_refs = []
++    for row in run_refs:
++        updated = dict(row)
++        result = by_run[updated["run_id"]]
++        updated.update(result)
++        updated_refs.append(updated)
++        spec_path = Path(str(updated["run_spec_path"]))
++        spec = _require_existing(context.repo_root / spec_path, "run spec")
++        spec["status"] = PROXY_RUN_STATUS
++        spec["result_judgment"] = result["result_judgment"]
++        spec["run_manifest_path"] = result["run_manifest_path"]
++        spec["receipt_path"] = result["receipt_path"]
++        spec["lineage_path"] = result["lineage_path"]
++        spec["metrics_path"] = result["metrics_path"]
++        spec["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
++        yaml_updates[spec_path] = spec
++    text_updates[run_refs_path] = dump_csv(fieldnames, updated_refs)
++
++    campaign = dict(campaign)
++    campaign.update(
++        {
++            "status": PROXY_EXECUTION_STATUS,
++            "updated_at_utc": now,
++            "claim_boundary": claim_boundary,
++            "result_counts": counts,
++            "executed_proxy_run_count": len(results),
++            "valid_proxy_model_bearing_run_count": len(results),
++            "candidate_count": 0,
++            "l5_candidate_count": 0,
++            "next_action": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
++            "evidence_paths": [summary_path.as_posix(), run_refs_path.as_posix()],
++            "missing_evidence": PROXY_EXECUTION_MISSING_EVIDENCE,
++            "notes": "Wave02 proxy observations executed; L4 follow-through required next. No candidate or runtime authority claim.",
++        }
++    )
++    yaml_updates[campaign_path] = campaign
++
++    sweep_path = Path("lab/campaigns") / campaign_id / "sweeps" / sweep_id / "sweep_manifest.yaml"
++    sweep = _require_existing(context.repo_root / sweep_path, "sweep manifest")
++    sweep.update(
++        {
++            "status": PROXY_EXECUTION_STATUS,
++            "updated_at_utc": now,
++            "claim_boundary": claim_boundary,
++            "run_count": len(results),
++            "result_counts": counts,
++            "next_action": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
++        }
++    )
++    yaml_updates[sweep_path] = sweep
++
++    wave_id = _first_text(campaign.get("wave_ids"))
++    wave_path = Path("lab/waves") / wave_id / "wave_allocation.yaml"
++    wave = _require_existing(context.repo_root / wave_path, "wave allocation")
++    wave["claim_boundary"] = claim_boundary
++    wave["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
++    allocations = []
++    for allocation in wave.get("campaign_allocations") or []:
++        updated = dict(allocation)
++        if updated.get("campaign_id") == campaign_id:
++            updated["status"] = PROXY_EXECUTION_STATUS
++            updated["claim_boundary"] = claim_boundary
++            updated["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
++            updated["notes"] = "Wave02 proxy observations executed; L4 follow-through required next. No candidate or runtime authority claim."
++        allocations.append(updated)
++    wave["campaign_allocations"] = allocations
++    yaml_updates[wave_path] = wave
++
++    campaign_refs_path = Path("lab/waves") / wave_id / "campaign_refs.csv"
++    campaign_ref_rows = read_csv_rows(context.repo_root / campaign_refs_path)
++    for row in campaign_ref_rows:
++        if row.get("campaign_id") == campaign_id:
++            row["status"] = PROXY_EXECUTION_STATUS
++            row["claim_boundary"] = claim_boundary
++            row["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
++            row["notes"] = "Wave02 proxy observations executed; L4 follow-through required next. No protected claim."
++    text_updates[campaign_refs_path] = dump_csv(CAMPAIGN_REF_FIELDS, campaign_ref_rows)
++
++    goal_path = Path("lab/goals") / goal_id / "goal_manifest.yaml"
++    goal = _require_existing(context.repo_root / goal_path, "goal manifest")
++    next_work_path = Path("lab/goals") / goal_id / "next_work_item.yaml"
++    next_work = _proxy_execution_next_work(goal_id, campaign, counts, len(results))
++    goal["updated_at_utc"] = now
++    goal["active_phase"] = PROXY_EXECUTION_STATUS
++    goal["claim_boundary"] = claim_boundary
++    goal["next_work_item"] = _next_work_pointer(next_work)
++    goal["wave02_tradeability_campaign"] = {
++        "campaign_id": campaign_id,
++        "status": PROXY_EXECUTION_STATUS,
++        "executed_proxy_run_count": len(results),
++        "result_counts": counts,
++        "candidate_count": 0,
++        "l5_candidate_count": 0,
++        "claim_boundary": claim_boundary,
++        "evidence_path": summary_path.as_posix(),
++        "next_work_item": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
++    }
++    yaml_updates[goal_path] = goal
++    yaml_updates[next_work_path] = next_work
++
++    cursor_path = Path("lab/goals") / goal_id / "resume_cursor.yaml"
++    cursor = _require_existing(context.repo_root / cursor_path, "resume cursor")
++    cursor["updated_at_utc"] = now
++    cursor["active_phase"] = PROXY_EXECUTION_STATUS
++    cursor["active_work_item_id"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
++    cursor["claim_boundary"] = claim_boundary
++    cursor["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
++    cursor["unresolved_blockers"] = PROXY_EXECUTION_MISSING_EVIDENCE
++    yaml_updates[cursor_path] = cursor
++
++    artifact_paths = tuple(sorted(set(yaml_updates) | set(text_updates), key=lambda item: item.as_posix()))
++    return LifecyclePlan(yaml_updates=yaml_updates, text_updates=text_updates, artifact_paths=artifact_paths)
++
++
+ def _stage_common_neighbors(
+     repo_root: Path,
+     campaign_id: str,
+@@ -1314,6 +1580,19 @@ def _complete_transition_next_work(
+             "execute each materialized run spec with run_manifest, experiment_receipt, artifact_lineage, and metrics",
+             "preserve proxy/runtime follow-through decision without claiming candidate, runtime authority, economics pass, or live readiness",
+         ]
++    elif next_action == "work_wave02_tradeability_l4_materialization_preflight_v0":
++        primary_family = "onnx_export_parity"
++        primary_skill = "spacesonar-runtime-evidence"
++        verification_profile = "runtime_preflight"
++        outputs = [
++            "runtime/packages/<bundle_id>/experiment_bundle.json",
++            "runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml",
++        ]
++        acceptance_criteria = [
++            "materialize ONNX/bundle follow-through for valid Wave02 proxy/model-bearing runs",
++            "prepare L4 validation and research_oos MT5 attempt manifests without claiming runtime authority or economics pass",
++            "record blocker/reopen conditions for any run that cannot reach L4 follow-through",
++        ]
+     return {
+         "version": "work_item_lite_v1",
+         "work_item_id": next_action,
+@@ -1503,6 +1782,10 @@ def record_run_result(run_id: str, result: RunResult, context: ExecutionContext)
+     return _run_with_lifecycle_lock(context, lambda: _commit_plan(context, plan))
+ 
+ 
++def record_proxy_execution(campaign_id: str, context: ExecutionContext) -> TransactionResult:
++    return _run_with_lifecycle_lock(context, lambda: _commit_plan(context, _record_proxy_execution_plan(campaign_id, context)))
++
++
+ def judge_campaign(campaign_id: str, context: ExecutionContext) -> TransactionResult:
+     return _run_with_lifecycle_lock(context, lambda: _commit_plan(context, _judgment_plan(campaign_id, context)))
+ 
+diff --git a/src/spacesonar/control_plane/provenance.py b/src/spacesonar/control_plane/provenance.py
+index 04d77f5..a9d12e3 100644
+--- a/src/spacesonar/control_plane/provenance.py
++++ b/src/spacesonar/control_plane/provenance.py
+@@ -13,7 +13,7 @@ from datetime import UTC, datetime, timedelta
+ from pathlib import Path
+ from typing import Any
+ 
+-from .store import dump_json, dump_yaml, read_json, read_yaml, sha256_file
++from .store import dump_json, dump_yaml, filesystem_path, read_json, read_yaml, sha256_file
+ 
+ 
+ SOURCE_ROOTS = (
+@@ -26,7 +26,6 @@ SOURCE_ROOTS = (
+     "configs/",
+     "tests/",
+     ".agents/",
+-    ".codex/",
+     ".github/workflows/",
+     "docs/policies/",
+     "docs/agent_control/",
+@@ -344,10 +343,11 @@ def source_snapshot(repo_root: Path, batch_id: str, *, write: bool = True) -> di
+ 
+ def file_hash_record(repo_root: Path, rel_path: str) -> dict[str, Any]:
+     path = repo_root / rel_path
++    is_file = os.path.isfile(filesystem_path(path))
+     return {
+         "path": rel_path,
+-        "sha256": sha256_file(path) if path.exists() and path.is_file() else None,
+-        "size_bytes": path.stat().st_size if path.exists() and path.is_file() else None,
++        "sha256": sha256_file(path) if is_file else None,
++        "size_bytes": os.stat(filesystem_path(path)).st_size if is_file else None,
+     }
+ 
+ 
+@@ -361,7 +361,7 @@ def _validate_hash_records(repo_root: Path, paths: list[str], *, label: str, req
+         if Path(rel_path).is_absolute() or ".." in Path(rel_path).parts:
+             raise BatchReceiptError(f"{label} path must be repo-relative: {raw_path}")
+         path = repo_root / rel_path
+-        if require_present and not path.exists():
++        if require_present and not os.path.exists(filesystem_path(path)):
+             raise BatchReceiptError(f"{label} path is missing: {rel_path}")
+         record = file_hash_record(repo_root, rel_path)
+         if require_present and (record["sha256"] is None or record["size_bytes"] is None):
+diff --git a/tests/test_wave01_operating_closeout.py b/tests/test_wave01_operating_closeout.py
+index 8b847b4..b9bef36 100644
+--- a/tests/test_wave01_operating_closeout.py
++++ b/tests/test_wave01_operating_closeout.py
+@@ -37,8 +37,12 @@ CURRENT_POLICY_CLOSEOUT_PATH = CLOSEOUT_PATH.parent / "current_policy_closeout_a
+ WAVE01_POST_CLOSEOUT_WORK_ITEM_ID = "work_post_wave01_user_directed_wave02_or_review_v0"
+ WAVE02_ID = "wave_us100_wave02_tradeability_decision_surface_v0"
+ WAVE02_CAMPAIGN_ID = "campaign_us100_wave02_tradeability_decision_surface_v0"
+-WAVE02_WORK_ITEM_ID = "execute_materialized_run_specs"
+-WAVE02_NEXT_ACTION = "execute_materialized_run_specs"
++WAVE02_WORK_ITEM_ID = "work_wave02_tradeability_l4_materialization_preflight_v0"
++WAVE02_NEXT_ACTION = "materialize_wave02_l4_follow_through"
++WAVE02_ACTIVE_PHASE = "wave02_proxy_observation_l4_required"
++WAVE02_CLAIM_BOUNDARY = (
++    "wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve"
++)
+ 
+ 
+ def load_yaml(path: Path) -> dict[str, Any]:
+@@ -121,18 +125,20 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
+     current_policy_closeout = load_yaml(CURRENT_POLICY_CLOSEOUT_PATH)
+ 
+     assert goal["status"] == "active_wave02_pre_operational_research"
+-    assert goal["active_phase"] == "wave02_campaign_open"
++    assert goal["active_phase"] == WAVE02_ACTIVE_PHASE
++    assert goal["claim_boundary"] == WAVE02_CLAIM_BOUNDARY
+     assert goal["active_ids"]["wave_id"] == WAVE02_ID
+     assert goal["active_ids"]["campaign_id"] == WAVE02_CAMPAIGN_ID
+     assert goal["next_work_item"]["work_item_id"] == WAVE02_WORK_ITEM_ID
+     assert next_work["work_item_id"] == WAVE02_WORK_ITEM_ID
+     assert next_work["next_action"] == WAVE02_NEXT_ACTION
+-    assert next_work["primary_family"] == "model_training"
+-    assert next_work["primary_skill"] == "spacesonar-model-validation"
++    assert next_work["primary_family"] == "onnx_export_parity"
++    assert next_work["primary_skill"] == "spacesonar-runtime-evidence"
+     assert cursor["cursor_state"] == "active_wave02_pre_operational_research"
+-    assert cursor["active_phase"] == "wave02_campaign_open"
++    assert cursor["active_phase"] == WAVE02_ACTIVE_PHASE
+     assert cursor["active_work_item_id"] == WAVE02_WORK_ITEM_ID
+     assert cursor["active_ids"]["wave_id"] == WAVE02_ID
++    assert cursor["unresolved_blockers"] == ["L4_split_runtime_probe_not_yet_materialized"]
+     assert current_policy_closeout["legacy_source_evidence"]["legacy_wave_closeout"] == CLOSEOUT_PATH.relative_to(ROOT).as_posix()
+     assert workspace["active_wave"]["wave_id"] == WAVE02_ID
+     assert workspace["active_wave"]["status"] == "wave_open"
+@@ -142,7 +148,7 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
+     assert wave_by_id["wave_us100_closedbar_surface_cartography_v0"]["status"] == current_policy_closeout["status"]
+     assert wave_by_id["wave_us100_closedbar_surface_cartography_v0"]["next_action"] == legacy_closeout["next_action"]
+     assert wave_by_id[WAVE02_ID]["status"] == "wave_open"
+-    assert wave_by_id[WAVE02_ID]["next_action"] == WAVE02_NEXT_ACTION
++    assert wave_by_id[WAVE02_ID]["next_action"] == WAVE02_WORK_ITEM_ID
+ 
+ 
+ def test_agent_observation_proof_releases_repair_work_item_everywhere() -> None:
+@@ -171,12 +177,12 @@ def test_successful_proof_restores_user_directed_next_allowed_shapes() -> None:
+ 
+     assert next_work["work_item_id"] == WAVE02_WORK_ITEM_ID
+     assert next_work["next_action"] == WAVE02_NEXT_ACTION
+-    assert next_work["primary_family"] == "model_training"
+-    assert next_work["primary_skill"] == "spacesonar-model-validation"
+-    assert "lab/runs/<run_id>/run_manifest.json" in next_work["outputs"]
+-    assert next_work["claim_boundary"] == (
+-        "wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness"
+-    )
++    assert next_work["primary_family"] == "onnx_export_parity"
++    assert next_work["primary_skill"] == "spacesonar-runtime-evidence"
++    assert "runtime/packages/<bundle_id>/experiment_bundle.json" in next_work["outputs"]
++    assert next_work["claim_boundary"] == WAVE02_CLAIM_BOUNDARY
++    assert next_work["current_truth"]["executed_proxy_run_count"] == 8
++    assert next_work["current_truth"]["candidate_count"] == 0
+     assert "next_allowed_shapes" not in next_work
+ 
+ 
+diff --git a/tests/test_wave02_tradeability_proxy_components.py b/tests/test_wave02_tradeability_proxy_components.py
+new file mode 100644
+index 0000000..1e02465
+--- /dev/null
++++ b/tests/test_wave02_tradeability_proxy_components.py
+@@ -0,0 +1,67 @@
++from __future__ import annotations
++
++import numpy as np
++import pandas as pd
++import pytest
++
++from foundation.features.wave02_tradeability_features import FEATURE_FAMILY_BY_RECIPE, build_wave02_tradeability_features
++from foundation.labels.wave02_tradeability_labels import LABEL_CONFIGS, build_wave02_tradeability_labels
++
++
++def _synthetic_closed_bar_frame(rows: int = 240) -> pd.DataFrame:
++    timestamp = pd.date_range("2024-01-02T13:30:00Z", periods=rows, freq="5min")
++    idx = np.arange(rows, dtype=float)
++    close = 16000.0 + idx * 0.75 + np.sin(idx / 4.0) * 12.0 + np.where((idx % 47) < 4, idx % 5, 0.0)
++    open_ = close - np.cos(idx / 5.0) * 2.0
++    high = np.maximum(open_, close) + 4.0 + (idx % 7) * 0.2
++    low = np.minimum(open_, close) - 4.0 - (idx % 5) * 0.2
++    role = np.where(idx < 120, "train", np.where(idx < 180, "validation", "research_oos_a"))
++    return pd.DataFrame(
++        {
++            "model_row_key": [f"row_{int(item):04d}" for item in idx],
++            "primary_split_role": role,
++            "open": open_,
++            "high": high,
++            "low": low,
++            "close": close,
++            "tick_volume": 1000.0 + (idx % 19) * 11.0,
++            "spread_points": 12.0 + (idx % 3),
++            "real_volume": np.zeros(rows),
++            "row_seq": idx.astype(int),
++            "time_open_unix": (timestamp.view("int64") // 1_000_000_000).astype(int),
++            "time_close_unix": (timestamp.view("int64") // 1_000_000_000 + 300).astype(int),
++            "us100_bar_close_time_utc_rendered": timestamp.astype(str),
++        }
++    )
++
++
++@pytest.mark.parametrize("feature_recipe_id", sorted(FEATURE_FAMILY_BY_RECIPE))
++def test_wave02_feature_recipes_emit_declared_schema(feature_recipe_id: str) -> None:
++    frame = _synthetic_closed_bar_frame()
++
++    features, schema = build_wave02_tradeability_features(frame, feature_recipe_id)
++
++    assert schema.feature_recipe_id == feature_recipe_id
++    assert schema.feature_family == FEATURE_FAMILY_BY_RECIPE[feature_recipe_id]
++    assert schema.feature_columns == list(features.columns)
++    assert schema.boundary == "right_aligned_closed_bar_us100_wave02_tradeability_features_no_aux_symbols"
++    assert len(schema.feature_schema_hash) == 64
++    assert features.notna().any().any()
++
++
++@pytest.mark.parametrize("label_recipe_id", sorted(LABEL_CONFIGS))
++def test_wave02_label_recipes_respect_same_role_horizon(label_recipe_id: str) -> None:
++    frame = _synthetic_closed_bar_frame()
++    horizon = LABEL_CONFIGS[label_recipe_id][1]
++
++    labels, schema = build_wave02_tradeability_labels(frame, label_recipe_id)
++
++    assert schema.label_recipe_id == label_recipe_id
++    assert schema.horizon_bars == horizon
++    assert schema.target_columns == list(labels.columns)
++    assert len(schema.label_schema_hash) == 64
++    assert int(labels["same_role_horizon_ok"].sum()) > 0
++    eligible_with_target = labels["same_role_horizon_ok"] & labels["target_continuous"].notna()
++    assert int(eligible_with_target.sum()) > 0
++    assert labels.loc[eligible_with_target, "target_binary_raw"].notna().all()
++    assert labels.loc[119 - horizon + 1 : 119, "same_role_horizon_ok"].eq(False).all()

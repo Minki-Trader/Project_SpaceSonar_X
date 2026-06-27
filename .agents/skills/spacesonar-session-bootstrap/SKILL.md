@@ -30,6 +30,7 @@ Use when starting or resuming repository work that needs current truth, stale-as
 
 - Start with the smallest repo-controlled read or action that answers the current request.
 - Default to writer-scope smoke, not pytest/full graph validation. Name `validation_depth` before running commands.
+- When run evidence is touched, prefer `python -m spacesonar.cli project writer-smoke ...` as the first proof command.
 - Do not use whole-tree inventory as proof of operational stability; identify the owned source-of-truth surface and the guard that should fail early.
 - Do not recreate deleted legacy archive meanings.
 - Do not start broad validators or materializers unless the task is a boundary closeout, shared-contract change, source-of-truth drift repair, or protected claim surface.

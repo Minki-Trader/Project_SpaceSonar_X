@@ -13,6 +13,7 @@ from spacesonar.control_plane.lifecycle import (
     judge_campaign,
     materialize_run_specs,
     open_campaign,
+    record_proxy_execution,
 )
 from spacesonar.control_plane.agent_metrics import (
     agent_operating_events_diff,
@@ -125,6 +126,8 @@ def build_parser() -> argparse.ArgumentParser:
     open_p.add_argument("--spec", required=True)
     materialize_p = campaign_sub.add_parser("materialize")
     materialize_p.add_argument("--campaign-id", required=True)
+    record_proxy_p = campaign_sub.add_parser("record-proxy-execution")
+    record_proxy_p.add_argument("--campaign-id", required=True)
     judge_p = campaign_sub.add_parser("judge")
     judge_p.add_argument("--campaign-id", required=True)
     close_p = campaign_sub.add_parser("close")
@@ -149,6 +152,12 @@ def build_parser() -> argparse.ArgumentParser:
     project_area = sub.add_parser("project")
     project_sub = project_area.add_subparsers(dest="action", required=True)
     project_sub.add_parser("validate")
+    writer_smoke = project_sub.add_parser("writer-smoke")
+    writer_smoke.add_argument("--run-id", action="append", default=[])
+    writer_smoke.add_argument("--run-refs")
+    writer_smoke.add_argument("--campaign-id")
+    writer_smoke.add_argument("--summary")
+    writer_smoke.add_argument("--pre-runtime", action="store_true")
     workspace = project_sub.add_parser("workspace")
     workspace_group = workspace.add_mutually_exclusive_group(required=True)
     workspace_group.add_argument("--check", action="store_true")
@@ -204,6 +213,8 @@ def main(argv: list[str] | None = None) -> int:
             result = open_campaign(Path(args.spec), ctx)
         elif args.action == "materialize":
             result = materialize_run_specs(args.campaign_id, ctx)
+        elif args.action == "record-proxy-execution":
+            result = record_proxy_execution(args.campaign_id, ctx)
         elif args.action == "judge":
             result = judge_campaign(args.campaign_id, ctx)
         elif args.action == "close":
@@ -257,6 +268,22 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"ERROR: {error}")
             return 1
         print("project validation passed")
+        return 0
+    if args.area == "project" and args.action == "writer-smoke":
+        from foundation.validation.writer_scope_evidence_smoke import validate
+
+        errors = validate(
+            repo_root,
+            run_ids=list(args.run_id or []),
+            run_refs=args.run_refs,
+            campaign_id=args.campaign_id,
+            summary=args.summary,
+            pre_runtime=bool(args.pre_runtime),
+        )
+        if errors:
+            for error in errors:
+                print(f"ERROR: {error}")
+            return 1
         return 0
     if args.area == "agents" and args.action == "metrics":
         if args.write:

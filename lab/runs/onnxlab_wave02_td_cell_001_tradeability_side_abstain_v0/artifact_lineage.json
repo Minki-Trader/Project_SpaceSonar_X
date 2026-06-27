@@ -1,0 +1,95 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0.yaml",
+      "sha256": "87bb9843822a4b582062d917480d8aa3723c1fccc1fe955688fa6862f481739d",
+      "size_bytes": 2246,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave02_tradeability_proxy_batch.py",
+    "command": "foundation/pipelines/run_wave02_tradeability_proxy_batch.py"
+  },
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/run_manifest.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/feature_schema.json",
+      "sha256": "f7eed778b5e31ddf3e7c8fbe83da53b58102da4f7a9d4a06d06ce8887496db5e",
+      "size_bytes": 1878,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/label_schema.json",
+      "sha256": "1fb3c08b473df280e9a1ad04cb7c2ba74b02cdb03127d6c28be0fb3edd5b475e",
+      "size_bytes": 759,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/model_summary.json",
+      "sha256": "7a21839156c3311c8156feee07b68f4009133df7758e059de75acd14f4ab9f75",
+      "size_bytes": 846,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/split_profile.json",
+      "sha256": "91551f598c108e19f5bcee44c80f2ecdc596e3ca163006ccb1bfe3de92008e30",
+      "size_bytes": 256,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "d4d4921fecddbfc6cf66e091742fb765827d9e7e59d85d7c9e8204115f512601",
+      "size_bytes": 22241,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "dfda4ab19790ac5e6bdb2521158bc8fe2acd249af0409bc1c7192940b1d5b36a",
+      "size_bytes": 23094,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/reports/proxy_tradeability_report.json",
+      "sha256": "4e6590e3e1f9990c0a49f6a7741b7afe9c1e1892c74cf395ab7e94e52a15f684",
+      "size_bytes": 5755,
+      "availability": "local_generated_hash_recorded_not_committed"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/feature_schema.json": "f7eed778b5e31ddf3e7c8fbe83da53b58102da4f7a9d4a06d06ce8887496db5e"
+    },
+    {
+      "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/label_schema.json": "1fb3c08b473df280e9a1ad04cb7c2ba74b02cdb03127d6c28be0fb3edd5b475e"
+    },
+    {
+      "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/model_summary.json": "7a21839156c3311c8156feee07b68f4009133df7758e059de75acd14f4ab9f75"
+    },
+    {
+      "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/split_profile.json": "91551f598c108e19f5bcee44c80f2ecdc596e3ca163006ccb1bfe3de92008e30"
+    },
+    {
+      "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/prediction_sample_validation.csv": "d4d4921fecddbfc6cf66e091742fb765827d9e7e59d85d7c9e8204115f512601"
+    },
+    {
+      "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/artifacts/prediction_sample_research_oos_a.csv": "dfda4ab19790ac5e6bdb2521158bc8fe2acd249af0409bc1c7192940b1d5b36a"
+    },
+    {
+      "lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/reports/proxy_tradeability_report.json": "4e6590e3e1f9990c0a49f6a7741b7afe9c1e1892c74cf395ab7e94e52a15f684"
+    }
+  ],
+  "availability": "source_of_truth_committed_local_generated_artifacts_hash_recorded_not_committed",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing"
+}

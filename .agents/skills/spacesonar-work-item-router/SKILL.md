@@ -63,6 +63,7 @@ Internal receipts are not user reports.
 
 - Default `execution_weight=thin_first_pass` unless the work is already at a campaign/wave boundary, protected runtime/economics/handoff claim, shared-contract mutation, or known source-of-truth drift repair.
 - Default `validation_depth=writer_scope_smoke`; pytest, full active-record graph, full project validate, evidence-graph-full, broad hash sync, and global registry regeneration are not default run-loop actions.
+- For touched run evidence, use `python -m spacesonar.cli project writer-smoke --run-refs <run_refs.csv> --campaign-id <campaign_id> --summary <summary.yaml> --pre-runtime` before considering broader validation.
 - Do not route a first plumbing attempt as full-project reconciliation. Add broader validation only after the thin path is real or the claim requires it.
 - For session start/resume, route the first executable step as one narrow fixture/run/probe/smoke path. Broad materializers, global sync, full validators, or full pytest require an explicit boundary/claim/drift reason.
 

@@ -60,10 +60,27 @@ allowed_non_pytest_smokes:
   - parse_touched_yaml_json_toml_csv
   - compile_touched_python_modules
   - import_touched_python_module_when_safe
+  - run_writer_scope_evidence_smoke_for_touched_runs
   - run_policy_or_routing_lint_when_policy_or_routing_changed
   - run_repository_setting_check_when_git_policy_changed
   - run_registry_projection_check_when_registry_projection_changed
   - inspect_manifest_receipt_lineage_hash_fields_for_touched_records
+
+writer_scope_commands:
+  run_evidence: "python -m spacesonar.cli project writer-smoke --run-refs <repo-relative-run_refs.csv> --campaign-id <campaign_id> --summary <repo-relative-summary.yaml> --pre-runtime"
+  direct_validator: "python foundation/validation/writer_scope_evidence_smoke.py --run-id <run_id> --pre-runtime"
+
+transaction_validation_policy:
+  lifecycle_default_validation_depth: writer_scope_smoke
+  lifecycle_must_not_call_by_default:
+    - control_plane_validator_full
+    - active_record_validator_full
+    - pytest
+  lifecycle_boundary_escalation_only:
+    - campaign_closeout
+    - wave_closeout
+    - protected_claim_surface_changed
+    - source_of_truth_drift_detected
 
 escalate_to_manual_boundary_validation_when:
   - campaign_closeout
