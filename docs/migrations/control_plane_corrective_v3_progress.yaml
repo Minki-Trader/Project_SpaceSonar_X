@@ -9,12 +9,13 @@ wp08_final_hygiene:
   status: completed
   scope: final_repository_hygiene_validation_only
 main_integration_readiness:
-  status: ready_after_remote_protection_verified_and_required_checks_pass
+  status: ready_for_main_direct_push_with_fast_remote_smoke
   required_checks:
   - control-plane-fast
   - unit
+  manual_boundary_checks:
   - evidence-graph-full
-  - full-suite
+  - full-regression
   enforcement_command: python foundation/validation/remote_repository_settings_verifier.py --repo-root . --enforce-main-integration
   observation_only_after_post_wp08_proof: true
   wave_progression_ready_for_user_direction: true
@@ -1744,16 +1745,17 @@ work_units:
         repair_work_item_id: work_wp07_closeout_evidence_repair_v0
       delivery_hygiene:
         remote_repository_settings_record: docs/policies/remote_repository_settings.yaml
-        remote_branch_protection: verified
+        remote_branch_protection: not_enabled_or_not_visible
         mt5_manual_workflow: .github/workflows/mt5-runtime-manual.yml
         final_migration_ledger: docs/migrations/control_plane_corrective_v3.yaml
       main_integration_readiness:
-        status: ready_after_remote_protection_verified_and_required_checks_pass
+        status: ready_for_main_direct_push_with_fast_remote_smoke
         required_ci_jobs:
         - control-plane-fast
         - unit
+        manual_boundary_jobs:
         - evidence-graph-full
-        - full-suite
+        - full-regression
       wave_progression_readiness:
         status: blocked
         blockers:

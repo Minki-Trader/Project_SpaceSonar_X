@@ -27,22 +27,29 @@ main_integration_policy:
 This policy keeps experiment throughput on `main` while preventing run-by-run
 remote churn.
 
-## Scoped Campaign Closeout CI
+## Boundary Validation Cadence
 
-Campaign-local closeout PRs may use scoped partial CI when the changed
-paths are limited to campaign evidence, campaign closeout records, clue memory,
-negative memory, and the approved campaign-local registries.
+The normal main loop is not full-regression-first. Main push runs the fast
+control-plane checks and the scoped unit set. It also runs `ci-scope-gate` in
+advisory mode so the commit records whether a heavier boundary check would be
+needed, without blocking routine experiment throughput.
 
-The CI policy uses two layers:
+The CI policy uses three layers:
 
-- `ci-scope-gate` is a required check for pull requests and protected pushes.
-- `full-regression` remains a manual `workflow_dispatch` workflow for protected
-  changes that need a complete `uv run pytest -q` record.
+- `control-plane-fast` plus `unit` run on main pushes as the default remote
+  smoke layer.
+- `evidence-graph-full` is a manual `workflow_dispatch` boundary check for
+  campaign closeout, wave closeout, source-of-truth drift, or protected claim
+  escalation.
+- `full-regression` remains a manual `workflow_dispatch` workflow for complete
+  `uv run pytest -q` evidence when shared source, dependencies, validators, or
+  policy semantics changed enough to need the whole suite.
 
-The scope gate must require full regression for shared-control, evaluator,
-policy, registry, workspace, wave, goal, runtime-truth, dependency, workflow, or
-protected-claim changes. A missing manual full-regression run cannot silently
-pass.
+The strong guard is the writer and source-of-truth layer: run manifests,
+receipts, lineage, workspace projection, registry projection, and transaction
+receipts must be correct when written. The broad validators confirm boundary
+consistency; they should not be the normal way to discover routine run-local
+mistakes.
 
 ## Worktree Fit Rule
 

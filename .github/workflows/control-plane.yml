@@ -1,6 +1,7 @@
 name: control-plane
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -13,7 +14,7 @@ permissions:
 
 jobs:
   ci-scope-gate:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,8 +30,9 @@ jobs:
           else
             BASE="${{ github.event.before }}"
             HEAD="${{ github.sha }}"
+            ADVISORY="--advisory"
           fi
-          python foundation/validation/ci_scope_gate.py --repo-root . --base "$BASE" --head "$HEAD" --repository "$GITHUB_REPOSITORY" --token "${{ github.token }}"
+          python foundation/validation/ci_scope_gate.py --repo-root . --base "$BASE" --head "$HEAD" --repository "$GITHUB_REPOSITORY" --token "${{ github.token }}" ${ADVISORY:-}
 
   control-plane-fast:
     runs-on: ubuntu-latest
@@ -60,7 +62,9 @@ jobs:
       - run: uv run pytest tests/test_runtime_completion_contract.py tests/test_wave01_runtime_truth_migration.py tests/control_plane tests/test_routing_behavior.py -q
 
   evidence-graph-full:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

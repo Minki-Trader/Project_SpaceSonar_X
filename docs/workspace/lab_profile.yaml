@@ -95,6 +95,32 @@ execution_weight_policy:
     - runtime_economics_handoff_or_protected_claim
     - thin_path_succeeds_and_surface_remains_useful
   global_sync_default: boundary_or_source_of_truth_only
+  validation_cadence:
+    run_loop_default:
+      profile: fast_remote_smoke_plus_writer_receipts
+      required_guards:
+        - transaction_receipt
+        - run_manifest_or_attempt_manifest
+        - experiment_receipt_or_batch_receipt
+        - artifact_lineage_hashes_when_outputs_exist
+        - claim_boundary_and_forbidden_claims
+      forbidden_default_checks:
+        - full_pytest
+        - full_active_record_graph
+        - full_project_validate
+    boundary_default:
+      profile: evidence_graph_full_manual
+      trigger_events:
+        - campaign_closeout
+        - wave_closeout
+        - source_of_truth_drift
+        - protected_claim_change
+    archive_default:
+      profile: full_regression_manual
+      trigger_events:
+        - shared_source_or_dependency_change_with_broad_blast_radius
+        - validator_or_policy_semantics_change
+        - user_requested_full_archive_recheck
   missing_adapter_first_action: smallest_explicit_translation_layer_to_test_path
   l4_policy_effect: valid_proxy_model_bearing_runs_still_require_L4_but_may_progress_in_bounded_batches
   l4_budget_accounting:

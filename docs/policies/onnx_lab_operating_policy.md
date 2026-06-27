@@ -150,16 +150,19 @@ The lab is attempt-first, not bureaucracy-first.
 - Use a thin first pass: one fixture, one representative run, one export smoke, one parser smoke, or one MT5 micro-path when that is enough to prove or falsify the path.
 - Scale to broader execution only after the thin path is real, the surface remains useful, or the claim boundary requires it.
 - Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are for shared-contract edits, source-of-truth drift, campaign/wave boundary closeout, or protected runtime/economics/handoff claims.
-- Ordinary campaign-closeout PRs may use scoped partial CI when changed paths
-  are limited to campaign-local evidence, closeout records, clue memory,
-  negative memory, and approved campaign-local registries.
-- Full regression remains required for shared-control, evaluator, validation,
-  migration, policy, workspace, wave, goal, runtime-truth, dependency, workflow,
-  or protected-claim changes. Protected claims include runtime authority,
-  economics pass, live readiness, selected baseline, production deployment, and
-  reviewed or verified pass.
-- `ci-scope-gate` is the required check that decides whether manual
-  `full-regression` evidence is needed for the head commit.
+- Main push defaults to a fast remote smoke layer: policy/routing lints,
+  repository setting check, registry projection check, whitespace check, and a
+  focused unit set.
+- `ci-scope-gate` classifies changed paths on main push in advisory mode. It is
+  allowed to say that a manual boundary check is needed, but it must not turn
+  every run-local update into a blocking full-regression wait.
+- `evidence-graph-full` is manual `workflow_dispatch` evidence for campaign
+  closeout, wave closeout, source-of-truth drift, or protected runtime,
+  economics, handoff, reviewed/pass, selected-baseline, production, or live
+  readiness claim changes.
+- Full regression remains manual `workflow_dispatch` evidence for shared source,
+  dependency, validator, policy, workflow, or protected-claim changes when the
+  focused checks do not cover the blast radius.
 - For ordinary run-local learning, update the local manifest, receipt, lineage, metrics, or campaign-local summary first. Global indexes can wait until the boundary unless the index is the current source of truth.
 - The mandatory L4 rule still stands for every valid proxy/model-bearing run. It may be executed in bounded materialization and probe batches rather than folded into the first proxy or adapter attempt.
 - L4 budget accounting uses the `validation_research_oos_pair` unit. One L4 budget unit means the same declared cell/surface/runtime-surface has both required period roles: `validation` and `research_oos`.
