@@ -1,197 +1,32 @@
-version: onnx_lab_work_item_v1
-work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
+version: work_item_lite_v1
+work_item_id: work_wave02_tradeability_materialize_initial_specs_v0
+request_digest: wave02_tradeability_decision_surface_open_v0
+primary_family: experiment_design
+primary_skill: spacesonar-experiment-design
+verification_profile: lab_experiment
+targets:
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
+acceptance_criteria:
+- Wave02 campaign open manifests and registries validate
+- next action materializes declared initial broad run specs
+claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+policy_binding:
+  revision: policy_contract_v2
+  guards:
+  - GUARD_003_CLAIM_BOUNDARY
+  - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_006_BRANCH_WORKTREE
+outputs:
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/
+next_action: materialize_wave02_tradeability_initial_specs
+summary: Materialize Wave02 tradeability decision-surface initial broad run specs.
+path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+provenance:
+  source: wave02_tradeability_decision_campaign_spec
+  source_campaign_spec: lab/goals/goal_us100_onnx_forward_boundary_v0/wave02_tradeability_decision_campaign_spec.yaml
+created_at_utc: '2026-06-27T12:15:00Z'
+status: pending
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-created_at_utc: '2026-06-22T04:56:57Z'
-status: wave01_operating_proof_window_closed
-current_truth:
-  active_goal_status: complete_wave01_operating_proof_window
-  wave_id: wave_us100_closedbar_surface_cartography_v0
-  wave_closeout: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
-  campaign_count_closed: 3
-  candidate_count: 0
-  l5_candidate_count: 0
-  negative_memory_ids:
-  - neg_wave0_decision_replay_momentum_ret_1_loss_v0
-  - neg_wave01_event_barrier_score_band_decision_replay_loss_v0
-  - neg_wave01_session_transition_inverse_score_band_decision_replay_loss_v0
-  preserved_clue_ids:
-  - clue_wave0_tradeability_mid_horizon_v0
-  - clue_wave0_path_quality_h12_side_signal_v0
-  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
-  claim_boundary: control_plane_stabilization_validated_standard_l4_runtime_contract_complete_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
-  wave01_event_barrier_l4_runtime_execution_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  wave01_event_barrier_l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
-  wave01_event_barrier_l4_runtime_execution_counts:
-    prepared_attempt_count: 24
-    selected_attempt_count: 0
-    indexed_execution_count: 24
-    executed_attempt_count: 24
-    completed_manifest_count: 24
-    touched_manifest_count: 24
-    telemetry_observed_count: 24
-    telemetry_missing_count: 0
-    tester_report_observed_count: 24
-    tester_report_missing_count: 0
-    terminal_execution_count: 24
-    telemetry_observation_count: 24
-    tester_report_observation_count: 24
-    portable_contract_count: 24
-    runtime_probe_complete_count: 24
-    runtime_probe_incomplete_count: 0
-    period_role_counts:
-      research_oos: 12
-      validation: 12
-    status_counts:
-      runtime_probe_completed: 24
-    result_judgment_counts:
-      runtime_probe: 24
-  wave01_session_transition_l4_runtime_execution_summary: lab/campaigns/campaign_us100_session_transition_regime_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  wave01_session_transition_l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
-  wave01_session_transition_l4_runtime_execution_counts:
-    prepared_attempt_count: 20
-    selected_attempt_count: 7
-    indexed_execution_count: 20
-    executed_attempt_count: 20
-    completed_manifest_count: 20
-    touched_manifest_count: 20
-    telemetry_observed_count: 20
-    telemetry_missing_count: 0
-    tester_report_observed_count: 20
-    tester_report_missing_count: 0
-    terminal_execution_count: 20
-    telemetry_observation_count: 20
-    tester_report_observation_count: 20
-    portable_contract_count: 20
-    runtime_probe_complete_count: 20
-    runtime_probe_incomplete_count: 0
-    period_role_counts:
-      research_oos: 10
-      validation: 10
-    status_counts:
-      runtime_probe_completed: 20
-    result_judgment_counts:
-      runtime_probe: 20
-  wave01_event_barrier_l4_decision_replay_runtime_execution_summary: lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
-  wave01_event_barrier_l4_decision_replay_runtime_execution_status: wave01_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
-  wave01_event_barrier_l4_decision_replay_runtime_execution_counts:
-    prepared_attempt_count: 10
-    selected_attempt_count: 0
-    indexed_execution_count: 10
-    executed_attempt_count: 10
-    completed_manifest_count: 10
-    touched_manifest_count: 10
-    source_score_telemetry_observed_count: 10
-    execution_telemetry_observed_count: 10
-    execution_telemetry_missing_count: 0
-    tester_report_observed_count: 10
-    tester_report_missing_count: 0
-    tester_log_observed_count: 10
-    terminal_execution_count: 10
-    telemetry_observation_count: 10
-    tester_report_observation_count: 10
-    portable_contract_count: 10
-    runtime_probe_complete_count: 10
-    runtime_probe_incomplete_count: 0
-    open_action_count: 48439
-    close_action_count: 48347
-    open_failed_count: 174
-    period_role_counts:
-      research_oos: 5
-      validation: 5
-    direction_policy_counts:
-      score_band_side: 10
-    status_counts:
-      runtime_probe_completed: 10
-    result_judgment_counts:
-      runtime_probe: 10
-  l4_runtime_execution_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
-  l4_runtime_execution_counts:
-    prepared_attempt_count: 24
-    selected_attempt_count: 24
-    indexed_execution_count: 24
-    executed_attempt_count: 24
-    completed_manifest_count: 24
-    touched_manifest_count: 24
-    telemetry_observed_count: 24
-    telemetry_missing_count: 0
-    tester_report_observed_count: 24
-    tester_report_missing_count: 0
-    terminal_execution_count: 24
-    telemetry_observation_count: 24
-    tester_report_observation_count: 24
-    portable_contract_count: 24
-    runtime_probe_complete_count: 24
-    runtime_probe_incomplete_count: 0
-    period_role_counts:
-      research_oos: 12
-      validation: 12
-    status_counts:
-      runtime_probe_completed: 24
-    result_judgment_counts:
-      runtime_probe: 24
-  l4_decision_replay_runtime_execution_summary: lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/decision_replay_runtime_execution_summary.yaml
-  l4_decision_replay_runtime_execution_status: decision_replay_terminal_execution_attempted_for_all_prepared_attempts
-  l4_decision_replay_runtime_execution_counts:
-    prepared_attempt_count: 6
-    selected_attempt_count: 6
-    indexed_execution_count: 6
-    executed_attempt_count: 6
-    completed_manifest_count: 6
-    touched_manifest_count: 6
-    source_score_telemetry_observed_count: 6
-    execution_telemetry_observed_count: 6
-    execution_telemetry_missing_count: 0
-    tester_report_observed_count: 6
-    tester_report_missing_count: 0
-    tester_log_observed_count: 6
-    terminal_execution_count: 6
-    telemetry_observation_count: 6
-    tester_report_observation_count: 6
-    portable_contract_count: 6
-    runtime_probe_complete_count: 6
-    runtime_probe_incomplete_count: 0
-    open_action_count: 39598
-    close_action_count: 11727
-    open_failed_count: 0
-    period_role_counts:
-      research_oos: 3
-      validation: 3
-    direction_policy_counts:
-      momentum_ret_1: 6
-    status_counts:
-      runtime_probe_completed: 6
-    result_judgment_counts:
-      runtime_probe: 6
-next_allowed_shapes:
-- user_directed_wave02_open
-- new_unexplored_multi_axis_surface
-- previous_material_only_bounded_synthesis_mix2_then_mix3
-- post_closeout_review
-forbidden_carryover:
-- replay_Wave01_score_band_side_as_candidate_repair
-- replay_Wave01_inverse_score_band_as_candidate_repair
-- force_non_directional_or_diagnostic_scores_into_orders_without_new_decision_surface
-- feature_only_campaign
-- label_only_campaign
-- model_only_campaign
-- threshold_only_campaign
-- repair_only_campaign
-claim_boundary: post_wave01_handoff_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
-forbidden_claims:
-- selected_baseline
-- operating_reference
-- operating_promotion
-- runtime_authority
-- economics_pass
-- materialization_ready
-- handoff_complete
-- live_readiness
-- reviewed_verified_pass
-next_action: work_post_wave01_user_directed_wave02_or_review_v0
-next_action_detail: Wave01 evaluator-backed closeout is complete. Continue only with
-  user-directed Wave02, review, or a newly declared surface.
-missing_material_if_relevant: []
-blocking_requirements: []
-updated_at_utc: '2026-06-26T18:25:47Z'
-blocking_findings: []
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0

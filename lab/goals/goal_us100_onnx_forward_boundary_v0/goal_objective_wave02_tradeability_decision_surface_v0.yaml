@@ -1,0 +1,50 @@
+version: goal_objective_revision_v1
+revision_id: goal_objective_wave02_tradeability_decision_surface_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+created_at_utc: '2026-06-27T12:10:00Z'
+source_of_truth: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_wave02_tradeability_decision_surface_v0.yaml
+primary_objective: wave02_pre_operational_research
+proof_window: Wave02_opening_campaign
+objective: >
+  Open Wave02 as a new multi-axis tradeability and decision-surface research
+  wave. Use Wave01 preserved clues only as questions to investigate, not as
+  selected baselines, operating references, candidate repairs, or inherited
+  winners.
+claim_boundary: wave02_objective_revision_only_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+wave02_operating_rules:
+  wave_role: pre_operational_research_until_runtime_evidence_candidate_boundary
+  campaign_shape: new_unexplored_multi_axis_surface
+  forbidden_shapes:
+    - feature_only_campaign
+    - label_only_campaign
+    - model_only_campaign
+    - threshold_only_campaign
+    - repair_only_campaign
+  required_axes:
+    - target_or_label_surface
+    - feature_or_input_surface
+    - model_or_training_surface
+    - decision_surface
+    - evaluation_or_runtime_surface
+  runtime_follow_through: L4_split_runtime_probe_required_for_valid_proxy_model_bearing_runs
+  l5_effect: continue_to_L5_candidate_runtime_evidence_only_if_L4_is_promising
+legacy_relation:
+  inherits_legacy_winner: false
+  inherits_selected_baseline: false
+  inherits_runtime_authority: false
+  uses_wave01_material_as: preserved_questions_and_negative_memory_only
+source_questions:
+  - clue_wave01_session_transition_remaining_decision_surface_needed_v0
+  - clue_wave0_tradeability_mid_horizon_v0
+  - clue_wave0_path_quality_h12_side_signal_v0
+forbidden_claims:
+  - selected_baseline
+  - operating_reference
+  - operating_promotion
+  - runtime_authority
+  - economics_pass
+  - materialization_ready
+  - handoff_complete
+  - live_readiness
+  - reviewed_verified_pass
+  - goal_achieve

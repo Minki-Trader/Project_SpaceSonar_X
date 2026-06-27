@@ -1,0 +1,40 @@
+version: surface_manifest_v1
+surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+status: campaign_opened
+created_at_utc: '2026-06-27T12:15:00Z'
+inheritance_policy: no_prior_feature_label_target_model_or_runtime_defaults
+problem_shape:
+  input_surface: session_range_tradeability_state
+  target_or_label_surface: tradeability_side_abstain
+  decision_use: side_abstain_tradeability_gate
+  holding_logic: declared_per_run_short_horizon_timeout_or_barrier_exit
+  evaluation_method: proxy_then_L4_split_runtime_probe
+recipe_refs:
+  data_surface_id: data_surface_us100_m5_closedbar_wave02_v0
+  label_recipe_id: label_wave02_tradeability_side_abstain_v0
+  feature_recipe_id: feature_wave02_session_range_tradeability_v0
+  model_recipe_id: model_wave02_interpretable_tradeability_v0
+  decision_recipe_id: decision_wave02_side_abstain_tradeability_v0
+  split_recipe_id: split_set_v0
+  eval_recipe_id: eval_wave02_proxy_runtime_kpi_v0
+storage_contract:
+  source_of_truth: lab/surfaces/surface_us100_wave02_tradeability_side_abstain_v0/surface_manifest.yaml
+  registry_rows:
+  - docs/registers/experiment_surface_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+runtime_level_target: L4_split_runtime_probe_for_valid_proxy_model_runs
+claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+evidence_path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+next_action: materialize_wave02_tradeability_initial_specs
+notes: Surface opened by lifecycle engine.

@@ -347,12 +347,12 @@ def validate_artifact_registry(repo_root: Path) -> list[str]:
         artifact_path = repo_root / rel_path
         availability = row.get("availability", "")
         must_exist = availability in HASH_REQUIRED_AVAILABILITY
-        if not artifact_path.exists():
+        if not path_exists(artifact_path):
             if must_exist:
                 errors.append(f"artifact_registry.csv {row.get('artifact_id')}: missing {rel_path}")
             continue
         observed_hash = sha256(artifact_path)
-        observed_size = artifact_path.stat().st_size
+        observed_size = os.path.getsize(filesystem_path(artifact_path))
         if row.get("sha256") and not sha256_matches_text_checkout(row["sha256"], artifact_path):
             errors.append(
                 f"artifact_registry.csv {row.get('artifact_id')}: sha256 mismatch "
@@ -364,7 +364,7 @@ def validate_artifact_registry(repo_root: Path) -> list[str]:
                 f"{rel_path} expected={row['size_bytes']} observed={observed_size}"
             )
         source = row.get("source_of_truth")
-        if source and not (repo_root / source).exists():
+        if source and not path_exists(repo_root / source):
             errors.append(f"artifact_registry.csv {row.get('artifact_id')}: missing source_of_truth {source}")
     return errors
 
@@ -921,7 +921,7 @@ def validate_manifest_backed_registry(
     manifest_id_field: str,
 ) -> list[str]:
     registry_path = repo_root / "docs" / "registers" / registry_name
-    if not registry_path.exists():
+    if not path_exists(registry_path):
         return [f"{registry_name}: missing docs/registers/{registry_name}"]
     errors: list[str] = []
     for row in read_csv_rows(registry_path):
@@ -930,7 +930,7 @@ def validate_manifest_backed_registry(
         if not record_id or not manifest_path_text:
             continue
         manifest_path = repo_root / manifest_path_text
-        if not manifest_path.exists():
+        if not path_exists(manifest_path):
             errors.append(f"{registry_name} {record_id}: missing {manifest_path_text}")
             continue
         manifest = load_yaml(manifest_path)
@@ -942,7 +942,7 @@ def validate_manifest_backed_registry(
             if observed and expected and observed != expected:
                 errors.append(f"{registry_name} {record_id}: {field} mismatch")
         evidence_path = row.get("evidence_path")
-        if evidence_path and not (repo_root / evidence_path).exists():
+        if evidence_path and not path_exists(repo_root / evidence_path):
             errors.append(f"{registry_name} {record_id}: missing evidence_path {evidence_path}")
     return errors
 

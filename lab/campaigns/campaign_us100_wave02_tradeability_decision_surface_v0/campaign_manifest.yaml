@@ -1,0 +1,304 @@
+version: campaign_manifest_v2
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+campaign_type: standard_experiment
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: campaign_opened
+created_at_utc: '2026-06-27T12:15:00Z'
+updated_at_utc: '2026-06-27T12:15:00Z'
+wave_ids:
+- wave_us100_wave02_tradeability_decision_surface_v0
+idea_ids:
+- idea_us100_wave02_tradeability_side_abstain_surface_v0
+hypothesis_ids:
+- hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+objective: 'Open Wave02 with a new multi-axis tradeability and side-abstain decision
+  surface. The first campaign tests whether explicit trade/no-trade and side semantics
+  can turn preserved Wave01 questions into runtime-testable surfaces without inheriting
+  any winner, candidate, threshold, or runtime authority.
+
+  '
+axis_tags:
+- target_or_label_surface
+- feature_or_input_surface
+- model_or_training_surface
+- decision_surface
+- evaluation_or_runtime_surface
+exploration_coverage:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  primary_unknown_axis: decision_surface
+  required_research_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  companion_axes:
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  forbidden_research_shapes:
+  - feature_only_wave_or_campaign
+  - label_only_wave_or_campaign
+  - model_only_wave_or_campaign
+  - threshold_only_wave_or_campaign
+  - repair_only_wave_or_campaign
+  single_axis_exception_policy: control_fixture_plumbing_runtime_micro_probe_or_bug_repair_only_with_lowered_claim_boundary
+  novelty_claim: 'Wave02 opens a new explicit tradeability and side-abstain decision
+    surface instead of replaying Wave01 score bands, inverse score bands, or momentum
+    repair tracks.
+
+    '
+policy_binding:
+  revision: policy_contract_v2
+  guards:
+  - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+  - GUARD_002_RUNTIME_COMPLETION_TRUTH
+  - GUARD_003_CLAIM_BOUNDARY
+  - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_005_LOCKED_OOS
+  - GUARD_006_BRANCH_WORKTREE
+routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills:
+  - spacesonar-data-integrity
+  - spacesonar-evidence-provenance
+  required_gates:
+  - design_contract_check
+  - exploration_coverage_check
+  - campaign_proxy_runtime_parity_policy
+  - final_claim_guard
+skill_routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills:
+  - spacesonar-data-integrity
+  - spacesonar-evidence-provenance
+  required_gates:
+  - design_contract_check
+  - exploration_coverage_check
+  - campaign_proxy_runtime_parity_policy
+  - final_claim_guard
+required_gates:
+- campaign_lifecycle_spec_valid
+- exploration_coverage_check
+- proxy_runtime_parity_policy
+- final_claim_guard
+claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+experiment_design:
+  hypothesis: 'A surface that predicts tradeability plus direction/abstain state should
+    be more runtime-testable than reusing Wave01 scalar score bands, because the decision
+    head directly declares side, no-trade, and holding/exit semantics.
+
+    '
+  decision_use: side_abstain_tradeability_gate
+  comparison_baseline:
+  - no_trade_baseline
+  - Wave01 preserved clues as questions only
+  control_variables:
+  - FPMarkets US100 M5 closed-bar base frame
+  - split_set_v0 validation and research_oos roles
+  - locked final OOS excluded
+  - no inherited Wave01 thresholds or candidates
+  changed_variables:
+  - explicit tradeability target
+  - explicit side/abstain decision surface
+  - session/range state feature surface
+  - runtime-oriented sparse decision semantics
+  kpi_interpretation_plan:
+    required_for_kpi_bearing_result: true
+    required_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
+    claim_effect: exploratory_hypothesis_only_no_selection_or_pass
+  expected_effect_probe: 'Useful cells should show stable trade/no-trade separation
+    and interpretable side behavior in proxy metrics before any L4/L5 escalation.
+
+    '
+  surface_rotation_rationale: 'Wave01 left decision-surface questions, not candidates.
+    Wave02 starts with a new decision surface rather than local repairs to score-band
+    or inverse score-band attempts.
+
+    '
+  search_shape: broad
+  axis_balance_check: multi_axis_surface_not_single_axis_repair
+  sample_scope:
+    instrument: FPMarkets US100
+    timeframe: M5
+    split_recipe_id: split_set_v0
+    locked_final_oos: excluded
+  success_criteria:
+  - proxy metrics identify at least one interpretable tradeability/side surface worth
+    L4 follow-through
+  - valid proxy/model-bearing runs declare ONNX/EA/MT5 follow-through requirements
+  - no selected baseline or runtime authority is claimed
+  failure_criteria:
+  - proxy and runtime semantics cannot be reconciled after a bounded repair/fallback
+    attempt
+  - broad cells collapse into generic threshold repair without a new surface clue
+  - runtime execution semantics are undefined for model-bearing outputs
+  invalid_conditions:
+  - locked final OOS is used without unlock contract
+  - inherited Wave01 thresholds are treated as candidates
+  - campaign becomes feature-only, label-only, model-only, threshold-only, or repair-only
+  stop_conditions:
+  - no reusable surface clue after the initial broad batch and one bounded repair
+    at most
+  - evidence cannot support any stronger claim than exploratory observation
+  evidence_plan:
+  - campaign_manifest
+  - run_specs_index
+  - run_manifest
+  - experiment_receipt
+  - artifact_lineage
+  - metrics
+  - ONNX bundle and parity record for valid model-bearing runs
+  - MT5 L4 attempt manifests for promising or valid proxy/model-bearing runs
+  idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
+  hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+  surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+  sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+materialization:
+  run_specs:
+  - run_id: onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_tradeability_side_abstain_h6_v0
+      feature_recipe_id: feature_wave02_session_range_tradeability_v0
+      model_recipe_id: model_wave02_logistic_tradeability_v0
+      decision_recipe_id: decision_wave02_side_abstain_sparse_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record proxy observation with changed label/decision surface
+  - run_id: onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_tradeability_side_abstain_h12_v0
+      feature_recipe_id: feature_wave02_session_range_tradeability_v0
+      model_recipe_id: model_wave02_tree_tradeability_v0
+      decision_recipe_id: decision_wave02_side_abstain_sparse_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record proxy observation with tree surface and explicit side/abstain semantics
+  - run_id: onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_range_break_tradeability_v0
+      feature_recipe_id: feature_wave02_range_compression_release_v0
+      model_recipe_id: model_wave02_logistic_tradeability_v0
+      decision_recipe_id: decision_wave02_breakout_abstain_timeout_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record range-break tradeability proxy observation
+  - run_id: onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_session_open_tradeability_v0
+      feature_recipe_id: feature_wave02_session_transition_range_v0
+      model_recipe_id: model_wave02_interpretable_tradeability_v0
+      decision_recipe_id: decision_wave02_session_gated_side_abstain_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record session-gated side/abstain proxy observation
+  - run_id: onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_no_trade_filter_v0
+      feature_recipe_id: feature_wave02_session_range_tradeability_v0
+      model_recipe_id: model_wave02_logistic_tradeability_v0
+      decision_recipe_id: decision_wave02_trade_no_trade_filter_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record trade/no-trade filtering proxy observation
+  - run_id: onnxlab_wave02_td_cell_006_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_side_quality_v0
+      feature_recipe_id: feature_wave02_multiscale_path_quality_v0
+      model_recipe_id: model_wave02_tree_tradeability_v0
+      decision_recipe_id: decision_wave02_side_abstain_sparse_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record side-quality broad surface proxy observation
+  - run_id: onnxlab_wave02_td_cell_007_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_event_continuation_tradeability_v0
+      feature_recipe_id: feature_wave02_event_session_range_v0
+      model_recipe_id: model_wave02_interpretable_tradeability_v0
+      decision_recipe_id: decision_wave02_event_abstain_timeout_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record event-continuation proxy observation
+  - run_id: onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0
+    recipe_refs:
+      label_recipe_id: label_wave02_adverse_move_avoidance_v0
+      feature_recipe_id: feature_wave02_session_range_tradeability_v0
+      model_recipe_id: model_wave02_logistic_tradeability_v0
+      decision_recipe_id: decision_wave02_tradeability_risk_abstain_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record adverse-move avoidance proxy observation
+judgment_contract:
+  evidence_inputs:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/evidence/judgment.yaml
+  result_judgment: inconclusive
+  candidate_effect: no_candidate_claimed
+  clue_effect: no_clue_until_evidence_materialized
+  negative_memory_effect: no_negative_memory_until_evidence_materialized
+  missing_evidence:
+  - proxy_runs_not_yet_executed
+  - runtime_authority_not_claimed
+  reopen_conditions:
+  - materialize and execute declared broad run specs
+storage_contract:
+  durable_identity_policy: repo_relative_paths_only
+  source_of_truth: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+  wave_campaign_refs:
+  - lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/campaign_refs.csv
+  registry_rows:
+  - docs/registers/campaign_registry.csv
+  campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
+provenance:
+  opened_by_work_item_id: work_post_wave01_user_directed_wave02_or_review_v0
+  source_spec: lab/goals/goal_us100_onnx_forward_boundary_v0/wave02_tradeability_decision_campaign_spec.yaml
+  command_argv:
+  - C:\Users\awdse\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\src\spacesonar\cli.py
+  - --repo-root
+  - .
+  - --work-item-id
+  - work_post_wave01_user_directed_wave02_or_review_v0
+  - campaign
+  - open
+  - --spec
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/wave02_tradeability_decision_campaign_spec.yaml
+next_action: materialize_wave02_tradeability_initial_specs
+notes: 'Wave02 campaign-open scaffold only. Declared run specs are not executed, selected,
+  or runtime-authoritative until manifests, receipts, lineage, and runtime evidence
+  exist.
+
+  '

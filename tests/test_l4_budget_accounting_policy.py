@@ -298,9 +298,9 @@ def test_wave01_current_policy_closeout_amendment_recloses_budget_kpi_and_segmen
     assert "direction" in segment_note["segment_status_after_repair"]["materialized_axes"]
     assert "trade_shape_bucket" in segment_note["segment_status_after_repair"]["materialized_axes"]
     assert amendment["technical_or_environmental_blockers"] == []
-    assert workspace["active_wave"]["closeout"] == (
-        "lab/waves/wave_us100_closedbar_surface_cartography_v0/current_policy_closeout_amendment.yaml"
-    )
+    assert workspace["active_wave"]["wave_id"] == "wave_us100_wave02_tradeability_decision_surface_v0"
+    assert workspace["active_wave"]["status"] == "wave_open"
+    assert workspace["active_wave"]["closeout"] is None
     assert wave_registry[0]["status"] == "wave01_current_policy_closed_complete"
     assert wave_registry[0]["evidence_path"] == (
         "lab/waves/wave_us100_closedbar_surface_cartography_v0/current_policy_closeout_amendment.yaml"

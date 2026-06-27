@@ -1,0 +1,102 @@
+version: wave_allocation_v1
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: wave_open
+created_at_utc: '2026-06-27T12:15:00Z'
+claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+allocation_goal: 'Spend the first Wave02 campaign on a new decision/tradeability surface,
+  then rotate instead of repairing one weak cell unless a reusable divergence or prevention-memory
+  question appears.
+
+  '
+storage_contract:
+  source_of_truth: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
+  campaign_refs: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/campaign_refs.csv
+  wave_closeout: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
+  registry_rows:
+  - docs/registers/wave_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+budget:
+  budget_profile: standard_wave
+  allocation_mode: fixed_wave_budget_variable_campaign_budget
+  wave_budget_fixed_before_open: true
+  max_runs: 72
+  standard_total_run_budget: 72
+  standard_campaign_slots: 3
+  reserve_fraction: 0.15
+  campaign_run_budget_bounds:
+    min_runs: 8
+    default_runs: 18
+    max_runs: 30
+  per_campaign_allocation_reason_required: true
+  hypothesis_allocation_reason_required: true
+  allocation_reason_must_name:
+  - hypothesis_surface_width
+  - changed_axes
+  - held_fixed_axes
+  - why_this_campaign_needs_more_or_less_than_default
+  mid_wave_budget_increase_policy: forbidden_without_new_wave_or_explicit_budget_amendment
+  budget_exception:
+    status: none
+    allowed_timing: before_wave_open
+    exception_profile: null
+    reason: ''
+    approved_by_user: false
+    claim_boundary: planning_scaffold
+  l4_pair_budget: 36
+  l4_budget_unit: validation_research_oos_pair
+  l4_required_period_roles:
+  - validation
+  - research_oos
+campaign_allocations:
+- campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+  allocation_role: wave02_first_campaign_new_decision_surface
+  max_runs: 24
+  initial_batch_size: 8
+  allocation_reason: 'hypothesis_surface_width: first Wave02 broad decision/tradeability
+    surface; changed_axes: target_or_label_surface, feature_or_input_surface, model_or_training_surface,
+    decision_surface, evaluation_or_runtime_surface; held_fixed_axes: FPMarkets US100
+    M5 closed-bar base frame, split_set_v0 validation and research_oos roles, locked
+    final OOS excluded, no inherited Wave01 thresholds or candidates; why_this_campaign_needs_more_or_less_than_default:
+    non-default run budget 24 vs default 18 to cover the initial broad surface without
+    turning the campaign into repair.'
+  budget:
+    run_budget: 24
+    allocation_reason: 'hypothesis_surface_width: first Wave02 broad decision/tradeability
+      surface; changed_axes: target_or_label_surface, feature_or_input_surface, model_or_training_surface,
+      decision_surface, evaluation_or_runtime_surface; held_fixed_axes: FPMarkets
+      US100 M5 closed-bar base frame, split_set_v0 validation and research_oos roles,
+      locked final OOS excluded, no inherited Wave01 thresholds or candidates; why_this_campaign_needs_more_or_less_than_default:
+      non-default run budget 24 vs default 18 to cover the initial broad surface without
+      turning the campaign into repair.'
+    hypothesis_surface_width: 'Wave01 left decision-surface questions, not candidates.
+      Wave02 starts with a new decision surface rather than local repairs to score-band
+      or inverse score-band attempts.
+
+      '
+    changed_axes:
+    - target_or_label_surface
+    - feature_or_input_surface
+    - model_or_training_surface
+    - decision_surface
+    - evaluation_or_runtime_surface
+    held_fixed_axes:
+    - FPMarkets US100 M5 closed-bar base frame
+    - split_set_v0 validation and research_oos roles
+    - locked final OOS excluded
+    - no inherited Wave01 thresholds or candidates
+    why_this_campaign_needs_more_or_less_than_default: initial broad Wave02 surface
+      uses non-default budget before rotation
+  status: campaign_opened
+  campaign_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_wave02_tradeability_side_abstain_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/sweep_manifest.yaml
+  campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
+  claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+  next_action: materialize_wave02_tradeability_initial_specs
+  notes: 'Wave02 campaign-open scaffold only. Declared run specs are not executed,
+    selected, or runtime-authoritative until manifests, receipts, lineage, and runtime
+    evidence exist.
+
+    '
+next_action: materialize_wave02_tradeability_initial_specs

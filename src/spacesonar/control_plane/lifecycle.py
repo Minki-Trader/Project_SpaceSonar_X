@@ -9,7 +9,7 @@ from .lock import ControlPlaneLockError, control_plane_lock
 from .models import ExecutionContext, RunResult, TransactionResult
 from .provenance import attach_execution_batch_ref
 from .registry_projection import _stage_registry_projections, artifact_row_for_text
-from .state_projection import stage_workspace_projection, workspace_projection_diff
+from .state_projection import workspace_projection_diff, workspace_projection_text
 from .store import dump_csv, dump_yaml, read_csv_rows, read_yaml
 from .transaction import ControlPlaneTransaction, utc_now
 
@@ -358,17 +358,61 @@ def _claim_boundary(spec: CampaignLifecycleSpec | dict[str, Any], context: Execu
 
 
 def _full_next_work(existing: dict[str, Any], spec: CampaignLifecycleSpec) -> dict[str, Any]:
-    payload = dict(existing)
-    payload.update(spec.next_work_item)
+    # A next-work item is the active pointer for the next operation, not an archive
+    # of the previous work item's current_truth/status.
+    payload = dict(spec.next_work_item)
     payload.setdefault("version", "work_item_lite_v1")
     payload.setdefault("work_item_id", spec.next_work_item["work_item_id"])
     payload.setdefault("created_at_utc", spec.payload["created_at_utc"])
+    payload.setdefault("status", spec.payload.get("next_work_status", "pending"))
+    payload.setdefault("active_goal_id", spec.goal_id)
+    payload.setdefault("wave_id", spec.wave_id)
+    payload.setdefault("campaign_id", spec.campaign_id)
+    payload.setdefault("claim_boundary", spec.payload.get("claim_boundary", ""))
     payload.setdefault("provenance", {})
     payload["provenance"] = {
-        **(existing.get("provenance") or {}),
         **(spec.next_work_item.get("provenance") or {}),
         "source_campaign_spec": spec.rel_path.as_posix(),
     }
+    return payload
+
+
+def _full_resume_cursor(existing: dict[str, Any], spec: CampaignLifecycleSpec, next_work: dict[str, Any]) -> dict[str, Any]:
+    payload = dict(spec.payload.get("resume_cursor") or {})
+    payload.setdefault("version", "active_goal_resume_cursor_v1")
+    payload.setdefault("active_goal_id", spec.goal_id)
+    payload["updated_at_utc"] = spec.payload.get("updated_at_utc") or spec.payload["created_at_utc"]
+    payload["cursor_state"] = spec.payload.get("goal_status", "active")
+    payload["active_phase"] = spec.payload.get("active_phase", "campaign_open")
+    payload["active_work_item_id"] = next_work["work_item_id"]
+    payload["campaign_id"] = spec.campaign_id
+    payload["claim_boundary"] = spec.payload.get("claim_boundary", "")
+    payload["next_action"] = spec.payload.get("next_action", next_work.get("next_action", ""))
+    payload.setdefault("unresolved_blockers", [])
+    payload["active_ids"] = {
+        "idea_id": spec.idea_id,
+        "hypothesis_id": spec.hypothesis_id,
+        "wave_id": spec.wave_id,
+        "campaign_id": spec.campaign_id,
+        "surface_id": spec.surface_id,
+        "sweep_id": spec.sweep_id,
+    }
+    payload.setdefault(
+        "current_truth_sources",
+        [
+            f"lab/goals/{spec.goal_id}/goal_manifest.yaml",
+            f"lab/goals/{spec.goal_id}/next_work_item.yaml",
+            f"lab/waves/{spec.wave_id}/wave_allocation.yaml",
+            f"lab/waves/{spec.wave_id}/campaign_refs.csv",
+            f"lab/campaigns/{spec.campaign_id}/campaign_manifest.yaml",
+            f"lab/surfaces/{spec.surface_id}/surface_manifest.yaml",
+            f"lab/campaigns/{spec.campaign_id}/sweeps/{spec.sweep_id}/sweep_manifest.yaml",
+            "docs/workspace/workspace_state.yaml",
+            "docs/registers/goal_registry.csv",
+            "docs/registers/wave_registry.csv",
+            "docs/registers/campaign_registry.csv",
+        ],
+    )
     return payload
 
 
@@ -538,6 +582,76 @@ def _sweep_manifest(spec: CampaignLifecycleSpec, context: ExecutionContext) -> d
     }
 
 
+def _standard_wave_budget(repo_root: Path, spec: CampaignLifecycleSpec, existing: dict[str, Any]) -> dict[str, Any]:
+    profile = _read_yaml_if_exists(repo_root / "docs/workspace/lab_profile.yaml")
+    policy = profile.get("wave_budget_policy") or {}
+    l4_policy = policy.get("l4_pair_budget_policy") or {}
+    defaults = {
+        "budget_profile": policy.get("default_profile", "standard_wave"),
+        "allocation_mode": policy.get("allocation_mode", "fixed_wave_budget_variable_campaign_budget"),
+        "wave_budget_fixed_before_open": policy.get("wave_budget_fixed_before_open", True),
+        "max_runs": policy.get("standard_total_run_budget", 72),
+        "standard_total_run_budget": policy.get("standard_total_run_budget", 72),
+        "standard_campaign_slots": policy.get("standard_campaign_slots", 3),
+        "reserve_fraction": policy.get("reserve_fraction", 0.15),
+        "campaign_run_budget_bounds": policy.get(
+            "campaign_run_budget_bounds",
+            {"min_runs": 8, "default_runs": 18, "max_runs": 30},
+        ),
+        "per_campaign_allocation_reason_required": policy.get("per_campaign_allocation_reason_required", True),
+        "hypothesis_allocation_reason_required": policy.get("hypothesis_allocation_reason_required", True),
+        "allocation_reason_must_name": policy.get(
+            "allocation_reason_must_name",
+            [
+                "hypothesis_surface_width",
+                "changed_axes",
+                "held_fixed_axes",
+                "why_this_campaign_needs_more_or_less_than_default",
+            ],
+        ),
+        "mid_wave_budget_increase_policy": policy.get(
+            "mid_wave_budget_increase_policy",
+            "forbidden_without_new_wave_or_explicit_budget_amendment",
+        ),
+        "budget_exception": {
+            "status": (policy.get("budget_exception_policy") or {}).get("default", "none"),
+            "allowed_timing": (policy.get("budget_exception_policy") or {}).get("allowed_timing", "before_wave_open"),
+            "exception_profile": None,
+            "reason": "",
+            "approved_by_user": False,
+            "claim_boundary": "planning_scaffold",
+        },
+        "l4_pair_budget": l4_policy.get("standard_pair_budget", 36),
+        "l4_budget_unit": l4_policy.get("budget_unit", "validation_research_oos_pair"),
+        "l4_required_period_roles": spec.payload.get("budget", {}).get(
+            "l4_required_period_roles",
+            ["validation", "research_oos"],
+        ),
+    }
+    budget = {**defaults, **(existing.get("budget") or {}), **(spec.payload.get("budget") or {})}
+    budget["budget_exception"] = {
+        **defaults["budget_exception"],
+        **((existing.get("budget") or {}).get("budget_exception") or {}),
+        **((spec.payload.get("budget") or {}).get("budget_exception") or {}),
+    }
+    return budget
+
+
+def _allocation_reason(spec: CampaignLifecycleSpec, run_budget: Any, default_runs: Any) -> str:
+    provided = spec.payload.get("allocation_reason") or (spec.payload.get("allocation_budget") or {}).get("allocation_reason")
+    if provided:
+        return str(provided)
+    changed_axes = ", ".join(str(item) for item in (spec.payload.get("axis_tags") or []))
+    held_fixed = ", ".join(str(item) for item in ((spec.payload.get("experiment_design") or {}).get("control_variables") or []))
+    return (
+        "hypothesis_surface_width: first Wave02 broad decision/tradeability surface; "
+        f"changed_axes: {changed_axes or 'declared in campaign spec'}; "
+        f"held_fixed_axes: {held_fixed or 'declared split/data/runtime controls'}; "
+        f"why_this_campaign_needs_more_or_less_than_default: non-default run budget {run_budget} vs default {default_runs} "
+        "to cover the initial broad surface without turning the campaign into repair."
+    )
+
+
 def _goal_manifest(repo_root: Path, spec: CampaignLifecycleSpec, next_work: dict[str, Any], context: ExecutionContext) -> dict[str, Any]:
     rel_path = Path("lab/goals") / spec.goal_id / "goal_manifest.yaml"
     existing = _read_yaml_if_exists(repo_root / rel_path)
@@ -586,13 +700,29 @@ def _goal_manifest(repo_root: Path, spec: CampaignLifecycleSpec, next_work: dict
 def _wave_manifest(repo_root: Path, spec: CampaignLifecycleSpec, context: ExecutionContext) -> dict[str, Any]:
     rel_path = Path("lab/waves") / spec.wave_id / "wave_allocation.yaml"
     existing = _read_yaml_if_exists(repo_root / rel_path)
+    budget = _standard_wave_budget(repo_root, spec, existing)
+    default_runs = (budget.get("campaign_run_budget_bounds") or {}).get("default_runs")
+    run_budget = spec.payload.get("max_runs", (spec.payload.get("budget") or {}).get("max_runs", default_runs))
+    allocation_reason = _allocation_reason(spec, run_budget, default_runs)
     allocations = [item for item in existing.get("campaign_allocations", []) if item.get("campaign_id") != spec.campaign_id]
     allocations.append(
         {
             "campaign_id": spec.campaign_id,
             "allocation_role": spec.payload.get("allocation_role", "lifecycle_opened_campaign"),
-            "max_runs": spec.payload.get("max_runs", (spec.payload.get("budget") or {}).get("max_runs")),
+            "max_runs": run_budget,
             "initial_batch_size": spec.payload.get("initial_batch_size", (spec.payload.get("budget") or {}).get("initial_batch_size")),
+            "allocation_reason": allocation_reason,
+            "budget": {
+                **(spec.payload.get("allocation_budget") or {}),
+                "run_budget": run_budget,
+                "allocation_reason": allocation_reason,
+                "hypothesis_surface_width": spec.payload.get("surface_rotation_rationale")
+                or (spec.payload.get("experiment_design") or {}).get("surface_rotation_rationale")
+                or "broad first Wave02 surface",
+                "changed_axes": spec.payload.get("axis_tags") or [],
+                "held_fixed_axes": (spec.payload.get("experiment_design") or {}).get("control_variables") or [],
+                "why_this_campaign_needs_more_or_less_than_default": "initial broad Wave02 surface uses non-default budget before rotation",
+            },
             "status": spec.payload.get("status", "campaign_opened"),
             "campaign_manifest": f"lab/campaigns/{spec.campaign_id}/campaign_manifest.yaml",
             "surface_manifest": f"lab/surfaces/{spec.surface_id}/surface_manifest.yaml",
@@ -621,7 +751,7 @@ def _wave_manifest(repo_root: Path, spec: CampaignLifecycleSpec, context: Execut
                 "registry_rows": ["docs/registers/wave_registry.csv"],
                 "durable_identity_policy": "repo_relative_paths_only",
             },
-            "budget": {**(existing.get("budget") or {}), **(spec.payload.get("budget") or {})},
+            "budget": budget,
             "campaign_allocations": allocations,
             "next_action": spec.payload.get("next_action", existing.get("next_action", "materialize_run_specs")),
         }
@@ -677,12 +807,12 @@ def _open_campaign_plan(spec_path: Path, context: ExecutionContext) -> Lifecycle
         }
     )
     if (context.repo_root / Path("lab/goals") / spec.goal_id / "resume_cursor.yaml").exists() or spec.payload.get("resume_cursor"):
-        yaml_updates[Path("lab/goals") / spec.goal_id / "resume_cursor.yaml"] = {
-            **_read_yaml_if_exists(context.repo_root / Path("lab/goals") / spec.goal_id / "resume_cursor.yaml"),
-            **(spec.payload.get("resume_cursor") or {}),
-            "active_work_item_id": next_work["work_item_id"],
-            "campaign_id": spec.campaign_id,
-        }
+        resume_cursor_path = Path("lab/goals") / spec.goal_id / "resume_cursor.yaml"
+        yaml_updates[resume_cursor_path] = _full_resume_cursor(
+            _read_yaml_if_exists(context.repo_root / resume_cursor_path),
+            spec,
+            next_work,
+        )
     campaign_refs_path = Path("lab/waves") / spec.wave_id / "campaign_refs.csv"
     run_refs_path = Path("lab/campaigns") / spec.campaign_id / "sweeps" / spec.sweep_id / "run_refs.csv"
     text_updates[campaign_refs_path] = _campaign_refs_csv(context.repo_root, campaign_refs_path, wave, spec)
@@ -1235,14 +1365,31 @@ def _stage_plan(tx: ControlPlaneTransaction, context: ExecutionContext, plan: Li
         tx.stage_yaml(rel_path, payload)
     for rel_path, payload in sorted(plan.text_updates.items(), key=lambda item: item[0].as_posix()):
         tx.stage_text(rel_path, payload)
+    workspace_path = Path("docs/workspace/workspace_state.yaml")
+    workspace_text = workspace_projection_text(context.repo_root, yaml_overrides=plan.yaml_updates)
+    tx.stage_text(workspace_path, workspace_text)
+    text_updates = {**plan.text_updates, workspace_path: workspace_text}
+    extra_artifacts = [
+        *_artifact_rows_for_plan(context, plan),
+        artifact_row_for_text(
+            workspace_path,
+            workspace_text,
+            artifact_type="workspace_projection",
+            producer_command=" ".join(context.command_argv),
+            regeneration_command="python -m spacesonar.cli project workspace --write",
+            source_of_truth=workspace_path.as_posix(),
+            consumer=context.work_item_id,
+            claim_boundary=context.claim_boundary,
+            notes="Lifecycle transaction workspace projection.",
+        ),
+    ]
     _stage_registry_projections(
         tx,
         context.repo_root,
         yaml_overrides=plan.yaml_updates,
-        text_overrides=plan.text_updates,
-        extra_artifacts=_artifact_rows_for_plan(context, plan),
+        text_overrides=text_updates,
+        extra_artifacts=extra_artifacts,
     )
-    stage_workspace_projection(tx, context.repo_root, yaml_overrides=plan.yaml_updates)
 
 
 def _is_full_project(repo_root: Path) -> bool:
@@ -1280,7 +1427,15 @@ def _lifecycle_transition_errors(repo_root: Path) -> list[str]:
     errors: list[str] = []
     for campaign_path in sorted(repo_root.glob("lab/campaigns/*/campaign_manifest.yaml")):
         campaign = _read_yaml_if_exists(campaign_path)
-        for key in ["campaign_id", "active_goal_id", "wave_ids", "idea_ids", "hypothesis_ids", "storage_contract"]:
+        required_keys = ["campaign_id", "wave_ids", "idea_ids", "hypothesis_ids", "storage_contract"]
+        status = str(campaign.get("status") or "")
+        is_legacy_superseded_fixture = (
+            campaign.get("version") == "campaign_manifest_v1"
+            and ("superseded" in status or not campaign.get("wave_ids"))
+        )
+        if not is_legacy_superseded_fixture:
+            required_keys.append("active_goal_id")
+        for key in required_keys:
             if key not in campaign:
                 errors.append(f"{campaign_path.relative_to(repo_root).as_posix()}: missing {key}")
         evidence = (campaign.get("storage_contract") or {}).get("campaign_closeout")
