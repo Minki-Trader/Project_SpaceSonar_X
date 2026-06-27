@@ -2,9 +2,9 @@ version: campaign_manifest_v2
 campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: wave02_l4_pair_judgment_completed_l5_routing_decision_pending
+status: wave02_decision_replay_adapter_prepared_terminal_execution_pending
 created_at_utc: '2026-06-27T12:15:00Z'
-updated_at_utc: '2026-06-27T21:09:45Z'
+updated_at_utc: '2026-06-27T21:19:41Z'
 wave_ids:
 - wave_us100_wave02_tradeability_decision_surface_v0
 idea_ids:
@@ -82,7 +82,7 @@ required_gates:
 - exploration_coverage_check
 - proxy_runtime_parity_policy
 - final_claim_guard
-claim_boundary: wave02_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_decision_replay_runtime_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -296,9 +296,8 @@ provenance:
   - open
   - --spec
   - lab/goals/goal_us100_onnx_forward_boundary_v0/wave02_tradeability_decision_campaign_spec.yaml
-next_action: decide whether to open a bounded Wave02 decision-execution adapter or
-  rotate; do not claim L5 candidate, economics pass, runtime authority, live readiness,
-  or Goal Achieve
+next_action: execute prepared Wave02 decision replay MT5 attempts with portable terminal
+  only, then judge paired validation/research_oos results
 notes: Wave02 proxy observations executed; L4 follow-through required next. No candidate
   or runtime authority claim.
 run_specs_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
@@ -317,10 +316,10 @@ evidence_paths:
 - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
 - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
 missing_evidence:
-- decision_execution_adapter_not_yet_applied
+- decision_replay_terminal_execution_not_run
+- tester_reports_missing_until_execution
+- economics_metrics_missing_until_tester_report
 - candidate_specific_L5_manifest_not_opened
-- economics_metrics_not_available_from_non_trading_score_probe
-- row_level_proxy_vs_MT5_score_alignment_not_performed
 l4_follow_through:
   onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
   onnx_materialization_status: completed_exportable_bundles_l4_terminal_execution_required
@@ -396,3 +395,28 @@ l4_follow_through:
         runtime_probe_completed: 16
       result_judgment_counts:
         runtime_probe: 16
+  decision_replay:
+    adapter_preparation_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+    adapter_preparation_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+    adapter_eligibility_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+    adapter_preparation_status: wave02_decision_replay_adapter_attempts_prepared_terminal_execution_next
+    adapter_preparation_counts:
+      preserved_clue_count: 7
+      direct_trade_adapter_eligible_cell_count: 7
+      not_direct_trade_adapter_eligible_cell_count: 0
+      prepared_attempt_count: 14
+      prepared_cell_count: 7
+      candidate_count: 0
+      l5_candidate_count: 0
+      period_role_counts:
+        research_oos: 7
+        validation: 7
+      decision_family_counts:
+        abstain_capable_direction_agnostic_tradeability: 14
+      direction_policy_counts:
+        momentum_ret_1: 14
+      hold_bars_source_counts:
+        fallback_h6_recorded_for_tradeability_labels_without_explicit_horizon: 10
+        label_recipe_id_horizon_suffix: 4
+      eligibility_reason_counts:
+        eligible_direction_agnostic_tradeability_momentum_ret_1_adapter: 7

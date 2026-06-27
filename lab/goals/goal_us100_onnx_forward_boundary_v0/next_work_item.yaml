@@ -1,20 +1,19 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_tradeability_l5_routing_decision_v0
-parent_work_item_id: work_wave02_tradeability_l4_pair_judgment_v0
-primary_family: candidate_evaluation
-primary_skill: spacesonar-result-judgment
-verification_profile: writer_scope_smoke
+work_item_id: work_wave02_tradeability_decision_replay_runtime_execution_v0
+parent_work_item_id: work_wave02_tradeability_l4_decision_replay_adapter_preparation_v0
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+verification_profile: runtime_preflight_terminal_execution
 targets:
-- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
 acceptance_criteria:
-- decide whether Wave02 preserved L4 score-observation pairs justify bounded decision-execution
-  adapter work
+- execute prepared Wave02 decision replay validation/research_oos MT5 attempts
+- record execution telemetry, tester report receipts, and runtime completion before
+  any pair judgment
 - keep candidate_count and l5_candidate_count at zero until candidate-specific L5
   manifest exists
-- keep runtime_authority, economics_pass, selected_baseline, live_readiness, and goal_achieve
-  forbidden
-claim_boundary: wave02_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_decision_replay_runtime_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
@@ -24,130 +23,134 @@ policy_binding:
   - GUARD_004_ARTIFACT_IDENTITY
   - GUARD_007_OPERATIONAL_STABILITY
 outputs:
-- lab/candidates/<candidate_id>/candidate_summary.yaml only if L5 is explicitly opened
-  later
-- runtime/packages/<bundle_id>/experiment_bundle.json only if candidate-specific L5
-  materialization is opened later
-next_action: decide whether to open a bounded Wave02 decision-execution adapter or
-  rotate; do not claim L5 candidate, economics pass, runtime authority, live readiness,
-  or Goal Achieve
+- runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+- runtime/mt5_attempts/<attempt_id>/telemetry/execution_telemetry.csv
+- runtime/mt5_attempts/<attempt_id>/reports/tester_report.htm
+next_action: execute prepared Wave02 decision replay MT5 attempts with portable terminal
+  only, then judge paired validation/research_oos results
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-summary: Route Wave02 pair judgment outcomes without promoting score probes to candidates.
+summary: Execute prepared Wave02 sparse decision replay attempts.
 provenance:
-  source: work_wave02_tradeability_l4_pair_judgment_v0
+  source: work_wave02_tradeability_l4_decision_replay_adapter_preparation_v0
   campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
-  source_of_truth: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  source_of_truth: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
 current_truth:
-  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  l4_pair_judgment_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  l4_pair_judgment_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
-  l4_pair_judgment_status: wave02_l4_pair_judgment_completed_l5_routing_decision_pending
-  l4_pair_judgment_counts:
-    cell_pair_count: 8
-    runtime_probe_pair_complete_count: 8
-    both_period_roles_observed_count: 8
-    nonempty_telemetry_pair_count: 8
-    tester_report_pair_observed_count: 8
-    decision_execution_pending_pair_count: 8
-    l5_decision_review_required_count: 7
+  decision_replay_adapter_preparation_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  decision_replay_adapter_preparation_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  decision_replay_adapter_eligibility_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  decision_replay_adapter_preparation_status: wave02_decision_replay_adapter_attempts_prepared_terminal_execution_next
+  decision_replay_adapter_preparation_counts:
+    preserved_clue_count: 7
+    direct_trade_adapter_eligible_cell_count: 7
+    not_direct_trade_adapter_eligible_cell_count: 0
+    prepared_attempt_count: 14
+    prepared_cell_count: 7
     candidate_count: 0
     l5_candidate_count: 0
-    proxy_judgment_counts:
-      inconclusive: 1
-      preserved_clue: 7
-    result_judgment_counts:
-      runtime_probe: 8
-    l5_status_counts:
-      l5_decision_review_required_no_candidate_claim: 7
-      no_l5_score_probe_only: 1
-    comparison_class_counts:
-      proxy_inconclusive_runtime_score_observed: 1
-      proxy_preserved_clue_runtime_score_observed: 7
-    runtime_execution_counts:
-      prepared_attempt_count: 16
-      selected_attempt_count: 2
-      indexed_execution_count: 16
-      executed_attempt_count: 16
-      completed_manifest_count: 16
-      touched_manifest_count: 16
-      telemetry_observed_count: 16
-      telemetry_missing_count: 0
-      tester_report_observed_count: 16
-      tester_report_missing_count: 0
-      terminal_execution_count: 16
-      telemetry_observation_count: 16
-      tester_report_observation_count: 16
-      portable_contract_count: 16
-      runtime_probe_complete_count: 16
-      runtime_probe_incomplete_count: 0
-      period_role_counts:
-        research_oos: 8
-        validation: 8
-      status_counts:
-        runtime_probe_completed: 16
-      result_judgment_counts:
-        runtime_probe: 16
+    period_role_counts:
+      research_oos: 7
+      validation: 7
+    decision_family_counts:
+      abstain_capable_direction_agnostic_tradeability: 14
+    direction_policy_counts:
+      momentum_ret_1: 14
+    hold_bars_source_counts:
+      fallback_h6_recorded_for_tradeability_labels_without_explicit_horizon: 10
+      label_recipe_id_horizon_suffix: 4
+    eligibility_reason_counts:
+      eligible_direction_agnostic_tradeability_momentum_ret_1_adapter: 7
   candidate_count: 0
   l5_candidate_count: 0
 unresolved_blockers:
-- Wave02_L5_routing_decision_pending
+- Wave02_decision_replay_terminal_execution_pending
 reopen_conditions:
-- rerun pair aggregation if a Wave02 L4 runtime attempt manifest, score telemetry
-  summary, or tester report receipt changes
-- open L5 only with candidate-specific manifest and decision-execution adapter evidence
-  plan
-status: wave02_l5_routing_decision_pending
+- rerun adapter preparation if Wave02 L4 pair judgment or source score attempt index
+  changes
+- do not open candidate-specific L5 materialization until decision replay pair judgment
+  exists
+status: wave02_decision_replay_terminal_execution_pending
 missing_material_if_relevant:
-- decision_execution_adapter_not_yet_applied
+- decision_replay_terminal_execution_not_run
+- tester_reports_missing_until_execution
+- economics_metrics_missing_until_tester_report
 - candidate_specific_L5_manifest_not_opened
-- economics_metrics_not_available_from_non_trading_score_probe
-- row_level_proxy_vs_MT5_score_alignment_not_performed
 execution_provenance:
-  git_sha: 848771d9bc025c19bf902bf8018a6d0a4ff2f740
+  git_sha: ac8945f4abc83bbbba7e07b320f33be7443d77d0
   branch: main
   dirty_flag: true
   changed_files:
   - M .codex/config.toml
   - ' M docs/registers/artifact_registry.csv'
-  - ?? foundation/pipelines/aggregate_wave02_tradeability_l4_pair_judgments.py
-  - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
-  - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_pair_judgment_v0_closeout.yaml
+  - ' M foundation/mt5/score_replay_decision_adapter.py'
+  - ?? foundation/pipelines/prepare_wave02_tradeability_l4_decision_replay_attempts.py
+  - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_decision_replay_adapter_preparation_v0_closeout.yaml
   - ?? package.json
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/
+  - ?? runtime/mt5_attempts/attempt_wave02_td_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/
   command_argv:
-  - python.exe foundation/pipelines/aggregate_wave02_tradeability_l4_pair_judgments.py
-    --write-control-records
+  - python
+  - foundation/pipelines/prepare_wave02_tradeability_l4_decision_replay_attempts.py
+  - --write-records
   python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
   python_version: 3.13.9
   key_package_versions:
     python: 3.13.9
     yaml: 6.0.3
-  started_at_utc: '2026-06-27T21:09:45Z'
-  ended_at_utc: '2026-06-27T21:09:45Z'
+  started_at_utc: '2026-06-27T21:19:41Z'
+  ended_at_utc: '2026-06-27T21:19:41Z'
   input_hashes:
-  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-    sha256: 9861e4b25ff04b845627362806678084f52fde4352e32982a225b07f86f55501
-    size_bytes: 17738
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
-    sha256: 1ef4114c0a41d5935c2a25738232cc2299e4f48bfcf461bb92143858265f2d36
-    size_bytes: 15786
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
-    sha256: 675f086ecfb3cf6f714985898e8d5385a37e424343ba341407d4e8ca957b7aa5
-    size_bytes: 11347
-    availability: present_hash_recorded
-  output_hashes:
-  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-    sha256: 559f769ee00445e0db9d3f7c34610d3ba6ca89c64650b966b1d039dde83329a0
-    size_bytes: 9112
-    availability: present_hash_recorded
   - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
     sha256: 649435ebcb1a94fe25dab9d9afa5b86f0d54790ffb554b568a2433198e61d029
     size_bytes: 9141
     availability: present_hash_recorded
-  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_pair_judgment_v0_closeout.yaml
-    sha256: ae93191a12c093f8cb0fb7f2b05ae24ecbd5a231e2311161dce3a533460e1d61
-    size_bytes: 3457
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+    sha256: 190178dcdbcd4d5c62047cee1e71e1bd7e77023b92e522ce33b98b4b40d97142
+    size_bytes: 14114
+    availability: present_hash_recorded
+  - path: configs/mt5/tester_execution_profile_v0.yaml
+    sha256: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
+    size_bytes: 3036
+    availability: present_hash_recorded
+  - path: foundation/config/mt5_runtime_probe_contract.yaml
+    sha256: 31dd303d5fcd46824a63d5dce7aff660c3d34bfefbaf4efb5a07d25a988b52ee
+    size_bytes: 8515
+    availability: present_hash_recorded
+  - path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+    sha256: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
+    size_bytes: 2691
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+    sha256: f4517c9a3fe6eca97be89e461df0d68b53349917809f329d8362502bd56d9bd8
+    size_bytes: 8934
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+    sha256: 48ccfb0687ead2f828fd0820750a3597d7e96580f3c535a7e4c118f24302eec1
+    size_bytes: 19833
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+    sha256: 4bc4ec475e5ffc53f4ec0a17d53ca96868ae1df75642bbdc2256638f3b272b83
+    size_bytes: 3711
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_compile_summary.yaml
+    sha256: 30ff1187e79c7aef9ac04aca1cb39937ce3a501b69735149e9e27f0d436baa71
+    size_bytes: 821
+    availability: present_hash_recorded
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+    sha256: 8281414c48715ce138ab4ec54856781ef89d9a078b5a9a50b7577090e14b6676
+    size_bytes: 2379
     availability: present_hash_recorded
   unknown_git_claim_effect: dirty_worktree_recorded_claim_lowered_no_candidate_runtime_authority_or_economics_pass

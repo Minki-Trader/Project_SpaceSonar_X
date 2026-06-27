@@ -1,0 +1,181 @@
+version: wave02_tradeability_l4_decision_replay_adapter_preparation_summary_v1
+summary_id: wave02_tradeability_l4_decision_replay_adapter_preparation_v0
+work_item_id: work_wave02_tradeability_l4_decision_replay_adapter_preparation_v0
+parent_work_item_id: work_wave02_tradeability_l5_routing_decision_v0
+next_work_item_id: work_wave02_tradeability_decision_replay_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+  campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+  idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
+  hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+  surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+  sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+  run_id: null
+  artifact_id: artifact_wave02_tradeability_decision_replay_adapter_prep_summary_v0
+  bundle_id: null
+  candidate_id: null
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+created_at_utc: '2026-06-27T21:19:41Z'
+status: wave02_decision_replay_adapter_attempts_prepared_terminal_execution_next
+execution_weight: bounded_all_preserved_wave02_pairs
+adapter_id: score_replay_sparse_decision_adapter_v0
+claim_boundary: wave02_decision_replay_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+support_skills:
+- spacesonar-experiment-design
+- spacesonar-evidence-provenance
+- spacesonar-claim-discipline
+validation_depth: writer_scope_smoke
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+counts:
+  preserved_clue_count: 7
+  direct_trade_adapter_eligible_cell_count: 7
+  not_direct_trade_adapter_eligible_cell_count: 0
+  prepared_attempt_count: 14
+  prepared_cell_count: 7
+  candidate_count: 0
+  l5_candidate_count: 0
+  period_role_counts:
+    research_oos: 7
+    validation: 7
+  decision_family_counts:
+    abstain_capable_direction_agnostic_tradeability: 14
+  direction_policy_counts:
+    momentum_ret_1: 14
+  hold_bars_source_counts:
+    fallback_h6_recorded_for_tradeability_labels_without_explicit_horizon: 10
+    label_recipe_id_horizon_suffix: 4
+  eligibility_reason_counts:
+    eligible_direction_agnostic_tradeability_momentum_ret_1_adapter: 7
+source_records:
+  pair_judgment_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  score_attempt_preparation_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+  execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+  runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
+  period_profile: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+artifact_paths:
+  summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  attempt_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  eligibility_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  compile_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_compile_summary.yaml
+  closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  ea_source: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+experiment_design:
+  idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
+  hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+  surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+  sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+  hypothesis: Wave02 tradeability preserved clues may only matter if score-high bars
+    can be translated into sparse side-bearing tester trades.
+  decision_use: score_high_tradeability_gate_with_momentum_ret_1_side_policy
+  comparison_baseline: Wave02 L4 non-trading score probe pair observations
+  control_variables:
+  - FPMarkets US100 M5
+  - split_set_v0 validation and research_oos periods
+  - fixed_lot 0.02 tester profile
+  - locked_final_oos_b excluded
+  changed_variables:
+  - decision_execution_adapter
+  - momentum_ret_1_side_policy
+  - sparse_order_replay
+  kpi_interpretation_plan: tester report/trade-shape metrics only after terminal execution;
+    no economics pass
+  attribution_axes:
+  - cell_id
+  - period_role
+  - direction_policy
+  - hold_bars
+  - score_threshold
+  expected_effect_probe: preserved cells should avoid broad two-period loss before
+    any L5 candidate-specific evidence is opened
+  surface_rotation_rationale: score probes are insufficient; a sparse decision replay
+    is the smallest runtime follow-through
+  search_shape: runtime follow-through
+  next_surface_options:
+  - execute_prepared_decision_replay
+  - rotate_if_decision_replay_negative
+  axis_balance_check: runtime_follow_through_not_single_axis_repair
+  sample_scope: validation_and_research_oos_only_locked_final_excluded
+  success_criteria:
+  - paired terminal execution produces interpretable reports without protected claim
+  failure_criteria:
+  - loss_or_runtime_friction_in_both_period_roles
+  - missing_terminal_report_after_repair_attempt
+  invalid_conditions:
+  - locked_final_oos_b_used
+  - candidate_claim_without_L5_manifest
+  stop_conditions:
+  - negative paired decision replay judgment
+  reopen_or_stop_condition: rerun preparation only if pair judgment or source score
+    attempt paths change
+  evidence_plan:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  claim_boundary: wave02_decision_replay_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  legacy_relation: uses generic score replay adapter, not legacy winner or promotion
+    inheritance
+  axis_tags:
+  - decision_surface
+  - evaluation_or_runtime_surface
+  - holding_policy
+  broad_sweep: bounded_all_preserved_wave02_pairs
+  extreme_sweep: not_applicable
+  micro_search_gate: forbidden_before_decision_replay_judgment
+  failure_memory: record negative memory if replay fails rather than repairing into
+    candidate track
+judgment:
+  result_subject: Wave02 preserved-clue tradeability decision replay adapter preparation
+  judgment_label: runtime_probe
+  metric_identity: no performance metric; adapter/config preparation only
+  comparison_baseline: Wave02 paired L4 score telemetry preserved clues
+  tested_factor: direction-agnostic tradeability score translated through momentum_ret_1
+    sparse order policy
+  kpi_interpretation: not evaluated until MT5 decision replay execution
+  directional_effect_hypothesis: score-high tradeability bars may need explicit side
+    policy to become testable
+  attribution_confidence: design_preparation_only
+  claim_boundary: wave02_decision_replay_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  missing_evidence:
+  - decision_replay_terminal_execution_not_run
+  - tester_reports_missing_until_execution
+  - economics_metrics_missing_until_tester_report
+  - candidate_specific_L5_manifest_not_opened
+  next_action: execute prepared Wave02 decision replay MT5 attempts with portable
+    terminal only, then judge paired validation/research_oos results
+environment:
+  command_argv:
+  - python
+  - foundation/pipelines/prepare_wave02_tradeability_l4_decision_replay_attempts.py
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    yaml: 6.0.3
+  git_sha: ac8945f4abc83bbbba7e07b320f33be7443d77d0
+  branch: main
+  dirty_flag: true
+  changed_files:
+  - M .codex/config.toml
+  - ' M foundation/mt5/score_replay_decision_adapter.py'
+  - ?? foundation/pipelines/prepare_wave02_tradeability_l4_decision_replay_attempts.py
+  - ?? package.json
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

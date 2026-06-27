@@ -149,6 +149,9 @@ def direction_policy_slug(policy: str) -> str:
 
 def attempt_id_for(cell_id: str, period_role: str, direction_policy: str) -> str:
     raw_cell = str(cell_id)
+    if raw_cell.startswith("wave02_"):
+        cell_fragment = raw_cell.replace("wave02_", "", 1)
+        return f"attempt_wave02_{cell_fragment}_l4_decision_replay_{period_role}_{normalize_policy(direction_policy)}_v0"
     if raw_cell.startswith("wave01_"):
         cell_fragment = raw_cell.replace("wave01_", "", 1)
         return f"attempt_wave01_{cell_fragment}_l4_decision_replay_{period_role}_{normalize_policy(direction_policy)}_v0"
