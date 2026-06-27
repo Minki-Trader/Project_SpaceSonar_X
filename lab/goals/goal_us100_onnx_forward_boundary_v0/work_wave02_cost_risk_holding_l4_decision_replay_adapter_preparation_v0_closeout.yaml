@@ -1,0 +1,57 @@
+version: work_closeout_v1
+work_item_id: work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0
+parent_work_item_id: work_wave02_cost_risk_holding_l5_routing_decision_v0
+next_work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-27T23:48:13Z'
+result_judgment: runtime_probe
+status: wave02_cost_risk_holding_decision_replay_adapter_attempts_prepared_terminal_execution_next
+claim_boundary: wave02_cost_risk_holding_decision_replay_adapter_preparation_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_compile_summary.yaml
+counts:
+  routing_cell_count: 6
+  direct_trade_adapter_eligible_cell_count: 6
+  not_direct_trade_adapter_eligible_cell_count: 0
+  prepared_attempt_count: 12
+  prepared_cell_count: 6
+  candidate_count: 0
+  l5_candidate_count: 0
+  period_role_counts:
+    research_oos: 6
+    validation: 6
+  decision_family_counts:
+    abstain_timeout_h12: 2
+    abstain_timeout_h6: 2
+    adverse_excursion_stop: 2
+    open_failed_abstain_gate: 2
+    session_abstain_timeout: 2
+    volatility_stop_timeout: 2
+  direction_policy_counts:
+    score_band_side: 12
+  hold_bars_source_counts:
+    target_and_label.label_variant: 12
+  eligibility_reason_counts:
+    eligible_crh_score_band_side_adapter: 6
+missing_evidence:
+- decision_replay_terminal_execution_not_run
+- tester_reports_missing_until_execution
+- economics_metrics_missing_until_tester_report
+- candidate_specific_L5_manifest_not_opened
+next_action: execute prepared Wave02 cost/risk/holding sparse decision replay MT5
+  attempts with portable terminal only, then judge paired validation/research_oos
+  results
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

@@ -1,0 +1,154 @@
+version: mt5_attempt_manifest_v2
+attempt_id: attempt_wave02_crh_cell_001_l4_decision_replay_validation_score_band_side_v0
+parent_score_attempt_id: attempt_wave02_crh_cell_001_l4_validation_v0
+adapter_id: score_replay_sparse_decision_adapter_v0
+run_id: onnxlab_wave02_crh_cell_001_cost_risk_holding_v0
+cell_id: wave02_crh_cell_001
+bundle_id: bundle_wave02_crh_cell_001_l4_onnx_export_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+created_at_utc: '2026-06-27T23:48:13Z'
+status: prepared_pending_terminal_execution
+claim_boundary: wave02_cost_risk_holding_decision_replay_adapter_preparation_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+source_of_truth: runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_decision_replay_validation_score_band_side_v0/attempt_manifest.yaml
+work_item_id: work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0
+parent_work_item_id: work_wave02_cost_risk_holding_l5_routing_decision_v0
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required
+  required_runtime_level: L4_split_runtime_probe_decision_replay_follow_through
+  reason: Wave02 CRH preserved score observations require sparse score-band decision
+    replay before any candidate-specific L5 routing claim.
+  lowered_claim_if_not_run: decision_replay_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate
+period_identity:
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: validation
+  from_date: 2024.06.05
+  to_date: 2025.03.10
+  locked_final_oos_b: excluded_forbidden_by_default
+execution_identity:
+  execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  symbol: US100
+  timeframe: M5
+  sizing_policy:
+    fixed_lot: 0.02
+    source: configs/mt5/tester_execution_profile_v0.yaml
+  score_replay_not_onnx_execution: true
+  direction_policy: score_band_side
+runtime_surface_contract:
+  completion_surface_scope: full_period_sparse_decision_surface
+  surface_scope: wave02_cost_risk_holding_sparse_score_band_decision_replay_from_mt5_score_telemetry
+  source_score_telemetry_common_path: SpaceSonar\wave02_cost_risk_holding_l4_score_probe\attempt_wave02_crh_cell_001_l4_validation_v0\score_telemetry.csv
+  source_score_attempt_manifest: runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_validation_v0/attempt_manifest.yaml
+  decision_family: abstain_timeout_h6
+  decision_execution_kind: score_band_directional
+  direction_policy: score_band_side
+  score_low_threshold: 0.3977058869156862
+  score_high_threshold: 0.6128074412013571
+  hold_bars: 6
+  hold_bars_source: target_and_label.label_variant
+  decision_output: score_ge_high_long_score_le_low_short_else_flat
+  forbidden_interpretation: not_runtime_authority_not_economics_pass_not_candidate_until_terminal_judgment_exists
+proxy_runtime_parity:
+  status: adapter_prepared_terminal_execution_pending
+  shared_contract:
+  - US100_M5_closed_bar_base_frame
+  - period_profile_split_set_v0
+  - us100_m5_fpmarkets_tester_execution_v0
+  - source_MT5_score_telemetry_full_period
+  - score_band_thresholds_from_CRH_bundle
+  - score_band_side_policy_high_long_low_short
+  known_differences:
+  - This adapter replays previously observed MT5 score telemetry and does not run
+    ONNX in the trading EA.
+  - CRH score telemetry decision field is unknown; execution uses declared score_low/high
+    thresholds.
+  - The adapter observes sparse tester trades but cannot create runtime authority
+    or economics pass by itself.
+  interpretation_drift_risks:
+  - bar_close_time_lookup_alignment
+  - score_threshold_translation
+  - score_band_side_direction_policy
+  - hold_bars_exit_semantics
+  - tester_fill_cost_spread_lot_rounding
+  minimum_reconciliation_attempt:
+    status: prepared
+    attempt: score telemetry bar_close_time will be replayed into sparse MT5 orders
+      using score band side thresholds
+    forced_equality_required: false
+  unit_semantics:
+    score: single_float_score_from_prior_MT5_score_probe
+    high_threshold: 0.6128074412013571
+    low_threshold: 0.3977058869156862
+    side_mapping: score_ge_high_long_score_le_low_short_else_flat
+    lot: fixed_lot_0.02
+    hold: 6_M5_closed_bars
+  comparison_class: pending_terminal_execution
+  divergence_judgment: pending_terminal_execution
+  prevention_memory:
+  - Do not infer CRH candidate status from score telemetry alone.
+  - Score band replay is a bounded adapter attempt, not selected baseline or runtime
+    authority.
+  - If replay loses or is unstable, record negative memory instead of repairing into
+    a candidate track.
+  follow_up_action: execute prepared Wave02 cost/risk/holding sparse decision replay
+    MT5 attempts with portable terminal only, then judge paired validation/research_oos
+    results
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+artifact_identity:
+  ea_entrypoint:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+    sha256: cdb699af6a7e9ca8436614d9b82282ce1415b3f92be72eeab23c8b76a53351a4
+    size_bytes: 16703
+    availability: present_hash_recorded
+  ea_binary:
+    path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+    sha256: a3c55ed8dd158a9de9c872e6b4c9b313bb316129041c57f3d35369986305f8ca
+    size_bytes: 41072
+    availability: local_binary_hash_recorded_ignored_by_git
+  bundle:
+    path: runtime/packages/bundle_wave02_crh_cell_001_l4_onnx_export_v0/experiment_bundle.json
+    sha256: 507eef7edff4c4441b17558a8f76ac95f8d7455a72622bab346791e75d80f7f9
+    size_bytes: 23252
+    availability: present_hash_recorded
+  source_score_attempt:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_validation_v0/attempt_manifest.yaml
+    availability: present_hash_recorded
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_decision_replay_validation_score_band_side_v0/tester_config.ini
+    sha256: 02169e2f76f9b4ff9176ac8afa6313d027678d78d4d96298da3638e19f4ce696
+    size_bytes: 1528
+    availability: present_hash_recorded
+required_gate_coverage:
+  passed:
+  - source_score_telemetry_observed
+  - wave02_crh_decision_adapter_prepared
+  - tester_config_prepared
+  - locked_final_excluded
+  missing:
+  - Strategy_Tester_terminal_execution
+  - tester_report_hash
+  - economics_metrics
+  not_applicable:
+  - locked_final_oos_b_access
+missing_evidence:
+- decision_replay_terminal_execution_not_run
+- tester_report_missing_until_terminal_execution
+- economics_metrics_missing_until_tester_report
+- candidate_specific_L5_manifest_not_opened
+next_action: execute prepared Wave02 cost/risk/holding sparse decision replay MT5
+  attempts with portable terminal only, then judge paired validation/research_oos
+  results
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

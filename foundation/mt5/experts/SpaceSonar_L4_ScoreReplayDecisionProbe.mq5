@@ -3,7 +3,7 @@
 //| Replays MT5 score telemetry into sparse tester trades.            |
 //+------------------------------------------------------------------+
 #property strict
-#property version   "1.02"
+#property version   "1.03"
 #property description "Score-telemetry replay EA for sparse decision-execution probing."
 
 #include <Trade/Trade.mqh>
@@ -162,6 +162,18 @@ bool IsScoreBandDirectionalFamily()
    if(InpDecisionFamily == "range_edge_abstain_timeout_exit")
       return true;
    if(InpDecisionFamily == "failed_breakout_reversion_abstain_exit")
+      return true;
+   if(InpDecisionFamily == "abstain_timeout_h6")
+      return true;
+   if(InpDecisionFamily == "abstain_timeout_h12")
+      return true;
+   if(InpDecisionFamily == "adverse_excursion_stop")
+      return true;
+   if(InpDecisionFamily == "open_failed_abstain_gate")
+      return true;
+   if(InpDecisionFamily == "session_abstain_timeout")
+      return true;
+   if(InpDecisionFamily == "volatility_stop_timeout")
       return true;
    return false;
 }

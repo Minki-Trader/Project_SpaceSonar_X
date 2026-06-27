@@ -2,9 +2,9 @@ version: campaign_manifest_v2
 campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: wave02_cost_risk_holding_l4_pair_judgment_completed_l5_routing_decision_pending
+status: wave02_cost_risk_holding_decision_replay_terminal_execution_pending
 created_at_utc: '2026-06-27T22:09:35Z'
-updated_at_utc: '2026-06-27T23:33:04Z'
+updated_at_utc: '2026-06-27T23:48:13Z'
 wave_ids:
 - wave_us100_wave02_tradeability_decision_surface_v0
 idea_ids:
@@ -72,7 +72,7 @@ required_gates:
 - exploration_coverage_check
 - proxy_runtime_parity_policy
 - final_claim_guard
-claim_boundary: wave02_cost_risk_holding_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_execution_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -210,8 +210,9 @@ previous_campaign_boundary:
   closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
   negative_memory: lab/memory/negative/neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0.yaml
   carry_forward_rule: do_not_reopen_momentum_ret_1_replay_as_candidate_repair
-next_action: decide whether Wave02 cost/risk/holding pairs justify a bounded decision-execution
-  adapter before any L5 candidate manifest
+next_action: execute prepared Wave02 cost/risk/holding sparse decision replay MT5
+  attempts with portable terminal only, then judge paired validation/research_oos
+  results
 first_batch_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
 run_refs: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
 proxy_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
@@ -315,6 +316,55 @@ l4_follow_through:
         runtime_probe_completed: 12
       result_judgment_counts:
         runtime_probe: 12
+  decision_replay:
+    l5_routing_decision_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+    l5_routing_decision_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+    l5_routing_decision_status: wave02_cost_risk_holding_l5_routing_decision_completed_adapter_preparation_pending
+    l5_routing_decision_counts:
+      evaluated_pair_count: 6
+      adapter_preparation_cell_count: 6
+      candidate_manifest_opened_count: 0
+      candidate_count: 0
+      l5_candidate_count: 0
+      routing_decision_counts:
+        prepare_decision_execution_adapter: 6
+      source_l5_status_counts:
+        l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+      decision_family_counts:
+        abstain_timeout_h12: 1
+        abstain_timeout_h6: 1
+        adverse_excursion_stop: 1
+        open_failed_abstain_gate: 1
+        session_abstain_timeout: 1
+        volatility_stop_timeout: 1
+    adapter_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+    adapter_preparation_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+    adapter_eligibility_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+    adapter_preparation_status: wave02_cost_risk_holding_decision_replay_adapter_attempts_prepared_terminal_execution_next
+    adapter_preparation_counts:
+      routing_cell_count: 6
+      direct_trade_adapter_eligible_cell_count: 6
+      not_direct_trade_adapter_eligible_cell_count: 0
+      prepared_attempt_count: 12
+      prepared_cell_count: 6
+      candidate_count: 0
+      l5_candidate_count: 0
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      decision_family_counts:
+        abstain_timeout_h12: 2
+        abstain_timeout_h6: 2
+        adverse_excursion_stop: 2
+        open_failed_abstain_gate: 2
+        session_abstain_timeout: 2
+        volatility_stop_timeout: 2
+      direction_policy_counts:
+        score_band_side: 12
+      hold_bars_source_counts:
+        target_and_label.label_variant: 12
+      eligibility_reason_counts:
+        eligible_crh_score_band_side_adapter: 6
 evidence_paths:
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_index.csv
@@ -325,16 +375,15 @@ evidence_paths:
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
 missing_evidence:
-- decision_execution_adapter_not_yet_applied
+- decision_replay_terminal_execution_not_run
+- tester_reports_missing_until_execution
+- economics_metrics_missing_until_tester_report
 - candidate_specific_L5_manifest_not_opened
-- economics_metrics_not_available_from_non_trading_score_probe
-- row_level_proxy_vs_MT5_score_alignment_not_performed
 unresolved_blockers:
-- Wave02_cost_risk_holding_L5_routing_decision_pending
+- Wave02_cost_risk_holding_decision_replay_adapter_preparation_pending
 reopen_conditions:
-- rerun pair aggregation if a Wave02 CRH L4 runtime attempt manifest, score telemetry
-  summary, or tester report receipt changes
-- open L5 only with candidate-specific manifest and decision-execution adapter evidence
-  plan
+- rerun routing decision if CRH L4 pair judgment summary or index changes
+- open candidate-specific L5 manifest only after decision replay pair judgment supports
+  it
 candidate_count: 0
 l5_candidate_count: 0

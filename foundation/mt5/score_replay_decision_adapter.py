@@ -25,6 +25,12 @@ SCORE_BAND_DIRECTIONAL_FAMILIES = frozenset(
         "session_gated_abstain_barrier_exit",
         "range_edge_abstain_timeout_exit",
         "failed_breakout_reversion_abstain_exit",
+        "abstain_timeout_h6",
+        "abstain_timeout_h12",
+        "adverse_excursion_stop",
+        "open_failed_abstain_gate",
+        "session_abstain_timeout",
+        "volatility_stop_timeout",
     }
 )
 NON_TRADE_DIAGNOSTIC_FAMILIES = frozenset(

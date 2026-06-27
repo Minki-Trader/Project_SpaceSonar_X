@@ -1,0 +1,76 @@
+version: work_closeout_v1
+work_item_id: work_wave02_cost_risk_holding_l5_routing_decision_v0
+parent_work_item_id: work_wave02_cost_risk_holding_l4_pair_judgment_v0
+next_work_item_id: work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-27T23:41:56Z'
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+result_judgment: runtime_probe
+status: wave02_cost_risk_holding_l5_routing_decision_completed_adapter_preparation_pending
+claim_boundary: wave02_cost_risk_holding_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+counts:
+  evaluated_pair_count: 6
+  adapter_preparation_cell_count: 6
+  candidate_manifest_opened_count: 0
+  candidate_count: 0
+  l5_candidate_count: 0
+  routing_decision_counts:
+    prepare_decision_execution_adapter: 6
+  source_l5_status_counts:
+    l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+  decision_family_counts:
+    abstain_timeout_h12: 1
+    abstain_timeout_h6: 1
+    adverse_excursion_stop: 1
+    open_failed_abstain_gate: 1
+    session_abstain_timeout: 1
+    volatility_stop_timeout: 1
+missing_evidence:
+- decision_execution_adapter_attempts_not_prepared
+- decision_replay_terminal_execution_not_run
+- candidate_specific_L5_manifest_not_opened
+- economics_metrics_not_available_from_non_trading_score_probe
+next_action: prepare Wave02 cost/risk/holding sparse score-band decision replay attempts
+  before any candidate-specific L5 manifest
+unresolved_blockers:
+- Wave02_cost_risk_holding_decision_replay_adapter_preparation_pending
+reopen_conditions:
+- rerun routing decision if CRH L4 pair judgment summary or index changes
+- open candidate-specific L5 manifest only after decision replay pair judgment supports
+  it
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+required_gate_coverage:
+  passed:
+  - source_pair_judgment_present
+  - candidate_manifest_not_opened_from_score_probe
+  - adapter_preparation_next_work_item_declared
+  - artifact_hash_registry_update
+  - final_claim_guard
+  - writer_scope_self_check
+  missing:
+  - decision_execution_adapter_attempts_not_prepared
+  - decision_replay_terminal_execution_not_run
+  - candidate_specific_L5_manifest_not_opened
+  - economics_metrics_not_available_from_non_trading_score_probe
+  not_applicable:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - candidate_manifest
+  - goal_achieve
+  - live_readiness
