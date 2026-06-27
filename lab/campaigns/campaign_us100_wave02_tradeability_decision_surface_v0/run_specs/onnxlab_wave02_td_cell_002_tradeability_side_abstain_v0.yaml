@@ -1,0 +1,35 @@
+version: campaign_run_spec_v1
+run_id: onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0
+goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
+hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+  campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+  idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
+  hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+  surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+  sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+  artifact_ids: []
+  bundle_id: null
+  candidate_id: null
+status: prepared
+created_at_utc: '2026-06-27T12:15:00Z'
+recipe_refs:
+  label_recipe_id: label_wave02_tradeability_side_abstain_h12_v0
+  feature_recipe_id: feature_wave02_session_range_tradeability_v0
+  model_recipe_id: model_wave02_tree_tradeability_v0
+  decision_recipe_id: decision_wave02_side_abstain_sparse_v0
+split_profile: split_set_v0
+evaluation_profile: eval_wave02_proxy_runtime_kpi_v0
+verification_profile: lab_experiment
+acceptance_criteria:
+- record proxy observation with tree surface and explicit side/abstain semantics
+claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+sequence: 2
+next_action: execute_run_spec

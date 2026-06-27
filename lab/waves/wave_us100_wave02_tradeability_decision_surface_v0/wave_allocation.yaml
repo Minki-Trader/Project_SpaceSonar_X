@@ -87,16 +87,16 @@ campaign_allocations:
     - no inherited Wave01 thresholds or candidates
     why_this_campaign_needs_more_or_less_than_default: initial broad Wave02 surface
       uses non-default budget before rotation
-  status: campaign_opened
+  status: run_specs_materialized
   campaign_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_wave02_tradeability_side_abstain_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/sweep_manifest.yaml
   campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
   claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
-  next_action: materialize_wave02_tradeability_initial_specs
+  next_action: execute_materialized_run_specs
   notes: 'Wave02 campaign-open scaffold only. Declared run specs are not executed,
     selected, or runtime-authoritative until manifests, receipts, lineage, and runtime
     evidence exist.
 
     '
-next_action: materialize_wave02_tradeability_initial_specs
+next_action: execute_materialized_run_specs

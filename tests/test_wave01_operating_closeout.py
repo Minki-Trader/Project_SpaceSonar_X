@@ -37,7 +37,8 @@ CURRENT_POLICY_CLOSEOUT_PATH = CLOSEOUT_PATH.parent / "current_policy_closeout_a
 WAVE01_POST_CLOSEOUT_WORK_ITEM_ID = "work_post_wave01_user_directed_wave02_or_review_v0"
 WAVE02_ID = "wave_us100_wave02_tradeability_decision_surface_v0"
 WAVE02_CAMPAIGN_ID = "campaign_us100_wave02_tradeability_decision_surface_v0"
-WAVE02_WORK_ITEM_ID = "work_wave02_tradeability_materialize_initial_specs_v0"
+WAVE02_WORK_ITEM_ID = "execute_materialized_run_specs"
+WAVE02_NEXT_ACTION = "execute_materialized_run_specs"
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -125,8 +126,9 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
     assert goal["active_ids"]["campaign_id"] == WAVE02_CAMPAIGN_ID
     assert goal["next_work_item"]["work_item_id"] == WAVE02_WORK_ITEM_ID
     assert next_work["work_item_id"] == WAVE02_WORK_ITEM_ID
-    assert next_work["status"] == "pending"
-    assert next_work["wave_id"] == WAVE02_ID
+    assert next_work["next_action"] == WAVE02_NEXT_ACTION
+    assert next_work["primary_family"] == "model_training"
+    assert next_work["primary_skill"] == "spacesonar-model-validation"
     assert cursor["cursor_state"] == "active_wave02_pre_operational_research"
     assert cursor["active_phase"] == "wave02_campaign_open"
     assert cursor["active_work_item_id"] == WAVE02_WORK_ITEM_ID
@@ -140,7 +142,7 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
     assert wave_by_id["wave_us100_closedbar_surface_cartography_v0"]["status"] == current_policy_closeout["status"]
     assert wave_by_id["wave_us100_closedbar_surface_cartography_v0"]["next_action"] == legacy_closeout["next_action"]
     assert wave_by_id[WAVE02_ID]["status"] == "wave_open"
-    assert wave_by_id[WAVE02_ID]["next_action"] == "materialize_wave02_tradeability_initial_specs"
+    assert wave_by_id[WAVE02_ID]["next_action"] == WAVE02_NEXT_ACTION
 
 
 def test_agent_observation_proof_releases_repair_work_item_everywhere() -> None:
@@ -168,8 +170,10 @@ def test_successful_proof_restores_user_directed_next_allowed_shapes() -> None:
     next_work = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "next_work_item.yaml")
 
     assert next_work["work_item_id"] == WAVE02_WORK_ITEM_ID
-    assert next_work["next_action"] == "materialize_wave02_tradeability_initial_specs"
-    assert next_work["status"] == "pending"
+    assert next_work["next_action"] == WAVE02_NEXT_ACTION
+    assert next_work["primary_family"] == "model_training"
+    assert next_work["primary_skill"] == "spacesonar-model-validation"
+    assert "lab/runs/<run_id>/run_manifest.json" in next_work["outputs"]
     assert next_work["claim_boundary"] == (
         "wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness"
     )
@@ -206,12 +210,14 @@ def test_updated_timestamps_change_with_state_transition() -> None:
     goal = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "goal_manifest.yaml")
     next_work = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "next_work_item.yaml")
     cursor = load_yaml(ROOT / "lab" / "goals" / "goal_us100_onnx_forward_boundary_v0" / "resume_cursor.yaml")
+    workspace = load_yaml(ROOT / "docs" / "workspace" / "workspace_state.yaml")
     wave = load_yaml(ROOT / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_allocation.yaml")
     wave02 = load_yaml(ROOT / "lab" / "waves" / WAVE02_ID / "wave_allocation.yaml")
 
-    assert goal["updated_at_utc"] == wave02["created_at_utc"]
-    assert next_work["created_at_utc"] == wave02["created_at_utc"]
-    assert cursor["updated_at_utc"] == wave02["created_at_utc"]
+    assert goal["updated_at_utc"] > wave02["created_at_utc"]
+    assert cursor["updated_at_utc"] == goal["updated_at_utc"]
+    assert workspace["updated_utc"] == goal["updated_at_utc"]
+    assert next_work["work_item_id"] == WAVE02_WORK_ITEM_ID
     assert wave["updated_at_utc"] == closeout["generated_at_utc"]
 
 

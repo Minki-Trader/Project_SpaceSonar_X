@@ -343,6 +343,15 @@ def test_nonexistent_campaign_materialize_and_judge_are_rejected(tmp_path: Path)
 
 
 def test_materialize_judge_campaign_close_and_wave_close_state_machine(tmp_path: Path) -> None:
+    write_yaml(
+        tmp_path / "lab/goals/goal_wave02_fixture_v0/resume_cursor.yaml",
+        {
+            "version": "active_goal_resume_cursor_v1",
+            "active_goal_id": "goal_wave02_fixture_v0",
+            "active_work_item_id": "stale_work_v0",
+            "next_action": "stale_action",
+        },
+    )
     assert open_campaign(write_spec(tmp_path), context(tmp_path)).status == "committed"
     assert close_wave("wave_wave02_fixture_v0", context(tmp_path)).status == "aborted_validation_failed"
     assert materialize_run_specs("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
@@ -362,6 +371,15 @@ def test_materialize_judge_campaign_close_and_wave_close_state_machine(tmp_path:
     assert "run_wave02_fixture_001" in refs
     assert "goal_wave02_fixture_v0" in refs
     assert load_yaml(tmp_path / "lab/campaigns/campaign_wave02_surface_probe_v0/campaign_manifest.yaml")["status"] == "run_specs_materialized"
+    next_work = load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/next_work_item.yaml")
+    assert next_work["work_item_id"] == "execute_materialized_run_specs"
+    assert next_work["primary_family"] == "model_training"
+    assert next_work["primary_skill"] == "spacesonar-model-validation"
+    assert next_work["verification_profile"] == "lab_experiment"
+    wave = load_yaml(tmp_path / "lab/waves/wave_wave02_fixture_v0/wave_allocation.yaml")
+    assert wave["next_action"] == "execute_materialized_run_specs"
+    cursor = load_yaml(tmp_path / "lab/goals/goal_wave02_fixture_v0/resume_cursor.yaml")
+    assert cursor["next_action"] == "execute_materialized_run_specs"
     assert any(path.endswith("run_wave02_fixture_001.yaml") for path in artifact_paths(tmp_path))
     no_evidence = judge_campaign("campaign_wave02_surface_probe_v0", context(tmp_path))
     assert no_evidence.status == "aborted_validation_failed"
