@@ -344,6 +344,7 @@ def validate_templates(repo_root: Path) -> list[str]:
         label="campaign_manifest.template.yaml top-level",
         observed=set(campaign_template),
         required={
+            "active_goal_id",
             "campaign_type",
             "exploration_coverage",
             "bounded_synthesis",
@@ -462,6 +463,7 @@ def validate_templates(repo_root: Path) -> list[str]:
         label="wave_allocation.template.yaml top-level",
         observed=set(wave_template),
         required={
+            "active_goal_id",
             "budget",
             "campaign_allocations",
             "storage_contract",
@@ -514,6 +516,31 @@ def validate_templates(repo_root: Path) -> list[str]:
         errors.append("wave_allocation.template.yaml campaign_run_budget_bounds must satisfy min <= default <= max")
     if wave_budget.get("l4_pair_budget") != (profile_policy.get("l4_pair_budget_policy") or {}).get("standard_pair_budget"):
         errors.append("wave_allocation.template.yaml l4_pair_budget does not match lab_profile standard_pair_budget")
+    required_id_chain = {
+        "goal_id",
+        "wave_id",
+        "campaign_id",
+        "idea_id",
+        "hypothesis_id",
+        "surface_id",
+        "sweep_id",
+        "artifact_ids",
+        "bundle_id",
+        "candidate_id",
+    }
+    for name in [
+        "experiment_receipt.template.yaml",
+        "run_manifest.template.json",
+        "experiment_bundle.template.json",
+        "attempt_manifest.template.yaml",
+        "runtime_evidence.template.yaml",
+    ]:
+        add_missing(
+            errors,
+            label=f"{name} id_chain",
+            observed=set((templates[name].get("id_chain") or {})),
+            required=required_id_chain,
+        )
     return errors
 
 

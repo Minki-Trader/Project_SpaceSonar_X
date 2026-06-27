@@ -39,6 +39,11 @@ CAMPAIGN_REF_FIELDS = [
 ]
 RUN_REF_FIELDS = [
     "run_id",
+    "goal_id",
+    "wave_id",
+    "campaign_id",
+    "idea_id",
+    "hypothesis_id",
     "run_spec_path",
     "status",
     "surface_id",
@@ -304,6 +309,40 @@ def _merge_unique(existing: Any, required: str) -> list[str]:
     if required not in values:
         values.append(required)
     return values
+
+
+def _first_text(value: Any) -> str:
+    items = _list(value)
+    if not items:
+        return ""
+    return str(items[0] or "")
+
+
+def _campaign_identity(campaign: dict[str, Any]) -> dict[str, str]:
+    design = campaign.get("experiment_design") or {}
+    return {
+        "goal_id": str(campaign.get("active_goal_id") or campaign.get("goal_id") or ""),
+        "wave_id": _first_text(campaign.get("wave_ids")),
+        "campaign_id": str(campaign.get("campaign_id") or ""),
+        "idea_id": str(design.get("idea_id") or _first_text(campaign.get("idea_ids"))),
+        "hypothesis_id": str(design.get("hypothesis_id") or _first_text(campaign.get("hypothesis_ids"))),
+        "surface_id": str(design.get("surface_id") or ""),
+        "sweep_id": str(design.get("sweep_id") or ""),
+    }
+
+
+def _declared_run_id_chain(campaign_identity: dict[str, str], run_spec: dict[str, Any]) -> dict[str, Any]:
+    declared_chain = run_spec.get("id_chain") or {}
+    for key, expected in campaign_identity.items():
+        observed = declared_chain.get(key)
+        if observed not in (None, "", expected):
+            raise LifecycleInputError(f"run spec {run_spec.get('run_id')} id_chain.{key} conflicts with campaign identity")
+    return {
+        **campaign_identity,
+        "artifact_ids": declared_chain.get("artifact_ids") or run_spec.get("artifact_ids") or [],
+        "bundle_id": declared_chain.get("bundle_id") or run_spec.get("bundle_id"),
+        "candidate_id": declared_chain.get("candidate_id") or run_spec.get("candidate_id"),
+    }
 
 
 def _require_existing(path: Path, label: str) -> dict[str, Any]:
@@ -686,6 +725,10 @@ def _materialize_plan(campaign_id: str, context: ExecutionContext) -> LifecycleP
     sweep_id = design.get("sweep_id")
     if not surface_id or not sweep_id:
         raise LifecycleInputError(f"campaign missing surface_id or sweep_id: {campaign_id}")
+    campaign_identity = _campaign_identity(campaign)
+    missing_identity = [key for key, value in campaign_identity.items() if not value]
+    if missing_identity:
+        raise LifecycleInputError(f"campaign missing run identity fields: {', '.join(missing_identity)}")
     surface_path = Path("lab/surfaces") / surface_id / "surface_manifest.yaml"
     sweep_path = Path("lab/campaigns") / campaign_id / "sweeps" / sweep_id / "sweep_manifest.yaml"
     _require_existing(context.repo_root / surface_path, "surface manifest")
@@ -701,9 +744,12 @@ def _materialize_plan(campaign_id: str, context: ExecutionContext) -> LifecycleP
         run_id = run_spec.get("run_id")
         if not run_id:
             raise LifecycleInputError("run spec must declare a stable run_id")
+        id_chain = _declared_run_id_chain(campaign_identity, run_spec)
         payload = {
             "version": "campaign_run_spec_v1",
             "run_id": run_id,
+            **campaign_identity,
+            "id_chain": id_chain,
             "campaign_id": campaign_id,
             "surface_id": surface_id,
             "sweep_id": sweep_id,
@@ -725,6 +771,11 @@ def _materialize_plan(campaign_id: str, context: ExecutionContext) -> LifecycleP
         run_ref_rows.append(
             {
                 "run_id": run_id,
+                "goal_id": campaign_identity["goal_id"],
+                "wave_id": campaign_identity["wave_id"],
+                "campaign_id": campaign_identity["campaign_id"],
+                "idea_id": campaign_identity["idea_id"],
+                "hypothesis_id": campaign_identity["hypothesis_id"],
                 "run_spec_path": rel_path.as_posix(),
                 "status": "prepared",
                 "surface_id": surface_id,
@@ -982,6 +1033,19 @@ def _validate_run_specs_index(repo_root: Path, campaign: dict[str, Any]) -> None
     missing = [row.get("run_spec_path") for row in rows if not row.get("run_spec_path") or not (repo_root / row["run_spec_path"]).exists()]
     if missing:
         raise LifecycleInputError(f"campaign judgment missing declared run-spec files: {', '.join(map(str, missing))}")
+    expected_identity = _campaign_identity(campaign)
+    for row in rows:
+        run_id = str(row.get("run_id") or "")
+        for key, expected in expected_identity.items():
+            if row.get(key) not in (None, "", expected):
+                raise LifecycleInputError(f"campaign judgment run_refs {run_id} has conflicting {key}: {row.get(key)}")
+        run_spec = _read_yaml_if_exists(repo_root / str(row["run_spec_path"]))
+        id_chain = run_spec.get("id_chain") or {}
+        for key, expected in expected_identity.items():
+            if id_chain.get(key) != expected:
+                raise LifecycleInputError(
+                    f"campaign judgment run spec {run_id} id_chain.{key} expected={expected} observed={id_chain.get(key)}"
+                )
 
 
 def _validate_evidence_identity(repo_root: Path, evidence_inputs: list[str], campaign_id: str) -> None:

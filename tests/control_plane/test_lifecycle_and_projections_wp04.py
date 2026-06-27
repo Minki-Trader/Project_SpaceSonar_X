@@ -309,12 +309,20 @@ def test_materialize_judge_campaign_close_and_wave_close_state_machine(tmp_path:
     assert close_wave("wave_wave02_fixture_v0", context(tmp_path)).status == "aborted_validation_failed"
     assert materialize_run_specs("campaign_wave02_surface_probe_v0", context(tmp_path)).status == "committed"
     run_spec = load_yaml(tmp_path / "lab/campaigns/campaign_wave02_surface_probe_v0/run_specs/run_wave02_fixture_001.yaml")
+    assert run_spec["id_chain"]["goal_id"] == "goal_wave02_fixture_v0"
+    assert run_spec["id_chain"]["wave_id"] == "wave_wave02_fixture_v0"
+    assert run_spec["id_chain"]["campaign_id"] == "campaign_wave02_surface_probe_v0"
+    assert run_spec["id_chain"]["idea_id"] == "idea_wave02_fixture_v0"
+    assert run_spec["id_chain"]["hypothesis_id"] == "hyp_wave02_fixture_v0"
+    assert run_spec["id_chain"]["surface_id"] == "surface_wave02_fixture_v0"
+    assert run_spec["id_chain"]["sweep_id"] == "sweep_wave02_fixture_v0"
     assert run_spec["recipe_refs"]["model_recipe_id"] == "model_fixture_v0"
     assert run_spec["split_profile"] == "split_fixture_v0"
     assert run_spec["evaluation_profile"] == "eval_fixture_v0"
     assert run_spec["verification_profile"] == "runtime"
     refs = (tmp_path / "lab/campaigns/campaign_wave02_surface_probe_v0/sweeps/sweep_wave02_fixture_v0/run_refs.csv").read_text(encoding="utf-8")
     assert "run_wave02_fixture_001" in refs
+    assert "goal_wave02_fixture_v0" in refs
     assert load_yaml(tmp_path / "lab/campaigns/campaign_wave02_surface_probe_v0/campaign_manifest.yaml")["status"] == "run_specs_materialized"
     assert any(path.endswith("run_wave02_fixture_001.yaml") for path in artifact_paths(tmp_path))
     no_evidence = judge_campaign("campaign_wave02_surface_probe_v0", context(tmp_path))
