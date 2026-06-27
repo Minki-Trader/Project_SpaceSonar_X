@@ -4,6 +4,23 @@ claim_boundary: operational_control_policy_only_no_runtime_authority_no_economic
 
 default_validation_depth: writer_scope_smoke
 
+default_command_selection:
+  project_validate_default: false
+  project_validate_allowed_only_when:
+    - campaign_closeout
+    - wave_closeout
+    - source_of_truth_drift_detected
+    - shared_contract_or_validator_semantics_changed
+    - explicit_user_requests_project_validate
+  preferred_before_project_validate:
+    - identify_current_work_item_next_executable_writer_or_probe
+    - run_writer_scope_smoke_for_touched_evidence
+    - parse_touched_yaml_json_toml_csv
+    - compile_touched_python_modules
+    - run_routing_or_policy_lint_for_policy_changes
+    - run_registry_or_workspace_projection_check_only_when_projection_changed
+  rule: project validate is an archive or boundary command, not a routine progress command
+
 routine_inspection_scope:
   current_truth_first:
     - AGENTS.md
@@ -26,6 +43,10 @@ routine_inspection_scope:
     - lab/runs/*/reports/**
     - temp_policy_drafts/**
   rule: inspect canonical source-of-truth records, not volatile local workspaces, when deciding operational state
+  user_requests_all_folders_all_files_policy:
+    interpretation: source_of_truth_and_owner_surface_inventory_with_volatile_excludes
+    proof_effect: inventory_only_not_operational_stability_proof
+    required_followup: convert_observed_gap_into_owner_writer_policy_or_manifest_rule
   direct_inspection_command_policy:
     preferred_listing: rg --files with exclude patterns for volatile/generated surfaces
     preferred_reads: targeted source-of-truth files and touched owner files
@@ -117,6 +138,7 @@ forbidden_default_commands:
   - evidence_graph_full_workflow
   - active_record_validator_full_graph
   - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
   - broad_hash_resync
   - global_registry_regeneration
   - whole_tree_scan_as_proof
@@ -207,6 +229,7 @@ protected_claim_surfaces:
 
 operator_failure_modes_to_avoid:
   - running_full_tests_before_identifying_owned_surface
+  - running_project_validate_as_a_progress_substitute
   - validation_only_loop_when_executable_work_is_pending
   - using_folder_inventory_as_substitute_for_policy_reasoning
   - scanning_volatile_local_workspaces_as_operational_evidence

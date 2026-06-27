@@ -32,8 +32,10 @@ Use when starting or resuming repository work that needs current truth, stale-as
 - If the user asks for progress, experiments, or why work is slow, identify the active work item's next executable writer/probe and move there before any validation-only loop.
 - Default to writer-scope smoke, not pytest/full graph validation. Name `validation_depth` before running commands.
 - When run evidence is touched, prefer `python -m spacesonar.cli project writer-smoke ...` as the first proof command.
+- Do not use `python -m spacesonar.cli project validate` as a progress-loop default; reserve it for boundary, drift, shared-contract/validator semantics, or explicit user-request cases.
 - Do not use whole-tree inventory as proof of operational stability; identify the owned source-of-truth surface and the guard that should fail early.
 - Direct inspection means targeted source-of-truth and owner-file reads. Use `rg --files` with volatile excludes for listings; do not use unbounded recursive workspace walks as current truth.
+- If the user asks to inspect all folders/files, treat it as an owner-surface inventory with volatile excludes, then convert each gap into a source-of-truth, writer, manifest, skill, or policy rule. Do not spend the run loop traversing raw generated artifacts.
 - Do not inspect `.pytest_tmp`, `.spacesonar/transactions`, runtime telemetry/report trees, or package artifact trees as current truth; inspect their manifests, receipts, summaries, and hashes.
 - Do not recreate deleted legacy archive meanings.
 - Do not start broad validators or materializers unless the task is a boundary closeout, shared-contract change, source-of-truth drift repair, or protected claim surface.

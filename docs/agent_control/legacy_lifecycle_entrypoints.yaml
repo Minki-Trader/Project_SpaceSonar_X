@@ -180,4 +180,5 @@ entrypoints:
     classification: historical_disabled
     lifecycle_actions:
       - workspace_sync
-    replacement_command: python -m spacesonar.cli project validate
+    replacement_command: python -m spacesonar.cli project workspace --check
+    replacement_note: project_validate_is_boundary_or_explicit_user_request_only

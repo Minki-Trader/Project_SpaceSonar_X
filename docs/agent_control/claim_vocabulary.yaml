@@ -1,42 +1,89 @@
-version: claim_vocabulary_v1
+version: claim_vocabulary_v2
+purpose: machine_readable_claim_boundary_terms_for_spacesonar_onnx_lab
+
 protected_claim_aliases:
   runtime_authority:
     - runtime_authority
     - runtime authority
     - runtime-authority
-    - 런타임 권한
+    - authority_to_trade
+    - operating_authority
   economics_pass:
     - economics_pass
     - economics pass
     - economics-pass
-    - 경제성 통과
+    - economic_pass
+    - economic pass
   live_readiness:
     - live_readiness
     - live readiness
-    - live-readiness
-    - 라이브 준비 완료
+    - live-ready
+    - live_ready
+    - ready_for_live
   selected_baseline:
     - selected_baseline
     - selected baseline
     - selected-baseline
-    - 선택 기준선
+    - operating_baseline
+    - chosen_baseline
   production_deployment:
     - production_deployment
     - production deployment
     - production-deployment
-    - 운영 배포
+    - production_ready
+    - deployed_to_production
+  goal_achieve:
+    - goal_achieve
+    - goal achieve
+    - goal-achieve
+    - goal_achieved
+    - objective_achieved
+  materialization_ready:
+    - materialization_ready
+    - materialization ready
+    - materialization-ready
+  handoff_complete:
+    - handoff_complete
+    - handoff complete
+    - handoff-complete
+  reviewed_verified_pass:
+    - reviewed_verified_pass
+    - reviewed or verified pass
+    - reviewed_pass
+    - verified_pass
+    - review_passed
+    - verification_passed
+
 protected_claim_assertion_intent_aliases:
   - approve
   - mark
   - declare
   - claim
   - promote
+  - select
   - set
   - grant
-  - 인정
-  - 승인
-  - 선언
-  - 설정
+  - achieve
+  - ready
+  - pass
+  - verify
+  - review
+
+status_lowering_tokens:
+  - pending
+  - planning
+  - draft
+  - placeholder
+  - not_yet_evaluated
+  - not_applicable
+  - missing_evidence
+  - investigation_in_progress
+  - no_candidate
+  - no_runtime_authority
+  - no_economics_pass
+  - no_live_readiness
+  - no_goal_achieve
+
 claim_classes:
   completed:
     allowed_when:
@@ -48,6 +95,7 @@ claim_classes:
       - scope_missing_without_user_quote
       - triggered_skill_receipt_missing
       - required_kpi_missing
+      - status_lowering_token_present_without_resolution
   completed_reduced_scope:
     allowed_when:
       - explicit_user_scope_reduction_quote_exists
@@ -114,6 +162,9 @@ claim_classes:
     allowed_when:
       - requested_verification_layer_passed
       - source_authority_matches_claim
+    forbidden_when:
+      - used_for_whole_project_without_boundary_scope
+      - used_as_runtime_authority_or_economics_pass
   runtime_probe:
     allowed_when:
       - mt5_or_runtime_observation_exists
@@ -123,16 +174,21 @@ claim_classes:
     allowed_when:
       - runtime_authority_contract_passed
       - explicit_policy_allows_authority_claim
+    forbidden_when:
+      - operational_validation_not_complete
   planning_scaffold:
     allowed_when:
       - no_runtime_or_operating_claim
       - missing_evidence_named
       - next_action_named
+
 forbidden_substitutions:
-  - "answer_clarity_guard_cannot_replace_runtime_evidence"
-  - "claim_discipline_cannot_replace_missing_evidence"
-  - "evidence_provenance_cannot_replace_missing_source_manifests_or_receipts"
-  - "python_structural_result_cannot_replace_mt5_result"
-  - "top_k_probe_cannot_replace_full_scope_verification_without_user_quote"
-  - "registry_row_cannot_replace_run_local_evidence"
-  - "agent_consensus_cannot_replace_required_evidence"
+  - answer_clarity_guard_cannot_replace_runtime_evidence
+  - claim_discipline_cannot_replace_missing_evidence
+  - evidence_provenance_cannot_replace_missing_source_manifests_or_receipts
+  - python_structural_result_cannot_replace_mt5_result
+  - top_k_probe_cannot_replace_full_scope_verification_without_user_quote
+  - registry_row_cannot_replace_run_local_evidence
+  - agent_consensus_cannot_replace_required_evidence
+  - pytest_cannot_replace_writer_manifest_receipt_hash_contract
+  - full_regression_cannot_replace_current_work_item_next_executable_step

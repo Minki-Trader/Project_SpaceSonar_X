@@ -67,7 +67,9 @@ Internal receipts are not user reports.
 - Do not route a first plumbing attempt as full-project reconciliation. Add broader validation only after the thin path is real or the claim requires it.
 - For session start/resume, route the first executable step as one narrow fixture/run/probe/smoke path. Broad materializers, global sync, full validators, or full pytest require an explicit boundary/claim/drift reason.
 - If the user asks why progress is slow or asks for experiments, route to the active work item's next executable writer, runner, probe, adapter, or materializer. Validation-only work is allowed only when the source-of-truth record itself is the task.
+- If the user complains about pytest/full-regression/evidence-graph delay, route either to the active executable work item or to `policy_skill_governance` to harden the operating rule; do not answer by starting another broad validation pass.
 - For direct repository inspection, use source-of-truth and touched-owner reads. Do not route unbounded recursive workspace walks as proof; volatile tree inventory is operational noise.
+- `python -m spacesonar.cli project validate` is not a default progress-loop smoke. It is boundary, source-of-truth drift, shared validator/contract semantics, or explicit user-request scope.
 
 ## Do Not
 

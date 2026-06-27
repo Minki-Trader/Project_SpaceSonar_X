@@ -4,7 +4,7 @@ claim_boundary: routing_behavior_smoke_only_no_reviewed_pass
 prompt_count_policy:
   min: 12
   max: 20
-  current: 17
+  current: 18
 cases:
   - id: route_smoke_001_policy_branch_receipt
     prompt: "Wire branch policy into run receipts and claim downgrade rules."
@@ -236,3 +236,28 @@ cases:
       - encoding_check
       - final_claim_guard
     expected_claim_boundary: advisory_only_no_reviewed_pass
+
+  - id: route_smoke_017_no_pytest_operating_loop
+    prompt: "Harden the default Codex loop so progress work uses the next writer/probe and writer-scope smoke instead of pytest, project validate, full evidence graph, or full regression."
+    expected_primary_family: policy_skill_governance
+    expected_primary_skill: spacesonar-work-item-router
+    expected_support_skills:
+      - spacesonar-architecture-guard
+      - spacesonar-evidence-provenance
+    expected_required_gates:
+      - branch_worktree_fit
+      - provenance_capture
+      - skill_metadata_lint
+      - storage_contract_check
+      - routing_smoke_eval
+      - dry_run_receipt
+      - encoding_check
+      - final_claim_guard
+    expected_validation_depth: writer_scope_smoke
+    expected_skipped_broad_validations:
+      - pytest
+      - spacesonar_cli_project_validate_as_progress_default
+      - full_regression_workflow
+      - evidence_graph_full_workflow
+      - active_record_validator_full_graph
+    expected_claim_boundary: operational_control_policy_only

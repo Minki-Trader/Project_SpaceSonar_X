@@ -31,6 +31,7 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 - Compute hashes from the final written bytes after newline and encoding decisions are complete; do not use broad hash resync to mask a writer contract bug.
 - A writer that records `artifact_identity` must first ensure the referenced summary/receipt exists on the same filesystem path it will hash. Optional raw local artifacts may be marked missing or local-only; proof-bearing summaries and receipts must not be missing after writer close.
 - For touched run evidence, run writer-scope smoke through `python -m spacesonar.cli project writer-smoke ...`; do not substitute full active-record validation as the default proof path.
+- Do not substitute `python -m spacesonar.cli project validate` for writer-local evidence proof during ordinary progress work. If project validate is needed, record the boundary, drift, shared-contract, or explicit user-request reason.
 - Treat telemetry/report/artifact directories as raw evidence locations, not traversal roots for routine operating truth; consume their paired manifests, summaries, receipts, and hashes.
 - Do not commit heavy artifacts just to close a gap.
 - Do not call a run reviewed, selected, runtime-ready, economics-pass, or handoff-complete without matching durable evidence.
