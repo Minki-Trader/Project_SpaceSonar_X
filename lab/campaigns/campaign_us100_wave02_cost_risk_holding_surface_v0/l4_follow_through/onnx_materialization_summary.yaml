@@ -1,0 +1,182 @@
+version: wave02_cost_risk_holding_l4_onnx_materialization_summary_v1
+summary_id: wave02_cost_risk_holding_l4_onnx_materialization_summary_v0
+work_item_id: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+created_at_utc: '2026-06-27T22:46:42Z'
+status: completed_exportable_bundles_l4_terminal_execution_required
+claim_boundary: wave02_cost_risk_holding_l4_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+source_inputs:
+  run_refs: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+  row_membership_manifest: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
+  period_profile: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  tester_execution_profile: configs/mt5/tester_execution_profile_v0.yaml
+input_hashes:
+- path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+  sha256: cd8e3ff894f8ea545ed74144f7dd5c9b26b959fa3942f0172f07a60753322f90
+  size_bytes: 4006
+  availability: present_hash_recorded
+- path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+  sha256: 915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c
+  size_bytes: 4857
+  availability: present_hash_recorded
+- path: foundation/config/mt5_runtime_probe_contract.yaml
+  sha256: 31dd303d5fcd46824a63d5dce7aff660c3d34bfefbaf4efb5a07d25a988b52ee
+  size_bytes: 8515
+  availability: present_hash_recorded
+- path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+  sha256: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
+  size_bytes: 2691
+  availability: present_hash_recorded
+- path: configs/mt5/tester_execution_profile_v0.yaml
+  sha256: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
+  size_bytes: 3036
+  availability: present_hash_recorded
+- path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  sha256: c45ab2998983a63f79f6364575bc7c4f764bdd479a61d7a490084864af34706a
+  size_bytes: 36739
+  availability: present_hash_recorded
+counts:
+  valid_proxy_runs_requiring_l4: 6
+  exportable_bundle_count: 6
+  failed_materialization_count: 0
+  status_counts:
+    onnx_exported_python_onnxruntime_parity_passed: 6
+  parity_status_counts:
+    passed: 6
+  model_family_counts:
+    logistic_or_linear_rank_scout: 3
+    tree_or_boosted_onnx_feasible_scout: 3
+  task_kind_counts:
+    classification: 6
+artifact_outputs:
+  index_csv: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_index.csv
+  bundle_manifest_paths:
+  - runtime/packages/bundle_wave02_crh_cell_001_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave02_crh_cell_002_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave02_crh_cell_003_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave02_crh_cell_004_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave02_crh_cell_005_l4_onnx_export_v0/experiment_bundle.json
+  - runtime/packages/bundle_wave02_crh_cell_006_l4_onnx_export_v0/experiment_bundle.json
+  onnx_paths:
+  - runtime/packages/bundle_wave02_crh_cell_001_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave02_crh_cell_002_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave02_crh_cell_003_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave02_crh_cell_004_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave02_crh_cell_005_l4_onnx_export_v0/artifacts/model.onnx
+  - runtime/packages/bundle_wave02_crh_cell_006_l4_onnx_export_v0/artifacts/model.onnx
+runtime_contract_binding:
+  required_runtime_level: L4_split_runtime_probe
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  required_period_roles:
+  - validation
+  - research_oos
+  tester_execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  locked_final_oos_b: excluded_forbidden_by_default
+judgment:
+  judgment_class: onnx_bundle_preflight
+  runtime_probe_completed: false
+  runtime_authority: false
+  economics_pass: false
+  selected_baseline: false
+  goal_achieve: false
+  next_action: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+environment:
+  command: foundation/pipelines/materialize_wave02_cost_risk_holding_l4_preflight.py
+    --write-control-records --copy-common-files
+  command_argv:
+  - foundation/pipelines/materialize_wave02_cost_risk_holding_l4_preflight.py
+  - --write-control-records
+  - --copy-common-files
+  cwd: .
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  dependency_summary:
+    python: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    onnx: 1.20.1
+    onnxruntime: 1.24.3
+    skl2onnx: 1.20.0
+    yaml: 6.0.3
+  started_at_utc: '2026-06-27T22:46:42Z'
+  ended_at_utc: '2026-06-27T22:47:07Z'
+  git_sha: 5685b4796fc7c5b3cb1065b66b0c7dbaee49a797
+  branch: main
+  changed_files:
+  - M .codex/config.toml
+  - M  docs/registers/artifact_registry.csv
+  - M  docs/workspace/workspace_state.yaml
+  - M  foundation/pipelines/materialize_wave02_cost_risk_holding_first_batch_specs.py
+  - AM foundation/pipelines/materialize_wave02_cost_risk_holding_l4_preflight.py
+  - M  foundation/pipelines/run_wave02_cost_risk_holding_proxy_batch.py
+  - M  lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+  - A  lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+  - A  lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  - A  lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_index.csv
+  - A  lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  - A  lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/writer_contract_precheck.yaml
+  - M  lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
+  - M  lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+  - M  lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  - M  lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+  - A  lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_materialization_preflight_v0_closeout.yaml
+  - M  lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/artifact_lineage.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_001_cost_risk_holding_v0/run_manifest.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_002_cost_risk_holding_v0/artifact_lineage.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_002_cost_risk_holding_v0/run_manifest.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_003_cost_risk_holding_v0/artifact_lineage.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_003_cost_risk_holding_v0/run_manifest.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_004_cost_risk_holding_v0/artifact_lineage.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_004_cost_risk_holding_v0/run_manifest.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_005_cost_risk_holding_v0/artifact_lineage.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_005_cost_risk_holding_v0/run_manifest.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_006_cost_risk_holding_v0/artifact_lineage.json
+  - M  lab/runs/onnxlab_wave02_crh_cell_006_cost_risk_holding_v0/run_manifest.json
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_research_oos_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_research_oos_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_validation_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_validation_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_research_oos_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_validation_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_validation_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_003_l4_research_oos_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_003_l4_research_oos_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_003_l4_validation_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_003_l4_validation_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_research_oos_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_research_oos_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_validation_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_validation_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_005_l4_research_oos_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_005_l4_research_oos_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_005_l4_validation_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_005_l4_validation_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_research_oos_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_research_oos_v0/tester_config.ini
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_validation_v0/attempt_manifest.yaml
+  - AM runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_validation_v0/tester_config.ini
+  - AM runtime/packages/bundle_wave02_crh_cell_001_l4_onnx_export_v0/experiment_bundle.json
+  - AM runtime/packages/bundle_wave02_crh_cell_002_l4_onnx_export_v0/experiment_bundle.json
+  - AM runtime/packages/bundle_wave02_crh_cell_003_l4_onnx_export_v0/experiment_bundle.json
+  - AM runtime/packages/bundle_wave02_crh_cell_004_l4_onnx_export_v0/experiment_bundle.json
+  - AM runtime/packages/bundle_wave02_crh_cell_005_l4_onnx_export_v0/experiment_bundle.json
+  - AM runtime/packages/bundle_wave02_crh_cell_006_l4_onnx_export_v0/experiment_bundle.json
+  - ?? package.json
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

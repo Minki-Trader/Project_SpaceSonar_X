@@ -58,7 +58,9 @@
     "source_of_truth": "lab/runs/onnxlab_wave02_crh_cell_002_cost_risk_holding_v0/run_manifest.json",
     "receipt": "lab/runs/onnxlab_wave02_crh_cell_002_cost_risk_holding_v0/experiment_receipt.yaml",
     "campaign_run_refs": "lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv",
-    "durable_identity_policy": "repo_relative_paths_only"
+    "durable_identity_policy": "repo_relative_paths_only",
+    "lineage": "lab/runs/onnxlab_wave02_crh_cell_002_cost_risk_holding_v0/artifact_lineage.json",
+    "metrics": "lab/runs/onnxlab_wave02_crh_cell_002_cost_risk_holding_v0/metrics.json"
   },
   "forbidden_claims": [
     "selected_baseline",
@@ -121,5 +123,34 @@
     "target_level": "L4_split_runtime_probe",
     "lowered_claim_if_not_run": "proxy_observation_only_no_runtime_authority_no_economics_pass_no_candidate",
     "follow_up_work_item_id": "work_wave02_cost_risk_holding_l4_materialization_preflight_v0"
+  },
+  "id_chain": {
+    "goal_id": "goal_us100_onnx_forward_boundary_v0",
+    "wave_id": "wave_us100_wave02_tradeability_decision_surface_v0",
+    "campaign_id": "campaign_us100_wave02_cost_risk_holding_surface_v0",
+    "idea_id": "idea_us100_wave02_cost_risk_holding_surface_v0",
+    "hypothesis_id": "hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0",
+    "surface_id": "surface_us100_wave02_cost_risk_holding_v0",
+    "sweep_id": "sweep_us100_wave02_cost_risk_holding_broad_v0",
+    "run_id": "onnxlab_wave02_crh_cell_002_cost_risk_holding_v0",
+    "artifact_id": null,
+    "bundle_id": null,
+    "candidate_id": null
+  },
+  "required_gate_coverage": {
+    "passed": [
+      "run_manifest",
+      "experiment_receipt",
+      "storage_contract_check",
+      "runtime_learning_probe_decision",
+      "proxy_runtime_parity_decision",
+      "final_claim_guard"
+    ],
+    "missing": [
+      "L4_split_runtime_probe_for_valid_proxy_run"
+    ],
+    "not_applicable": [
+      "locked_final_oos_b_access"
+    ]
   }
 }

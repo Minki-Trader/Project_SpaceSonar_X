@@ -524,6 +524,27 @@ def run_one(manifest_path: Path, frame: pd.DataFrame, command_argv: list[str]) -
             "executed_at_utc": utc_now(),
             "primary_family": "model_training",
             "primary_skill": "spacesonar-model-validation",
+            "id_chain": {
+                "goal_id": manifest.get("active_goal_id"),
+                "wave_id": manifest.get("wave_id"),
+                "campaign_id": manifest.get("campaign_id"),
+                "idea_id": manifest.get("idea_id"),
+                "hypothesis_id": manifest.get("hypothesis_id"),
+                "surface_id": manifest.get("surface_id"),
+                "sweep_id": manifest.get("sweep_id"),
+                "run_id": run_id,
+                "artifact_id": None,
+                "bundle_id": None,
+                "candidate_id": None,
+            },
+            "storage_contract": {
+                "source_of_truth": manifest_path.relative_to(REPO_ROOT).as_posix(),
+                "receipt": receipt_path.relative_to(REPO_ROOT).as_posix(),
+                "lineage": lineage_path.relative_to(REPO_ROOT).as_posix(),
+                "metrics": metrics_path.relative_to(REPO_ROOT).as_posix(),
+                "campaign_run_refs": spec_writer.PATHS["run_refs"].as_posix(),
+                "durable_identity_policy": "repo_relative_paths_only",
+            },
             "result_judgment": judgment,
             "metrics_path": metrics_path.relative_to(REPO_ROOT).as_posix(),
             "lineage_path": lineage_path.relative_to(REPO_ROOT).as_posix(),
@@ -536,14 +557,30 @@ def run_one(manifest_path: Path, frame: pd.DataFrame, command_argv: list[str]) -
                 "lowered_claim_if_not_run": "proxy_observation_only_no_runtime_authority_no_economics_pass_no_candidate",
                 "follow_up_work_item_id": NEXT_WORK_ITEM_ID,
             },
+            "required_gate_coverage": {
+                "passed": [
+                    "run_manifest",
+                    "experiment_receipt",
+                    "storage_contract_check",
+                    "runtime_learning_probe_decision",
+                    "proxy_runtime_parity_decision",
+                    "final_claim_guard",
+                ],
+                "missing": ["L4_split_runtime_probe_for_valid_proxy_run"],
+                "not_applicable": ["locked_final_oos_b_access"],
+            },
             "claim_boundary": CLAIM_BOUNDARY,
             "next_action": NEXT_WORK_ITEM_ID,
         }
     )
+    write_json(manifest_path, manifest)
+    lineage["source_inputs"] = [
+        artifact_ref(REPO_ROOT / ROW_MEMBERSHIP_MANIFEST),
+        artifact_ref(manifest_path),
+    ]
     write_json(metrics_path, metrics)
     write_json(lineage_path, lineage)
     write_yaml(receipt_path, receipt)
-    write_json(manifest_path, manifest)
 
     return {
         "run_id": run_id,
@@ -578,6 +615,11 @@ def summary_payload(results: list[dict[str, Any]], command_argv: list[str]) -> d
         "primary_family": "model_training",
         "primary_skill": "spacesonar-model-validation",
         "support_skills": ["spacesonar-evidence-provenance"],
+        "executed_proxy_run_count": len(results),
+        "result_counts": dict(counts),
+        "runtime_authority": "not_claimed",
+        "economics_pass": "not_claimed",
+        "live_readiness": "not_claimed",
         "counts": {
             "executed_proxy_run_count": len(results),
             "candidate_count": 0,

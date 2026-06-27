@@ -1,28 +1,45 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
-parent_work_item_id: work_wave02_cost_risk_holding_execute_proxy_batch_v0
-primary_family: onnx_export_parity
+work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+primary_family: runtime_probe
 primary_skill: spacesonar-runtime-evidence
-verification_profile: onnx_bundle
+verification_profile: runtime_preflight_terminal_execution
 targets:
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
 acceptance_criteria:
-- materialize ONNX/runtime-follow-through prep for executed cost/risk/holding proxy
-  runs
-- do not claim candidate, runtime authority, economics pass, live readiness, or Goal
-  Achieve
-- prepare L4 split runtime probe only for valid model-bearing proxy outputs
-status: wave02_cost_risk_holding_l4_materialization_preflight_pending
-claim_boundary: wave02_cost_risk_holding_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: prepare Wave02 cost/risk/holding L4 materialization and runtime attempts
+- execute prepared validation and research_oos MT5 cost/risk/holding score-probe attempts
+- record telemetry/report hashes before any L4 completion claim
+- keep runtime_authority, economics_pass, candidate, live_readiness, and goal_achieve
+  forbidden
+claim_boundary: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+policy_binding:
+  revision: policy_contract_v2
+  guards:
+  - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+  - GUARD_002_RUNTIME_COMPLETION_TRUTH
+  - GUARD_003_CLAIM_BOUNDARY
+  - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_007_OPERATIONAL_STABILITY
+outputs:
+- runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+- runtime/mt5_attempts/<attempt_id>/telemetry/score_telemetry.csv
+- runtime/mt5_attempts/<attempt_id>/reports/tester_report.htm
+next_action: execute_prepared_wave02_cost_risk_holding_l4_strategy_tester_attempts
+path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+summary: Execute Wave02 cost/risk/holding prepared L4 Strategy Tester score-probe
+  attempts.
+provenance:
+  source: wave02_cost_risk_holding_l4_materialization_preflight
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  source_of_truth: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
 current_truth:
-  proxy_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
-  proxy_execution_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_index.csv
+  onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  prepared_attempt_count: 12
+  runtime_probe_completed: false
+  candidate_count: 0
+  l5_candidate_count: 0
 unresolved_blockers:
-- Wave02_cost_risk_holding_L4_materialization_not_prepared
-missing_material_if_relevant:
-- ONNX_exports_absent
-- MT5_L4_split_runtime_probe_absent
-- candidate_evidence_absent
-- operational_validation_not_started
+- L4_split_runtime_probe_terminal_execution_pending
+reopen_conditions:
+- portable Strategy Tester execution records telemetry and completed report hashes

@@ -3,8 +3,8 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 workspace_active: true
 status: active_wave02_pre_operational_research
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-27T22:23:34Z'
-claim_boundary: active_goal_wave02_campaign_002_open_not_goal_achieve
+updated_at_utc: '2026-06-27T22:46:42Z'
+claim_boundary: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -60,7 +60,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave02_cost_risk_holding_l4_materialization_preflight_pending
+active_phase: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_next
 active_ids:
   idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
   hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
@@ -401,9 +401,9 @@ forbidden_claims:
 - reviewed_verified_pass
 - business_or_project_goal_achieve
 next_work_item:
-  work_item_id: work_wave02_tradeability_decision_replay_runtime_execution_v0
+  work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  summary: Wave02 decision replay terminal execution pending; no candidate claim.
+  summary: Execute prepared Wave02 cost/risk/holding L4 score-probe attempts.
 wave01_operating_closeout:
   status: wave01_operating_proof_window_closed
   closeout_path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
@@ -991,9 +991,9 @@ wave02_tradeability_campaign:
 wave02_cost_risk_holding_campaign:
   campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
   campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
-  status: wave02_cost_risk_holding_campaign_opened_planning_scaffold
-  claim_boundary: wave02_cost_risk_holding_campaign_open_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-  next_work_item: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
+  status: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_next
+  claim_boundary: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  next_work_item: work_wave02_cost_risk_holding_l4_runtime_execution_v0
   first_batch_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
   materialized_run_count: 6
   proxy_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
@@ -1004,3 +1004,31 @@ wave02_cost_risk_holding_campaign:
     result_judgment_counts:
       preserved_clue: 6
     l4_required_count: 6
+  l4_onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  l4_onnx_materialization_status: completed_exportable_bundles_l4_terminal_execution_required
+  l4_onnx_materialization_counts:
+    valid_proxy_runs_requiring_l4: 6
+    exportable_bundle_count: 6
+    failed_materialization_count: 0
+    status_counts:
+      onnx_exported_python_onnxruntime_parity_passed: 6
+    parity_status_counts:
+      passed: 6
+    model_family_counts:
+      logistic_or_linear_rank_scout: 3
+      tree_or_boosted_onnx_feasible_scout: 3
+    task_kind_counts:
+      classification: 6
+  l4_attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  l4_attempt_preparation_status: prepared_attempts_pending_terminal_execution
+  l4_attempt_preparation_counts:
+    exported_bundle_count: 6
+    required_period_role_count: 2
+    prepared_attempt_count: 12
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    common_copy_status_counts:
+      copied_to_mt5_common_files: 12
+  candidate_count: 0
+  l5_candidate_count: 0

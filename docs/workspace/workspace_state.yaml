@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-27T22:23:34Z'
+updated_utc: '2026-06-27T22:46:42Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -15,15 +15,15 @@ active_wave:
   closeout: null
 active_campaign:
   campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
-  status: wave02_cost_risk_holding_proxy_batch_executed_l4_required
+  status: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_next
   manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
 active_work_item:
-  work_item_id: work_wave02_cost_risk_holding_l4_materialization_preflight_v0
+  work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_cost_risk_holding_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: prepare Wave02 cost/risk/holding L4 materialization and runtime attempts
+current_claim_boundary: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+next_action: Execute prepared Wave02 cost/risk/holding L4 score-probe attempts.
 unresolved_blockers:
-- Wave02_cost_risk_holding_L4_materialization_not_prepared
+- L4_split_runtime_probe_terminal_execution_pending
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml
   runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
@@ -239,3 +239,18 @@ summary_counts:
     result_judgment_counts:
       preserved_clue: 6
     l4_required_count: 6
+  wave02_cost_risk_holding_l4_materialization:
+    exported_bundle_count: 6
+    prepared_attempt_count: 12
+    candidate_count: 0
+    l5_candidate_count: 0
+wave02_cost_risk_holding_l4_materialization:
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  status: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_next
+  claim_boundary: wave02_cost_risk_holding_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+  attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  prepared_attempt_count: 12
+  candidate_count: 0
+  l5_candidate_count: 0
+  next_work_item: work_wave02_cost_risk_holding_l4_runtime_execution_v0
