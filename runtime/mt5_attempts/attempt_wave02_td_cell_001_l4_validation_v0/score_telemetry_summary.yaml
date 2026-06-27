@@ -1,0 +1,28 @@
+version: wave02_tradeability_l4_score_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/score_telemetry_summary.yaml
+attempt_id: attempt_wave02_td_cell_001_l4_validation_v0
+run_id: onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0
+bundle_id: bundle_wave02_td_cell_001_l4_onnx_export_v0
+period_role: validation
+telemetry:
+  path: null
+  availability: missing_after_terminal_execution
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_001_l4_validation_v0\score_telemetry.csv
+stats:
+  status: telemetry_missing
+  row_count: 0
+failure_disposition:
+  reproduction: MT5 terminal was launched with the attempt tester_config.ini
+  exact_failing_layer: mt5_strategy_tester_common_file_score_telemetry
+  bounded_repair_or_fallback_attempt: portable attempt plus configured main-mode fallback
+    when enabled
+  evidence_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/terminal_run_summary.yaml
+  remaining_blocker: score telemetry CSV not observed in MT5 Common Files
+  reopen_condition: rerun with terminal log inspection, EA journal capture, or explicit
+    terminal cleanup if the terminal process was stale
+claim_boundary: terminal_attempt_no_score_telemetry_no_l4_completion
+work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+subwork_item_id: work_wave02_tradeability_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0

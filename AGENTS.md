@@ -31,6 +31,7 @@ Read this file first, then stop. Load more only when task-relevant:
 - selected skill only after routing: `.agents/skills/<skill>/SKILL.md`
 
 Do not read broad archives, legacy routing/review records, or generated run trees by default.
+Direct inspection means source-of-truth and owned code/policy files. Do not use unbounded recursive workspace walks or volatile generated trees as operating proof.
 
 ## ID Model
 

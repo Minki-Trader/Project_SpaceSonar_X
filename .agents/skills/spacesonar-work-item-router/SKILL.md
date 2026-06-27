@@ -67,6 +67,7 @@ Internal receipts are not user reports.
 - Do not route a first plumbing attempt as full-project reconciliation. Add broader validation only after the thin path is real or the claim requires it.
 - For session start/resume, route the first executable step as one narrow fixture/run/probe/smoke path. Broad materializers, global sync, full validators, or full pytest require an explicit boundary/claim/drift reason.
 - If the user asks why progress is slow or asks for experiments, route to the active work item's next executable writer, runner, probe, adapter, or materializer. Validation-only work is allowed only when the source-of-truth record itself is the task.
+- For direct repository inspection, use source-of-truth and touched-owner reads. Do not route unbounded recursive workspace walks as proof; volatile tree inventory is operational noise.
 
 ## Do Not
 
@@ -75,6 +76,7 @@ Internal receipts are not user reports.
 - treat advisory micro-consult as formal review
 - make internal receipts tutorial-like
 - use whole-tree scans, repeated folder passes, or CI success as proof of operating stability
+- use recursive workspace listing without excluding volatile/generated trees
 - scan volatile local trees such as `.pytest_tmp`, `.spacesonar/transactions`, runtime reports/telemetry, or package artifacts as a routine current-truth source
 - claim completion/review/pass without required gate coverage
 - route a non-trivial item without a storage contract

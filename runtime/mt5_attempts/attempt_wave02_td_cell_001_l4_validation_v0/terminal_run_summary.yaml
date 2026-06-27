@@ -1,0 +1,193 @@
+command_argv_redacted:
+- ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+- /portable
+- /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_validation_v0\tester_config.ini
+cwd: .
+started_at_utc: '2026-06-27T20:23:40.228954Z'
+ended_at_utc: '2026-06-27T20:23:44.041472Z'
+exit_code: 3294954941
+timed_out: false
+stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stdout_tail: ''
+stderr_tail: ''
+mode: portable_contract_attempt
+attempt_claim_boundary: standard_contract_attempt_only
+telemetry_exists_after_attempt: false
+terminal_attempts:
+- command_argv_redacted:
+  - ${PROGRAMFILES}\MetaTrader 5\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_validation_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-27T20:23:40.228954Z'
+  ended_at_utc: '2026-06-27T20:23:44.041472Z'
+  exit_code: 3294954941
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  telemetry_exists_after_attempt: false
+terminal_cleanup_actions: []
+terminal_cleanup_policy:
+  default_terminate_existing: false
+  explicit_termination_requested: false
+  allowed_scope: explicit_user_requested_only
+  formal_runtime_claim_effect: no_global_cleanup_used
+terminal_mode_policy:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  main_mode_fallback_allowed: false
+  main_mode_fallback_used: false
+  fallback_reason: null
+  claim_effect: l4_standard_portable_attempt_observation
+selected_attempt_index: null
+telemetry_observed: false
+version: wave02_tradeability_l4_terminal_run_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/terminal_run_summary.yaml
+attempt_id: attempt_wave02_td_cell_001_l4_validation_v0
+run_id: onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0
+bundle_id: bundle_wave02_td_cell_001_l4_onnx_export_v0
+tester_config:
+  path: runtime/mt5_attempts/attempt_wave02_td_cell_001_l4_validation_v0/tester_config.ini
+  sha256: 4b98d3e771bf76504af3d2200376ef0433dfae435b8d54b954c88db59cdcbce5
+  size_bytes: 1679
+  availability: present_hash_recorded
+tester_report_config:
+  status: tester_report_config_normalized
+  changed: false
+  report_value: reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0\tester_report
+  report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
+tester_report_resolution_prelaunch:
+  status: tester_report_directories_partially_prepared
+  report_value: reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0\tester_report
+  prepared:
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_td_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+  skipped:
+  - origin: portable_terminal_root
+    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
+      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
+  - origin: portable_terminal_root
+    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
+      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
+  - origin: portable_terminal_root
+    redacted_parent: ${PROGRAMFILES}\MetaTrader 5\reports\spacesonar\attempt_wave02_td_cell_001_l4_validation_v0
+    reason: "PermissionError: [WinError 5] \uC561\uC138\uC2A4\uAC00 \uAC70\uBD80\uB418\
+      \uC5C8\uC2B5\uB2C8\uB2E4: 'C:\\\\Program Files\\\\MetaTrader 5\\\\reports'"
+  prelaunch_candidates:
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 75033f379e231fab056c3438235ff6bfbc4cf5c0888c09ebad62fb2d684f1879
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: b35cdc6c01fe01b5d970081a88e4b727ff134cce08428682bdd1ad1928d0765b
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 597ea89c273800a10ec3fc304afc068765cfdb2582aebf48e6601e31202fb1f7
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: b4e539936c22baf24bed110a670435e83940e7b140051ea245c8da50034bcbaa
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 26005054bb2174eea2168d585b4bd2b02aca69c5ae411c0f740b39c34e7e5128
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: d8e7730ff1f3684c85469be1009f0c67b6a9da4bb85fe384e166e5bffced7d0c
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: a61aec78d8f75961aabff32a0490d3173a5696b2e11ba5ba3f8976a49d2d5a3d
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: b86a1e1ee96083886edf094b5ce17918297f19ac770cc26d48286851020e1f8b
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: c0fc8190f461a198ba9268ab3b8170bdd2f09d25f61464b6404fac5674d5ce0f
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: d7fbde5594560bb2821535a310da787be021bfdcff9014658f177e392b065584
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: b16dbdbf7a04e64a1ac3f6d5b2787b132f4a665e2aacef0115ac5b415d17aebd
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 8f1378bff05e1c268f2e3775e6a5577b1862573a7202683b784a5f350333a115
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_td_cell_001_l4_validation_v0\score_telemetry.csv
+claim_boundary: terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
+telemetry_file_observed_after_attempt: false
+telemetry_rows_observed_after_attempt: false
+telemetry_row_count: 0
+work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+subwork_item_id: work_wave02_tradeability_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0

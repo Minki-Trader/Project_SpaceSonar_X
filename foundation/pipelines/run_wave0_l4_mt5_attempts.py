@@ -69,6 +69,7 @@ PARTIAL_STATUS = "partial_l4_terminal_execution_started"
 ALL_ATTEMPTS_STATUS = "l4_terminal_execution_attempted_for_all_prepared_attempts"
 COMMON_REL_ROOT = "SpaceSonar\\l4_score_probe"
 TESTER_REPORT_REL_ROOT = "reports\\spacesonar"
+TESTER_REPORT_SUFFIXES = {".htm", ".html", ".xml"}
 
 
 class NoAliasDumper(yaml.SafeDumper):
@@ -103,6 +104,34 @@ def artifact_ref(path: Path, repo_root: Path = REPO_ROOT, *, availability: str =
         "size_bytes": full.stat().st_size,
         "availability": availability,
     }
+
+
+def ensure_tester_report_receipt_artifact_ref(
+    receipt_path: Path,
+    receipt: dict[str, Any],
+    repo_root: Path = REPO_ROOT,
+) -> dict[str, Any]:
+    full = receipt_path if receipt_path.is_absolute() else repo_root / receipt_path
+    if not full.exists():
+        try:
+            write_receipt(full, receipt)
+        except OSError as exc:
+            receipt.setdefault("writer_warnings", []).append(
+                {
+                    "stage": "write_receipt",
+                    "error_class": exc.__class__.__name__,
+                    "claim_effect": "receipt_write_retry_required_before_artifact_ref",
+                }
+            )
+    if not full.exists():
+        full.parent.mkdir(parents=True, exist_ok=True)
+        with full.open("w", encoding="utf-8") as handle:
+            yaml.dump(receipt, handle, Dumper=NoAliasDumper, sort_keys=False, allow_unicode=False)
+    return artifact_ref(full, repo_root)
+
+
+def is_tester_report_artifact(path: Path) -> bool:
+    return path.is_file() and path.suffix.lower() in TESTER_REPORT_SUFFIXES
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -486,9 +515,13 @@ def candidate_report_paths(
             main_terminal_data_root=main_terminal_data_root,
             attempt_root=attempt_root,
         ):
-            if candidate.path.exists():
+            if is_tester_report_artifact(candidate.path):
                 candidates.append((candidate.path, candidate.origin))
-    candidates.extend((path, "attempt_archive_path") for path in attempt_root.glob("tester_report*") if path.exists())
+    candidates.extend(
+        (path, "attempt_archive_path")
+        for path in attempt_root.glob("tester_report*")
+        if is_tester_report_artifact(path)
+    )
     seen: set[Path] = set()
     unique: list[tuple[Path, str]] = []
     for path, origin in candidates:
@@ -537,6 +570,8 @@ def prepare_tester_report_directories(
                 }
             )
     for path in attempt_root.glob("tester_report*"):
+        if not is_tester_report_artifact(path):
+            continue
         snapshot = snapshot_report_candidate(path, "attempt_archive_path")
         if snapshot["path_key"] not in seen_prelaunch:
             prelaunch.append(snapshot)
@@ -949,6 +984,7 @@ def run_one_attempt(
         terminal_summary["empty_telemetry_claim_effect"] = "csv_header_only_no_l4_score_observation"
     write_yaml(root / "terminal_run_summary.yaml", terminal_summary)
 
+    receipt_path = root / "tester_report_receipt.yaml"
     report_receipt = build_tester_report_receipt_for_attempt(
         repo_root=repo_root,
         attempt_root=root,
@@ -1042,7 +1078,11 @@ def run_one_attempt(
     }
     manifest.setdefault("artifact_identity", {})["terminal_run_summary"] = artifact_ref(root / "terminal_run_summary.yaml", repo_root)
     manifest["artifact_identity"]["score_telemetry_summary"] = artifact_ref(root / "score_telemetry_summary.yaml", repo_root)
-    manifest["artifact_identity"]["tester_report_receipt"] = artifact_ref(root / "tester_report_receipt.yaml", repo_root)
+    manifest["artifact_identity"]["tester_report_receipt"] = ensure_tester_report_receipt_artifact_ref(
+        receipt_path,
+        report_receipt,
+        repo_root,
+    )
     if telemetry_artifact:
         manifest["artifact_identity"]["telemetry"]["repo_copy"] = telemetry_artifact
     manifest["artifact_identity"]["tester_reports"] = [report]
@@ -1479,6 +1519,8 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                     "notes": "raw telemetry is local/generated and ignored; summary is committed",
                 }
             )
+        else:
+            by_id.pop(f"artifact_{row['attempt_id']}_score_telemetry_csv_v0", None)
         if row.get("tester_report_path"):
             put(
                 {
@@ -1497,6 +1539,8 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                     "notes": "raw tester report is generated/local; summary remains source for git",
                 }
             )
+        else:
+            by_id.pop(f"artifact_{row['attempt_id']}_tester_report_v0", None)
     write_csv(registry_path, list(by_id.values()), fieldnames)
 
 

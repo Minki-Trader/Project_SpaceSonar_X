@@ -22,6 +22,7 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 - Verify the responsible source-of-truth path and writer contract before invoking broad validators.
 - Do not use adjacent guessing when artifact names vary.
 - Do not treat repeated folder scans, whole-tree inventory, or CI success as proof that the operating rule is correct.
+- If direct inspection is needed, inspect source-of-truth records and owner files with volatile excludes. A recursive listing that enters `.pytest_tmp`, `.spacesonar/transactions`, raw runtime reports, telemetry, or package artifacts is drift noise, not evidence.
 - Do not let volatile local workspaces (`.pytest_tmp`, `.spacesonar/transactions`, raw runtime reports/telemetry, package artifacts) define current truth; follow the manifest, receipt, summary, registry projection, or workspace projection.
 - Do not revive legacy routing/review meanings from deleted archive paths.
 - If a legacy file is absent, treat that evidence as unavailable unless the user explicitly restores it from backup.

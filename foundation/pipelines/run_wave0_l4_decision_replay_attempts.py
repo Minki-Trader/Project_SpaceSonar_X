@@ -34,6 +34,7 @@ from foundation.pipelines.run_wave0_l4_mt5_attempts import (
     current_git_identity,
     dependency_summary,
     ensure_completion_surface_scope,
+    ensure_tester_report_receipt_artifact_ref,
     normalize_tester_report_config,
     prepare_tester_report_directories,
     public_report_resolution_summary,
@@ -577,6 +578,7 @@ def run_one_attempt(
         }
     write_yaml(root / "execution_telemetry_summary.yaml", telemetry_summary)
 
+    receipt_path = root / "tester_report_receipt.yaml"
     report_receipt = build_tester_report_receipt_for_attempt(
         repo_root=repo_root,
         attempt_root=root,
@@ -692,7 +694,11 @@ def run_one_attempt(
     artifact_identity = manifest.setdefault("artifact_identity", {})
     artifact_identity["terminal_run_summary"] = artifact_ref(root / "terminal_run_summary.yaml", repo_root)
     artifact_identity["execution_telemetry_summary"] = artifact_ref(root / "execution_telemetry_summary.yaml", repo_root)
-    artifact_identity["tester_report_receipt"] = artifact_ref(root / "tester_report_receipt.yaml", repo_root)
+    artifact_identity["tester_report_receipt"] = ensure_tester_report_receipt_artifact_ref(
+        receipt_path,
+        report_receipt,
+        repo_root,
+    )
     if source_observed:
         artifact_identity["tester_log_summary"] = artifact_ref(root / "tester_log_summary.yaml", repo_root)
     if telemetry_artifact:
@@ -1111,6 +1117,8 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                     "notes": "raw execution telemetry is local/generated and ignored; summary is committed",
                 }
             )
+        else:
+            by_id.pop(f"artifact_{row['attempt_id']}_execution_telemetry_csv_v0", None)
         if row.get("tester_report_path"):
             put(
                 {
@@ -1129,6 +1137,8 @@ def upsert_artifact_registry(repo_root: Path, summary: dict[str, Any], execution
                     "notes": "raw tester report is generated/local; parse before economics claim",
                 }
             )
+        else:
+            by_id.pop(f"artifact_{row['attempt_id']}_tester_report_v0", None)
     write_csv(registry_path, list(by_id.values()), fieldnames)
 
 

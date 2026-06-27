@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-27T19:49:42Z'
+updated_utc: '2026-06-27T20:23:44Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -18,8 +18,8 @@ active_campaign:
 active_work_item:
   work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
-next_action: Execute Wave02 prepared L4 Strategy Tester score-probe attempts.
+current_claim_boundary: wave02_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+next_action: continue running remaining prepared Wave02 L4 Strategy Tester attempts
 unresolved_blockers:
 - L4_split_runtime_probe_terminal_execution_pending
 source_of_truth_pointers:
@@ -29,4 +29,7 @@ source_of_truth_pointers:
 summary_counts:
   candidate_count: 0
   l5_candidate_count: 0
-  runtime_contract_integrity: null
+  runtime_contract_integrity:
+    runtime_probe_complete_count: 0
+    prepared_attempt_count: 16
+    runtime_probe_complete: false

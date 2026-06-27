@@ -26,6 +26,15 @@ routine_inspection_scope:
     - lab/runs/*/reports/**
     - temp_policy_drafts/**
   rule: inspect canonical source-of-truth records, not volatile local workspaces, when deciding operational state
+  direct_inspection_command_policy:
+    preferred_listing: rg --files with exclude patterns for volatile/generated surfaces
+    preferred_reads: targeted source-of-truth files and touched owner files
+    forbidden_for_operational_truth:
+      - unbounded_recursive_workspace_walk
+      - recursive_Get-ChildItem_without_volatile_excludes
+      - generated_transaction_tree_inventory
+      - raw_runtime_artifact_tree_inventory
+    reason: volatile generated trees can be stale, missing, huge, or intentionally ignored; they are not proof of operating state
 
 experiment_first_loop:
   applies_when:
@@ -89,6 +98,11 @@ strong_writer_guards:
     - output_paths_hashes_or_reason_present
     - producer_command_present
     - environment_or_lock_reference_present_when_reproducibility_matters
+  writer_path_identity:
+    - write_and_hash_the_same_filesystem_path
+    - after_write_existence_check_before_artifact_ref
+    - failure_path_still_writes_summary_receipt_claim_boundary
+    - missing_optional_local_artifact_records_availability_instead_of_crashing
   registries:
     - generated_or_index_only
     - never_source_of_truth_without_manifest
@@ -129,6 +143,7 @@ hard_enforcement_points:
     - next_action_or_reopen_condition_declared_when_incomplete
   writer_after_write:
     - all_declared_source_of_truth_paths_exist
+    - receipt_and_summary_files_exist_before_artifact_ref
     - repo_relative_paths_only
     - hashes_match_written_outputs_or_hash_only_availability_declared
     - registry_rows_link_to_manifest_not_to_claim_authority

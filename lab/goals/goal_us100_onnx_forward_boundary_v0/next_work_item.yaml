@@ -11,7 +11,7 @@ acceptance_criteria:
 - record telemetry/report hashes before any L4 completion claim
 - keep runtime_authority, economics_pass, candidate, live_readiness, and goal_achieve
   forbidden
-claim_boundary: wave02_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
@@ -24,7 +24,7 @@ outputs:
 - runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
 - runtime/mt5_attempts/<attempt_id>/telemetry/score_telemetry.csv
 - runtime/mt5_attempts/<attempt_id>/reports/tester_report.htm
-next_action: execute_prepared_wave02_l4_strategy_tester_attempts
+next_action: continue running remaining prepared Wave02 L4 Strategy Tester attempts
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
 summary: Execute Wave02 prepared L4 Strategy Tester score-probe attempts.
 provenance:
@@ -38,7 +38,35 @@ current_truth:
   runtime_probe_completed: false
   candidate_count: 0
   l5_candidate_count: 0
+  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  l4_runtime_execution_status: partial_l4_terminal_execution_started
+  l4_runtime_execution_counts:
+    prepared_attempt_count: 16
+    selected_attempt_count: 1
+    indexed_execution_count: 1
+    executed_attempt_count: 1
+    completed_manifest_count: 0
+    touched_manifest_count: 1
+    telemetry_observed_count: 0
+    telemetry_missing_count: 1
+    tester_report_observed_count: 0
+    tester_report_missing_count: 1
+    terminal_execution_count: 1
+    telemetry_observation_count: 0
+    tester_report_observation_count: 0
+    portable_contract_count: 1
+    runtime_probe_complete_count: 0
+    runtime_probe_incomplete_count: 1
+    period_role_counts:
+      validation: 1
+    status_counts:
+      terminal_executed_no_telemetry: 1
+    result_judgment_counts:
+      inconclusive: 1
 unresolved_blockers:
 - L4_split_runtime_probe_terminal_execution_pending
 reopen_conditions:
 - portable Strategy Tester execution records telemetry and completed report hashes
+status: l4_strategy_tester_execution_in_progress
+missing_material_if_relevant:
+- remaining_prepared_L4_attempts

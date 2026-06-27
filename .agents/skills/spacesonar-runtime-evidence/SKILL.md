@@ -35,5 +35,7 @@ Use when work touches ONNX export, runtime bundles, EA modules, `.mq5/.mqh/.set`
 - Runtime completion requires the runtime probe contract, completed reports, telemetry rows, portable terminal mode, correct period/execution IDs, and eligible surface scope.
 - Main-mode fallback is diagnostic only.
 - When prepared MT5 attempts exist, the next meaningful action is runner/probe execution or runner repair, not another full validation pass.
+- Runtime runners must write terminal summary, telemetry summary, tester-report receipt, missing evidence, next action, and claim boundary even when telemetry or tester report is missing.
+- Do not let missing local tester reports crash manifest writing. Record missing availability and reopen condition, then keep the runtime claim below L4 completion.
 - Do not convert proxy results, diagnostic samples, or telemetry-only observations into economics pass, live readiness, selected baseline, or runtime authority.
 - Missing runner, parser, report, tester config, ONNX, EA, or runtime glue under repo control requires the smallest credible repair or fixture attempt before blocked or invalid disposition.

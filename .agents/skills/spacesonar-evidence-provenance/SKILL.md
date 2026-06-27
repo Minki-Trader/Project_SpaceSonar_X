@@ -29,6 +29,7 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 - Use repo-relative paths plus IDs and hashes for durable identity.
 - For no-pytest operation, prefer writer-time manifest/receipt/hash checks over broad retrospective validation.
 - Compute hashes from the final written bytes after newline and encoding decisions are complete; do not use broad hash resync to mask a writer contract bug.
+- A writer that records `artifact_identity` must first ensure the referenced summary/receipt exists on the same filesystem path it will hash. Optional raw local artifacts may be marked missing or local-only; proof-bearing summaries and receipts must not be missing after writer close.
 - For touched run evidence, run writer-scope smoke through `python -m spacesonar.cli project writer-smoke ...`; do not substitute full active-record validation as the default proof path.
 - Treat telemetry/report/artifact directories as raw evidence locations, not traversal roots for routine operating truth; consume their paired manifests, summaries, receipts, and hashes.
 - Do not commit heavy artifacts just to close a gap.
