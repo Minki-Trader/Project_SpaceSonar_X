@@ -1,17 +1,18 @@
 version: work_item_lite_v1
-work_item_id: execute_materialized_run_specs
-request_digest: 29664c8af976be8c7cc84277b07e12684bec47522d46c325ab6e43033399d0d0
-primary_family: model_training
-primary_skill: spacesonar-model-validation
-verification_profile: lab_experiment
+work_item_id: work_wave02_tradeability_l4_materialization_preflight_v0
+request_digest: 2dfe6906ddbea8ebb48c91bda0993a3aa8222b92c752d3e74e8018b372067beb
+primary_family: onnx_export_parity
+primary_skill: spacesonar-runtime-evidence
+verification_profile: runtime_preflight
 targets:
-- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/evidence/proxy_execution_summary.yaml
 acceptance_criteria:
-- execute each materialized run spec with run_manifest, experiment_receipt, artifact_lineage,
-  and metrics
-- preserve proxy/runtime follow-through decision without claiming candidate, runtime
-  authority, economics pass, or live readiness
-claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
+- materialize ONNX/bundle follow-through for valid Wave02 proxy/model-bearing runs
+- prepare L4 validation and research_oos MT5 attempt manifests without claiming runtime
+  authority or economics pass
+- record blocker/reopen conditions for any run that cannot reach L4 follow-through
+claim_boundary: wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
@@ -22,13 +23,18 @@ policy_binding:
   - GUARD_005_LOCKED_OOS
   - GUARD_006_BRANCH_WORKTREE
 outputs:
-- lab/runs/<run_id>/run_manifest.json
-- lab/runs/<run_id>/experiment_receipt.yaml
-- lab/runs/<run_id>/artifact_lineage.json
-- lab/runs/<run_id>/metrics.json
-next_action: execute_materialized_run_specs
+- runtime/packages/<bundle_id>/experiment_bundle.json
+- runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+next_action: materialize_wave02_l4_follow_through
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-summary: execute_materialized_run_specs
+summary: Materialize Wave02 L4 follow-through for executed proxy observations.
 provenance:
-  source: canonical_lifecycle_transition
+  source: canonical_proxy_execution_record
   campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+current_truth:
+  executed_proxy_run_count: 8
+  result_counts:
+    inconclusive: 1
+    preserved_clue: 7
+  candidate_count: 0
+  l5_candidate_count: 0

@@ -1,0 +1,29 @@
+version: wave02_proxy_execution_summary_v1
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+status: wave02_proxy_observation_l4_required
+created_at_utc: '2026-06-27T17:35:36.669361Z'
+claim_boundary: wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+executed_proxy_run_count: 8
+result_counts:
+  inconclusive: 1
+  preserved_clue: 7
+candidate_count: 0
+l5_candidate_count: 0
+runtime_authority: not_claimed
+economics_pass: not_claimed
+live_readiness: not_claimed
+next_work_item: work_wave02_tradeability_l4_materialization_preflight_v0
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
+- lab/runs/onnxlab_wave02_td_cell_001_tradeability_side_abstain_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_td_cell_002_tradeability_side_abstain_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_td_cell_003_tradeability_side_abstain_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_td_cell_004_tradeability_side_abstain_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_td_cell_006_tradeability_side_abstain_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_td_cell_007_tradeability_side_abstain_v0/run_manifest.json
+- lab/runs/onnxlab_wave02_td_cell_008_tradeability_side_abstain_v0/run_manifest.json
+reopen_conditions:
+- rerun a cell only if manifest, receipt, lineage, or metrics fail validation
+unresolved_blockers:
+- L4_split_runtime_probe_not_yet_materialized

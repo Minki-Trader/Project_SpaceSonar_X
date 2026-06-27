@@ -1,0 +1,37 @@
+diff --git a/src/spacesonar/control_plane/provenance.py b/src/spacesonar/control_plane/provenance.py
+index a9d12e3..b02fe02 100644
+--- a/src/spacesonar/control_plane/provenance.py
++++ b/src/spacesonar/control_plane/provenance.py
+@@ -240,6 +240,16 @@ def _zip_untracked_sources(repo_root: Path, archive_rel_path: Path, paths: list[
+     return archive_rel_path.as_posix(), archive_sha, manifest
+ 
+ 
++def _diff_check_safe_patch(text: str) -> str:
++    lines = []
++    for line in text.splitlines():
++        if line.startswith("+") and line.strip() == "+":
++            lines.append("+")
++        else:
++            lines.append(line)
++    return "\n".join(lines) + ("\n" if text.endswith("\n") else "")
++
++
+ def build_source_snapshot_payload(repo_root: Path, batch_id: str, *, namespace: str = "source_snapshot") -> dict[str, Any]:
+     if not namespace or Path(namespace).is_absolute() or ".." in Path(namespace).parts:
+         raise BatchReceiptError(f"source snapshot namespace must be a simple relative path: {namespace}")
+@@ -285,13 +295,13 @@ def build_source_snapshot_payload(repo_root: Path, batch_id: str, *, namespace:
+     tracked_patch_rel = staged_patch_rel = untracked_archive_rel = None
+     tracked_patch_sha = staged_patch_sha = untracked_archive_sha = None
+     untracked_archive_manifest: list[dict[str, Any]] = []
+-    tracked_patch = _run(repo_root, ["git", "diff", "--binary", "--", *SOURCE_ROOTS])
++    tracked_patch = _diff_check_safe_patch(_run(repo_root, ["git", "diff", "--binary", "--", *SOURCE_ROOTS]))
+     if tracked_patch:
+         tracked_patch_rel = (rel_root / "tracked_unstaged.patch").as_posix()
+         tracked_patch_bytes = tracked_patch.encode("utf-8")
+         tracked_patch_sha = hashlib.sha256(tracked_patch_bytes).hexdigest()
+         files[rel_root / "tracked_unstaged.patch"] = tracked_patch_bytes
+-    staged_patch = _run(repo_root, ["git", "diff", "--cached", "--binary", "--", *SOURCE_ROOTS])
++    staged_patch = _diff_check_safe_patch(_run(repo_root, ["git", "diff", "--cached", "--binary", "--", *SOURCE_ROOTS]))
+     if staged_patch:
+         staged_patch_rel = (rel_root / "staged.patch").as_posix()
+         staged_patch_bytes = staged_patch.encode("utf-8")

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import dataclass
 import hashlib
+import json
 from pathlib import Path
 from typing import Any, Callable
 
@@ -1221,6 +1223,270 @@ def _require_evidence(repo_root: Path, evidence_inputs: list[str], label: str) -
         raise LifecycleInputError(f"{label} missing evidence inputs: {', '.join(missing)}")
 
 
+PROXY_EXECUTION_STATUS = "wave02_proxy_observation_l4_required"
+PROXY_RUN_STATUS = "executed_proxy_observation_l4_required"
+PROXY_EXECUTION_NEXT_WORK_ITEM_ID = "work_wave02_tradeability_l4_materialization_preflight_v0"
+PROXY_EXECUTION_MISSING_EVIDENCE = ["L4_split_runtime_probe_not_yet_materialized"]
+
+
+def _read_json_file(path: Path) -> dict[str, Any]:
+    if not _path_exists(path):
+        raise LifecycleInputError(f"required JSON evidence missing: {path.as_posix()}")
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise LifecycleInputError(f"JSON evidence is not a mapping: {path.as_posix()}")
+    return payload
+
+
+def _require_proxy_run_evidence(repo_root: Path, run_id: str, campaign_id: str) -> dict[str, Any]:
+    manifest_rel = Path("lab/runs") / run_id / "run_manifest.json"
+    manifest = _read_json_file(repo_root / manifest_rel)
+    if manifest.get("version") != "run_manifest_v3":
+        raise LifecycleInputError(f"{manifest_rel.as_posix()}: expected run_manifest_v3")
+    if manifest.get("status") != PROXY_RUN_STATUS:
+        raise LifecycleInputError(f"{manifest_rel.as_posix()}: status is not {PROXY_RUN_STATUS}")
+    id_chain = manifest.get("id_chain") or {}
+    if id_chain.get("campaign_id") != campaign_id:
+        raise LifecycleInputError(f"{manifest_rel.as_posix()}: id_chain.campaign_id mismatch")
+    for forbidden in ("candidate_id", "bundle_id"):
+        if id_chain.get(forbidden):
+            raise LifecycleInputError(f"{manifest_rel.as_posix()}: {forbidden} must be empty before L4")
+    storage = manifest.get("storage_contract") or {}
+    required_storage = {
+        "source_of_truth": manifest_rel.as_posix(),
+        "receipt": f"lab/runs/{run_id}/experiment_receipt.yaml",
+        "lineage": f"lab/runs/{run_id}/artifact_lineage.json",
+        "metrics": f"lab/runs/{run_id}/metrics.json",
+    }
+    for key, expected in required_storage.items():
+        observed = str(storage.get(key) or "")
+        if observed != expected:
+            raise LifecycleInputError(f"{manifest_rel.as_posix()}: storage_contract.{key} expected {expected}, observed {observed}")
+        if not _path_exists(repo_root / expected):
+            raise LifecycleInputError(f"{manifest_rel.as_posix()}: storage_contract.{key} path missing: {expected}")
+    if "L4_split_runtime_probe_for_valid_proxy_run" not in (manifest.get("required_gate_coverage") or {}).get("missing", []):
+        raise LifecycleInputError(f"{manifest_rel.as_posix()}: missing L4 gate must remain explicit")
+    claim_boundary = str(manifest.get("claim_boundary") or "")
+    for blocked in ["runtime_authority", "economics_pass", "live_readiness", "goal_achieve"]:
+        if blocked not in claim_boundary:
+            raise LifecycleInputError(f"{manifest_rel.as_posix()}: claim boundary does not block {blocked}")
+    return manifest
+
+
+def _proxy_execution_result_from_manifest(run_id: str, manifest: dict[str, Any]) -> dict[str, str]:
+    storage = manifest.get("storage_contract") or {}
+    return {
+        "run_id": run_id,
+        "status": str(manifest.get("status") or PROXY_RUN_STATUS),
+        "result_judgment": str(manifest.get("result_judgment") or "inconclusive"),
+        "run_manifest_path": str(storage.get("source_of_truth") or f"lab/runs/{run_id}/run_manifest.json"),
+        "receipt_path": str(storage.get("receipt") or f"lab/runs/{run_id}/experiment_receipt.yaml"),
+        "lineage_path": str(storage.get("lineage") or f"lab/runs/{run_id}/artifact_lineage.json"),
+        "metrics_path": str(storage.get("metrics") or f"lab/runs/{run_id}/metrics.json"),
+        "report_path": str(manifest.get("evidence_path") or ""),
+        "claim_boundary": str(manifest.get("claim_boundary") or ""),
+        "next_action": str(manifest.get("next_action") or PROXY_EXECUTION_NEXT_WORK_ITEM_ID),
+        "notes": str(manifest.get("notes") or "Wave02 proxy observation only; L4 follow-through required before runtime claims."),
+    }
+
+
+def _proxy_execution_next_work(goal_id: str, campaign: dict[str, Any], counts: dict[str, int], run_count: int) -> dict[str, Any]:
+    next_work = _complete_transition_next_work(
+        goal_id=goal_id,
+        campaign=campaign,
+        next_action=PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
+        targets=[
+            str(campaign.get("run_specs_index") or ""),
+            f"lab/campaigns/{campaign.get('campaign_id')}/evidence/proxy_execution_summary.yaml",
+        ],
+    )
+    next_work["next_action"] = "materialize_wave02_l4_follow_through"
+    next_work["summary"] = "Materialize Wave02 L4 follow-through for executed proxy observations."
+    next_work["current_truth"] = {
+        "executed_proxy_run_count": run_count,
+        "result_counts": counts,
+        "candidate_count": 0,
+        "l5_candidate_count": 0,
+    }
+    next_work["provenance"] = {"source": "canonical_proxy_execution_record", "campaign_id": campaign.get("campaign_id")}
+    return next_work
+
+
+def _record_proxy_execution_plan(campaign_id: str, context: ExecutionContext) -> LifecyclePlan:
+    campaign_path = Path("lab/campaigns") / campaign_id / "campaign_manifest.yaml"
+    campaign = _require_existing(context.repo_root / campaign_path, "campaign manifest")
+    if campaign.get("campaign_id") != campaign_id:
+        raise LifecycleInputError(f"{campaign_path.as_posix()}: campaign_id mismatch")
+    goal_id = str(campaign.get("active_goal_id") or "")
+    if not goal_id:
+        raise LifecycleInputError(f"{campaign_path.as_posix()}: missing active_goal_id")
+    sweep_id = str((campaign.get("experiment_design") or {}).get("sweep_id") or "")
+    if not sweep_id:
+        raise LifecycleInputError(f"{campaign_path.as_posix()}: missing experiment_design.sweep_id")
+    run_refs_path = Path(str(campaign.get("run_specs_index") or f"lab/campaigns/{campaign_id}/sweeps/{sweep_id}/run_refs.csv"))
+    run_refs = read_csv_rows(context.repo_root / run_refs_path)
+    if not run_refs:
+        raise LifecycleInputError(f"{run_refs_path.as_posix()}: no run refs")
+
+    results: list[dict[str, str]] = []
+    claim_boundaries: set[str] = set()
+    for row in run_refs:
+        run_id = str(row.get("run_id") or "")
+        if not run_id:
+            raise LifecycleInputError(f"{run_refs_path.as_posix()}: row missing run_id")
+        manifest = _require_proxy_run_evidence(context.repo_root, run_id, campaign_id)
+        result = _proxy_execution_result_from_manifest(run_id, manifest)
+        results.append(result)
+        claim_boundaries.add(result["claim_boundary"])
+    if len(claim_boundaries) != 1:
+        raise LifecycleInputError(f"{campaign_path.as_posix()}: proxy run claim boundaries disagree")
+    claim_boundary = next(iter(claim_boundaries))
+    counts = dict(sorted(Counter(item["result_judgment"] for item in results).items()))
+    now = utc_now()
+    summary_path = Path("lab/campaigns") / campaign_id / "evidence" / "proxy_execution_summary.yaml"
+    summary = {
+        "version": "wave02_proxy_execution_summary_v1",
+        "campaign_id": campaign_id,
+        "status": PROXY_EXECUTION_STATUS,
+        "created_at_utc": now,
+        "claim_boundary": claim_boundary,
+        "executed_proxy_run_count": len(results),
+        "result_counts": counts,
+        "candidate_count": 0,
+        "l5_candidate_count": 0,
+        "runtime_authority": "not_claimed",
+        "economics_pass": "not_claimed",
+        "live_readiness": "not_claimed",
+        "next_work_item": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
+        "evidence_paths": [run_refs_path.as_posix(), *[item["run_manifest_path"] for item in results]],
+        "reopen_conditions": ["rerun a cell only if manifest, receipt, lineage, or metrics fail validation"],
+        "unresolved_blockers": PROXY_EXECUTION_MISSING_EVIDENCE,
+    }
+
+    yaml_updates: dict[Path, dict[str, Any]] = {summary_path: summary}
+    text_updates: dict[Path, str] = {}
+
+    extra_fields = ["run_manifest_path", "receipt_path", "lineage_path", "metrics_path", "report_path", "result_judgment", "notes"]
+    fieldnames = list(run_refs[0].keys())
+    for field in extra_fields:
+        if field not in fieldnames:
+            fieldnames.append(field)
+    by_run = {item["run_id"]: item for item in results}
+    updated_refs = []
+    for row in run_refs:
+        updated = dict(row)
+        result = by_run[updated["run_id"]]
+        updated.update(result)
+        updated_refs.append(updated)
+        spec_path = Path(str(updated["run_spec_path"]))
+        spec = _require_existing(context.repo_root / spec_path, "run spec")
+        spec["status"] = PROXY_RUN_STATUS
+        spec["result_judgment"] = result["result_judgment"]
+        spec["run_manifest_path"] = result["run_manifest_path"]
+        spec["receipt_path"] = result["receipt_path"]
+        spec["lineage_path"] = result["lineage_path"]
+        spec["metrics_path"] = result["metrics_path"]
+        spec["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
+        yaml_updates[spec_path] = spec
+    text_updates[run_refs_path] = dump_csv(fieldnames, updated_refs)
+
+    campaign = dict(campaign)
+    campaign.update(
+        {
+            "status": PROXY_EXECUTION_STATUS,
+            "updated_at_utc": now,
+            "claim_boundary": claim_boundary,
+            "result_counts": counts,
+            "executed_proxy_run_count": len(results),
+            "valid_proxy_model_bearing_run_count": len(results),
+            "candidate_count": 0,
+            "l5_candidate_count": 0,
+            "next_action": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
+            "evidence_paths": [summary_path.as_posix(), run_refs_path.as_posix()],
+            "missing_evidence": PROXY_EXECUTION_MISSING_EVIDENCE,
+            "notes": "Wave02 proxy observations executed; L4 follow-through required next. No candidate or runtime authority claim.",
+        }
+    )
+    yaml_updates[campaign_path] = campaign
+
+    sweep_path = Path("lab/campaigns") / campaign_id / "sweeps" / sweep_id / "sweep_manifest.yaml"
+    sweep = _require_existing(context.repo_root / sweep_path, "sweep manifest")
+    sweep.update(
+        {
+            "status": PROXY_EXECUTION_STATUS,
+            "updated_at_utc": now,
+            "claim_boundary": claim_boundary,
+            "run_count": len(results),
+            "result_counts": counts,
+            "next_action": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
+        }
+    )
+    yaml_updates[sweep_path] = sweep
+
+    wave_id = _first_text(campaign.get("wave_ids"))
+    wave_path = Path("lab/waves") / wave_id / "wave_allocation.yaml"
+    wave = _require_existing(context.repo_root / wave_path, "wave allocation")
+    wave["claim_boundary"] = claim_boundary
+    wave["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
+    allocations = []
+    for allocation in wave.get("campaign_allocations") or []:
+        updated = dict(allocation)
+        if updated.get("campaign_id") == campaign_id:
+            updated["status"] = PROXY_EXECUTION_STATUS
+            updated["claim_boundary"] = claim_boundary
+            updated["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
+            updated["notes"] = "Wave02 proxy observations executed; L4 follow-through required next. No candidate or runtime authority claim."
+        allocations.append(updated)
+    wave["campaign_allocations"] = allocations
+    yaml_updates[wave_path] = wave
+
+    campaign_refs_path = Path("lab/waves") / wave_id / "campaign_refs.csv"
+    campaign_ref_rows = read_csv_rows(context.repo_root / campaign_refs_path)
+    for row in campaign_ref_rows:
+        if row.get("campaign_id") == campaign_id:
+            row["status"] = PROXY_EXECUTION_STATUS
+            row["claim_boundary"] = claim_boundary
+            row["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
+            row["notes"] = "Wave02 proxy observations executed; L4 follow-through required next. No protected claim."
+    text_updates[campaign_refs_path] = dump_csv(CAMPAIGN_REF_FIELDS, campaign_ref_rows)
+
+    goal_path = Path("lab/goals") / goal_id / "goal_manifest.yaml"
+    goal = _require_existing(context.repo_root / goal_path, "goal manifest")
+    next_work_path = Path("lab/goals") / goal_id / "next_work_item.yaml"
+    next_work = _proxy_execution_next_work(goal_id, campaign, counts, len(results))
+    goal["updated_at_utc"] = now
+    goal["active_phase"] = PROXY_EXECUTION_STATUS
+    goal["claim_boundary"] = claim_boundary
+    goal["next_work_item"] = _next_work_pointer(next_work)
+    goal["wave02_tradeability_campaign"] = {
+        "campaign_id": campaign_id,
+        "status": PROXY_EXECUTION_STATUS,
+        "executed_proxy_run_count": len(results),
+        "result_counts": counts,
+        "candidate_count": 0,
+        "l5_candidate_count": 0,
+        "claim_boundary": claim_boundary,
+        "evidence_path": summary_path.as_posix(),
+        "next_work_item": PROXY_EXECUTION_NEXT_WORK_ITEM_ID,
+    }
+    yaml_updates[goal_path] = goal
+    yaml_updates[next_work_path] = next_work
+
+    cursor_path = Path("lab/goals") / goal_id / "resume_cursor.yaml"
+    cursor = _require_existing(context.repo_root / cursor_path, "resume cursor")
+    cursor["updated_at_utc"] = now
+    cursor["active_phase"] = PROXY_EXECUTION_STATUS
+    cursor["active_work_item_id"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
+    cursor["claim_boundary"] = claim_boundary
+    cursor["next_action"] = PROXY_EXECUTION_NEXT_WORK_ITEM_ID
+    cursor["unresolved_blockers"] = PROXY_EXECUTION_MISSING_EVIDENCE
+    yaml_updates[cursor_path] = cursor
+
+    artifact_paths = tuple(sorted(set(yaml_updates) | set(text_updates), key=lambda item: item.as_posix()))
+    return LifecyclePlan(yaml_updates=yaml_updates, text_updates=text_updates, artifact_paths=artifact_paths)
+
+
 def _stage_common_neighbors(
     repo_root: Path,
     campaign_id: str,
@@ -1313,6 +1579,19 @@ def _complete_transition_next_work(
         acceptance_criteria = [
             "execute each materialized run spec with run_manifest, experiment_receipt, artifact_lineage, and metrics",
             "preserve proxy/runtime follow-through decision without claiming candidate, runtime authority, economics pass, or live readiness",
+        ]
+    elif next_action == "work_wave02_tradeability_l4_materialization_preflight_v0":
+        primary_family = "onnx_export_parity"
+        primary_skill = "spacesonar-runtime-evidence"
+        verification_profile = "runtime_preflight"
+        outputs = [
+            "runtime/packages/<bundle_id>/experiment_bundle.json",
+            "runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml",
+        ]
+        acceptance_criteria = [
+            "materialize ONNX/bundle follow-through for valid Wave02 proxy/model-bearing runs",
+            "prepare L4 validation and research_oos MT5 attempt manifests without claiming runtime authority or economics pass",
+            "record blocker/reopen conditions for any run that cannot reach L4 follow-through",
         ]
     return {
         "version": "work_item_lite_v1",
@@ -1501,6 +1780,10 @@ def record_run_result(run_id: str, result: RunResult, context: ExecutionContext)
     payload = attach_execution_batch_ref(payload, context.repo_root, str(batch_id))
     plan = LifecyclePlan({Path("lab/runs") / run_id / "result.yaml": payload}, {}, (Path("lab/runs") / run_id / "result.yaml",))
     return _run_with_lifecycle_lock(context, lambda: _commit_plan(context, plan))
+
+
+def record_proxy_execution(campaign_id: str, context: ExecutionContext) -> TransactionResult:
+    return _run_with_lifecycle_lock(context, lambda: _commit_plan(context, _record_proxy_execution_plan(campaign_id, context)))
 
 
 def judge_campaign(campaign_id: str, context: ExecutionContext) -> TransactionResult:

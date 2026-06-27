@@ -37,8 +37,12 @@ CURRENT_POLICY_CLOSEOUT_PATH = CLOSEOUT_PATH.parent / "current_policy_closeout_a
 WAVE01_POST_CLOSEOUT_WORK_ITEM_ID = "work_post_wave01_user_directed_wave02_or_review_v0"
 WAVE02_ID = "wave_us100_wave02_tradeability_decision_surface_v0"
 WAVE02_CAMPAIGN_ID = "campaign_us100_wave02_tradeability_decision_surface_v0"
-WAVE02_WORK_ITEM_ID = "execute_materialized_run_specs"
-WAVE02_NEXT_ACTION = "execute_materialized_run_specs"
+WAVE02_WORK_ITEM_ID = "work_wave02_tradeability_l4_materialization_preflight_v0"
+WAVE02_NEXT_ACTION = "materialize_wave02_l4_follow_through"
+WAVE02_ACTIVE_PHASE = "wave02_proxy_observation_l4_required"
+WAVE02_CLAIM_BOUNDARY = (
+    "wave02_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve"
+)
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -121,18 +125,20 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
     current_policy_closeout = load_yaml(CURRENT_POLICY_CLOSEOUT_PATH)
 
     assert goal["status"] == "active_wave02_pre_operational_research"
-    assert goal["active_phase"] == "wave02_campaign_open"
+    assert goal["active_phase"] == WAVE02_ACTIVE_PHASE
+    assert goal["claim_boundary"] == WAVE02_CLAIM_BOUNDARY
     assert goal["active_ids"]["wave_id"] == WAVE02_ID
     assert goal["active_ids"]["campaign_id"] == WAVE02_CAMPAIGN_ID
     assert goal["next_work_item"]["work_item_id"] == WAVE02_WORK_ITEM_ID
     assert next_work["work_item_id"] == WAVE02_WORK_ITEM_ID
     assert next_work["next_action"] == WAVE02_NEXT_ACTION
-    assert next_work["primary_family"] == "model_training"
-    assert next_work["primary_skill"] == "spacesonar-model-validation"
+    assert next_work["primary_family"] == "onnx_export_parity"
+    assert next_work["primary_skill"] == "spacesonar-runtime-evidence"
     assert cursor["cursor_state"] == "active_wave02_pre_operational_research"
-    assert cursor["active_phase"] == "wave02_campaign_open"
+    assert cursor["active_phase"] == WAVE02_ACTIVE_PHASE
     assert cursor["active_work_item_id"] == WAVE02_WORK_ITEM_ID
     assert cursor["active_ids"]["wave_id"] == WAVE02_ID
+    assert cursor["unresolved_blockers"] == ["L4_split_runtime_probe_not_yet_materialized"]
     assert current_policy_closeout["legacy_source_evidence"]["legacy_wave_closeout"] == CLOSEOUT_PATH.relative_to(ROOT).as_posix()
     assert workspace["active_wave"]["wave_id"] == WAVE02_ID
     assert workspace["active_wave"]["status"] == "wave_open"
@@ -142,7 +148,7 @@ def test_goal_next_work_cursor_workspace_wave_registry_and_closeout_agree() -> N
     assert wave_by_id["wave_us100_closedbar_surface_cartography_v0"]["status"] == current_policy_closeout["status"]
     assert wave_by_id["wave_us100_closedbar_surface_cartography_v0"]["next_action"] == legacy_closeout["next_action"]
     assert wave_by_id[WAVE02_ID]["status"] == "wave_open"
-    assert wave_by_id[WAVE02_ID]["next_action"] == WAVE02_NEXT_ACTION
+    assert wave_by_id[WAVE02_ID]["next_action"] == WAVE02_WORK_ITEM_ID
 
 
 def test_agent_observation_proof_releases_repair_work_item_everywhere() -> None:
@@ -171,12 +177,12 @@ def test_successful_proof_restores_user_directed_next_allowed_shapes() -> None:
 
     assert next_work["work_item_id"] == WAVE02_WORK_ITEM_ID
     assert next_work["next_action"] == WAVE02_NEXT_ACTION
-    assert next_work["primary_family"] == "model_training"
-    assert next_work["primary_skill"] == "spacesonar-model-validation"
-    assert "lab/runs/<run_id>/run_manifest.json" in next_work["outputs"]
-    assert next_work["claim_boundary"] == (
-        "wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness"
-    )
+    assert next_work["primary_family"] == "onnx_export_parity"
+    assert next_work["primary_skill"] == "spacesonar-runtime-evidence"
+    assert "runtime/packages/<bundle_id>/experiment_bundle.json" in next_work["outputs"]
+    assert next_work["claim_boundary"] == WAVE02_CLAIM_BOUNDARY
+    assert next_work["current_truth"]["executed_proxy_run_count"] == 8
+    assert next_work["current_truth"]["candidate_count"] == 0
     assert "next_allowed_shapes" not in next_work
 
 
