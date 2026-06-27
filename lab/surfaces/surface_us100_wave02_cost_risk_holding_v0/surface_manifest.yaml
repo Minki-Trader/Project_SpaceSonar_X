@@ -1,0 +1,40 @@
+version: surface_manifest_v1
+surface_id: surface_us100_wave02_cost_risk_holding_v0
+hypothesis_id: hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0
+campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+status: wave02_cost_risk_holding_campaign_opened_planning_scaffold
+created_at_utc: '2026-06-27T22:09:35Z'
+axis_tags:
+- target_or_label_surface
+- feature_or_input_surface
+- model_or_training_surface
+- decision_surface
+- risk_or_sizing_surface
+- horizon_or_holding_policy
+- evaluation_or_runtime_surface
+- execution_cost_surface
+- us100_m5_closed_bar_only
+recipes:
+  feature_recipe_id: feature_wave02_us100_cost_risk_holding_v0
+  label_recipe_id: label_wave02_cost_adjusted_tradeability_v0
+  model_recipe_id: model_wave02_cost_risk_onnx_scout_v0
+  decision_recipe_id: decision_wave02_cost_risk_holding_abstain_v0
+  eval_recipe_id: eval_wave02_cost_risk_runtime_v0
+  split_recipe_id: split_set_v0
+claim_boundary: wave02_cost_risk_holding_campaign_open_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+storage_contract:
+  source_of_truth: lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
+  campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+  surface_contract: configs/onnx_lab/surface_contracts/surface_us100_wave02_cost_risk_holding_v0.yaml
+next_action: work_wave02_cost_risk_holding_first_batch_spec_v0

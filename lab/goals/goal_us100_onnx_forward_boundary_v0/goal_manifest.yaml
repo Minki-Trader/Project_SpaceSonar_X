@@ -3,8 +3,8 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 workspace_active: true
 status: active_wave02_pre_operational_research
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-27T21:59:21Z'
-claim_boundary: wave02_decision_replay_runtime_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+updated_at_utc: '2026-06-27T22:09:35Z'
+claim_boundary: active_goal_wave02_campaign_002_open_not_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -60,7 +60,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave02_next_campaign_or_wave_boundary_decision_pending
+active_phase: wave02_cost_risk_holding_first_batch_spec_pending
 active_ids:
   idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
   hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
@@ -988,3 +988,9 @@ wave02_tradeability_campaign:
   l5_candidate_ids: []
   campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
   campaign_closeout_status: wave02_tradeability_campaign_closed_negative_l5_evidence_no_l5_candidate
+wave02_cost_risk_holding_campaign:
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+  status: wave02_cost_risk_holding_campaign_opened_planning_scaffold
+  claim_boundary: wave02_cost_risk_holding_campaign_open_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_work_item: work_wave02_cost_risk_holding_first_batch_spec_v0

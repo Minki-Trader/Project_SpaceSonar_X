@@ -1,0 +1,22 @@
+version: hypothesis_manifest_v1
+hypothesis_id: hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0
+idea_id: idea_us100_wave02_cost_risk_holding_surface_v0
+status: wave02_cost_risk_holding_campaign_opened_planning_scaffold
+created_at_utc: '2026-06-27T22:09:35Z'
+hypothesis: A cost/risk/holding-aware abstain surface may reduce untradeable action
+  streams by requiring the model or decision policy to account for entry friction,
+  open_failed risk, adverse excursion, and timeout/exit before a score can become
+  an MT5 decision.
+decision_use: abstain_capable_cost_risk_holding_gate
+comparison_baseline:
+- no_trade_baseline
+- closed_wave02_momentum_ret_1_replay_negative_memory_reference_only
+changed_variables:
+- cost-adjusted tradeability label
+- execution/open_failed avoidance feature context
+- adverse-excursion-aware holding/exit semantics
+- abstain-capable risk/holding decision policy
+claim_boundary: wave02_cost_risk_holding_campaign_open_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+evidence_path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+next_action: work_wave02_cost_risk_holding_first_batch_spec_v0
+notes: Hypothesis open for broad surface scout only; no model run or candidate claim.

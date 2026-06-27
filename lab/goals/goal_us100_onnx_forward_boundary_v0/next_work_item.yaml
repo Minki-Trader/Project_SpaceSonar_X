@@ -1,35 +1,36 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
-parent_work_item_id: work_wave02_tradeability_campaign_closeout_v0
+work_item_id: work_wave02_cost_risk_holding_first_batch_spec_v0
+parent_work_item_id: work_wave02_open_cost_risk_holding_campaign_v0
 primary_family: experiment_design
 primary_skill: spacesonar-experiment-design
-verification_profile: writer_scope_next_boundary_decision
+verification_profile: writer_scope_first_batch_spec
 targets:
-- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
-- lab/memory/negative/neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
 acceptance_criteria:
-- decide next Wave02 campaign or wave closeout boundary
-- do not reopen momentum_ret_1 decision replay as candidate repair
-- keep selected baseline, runtime authority, economics pass, live readiness, and Goal
-  Achieve forbidden
-claim_boundary: wave02_next_campaign_or_wave_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: decide whether Wave02 opens a new campaign or closes the wave; do not
-  repair momentum_ret_1 replay as a candidate
-status: wave02_next_campaign_or_wave_boundary_decision_pending
+- materialize first batch run manifests for the cost/risk/holding surface
+- each run declares changed_variables, feature/label/model/decision/eval recipes,
+  and split roles
+- no selected baseline, runtime authority, economics pass, live readiness, or Goal
+  Achieve claim
+created_at_utc: '2026-06-27T22:09:35Z'
+status: wave02_cost_risk_holding_first_batch_spec_pending
+claim_boundary: wave02_cost_risk_holding_first_batch_spec_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: materialize first broad batch run specs for Wave02 cost/risk/holding
+  campaign
 current_truth:
-  campaign_closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
-  negative_memory: lab/memory/negative/neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0.yaml
-  candidate_count: 2
-  l5_candidate_count: 0
+  campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
 unresolved_blockers:
-- Wave02_next_campaign_or_wave_boundary_decision_pending
+- Wave02_cost_risk_holding_first_batch_specs_not_materialized
 reopen_conditions:
-- new decision/risk/holding policy or explicit open_failed execution repair before
-  any renewed L5 target
+- rerun campaign open writer if campaign registry or wave allocation is manually edited
 missing_material_if_relevant:
-- positive_l5_candidate_absent
-- selected_baseline_forbidden
-- runtime_authority_forbidden
-- economics_pass_forbidden
-- locked_final_oos_b_not_used
+- run_manifests_not_materialized
+- proxy_results_absent
+- l4_runtime_follow_through_absent
+- candidate_evidence_absent
 - operational_validation_not_started

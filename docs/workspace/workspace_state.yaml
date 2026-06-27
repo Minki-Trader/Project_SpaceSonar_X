@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-27T21:59:21Z'
+updated_utc: '2026-06-27T22:09:35Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -10,21 +10,21 @@ active_goal:
   manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
 active_wave:
   wave_id: wave_us100_wave02_tradeability_decision_surface_v0
-  status: wave_open
+  status: wave02_campaign_002_open
   allocation: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
   closeout: null
 active_campaign:
-  campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
-  status: wave02_tradeability_campaign_closed_negative_l5_evidence_no_l5_candidate
-  closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  status: wave02_cost_risk_holding_campaign_opened_planning_scaffold
+  manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
 active_work_item:
-  work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
+  work_item_id: work_wave02_cost_risk_holding_first_batch_spec_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_next_campaign_or_wave_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: decide whether Wave02 opens a new campaign or closes the wave; do not
-  repair momentum_ret_1 replay as a candidate
+current_claim_boundary: wave02_cost_risk_holding_first_batch_spec_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: materialize first broad batch run specs for Wave02 cost/risk/holding
+  campaign
 unresolved_blockers:
-- Wave02_next_campaign_or_wave_boundary_decision_pending
+- Wave02_cost_risk_holding_first_batch_specs_not_materialized
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml
   runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
@@ -223,3 +223,9 @@ summary_counts:
     l5_candidate_count: 0
     held_for_open_failed_caveat_count: 4
     repair_first_count: 1
+  wave02_campaign_002_open:
+    campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+    initial_batch_size: 6
+    max_runs: 18
+    candidate_count: 0
+    l5_candidate_count: 0

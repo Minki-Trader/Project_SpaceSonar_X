@@ -1,0 +1,92 @@
+version: work_closeout_v1
+work_item_id: work_wave02_open_cost_risk_holding_campaign_v0
+parent_work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
+next_work_item_id: work_wave02_cost_risk_holding_first_batch_spec_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-27T22:09:35Z'
+primary_family: experiment_design
+primary_skill: spacesonar-experiment-design
+support_skills:
+- spacesonar-evidence-provenance
+status: wave02_next_boundary_decision_closed_new_campaign_opened
+decision: open_wave02_second_campaign
+claim_boundary: wave02_cost_risk_holding_campaign_open_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
+created_artifacts:
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+- lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
+- lab/hypotheses/idea_us100_wave02_cost_risk_holding_surface_v0.yaml
+- lab/hypotheses/hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+- configs/onnx_lab/feature_recipes/feature_wave02_us100_cost_risk_holding_v0.yaml
+- configs/onnx_lab/label_recipes/label_wave02_cost_adjusted_tradeability_v0.yaml
+- configs/onnx_lab/model_recipes/model_wave02_cost_risk_onnx_scout_v0.yaml
+- configs/onnx_lab/decision_recipes/decision_wave02_cost_risk_holding_abstain_v0.yaml
+- configs/onnx_lab/eval_recipes/eval_wave02_cost_risk_runtime_v0.yaml
+- configs/onnx_lab/surface_contracts/surface_us100_wave02_cost_risk_holding_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_open_cost_risk_holding_campaign_v0_closeout.yaml
+missing_evidence:
+- run_manifests_not_materialized
+- proxy_results_absent
+- l4_runtime_follow_through_absent
+- candidate_evidence_absent
+- operational_validation_not_started
+next_action: work_wave02_cost_risk_holding_first_batch_spec_v0
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
+  - lab/memory/negative/neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0.yaml
+  producer: python foundation/pipelines/open_wave02_cost_risk_holding_campaign.py
+    --write-control-records
+  consumer: work_wave02_cost_risk_holding_first_batch_spec_v0
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+  - lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
+  - lab/hypotheses/idea_us100_wave02_cost_risk_holding_surface_v0.yaml
+  - lab/hypotheses/hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0.yaml
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
+  - configs/onnx_lab/feature_recipes/feature_wave02_us100_cost_risk_holding_v0.yaml
+  - configs/onnx_lab/label_recipes/label_wave02_cost_adjusted_tradeability_v0.yaml
+  - configs/onnx_lab/model_recipes/model_wave02_cost_risk_onnx_scout_v0.yaml
+  - configs/onnx_lab/decision_recipes/decision_wave02_cost_risk_holding_abstain_v0.yaml
+  - configs/onnx_lab/eval_recipes/eval_wave02_cost_risk_runtime_v0.yaml
+  - configs/onnx_lab/surface_contracts/surface_us100_wave02_cost_risk_holding_v0.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_open_cost_risk_holding_campaign_v0_closeout.yaml
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    git_sha: 4df207e73fdb96a4a1a45812334aef65f0c737bf
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - ' M .codex/config.toml'
+    - ?? configs/onnx_lab/decision_recipes/decision_wave02_cost_risk_holding_abstain_v0.yaml
+    - ?? configs/onnx_lab/eval_recipes/eval_wave02_cost_risk_runtime_v0.yaml
+    - ?? configs/onnx_lab/feature_recipes/feature_wave02_us100_cost_risk_holding_v0.yaml
+    - ?? configs/onnx_lab/label_recipes/label_wave02_cost_adjusted_tradeability_v0.yaml
+    - ?? configs/onnx_lab/model_recipes/model_wave02_cost_risk_onnx_scout_v0.yaml
+    - ?? configs/onnx_lab/surface_contracts/surface_us100_wave02_cost_risk_holding_v0.yaml
+    - ?? foundation/pipelines/open_wave02_cost_risk_holding_campaign.py
+    - ?? lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/
+    - ?? lab/hypotheses/hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0.yaml
+    - ?? lab/hypotheses/idea_us100_wave02_cost_risk_holding_surface_v0.yaml
+    - ?? lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/
+    - ?? package.json
