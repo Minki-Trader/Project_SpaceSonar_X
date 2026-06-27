@@ -2,7 +2,7 @@ version: sweep_manifest_v1
 sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
 campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
 surface_id: surface_us100_wave02_tradeability_side_abstain_v0
-status: campaign_opened
+status: run_specs_materialized
 created_at_utc: '2026-06-27T12:15:00Z'
 sweep_type: broad_surface_scout
 axes:
@@ -20,5 +20,6 @@ storage_contract:
   durable_identity_policy: repo_relative_paths_only
 claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
 evidence_path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
-next_action: materialize_wave02_tradeability_initial_specs
+next_action: execute_materialized_run_specs
 notes: Sweep opened with zero executed runs.
+run_count: 8

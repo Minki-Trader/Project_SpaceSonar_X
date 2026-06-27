@@ -1,32 +1,34 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_tradeability_materialize_initial_specs_v0
-request_digest: wave02_tradeability_decision_surface_open_v0
-primary_family: experiment_design
-primary_skill: spacesonar-experiment-design
+work_item_id: execute_materialized_run_specs
+request_digest: 29664c8af976be8c7cc84277b07e12684bec47522d46c325ab6e43033399d0d0
+primary_family: model_training
+primary_skill: spacesonar-model-validation
 verification_profile: lab_experiment
 targets:
 - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
-- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
 acceptance_criteria:
-- Wave02 campaign open manifests and registries validate
-- next action materializes declared initial broad run specs
+- execute each materialized run spec with run_manifest, experiment_receipt, artifact_lineage,
+  and metrics
+- preserve proxy/runtime follow-through decision without claiming candidate, runtime
+  authority, economics pass, or live readiness
 claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
 policy_binding:
   revision: policy_contract_v2
   guards:
+  - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+  - GUARD_002_RUNTIME_COMPLETION_TRUTH
   - GUARD_003_CLAIM_BOUNDARY
   - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_005_LOCKED_OOS
   - GUARD_006_BRANCH_WORKTREE
 outputs:
-- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/run_specs/
-next_action: materialize_wave02_tradeability_initial_specs
-summary: Materialize Wave02 tradeability decision-surface initial broad run specs.
+- lab/runs/<run_id>/run_manifest.json
+- lab/runs/<run_id>/experiment_receipt.yaml
+- lab/runs/<run_id>/artifact_lineage.json
+- lab/runs/<run_id>/metrics.json
+next_action: execute_materialized_run_specs
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+summary: execute_materialized_run_specs
 provenance:
-  source: wave02_tradeability_decision_campaign_spec
-  source_campaign_spec: lab/goals/goal_us100_onnx_forward_boundary_v0/wave02_tradeability_decision_campaign_spec.yaml
-created_at_utc: '2026-06-27T12:15:00Z'
-status: pending
-active_goal_id: goal_us100_onnx_forward_boundary_v0
-wave_id: wave_us100_wave02_tradeability_decision_surface_v0
-campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+  source: canonical_lifecycle_transition
+  campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0

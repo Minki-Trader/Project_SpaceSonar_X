@@ -10,7 +10,7 @@ from .models import ExecutionContext, RunResult, TransactionResult
 from .provenance import attach_execution_batch_ref
 from .registry_projection import _stage_registry_projections, artifact_row_for_text
 from .state_projection import workspace_projection_diff, workspace_projection_text
-from .store import dump_csv, dump_yaml, read_csv_rows, read_yaml
+from .store import dump_csv, dump_yaml, filesystem_path, read_csv_rows, read_yaml
 from .transaction import ControlPlaneTransaction, utc_now
 
 
@@ -290,10 +290,16 @@ def _run_with_lifecycle_lock(context: ExecutionContext, operation: Callable[[], 
 
 
 def _read_yaml_if_exists(path: Path) -> dict[str, Any]:
-    if not path.exists():
+    if not _path_exists(path):
         return {}
     loaded = read_yaml(path)
     return loaded if isinstance(loaded, dict) else {}
+
+
+def _path_exists(path: Path) -> bool:
+    import os
+
+    return os.path.exists(filesystem_path(path))
 
 
 def _list(value: Any) -> list[Any]:
@@ -849,7 +855,7 @@ def _apply_workspace_handoff(repo_root: Path, spec: CampaignLifecycleSpec, yaml_
 def _materialize_plan(campaign_id: str, context: ExecutionContext) -> LifecyclePlan:
     campaign_path = Path("lab/campaigns") / campaign_id / "campaign_manifest.yaml"
     campaign = _require_existing(context.repo_root / campaign_path, "campaign manifest")
-    _require_campaign_status(campaign, ["campaign_opened"], "materialize")
+    _require_campaign_status(campaign, ["campaign_opened", "run_specs_materialized"], "materialize")
     design = campaign.get("experiment_design") or {}
     surface_id = design.get("surface_id")
     sweep_id = design.get("sweep_id")
@@ -921,7 +927,7 @@ def _materialize_plan(campaign_id: str, context: ExecutionContext) -> LifecycleP
     campaign = dict(campaign)
     campaign["status"] = "run_specs_materialized"
     campaign["run_specs_index"] = run_refs_path.as_posix()
-    campaign["next_action"] = "judge_campaign_after_evidence"
+    campaign["next_action"] = "execute_materialized_run_specs"
     sweep = dict(sweep)
     sweep["status"] = "run_specs_materialized"
     sweep["run_count"] = len(run_ref_rows)
@@ -1210,7 +1216,7 @@ def _validate_evaluator_refs(repo_root: Path, refs: Any, label: str) -> None:
 def _require_evidence(repo_root: Path, evidence_inputs: list[str], label: str) -> None:
     if not evidence_inputs:
         raise LifecycleInputError(f"{label} requires evidence inputs")
-    missing = [item for item in evidence_inputs if not (repo_root / str(item)).exists()]
+    missing = [item for item in evidence_inputs if not _path_exists(repo_root / str(item))]
     if missing:
         raise LifecycleInputError(f"{label} missing evidence inputs: {', '.join(missing)}")
 
@@ -1242,6 +1248,8 @@ def _stage_common_neighbors(
             else:
                 allocations.append(allocation)
         wave["campaign_allocations"] = allocations
+        if wave.get("status") != "closed" and campaign.get("next_action"):
+            wave["next_action"] = campaign.get("next_action")
         yaml_updates[wave_path] = wave
         refs_path = Path("lab/waves") / str(wave_id) / "campaign_refs.csv"
         rows = read_csv_rows(repo_root / refs_path) if (repo_root / refs_path).exists() else []
@@ -1287,18 +1295,37 @@ def _complete_transition_next_work(
 ) -> dict[str, Any]:
     routing = campaign.get("routing") or campaign.get("skill_routing") or {}
     claim_boundary = str(campaign.get("claim_boundary") or "control_plane_lifecycle_only_no_runtime_authority_no_economics_pass")
+    primary_family = routing.get("primary_family") or "policy_skill_governance"
+    primary_skill = routing.get("primary_skill") or "spacesonar-workspace-state-sync"
+    verification_profile = campaign.get("verification_profile") or "governance"
+    outputs: list[str] = []
+    acceptance_criteria = [f"complete {next_action} without weakening claim boundary"]
+    if next_action == "execute_materialized_run_specs":
+        primary_family = "model_training"
+        primary_skill = "spacesonar-model-validation"
+        verification_profile = "lab_experiment"
+        outputs = [
+            "lab/runs/<run_id>/run_manifest.json",
+            "lab/runs/<run_id>/experiment_receipt.yaml",
+            "lab/runs/<run_id>/artifact_lineage.json",
+            "lab/runs/<run_id>/metrics.json",
+        ]
+        acceptance_criteria = [
+            "execute each materialized run spec with run_manifest, experiment_receipt, artifact_lineage, and metrics",
+            "preserve proxy/runtime follow-through decision without claiming candidate, runtime authority, economics pass, or live readiness",
+        ]
     return {
         "version": "work_item_lite_v1",
         "work_item_id": next_action,
         "request_digest": hashlib.sha256("|".join([campaign.get("campaign_id", ""), next_action, *targets]).encode("utf-8")).hexdigest(),
-        "primary_family": routing.get("primary_family") or "policy_skill_governance",
-        "primary_skill": routing.get("primary_skill") or "spacesonar-workspace-state-sync",
-        "verification_profile": campaign.get("verification_profile") or "governance",
+        "primary_family": primary_family,
+        "primary_skill": primary_skill,
+        "verification_profile": verification_profile,
         "targets": targets,
-        "acceptance_criteria": [f"complete {next_action} without weakening claim boundary"],
+        "acceptance_criteria": acceptance_criteria,
         "claim_boundary": claim_boundary,
         "policy_binding": campaign.get("policy_binding") or {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
-        "outputs": [],
+        "outputs": outputs,
         "next_action": next_action,
         "path": f"lab/goals/{goal_id}/next_work_item.yaml",
         "summary": next_action,
@@ -1330,6 +1357,7 @@ def _stage_goal_transition(
         cursor = dict(yaml_updates.get(resume_cursor_path) or _read_yaml_if_exists(repo_root / resume_cursor_path))
         cursor["active_work_item_id"] = next_work["work_item_id"]
         cursor["campaign_id"] = campaign.get("campaign_id")
+        cursor["next_action"] = next_action
         cursor["updated_at_utc"] = goal["updated_at_utc"]
         yaml_updates[resume_cursor_path] = cursor
 

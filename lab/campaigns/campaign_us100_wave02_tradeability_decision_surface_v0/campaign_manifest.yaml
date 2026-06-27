@@ -2,7 +2,7 @@ version: campaign_manifest_v2
 campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: campaign_opened
+status: run_specs_materialized
 created_at_utc: '2026-06-27T12:15:00Z'
 updated_at_utc: '2026-06-27T12:15:00Z'
 wave_ids:
@@ -296,9 +296,10 @@ provenance:
   - open
   - --spec
   - lab/goals/goal_us100_onnx_forward_boundary_v0/wave02_tradeability_decision_campaign_spec.yaml
-next_action: materialize_wave02_tradeability_initial_specs
+next_action: execute_materialized_run_specs
 notes: 'Wave02 campaign-open scaffold only. Declared run specs are not executed, selected,
   or runtime-authoritative until manifests, receipts, lineage, and runtime evidence
   exist.
 
   '
+run_specs_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
