@@ -1,0 +1,179 @@
+version: wave02_tradeability_l4_pair_judgment_summary_v1
+summary_id: wave02_tradeability_l4_pair_judgment_summary_v0
+work_item_id: work_wave02_tradeability_l4_pair_judgment_v0
+parent_work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+  campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+  idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
+  hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
+  surface_id: surface_us100_wave02_tradeability_side_abstain_v0
+  sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+  run_id: null
+  artifact_id: artifact_wave02_tradeability_l4_pair_judgment_summary_v0
+  bundle_id: null
+  candidate_id: null
+campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
+sweep_id: sweep_us100_wave02_tradeability_side_abstain_broad_v0
+created_at_utc: '2026-06-27T21:09:45Z'
+ended_at_utc: '2026-06-27T21:09:45Z'
+status: wave02_l4_pair_judgment_completed_l5_routing_decision_pending
+claim_boundary: wave02_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+support_skills:
+- spacesonar-evidence-provenance
+- spacesonar-claim-discipline
+validation_depth: writer_scope_smoke
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+counts:
+  cell_pair_count: 8
+  runtime_probe_pair_complete_count: 8
+  both_period_roles_observed_count: 8
+  nonempty_telemetry_pair_count: 8
+  tester_report_pair_observed_count: 8
+  decision_execution_pending_pair_count: 8
+  l5_decision_review_required_count: 7
+  candidate_count: 0
+  l5_candidate_count: 0
+  proxy_judgment_counts:
+    inconclusive: 1
+    preserved_clue: 7
+  result_judgment_counts:
+    runtime_probe: 8
+  l5_status_counts:
+    l5_decision_review_required_no_candidate_claim: 7
+    no_l5_score_probe_only: 1
+  comparison_class_counts:
+    proxy_inconclusive_runtime_score_observed: 1
+    proxy_preserved_clue_runtime_score_observed: 7
+  runtime_execution_counts:
+    prepared_attempt_count: 16
+    selected_attempt_count: 2
+    indexed_execution_count: 16
+    executed_attempt_count: 16
+    completed_manifest_count: 16
+    touched_manifest_count: 16
+    telemetry_observed_count: 16
+    telemetry_missing_count: 0
+    tester_report_observed_count: 16
+    tester_report_missing_count: 0
+    terminal_execution_count: 16
+    telemetry_observation_count: 16
+    tester_report_observation_count: 16
+    portable_contract_count: 16
+    runtime_probe_complete_count: 16
+    runtime_probe_incomplete_count: 0
+    period_role_counts:
+      research_oos: 8
+      validation: 8
+    status_counts:
+      runtime_probe_completed: 16
+    result_judgment_counts:
+      runtime_probe: 16
+judgment:
+  result_subject: Wave02 tradeability L4 validation/research_oos score telemetry pair
+    aggregation
+  evidence_paths:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+  metric_identity: paired MT5 score telemetry summaries and Strategy Tester report
+    presence; non-trading score probe only
+  comparison_baseline: source proxy judgment plus MT5 validation/research_oos score-observation
+    presence
+  tested_factor: Wave02 explicit tradeability plus side/abstain broad surface after
+    ONNX/EA/MT5 score-probe follow-through
+  kpi_interpretation: runtime score observation only; no trading economics, no profit
+    factor, no drawdown, no live or production meaning
+  directional_effect_hypothesis: preserved_clue pairs may justify a bounded decision-execution
+    adapter review, but score telemetry alone cannot create a candidate
+  attribution_confidence: low_to_moderate_runtime_observation_only
+  judgment_label: runtime_probe
+  claim_boundary: wave02_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  missing_evidence:
+  - decision_execution_adapter_not_yet_applied
+  - candidate_specific_L5_manifest_not_opened
+  - economics_metrics_not_available_from_non_trading_score_probe
+  - row_level_proxy_vs_MT5_score_alignment_not_performed
+  next_action: decide whether to open a bounded Wave02 decision-execution adapter
+    or rotate; do not claim L5 candidate, economics pass, runtime authority, live
+    readiness, or Goal Achieve
+runtime_contract_effect:
+  l4_score_observation: observed_for_all_pairs
+  standard_l4_completion: completed_for_all_pairs_no_runtime_authority
+  l5_continuation: routing_decision_pending_no_candidate_claim
+  locked_final_oos_b: not_used
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
+  producer: python.exe foundation/pipelines/aggregate_wave02_tradeability_l4_pair_judgments.py
+    --write-control-records
+  consumer: work_wave02_tradeability_l5_routing_decision_v0
+  artifact_paths:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_pair_judgment_v0_closeout.yaml
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_pair_judgment_v0_closeout.yaml
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    yaml: 6.0.3
+    git_sha: 848771d9bc025c19bf902bf8018a6d0a4ff2f740
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - M .codex/config.toml
+    - ?? foundation/pipelines/aggregate_wave02_tradeability_l4_pair_judgments.py
+    - ?? package.json
+  regeneration_commands:
+  - python.exe foundation/pipelines/aggregate_wave02_tradeability_l4_pair_judgments.py
+    --write-control-records
+  registry_links:
+  - docs/registers/artifact_registry.csv
+  availability: present_hash_recorded_after_write
+  lineage_judgment: pair_summary_index_and_closeout_written_from_runtime_execution_summary_and_score_telemetry_summaries
+  claim_boundary: wave02_l4_pair_score_observation_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+artifact_outputs:
+  pair_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  pair_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  pair_closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_pair_judgment_v0_closeout.yaml
+  runtime_execution_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  runtime_execution_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+prevention_memory:
+- Wave02 L4 score telemetry closes through pair judgment before any L5 routing decision.
+- Non-trading score probes cannot create economics pass, runtime authority, selected
+  baseline, live readiness, or Goal Achieve.
+- Writer-scope smoke is the default operating proof; broad pytest/full-regression
+  is boundary or explicit-request only.
+unresolved_blockers:
+- Wave02_L5_routing_decision_pending
+reopen_conditions:
+- rerun pair aggregation if a Wave02 L4 runtime attempt manifest, score telemetry
+  summary, or tester report receipt changes
+- open L5 only with candidate-specific manifest and decision-execution adapter evidence
+  plan
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

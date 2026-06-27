@@ -3,8 +3,8 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 workspace_active: true
 status: active_wave02_pre_operational_research
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-27T20:58:25Z'
-claim_boundary: wave02_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+updated_at_utc: '2026-06-27T21:09:45Z'
+claim_boundary: wave02_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -60,7 +60,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave02_l4_pair_judgment_required_next
+active_phase: wave02_l4_pair_judgment_completed_l5_routing_decision_pending
 active_ids:
   idea_id: idea_us100_wave02_tradeability_side_abstain_surface_v0
   hypothesis_id: hyp_us100_wave02_tradeability_side_abstain_runtime_alignment_v0
@@ -401,9 +401,9 @@ forbidden_claims:
 - reviewed_verified_pass
 - business_or_project_goal_achieve
 next_work_item:
-  work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
+  work_item_id: work_wave02_tradeability_l5_routing_decision_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  summary: Execute prepared Wave02 L4 score-probe attempts.
+  summary: Wave02 L5 routing decision pending; no candidate claim.
 wave01_operating_closeout:
   status: wave01_operating_proof_window_closed
   closeout_path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
@@ -728,16 +728,16 @@ workspace_projection:
   active: true
 wave02_tradeability_campaign:
   campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
-  status: wave02_l4_attempts_prepared_terminal_execution_next
+  status: wave02_l4_pair_judgment_completed_l5_routing_decision_pending
   executed_proxy_run_count: 8
   result_counts:
     inconclusive: 1
     preserved_clue: 7
   candidate_count: 0
   l5_candidate_count: 0
-  claim_boundary: wave02_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  claim_boundary: wave02_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
   evidence_path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/evidence/proxy_execution_summary.yaml
-  next_work_item: work_wave02_tradeability_l4_runtime_execution_v0
+  next_work_item: work_wave02_tradeability_l5_routing_decision_v0
   l4_onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
   l4_onnx_materialization_status: completed_exportable_bundles_l4_terminal_execution_required
   l4_onnx_materialization_counts:
@@ -790,3 +790,51 @@ wave02_tradeability_campaign:
       runtime_probe_completed: 16
     result_judgment_counts:
       runtime_probe: 16
+  l4_pair_judgment_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  l4_pair_judgment_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  l4_pair_judgment_status: wave02_l4_pair_judgment_completed_l5_routing_decision_pending
+  l4_pair_judgment_counts:
+    cell_pair_count: 8
+    runtime_probe_pair_complete_count: 8
+    both_period_roles_observed_count: 8
+    nonempty_telemetry_pair_count: 8
+    tester_report_pair_observed_count: 8
+    decision_execution_pending_pair_count: 8
+    l5_decision_review_required_count: 7
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      inconclusive: 1
+      preserved_clue: 7
+    result_judgment_counts:
+      runtime_probe: 8
+    l5_status_counts:
+      l5_decision_review_required_no_candidate_claim: 7
+      no_l5_score_probe_only: 1
+    comparison_class_counts:
+      proxy_inconclusive_runtime_score_observed: 1
+      proxy_preserved_clue_runtime_score_observed: 7
+    runtime_execution_counts:
+      prepared_attempt_count: 16
+      selected_attempt_count: 2
+      indexed_execution_count: 16
+      executed_attempt_count: 16
+      completed_manifest_count: 16
+      touched_manifest_count: 16
+      telemetry_observed_count: 16
+      telemetry_missing_count: 0
+      tester_report_observed_count: 16
+      tester_report_missing_count: 0
+      terminal_execution_count: 16
+      telemetry_observation_count: 16
+      tester_report_observation_count: 16
+      portable_contract_count: 16
+      runtime_probe_complete_count: 16
+      runtime_probe_incomplete_count: 0
+      period_role_counts:
+        research_oos: 8
+        validation: 8
+      status_counts:
+        runtime_probe_completed: 16
+      result_judgment_counts:
+        runtime_probe: 16

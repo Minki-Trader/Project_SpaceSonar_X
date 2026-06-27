@@ -1,17 +1,20 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_tradeability_l4_runtime_execution_v0
-primary_family: runtime_probe
-primary_skill: spacesonar-runtime-evidence
-verification_profile: runtime_preflight_terminal_execution
+work_item_id: work_wave02_tradeability_l5_routing_decision_v0
+parent_work_item_id: work_wave02_tradeability_l4_pair_judgment_v0
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+verification_profile: writer_scope_smoke
 targets:
-- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
-- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
 acceptance_criteria:
-- execute prepared validation and research_oos MT5 score-probe attempts
-- record telemetry/report hashes before any L4 completion claim
-- keep runtime_authority, economics_pass, candidate, live_readiness, and goal_achieve
+- decide whether Wave02 preserved L4 score-observation pairs justify bounded decision-execution
+  adapter work
+- keep candidate_count and l5_candidate_count at zero until candidate-specific L5
+  manifest exists
+- keep runtime_authority, economics_pass, selected_baseline, live_readiness, and goal_achieve
   forbidden
-claim_boundary: wave02_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_l5_routing_decision_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
@@ -21,54 +24,130 @@ policy_binding:
   - GUARD_004_ARTIFACT_IDENTITY
   - GUARD_007_OPERATIONAL_STABILITY
 outputs:
-- runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
-- runtime/mt5_attempts/<attempt_id>/telemetry/score_telemetry.csv
-- runtime/mt5_attempts/<attempt_id>/reports/tester_report.htm
-next_action: aggregate paired Wave02 validation/research_oos L4 telemetry before any
-  L5 candidate routing
+- lab/candidates/<candidate_id>/candidate_summary.yaml only if L5 is explicitly opened
+  later
+- runtime/packages/<bundle_id>/experiment_bundle.json only if candidate-specific L5
+  materialization is opened later
+next_action: decide whether to open a bounded Wave02 decision-execution adapter or
+  rotate; do not claim L5 candidate, economics pass, runtime authority, live readiness,
+  or Goal Achieve
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-summary: Execute Wave02 prepared L4 Strategy Tester score-probe attempts.
+summary: Route Wave02 pair judgment outcomes without promoting score probes to candidates.
 provenance:
-  source: wave02_l4_materialization_preflight
+  source: work_wave02_tradeability_l4_pair_judgment_v0
   campaign_id: campaign_us100_wave02_tradeability_decision_surface_v0
-  source_of_truth: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+  source_of_truth: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
 current_truth:
-  onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
-  attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
-  prepared_attempt_count: 16
-  runtime_probe_completed: false
+  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  l4_pair_judgment_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  l4_pair_judgment_index: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  l4_pair_judgment_status: wave02_l4_pair_judgment_completed_l5_routing_decision_pending
+  l4_pair_judgment_counts:
+    cell_pair_count: 8
+    runtime_probe_pair_complete_count: 8
+    both_period_roles_observed_count: 8
+    nonempty_telemetry_pair_count: 8
+    tester_report_pair_observed_count: 8
+    decision_execution_pending_pair_count: 8
+    l5_decision_review_required_count: 7
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      inconclusive: 1
+      preserved_clue: 7
+    result_judgment_counts:
+      runtime_probe: 8
+    l5_status_counts:
+      l5_decision_review_required_no_candidate_claim: 7
+      no_l5_score_probe_only: 1
+    comparison_class_counts:
+      proxy_inconclusive_runtime_score_observed: 1
+      proxy_preserved_clue_runtime_score_observed: 7
+    runtime_execution_counts:
+      prepared_attempt_count: 16
+      selected_attempt_count: 2
+      indexed_execution_count: 16
+      executed_attempt_count: 16
+      completed_manifest_count: 16
+      touched_manifest_count: 16
+      telemetry_observed_count: 16
+      telemetry_missing_count: 0
+      tester_report_observed_count: 16
+      tester_report_missing_count: 0
+      terminal_execution_count: 16
+      telemetry_observation_count: 16
+      tester_report_observation_count: 16
+      portable_contract_count: 16
+      runtime_probe_complete_count: 16
+      runtime_probe_incomplete_count: 0
+      period_role_counts:
+        research_oos: 8
+        validation: 8
+      status_counts:
+        runtime_probe_completed: 16
+      result_judgment_counts:
+        runtime_probe: 16
   candidate_count: 0
   l5_candidate_count: 0
-  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
-  l4_runtime_execution_counts:
-    prepared_attempt_count: 16
-    selected_attempt_count: 2
-    indexed_execution_count: 16
-    executed_attempt_count: 16
-    completed_manifest_count: 16
-    touched_manifest_count: 16
-    telemetry_observed_count: 16
-    telemetry_missing_count: 0
-    tester_report_observed_count: 16
-    tester_report_missing_count: 0
-    terminal_execution_count: 16
-    telemetry_observation_count: 16
-    tester_report_observation_count: 16
-    portable_contract_count: 16
-    runtime_probe_complete_count: 16
-    runtime_probe_incomplete_count: 0
-    period_role_counts:
-      research_oos: 8
-      validation: 8
-    status_counts:
-      runtime_probe_completed: 16
-    result_judgment_counts:
-      runtime_probe: 16
 unresolved_blockers:
-- Wave02_L4_pair_judgment_pending
+- Wave02_L5_routing_decision_pending
 reopen_conditions:
-- write Wave02 l4_pair_judgment_summary and l4_pair_judgment_index before L5 routing
-status: l4_strategy_tester_execution_completed_for_prepared_attempts
+- rerun pair aggregation if a Wave02 L4 runtime attempt manifest, score telemetry
+  summary, or tester report receipt changes
+- open L5 only with candidate-specific manifest and decision-execution adapter evidence
+  plan
+status: wave02_l5_routing_decision_pending
 missing_material_if_relevant:
-- paired_L4_period_aggregation_pending
+- decision_execution_adapter_not_yet_applied
+- candidate_specific_L5_manifest_not_opened
+- economics_metrics_not_available_from_non_trading_score_probe
+- row_level_proxy_vs_MT5_score_alignment_not_performed
+execution_provenance:
+  git_sha: 848771d9bc025c19bf902bf8018a6d0a4ff2f740
+  branch: main
+  dirty_flag: true
+  changed_files:
+  - M .codex/config.toml
+  - ' M docs/registers/artifact_registry.csv'
+  - ?? foundation/pipelines/aggregate_wave02_tradeability_l4_pair_judgments.py
+  - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - ?? lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_pair_judgment_v0_closeout.yaml
+  - ?? package.json
+  command_argv:
+  - python.exe foundation/pipelines/aggregate_wave02_tradeability_l4_pair_judgments.py
+    --write-control-records
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    python: 3.13.9
+    yaml: 6.0.3
+  started_at_utc: '2026-06-27T21:09:45Z'
+  ended_at_utc: '2026-06-27T21:09:45Z'
+  input_hashes:
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+    sha256: 9861e4b25ff04b845627362806678084f52fde4352e32982a225b07f86f55501
+    size_bytes: 17738
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+    sha256: 1ef4114c0a41d5935c2a25738232cc2299e4f48bfcf461bb92143858265f2d36
+    size_bytes: 15786
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/sweeps/sweep_us100_wave02_tradeability_side_abstain_broad_v0/run_refs.csv
+    sha256: 675f086ecfb3cf6f714985898e8d5385a37e424343ba341407d4e8ca957b7aa5
+    size_bytes: 11347
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+    sha256: 559f769ee00445e0db9d3f7c34610d3ba6ca89c64650b966b1d039dde83329a0
+    size_bytes: 9112
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+    sha256: 649435ebcb1a94fe25dab9d9afa5b86f0d54790ffb554b568a2433198e61d029
+    size_bytes: 9141
+    availability: present_hash_recorded
+  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_tradeability_l4_pair_judgment_v0_closeout.yaml
+    sha256: ae93191a12c093f8cb0fb7f2b05ae24ecbd5a231e2311161dce3a533460e1d61
+    size_bytes: 3457
+    availability: present_hash_recorded
+  unknown_git_claim_effect: dirty_worktree_recorded_claim_lowered_no_candidate_runtime_authority_or_economics_pass
