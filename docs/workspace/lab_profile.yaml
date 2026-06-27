@@ -108,6 +108,43 @@ execution_weight_policy:
       - runtime_probe_complete_count
     physical_attempt_count_meaning: period_role_strategy_tester_executions_not_budget_burn
     pair_count_meaning: one_declared_l4_cell_surface_runtime_kind_with_both_required_period_roles
+wave_budget_policy:
+  default_profile: standard_wave
+  allocation_mode: fixed_wave_budget_variable_campaign_budget
+  wave_budget_fixed_before_open: true
+  standard_total_run_budget: 72
+  standard_campaign_slots: 3
+  reserve_fraction: 0.15
+  campaign_run_budget_bounds:
+    min_runs: 8
+    default_runs: 18
+    max_runs: 30
+  per_campaign_allocation_reason_required: true
+  hypothesis_allocation_reason_required: true
+  allocation_reason_must_name:
+    - hypothesis_surface_width
+    - changed_axes
+    - held_fixed_axes
+    - why_this_campaign_needs_more_or_less_than_default
+  mid_wave_budget_increase_policy: forbidden_without_new_wave_or_explicit_budget_amendment
+  budget_exception_policy:
+    default: none
+    allowed_timing: before_wave_open
+    required_fields:
+      - exception_profile
+      - reason
+      - approved_by_user
+      - claim_boundary
+  legacy_retrofit_closeout_policy:
+    retired_unused_active_budget_forbidden: true
+    allowed_only_for_closed_legacy_wave_reclose: true
+    required_rule: actualized_retrofit_budget_must_equal_materialized_content_inventory
+    future_wave_effect: not_allowed_for_wave02_plus_pre_open_budget
+  l4_pair_budget_policy:
+    budget_unit: validation_research_oos_pair
+    standard_pair_budget: 36
+    physical_attempts_are_evidence_counts_not_budget_burn: true
+    decision_replay_pair_budget_policy: separate_ledger_unless_explicitly_budgeted_with_standard_l4
 campaign_exploration_policy:
   mode: unexplored_surface_discovery_not_single_axis_progression
   forbidden_research_shapes:
@@ -145,14 +182,54 @@ kpi_interpretation_policy:
     - sufficient_sample
     - matching_proxy_runtime_evidence_when_runtime_claimed
   weak_evidence_claim_effect: exploratory_hypothesis_only
+  segment_breakdown_policy:
+    overall_required: true
+    required_axes:
+      - overall
+      - period_role
+      - time_window
+      - session
+      - direction
+      - score_or_threshold_bucket
+      - trade_shape_bucket
+      - runtime_surface
+    optional_axes:
+      - volatility_regime
+      - drawdown_cluster
+      - holding_period_bucket
+      - feature_family
+      - target_family
+      - model_family
+      - spread_or_cost_bucket
+    missing_segment_record_required: true
+    fake_segment_placeholder_forbidden: true
+    observed_segment_requires_metric_or_count_basis: true
+    missing_segment_requires_next_materialization_step: true
+    segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
 bounded_synthesis_policy:
   campaign_type: bounded_synthesis
   source_scope: previous_material_only
+  cadence:
+    trigger: after_5_standard_campaign_closeouts
+    standard_campaign_closeout_count_required: 5
+    counting_scope: since_last_bounded_synthesis_campaign
+    early_open_exception: recorded_reason_required_before_open
   default_mix_depth:
     - mix-2
     - mix-3
   mix4_policy: exception_only_with_recorded_reason
   mix5_plus_policy: forbidden
+  ingredient_lifecycle:
+    raw_reuse_default: forbidden_after_consumed_by_completed_synthesis
+    allowed_reuse_statuses:
+      - carry_forward_ingredient
+      - reopened_ingredient_exception
+    carry_forward_requires_source_synthesis: true
+    reopened_exception_requires_reason: true
+  kpi_policy:
+    ledger_required: true
+    stage_kind: special_mixing
+    same_fixed_schema_as_campaign_wave: true
   next_wave_influence: forbidden
   valid_proxy_runtime_level_required: L4_split_runtime_probe
   l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence

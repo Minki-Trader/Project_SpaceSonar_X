@@ -1,0 +1,103 @@
+version: segment_materialization_repair_note_v1
+note_id: wave01_current_policy_segment_materialization_repair_v0
+created_at_utc: '2026-06-27T00:00:00Z'
+status: repaired_to_current_policy_complete
+claim_boundary: segment_materialization_repair_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+applies_to:
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_ids:
+    - campaign_us100_task_surface_scout_v0
+    - campaign_us100_event_barrier_decision_surface_v0
+    - campaign_us100_session_transition_regime_surface_v0
+repair_attempts:
+  - attempt_id: wave01_kpi_builder_raw_telemetry_segment_extraction_v0
+    repaired_layer: foundation/evaluation/kpi_ledger_builder.py
+    action: >
+      Added raw MT5 execution telemetry extraction for time_window, session,
+      direction, action, and score_or_threshold buckets, then rebuilt all
+      Wave01 campaign KPI ledgers from existing evidence.
+    evidence_paths:
+      - foundation/evaluation/kpi_ledger_builder.py
+      - tests/test_kpi_ledger_validator.py
+      - lab/campaigns/campaign_us100_task_surface_scout_v0/kpi/kpi_summary.yaml
+      - lab/campaigns/campaign_us100_event_barrier_decision_surface_v0/kpi/kpi_summary.yaml
+      - lab/campaigns/campaign_us100_session_transition_regime_surface_v0/kpi/kpi_summary.yaml
+    result: materialized_time_window_session_score_bucket_and_runtime_surface_segments
+  - attempt_id: wave01_proxy_metric_compatibility_repair_v0
+    repaired_layer: foundation/evaluation/kpi_ledger_builder.py
+    action: >
+      Repaired proxy KPI projection so older regression/ranking scout metrics
+      without validation roc_auc still record an observed proxy KPI using
+      available validation spearman_corr, pearson_corr, rmse, or mae.
+    evidence_paths:
+      - lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/metrics.json
+      - foundation/evaluation/kpi_ledger_builder.py
+      - tests/test_kpi_ledger_validator.py
+    result: task_surface_scout_proxy_kpi_ledger_materialized
+  - attempt_id: wave01_trade_shape_reconstruction_materialization_v0
+    repaired_layer: foundation/mt5/trade_shape_reconstruction.py
+    action: >
+      Reconstructed closed-trade direction PnL, hold buckets, MFE, MAE, gross
+      points, and trade-shape buckets for all 18 Wave01 decision replay attempts
+      from retained execution_telemetry.csv and the source US100 M5 OHLC bars.
+      Then projected those summaries into campaign KPI ledgers as
+      mt5.trade_shape.direction.* and mt5.trade_shape.bucket.* records.
+    evidence_paths:
+      - foundation/mt5/trade_shape_reconstruction.py
+      - foundation/evaluation/kpi_ledger_builder.py
+      - foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+      - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/trade_shape_summary.yaml
+      - runtime/mt5_attempts/attempt_wave01_eb_cell_002_l4_decision_replay_validation_score_band_side_v0/trade_shape_summary.yaml
+      - runtime/mt5_attempts/attempt_wave01_st_cell_003_l4_decision_replay_validation_score_band_inverse_side_v0/trade_shape_summary.yaml
+    result: materialized_direction_pnl_and_trade_shape_bucket_segments
+segment_status_after_repair:
+  materialized_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
+  partial_materialized_axes: []
+  missing_axes: []
+closed_trade_reconstruction:
+  status: materialized_for_all_wave01_decision_replay_attempts
+  attempt_count: 18
+  closed_trade_count: 98027
+  missing_bar_count: 0
+  campaign_closed_trade_counts:
+    campaign_us100_task_surface_scout_v0: 39598
+    campaign_us100_event_barrier_decision_surface_v0: 48430
+    campaign_us100_session_transition_regime_surface_v0: 9999
+  price_basis: bar_open_at_recorded_bar_close_time_from_retained_ohlc_not_tester_deal_fill
+  claim_boundary: trade_shape_reconstruction_observation_only_no_tester_deal_ledger_no_runtime_authority_no_economics_pass_no_selected_baseline
+  output_pattern: runtime/mt5_attempts/<attempt_id>/trade_shape_summary.yaml
+  kpi_records:
+    direction_pnl: mt5.trade_shape.direction.<long_or_short>.gross_points_sum
+    trade_shape_bucket: mt5.trade_shape.bucket.<bucket>.<metric>
+future_runtime_instrumentation:
+  status: implemented_for_new_reruns
+  ea_entrypoint: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5
+  runner_inputs:
+    - InpTradeShapeTelemetryPath
+    - InpAttemptId
+    - InpEmitTradeShapeTelemetry
+  effect: future decision replay attempts emit trade_shape_telemetry.csv directly in addition to reconstruction fallback
+interpretation_rule:
+  status: active_for_wave01_current_policy_closeout
+  effect: >
+    Segment KPI exists for every required axis, including direction PnL and
+    trade_shape_bucket PnL/MFE/MAE. These segments support interpretation and
+    next-probe design only; they cannot support selected baseline, economics
+    pass, runtime authority, live readiness, reviewed/pass, handoff, or Goal
+    Achieve.
+not_claimed:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - production_deployment
+  - handoff_complete
+  - goal_achieve

@@ -120,6 +120,21 @@ Required interpretation chain:
 - attribution confidence
 - smallest next probe that can confirm or reject the explanation
 
+KPI ledgers and closeouts must include both overall KPI and segment breakdowns. Required segment axes are:
+
+- overall
+- period role: validation, research_oos, or other declared period role
+- time window
+- session
+- direction: long, short, flat, or no-trade
+- score or threshold bucket
+- trade shape bucket
+- runtime surface: proxy, MT5 runtime, or proxy-vs-MT5 comparison
+
+Optional segment axes include volatility regime, drawdown cluster, holding period bucket, feature family, target family, model family, and spread or cost bucket.
+
+If a required segment cannot be materialized from the current evidence, the KPI summary must still name the segment and record it as missing or not collected with a reason and the next materialization step. Do not create placeholder segment analysis: observed or partial segments must name the metric/count basis they came from. Segment results explain instability, concentration, and the next probe; they must not be used by themselves to claim selected baseline, economics pass, runtime authority, live readiness, reviewed/pass, or Goal Achieve.
+
 Outcome-only closeout is incomplete. If the changed variable, baseline, sample scope, or runtime evidence is missing, lower the interpretation to low-confidence or inconclusive. Do not claim a causal effect unless controls, matched scope, sufficient samples, and matching proxy/runtime evidence support it.
 
 ## Execution Weight
@@ -148,6 +163,34 @@ The lab is attempt-first, not bureaucracy-first.
 - Historical fields named like `formal_mt5_strategy_tester_runs` are not hard L4 budget caps when an active `l4_budget_unit` or wave budget accounting amendment exists. Prefer `l4_pair_budget`, `l4_pair_count`, and `l4_pair_budget_usage` for new records.
 - A minimal adapter is not a shortcut to claim success. It only proves that the path can be tested; stronger claims still need the matching evidence.
 
+## Wave Budget Allocation
+
+Wave budgets use a fixed-wave, variable-campaign allocation model.
+
+Rules:
+
+- The wave-level budget envelope is fixed before the wave opens.
+- The standard wave profile is `standard_wave`.
+- Standard wave run budget is 72 proxy/model-bearing run slots.
+- Standard wave campaign slots are 3.
+- Standard L4 budget is 36 `validation_research_oos_pair` units.
+- Campaign and hypothesis budgets may vary inside the wave envelope because hypotheses differ in search width, setup cost, and uncertainty.
+- Per-campaign run budget must stay within the declared campaign bounds unless the wave opens with an explicit budget exception.
+- Default campaign bounds are minimum 8 runs, default 18 runs, and maximum 30 runs.
+- Every campaign allocation must record an allocation reason before execution.
+- Campaign or hypothesis allocation that is above or below the default must also explain why it deviates from the default.
+- The reason must say which hypothesis surface needs the declared search width and which axes are held fixed.
+- New or open wave records must use the standard allocation mode. Legacy closed Wave01-style soft budgets may remain as compatibility records only; they do not define the current operating pattern.
+- A retrofitted legacy wave closeout must not hide unused active budget behind
+  `retired` wording. It must either execute the declared active budget or
+  explicitly re-declare an actualized retrofit budget that matches the durable
+  materialized content. Future waves cannot use this retrofit exception; their
+  budget is fixed before wave open.
+- Standard campaign allocations must not exceed the standard campaign slot count unless the wave opens with an explicit budget exception.
+- Mid-wave budget increases are not normal operation. If more budget is needed, open a new wave or record an explicit budget amendment with reason, user approval, and claim boundary.
+- Wave-to-wave KPI comparisons use the wave-level budget envelope, not the individual campaign allocation amounts.
+- Decision replay stays in a separate pair ledger unless the wave explicitly budgets it together with standard L4.
+
 ## Attempt Before Disposition
 
 This is a global operating rule, not only a runtime rule.
@@ -167,8 +210,11 @@ A bounded synthesis campaign is the current-lab equivalent of a previous-materia
 Rules:
 
 - Use `campaign_type: bounded_synthesis`.
+- Operating cadence is five completed standard campaign closeouts since the last bounded synthesis campaign before opening a new bounded synthesis campaign, unless a recorded exception is approved before open.
+- Counted cadence items must be real closed standard campaigns with closeout evidence, not bare IDs.
 - Source scope is previous material only: closed campaign clues, negative memory, divergence records, and run evidence from earlier campaigns.
-- Ingredient cards are required. Each ingredient must name source campaign/run/clue/memory IDs, evidence paths, salvage value, and forbidden uses.
+- Ingredient cards are required. Each ingredient must name source campaign/run/clue/memory IDs, evidence paths, salvage value, and forbidden uses. Missing evidence paths or source IDs make the ingredient unusable for closeout.
+- Raw ingredient cards consumed by a completed bounded synthesis campaign are not reused by default. A later synthesis campaign may see only carry-forward ingredients or a reopened ingredient with an explicit exception reason.
 - A synthesis campaign may create learning records, reference surfaces, preserved clues, negative memory, divergence questions, or new surface questions.
 - It must not direct the next wave, choose the next campaign theme, claim baseline status, or hide a repair continuation as a fresh hypothesis.
 - Default mix depth is `mix-2 -> mix-3`.
@@ -176,6 +222,7 @@ Rules:
 - `mix-5+` is forbidden unless the project policy is explicitly changed.
 - Every valid proxy/model-bearing synthesis run still follows the normal `L4_split_runtime_probe` requirement.
 - If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
+- KPI ledgers use the same fixed schema as ordinary campaign and wave records. Synthesis KPI rows must use `stage_kind: special_mixing` and keep proxy, MT5 runtime, and proxy-vs-MT5 comparison ledgers separated.
 - Closeout remains claim-boundary explicit: no selected baseline, runtime authority, economics pass, live readiness, reviewed/pass, or Goal Achieve without matching evidence.
 
 ## Campaign Parity Rule

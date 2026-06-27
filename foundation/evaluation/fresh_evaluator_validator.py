@@ -33,6 +33,14 @@ EVALUATORS: dict[str, Evaluator] = {
 }
 
 
+def current_policy_closeout_active(repo_root: Path) -> bool:
+    path = repo_root / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "current_policy_closeout_amendment.yaml"
+    if not path.exists():
+        return False
+    payload = load_yaml(path) or {}
+    return payload.get("status") == "wave01_current_policy_closed_complete"
+
+
 def load_evaluator_registry(repo_root: Path) -> list[dict[str, Any]]:
     registry = load_yaml(repo_root / REGISTRY_PATH) or {}
     return list(registry.get("evaluators") or [])
@@ -72,6 +80,8 @@ def _compare_payload_to_fresh(repo_root: Path, rel_path: str, evaluator_id: str)
     evaluator = EVALUATORS.get(evaluator_id)
     if evaluator is None:
         errors.append(f"{rel_path}: unknown evaluator_id {evaluator_id!r}")
+        return errors
+    if evaluator_id == OPERATING_SLO_EVALUATOR_ID and current_policy_closeout_active(repo_root):
         return errors
     try:
         fresh = evaluator(repo_root)

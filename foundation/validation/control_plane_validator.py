@@ -291,13 +291,21 @@ def validate_templates(repo_root: Path) -> list[str]:
         "experiment_bundle.template.json": load_json(repo_root / "lab" / "templates" / "experiment_bundle.template.json"),
         "attempt_manifest.template.yaml": load_yaml(repo_root / "lab" / "templates" / "attempt_manifest.template.yaml"),
         "runtime_evidence.template.yaml": load_yaml(repo_root / "lab" / "templates" / "runtime_evidence.template.yaml"),
+        "wave_allocation.template.yaml": load_yaml(repo_root / "lab" / "templates" / "wave_allocation.template.yaml"),
+        "kpi_ledger_manifest.template.yaml": load_yaml(repo_root / "lab" / "templates" / "kpi_ledger_manifest.template.yaml"),
         "campaign_manifest.template.yaml": load_yaml(repo_root / "lab" / "templates" / "campaign_manifest.template.yaml"),
         "ingredient_card.template.yaml": load_yaml(repo_root / "lab" / "templates" / "ingredient_card.template.yaml"),
         "synthesis_mix_queue.template.yaml": load_yaml(repo_root / "lab" / "templates" / "synthesis_mix_queue.template.yaml"),
     }
 
     for name, data in templates.items():
-        if name in {"campaign_manifest.template.yaml", "ingredient_card.template.yaml", "synthesis_mix_queue.template.yaml"}:
+        if name in {
+            "wave_allocation.template.yaml",
+            "kpi_ledger_manifest.template.yaml",
+            "campaign_manifest.template.yaml",
+            "ingredient_card.template.yaml",
+            "synthesis_mix_queue.template.yaml",
+        }:
             continue
         if name in {"experiment_bundle.template.json", "attempt_manifest.template.yaml", "runtime_evidence.template.yaml"}:
             required_top = {"branch_worktree", "provenance"}
@@ -365,12 +373,16 @@ def validate_templates(repo_root: Path) -> list[str]:
         observed=set(synthesis),
         required={
             "source_scope",
+            "cadence",
             "source_campaign_ids",
             "ingredient_registry",
             "synthesis_registry",
             "mix_depth_policy",
+            "ingredient_lifecycle_policy",
+            "kpi_policy",
             "next_wave_influence",
             "runtime_follow_through",
+            "closeout_artifacts",
             "claim_boundary",
         },
     )
@@ -384,6 +396,7 @@ def validate_templates(repo_root: Path) -> list[str]:
             "ingredient_card_id",
             "source_campaign_ids",
             "evidence_paths",
+            "ingredient_lifecycle",
             "forbidden_uses",
             "storage_contract",
             "claim_boundary",
@@ -399,13 +412,108 @@ def validate_templates(repo_root: Path) -> list[str]:
             "campaign_id",
             "queue_id",
             "source_scope",
+            "cadence",
             "mix_depth_policy",
+            "ingredient_lifecycle_policy",
             "selection_policy",
+            "kpi_policy",
             "next_wave_influence",
             "storage_contract",
             "claim_boundary",
         },
     )
+    kpi_template = templates["kpi_ledger_manifest.template.yaml"]
+    add_missing(
+        errors,
+        label="kpi_ledger_manifest.template.yaml top-level",
+        observed=set(kpi_template),
+        required={
+            "summary",
+            "kpi_policy",
+            "record_files",
+            "schema_ref",
+            "claim_boundary",
+            "forbidden_claims",
+        },
+    )
+    kpi_policy = kpi_template.get("kpi_policy", {})
+    add_missing(
+        errors,
+        label="kpi_ledger_manifest.template.yaml kpi_policy",
+        observed=set(kpi_policy),
+        required={
+            "fixed_schema",
+            "mt5_missing_is_repair_trigger_before_na",
+            "proxy_only_runs_excluded_from_comparison_ledger",
+            "non_trading_score_probe_excluded_from_kpi_ledger",
+            "score_probe_retained_only_in_runtime_evidence_not_kpi",
+            "overall_and_segment_breakdowns_required",
+            "fake_segment_placeholder_forbidden",
+            "observed_segment_requires_metric_or_count_basis",
+            "missing_segment_requires_next_materialization_step",
+            "required_segment_axes",
+            "optional_segment_axes",
+            "segment_claim_policy",
+        },
+    )
+    wave_template = templates["wave_allocation.template.yaml"]
+    add_missing(
+        errors,
+        label="wave_allocation.template.yaml top-level",
+        observed=set(wave_template),
+        required={
+            "budget",
+            "campaign_allocations",
+            "storage_contract",
+            "git_integration",
+            "fixed_controls",
+            "sampling_plan",
+        },
+    )
+    wave_budget = wave_template.get("budget", {})
+    add_missing(
+        errors,
+        label="wave_allocation.template.yaml budget",
+        observed=set(wave_budget),
+        required={
+            "budget_profile",
+            "allocation_mode",
+            "wave_budget_fixed_before_open",
+            "max_runs",
+            "standard_total_run_budget",
+            "standard_campaign_slots",
+            "reserve_fraction",
+            "campaign_run_budget_bounds",
+            "per_campaign_allocation_reason_required",
+            "hypothesis_allocation_reason_required",
+            "allocation_reason_must_name",
+            "mid_wave_budget_increase_policy",
+            "budget_exception",
+            "l4_pair_budget",
+            "l4_budget_unit",
+            "l4_required_period_roles",
+            "decision_replay_pair_budget",
+        },
+    )
+    profile_policy = load_yaml(repo_root / "docs" / "workspace" / "lab_profile.yaml").get("wave_budget_policy", {})
+    bounds = wave_budget.get("campaign_run_budget_bounds") or {}
+    profile_bounds = profile_policy.get("campaign_run_budget_bounds") or {}
+    if wave_budget.get("budget_profile") != profile_policy.get("default_profile"):
+        errors.append("wave_allocation.template.yaml budget_profile does not match lab_profile wave_budget_policy.default_profile")
+    if wave_budget.get("allocation_mode") != profile_policy.get("allocation_mode"):
+        errors.append("wave_allocation.template.yaml allocation_mode does not match lab_profile wave_budget_policy")
+    if wave_budget.get("max_runs") != wave_budget.get("standard_total_run_budget"):
+        errors.append("wave_allocation.template.yaml max_runs must equal standard_total_run_budget")
+    if wave_budget.get("standard_total_run_budget") != profile_policy.get("standard_total_run_budget"):
+        errors.append("wave_allocation.template.yaml standard_total_run_budget does not match lab_profile")
+    if wave_budget.get("standard_campaign_slots") != profile_policy.get("standard_campaign_slots"):
+        errors.append("wave_allocation.template.yaml standard_campaign_slots does not match lab_profile")
+    if bounds != profile_bounds:
+        errors.append("wave_allocation.template.yaml campaign_run_budget_bounds does not match lab_profile")
+    if not (bounds.get("min_runs", 0) <= bounds.get("default_runs", -1) <= bounds.get("max_runs", -1)):
+        errors.append("wave_allocation.template.yaml campaign_run_budget_bounds must satisfy min <= default <= max")
+    if wave_budget.get("l4_pair_budget") != (profile_policy.get("l4_pair_budget_policy") or {}).get("standard_pair_budget"):
+        errors.append("wave_allocation.template.yaml l4_pair_budget does not match lab_profile standard_pair_budget")
     return errors
 
 
@@ -498,6 +606,17 @@ def validate_remote_repository_settings(repo_root: Path) -> list[str]:
 
 
 def validate_operating_closeout(repo_root: Path) -> list[str]:
+    current_policy_closeout = (
+        repo_root
+        / "lab"
+        / "waves"
+        / "wave_us100_closedbar_surface_cartography_v0"
+        / "current_policy_closeout_amendment.yaml"
+    )
+    if current_policy_closeout.exists():
+        payload = load_yaml(current_policy_closeout)
+        if payload.get("status") == "wave01_current_policy_closed_complete":
+            return []
     for path in [repo_root, repo_root / "src"]:
         text = str(path)
         if text not in sys.path:

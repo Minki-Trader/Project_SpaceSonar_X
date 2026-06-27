@@ -62,6 +62,144 @@ def active_ids(repo: Path) -> tuple[str, str, str]:
     )
 
 
+def bounded_synthesis_campaign(campaign_id: str, **synthesis_overrides: Any) -> dict[str, Any]:
+    source_campaign_ids = [f"campaign_source_{index:02d}_v0" for index in range(1, 6)]
+    synthesis = {
+        "enabled": True,
+        "source_scope": "previous_material_only",
+        "cadence": {
+            "trigger": "after_5_standard_campaign_closeouts",
+            "standard_campaign_closeout_count_required": 5,
+            "counting_scope": "since_last_bounded_synthesis_campaign",
+            "counted_standard_campaign_ids": source_campaign_ids,
+            "early_open_exception_reason": "",
+        },
+        "source_campaign_ids": source_campaign_ids,
+        "mix_queue_path": f"lab/campaigns/{campaign_id}/synthesis/mix_queue.yaml",
+        "mix_depth_policy": {
+            "default_sequence": ["mix-2", "mix-3"],
+            "mix4_policy": "exception_only_with_recorded_reason",
+            "mix5_plus_policy": "forbidden",
+        },
+        "ingredient_lifecycle_policy": {
+            "raw_reuse_default": "forbidden_after_consumed_by_completed_synthesis",
+            "allowed_reuse_statuses": ["carry_forward_ingredient", "reopened_ingredient_exception"],
+            "carry_forward_requires_source_synthesis": True,
+            "reopened_exception_requires_reason": True,
+        },
+        "kpi_policy": {
+            "ledger_required": True,
+            "stage_kind": "special_mixing",
+            "same_fixed_schema_as_campaign_wave": True,
+            "overall_and_segment_breakdowns_required": True,
+        },
+        "next_wave_influence": "forbidden_reference_only",
+        "runtime_follow_through": {
+            "valid_proxy_model_bearing_mix_requires_l4": True,
+            "l4_promising_result_effect": "continue_to_L5_candidate_runtime_evidence",
+        },
+        "claim_boundary": (
+            "synthesis_learning_only_no_next_wave_direction_"
+            "no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness"
+        ),
+    }
+    synthesis.update(synthesis_overrides)
+    return {
+        "campaign_id": campaign_id,
+        "campaign_type": "bounded_synthesis",
+        "bounded_synthesis": synthesis,
+    }
+
+
+def seed_standard_campaign_closeouts(repo: Path, campaign_ids: list[str]) -> None:
+    for index, campaign_id in enumerate(campaign_ids, start=1):
+        campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+        closeout_path = repo / "lab" / "campaigns" / campaign_id / "campaign_closeout.yaml"
+        campaign_path.parent.mkdir(parents=True, exist_ok=True)
+        write_yaml(
+            campaign_path,
+            {
+                "campaign_id": campaign_id,
+                "campaign_type": "standard",
+                "status": "closed_for_synthesis_source",
+                "created_at_utc": f"2026-06-2{index}T00:00:00Z",
+                "claim_boundary": "standard_campaign_closed_no_selected_baseline_no_runtime_authority",
+                "campaign_closeout": f"lab/campaigns/{campaign_id}/campaign_closeout.yaml",
+            },
+        )
+        write_yaml(
+            closeout_path,
+            {
+                "campaign_id": campaign_id,
+                "status": "closed",
+                "claim_boundary": "closeout_evidence_only_no_selected_baseline_no_runtime_authority",
+            },
+        )
+
+
+def write_bounded_ingredient(
+    repo: Path,
+    campaign_id: str,
+    ingredient_id: str,
+    *,
+    source_campaign_id: str,
+    source_run_id: str = "run_source_fixture_v0",
+    evidence_path: str = "docs/workspace/workspace_state.yaml",
+    status: str = "available_for_first_synthesis",
+    consumed_by: str = "",
+    carry_from: str = "",
+    reopen_reason: str = "",
+) -> Path:
+    ingredient_path = repo / "lab" / "campaigns" / campaign_id / "synthesis" / "ingredients" / f"{ingredient_id}.yaml"
+    ingredient_path.parent.mkdir(parents=True, exist_ok=True)
+    write_yaml(
+        ingredient_path,
+        {
+            "version": "ingredient_card_v1",
+            "ingredient_card_id": ingredient_id,
+            "source_campaign_ids": [source_campaign_id],
+            "source_run_ids": [source_run_id],
+            "source_clue_ids": [],
+            "source_negative_memory_ids": [],
+            "source_divergence_ids": [],
+            "material_type": "preserved_clue",
+            "salvage_value": "usable synthesis fixture material with bounded claim",
+            "evidence_paths": [evidence_path],
+            "selection_eligibility": "eligible_for_mix",
+            "ingredient_lifecycle": {
+                "synthesis_use_status": status,
+                "consumed_by_synthesis_campaign_id": consumed_by,
+                "consumed_by_mix_item_id": "mix_item_fixture_v0" if consumed_by else "",
+                "carry_forward_from_synthesis_campaign_id": carry_from,
+                "reopened_ingredient_exception_reason": reopen_reason,
+            },
+            "forbidden_uses": [
+                "selected_baseline",
+                "next_wave_direction",
+                "repair_relabeling",
+            ],
+            "claim_boundary": "ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority",
+        },
+    )
+    return ingredient_path
+
+
+def write_valid_bounded_synthesis(repo: Path, campaign_id: str) -> dict[str, Any]:
+    manifest = bounded_synthesis_campaign(campaign_id)
+    source_campaign_ids = manifest["bounded_synthesis"]["source_campaign_ids"]
+    seed_standard_campaign_closeouts(repo, source_campaign_ids)
+    campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign_path.parent.mkdir(parents=True, exist_ok=True)
+    write_yaml(campaign_path, manifest)
+    write_bounded_ingredient(
+        repo,
+        campaign_id,
+        "ingredient_valid_fixture_v0",
+        source_campaign_id=source_campaign_ids[0],
+    )
+    return manifest
+
+
 def test_active_validator_rejects_stale_receipt_after_mt5_closeout(tmp_path: Path) -> None:
     repo = copy_evidence_repo(tmp_path)
     run_id, _bundle_id, _attempt_id = active_ids(repo)
@@ -164,6 +302,65 @@ def test_active_validator_rejects_legacy_completed_runtime_status(tmp_path: Path
     assert any("completed_* status without runtime_probe_complete" in error for error in errors)
 
 
+def test_active_validator_accepts_bounded_synthesis_with_real_sources_and_ingredient(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_valid_fixture_v0"
+    write_valid_bounded_synthesis(repo, campaign_id)
+
+    errors = validate(repo)
+
+    assert not any("bounded synthesis" in error and campaign_id in error for error in errors)
+    assert not any("ingredient_valid_fixture_v0" in error for error in errors)
+
+
+def test_active_validator_rejects_counted_campaign_without_closeout_evidence(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_missing_closeout_v0"
+    manifest = write_valid_bounded_synthesis(repo, campaign_id)
+    source_campaign_id = manifest["bounded_synthesis"]["source_campaign_ids"][0]
+    closeout_path = repo / "lab" / "campaigns" / source_campaign_id / "campaign_closeout.yaml"
+    closeout_path.unlink()
+
+    errors = validate(repo)
+
+    assert any("counted standard campaign missing closeout evidence" in error for error in errors)
+
+
+def test_active_validator_rejects_consumed_raw_ingredient_reused_as_fresh_material(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    first_campaign_id = "campaign_synthesis_consumed_fixture_v0"
+    second_campaign_id = "campaign_synthesis_reuse_fixture_v0"
+    first_manifest = write_valid_bounded_synthesis(repo, first_campaign_id)
+    source_campaign_id = first_manifest["bounded_synthesis"]["source_campaign_ids"][0]
+    write_bounded_ingredient(
+        repo,
+        first_campaign_id,
+        "ingredient_consumed_fixture_v0",
+        source_campaign_id=source_campaign_id,
+        status="consumed_by_completed_synthesis",
+        consumed_by=first_campaign_id,
+    )
+    second_manifest = bounded_synthesis_campaign(second_campaign_id)
+    second_manifest["bounded_synthesis"]["source_campaign_ids"] = first_manifest["bounded_synthesis"]["source_campaign_ids"]
+    second_manifest["bounded_synthesis"]["cadence"]["counted_standard_campaign_ids"] = first_manifest["bounded_synthesis"][
+        "source_campaign_ids"
+    ]
+    second_path = repo / "lab" / "campaigns" / second_campaign_id / "campaign_manifest.yaml"
+    second_path.parent.mkdir(parents=True, exist_ok=True)
+    write_yaml(second_path, second_manifest)
+    write_bounded_ingredient(
+        repo,
+        second_campaign_id,
+        "ingredient_reused_fresh_fixture_v0",
+        source_campaign_id=source_campaign_id,
+        status="available_for_first_synthesis",
+    )
+
+    errors = validate(repo)
+
+    assert any("raw ingredient identity was already consumed" in error for error in errors)
+
+
 def test_active_validator_rejects_bad_bounded_synthesis_mix_depth(tmp_path: Path) -> None:
     repo = copy_evidence_repo(tmp_path)
     campaign_id = "campaign_synthesis_bad_mix_v0"
@@ -171,29 +368,14 @@ def test_active_validator_rejects_bad_bounded_synthesis_mix_depth(tmp_path: Path
     campaign_path.parent.mkdir(parents=True)
     write_yaml(
         campaign_path,
-        {
-            "campaign_id": campaign_id,
-            "campaign_type": "bounded_synthesis",
-            "bounded_synthesis": {
-                "enabled": True,
-                "source_scope": "previous_material_only",
-                "source_campaign_ids": ["campaign_minimal_onnx_mt5_vertical_slice_v0"],
-                "mix_depth_policy": {
-                    "default_sequence": ["mix-3"],
-                    "mix4_policy": "exception_only_with_recorded_reason",
-                    "mix5_plus_policy": "forbidden",
-                },
-                "next_wave_influence": "forbidden_reference_only",
-                "runtime_follow_through": {
-                    "valid_proxy_model_bearing_mix_requires_l4": True,
-                    "l4_promising_result_effect": "continue_to_L5_candidate_runtime_evidence",
-                },
-                "claim_boundary": (
-                    "synthesis_learning_only_no_next_wave_direction_"
-                    "no_selected_baseline_no_runtime_authority"
-                ),
+        bounded_synthesis_campaign(
+            campaign_id,
+            mix_depth_policy={
+                "default_sequence": ["mix-3"],
+                "mix4_policy": "exception_only_with_recorded_reason",
+                "mix5_plus_policy": "forbidden",
             },
-        },
+        ),
     )
 
     errors = validate(repo)
@@ -208,34 +390,101 @@ def test_active_validator_rejects_synthesis_next_wave_influence(tmp_path: Path) 
     campaign_path.parent.mkdir(parents=True)
     write_yaml(
         campaign_path,
+        bounded_synthesis_campaign(campaign_id, next_wave_influence="allowed_to_direct_next_wave"),
+    )
+
+    errors = validate(repo)
+
+    assert any("next_wave_influence must be forbidden" in error for error in errors)
+
+
+def test_active_validator_rejects_bounded_synthesis_without_five_campaign_cadence(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_bad_cadence_v0"
+    campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign_path.parent.mkdir(parents=True)
+    manifest = bounded_synthesis_campaign(campaign_id)
+    manifest["bounded_synthesis"]["cadence"]["counted_standard_campaign_ids"] = ["campaign_one_v0"]
+    write_yaml(campaign_path, manifest)
+
+    errors = validate(repo)
+
+    assert any("requires 5 counted standard campaigns" in error for error in errors)
+
+
+def test_active_validator_rejects_bounded_synthesis_kpi_stage_kind_drift(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_bad_kpi_stage_v0"
+    campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign_path.parent.mkdir(parents=True)
+    manifest = bounded_synthesis_campaign(campaign_id)
+    manifest["bounded_synthesis"]["kpi_policy"]["stage_kind"] = "campaign"
+    write_yaml(campaign_path, manifest)
+
+    errors = validate(repo)
+
+    assert any("KPI stage_kind must be special_mixing" in error for error in errors)
+
+
+def test_active_validator_rejects_mix4_without_exception_reason(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_bad_mix4_v0"
+    campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign_path.parent.mkdir(parents=True)
+    write_yaml(campaign_path, bounded_synthesis_campaign(campaign_id))
+    queue_path = repo / "lab" / "campaigns" / campaign_id / "synthesis" / "mix_queue.yaml"
+    queue_path.parent.mkdir(parents=True)
+    write_yaml(
+        queue_path,
         {
+            "version": "synthesis_mix_queue_v1",
             "campaign_id": campaign_id,
-            "campaign_type": "bounded_synthesis",
-            "bounded_synthesis": {
-                "enabled": True,
-                "source_scope": "previous_material_only",
-                "source_campaign_ids": ["campaign_minimal_onnx_mt5_vertical_slice_v0"],
-                "mix_depth_policy": {
-                    "default_sequence": ["mix-2", "mix-3"],
-                    "mix4_policy": "exception_only_with_recorded_reason",
-                    "mix5_plus_policy": "forbidden",
-                },
-                "next_wave_influence": "allowed_to_direct_next_wave",
-                "runtime_follow_through": {
-                    "valid_proxy_model_bearing_mix_requires_l4": True,
-                    "l4_promising_result_effect": "continue_to_L5_candidate_runtime_evidence",
-                },
-                "claim_boundary": (
-                    "synthesis_learning_only_no_next_wave_direction_"
-                    "no_selected_baseline_no_runtime_authority"
-                ),
+            "queue_id": "queue_bad_mix4_v0",
+            "source_scope": "previous_material_only",
+            "ingredient_lifecycle_policy": {
+                "raw_reuse_default": "forbidden_after_consumed_by_completed_synthesis",
+            },
+            "kpi_policy": {"stage_kind": "special_mixing"},
+            "mix_items": [{"mix_item_id": "mix_item_bad_v0", "mix_depth": "mix-4"}],
+        },
+    )
+
+    errors = validate(repo)
+
+    assert any("mix-4 requires exception_reason" in error for error in errors)
+
+
+def test_active_validator_rejects_carry_forward_ingredient_without_source(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    campaign_id = "campaign_synthesis_bad_carry_forward_v0"
+    campaign_path = repo / "lab" / "campaigns" / campaign_id / "campaign_manifest.yaml"
+    campaign_path.parent.mkdir(parents=True)
+    write_yaml(campaign_path, bounded_synthesis_campaign(campaign_id))
+    ingredient_path = (
+        repo
+        / "lab"
+        / "campaigns"
+        / campaign_id
+        / "synthesis"
+        / "ingredients"
+        / "ingredient_bad_carry_forward_v0.yaml"
+    )
+    ingredient_path.parent.mkdir(parents=True)
+    write_yaml(
+        ingredient_path,
+        {
+            "version": "ingredient_card_v1",
+            "ingredient_card_id": "ingredient_bad_carry_forward_v0",
+            "ingredient_lifecycle": {
+                "synthesis_use_status": "carry_forward_ingredient",
+                "carry_forward_from_synthesis_campaign_id": "",
             },
         },
     )
 
     errors = validate(repo)
 
-    assert any("next_wave_influence must be forbidden" in error for error in errors)
+    assert any("carry_forward_ingredient requires source synthesis campaign" in error for error in errors)
 
 
 def test_active_validator_rejects_research_campaign_missing_exploration_coverage(tmp_path: Path) -> None:
@@ -297,6 +546,25 @@ def test_active_validator_rejects_wave_campaign_ref_status_drift(tmp_path: Path)
     errors = validate(repo)
 
     assert any("campaign_refs.csv campaign_us100_task_surface_scout_v0: status mismatch" in error for error in errors)
+
+
+def test_active_validator_rejects_active_wave_run_missing_goal_id(tmp_path: Path) -> None:
+    repo = copy_evidence_repo(tmp_path)
+    run_id = "onnxlab_wave0_cell_001_surface_scout_v0"
+    run_dir = repo / "lab" / "runs" / run_id
+
+    manifest = load_json(run_dir / "run_manifest.json")
+    manifest["id_chain"].pop("goal_id", None)
+    write_json(run_dir / "run_manifest.json", manifest)
+
+    receipt = load_yaml(run_dir / "experiment_receipt.yaml")
+    receipt["id_chain"].pop("goal_id", None)
+    write_yaml(run_dir / "experiment_receipt.yaml", receipt)
+
+    errors = validate(repo)
+
+    assert any(f"run_registry.csv {run_id}: manifest id_chain.goal_id" in error for error in errors)
+    assert any(f"run_registry.csv {run_id}: receipt id_chain.goal_id" in error for error in errors)
 
 
 def test_active_validator_rejects_surface_registry_status_drift(tmp_path: Path) -> None:

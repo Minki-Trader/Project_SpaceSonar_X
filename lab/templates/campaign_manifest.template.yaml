@@ -41,10 +41,32 @@ kpi_interpretation_policy:
     - evidence_limits
     - attribution_confidence
     - next_probe
+  segment_breakdown_policy:
+    overall_required: true
+    required_axes:
+      - overall
+      - period_role
+      - time_window
+      - session
+      - direction
+      - score_or_threshold_bucket
+      - trade_shape_bucket
+      - runtime_surface
+    missing_segment_record_required: true
+    segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
+    fake_segment_placeholder_forbidden: true
+    observed_segment_requires_metric_or_count_basis: true
+    missing_segment_requires_next_materialization_step: true
   claim_effect: exploratory_hypothesis_only_until_controls_and_runtime_evidence_support_stronger_claim
 bounded_synthesis:
   enabled: false
   source_scope: previous_material_only
+  cadence:
+    trigger: after_5_standard_campaign_closeouts
+    standard_campaign_closeout_count_required: 5
+    counting_scope: since_last_bounded_synthesis_campaign
+    counted_standard_campaign_ids: []
+    early_open_exception_reason: ""
   source_campaign_ids: []
   source_run_ids: []
   source_clue_ids: []
@@ -60,10 +82,31 @@ bounded_synthesis:
       - mix-3
     mix4_policy: exception_only_with_recorded_reason
     mix5_plus_policy: forbidden
+  ingredient_lifecycle_policy:
+    raw_reuse_default: forbidden_after_consumed_by_completed_synthesis
+    allowed_reuse_statuses:
+      - carry_forward_ingredient
+      - reopened_ingredient_exception
+    carry_forward_requires_source_synthesis: true
+    reopened_exception_requires_reason: true
+  kpi_policy:
+    ledger_required: true
+    ledger_path: lab/campaigns/<campaign_id>/kpi/
+    stage_kind: special_mixing
+    same_fixed_schema_as_campaign_wave: true
+    overall_and_segment_breakdowns_required: true
+    fake_segment_placeholder_forbidden: true
+    observed_segment_requires_metric_or_count_basis: true
+    missing_segment_requires_next_materialization_step: true
+    closeout_requires_kpi_interpretation: true
   next_wave_influence: forbidden_reference_only
   runtime_follow_through:
     valid_proxy_model_bearing_mix_requires_l4: true
     l4_promising_result_effect: continue_to_L5_candidate_runtime_evidence
+  closeout_artifacts:
+    synthesis_closeout_path: lab/campaigns/<campaign_id>/synthesis/synthesis_closeout.yaml
+    kpi_summary_path: lab/campaigns/<campaign_id>/kpi/kpi_summary.yaml
+    carry_forward_index_path: lab/campaigns/<campaign_id>/synthesis/carry_forward_ingredients.csv
   claim_boundary: synthesis_learning_only_no_next_wave_direction_no_selected_baseline_no_runtime_authority
 candidate_repair_policy:
   allowed_scope: bounded_run_or_sweep_only

@@ -1,0 +1,366 @@
+version: mt5_trade_shape_reconstruction_summary_v1
+attempt_id: attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0
+run_id: onnxlab_wave0_cell_011_surface_scout_v0
+campaign_id: campaign_us100_task_surface_scout_v0
+period_role: research_oos
+formula_version: trade_shape_reconstruction_v1
+method: reconstructed_from_decision_replay_execution_telemetry_and_us100_m5_ohlc
+price_basis: bar_open_at_recorded_bar_close_time_from_retained_ohlc_not_tester_deal_fill
+point: 0.01
+stats:
+  source_execution_rows: 45281
+  open_count: 6261
+  closed_trade_count: 6261
+  explicit_close_count: 1981
+  implicit_reversal_close_count: 4280
+  unclosed_position_count: 0
+  missing_bar_count: 0
+  direction_trade_counts:
+    short: 3199
+    long: 3062
+  trade_shape_bucket_count: 24
+overall:
+  trade_count: 6261
+  gross_points_sum: 307439.0
+  gross_points_avg: 49.10382
+  win_count: 2410
+  loss_count: 3818
+  flat_count: 33
+  win_rate: 0.38492254
+  avg_mfe_points: 2287.58361
+  avg_mae_points: 2028.161
+  avg_hold_bars: 1.70995
+  avg_exit_efficiency: -2.92084461
+by_direction:
+  long:
+    trade_count: 3062
+    gross_points_sum: 149859.0
+    gross_points_avg: 48.94154
+    win_count: 1236
+    loss_count: 1809
+    flat_count: 17
+    win_rate: 0.40365774
+    avg_mfe_points: 2169.30503
+    avg_mae_points: 2032.06728
+    avg_hold_bars: 1.71293
+    avg_exit_efficiency: -2.83326106
+  short:
+    trade_count: 3199
+    gross_points_sum: 157580.0
+    gross_points_avg: 49.25914
+    win_count: 1174
+    loss_count: 2009
+    flat_count: 16
+    win_rate: 0.36698968
+    avg_mfe_points: 2400.79681
+    avg_mae_points: 2024.42201
+    avg_hold_bars: 1.7071
+    avg_exit_efficiency: -3.00467731
+by_trade_shape_bucket:
+  long_hold_0_1_adverse_loss:
+    trade_count: 1246
+    gross_points_sum: -1850924.0
+    gross_points_avg: -1485.49278
+    win_count: 0
+    loss_count: 1246
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 706.4069
+    avg_mae_points: 3187.1236
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: -7.19458445
+  long_hold_0_1_efficient_win:
+    trade_count: 83
+    gross_points_sum: 118498.0
+    gross_points_avg: 1427.68675
+    win_count: 83
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 1857.80723
+    avg_mae_points: 650.84337
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.77441592
+  long_hold_0_1_failed_followthrough_loss:
+    trade_count: 219
+    gross_points_sum: -90398.0
+    gross_points_avg: -412.77626
+    win_count: 0
+    loss_count: 219
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 1996.79452
+    avg_mae_points: 1131.93607
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: -0.2200451
+  long_hold_0_1_flat_exit:
+    trade_count: 10
+    gross_points_sum: 0.0
+    gross_points_avg: 0.0
+    win_count: 0
+    loss_count: 0
+    flat_count: 10
+    win_rate: 0.0
+    avg_mfe_points: 461.2
+    avg_mae_points: 1080.2
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.0
+  long_hold_0_1_low_efficiency_win:
+    trade_count: 141
+    gross_points_sum: 44315.0
+    gross_points_avg: 314.29078
+    win_count: 141
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 1783.24823
+    avg_mae_points: 851.92199
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.17911545
+  long_hold_0_1_partial_win:
+    trade_count: 152
+    gross_points_sum: 197049.0
+    gross_points_avg: 1296.375
+    win_count: 152
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 2431.61184
+    avg_mae_points: 434.56579
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.49072146
+  long_hold_2_6_adverse_loss:
+    trade_count: 211
+    gross_points_sum: -338241.0
+    gross_points_avg: -1603.03791
+    win_count: 0
+    loss_count: 211
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 1651.38389
+    avg_mae_points: 3553.43128
+    avg_hold_bars: 2.19905
+    avg_exit_efficiency: -1.05947199
+  long_hold_2_6_efficient_win:
+    trade_count: 256
+    gross_points_sum: 1169375.0
+    gross_points_avg: 4567.87109
+    win_count: 256
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 5750.91406
+    avg_mae_points: 606.44141
+    avg_hold_bars: 3.69141
+    avg_exit_efficiency: 0.78256772
+  long_hold_2_6_failed_followthrough_loss:
+    trade_count: 133
+    gross_points_sum: -72382.0
+    gross_points_avg: -544.22556
+    win_count: 0
+    loss_count: 133
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 2532.96992
+    avg_mae_points: 1530.71429
+    avg_hold_bars: 2.33083
+    avg_exit_efficiency: -0.23448336
+  long_hold_2_6_flat_exit:
+    trade_count: 7
+    gross_points_sum: 0.0
+    gross_points_avg: 0.0
+    win_count: 0
+    loss_count: 0
+    flat_count: 7
+    win_rate: 0.0
+    avg_mfe_points: 1392.85714
+    avg_mae_points: 705.42857
+    avg_hold_bars: 2.0
+    avg_exit_efficiency: 0.0
+  long_hold_2_6_low_efficiency_win:
+    trade_count: 233
+    gross_points_sum: 144913.0
+    gross_points_avg: 621.94421
+    win_count: 233
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 3327.72961
+    avg_mae_points: 1420.70386
+    avg_hold_bars: 2.44635
+    avg_exit_efficiency: 0.17299285
+  long_hold_2_6_partial_win:
+    trade_count: 371
+    gross_points_sum: 827654.0
+    gross_points_avg: 2230.87332
+    win_count: 371
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 4319.15364
+    avg_mae_points: 829.03774
+    avg_hold_bars: 2.9407
+    avg_exit_efficiency: 0.50448912
+  short_hold_0_1_adverse_loss:
+    trade_count: 1394
+    gross_points_sum: -1928512.0
+    gross_points_avg: -1383.43759
+    win_count: 0
+    loss_count: 1394
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 690.53659
+    avg_mae_points: 2902.41607
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: -7.04878603
+  short_hold_0_1_efficient_win:
+    trade_count: 40
+    gross_points_sum: 63042.0
+    gross_points_avg: 1576.05
+    win_count: 40
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 2045.7
+    avg_mae_points: 685.775
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.78496496
+  short_hold_0_1_failed_followthrough_loss:
+    trade_count: 249
+    gross_points_sum: -121498.0
+    gross_points_avg: -487.94378
+    win_count: 0
+    loss_count: 249
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 2227.86345
+    avg_mae_points: 1255.37751
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: -0.22976348
+  short_hold_0_1_flat_exit:
+    trade_count: 11
+    gross_points_sum: 0.0
+    gross_points_avg: 0.0
+    win_count: 0
+    loss_count: 0
+    flat_count: 11
+    win_rate: 0.0
+    avg_mfe_points: 820.63636
+    avg_mae_points: 505.45455
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.0
+  short_hold_0_1_low_efficiency_win:
+    trade_count: 120
+    gross_points_sum: 31932.0
+    gross_points_avg: 266.1
+    win_count: 120
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 1626.00833
+    avg_mae_points: 870.25833
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.16447954
+  short_hold_0_1_partial_win:
+    trade_count: 105
+    gross_points_sum: 92949.0
+    gross_points_avg: 885.22857
+    win_count: 105
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 1912.20952
+    avg_mae_points: 828.29524
+    avg_hold_bars: 1.0
+    avg_exit_efficiency: 0.46994906
+  short_hold_2_6_adverse_loss:
+    trade_count: 200
+    gross_points_sum: -362456.0
+    gross_points_avg: -1812.28
+    win_count: 0
+    loss_count: 200
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 1855.225
+    avg_mae_points: 3879.91
+    avg_hold_bars: 2.1
+    avg_exit_efficiency: -1.06417219
+  short_hold_2_6_efficient_win:
+    trade_count: 199
+    gross_points_sum: 1074752.0
+    gross_points_avg: 5400.76382
+    win_count: 199
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 6997.71357
+    avg_mae_points: 654.86935
+    avg_hold_bars: 3.59799
+    avg_exit_efficiency: 0.76532785
+  short_hold_2_6_failed_followthrough_loss:
+    trade_count: 166
+    gross_points_sum: -124397.0
+    gross_points_avg: -749.37952
+    win_count: 0
+    loss_count: 166
+    flat_count: 0
+    win_rate: 0.0
+    avg_mfe_points: 3163.66867
+    avg_mae_points: 1868.19277
+    avg_hold_bars: 2.30723
+    avg_exit_efficiency: -0.24924352
+  short_hold_2_6_flat_exit:
+    trade_count: 5
+    gross_points_sum: 0.0
+    gross_points_avg: 0.0
+    win_count: 0
+    loss_count: 0
+    flat_count: 5
+    win_rate: 0.0
+    avg_mfe_points: 1252.4
+    avg_mae_points: 667.6
+    avg_hold_bars: 2.2
+    avg_exit_efficiency: 0.0
+  short_hold_2_6_low_efficiency_win:
+    trade_count: 258
+    gross_points_sum: 189443.0
+    gross_points_avg: 734.27519
+    win_count: 258
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 3628.60078
+    avg_mae_points: 1306.67054
+    avg_hold_bars: 2.49225
+    avg_exit_efficiency: 0.18616128
+  short_hold_2_6_partial_win:
+    trade_count: 452
+    gross_points_sum: 1242325.0
+    gross_points_avg: 2748.50664
+    win_count: 452
+    loss_count: 0
+    flat_count: 0
+    win_rate: 1.0
+    avg_mfe_points: 5408.94912
+    avg_mae_points: 744.0177
+    avg_hold_bars: 3.02876
+    avg_exit_efficiency: 0.49702291
+source_artifacts:
+  attempt_manifest:
+    path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+    sha256: 86f9c097c5d9553a30b0844c6dd3a706b65b2b732483c817b405cc95d18d4e70
+    size_bytes: 28716
+  execution_telemetry:
+    path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/execution_telemetry.csv
+    sha256: 98e058eae8d9de983ac7059091d782c9694b7255f4b0e2c93fe8305849357818
+    size_bytes: 6444003
+  raw_bars:
+    path: data/raw/mt5_bars/m5/wave0_us100_closedbar_surface_cartography_v0/US100/bars_us100_m5_mt5api_raw.csv
+    sha256: ab3308da907709beb5cf57895d5935069ee82d97bde7b4cf1aa00f885a0ea160
+    size_bytes: 44911007
+  trade_shape_telemetry:
+    path: runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/trade_shape_telemetry.csv
+    sha256: 2cabaea7605b076130a6aef563aabe53fe6b1be040571a65654af14d31a37336
+    size_bytes: 2359686
+    availability: local_telemetry_hash_recorded
+claim_boundary: trade_shape_reconstruction_observation_only_no_tester_deal_ledger_no_runtime_authority_no_economics_pass_no_selected_baseline

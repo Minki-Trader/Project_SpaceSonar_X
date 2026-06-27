@@ -11,6 +11,7 @@ from .transaction import ControlPlaneTransaction
 
 
 YamlOverrides = dict[Path, dict[str, Any]]
+CURRENT_POLICY_CLOSEOUT_NAME = "current_policy_closeout_amendment.yaml"
 
 
 def _read_yaml_view(repo_root: Path, rel_path: Path, yaml_overrides: YamlOverrides | None = None) -> dict[str, Any]:
@@ -93,19 +94,38 @@ def _select_wave_for_goal(
     if requested_wave_id:
         for path, wave in waves:
             if wave.get("wave_id") == requested_wave_id:
-                return path, wave, _read_yaml_view(repo_root, Path(_closeout_rel_path(wave, path)), yaml_overrides)
+                closeout_path = _active_closeout_rel_path(repo_root, wave, path, yaml_overrides)
+                return path, wave, _read_yaml_view(repo_root, Path(closeout_path), yaml_overrides)
         raise ValueError(f"active goal declares missing wave_id: {requested_wave_id}")
     goal_id = goal.get("active_goal_id") or goal.get("goal_id")
     matching = [(path, wave) for path, wave in waves if wave.get("active_goal_id") == goal_id]
     if matching:
         path, wave = sorted(matching, key=lambda item: item[0].as_posix())[-1]
-        return path, wave, _read_yaml_view(repo_root, Path(_closeout_rel_path(wave, path)), yaml_overrides)
+        closeout_path = _active_closeout_rel_path(repo_root, wave, path, yaml_overrides)
+        return path, wave, _read_yaml_view(repo_root, Path(closeout_path), yaml_overrides)
     return None, {}, {}
 
 
 def _closeout_rel_path(wave: dict[str, Any], wave_rel_path: Path) -> str:
     storage = wave.get("storage_contract") or {}
     return str(storage.get("wave_closeout") or wave.get("wave_closeout") or (wave_rel_path.parent / "wave_closeout.yaml").as_posix())
+
+
+def _active_closeout_rel_path(
+    repo_root: Path,
+    wave: dict[str, Any],
+    wave_rel_path: Path,
+    yaml_overrides: YamlOverrides | None = None,
+) -> str:
+    legacy_closeout_path = Path(_closeout_rel_path(wave, wave_rel_path))
+    if yaml_overrides and legacy_closeout_path in yaml_overrides:
+        return legacy_closeout_path.as_posix()
+    current_policy_path = Path((wave_rel_path.parent / CURRENT_POLICY_CLOSEOUT_NAME).as_posix())
+    if yaml_overrides and current_policy_path in yaml_overrides:
+        return current_policy_path.as_posix()
+    if os.path.exists(filesystem_path(repo_root / current_policy_path)):
+        return current_policy_path.as_posix()
+    return _closeout_rel_path(wave, wave_rel_path)
 
 
 def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides | None = None) -> dict[str, Any]:
@@ -116,7 +136,7 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
     active_ids = goal.get("active_ids") or {}
     goal_manifest = goal_path.as_posix() if goal_path else None
     wave_allocation = wave_path.as_posix() if wave_path else None
-    wave_closeout = _closeout_rel_path(wave, wave_path) if wave and wave_path else None
+    wave_closeout = _active_closeout_rel_path(repo_root, wave, wave_path, yaml_overrides) if wave and wave_path else None
     return {
         "version": "workspace_state_projection_v2",
         "updated_utc": goal.get("updated_at_utc")

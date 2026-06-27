@@ -25,12 +25,14 @@ from foundation.evaluation.kpi_record_model import (  # noqa: E402
     AUTHORITIES_BY_NAMESPACE,
     DEFAULT_CLAIM_BOUNDARY,
     FORBIDDEN_CLAIMS,
+    KPI_SEGMENT_CLAIM_POLICY,
     KPI_LEDGER_CONTRACT_VERSION,
     KPI_LEDGER_MANIFEST_VERSION,
     KPI_RECORD_FIELDNAMES,
     KPI_RECORD_SCHEMA_VERSION,
     NAMESPACE_BY_FAMILY,
     OBSERVED,
+    REQUIRED_KPI_SEGMENT_AXES,
     RECORD_FILES,
 )
 
@@ -87,6 +89,20 @@ def validate_contract(repo_root: Path) -> list[str]:
         missing = sorted(expected - observed)
         if missing:
             errors.append(f"docs/contracts/kpi_ledger_contract.yaml: allowed.{key} missing {missing}")
+    segment_policy = data.get("segment_breakdown_policy") or {}
+    required_axes = set(segment_policy.get("required_axes") or [])
+    missing_axes = sorted(set(REQUIRED_KPI_SEGMENT_AXES) - required_axes)
+    if missing_axes:
+        errors.append(f"docs/contracts/kpi_ledger_contract.yaml: segment_breakdown_policy.required_axes missing {missing_axes}")
+    if segment_policy.get("segment_claim_policy") != KPI_SEGMENT_CLAIM_POLICY:
+        errors.append("docs/contracts/kpi_ledger_contract.yaml: segment_breakdown_policy.segment_claim_policy mismatch")
+    for key in [
+        "fake_segment_placeholder_forbidden",
+        "observed_segment_requires_metric_or_count_basis",
+        "missing_segment_requires_next_materialization_step",
+    ]:
+        if segment_policy.get(key) is not True:
+            errors.append(f"docs/contracts/kpi_ledger_contract.yaml: segment_breakdown_policy.{key} must be true")
     return errors
 
 
@@ -111,10 +127,94 @@ def validate_manifest_shape(manifest_path: Path, manifest: dict[str, Any], repo_
         errors.append(f"{label}: kpi_policy.non_trading_score_probe_excluded_from_kpi_ledger must be true")
     if policy.get("score_probe_retained_only_in_runtime_evidence_not_kpi") is not True:
         errors.append(f"{label}: kpi_policy.score_probe_retained_only_in_runtime_evidence_not_kpi must be true")
+    if policy.get("overall_and_segment_breakdowns_required") is not True:
+        errors.append(f"{label}: kpi_policy.overall_and_segment_breakdowns_required must be true")
+    for key in [
+        "fake_segment_placeholder_forbidden",
+        "observed_segment_requires_metric_or_count_basis",
+        "missing_segment_requires_next_materialization_step",
+    ]:
+        if policy.get(key) is not True:
+            errors.append(f"{label}: kpi_policy.{key} must be true")
+    policy_axes = set(policy.get("required_segment_axes") or [])
+    missing_policy_axes = sorted(set(REQUIRED_KPI_SEGMENT_AXES) - policy_axes)
+    if missing_policy_axes:
+        errors.append(f"{label}: kpi_policy.required_segment_axes missing {missing_policy_axes}")
+    if policy.get("segment_claim_policy") != KPI_SEGMENT_CLAIM_POLICY:
+        errors.append(f"{label}: kpi_policy.segment_claim_policy must be {KPI_SEGMENT_CLAIM_POLICY}")
     forbidden = set(manifest.get("forbidden_claims") or [])
     missing_forbidden = sorted(set(FORBIDDEN_CLAIMS) - forbidden)
     if missing_forbidden:
         errors.append(f"{label}: forbidden_claims missing {missing_forbidden}")
+    return errors
+
+
+def validate_summary_shape(summary_path: Path, summary: dict[str, Any], repo_root: Path) -> list[str]:
+    label = rel(summary_path, repo_root)
+    errors: list[str] = []
+    policy = summary.get("kpi_policy") or {}
+    if policy.get("overall_and_segment_breakdowns_required") is not True:
+        errors.append(f"{label}: kpi_policy.overall_and_segment_breakdowns_required must be true")
+    for key in [
+        "fake_segment_placeholder_forbidden",
+        "observed_segment_requires_metric_or_count_basis",
+        "missing_segment_requires_next_materialization_step",
+    ]:
+        if policy.get(key) is not True:
+            errors.append(f"{label}: kpi_policy.{key} must be true")
+    policy_axes = set(policy.get("required_segment_axes") or [])
+    missing_policy_axes = sorted(set(REQUIRED_KPI_SEGMENT_AXES) - policy_axes)
+    if missing_policy_axes:
+        errors.append(f"{label}: kpi_policy.required_segment_axes missing {missing_policy_axes}")
+    if policy.get("segment_claim_policy") != KPI_SEGMENT_CLAIM_POLICY:
+        errors.append(f"{label}: kpi_policy.segment_claim_policy must be {KPI_SEGMENT_CLAIM_POLICY}")
+
+    coverage = summary.get("segment_coverage") or {}
+    breakdowns = summary.get("segment_breakdowns") or {}
+    coverage_axes = set(coverage.get("required_axes") or [])
+    missing_coverage_axes = sorted(set(REQUIRED_KPI_SEGMENT_AXES) - coverage_axes)
+    if missing_coverage_axes:
+        errors.append(f"{label}: segment_coverage.required_axes missing {missing_coverage_axes}")
+    if coverage.get("missing_axes"):
+        errors.append(f"{label}: segment_coverage.missing_axes must be empty")
+    if coverage.get("claim_policy") != KPI_SEGMENT_CLAIM_POLICY:
+        errors.append(f"{label}: segment_coverage.claim_policy must be {KPI_SEGMENT_CLAIM_POLICY}")
+    coverage_pending = set(coverage.get("pending_materialization_axes") or [])
+    for axis in REQUIRED_KPI_SEGMENT_AXES:
+        segment = breakdowns.get(axis)
+        if not isinstance(segment, dict):
+            errors.append(f"{label}: segment_breakdowns missing required axis {axis}")
+            continue
+        status = segment.get("status")
+        analysis_status = segment.get("analysis_status")
+        if status not in {"observed", "not_collected", "missing_source", "partial"}:
+            errors.append(f"{label}: segment_breakdowns.{axis}.status is invalid")
+        if status == "observed":
+            if analysis_status != "materialized":
+                errors.append(f"{label}: segment_breakdowns.{axis}.analysis_status must be materialized")
+            has_count_basis = "record_count" in segment or "counts" in segment
+            has_metric_basis = bool(segment.get("metric_basis") or segment.get("metric_basis_by_period_role"))
+            if not (has_count_basis or has_metric_basis):
+                errors.append(f"{label}: segment_breakdowns.{axis} observed segment lacks metric/count basis")
+        if status == "partial":
+            if analysis_status != "partial_materialized":
+                errors.append(f"{label}: segment_breakdowns.{axis}.analysis_status must be partial_materialized")
+            if not segment.get("missing_reason"):
+                errors.append(f"{label}: segment_breakdowns.{axis} partial segment requires missing_reason")
+            if not segment.get("next_materialization_step"):
+                errors.append(f"{label}: segment_breakdowns.{axis} partial segment requires next_materialization_step")
+        if axis != "overall" and status in {"not_collected", "missing_source"}:
+            if analysis_status not in {"not_materialized", "missing_source"}:
+                errors.append(f"{label}: segment_breakdowns.{axis}.analysis_status must show not materialized")
+            if not segment.get("missing_reason"):
+                errors.append(f"{label}: segment_breakdowns.{axis} requires missing_reason when not collected")
+            if not segment.get("next_materialization_step"):
+                errors.append(f"{label}: segment_breakdowns.{axis} requires next_materialization_step when not collected")
+            if axis not in coverage_pending:
+                errors.append(f"{label}: segment_coverage.pending_materialization_axes missing {axis}")
+        claim_effect = str(segment.get("claim_effect") or "")
+        if status in {"observed", "partial", "not_collected", "missing_source"} and "no_selection_or_pass" not in claim_effect:
+            errors.append(f"{label}: segment_breakdowns.{axis}.claim_effect must keep no_selection_or_pass boundary")
     return errors
 
 
@@ -315,6 +415,8 @@ def validate_manifest(manifest_path: Path, repo_root: Path) -> list[str]:
             errors.append(f"{rel(manifest_path, repo_root)}: summary.path missing {summary_path_value}")
         elif summary.get("sha256") != sha256(summary_path):
             errors.append(f"{rel(manifest_path, repo_root)}: summary.sha256 mismatch")
+        else:
+            errors.extend(validate_summary_shape(summary_path, load_yaml(summary_path), repo_root))
     return errors
 
 

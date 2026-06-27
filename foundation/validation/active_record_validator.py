@@ -40,6 +40,8 @@ REQUIRED_COMPANION_AXES = {
     "horizon_or_holding_policy",
     "evaluation_or_runtime_surface",
 }
+EXPECTED_WAVE_BUDGET_ALLOCATION_MODE = "fixed_wave_budget_variable_campaign_budget"
+EXPECTED_BOUNDED_SYNTHESIS_MIX_SEQUENCE = ["mix-2", "mix-3"]
 FORBIDDEN_SINGLE_AXIS_RESEARCH_SHAPES = {
     "feature_only_wave_or_campaign",
     "label_only_wave_or_campaign",
@@ -160,6 +162,29 @@ def as_set(values: Any) -> set[str]:
     if isinstance(values, str):
         return {item for item in values.split("|") if item}
     return {str(item) for item in values}
+
+
+def as_list(values: Any) -> list[str]:
+    if values is None:
+        return []
+    if isinstance(values, str):
+        return [values] if values else []
+    return [str(item) for item in values if str(item)]
+
+
+def has_nonempty_value(value: Any) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, str):
+        return bool(value.strip())
+    if isinstance(value, (list, tuple, set, dict)):
+        return bool(value)
+    return bool(str(value).strip())
+
+
+def status_text_is_closed_or_complete(value: str) -> bool:
+    lowered = value.lower()
+    return any(token in lowered for token in ["closed", "complete"])
 
 
 def claim_boundary_of(data: dict[str, Any]) -> str | None:
@@ -494,6 +519,243 @@ def validate_active_goal_records(repo_root: Path) -> list[str]:
     return errors
 
 
+def is_legacy_closed_wave_budget(wave: dict[str, Any], budget: dict[str, Any]) -> bool:
+    new_budget_keys = {
+        "budget_profile",
+        "allocation_mode",
+        "standard_total_run_budget",
+        "standard_campaign_slots",
+        "campaign_run_budget_bounds",
+        "l4_pair_budget",
+        "l4_budget_unit",
+    }
+    if any(key in budget for key in new_budget_keys):
+        return False
+    status = str(wave.get("status") or "")
+    claim_boundary = str(wave.get("claim_boundary") or "")
+    return "formal_mt5_strategy_tester_runs" in budget and status_text_is_closed_or_complete(
+        f"{status} {claim_boundary}"
+    )
+
+
+def allocation_is_bounded_synthesis(repo_root: Path, allocation: dict[str, Any]) -> bool:
+    if allocation.get("campaign_type") == "bounded_synthesis" or allocation.get("stage_kind") == "special_mixing":
+        return True
+    campaign_id = str(allocation.get("campaign_id") or "")
+    campaign_path_text = allocation.get("campaign_manifest")
+    if not campaign_path_text and campaign_id:
+        campaign_path_text = f"lab/campaigns/{campaign_id}/campaign_manifest.yaml"
+    if not campaign_path_text:
+        return False
+    campaign_path = repo_root / str(campaign_path_text)
+    if not campaign_path.exists():
+        return False
+    campaign = load_yaml(campaign_path) or {}
+    return campaign.get("campaign_type") == "bounded_synthesis" or (
+        (campaign.get("bounded_synthesis") or {}).get("enabled") is True
+    )
+
+
+def allocation_reason_has_marker(
+    allocation: dict[str, Any],
+    allocation_budget: dict[str, Any],
+    marker: str,
+    reason: str,
+    *,
+    run_budget: int,
+    default_runs: int,
+) -> bool:
+    if marker == "why_this_campaign_needs_more_or_less_than_default" and run_budget == default_runs:
+        return True
+    for source in [allocation_budget, allocation]:
+        if has_nonempty_value(source.get(marker)):
+            return True
+    lowered = reason.lower()
+    aliases = {
+        "hypothesis_surface_width": [
+            "hypothesis_surface_width",
+            "hypothesis surface",
+            "surface width",
+            "search width",
+            "wide hypothesis",
+            "narrow hypothesis",
+        ],
+        "changed_axes": [
+            "changed_axes",
+            "changed axis",
+            "changed axes",
+            "axis change",
+            "axes changed",
+        ],
+        "held_fixed_axes": [
+            "held_fixed_axes",
+            "held fixed",
+            "fixed axes",
+            "fixed axis",
+            "fixed controls",
+        ],
+        "why_this_campaign_needs_more_or_less_than_default": [
+            "more than default",
+            "less than default",
+            "above default",
+            "below default",
+            "non-default",
+            "deviates from default",
+            "needs more",
+            "needs less",
+        ],
+    }
+    return any(alias in lowered for alias in aliases.get(marker, [marker]))
+
+
+def budget_exception_is_active(budget: dict[str, Any]) -> bool:
+    budget_exception = budget.get("budget_exception") or {}
+    return budget_exception.get("status") not in {None, "none"}
+
+
+def validate_wave_budget_allocation_policy(repo_root: Path, wave_path: Path, wave: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    budget = wave.get("budget") or {}
+    label = rel(wave_path, repo_root)
+    allocation_mode = budget.get("allocation_mode")
+    if allocation_mode != EXPECTED_WAVE_BUDGET_ALLOCATION_MODE:
+        if is_legacy_closed_wave_budget(wave, budget):
+            return errors
+        if allocation_mode:
+            errors.append(f"{label}: budget.allocation_mode must be {EXPECTED_WAVE_BUDGET_ALLOCATION_MODE}")
+        else:
+            errors.append(f"{label}: budget.allocation_mode required for new/open wave budgets")
+        return errors
+
+    required_budget_fields = {
+        "budget_profile",
+        "wave_budget_fixed_before_open",
+        "max_runs",
+        "standard_total_run_budget",
+        "standard_campaign_slots",
+        "reserve_fraction",
+        "campaign_run_budget_bounds",
+        "per_campaign_allocation_reason_required",
+        "hypothesis_allocation_reason_required",
+        "allocation_reason_must_name",
+        "mid_wave_budget_increase_policy",
+        "budget_exception",
+        "l4_pair_budget",
+        "l4_budget_unit",
+        "l4_required_period_roles",
+    }
+    missing = sorted(required_budget_fields - set(budget))
+    if missing:
+        errors.append(f"{label}: wave budget missing required fields {missing}")
+        return errors
+
+    total_budget = budget.get("standard_total_run_budget")
+    max_runs = budget.get("max_runs")
+    if max_runs != total_budget:
+        errors.append(f"{label}: budget.max_runs must equal standard_total_run_budget")
+    if budget.get("wave_budget_fixed_before_open") is not True:
+        errors.append(f"{label}: wave budget must be fixed before open")
+    if budget.get("mid_wave_budget_increase_policy") != "forbidden_without_new_wave_or_explicit_budget_amendment":
+        errors.append(f"{label}: mid-wave budget increase policy is not the project standard")
+
+    bounds = budget.get("campaign_run_budget_bounds") or {}
+    for key in ["min_runs", "default_runs", "max_runs"]:
+        if key not in bounds:
+            errors.append(f"{label}: campaign_run_budget_bounds missing {key}")
+    min_runs = bounds.get("min_runs")
+    default_runs = bounds.get("default_runs")
+    max_campaign_runs = bounds.get("max_runs")
+    if not all(isinstance(value, int) for value in [min_runs, default_runs, max_campaign_runs]):
+        errors.append(f"{label}: campaign_run_budget_bounds must be integer counts")
+        return errors
+    if not (min_runs <= default_runs <= max_campaign_runs):
+        errors.append(f"{label}: campaign_run_budget_bounds must satisfy min <= default <= max")
+
+    budget_exception = budget.get("budget_exception") or {}
+    has_budget_exception = budget_exception_is_active(budget)
+    if has_budget_exception:
+        if budget_exception.get("allowed_timing") != "before_wave_open":
+            errors.append(f"{label}: budget_exception allowed_timing must be before_wave_open")
+        if not budget_exception.get("reason"):
+            errors.append(f"{label}: budget_exception requires reason")
+        if budget_exception.get("approved_by_user") is not True:
+            errors.append(f"{label}: budget_exception requires approved_by_user true")
+        if not budget_exception.get("claim_boundary"):
+            errors.append(f"{label}: budget_exception requires claim_boundary")
+
+    profile_path = repo_root / "docs" / "workspace" / "lab_profile.yaml"
+    if profile_path.exists() and not has_budget_exception:
+        profile_policy = (load_yaml(profile_path) or {}).get("wave_budget_policy") or {}
+        profile_l4 = profile_policy.get("l4_pair_budget_policy") or {}
+        expected_values = {
+            "budget_profile": profile_policy.get("default_profile"),
+            "allocation_mode": profile_policy.get("allocation_mode"),
+            "wave_budget_fixed_before_open": profile_policy.get("wave_budget_fixed_before_open"),
+            "standard_total_run_budget": profile_policy.get("standard_total_run_budget"),
+            "max_runs": profile_policy.get("standard_total_run_budget"),
+            "standard_campaign_slots": profile_policy.get("standard_campaign_slots"),
+            "reserve_fraction": profile_policy.get("reserve_fraction"),
+            "campaign_run_budget_bounds": profile_policy.get("campaign_run_budget_bounds"),
+            "per_campaign_allocation_reason_required": profile_policy.get(
+                "per_campaign_allocation_reason_required"
+            ),
+            "hypothesis_allocation_reason_required": profile_policy.get("hypothesis_allocation_reason_required"),
+            "allocation_reason_must_name": profile_policy.get("allocation_reason_must_name"),
+            "l4_pair_budget": profile_l4.get("standard_pair_budget"),
+            "l4_budget_unit": profile_l4.get("budget_unit"),
+        }
+        for field, expected in expected_values.items():
+            if expected is not None and budget.get(field) != expected:
+                errors.append(f"{label}: budget.{field} must match lab_profile wave_budget_policy")
+
+    standard_allocations = [
+        allocation
+        for allocation in wave.get("campaign_allocations") or []
+        if not allocation_is_bounded_synthesis(repo_root, allocation)
+    ]
+    slot_count = budget.get("standard_campaign_slots")
+    if isinstance(slot_count, int) and len(standard_allocations) > slot_count and not has_budget_exception:
+        errors.append(f"{label}: standard campaign allocations exceed standard_campaign_slots={slot_count}")
+
+    allocated_runs = 0
+    for allocation in wave.get("campaign_allocations") or []:
+        campaign_id = allocation.get("campaign_id") or "unknown_campaign"
+        allocation_budget = allocation.get("budget") or {}
+        run_budget = allocation_budget.get("run_budget", allocation.get("max_runs"))
+        reason = allocation_budget.get("allocation_reason") or allocation.get("allocation_reason")
+        if run_budget in {None, ""}:
+            continue
+        if not isinstance(run_budget, int):
+            errors.append(f"{label} allocation {campaign_id}: run budget must be an integer")
+            continue
+        allocated_runs += run_budget
+        if run_budget < min_runs or run_budget > max_campaign_runs:
+            errors.append(
+                f"{label} allocation {campaign_id}: run budget {run_budget} outside campaign bounds "
+                f"{min_runs}-{max_campaign_runs}"
+            )
+        if budget.get("per_campaign_allocation_reason_required") is True and not reason:
+            errors.append(f"{label} allocation {campaign_id}: allocation_reason required")
+        if run_budget != default_runs and not reason:
+            errors.append(f"{label} allocation {campaign_id}: non-default run budget requires allocation_reason")
+        if reason and budget.get("hypothesis_allocation_reason_required") is True:
+            for marker in budget.get("allocation_reason_must_name") or []:
+                if not allocation_reason_has_marker(
+                    allocation,
+                    allocation_budget,
+                    str(marker),
+                    str(reason),
+                    run_budget=run_budget,
+                    default_runs=default_runs,
+                ):
+                    errors.append(f"{label} allocation {campaign_id}: allocation_reason missing {marker}")
+
+    if isinstance(total_budget, int) and allocated_runs > total_budget:
+        errors.append(f"{label}: campaign allocation run budgets exceed wave total budget")
+
+    return errors
+
+
 def validate_wave_campaign_graph(repo_root: Path) -> list[str]:
     errors: list[str] = []
     wave_registry_path = repo_root / "docs" / "registers" / "wave_registry.csv"
@@ -516,6 +778,7 @@ def validate_wave_campaign_graph(repo_root: Path) -> list[str]:
         wave = load_yaml(wave_path)
         if wave.get("wave_id") != wave_id:
             errors.append(f"wave_registry.csv {wave_id}: wave_allocation wave_id mismatch")
+        errors.extend(validate_wave_budget_allocation_policy(repo_root, wave_path, wave))
         storage = wave.get("storage_contract") or {}
         campaign_refs_text = storage.get("campaign_refs")
         if not campaign_refs_text:
@@ -739,6 +1002,9 @@ def validate_run_campaign_chain(repo_root: Path) -> list[str]:
     run_registry_path = repo_root / "docs" / "registers" / "run_registry.csv"
     if not sweep_registry_path.exists() or not run_registry_path.exists():
         return errors
+    workspace = load_yaml(repo_root / "docs" / "workspace" / "workspace_state.yaml")
+    active_goal_id = (workspace.get("active_goal") or {}).get("goal_id")
+    active_wave_id = (workspace.get("active_wave") or {}).get("wave_id")
     sweeps = {row.get("sweep_id", ""): row for row in read_csv_rows(sweep_registry_path)}
     campaigns: dict[str, dict[str, Any]] = {}
     for row in read_csv_rows(repo_root / "docs" / "registers" / "campaign_registry.csv"):
@@ -778,6 +1044,97 @@ def validate_run_campaign_chain(repo_root: Path) -> list[str]:
                     f"run_registry.csv {row.get('run_id')}: {label} id_chain.wave_id "
                     f"{wave_id} not in campaign.wave_ids {sorted(campaign_wave_ids)}"
                 )
+            if active_goal_id and active_wave_id and wave_id == active_wave_id and id_chain.get("goal_id") != active_goal_id:
+                errors.append(
+                    f"run_registry.csv {row.get('run_id')}: {label} id_chain.goal_id "
+                    f"expected={active_goal_id} observed={id_chain.get('goal_id')}"
+                )
+    return errors
+
+
+def is_bounded_synthesis_campaign(campaign: dict[str, Any]) -> bool:
+    return campaign.get("campaign_type") == "bounded_synthesis" or (
+        (campaign.get("bounded_synthesis") or {}).get("enabled") is True
+    )
+
+
+def campaign_has_closeout_evidence(
+    repo_root: Path,
+    campaign: dict[str, Any],
+    registry_row: dict[str, str] | None,
+) -> bool:
+    candidate_paths: list[str] = []
+    for field in ["campaign_closeout", "closeout", "evidence_path"]:
+        value = campaign.get(field)
+        if value:
+            candidate_paths.append(str(value))
+    storage = campaign.get("storage_contract") or {}
+    if storage.get("campaign_closeout"):
+        candidate_paths.append(str(storage["campaign_closeout"]))
+    if registry_row and registry_row.get("evidence_path"):
+        candidate_paths.append(str(registry_row["evidence_path"]))
+    return any((repo_root / path_text).exists() for path_text in candidate_paths)
+
+
+def ingredient_raw_identity(ingredient: dict[str, Any]) -> tuple[str, ...]:
+    parts: list[str] = []
+    for field in [
+        "source_campaign_ids",
+        "source_run_ids",
+        "source_clue_ids",
+        "source_negative_memory_ids",
+        "source_divergence_ids",
+        "evidence_paths",
+    ]:
+        values = sorted(as_list(ingredient.get(field)))
+        if values:
+            parts.append(f"{field}={'|'.join(values)}")
+    material_type = str(ingredient.get("material_type") or "").strip()
+    if material_type:
+        parts.append(f"material_type={material_type}")
+    return tuple(parts)
+
+
+def validate_bounded_ingredient_card(
+    repo_root: Path,
+    ingredient_path: Path,
+    ingredient: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    label = rel(ingredient_path, repo_root)
+    if not as_list(ingredient.get("source_campaign_ids")):
+        errors.append(f"{label}: ingredient requires source_campaign_ids")
+    if not any(
+        as_list(ingredient.get(field))
+        for field in [
+            "source_run_ids",
+            "source_clue_ids",
+            "source_negative_memory_ids",
+            "source_divergence_ids",
+        ]
+    ):
+        errors.append(f"{label}: ingredient requires at least one source run/clue/memory/divergence id")
+    if not str(ingredient.get("salvage_value") or "").strip():
+        errors.append(f"{label}: ingredient requires salvage_value")
+
+    evidence_paths = as_list(ingredient.get("evidence_paths"))
+    if not evidence_paths:
+        errors.append(f"{label}: ingredient requires evidence_paths")
+    evidence_hashes = ingredient.get("evidence_hashes") or {}
+    for path_text in evidence_paths:
+        evidence_path = repo_root / path_text
+        if not evidence_path.exists():
+            errors.append(f"{label}: ingredient evidence_path missing {path_text}")
+            continue
+        expected_hash = evidence_hashes.get(path_text)
+        if expected_hash and not sha256_matches_text_checkout(str(expected_hash), evidence_path):
+            errors.append(f"{label}: ingredient evidence_hash mismatch {path_text}")
+
+    forbidden_uses = set(as_list(ingredient.get("forbidden_uses")))
+    for required_forbidden in ["selected_baseline", "next_wave_direction"]:
+        if required_forbidden not in forbidden_uses:
+            errors.append(f"{label}: ingredient forbidden_uses missing {required_forbidden}")
+
     return errors
 
 
@@ -786,8 +1143,19 @@ def validate_bounded_synthesis_campaigns(repo_root: Path) -> list[str]:
     campaign_root = repo_root / "lab" / "campaigns"
     if not campaign_root.exists():
         return errors
+    campaign_records: dict[str, tuple[Path, dict[str, Any]]] = {}
     for campaign_path in sorted(campaign_root.glob("*/campaign_manifest.yaml")):
-        campaign = load_yaml(campaign_path)
+        campaign = load_yaml(campaign_path) or {}
+        campaign_id = str(campaign.get("campaign_id") or campaign_path.parent.name)
+        campaign_records[campaign_id] = (campaign_path, campaign)
+    campaign_registry_path = repo_root / "docs" / "registers" / "campaign_registry.csv"
+    registry_by_campaign = {
+        row.get("campaign_id", ""): row
+        for row in read_csv_rows(campaign_registry_path)
+    } if campaign_registry_path.exists() else {}
+    ingredient_reuse_records: list[dict[str, Any]] = []
+
+    for campaign_path, campaign in sorted(campaign_records.values(), key=lambda item: str(item[0])):
         synthesis = campaign.get("bounded_synthesis") or {}
         if campaign.get("campaign_type") != "bounded_synthesis" and synthesis.get("enabled") is not True:
             continue
@@ -803,13 +1171,76 @@ def validate_bounded_synthesis_campaigns(repo_root: Path) -> list[str]:
         if campaign_id and campaign_id in source_campaign_ids:
             errors.append(f"{label}: bounded synthesis cannot use itself as a source campaign")
 
+        cadence = synthesis.get("cadence") or {}
+        if cadence.get("trigger") != "after_5_standard_campaign_closeouts":
+            errors.append(f"{label}: bounded synthesis cadence.trigger must be after_5_standard_campaign_closeouts")
+        try:
+            required_count = int(cadence.get("standard_campaign_closeout_count_required") or 0)
+        except (TypeError, ValueError):
+            required_count = 0
+        if required_count != 5:
+            errors.append(f"{label}: bounded synthesis cadence must require 5 standard campaign closeouts")
+        counted_campaigns = [str(item) for item in cadence.get("counted_standard_campaign_ids") or []]
+        duplicate_counted = sorted({item for item in counted_campaigns if counted_campaigns.count(item) > 1})
+        if duplicate_counted:
+            errors.append(f"{label}: bounded synthesis counted_standard_campaign_ids has duplicates {duplicate_counted}")
+        if len(counted_campaigns) < 5 and not str(cadence.get("early_open_exception_reason") or "").strip():
+            errors.append(
+                f"{label}: bounded synthesis requires 5 counted standard campaigns or an early_open_exception_reason"
+            )
+        counted_set = set(counted_campaigns)
+        source_set = set(source_campaign_ids)
+        missing_counted_sources = sorted(counted_set - source_set)
+        if missing_counted_sources:
+            errors.append(f"{label}: counted standard campaigns missing from source_campaign_ids {missing_counted_sources}")
+        for counted_campaign_id in counted_campaigns:
+            counted_record = campaign_records.get(counted_campaign_id)
+            if not counted_record:
+                errors.append(f"{label}: counted standard campaign missing manifest {counted_campaign_id}")
+                continue
+            counted_path, counted_campaign = counted_record
+            if is_bounded_synthesis_campaign(counted_campaign):
+                errors.append(f"{label}: counted campaign is bounded_synthesis not standard {counted_campaign_id}")
+            counted_status = str(counted_campaign.get("status") or "")
+            counted_claim = str(counted_campaign.get("claim_boundary") or "")
+            if not status_text_is_closed_or_complete(f"{counted_status} {counted_claim}"):
+                errors.append(f"{rel(counted_path, repo_root)}: counted standard campaign is not closed")
+            if not campaign_has_closeout_evidence(
+                repo_root,
+                counted_campaign,
+                registry_by_campaign.get(counted_campaign_id),
+            ):
+                errors.append(f"{rel(counted_path, repo_root)}: counted standard campaign missing closeout evidence")
+
         mix_policy = synthesis.get("mix_depth_policy") or {}
-        if mix_policy.get("default_sequence") != ["mix-2", "mix-3"]:
+        if mix_policy.get("default_sequence") != EXPECTED_BOUNDED_SYNTHESIS_MIX_SEQUENCE:
             errors.append(f"{label}: bounded synthesis mix depth must default to mix-2 then mix-3")
         if "exception" not in str(mix_policy.get("mix4_policy", "")):
             errors.append(f"{label}: bounded synthesis mix-4 must be exception-only with a recorded reason")
         if "forbidden" not in str(mix_policy.get("mix5_plus_policy", "")):
             errors.append(f"{label}: bounded synthesis mix-5+ must be forbidden")
+
+        lifecycle_policy = synthesis.get("ingredient_lifecycle_policy") or {}
+        if lifecycle_policy.get("raw_reuse_default") != "forbidden_after_consumed_by_completed_synthesis":
+            errors.append(f"{label}: bounded synthesis raw ingredient reuse must be forbidden after consumption")
+        allowed_reuse = set(lifecycle_policy.get("allowed_reuse_statuses") or [])
+        for required_status in {"carry_forward_ingredient", "reopened_ingredient_exception"}:
+            if required_status not in allowed_reuse:
+                errors.append(f"{label}: bounded synthesis allowed_reuse_statuses missing {required_status}")
+        if lifecycle_policy.get("carry_forward_requires_source_synthesis") is not True:
+            errors.append(f"{label}: carry-forward ingredients must name source synthesis")
+        if lifecycle_policy.get("reopened_exception_requires_reason") is not True:
+            errors.append(f"{label}: reopened ingredients must record an exception reason")
+
+        kpi_policy = synthesis.get("kpi_policy") or {}
+        if kpi_policy.get("ledger_required") is not True:
+            errors.append(f"{label}: bounded synthesis KPI ledger must be required")
+        if kpi_policy.get("stage_kind") != "special_mixing":
+            errors.append(f"{label}: bounded synthesis KPI stage_kind must be special_mixing")
+        if kpi_policy.get("same_fixed_schema_as_campaign_wave") is not True:
+            errors.append(f"{label}: bounded synthesis KPI must use the same fixed schema as campaign/wave ledgers")
+        if kpi_policy.get("overall_and_segment_breakdowns_required") is not True:
+            errors.append(f"{label}: bounded synthesis KPI must require overall and segment breakdowns")
 
         if not str(synthesis.get("next_wave_influence", "")).startswith("forbidden"):
             errors.append(f"{label}: bounded synthesis next_wave_influence must be forbidden")
@@ -824,6 +1255,113 @@ def validate_bounded_synthesis_campaigns(repo_root: Path) -> list[str]:
         for protected in ["selected_baseline", "runtime_authority", "economics_pass", "live_readiness", "goal_achieve"]:
             if protected in boundary and f"no_{protected}" not in boundary:
                 errors.append(f"{label}: bounded synthesis claim_boundary mentions {protected!r} without no_ guard")
+
+        mix_queue_path = synthesis.get("mix_queue_path") or f"lab/campaigns/{campaign_id}/synthesis/mix_queue.yaml"
+        queue_path = repo_root / str(mix_queue_path)
+        if queue_path.exists():
+            queue_label = rel(queue_path, repo_root)
+            queue = load_yaml(queue_path)
+            if queue.get("source_scope") != "previous_material_only":
+                errors.append(f"{queue_label}: source_scope must be previous_material_only")
+            queue_cadence = queue.get("cadence") or {}
+            if queue_cadence.get("trigger") != "after_5_standard_campaign_closeouts":
+                errors.append(f"{queue_label}: cadence.trigger must be after_5_standard_campaign_closeouts")
+            if queue_cadence.get("counting_scope") != "since_last_bounded_synthesis_campaign":
+                errors.append(f"{queue_label}: cadence.counting_scope must be since_last_bounded_synthesis_campaign")
+            if queue.get("default_sequence") != EXPECTED_BOUNDED_SYNTHESIS_MIX_SEQUENCE:
+                errors.append(f"{queue_label}: default_sequence must be mix-2 then mix-3")
+            queue_mix_policy = queue.get("mix_depth_policy") or {}
+            expected_queue_mix_policy = {
+                "mix2": "required_first",
+                "mix3": "default_completion_depth",
+                "mix4": "exception_only_with_recorded_reason",
+                "mix5_plus": "forbidden",
+            }
+            for key, expected in expected_queue_mix_policy.items():
+                if queue_mix_policy.get(key) != expected:
+                    errors.append(f"{queue_label}: mix_depth_policy.{key} must be {expected}")
+            queue_kpi = queue.get("kpi_policy") or {}
+            if queue_kpi.get("stage_kind") != "special_mixing":
+                errors.append(f"{queue_label}: kpi_policy.stage_kind must be special_mixing")
+            if queue_kpi.get("overall_and_segment_breakdowns_required") is not True:
+                errors.append(f"{queue_label}: kpi_policy must require overall and segment breakdowns")
+            queue_lifecycle = queue.get("ingredient_lifecycle_policy") or {}
+            if queue_lifecycle.get("raw_reuse_default") != "forbidden_after_consumed_by_completed_synthesis":
+                errors.append(f"{queue_label}: raw ingredient reuse must be forbidden after consumption")
+            for item in queue.get("mix_items") or []:
+                item_id = str(item.get("mix_item_id") or "<unknown>")
+                mix_depth = str(item.get("mix_depth") or "")
+                if mix_depth == "mix-4" and not str(item.get("exception_reason") or "").strip():
+                    errors.append(f"{queue_label} {item_id}: mix-4 requires exception_reason")
+                if mix_depth.startswith("mix-5"):
+                    errors.append(f"{queue_label} {item_id}: mix-5+ is forbidden")
+
+        ingredient_dir = repo_root / f"lab/campaigns/{campaign_id}/synthesis/ingredients"
+        if ingredient_dir.exists():
+            ingredient_paths = sorted(ingredient_dir.glob("*.yaml"))
+            if not ingredient_paths:
+                errors.append(f"{rel(ingredient_dir, repo_root)}: bounded synthesis requires ingredient cards")
+            for ingredient_path in ingredient_paths:
+                ingredient_label = rel(ingredient_path, repo_root)
+                ingredient = load_yaml(ingredient_path)
+                errors.extend(validate_bounded_ingredient_card(repo_root, ingredient_path, ingredient))
+                lifecycle = ingredient.get("ingredient_lifecycle") or {}
+                status = str(lifecycle.get("synthesis_use_status") or "")
+                consumed_by = str(lifecycle.get("consumed_by_synthesis_campaign_id") or "").strip()
+                carry_from = str(lifecycle.get("carry_forward_from_synthesis_campaign_id") or "").strip()
+                reopen_reason = str(lifecycle.get("reopened_ingredient_exception_reason") or "").strip()
+                if consumed_by and status not in {
+                    "consumed_by_completed_synthesis",
+                    "carry_forward_ingredient",
+                    "reopened_ingredient_exception",
+                }:
+                    errors.append(f"{ingredient_label}: consumed ingredient has invalid synthesis_use_status {status}")
+                if status == "carry_forward_ingredient" and not carry_from:
+                    errors.append(f"{ingredient_label}: carry_forward_ingredient requires source synthesis campaign")
+                if status == "reopened_ingredient_exception" and not reopen_reason:
+                    errors.append(f"{ingredient_label}: reopened_ingredient_exception requires reason")
+                raw_identity = ingredient_raw_identity(ingredient)
+                if raw_identity:
+                    ingredient_reuse_records.append(
+                        {
+                            "identity": raw_identity,
+                            "path": ingredient_path,
+                            "campaign_id": campaign_id,
+                            "status": status,
+                            "consumed_by": consumed_by,
+                        }
+                    )
+        else:
+            errors.append(f"{rel(ingredient_dir, repo_root)}: bounded synthesis requires ingredient cards")
+
+    consumed_by_identity: dict[tuple[str, ...], set[str]] = {}
+    for record in ingredient_reuse_records:
+        if record["status"] == "consumed_by_completed_synthesis" and record["consumed_by"]:
+            consumed_by_identity.setdefault(record["identity"], set()).add(str(record["consumed_by"]))
+    for identity, consuming_campaigns in consumed_by_identity.items():
+        if len(consuming_campaigns) > 1:
+            paths = [
+                rel(record["path"], repo_root)
+                for record in ingredient_reuse_records
+                if record["identity"] == identity and record["status"] == "consumed_by_completed_synthesis"
+            ]
+            errors.append(
+                "bounded synthesis raw ingredient reused as consumed material across campaigns "
+                f"{sorted(consuming_campaigns)} paths={paths}"
+            )
+        for record in ingredient_reuse_records:
+            if record["identity"] != identity:
+                continue
+            if record["status"] in {
+                "consumed_by_completed_synthesis",
+                "carry_forward_ingredient",
+                "reopened_ingredient_exception",
+            }:
+                continue
+            errors.append(
+                f"{rel(record['path'], repo_root)}: raw ingredient identity was already consumed by "
+                f"{sorted(consuming_campaigns)} and must be carry_forward_ingredient or reopened_ingredient_exception"
+            )
     return errors
 
 
@@ -1241,6 +1779,7 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
     closeout_path = repo_root / "lab" / "waves" / "wave_us100_closedbar_surface_cartography_v0" / "wave_closeout.yaml"
     if path_exists(closeout_path):
         closeout = load_yaml(closeout_path) or {}
+        current_policy_closeout_path = closeout_path.parent / "current_policy_closeout_amendment.yaml"
         runtime_integrity = closeout.get("runtime_contract_integrity") or {}
         if runtime_integrity.get("status") == "passed":
             from foundation.evaluation.runtime_contract_evaluator import evaluate_runtime_contract
@@ -1248,7 +1787,13 @@ def validate_runtime_completion_truth(repo_root: Path) -> list[str]:
             runtime_result = evaluate_runtime_contract(repo_root)
             if runtime_result.get("status") != "passed":
                 errors.append(f"{rel(closeout_path, repo_root)}: runtime_contract_integrity passed but runtime evaluator did not pass")
-        if closeout.get("version") == "wave_closeout_v2" and path_exists(repo_root / ".git") and path_exists(repo_root / "AGENTS.md"):
+        if path_exists(current_policy_closeout_path):
+            amendment = load_yaml(current_policy_closeout_path) or {}
+            if amendment.get("status") != "wave01_current_policy_closed_complete":
+                errors.append(f"{rel(current_policy_closeout_path, repo_root)}: status must be wave01_current_policy_closed_complete")
+            if amendment.get("legacy_source_evidence", {}).get("legacy_wave_closeout") != rel(closeout_path, repo_root):
+                errors.append(f"{rel(current_policy_closeout_path, repo_root)}: legacy_wave_closeout must reference wave_closeout.yaml")
+        elif closeout.get("version") == "wave_closeout_v2" and path_exists(repo_root / ".git") and path_exists(repo_root / "AGENTS.md"):
             from foundation.evaluation.build_operating_closeout import validate_committed_closeout
 
             errors.extend(validate_committed_closeout(repo_root))

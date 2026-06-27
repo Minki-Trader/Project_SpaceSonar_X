@@ -30,12 +30,50 @@ summary:
   mt5_attempt_count: 0
   comparison_pair_count: 0
   proxy_only_excluded_from_comparison_count: 0
+  segment_breakdown_required: true
+  required_segment_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
   missing_value_reason_counts: {}
   authority_counts: {}
+  segment_materialization:
+    materialized_axes: []
+    partial_materialized_axes: []
+    pending_materialization_axes: []
 kpi_policy:
   fixed_schema: true
   mt5_missing_is_repair_trigger_before_na: true
   proxy_only_runs_excluded_from_comparison_ledger: true
+  non_trading_score_probe_excluded_from_kpi_ledger: true
+  score_probe_retained_only_in_runtime_evidence_not_kpi: true
+  overall_and_segment_breakdowns_required: true
+  fake_segment_placeholder_forbidden: true
+  observed_segment_requires_metric_or_count_basis: true
+  missing_segment_requires_next_materialization_step: true
+  required_segment_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
+  optional_segment_axes:
+    - volatility_regime
+    - drawdown_cluster
+    - holding_period_bucket
+    - feature_family
+    - target_family
+    - model_family
+    - spread_or_cost_bucket
+  segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
 claim_boundary: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
 forbidden_claims:
   - selected_baseline
@@ -45,4 +83,3 @@ forbidden_claims:
   - handoff_complete
   - reviewed_verified_pass
   - goal_achieve
-

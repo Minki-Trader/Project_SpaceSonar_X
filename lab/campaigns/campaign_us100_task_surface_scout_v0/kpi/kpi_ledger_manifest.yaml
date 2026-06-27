@@ -1,0 +1,131 @@
+version: kpi_ledger_manifest_v1
+ledger_id: kpi_ledger_campaign_us100_task_surface_scout_v0_v0
+ledger_scope: campaign
+schema_ref:
+  path: docs/contracts/kpi_ledger_contract.yaml
+  version: kpi_ledger_contract_v1
+scope_identity:
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_closedbar_surface_cartography_v0
+  campaign_id: campaign_us100_task_surface_scout_v0
+  stage_kind: campaign
+  synthesis_stage_id: ''
+source_artifacts:
+  proxy_authorities:
+  - lab/runs/onnxlab_wave0_cell_001_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_002_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_003_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_004_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_005_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_006_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_007_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_008_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_009_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_010_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_011_surface_scout_v0/metrics.json
+  - lab/runs/onnxlab_wave0_cell_012_surface_scout_v0/metrics.json
+  mt5_authorities:
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_research_oos_momentum_ret_1_v0/trade_shape_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_008_l4_decision_replay_validation_momentum_ret_1_v0/trade_shape_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_research_oos_momentum_ret_1_v0/trade_shape_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_011_l4_decision_replay_validation_momentum_ret_1_v0/trade_shape_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_research_oos_momentum_ret_1_v0/trade_shape_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/attempt_manifest.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/tester_report_receipt.yaml
+  - runtime/mt5_attempts/attempt_wave0_cell_012_l4_decision_replay_validation_momentum_ret_1_v0/trade_shape_summary.yaml
+record_files:
+  proxy_kpi_records:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/kpi/proxy_kpi_records.csv
+    sha256: 619f81e27ddacae32d10499791b79a488386272368a9fbfe14c2fe10692f977d
+    row_count: 12
+  mt5_runtime_kpi_records:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/kpi/mt5_runtime_kpi_records.csv
+    sha256: 00fc22a746d442ce62a26b4911148a0a82874ddc41f6854be4bf07fb0f4b62dd
+    row_count: 1086
+  proxy_mt5_comparison_records:
+    path: lab/campaigns/campaign_us100_task_surface_scout_v0/kpi/proxy_mt5_comparison_records.csv
+    sha256: 8a8854b1fddff4d7cb83de2b78945fd7cc1e021e9fb452b18a9b65535adec982
+    row_count: 15
+summary:
+  path: lab/campaigns/campaign_us100_task_surface_scout_v0/kpi/kpi_summary.yaml
+  sha256: aa26e08bfd3c52f02bc93fac796f729e6b173fd8d08ad5dd55d735d1622c5167
+  proxy_run_count: 12
+  mt5_attempt_count: 6
+  trade_execution_attempt_count: 6
+  comparison_pair_count: 3
+  proxy_only_excluded_from_comparison_count: 0
+  segment_breakdown_required: true
+  required_segment_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  segment_materialization:
+    materialized_axes:
+    - direction
+    - overall
+    - period_role
+    - runtime_surface
+    - score_or_threshold_bucket
+    - session
+    - time_window
+    - trade_shape_bucket
+    partial_materialized_axes: []
+    pending_materialization_axes: []
+kpi_policy:
+  fixed_schema: true
+  mt5_missing_is_repair_trigger_before_na: true
+  proxy_only_runs_excluded_from_comparison_ledger: true
+  non_trading_score_probe_excluded_from_kpi_ledger: true
+  score_probe_retained_only_in_runtime_evidence_not_kpi: true
+  overall_and_segment_breakdowns_required: true
+  fake_segment_placeholder_forbidden: true
+  observed_segment_requires_metric_or_count_basis: true
+  missing_segment_requires_next_materialization_step: true
+  required_segment_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  optional_segment_axes:
+  - volatility_regime
+  - drawdown_cluster
+  - holding_period_bucket
+  - feature_family
+  - target_family
+  - model_family
+  - spread_or_cost_bucket
+  segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
+claim_boundary: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- live_readiness
+- handoff_complete
+- reviewed_verified_pass
+- goal_achieve
