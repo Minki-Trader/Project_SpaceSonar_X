@@ -61,7 +61,7 @@ guards:
       - work_items
       - transactions
       - migration_records
-    rule: Check branch and worktree fit before mutation, preserve user changes, and keep main integration to approved boundary events.
+    rule: Work on main by default under the current user override, create branches only on explicit user request, preserve user changes, and push origin/main only at approved campaign closeout, wave closeout, or user-approved stabilization boundaries.
     validator: foundation.validation.control_plane_validator.validate_work_item_schema
 
 policy_binding_template:

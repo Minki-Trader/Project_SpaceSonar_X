@@ -84,8 +84,9 @@ Policy meaning lives in `docs/agent_control/policy_contract.yaml`; manifests bin
 
 ## Git
 
-- Use `codex/` branches unless user asks otherwise.
-- Main integration is boundary-level and squash-only by policy: campaign open/close, wave open/close, or explicit control-plane stabilization.
+- Current user operating override: do not create or use routine `codex/` work branches.
+- Work on `main` by default unless the user explicitly asks for a separate branch.
+- Do not push every run. Push `origin/main` at campaign closeout or an explicit user-approved boundary/stabilization point.
 - Current git root may be this project or a parent `MQL5` tree; avoid unrelated MetaTrader folders in status/commits.
 - Never revert user changes unless explicitly requested.
 

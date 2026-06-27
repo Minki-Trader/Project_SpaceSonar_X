@@ -58,10 +58,15 @@ Wave/campaign ownership rule:
 
 Git integration cadence:
 
-- Durable commit/main-push boundaries are `campaign_open`, `campaign_close`, `wave_open`, and `wave_close`.
-- Do not push every run to `main` by default.
+- Work on `main` by default; routine `codex/` work branches are disabled unless
+  the user explicitly requests one.
+- Durable `origin/main` push boundaries are `campaign_close`, `wave_close`, and
+  explicit user-approved stabilization points.
+- Do not push every run to `origin/main` by default.
 - A boundary commit should include the matching source-of-truth manifest updates, registry/index updates, claim-boundary updates, and hash records for ignored heavy artifacts.
-- Intermediate run work may stay branch-local or branch-committed, but it is not main-integrated evidence until the boundary commit/push is complete.
+- Intermediate run work may stay as unpushed local `main` commits or dirty
+  working-tree output, but it is not remote main-integrated evidence until the
+  boundary commit/push is complete.
 
 ## Realtime Symbol Rule
 
