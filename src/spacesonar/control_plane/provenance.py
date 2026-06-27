@@ -13,7 +13,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from .store import dump_json, dump_yaml, read_json, read_yaml, sha256_file
+from .store import dump_json, dump_yaml, filesystem_path, read_json, read_yaml, sha256_file
 
 
 SOURCE_ROOTS = (
@@ -26,7 +26,6 @@ SOURCE_ROOTS = (
     "configs/",
     "tests/",
     ".agents/",
-    ".codex/",
     ".github/workflows/",
     "docs/policies/",
     "docs/agent_control/",
@@ -189,7 +188,7 @@ def _write_text_if_nonempty(repo_root: Path, rel_path: Path, text: str) -> tuple
         return None, None
     path = repo_root / rel_path
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text, encoding="utf-8", newline="\n")
     return rel_path.as_posix(), sha256_file(path)
 
 
@@ -241,6 +240,16 @@ def _zip_untracked_sources(repo_root: Path, archive_rel_path: Path, paths: list[
     return archive_rel_path.as_posix(), archive_sha, manifest
 
 
+def _diff_check_safe_patch(text: str) -> str:
+    lines = []
+    for line in text.splitlines():
+        if line.startswith("+") and line.strip() == "+":
+            lines.append("+")
+        else:
+            lines.append(line)
+    return "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+
+
 def build_source_snapshot_payload(repo_root: Path, batch_id: str, *, namespace: str = "source_snapshot") -> dict[str, Any]:
     if not namespace or Path(namespace).is_absolute() or ".." in Path(namespace).parts:
         raise BatchReceiptError(f"source snapshot namespace must be a simple relative path: {namespace}")
@@ -286,13 +295,13 @@ def build_source_snapshot_payload(repo_root: Path, batch_id: str, *, namespace: 
     tracked_patch_rel = staged_patch_rel = untracked_archive_rel = None
     tracked_patch_sha = staged_patch_sha = untracked_archive_sha = None
     untracked_archive_manifest: list[dict[str, Any]] = []
-    tracked_patch = _run(repo_root, ["git", "diff", "--binary", "--", *SOURCE_ROOTS])
+    tracked_patch = _diff_check_safe_patch(_run(repo_root, ["git", "diff", "--binary", "--", *SOURCE_ROOTS]))
     if tracked_patch:
         tracked_patch_rel = (rel_root / "tracked_unstaged.patch").as_posix()
         tracked_patch_bytes = tracked_patch.encode("utf-8")
         tracked_patch_sha = hashlib.sha256(tracked_patch_bytes).hexdigest()
         files[rel_root / "tracked_unstaged.patch"] = tracked_patch_bytes
-    staged_patch = _run(repo_root, ["git", "diff", "--cached", "--binary", "--", *SOURCE_ROOTS])
+    staged_patch = _diff_check_safe_patch(_run(repo_root, ["git", "diff", "--cached", "--binary", "--", *SOURCE_ROOTS]))
     if staged_patch:
         staged_patch_rel = (rel_root / "staged.patch").as_posix()
         staged_patch_bytes = staged_patch.encode("utf-8")
@@ -344,10 +353,11 @@ def source_snapshot(repo_root: Path, batch_id: str, *, write: bool = True) -> di
 
 def file_hash_record(repo_root: Path, rel_path: str) -> dict[str, Any]:
     path = repo_root / rel_path
+    is_file = os.path.isfile(filesystem_path(path))
     return {
         "path": rel_path,
-        "sha256": sha256_file(path) if path.exists() and path.is_file() else None,
-        "size_bytes": path.stat().st_size if path.exists() and path.is_file() else None,
+        "sha256": sha256_file(path) if is_file else None,
+        "size_bytes": os.stat(filesystem_path(path)).st_size if is_file else None,
     }
 
 
@@ -361,7 +371,7 @@ def _validate_hash_records(repo_root: Path, paths: list[str], *, label: str, req
         if Path(rel_path).is_absolute() or ".." in Path(rel_path).parts:
             raise BatchReceiptError(f"{label} path must be repo-relative: {raw_path}")
         path = repo_root / rel_path
-        if require_present and not path.exists():
+        if require_present and not os.path.exists(filesystem_path(path)):
             raise BatchReceiptError(f"{label} path is missing: {rel_path}")
         record = file_hash_record(repo_root, rel_path)
         if require_present and (record["sha256"] is None or record["size_bytes"] is None):
@@ -386,7 +396,7 @@ def _parse_utc(value: str) -> datetime:
 def _write_atomic_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    temp.write_text(text, encoding="utf-8")
+    temp.write_text(text, encoding="utf-8", newline="\n")
     os.replace(temp, path)
 
 
@@ -690,11 +700,11 @@ def add_provenance_compaction_marker(path: Path, batch_receipt_path: str) -> boo
         data["provenance_compaction"] = provenance_compaction_marker(batch_receipt_path)
         import json
 
-        path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
         return True
     data = read_yaml(path)
     if data.get("provenance_compaction") == provenance_compaction_marker(batch_receipt_path):
         return False
     data["provenance_compaction"] = provenance_compaction_marker(batch_receipt_path)
-    path.write_text(dump_yaml(data), encoding="utf-8")
+    path.write_text(dump_yaml(data), encoding="utf-8", newline="\n")
     return True

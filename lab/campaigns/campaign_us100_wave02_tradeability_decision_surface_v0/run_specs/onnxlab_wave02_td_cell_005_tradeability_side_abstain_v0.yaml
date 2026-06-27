@@ -18,7 +18,7 @@ id_chain:
   artifact_ids: []
   bundle_id: null
   candidate_id: null
-status: prepared
+status: executed_proxy_observation_l4_required
 created_at_utc: '2026-06-27T12:15:00Z'
 recipe_refs:
   label_recipe_id: label_wave02_no_trade_filter_v0
@@ -32,4 +32,9 @@ acceptance_criteria:
 - record trade/no-trade filtering proxy observation
 claim_boundary: wave02_campaign_open_planning_scaffold_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness
 sequence: 5
-next_action: execute_run_spec
+next_action: work_wave02_tradeability_l4_materialization_preflight_v0
+result_judgment: preserved_clue
+run_manifest_path: lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/run_manifest.json
+receipt_path: lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/experiment_receipt.yaml
+lineage_path: lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/artifact_lineage.json
+metrics_path: lab/runs/onnxlab_wave02_td_cell_005_tradeability_side_abstain_v0/metrics.json

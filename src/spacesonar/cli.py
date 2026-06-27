@@ -13,6 +13,7 @@ from spacesonar.control_plane.lifecycle import (
     judge_campaign,
     materialize_run_specs,
     open_campaign,
+    record_proxy_execution,
 )
 from spacesonar.control_plane.agent_metrics import (
     agent_operating_events_diff,
@@ -125,6 +126,8 @@ def build_parser() -> argparse.ArgumentParser:
     open_p.add_argument("--spec", required=True)
     materialize_p = campaign_sub.add_parser("materialize")
     materialize_p.add_argument("--campaign-id", required=True)
+    record_proxy_p = campaign_sub.add_parser("record-proxy-execution")
+    record_proxy_p.add_argument("--campaign-id", required=True)
     judge_p = campaign_sub.add_parser("judge")
     judge_p.add_argument("--campaign-id", required=True)
     close_p = campaign_sub.add_parser("close")
@@ -204,6 +207,8 @@ def main(argv: list[str] | None = None) -> int:
             result = open_campaign(Path(args.spec), ctx)
         elif args.action == "materialize":
             result = materialize_run_specs(args.campaign_id, ctx)
+        elif args.action == "record-proxy-execution":
+            result = record_proxy_execution(args.campaign_id, ctx)
         elif args.action == "judge":
             result = judge_campaign(args.campaign_id, ctx)
         elif args.action == "close":
