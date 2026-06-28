@@ -153,6 +153,19 @@ def validate(repo_root: Path) -> list[str]:
                 errors.append("goal_manifest.yaml: next_work_item.work_item_id does not match active next_work_item")
             if goal_next.get("path") != next_work_path_text:
                 errors.append("goal_manifest.yaml: next_work_item.path does not match workspace active_work_item.path")
+            errors.extend(validate_inactive_campaign_ids("goal_manifest.yaml", goal.get("active_ids") or {}, active_campaign))
+            resume_path = goal_path.parent / "resume_cursor.yaml"
+            if resume_path.exists():
+                resume = load_yaml(resume_path)
+                errors.extend(
+                    validate_resume_cursor(
+                        resume,
+                        workspace,
+                        next_work,
+                        next_work_path_text,
+                        active_campaign,
+                    )
+                )
 
     campaign_manifest_text = active_campaign.get("manifest")
     if campaign_manifest_text:
@@ -193,6 +206,47 @@ def validate(repo_root: Path) -> list[str]:
             if row.get("next_work_item") != next_work.get("work_item_id"):
                 errors.append("goal_registry.csv: next_work_item does not match active next_work_item")
 
+    return errors
+
+
+def validate_inactive_campaign_ids(label: str, active_ids: dict[str, Any], active_campaign: dict[str, Any]) -> list[str]:
+    if active_campaign.get("campaign_id"):
+        return []
+    errors: list[str] = []
+    for key in ["campaign_id", "idea_id", "hypothesis_id", "surface_id", "sweep_id", "run_id", "artifact_id", "bundle_id", "candidate_id"]:
+        if active_ids.get(key) not in (None, "", []):
+            errors.append(f"{label}: active_ids.{key} must be empty when workspace has no active campaign")
+    return errors
+
+
+def validate_resume_cursor(
+    resume: dict[str, Any],
+    workspace: dict[str, Any],
+    next_work: dict[str, Any],
+    next_work_path_text: str,
+    active_campaign: dict[str, Any],
+) -> list[str]:
+    errors: list[str] = []
+    active_goal = workspace.get("active_goal") or {}
+    if resume.get("active_goal_id") != active_goal.get("goal_id"):
+        errors.append("resume_cursor.yaml: active_goal_id does not match workspace")
+    if resume.get("active_work_item_id") != next_work.get("work_item_id"):
+        errors.append("resume_cursor.yaml: active_work_item_id does not match active next_work_item")
+    if resume.get("claim_boundary") != workspace.get("current_claim_boundary"):
+        errors.append("resume_cursor.yaml: claim_boundary does not match workspace")
+    if resume.get("next_action") != workspace.get("next_action"):
+        errors.append("resume_cursor.yaml: next_action does not match workspace")
+    if resume.get("campaign_id") != active_campaign.get("campaign_id"):
+        errors.append("resume_cursor.yaml: campaign_id does not match workspace active_campaign")
+    resume_blockers = resume.get("unresolved_blockers") or []
+    if resume_blockers != workspace.get("unresolved_blockers"):
+        errors.append("resume_cursor.yaml: unresolved_blockers does not match workspace")
+    resume_next_work = resume.get("next_work_item") or {}
+    if resume_next_work.get("work_item_id") != next_work.get("work_item_id"):
+        errors.append("resume_cursor.yaml: next_work_item.work_item_id does not match active next_work_item")
+    if resume_next_work.get("path") != next_work_path_text:
+        errors.append("resume_cursor.yaml: next_work_item.path does not match active next_work_item")
+    errors.extend(validate_inactive_campaign_ids("resume_cursor.yaml", resume.get("active_ids") or {}, active_campaign))
     return errors
 
 

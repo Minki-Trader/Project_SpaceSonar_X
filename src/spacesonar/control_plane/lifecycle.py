@@ -1204,7 +1204,7 @@ def _goal_updates_for_wave_close(
     goal["active_phase"] = "wave_closeout"
     goal["updated_at_utc"] = utc_now()
     goal["claim_boundary"] = closeout["claim_boundary"]
-    goal["active_ids"] = {**(goal.get("active_ids") or {}), "wave_id": wave.get("wave_id"), "campaign_id": None}
+    goal["active_ids"] = _wave_close_active_ids(goal.get("active_ids") or {}, str(wave.get("wave_id") or ""))
     goal["next_work_item"] = {
         "work_item_id": closeout["next_action"],
         "path": f"lab/goals/{goal_id}/next_work_item.yaml",
@@ -1239,17 +1239,45 @@ def _goal_updates_for_wave_close(
     )
     resume_cursor_path = Path("lab/goals") / str(goal_id) / "resume_cursor.yaml"
     updates = {goal_path: goal, next_work_path: next_work}
-    cursor = dict((yaml_updates or {}).get(resume_cursor_path) or _read_yaml_if_exists(repo_root / resume_cursor_path))
-    cursor.setdefault("version", "active_goal_resume_cursor_v1")
-    cursor["active_goal_id"] = goal_id
-    cursor["active_work_item_id"] = closeout["next_action"]
-    cursor["active_phase"] = "wave_closeout"
-    cursor["campaign_id"] = None
-    cursor["claim_boundary"] = closeout["claim_boundary"]
-    cursor["updated_at_utc"] = goal["updated_at_utc"]
-    cursor["next_work_item"] = {"work_item_id": closeout["next_action"], "path": next_work_path.as_posix()}
+    existing_cursor = dict((yaml_updates or {}).get(resume_cursor_path) or _read_yaml_if_exists(repo_root / resume_cursor_path))
+    cursor = {
+        "version": existing_cursor.get("version", "active_goal_resume_cursor_v1"),
+        "active_goal_id": goal_id,
+        "updated_at_utc": goal["updated_at_utc"],
+        "cursor_state": closeout["next_action"],
+        "active_phase": "wave_closeout",
+        "active_work_item_id": closeout["next_action"],
+        "campaign_id": None,
+        "claim_boundary": closeout["claim_boundary"],
+        "next_action": closeout["next_action"],
+        "unresolved_blockers": [],
+        "active_ids": _wave_close_active_ids(existing_cursor.get("active_ids") or goal.get("active_ids") or {}, str(wave.get("wave_id") or "")),
+        "current_truth_sources": [
+            f"lab/waves/{wave.get('wave_id')}/wave_allocation.yaml",
+            f"lab/waves/{wave.get('wave_id')}/wave_closeout.yaml",
+            f"lab/goals/{goal_id}/goal_manifest.yaml",
+            next_work_path.as_posix(),
+            "docs/workspace/workspace_state.yaml",
+        ],
+        "latest_completed_work": {
+            "work_item_id": closeout["next_action"],
+            "result_judgment": "wave_closed",
+            "claim_boundary": closeout["claim_boundary"],
+            "evidence_paths": [f"lab/waves/{wave.get('wave_id')}/wave_closeout.yaml"],
+        },
+        "next_work_item": {"work_item_id": closeout["next_action"], "path": next_work_path.as_posix()},
+    }
     updates[resume_cursor_path] = cursor
     return updates
+
+
+def _wave_close_active_ids(existing: dict[str, Any], wave_id: str) -> dict[str, Any]:
+    active_ids = dict(existing)
+    active_ids["wave_id"] = wave_id
+    for key in ["campaign_id", "idea_id", "hypothesis_id", "surface_id", "sweep_id", "run_id", "artifact_id", "bundle_id", "candidate_id"]:
+        if key in active_ids or key == "campaign_id":
+            active_ids[key] = None
+    return active_ids
 
 
 def _is_closed_status(value: Any) -> bool:
