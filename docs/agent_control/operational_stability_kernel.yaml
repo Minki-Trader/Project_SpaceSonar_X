@@ -1,8 +1,9 @@
-version: operational_stability_kernel_v3
-purpose: codex_operates_stably_without_routine_pytest_or_full_graph_validation
+version: operational_stability_kernel_v4
+purpose: codex_operates_experiment_first_without_validation_or_review_loops_as_progress
 claim_boundary: operational_control_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 
 default_validation_depth: writer_scope_smoke
+default_progress_unit: next_executable_experiment_writer_or_probe
 writer_scope_operating_contract_path: docs/agent_control/writer_scope_operating_contract.yaml
 strong_trigger_revision: validation_attempt_budget_v1
 global_write_time_guard_path: src/spacesonar/control_plane/writer_contract.py
@@ -11,8 +12,7 @@ transaction_write_time_guard_path: src/spacesonar/control_plane/transaction.py
 default_command_selection:
   project_validate_default: false
   project_validate_allowed_only_when:
-    - campaign_closeout
-    - wave_closeout
+    - campaign_or_wave_boundary_with_recorded_archive_escalation_reason
     - source_of_truth_drift_detected
     - shared_contract_or_validator_semantics_changed
     - explicit_user_requests_project_validate
@@ -23,7 +23,7 @@ default_command_selection:
     - compile_touched_python_modules
     - run_routing_or_policy_lint_for_policy_changes
     - run_registry_or_workspace_projection_check_only_when_projection_changed
-  rule: project validate is an archive or boundary command, not a routine progress command
+  rule: project validate is an archive or escalation command, not a routine progress command; campaign or wave boundary alone is not an automatic broad-validation allowance
 
 routine_inspection_scope:
   current_truth_first:
@@ -153,6 +153,15 @@ writer_contract_enforcement:
   required_writer_version_field: writer_contract_version
   required_writer_preflight_field: writer_preflight_gate
   required_validation_attempt_budget_field: validation_attempt_budget
+  required_progress_fields:
+    - progress_class
+    - progress_effect
+    - next_executable_action
+    - experiment_or_boundary_effect
+  forbidden_success_progress_classes:
+    - validation_only
+    - review_only
+    - inspection_only
   global_write_time_guard_required: true
   transaction_stage_yaml_enforces_strict_writer_surfaces: true
   default_gap_effect: investigation_in_progress_until_owner_rule_is_patched
@@ -217,6 +226,10 @@ writer_scope_operating_contract:
     - writer_contract_version
     - primary_family
     - primary_skill
+    - progress_class
+    - progress_effect
+    - next_executable_action
+    - experiment_or_boundary_effect
     - source_of_truth_paths
     - writer_owned_outputs
     - validation_depth
@@ -231,10 +244,18 @@ writer_scope_operating_contract:
   rule: writer_local_contract_is_the_default_stability_mechanism_not_pytest
 
 experiment_first_loop:
+  default_progress_unit: next_executable_experiment_writer_or_probe
+  not_progress:
+    - validation
+    - inspection
+    - registry_projection
+  proof_rule: registry_projection_is_index_only_manifest_receipt_hash_is_proof
+  generic_review_gates_after_experiment_first: forbidden_unless_blocker_requires_user_choice
   applies_when:
     - user_asks_progress
     - user_asks_experiment
     - active_work_item_has_next_executable_probe_or_writer
+    - user_direction_is_experiment_first
   required_order:
     - read_current_truth
     - identify_next_executable_writer_or_probe
@@ -242,6 +263,32 @@ experiment_first_loop:
     - execute_or_materialize_the_thinnest_real_step
     - write_manifest_receipt_hash_claim_boundary
     - run_touched_surface_smoke_only_if_it_changes_the_claim
+  campaign_open:
+    meaningful_multi_axis_surface_required: true
+    default_proxy_spec_count: 18
+    required_axes:
+      - target_or_label_surface
+      - feature_or_input_surface
+      - model_or_training_surface
+      - decision_surface
+      - horizon_or_holding_policy
+      - evaluation_or_runtime_surface
+    forbidden_shapes:
+      - feature_only_campaign
+      - label_only_campaign
+      - model_only_campaign
+      - threshold_only_campaign
+      - repair_only_campaign
+  tiny_validation_samples:
+    default: forbidden
+    allowed_only_with:
+      - explicit_budget_blocker
+      - explicit_environment_blocker
+    claim_effect: blocker_limited_probe_not_progress_unit
+  broad_validation:
+    role: archive_or_escalation_only
+    boundary_auto_allow: false
+    requires_command_intent_gate: true
   forbidden_response_shape:
     - validation_only_loop_without_executing_pending_writer_or_probe
     - ci_or_full_graph_wait_before_attempting_repo_controlled_next_step
@@ -270,8 +317,7 @@ broad_validation_command_intent_gate:
     - broad_hash_resync
     - global_registry_regeneration
   allowed_only_when_one_of:
-    - campaign_closeout
-    - wave_closeout
+    - campaign_or_wave_boundary_with_recorded_archive_escalation_reason
     - source_of_truth_drift_detected_by_writer_scope_check
     - shared_contract_or_validator_semantics_changed
     - dependency_lock_or_workflow_changed
@@ -374,6 +420,10 @@ hard_enforcement_points:
     - writer_preflight_gate_passed_before_mutation
     - source_of_truth_path_declared
     - primary_family_and_skill_declared
+    - progress_class_declared
+    - progress_effect_declared
+    - next_executable_action_declared
+    - experiment_or_boundary_effect_declared
     - validation_attempt_budget_declared
     - id_chain_present_or_not_applicable_reason
     - claim_boundary_declared
@@ -426,14 +476,12 @@ transaction_validation_policy:
     - active_record_validator_full
     - pytest
   lifecycle_boundary_escalation_only:
-    - campaign_closeout
-    - wave_closeout
+    - campaign_or_wave_boundary_with_recorded_archive_escalation_reason
     - protected_claim_surface_changed
     - source_of_truth_drift_detected
 
 escalate_to_manual_boundary_validation_when:
-  - campaign_closeout
-  - wave_closeout
+  - campaign_or_wave_boundary_with_recorded_archive_escalation_reason
   - source_of_truth_drift_detected
   - shared_contract_or_validator_semantics_changed
   - dependency_lock_or_workflow_changed
@@ -470,6 +518,10 @@ machine_output_fields:
   - writer_contract_version
   - primary_family
   - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
   - touched_source_of_truth_paths
   - validation_depth
   - non_pytest_smokes

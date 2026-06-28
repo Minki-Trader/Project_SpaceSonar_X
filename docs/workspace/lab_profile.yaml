@@ -70,6 +70,32 @@ failure_disposition_policy:
   discard_or_defer_requires_failed_attempt_or_narrow_attempt_blocker: true
   attempt_exception_policy: record_attempt_blocker_and_lower_claim_boundary
   not_yet_attempted_claim_effect: investigation_in_progress_no_disposition
+experiment_first_operating_loop:
+  default_progress_unit: next_executable_experiment_writer_or_probe
+  validation_is_progress: false
+  inspection_is_progress: false
+  registry_projection_is_proof: false
+  proof_rule: manifest_receipt_hash_before_registry_projection
+  generic_review_gates_after_experiment_first: forbidden_unless_blocker_requires_user_choice
+  campaign_open:
+    meaningful_multi_axis_surface_required: true
+    default_proxy_spec_count: 18
+    required_axes:
+      - target_or_label_surface
+      - feature_or_input_surface
+      - model_or_training_surface
+      - decision_surface
+      - horizon_or_holding_policy
+      - evaluation_or_runtime_surface
+  tiny_validation_samples:
+    default: forbidden
+    allowed_only_with:
+      - explicit_budget_blocker
+      - explicit_environment_blocker
+  broad_validation:
+    role: archive_or_escalation_only
+    boundary_auto_allow: false
+    requires_command_intent_gate: true
 execution_weight_policy:
   posture: attempt_first_not_heavy_first
   operational_stability_kernel: docs/agent_control/operational_stability_kernel.yaml
@@ -119,6 +145,10 @@ execution_weight_policy:
         - global_registry_regeneration
       required_writer_contract_fields:
         - writer_contract_version
+        - progress_class
+        - progress_effect
+        - next_executable_action
+        - experiment_or_boundary_effect
         - validation_depth
         - non_pytest_smokes
         - skipped_broad_validations
@@ -137,8 +167,7 @@ execution_weight_policy:
     boundary_default:
       profile: source_of_truth_boundary_review_manual
       trigger_events:
-        - campaign_closeout
-        - wave_closeout
+        - campaign_or_wave_boundary_with_recorded_archive_escalation_reason
         - source_of_truth_drift
         - protected_claim_change
       default_evidence:
@@ -205,6 +234,9 @@ wave_budget_policy:
     decision_replay_pair_budget_policy: separate_ledger_unless_explicitly_budgeted_with_standard_l4
 campaign_exploration_policy:
   mode: unexplored_surface_discovery_not_single_axis_progression
+  default_proxy_spec_count: 18
+  meaningful_multi_axis_surface_required: true
+  tiny_validation_samples_allowed_by_default: false
   forbidden_research_shapes:
     - feature_only_wave_or_campaign
     - label_only_wave_or_campaign

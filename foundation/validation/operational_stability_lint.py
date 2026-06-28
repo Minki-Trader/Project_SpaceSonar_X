@@ -24,6 +24,10 @@ FORBIDDEN_DEFAULT_COMMANDS = {
 WRITER_REQUIRED_FIELDS = {
     "primary_family",
     "primary_skill",
+    "progress_class",
+    "progress_effect",
+    "next_executable_action",
+    "experiment_or_boundary_effect",
     "source_of_truth_paths",
     "writer_owned_outputs",
     "validation_depth",
@@ -54,6 +58,10 @@ PREFLIGHT_REQUIRED_NAMED_FIELDS = {
     "writer_owned_outputs",
     "primary_family",
     "primary_skill",
+    "progress_class",
+    "progress_effect",
+    "next_executable_action",
+    "experiment_or_boundary_effect",
     "validation_attempt_budget",
     "claim_boundary",
     "forbidden_claims",
@@ -272,6 +280,8 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
 
     if kernel.get("default_validation_depth") != "writer_scope_smoke":
         errors.append(f"{rel_path}: default_validation_depth must be writer_scope_smoke")
+    if kernel.get("default_progress_unit") != "next_executable_experiment_writer_or_probe":
+        errors.append(f"{rel_path}: default_progress_unit must be next_executable_experiment_writer_or_probe")
     if kernel.get("writer_scope_operating_contract_path") != "docs/agent_control/writer_scope_operating_contract.yaml":
         errors.append(f"{rel_path}: writer_scope_operating_contract_path mismatch")
     if kernel.get("strong_trigger_revision") != "validation_attempt_budget_v1":
@@ -286,6 +296,10 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
         errors.append(f"{rel_path}: forbidden_default_commands missing {command_id}")
 
     gate = kernel.get("broad_validation_command_intent_gate") or {}
+    allowed_reasons = as_set(gate.get("allowed_only_when_one_of"))
+    for automatic_boundary in ["campaign_closeout", "wave_closeout"]:
+        if automatic_boundary in allowed_reasons:
+            errors.append(f"{rel_path}: broad validation must not be automatically allowed by {automatic_boundary}")
     required_record = as_set(gate.get("required_record_before_running"))
     for field in sorted(COMMAND_GATE_REQUIRED_FIELDS - required_record):
         errors.append(f"{rel_path}: broad_validation_command_intent_gate missing {field}")
@@ -353,6 +367,27 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
     if "writer_scope_contract_lint" not in writer_commands:
         errors.append(f"{rel_path}: writer_scope_commands missing writer_scope_contract_lint")
 
+    experiment_loop = kernel.get("experiment_first_loop") or {}
+    if experiment_loop.get("default_progress_unit") != "next_executable_experiment_writer_or_probe":
+        errors.append(f"{rel_path}: experiment_first_loop.default_progress_unit mismatch")
+    progress_negatives = as_set(experiment_loop.get("not_progress"))
+    for item in ["validation", "inspection", "registry_projection"]:
+        if item not in progress_negatives:
+            errors.append(f"{rel_path}: experiment_first_loop.not_progress missing {item}")
+    if experiment_loop.get("generic_review_gates_after_experiment_first") != "forbidden_unless_blocker_requires_user_choice":
+        errors.append(f"{rel_path}: experiment_first_loop generic review gate policy mismatch")
+    campaign_open = experiment_loop.get("campaign_open") or {}
+    if campaign_open.get("default_proxy_spec_count") != 18:
+        errors.append(f"{rel_path}: experiment_first_loop.campaign_open.default_proxy_spec_count must be 18")
+    if campaign_open.get("meaningful_multi_axis_surface_required") is not True:
+        errors.append(f"{rel_path}: experiment_first_loop.campaign_open must require a multi-axis surface")
+    tiny_samples = experiment_loop.get("tiny_validation_samples") or {}
+    if tiny_samples.get("default") != "forbidden":
+        errors.append(f"{rel_path}: experiment_first_loop.tiny_validation_samples.default must be forbidden")
+    broad_policy = experiment_loop.get("broad_validation") or {}
+    if broad_policy.get("boundary_auto_allow") is not False:
+        errors.append(f"{rel_path}: experiment_first_loop.broad_validation.boundary_auto_allow must be false")
+
 
 def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
     rel_path = "docs/agent_control/writer_scope_operating_contract.yaml"
@@ -365,8 +400,12 @@ def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
         errors.append(f"{rel_path}: expected mapping")
         return
 
+    if contract.get("version") != "writer_scope_operating_contract_v3":
+        errors.append(f"{rel_path}: version must be writer_scope_operating_contract_v3")
     if contract.get("default_validation_depth") != "writer_scope_smoke":
         errors.append(f"{rel_path}: default_validation_depth must be writer_scope_smoke")
+    if contract.get("default_progress_unit") != "next_executable_experiment_writer_or_probe":
+        errors.append(f"{rel_path}: default_progress_unit must be next_executable_experiment_writer_or_probe")
     if contract.get("strong_trigger_revision") != "validation_attempt_budget_v1":
         errors.append(f"{rel_path}: strong_trigger_revision mismatch")
     if contract.get("global_write_time_guard") != "src/spacesonar/control_plane/writer_contract.py":
@@ -398,7 +437,15 @@ def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
 
     before_gate = contract.get("writer_before_write_gate") or {}
     missing_before = as_set(before_gate.get("fail_before_mutation_when_missing"))
-    for field in ["writer_contract_version", "validation_attempt_budget", "claim_boundary"]:
+    for field in [
+        "writer_contract_version",
+        "progress_class",
+        "progress_effect",
+        "next_executable_action",
+        "experiment_or_boundary_effect",
+        "validation_attempt_budget",
+        "claim_boundary",
+    ]:
         if field not in missing_before:
             errors.append(f"{rel_path}: writer_before_write_gate.fail_before_mutation_when_missing missing {field}")
     preflight = before_gate.get("required_preflight_record") or {}
@@ -426,6 +473,20 @@ def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
     if "validation_attempt_budget_observed_and_not_exceeded" not in missing_after:
         errors.append(f"{rel_path}: writer_after_write_gate missing validation_attempt_budget_observed_and_not_exceeded")
 
+    progress = contract.get("progress_semantics") or {}
+    if progress.get("validation_is_progress") is not False:
+        errors.append(f"{rel_path}: progress_semantics.validation_is_progress must be false")
+    if progress.get("inspection_is_progress") is not False:
+        errors.append(f"{rel_path}: progress_semantics.inspection_is_progress must be false")
+    if progress.get("registry_projection_is_proof") is not False:
+        errors.append(f"{rel_path}: progress_semantics.registry_projection_is_proof must be false")
+    if progress.get("default_progress_unit") != "next_executable_experiment_writer_or_probe":
+        errors.append(f"{rel_path}: progress_semantics.default_progress_unit mismatch")
+    forbidden_success = as_set(progress.get("forbidden_success_progress_classes"))
+    for item in ["validation_only", "review_only", "inspection_only"]:
+        if item not in forbidden_success:
+            errors.append(f"{rel_path}: progress_semantics.forbidden_success_progress_classes missing {item}")
+
 
 def evaluate_registry(errors: list[str], repo_root: Path) -> None:
     rel_path = "docs/agent_control/work_family_registry.yaml"
@@ -445,6 +506,10 @@ def evaluate_registry(errors: list[str], repo_root: Path) -> None:
             errors.append(f"{rel_path}: global_rules.{key} mismatch")
     for key in [
         "direct_inspection_policy",
+        "experiment_first_progress_policy",
+        "generic_review_gate_policy",
+        "campaign_open_default_proxy_spec_policy",
+        "tiny_validation_sample_policy",
         "writer_scope_operating_contract_policy",
         "writer_preflight_gate_policy",
         "validation_attempt_budget_policy",
@@ -484,6 +549,20 @@ def evaluate_lab_profile(errors: list[str], repo_root: Path) -> None:
         if field not in required_fields:
             errors.append(f"{rel_path}: run_loop_default.required_writer_contract_fields missing {field}")
     evaluate_validation_attempt_budget(errors, rel_path, run_loop.get("validation_attempt_budget"))
+    loop = profile.get("experiment_first_operating_loop") or {}
+    if loop.get("default_progress_unit") != "next_executable_experiment_writer_or_probe":
+        errors.append(f"{rel_path}: experiment_first_operating_loop.default_progress_unit mismatch")
+    if loop.get("validation_is_progress") is not False:
+        errors.append(f"{rel_path}: experiment_first_operating_loop.validation_is_progress must be false")
+    if loop.get("inspection_is_progress") is not False:
+        errors.append(f"{rel_path}: experiment_first_operating_loop.inspection_is_progress must be false")
+    if loop.get("registry_projection_is_proof") is not False:
+        errors.append(f"{rel_path}: experiment_first_operating_loop.registry_projection_is_proof must be false")
+    campaign_open = loop.get("campaign_open") or {}
+    if campaign_open.get("default_proxy_spec_count") != 18:
+        errors.append(f"{rel_path}: experiment_first_operating_loop.campaign_open.default_proxy_spec_count must be 18")
+    if campaign_open.get("meaningful_multi_axis_surface_required") is not True:
+        errors.append(f"{rel_path}: experiment_first_operating_loop.campaign_open must require a multi-axis surface")
 
 
 def evaluate_write_time_guard(errors: list[str], repo_root: Path) -> None:
@@ -496,7 +575,13 @@ def evaluate_write_time_guard(errors: list[str], repo_root: Path) -> None:
     for phrase in [
         "def enforce_writer_contract",
         "def writer_contract_required_for_path",
+        "writer_scope_operating_contract_v3",
         "STRICT_WRITER_FILENAMES",
+        "FORBIDDEN_SUCCESS_PROGRESS_CLASSES",
+        "next_executable_experiment_writer_or_probe",
+        "validation_only",
+        "review_only",
+        "inspection_only",
         "next_work_item.yaml",
         "campaign_closeout.yaml",
         "wave_closeout.yaml",

@@ -4,12 +4,46 @@ from pathlib import Path
 from typing import Any
 
 
-WRITER_CONTRACT_VERSION = "writer_scope_operating_contract_v2"
+WRITER_CONTRACT_VERSION = "writer_scope_operating_contract_v3"
+DEFAULT_PROGRESS_CLASS = "next_executable_experiment_writer_or_probe"
+
+FORBIDDEN_SUCCESS_PROGRESS_CLASSES = {
+    "validation_only",
+    "review_only",
+    "inspection_only",
+}
+
+SUCCESS_STATE_MARKERS = {
+    "pass",
+    "passed",
+    "success",
+    "succeeded",
+    "complete",
+    "completed",
+    "closed",
+    "ready",
+    "opened",
+    "materialized",
+}
+
+BLOCKER_OR_ESCALATION_MARKERS = {
+    "blocker",
+    "blocked",
+    "environment_blocker",
+    "budget_blocker",
+    "requires_user_choice",
+    "user_choice_required",
+    "command_intent_escalation",
+}
 
 REQUIRED_WRITER_FIELDS = {
     "writer_contract_version",
     "primary_family",
     "primary_skill",
+    "progress_class",
+    "progress_effect",
+    "next_executable_action",
+    "experiment_or_boundary_effect",
     "source_of_truth_paths",
     "writer_owned_outputs",
     "validation_depth",
@@ -30,6 +64,10 @@ PREFLIGHT_REQUIRED_NAMED_FIELDS = {
     "writer_owned_outputs",
     "primary_family",
     "primary_skill",
+    "progress_class",
+    "progress_effect",
+    "next_executable_action",
+    "experiment_or_boundary_effect",
     "validation_attempt_budget",
     "claim_boundary",
     "forbidden_claims",
@@ -63,6 +101,10 @@ def default_writer_preflight_gate() -> dict[str, Any]:
             "writer_owned_outputs",
             "primary_family",
             "primary_skill",
+            "progress_class",
+            "progress_effect",
+            "next_executable_action",
+            "experiment_or_boundary_effect",
             "validation_attempt_budget",
             "claim_boundary",
             "forbidden_claims",
@@ -109,6 +151,10 @@ def writer_contract_errors(rel_path: str | Path, payload: dict[str, Any]) -> lis
     for field in [
         "primary_family",
         "primary_skill",
+        "progress_class",
+        "progress_effect",
+        "next_executable_action",
+        "experiment_or_boundary_effect",
         "validation_depth",
         "broad_validation_escalation_reason",
         "claim_boundary",
@@ -130,6 +176,7 @@ def writer_contract_errors(rel_path: str | Path, payload: dict[str, Any]) -> lis
         errors.append(f"{label}: writer_contract_version must be {WRITER_CONTRACT_VERSION}")
     if payload.get("validation_depth") != "writer_scope_smoke":
         errors.append(f"{label}: validation_depth must be writer_scope_smoke")
+    _evaluate_progress_contract(errors, label, payload)
 
     self_check = payload.get("writer_scope_self_check")
     if not isinstance(self_check, dict):
@@ -175,6 +222,55 @@ def writer_contract_errors(rel_path: str | Path, payload: dict[str, Any]) -> lis
     return errors
 
 
+def _evaluate_progress_contract(errors: list[str], label: str, payload: dict[str, Any]) -> None:
+    progress_class = _normalize_token(payload.get("progress_class"))
+    progress_effect = _normalize_token(payload.get("progress_effect"))
+    boundary_effect = _normalize_token(payload.get("experiment_or_boundary_effect"))
+
+    success_like = _payload_claims_success(payload)
+    blocker_or_escalation = _payload_has_blocker_or_escalation(payload)
+    if progress_class in FORBIDDEN_SUCCESS_PROGRESS_CLASSES and success_like and not blocker_or_escalation:
+        errors.append(
+            f"{label}: progress_class {progress_class} cannot be a success state; "
+            "validation, review, and inspection are not progress"
+        )
+    for field, value in [
+        ("progress_effect", progress_effect),
+        ("experiment_or_boundary_effect", boundary_effect),
+    ]:
+        if value in FORBIDDEN_SUCCESS_PROGRESS_CLASSES and success_like and not blocker_or_escalation:
+            errors.append(f"{label}: {field} {value} cannot be recorded as progress")
+
+    user_direction = _normalize_token(payload.get("user_direction"))
+    provenance = payload.get("provenance")
+    if isinstance(provenance, dict) and not user_direction:
+        user_direction = _normalize_token(provenance.get("user_direction"))
+    if user_direction == "experiment_first" and _has_generic_review_gate(payload) and not blocker_or_escalation:
+        errors.append(
+            f"{label}: experiment_first direction cannot end in a generic review gate "
+            "without a recorded blocker or user-choice requirement"
+        )
+
+    requirements = payload.get("experiment_open_requirements")
+    if isinstance(requirements, dict):
+        default_specs = requirements.get("default_proxy_spec_count")
+        if default_specs != 18:
+            errors.append(f"{label}: experiment_open_requirements.default_proxy_spec_count must be 18")
+        axes = requirements.get("required_axes")
+        if not isinstance(axes, list) or len({str(axis) for axis in axes}) < 5:
+            errors.append(f"{label}: experiment_open_requirements.required_axes must name a multi-axis surface")
+        if requirements.get("tiny_validation_samples_allowed") is not False:
+            errors.append(f"{label}: experiment_open_requirements.tiny_validation_samples_allowed must be false")
+
+    for field in ["proxy_spec_count", "default_proxy_spec_count", "validation_sample_count"]:
+        count = payload.get(field)
+        if isinstance(count, int) and 0 < count < 18 and not _has_budget_or_environment_blocker(payload):
+            errors.append(
+                f"{label}: {field} below 18 is a tiny validation sample and requires "
+                "an explicit budget or environment blocker"
+            )
+
+
 def enforce_writer_contract(rel_path: str | Path, payload: dict[str, Any]) -> None:
     if not writer_contract_required_for_path(rel_path, payload):
         return
@@ -189,6 +285,83 @@ def _as_set(value: object) -> set[str]:
     if isinstance(value, list):
         return {str(item) for item in value}
     return {str(value)}
+
+
+def _normalize_token(value: object) -> str:
+    return str(value or "").strip().lower()
+
+
+def _walk_values(value: Any) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        items: list[str] = []
+        for child in value.values():
+            items.extend(_walk_values(child))
+        return items
+    if isinstance(value, list):
+        items: list[str] = []
+        for child in value:
+            items.extend(_walk_values(child))
+        return items
+    if value is None:
+        return []
+    return [str(value)]
+
+
+def _payload_claims_success(payload: dict[str, Any]) -> bool:
+    fields = [
+        payload.get("status"),
+        payload.get("result_status"),
+        payload.get("result_judgment"),
+        payload.get("progress_effect"),
+        payload.get("experiment_or_boundary_effect"),
+        payload.get("next_action_or_reopen_condition"),
+    ]
+    self_check = payload.get("writer_scope_self_check")
+    if isinstance(self_check, dict):
+        fields.append(self_check.get("status"))
+    text = " ".join(_normalize_token(item) for item in fields)
+    return any(marker in text for marker in SUCCESS_STATE_MARKERS)
+
+
+def _payload_has_blocker_or_escalation(payload: dict[str, Any]) -> bool:
+    values = _walk_values(
+        {
+            "unresolved_blockers_or_none": payload.get("unresolved_blockers_or_none"),
+            "unresolved_blockers": payload.get("unresolved_blockers"),
+            "next_action_or_reopen_condition": payload.get("next_action_or_reopen_condition"),
+            "broad_validation_escalation_reason": payload.get("broad_validation_escalation_reason"),
+            "experiment_or_boundary_effect": payload.get("experiment_or_boundary_effect"),
+        }
+    )
+    text = " ".join(_normalize_token(item) for item in values)
+    return any(marker in text for marker in BLOCKER_OR_ESCALATION_MARKERS)
+
+
+def _has_budget_or_environment_blocker(payload: dict[str, Any]) -> bool:
+    values = _walk_values(
+        {
+            "unresolved_blockers_or_none": payload.get("unresolved_blockers_or_none"),
+            "unresolved_blockers": payload.get("unresolved_blockers"),
+            "budget_or_environment_blocker": payload.get("budget_or_environment_blocker"),
+            "experiment_open_requirements": payload.get("experiment_open_requirements"),
+        }
+    )
+    text = " ".join(_normalize_token(item) for item in values)
+    return "budget_blocker" in text or "environment_blocker" in text
+
+
+def _has_generic_review_gate(payload: dict[str, Any]) -> bool:
+    values = [
+        payload.get("progress_class"),
+        payload.get("progress_effect"),
+        payload.get("next_executable_action"),
+        payload.get("next_action_or_reopen_condition"),
+        payload.get("experiment_or_boundary_effect"),
+    ]
+    text = " ".join(_normalize_token(value) for value in values)
+    return "review" in text and "runtime" not in text and "evidence" not in text
 
 
 def _require_non_empty_text(errors: list[str], label: str, payload: dict[str, Any], field: str) -> None:

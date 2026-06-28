@@ -1,6 +1,6 @@
-version: writer_scope_operating_contract_v2
+version: writer_scope_operating_contract_v3
 strong_trigger_revision: validation_attempt_budget_v1
-purpose: machine_contract_for_stable_operation_without_routine_pytest_or_full_graph_validation
+purpose: machine_contract_for_experiment_first_operation_without_validation_or_review_loops_as_progress
 claim_boundary: control_plane_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 global_write_time_guard: src/spacesonar/control_plane/writer_contract.py
 
@@ -16,11 +16,35 @@ applies_to:
   - workspace_state_mutations
 
 default_validation_depth: writer_scope_smoke
+default_progress_unit: next_executable_experiment_writer_or_probe
+
+progress_semantics:
+  validation_is_progress: false
+  inspection_is_progress: false
+  registry_projection_is_proof: false
+  default_progress_unit: next_executable_experiment_writer_or_probe
+  proof_rule: manifest_receipt_hash_before_registry_projection
+  generic_review_gates_after_experiment_first: forbidden_unless_blocker_requires_user_choice
+  forbidden_success_progress_classes:
+    - validation_only
+    - review_only
+    - inspection_only
+  campaign_open:
+    meaningful_multi_axis_surface_required: true
+    default_proxy_spec_count: 18
+    tiny_validation_samples_allowed_by_default: false
+    tiny_validation_sample_exceptions:
+      - explicit_budget_blocker
+      - explicit_environment_blocker
 
 required_writer_record_fields:
   - writer_contract_version
   - primary_family
   - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
   - source_of_truth_paths
   - writer_owned_outputs
   - validation_depth
@@ -70,6 +94,10 @@ writer_before_write_gate:
     - source_of_truth_paths
     - primary_family
     - primary_skill
+    - progress_class
+    - progress_effect
+    - next_executable_action
+    - experiment_or_boundary_effect
     - validation_depth
     - non_pytest_smokes
     - skipped_broad_validations
@@ -88,6 +116,10 @@ writer_before_write_gate:
       - writer_owned_outputs
       - primary_family
       - primary_skill
+      - progress_class
+      - progress_effect
+      - next_executable_action
+      - experiment_or_boundary_effect
       - validation_attempt_budget
       - claim_boundary
       - forbidden_claims
@@ -113,12 +145,13 @@ validation_attempt_budget:
 
 machine_enforcement:
   new_writer_records:
-    required_contract_version: writer_scope_operating_contract_v2
+    required_contract_version: writer_scope_operating_contract_v3
     required_write_time_guard: src/spacesonar/control_plane/writer_contract.py
     missing_required_field_effect: fail_writer_local_before_mutation
     missing_preflight_gate_effect: fail_writer_local_before_mutation
     missing_validation_attempt_budget_effect: fail_writer_local_before_mutation
     broad_validation_substitution_allowed: false
+    validation_review_inspection_success_state_effect: fail_writer_local_before_mutation
   legacy_writer_reuse:
     applies_to: legacy_pipeline_or_runner_reused_for_wave02_plus_or_active_work
     allowed_only_after:
@@ -129,6 +162,10 @@ machine_enforcement:
   summary_or_closeout_records:
     required:
       - writer_contract_version
+      - progress_class
+      - progress_effect
+      - next_executable_action
+      - experiment_or_boundary_effect
       - source_of_truth_paths
       - writer_owned_outputs
       - validation_depth
@@ -259,6 +296,10 @@ stable_loop_order:
   - escalate_broad_validation_only_with_command_intent_gate_record
 
 machine_output_fields:
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
   - validation_depth
   - non_pytest_smokes
   - skipped_broad_validations

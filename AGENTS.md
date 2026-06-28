@@ -9,6 +9,8 @@ Purpose: minimal cold-start rules for an ID-based ONNX development lab. Internal
 - Final north star, not an exploration gate: 5+ trades/day, PF about 1.5-3.0, <=10% DD across major windows.
 - Active split catalog: `configs/onnx_lab/split_recipes/split_set_v0.yaml`; research split set only, not baseline/pass/review.
 - Campaigns must explore meaningful surfaces, not become single-axis repair rooms.
+- Default progress unit: `next_executable_experiment_writer_or_probe`.
+- Validation, inspection, and registry projection are not progress; registries are indexes, not proof.
 
 ## Non-Inheritance
 
@@ -33,6 +35,7 @@ Read this file first, then stop. Load more only when task-relevant:
 
 Do not read broad archives, legacy routing/review records, or generated run trees by default.
 Direct inspection means source-of-truth and owned code/policy files. Do not use unbounded recursive workspace walks or volatile generated trees as operating proof.
+After explicit experiment-first user direction, do not route to a generic review gate unless a blocker requires user choice.
 
 ## ID Model
 
@@ -76,10 +79,22 @@ Policy meaning lives in `docs/agent_control/policy_contract.yaml`; manifests bin
 - `GUARD_004_ARTIFACT_IDENTITY`: durable identity uses repo-relative paths plus IDs/hashes; registries are indexes, not proof.
 - `GUARD_005_LOCKED_OOS`: locked final OOS is excluded unless an explicit unlock contract exists.
 - `GUARD_006_BRANCH_WORKTREE`: check branch/worktree fit before mutation; never revert user changes unless explicitly asked.
-- `GUARD_007_OPERATIONAL_STABILITY`: default to writer-scope smoke and source-of-truth checks; routine pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans are forbidden unless a boundary, drift, shared-contract change, protected claim, or explicit user request requires them.
+- `GUARD_007_OPERATIONAL_STABILITY`: default to writer-scope smoke and source-of-truth checks; routine pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans are forbidden unless a recorded archive/escalation reason, drift, shared-contract change, protected claim, or explicit user request requires them. Campaign or wave boundary alone is not enough.
+
+## Experiment-First Loop
+
+- Validation is not progress.
+- Inspection is not progress.
+- Registry projection is not proof.
+- Default progress unit is `next_executable_experiment_writer_or_probe`.
+- After explicit `experiment_first` user direction, generic review gates are forbidden unless a blocker requires user choice.
+- Campaign open requires a meaningful multi-axis surface and defaults to 18 proxy specs.
+- Tiny validation samples are forbidden unless an explicit budget or environment blocker exists.
+- Broad validation is archive/escalation only; campaign or wave boundary alone does not automatically allow pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.
 
 No-pytest operation is writer-contract first: every new or changed writer must name
-its `writer_contract_version`, owned source-of-truth paths, output records, validation depth, non-pytest
+its `writer_contract_version`, `progress_class`, `progress_effect`, `next_executable_action`,
+`experiment_or_boundary_effect`, owned source-of-truth paths, output records, validation depth, non-pytest
 smokes, skipped broad validations, escalation reason, self-check, claim boundary,
 and next action before broad validation can be considered.
 Strong trigger rule: every new or changed writer must pass `writer_preflight_gate`
@@ -89,6 +104,8 @@ a blocker/reopen condition or command-intent escalation record.
 Strict writer-owned YAML surfaces use the shared write-time guard
 `src/spacesonar/control_plane/writer_contract.py`; transaction-backed writers get
 the same fail-before-mutation check through `ControlPlaneTransaction.stage_yaml`.
+Strict writer-owned YAML must fail before mutation for validation-only, review-only,
+or inspection-only success states.
 
 ## Runtime And Parity
 

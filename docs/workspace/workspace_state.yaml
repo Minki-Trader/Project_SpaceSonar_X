@@ -1,25 +1,24 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-28T05:02:43.140331Z'
+updated_utc: '2026-06-28T07:55:46.949578Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
   timeframe: M5
 active_goal:
   goal_id: goal_us100_onnx_forward_boundary_v0
-  status: wave_closed
+  status: wave03_open_work_item_ready
   manifest: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
 active_wave:
-  wave_id: wave_us100_wave02_tradeability_decision_surface_v0
-  status: closed
-  allocation: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
-  closeout: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
+  wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+  status: pending_open_materialization
+  allocation: lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/wave_allocation.yaml
 active_campaign:
   campaign_id: null
 active_work_item:
-  work_item_id: open_next_wave_or_user_directed_review
+  work_item_id: work_wave03_open_volatility_state_transition_surface_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: open_next_wave_or_user_directed_review
+current_claim_boundary: wave03_experiment_open_work_item_pending_materialization_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: materialize_wave03_multi_axis_campaign_open_records_and_18_proxy_specs
 unresolved_blockers: []
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml

@@ -1,36 +1,93 @@
 version: work_item_lite_v1
-work_item_id: open_next_wave_or_user_directed_review
-request_digest: wave_closeout_next_action
-primary_family: policy_skill_governance
-primary_skill: spacesonar-workspace-state-sync
-verification_profile: governance
+work_item_id: work_wave03_open_volatility_state_transition_surface_v0
+request_digest: experiment_first_wave03_open_direction
+user_direction: experiment_first
+primary_family: experiment_design
+primary_skill: spacesonar-experiment-design
+verification_profile: design_only
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: wave03_experiment_open_writer_selected
+next_executable_action: materialize_wave03_multi_axis_campaign_open_records_and_18_proxy_specs
+experiment_or_boundary_effect: next_executable_wave03_campaign_open_records_pending_materialization
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+  campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+  idea_id: idea_us100_wave03_intraday_volatility_state_transition_v0
+  hypothesis_id: hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+  surface_id: surface_us100_wave03_compression_expansion_decision_v0
+  sweep_id: sweep_us100_wave03_compression_expansion_seed_v0
 targets:
-- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
+- lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/wave_allocation.yaml
+- lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/campaign_refs.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_manifest.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_specs_index.csv
 acceptance_criteria:
-- user selects next wave or review direction
-- selection uses lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
-claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+- wave03 allocation and campaign refs are materialized as source-of-truth records
+- campaign manifest opens a meaningful multi-axis volatility state transition surface
+- default proxy spec set contains 18 specs unless an explicit pre-open budget blocker is recorded
+- campaign open records bind the Wave03 idea, hypothesis, surface, and sweep IDs
+- no Wave02 execution liquidity, tradeability, or cost-risk-holding candidate repair is reopened
+claim_boundary: wave03_experiment_open_work_item_pending_materialization_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
   - GUARD_003_CLAIM_BOUNDARY
+  - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_007_OPERATIONAL_STABILITY
+experiment_open_requirements:
+  meaningful_multi_axis_surface_required: true
+  default_proxy_spec_count: 18
+  tiny_validation_samples_allowed: false
+  required_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  forbidden_shapes:
+  - feature_only_campaign
+  - label_only_campaign
+  - model_only_campaign
+  - threshold_only_campaign
+  - repair_only_campaign
+  proxy_runtime_follow_through_policy: valid_proxy_model_bearing_specs_consider_onnx_ea_mt5_follow_through
 outputs:
-- lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
-next_action: open_next_wave_or_user_directed_review
+- lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/wave_allocation.yaml
+- lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/campaign_refs.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_manifest.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_specs_index.csv
+next_action: materialize_wave03_multi_axis_campaign_open_records_and_18_proxy_specs
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-provenance:
-  source: wave_close_lifecycle
+current_truth:
+  source_wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+  source_wave_closeout: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
   decision_scaffold: lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
-writer_contract_version: writer_scope_operating_contract_v2
+  user_direction: experiment_first
+  candidate_count: 0
+  l5_candidate_count: 0
+  claim_effect: wave02_closed_wave03_open_writer_selected_no_candidate_claim
+provenance:
+  source: user_direction_experiment_first
+  resolved_from: open_next_wave_or_user_directed_review
+  decision_scaffold: lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
+writer_contract_version: writer_scope_operating_contract_v3
 source_of_truth_paths:
-- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
-- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
+- docs/workspace/workspace_state.yaml
+- docs/workspace/lab_profile.yaml
+- docs/agent_control/operational_stability_kernel.yaml
+- docs/agent_control/writer_scope_operating_contract.yaml
+- docs/agent_control/work_family_registry.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
 writer_owned_outputs:
 - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-- lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
+- docs/workspace/workspace_state.yaml
 validation_depth: writer_scope_smoke
 non_pytest_smokes:
-- write_time_writer_contract_guard
+- parse_touched_yaml
+- writer_scope_contract_lint_for_touched_writer_records
+- active_pointer_smoke
 skipped_broad_validations:
 - pytest
 - full_regression_workflow
@@ -39,7 +96,7 @@ skipped_broad_validations:
 - spacesonar_project_validate_full
 - broad_hash_resync
 - global_registry_regeneration
-broad_validation_escalation_reason: none_write_time_guarded_no_broad_validation
+broad_validation_escalation_reason: none_writer_scope_policy_and_active_pointer_smoke_only
 writer_preflight_gate:
   status: passed_before_mutation
   checked_before_mutation: true
@@ -49,6 +106,10 @@ writer_preflight_gate:
   - writer_owned_outputs
   - primary_family
   - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
   - validation_attempt_budget
   - claim_boundary
   - forbidden_claims
@@ -64,10 +125,13 @@ validation_attempt_budget:
   observed_writer_scope_attempts: 0
 writer_scope_self_check:
   status: passed
-  writer_contract_version: writer_scope_operating_contract_v2
+  writer_contract_version: writer_scope_operating_contract_v3
   validation_depth: writer_scope_smoke
+  progress_class: next_executable_experiment_writer_or_probe
   non_pytest_smokes:
-  - write_time_writer_contract_guard
+  - parse_touched_yaml
+  - writer_scope_contract_lint_for_touched_writer_records
+  - active_pointer_smoke
   failures: []
 forbidden_claims:
 - selected_baseline
@@ -80,4 +144,4 @@ forbidden_claims:
 - reviewed_verified_pass
 - goal_achieve
 unresolved_blockers_or_none: []
-next_action_or_reopen_condition: open_next_wave_or_user_directed_review
+next_action_or_reopen_condition: materialize_wave03_multi_axis_campaign_open_records_and_18_proxy_specs
