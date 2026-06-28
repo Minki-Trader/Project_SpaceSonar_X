@@ -1,0 +1,97 @@
+version: work_closeout_v1
+work_item_id: work_wave02_cost_risk_holding_campaign_closeout_v0
+parent_work_item_id: work_wave02_cost_risk_holding_decision_replay_l5_routing_decision_v0
+next_work_item_id: work_wave02_next_surface_rotation_decision_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T00:29:52Z'
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+result_judgment: negative_runtime_probe_no_candidate
+status: wave02_cost_risk_holding_campaign_closed_held_open_failed_caveat_no_candidate
+claim_boundary: wave02_cost_risk_holding_campaign_closed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_l5_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_campaign_closeout_v0_closeout.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+counts:
+  first_batch_materialized_run_count: 6
+  proxy_preserved_clue_count: 6
+  onnx_exportable_bundle_count: 6
+  l4_score_prepared_attempt_count: 12
+  l4_score_runtime_probe_complete_count: 12
+  l4_score_pair_count: 6
+  l4_score_decision_execution_pending_pair_count: 6
+  decision_replay_adapter_prepared_cell_count: 6
+  decision_replay_prepared_attempt_count: 12
+  decision_replay_runtime_probe_complete_count: 12
+  decision_replay_pair_count: 6
+  decision_replay_action_pair_count: 6
+  decision_replay_open_action_count: 47964
+  decision_replay_close_action_count: 48185
+  decision_replay_open_failed_count: 287
+  evaluated_pair_count: 6
+  held_for_open_failed_caveat_count: 6
+  repair_first_count: 0
+  candidate_manifest_opened_count: 0
+  candidate_count: 0
+  l5_candidate_count: 0
+  routing_decision_counts:
+    hold_for_open_failed_caveat_review: 6
+  observed_cell_count: 6
+  observed_cells:
+  - wave02_crh_cell_001
+  - wave02_crh_cell_002
+  - wave02_crh_cell_003
+  - wave02_crh_cell_004
+  - wave02_crh_cell_005
+  - wave02_crh_cell_006
+missing_evidence:
+- candidate_specific_L5_manifest_not_opened_due_to_open_failed_caveat
+- positive_l5_candidate_absent
+- selected_baseline_forbidden
+- runtime_authority_forbidden
+- economics_pass_forbidden
+- live_readiness_forbidden
+- goal_achieve_forbidden
+next_action: decide next Wave02 surface/campaign boundary after CRH open_failed-caveat
+  closeout; do not promote CRH evidence as candidate, runtime authority, economics
+  pass, live readiness, or Goal Achieve
+unresolved_blockers:
+- Wave02_next_surface_rotation_decision_pending
+reopen_conditions:
+- rerun campaign closeout if CRH decision replay routing summary or index changes
+- reopen CRH only after explicit open_failed semantics repair or materially new cost/risk/holding
+  policy
+- open candidate-specific L5 only with clean candidate manifest evidence and final
+  claim guard
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+required_gate_coverage:
+  passed:
+  - campaign_closeout_written
+  - negative_memory_recorded
+  - active_record_pointers_updated
+  - registry_rows_updated_as_indexes
+  - artifact_hashes_recorded_after_write
+  - final_claim_guard
+  - writer_scope_self_check
+  missing:
+  - candidate_specific_L5_manifest_not_opened_due_to_open_failed_caveat
+  - positive_l5_candidate_absent
+  not_applicable:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - live_readiness
+  - goal_achieve

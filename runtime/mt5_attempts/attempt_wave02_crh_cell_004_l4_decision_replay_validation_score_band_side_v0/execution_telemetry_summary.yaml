@@ -1,0 +1,64 @@
+version: wave02_cost_risk_holding_decision_replay_execution_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_decision_replay_validation_score_band_side_v0/execution_telemetry_summary.yaml
+attempt_id: attempt_wave02_crh_cell_004_l4_decision_replay_validation_score_band_side_v0
+source_attempt_id: attempt_wave02_crh_cell_004_l4_validation_v0
+run_id: onnxlab_wave02_crh_cell_004_cost_risk_holding_v0
+bundle_id: bundle_wave02_crh_cell_004_l4_onnx_export_v0
+period_role: validation
+direction_policy: score_band_side
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_decision_replay_validation_score_band_side_v0/telemetry/execution_telemetry.csv
+  sha256: bbf498c24604efaa2813a5bc888dcdb729196bbd8d600b748d39acf4fc60aa62
+  size_bytes: 6624762
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_cost_risk_holding_l4_decision_replay\attempt_wave02_crh_cell_004_l4_decision_replay_validation_score_band_side_v0\execution_telemetry.csv
+stats:
+  status: execution_telemetry_observed
+  row_count: 53554
+  first_bar_close_time: 2024.06.05 00:00:00
+  last_bar_close_time: 2025.03.07 23:50:00
+  symbol_counts:
+    US100: 53554
+  period_counts:
+    PERIOD_M5: 53554
+  decision_family_counts:
+    open_failed_abstain_gate: 53554
+  direction_policy_counts:
+    score_band_side: 53554
+  source_decision_counts:
+    unknown: 53554
+  execution_signal_counts:
+    flat: 30774
+    long: 9577
+    short: 13203
+  action_counts:
+    close_flat: 2706
+    close_hold_elapsed: 2526
+    hold_same_direction: 15142
+    no_trade_flat: 27923
+    open_failed: 30
+    open_long: 1775
+    open_short: 3452
+  trade_action_counts:
+    open_action_count: 5227
+    close_action_count: 5232
+    open_failed_count: 30
+    skip_spread_count: 0
+    no_trade_flat_count: 27923
+    hold_same_direction_count: 15142
+  score_stats:
+    finite_count: 53554
+    min: 0.1814527512
+    max: 0.8475558162
+    mean: 0.6275529787538634
+  spread_points_stats:
+    finite_count: 53554
+    min: 120.0
+    max: 700.0
+    mean: 130.75045748216752
+claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+subwork_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0

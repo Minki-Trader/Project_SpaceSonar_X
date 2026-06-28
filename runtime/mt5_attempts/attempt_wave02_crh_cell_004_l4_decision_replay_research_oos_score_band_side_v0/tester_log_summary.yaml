@@ -1,0 +1,80 @@
+version: wave02_cost_risk_holding_decision_replay_tester_log_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_decision_replay_research_oos_score_band_side_v0/tester_log_summary.yaml
+attempt_id: attempt_wave02_crh_cell_004_l4_decision_replay_research_oos_score_band_side_v0
+status: tester_log_observed
+tester_log:
+  redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\Tester\logs\20260628.log
+  sha256: e08273b4fa243efeb40b5c38225d0cf2fba6b5741d2230481d8f4e5a430da360
+  size_bytes: 10097942
+  availability: local_tester_log_hash_recorded_not_committed
+final_balance: 500.0
+final_balance_currency: USD
+orders_attempted: null
+rows_loaded: null
+rows_observed: null
+test_passed_duration: 0:00:09.043 (including ticks preprocessing 0:00:03.422).
+terminal_finished_result: null
+terminal_finished_duration: null
+agent_log_redacted_path: ${APPDATA}\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000\logs\20260628.log
+context_tail:
+- "IH\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulAddFusion\
+  \ modified: 0 with status: OK"
+- "RG\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer SkipLayerNormFusion\
+  \ modified: 0 with status: OK"
+- "KJ\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer FastGeluFusion\
+  \ modified: 0 with status: OK"
+- "JG\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer QuickGeluFusion\
+  \ modified: 0 with status: OK"
+- "EP\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer BiasSoftmaxFusion\
+  \ modified: 0 with status: OK"
+- "FP\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer BiasDropoutFusion\
+  \ modified: 0 with status: OK"
+- "PQ\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulScaleFusion\
+  \ modified: 0 with status: OK"
+- "PQ\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulActivationFusion\
+  \ modified: 0 with status: OK"
+- "HL\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulNBitsFusion\
+  \ modified: 0 with status: OK"
+- "OS\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer QDQFinalCleanupTransformer\
+  \ modified: 0 with status: OK"
+- "JR\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer NchwcTransformer\
+  \ modified: 0 with status: OK"
+- "QM\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer NhwcTransformer\
+  \ modified: 0 with status: OK"
+- "IK\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer ConvAddActivationFusion\
+  \ modified: 0 with status: OK"
+- "KE\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer RemoveDuplicateCastTransformer\
+  \ modified: 0 with status: OK"
+- "GG\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer CastFloat16Transformer\
+  \ modified: 0 with status: OK"
+- "MF\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer FuseFp16InitializerToFp32NodeTransformer\
+  \ modified: 0 with status: OK"
+- "LK\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MemcpyTransformer\
+  \ modified: 0 with status: OK"
+- "OE\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Use DeviceBasedPartition\
+  \ as default"
+- "RI\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Saving initialized tensors."
+- "NL\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Done saving initialized\
+  \ tensors"
+- "EF\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Session successfully\
+  \ initialized."
+- "QD\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: CPU selected"
+- "LP\t0\t05:45:13.067\tCore 01\tUS100 : real ticks begin from 2019.04.01 00:00:00"
+- "EK\t0\t05:45:15.785\tCore 01\tfinal balance 500.00 USD"
+- "HS\t0\t05:45:15.785\tCore 01\t2025.11.20 23:59:58   SpaceSonar L4 ONNX release\
+  \ released=true last_error=0 rows=45281"
+- "NR\t0\t05:45:15.785\tCore 01\tUS100,M5: 54636569 ticks, 45281 bars generated. Test\
+  \ passed in 0:00:08.839 (including ticks preprocessing 0:00:02.687)."
+- "PP\t0\t05:45:15.785\tCore 01\t1293 Mb memory used including 7 Mb of history data,\
+  \ 1152 Mb of tick data"
+- "MS\t0\t05:45:15.785\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\\
+  Tester\\D0E8209F77C8CF37AD8BF550E51FF075\\Agent-127.0.0.1-3000\\logs\\20260628.log\"\
+  \ written"
+- "QN\t0\t05:45:15.839\tTester\tautomatical testing finished"
+- "JI\t0\t05:45:15.839\tCore 01\tconnection closed"
+claim_boundary: wave02_cost_risk_holding_decision_replay_tester_log_observation_only_no_economics_pass
+work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+subwork_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0

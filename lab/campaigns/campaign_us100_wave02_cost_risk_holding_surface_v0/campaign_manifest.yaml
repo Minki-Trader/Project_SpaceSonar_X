@@ -2,9 +2,9 @@ version: campaign_manifest_v2
 campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
 campaign_type: standard_experiment
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: wave02_cost_risk_holding_decision_replay_terminal_execution_pending
+status: wave02_cost_risk_holding_campaign_closed_held_open_failed_caveat_no_candidate
 created_at_utc: '2026-06-27T22:09:35Z'
-updated_at_utc: '2026-06-27T23:48:13Z'
+updated_at_utc: '2026-06-28T00:29:52Z'
 wave_ids:
 - wave_us100_wave02_tradeability_decision_surface_v0
 idea_ids:
@@ -72,7 +72,7 @@ required_gates:
 - exploration_coverage_check
 - proxy_runtime_parity_policy
 - final_claim_guard
-claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_execution_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_next_surface_rotation_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -210,9 +210,7 @@ previous_campaign_boundary:
   closeout: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
   negative_memory: lab/memory/negative/neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0.yaml
   carry_forward_rule: do_not_reopen_momentum_ret_1_replay_as_candidate_repair
-next_action: execute prepared Wave02 cost/risk/holding sparse decision replay MT5
-  attempts with portable terminal only, then judge paired validation/research_oos
-  results
+next_action: work_wave02_next_surface_rotation_decision_v0
 first_batch_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
 run_refs: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/run_refs.csv
 proxy_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
@@ -319,24 +317,18 @@ l4_follow_through:
   decision_replay:
     l5_routing_decision_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
     l5_routing_decision_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
-    l5_routing_decision_status: wave02_cost_risk_holding_l5_routing_decision_completed_adapter_preparation_pending
+    l5_routing_decision_status: wave02_cost_risk_holding_l5_routing_decision_completed_no_candidate_campaign_closeout_pending
     l5_routing_decision_counts:
       evaluated_pair_count: 6
-      adapter_preparation_cell_count: 6
       candidate_manifest_opened_count: 0
       candidate_count: 0
       l5_candidate_count: 0
+      held_for_open_failed_caveat_count: 6
+      repair_first_count: 0
       routing_decision_counts:
-        prepare_decision_execution_adapter: 6
+        hold_for_open_failed_caveat_review: 6
       source_l5_status_counts:
-        l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
-      decision_family_counts:
-        abstain_timeout_h12: 1
-        abstain_timeout_h6: 1
-        adverse_excursion_stop: 1
-        open_failed_abstain_gate: 1
-        session_abstain_timeout: 1
-        volatility_stop_timeout: 1
+        l5_routing_review_required_with_open_failed_note_no_candidate_claim: 6
     adapter_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
     adapter_preparation_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
     adapter_eligibility_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
@@ -365,6 +357,97 @@ l4_follow_through:
         target_and_label.label_variant: 12
       eligibility_reason_counts:
         eligible_crh_score_band_side_adapter: 6
+    runtime_execution_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+    runtime_execution_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+    runtime_execution_status: wave02_cost_risk_holding_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 11
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      source_score_telemetry_observed_count: 12
+      execution_telemetry_observed_count: 12
+      execution_telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      tester_log_observed_count: 12
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      open_action_count: 47964
+      close_action_count: 48185
+      open_failed_count: 287
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      direction_policy_counts:
+        score_band_side: 12
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
+      candidate_count: 0
+      l5_candidate_count: 0
+    pair_judgment_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+    pair_judgment_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+    pair_judgment_status: wave02_cost_risk_holding_decision_replay_pair_judgment_completed_l5_routing_decision_pending
+    pair_judgment_counts:
+      cell_pair_count: 6
+      runtime_probe_pair_complete_count: 6
+      both_period_roles_observed_count: 6
+      nonempty_execution_pair_count: 6
+      tester_report_pair_observed_count: 6
+      decision_action_pair_count: 6
+      l5_routing_review_required_count: 6
+      l5_routing_review_repair_first_count: 0
+      candidate_count: 0
+      l5_candidate_count: 0
+      source_proxy_judgment_counts:
+        preserved_clue: 6
+      result_judgment_counts:
+        runtime_probe: 6
+      l5_status_counts:
+        l5_routing_review_required_with_open_failed_note_no_candidate_claim: 6
+      decision_replay_comparison_class_counts:
+        decision_replay_actions_observed: 6
+      runtime_execution_counts:
+        prepared_attempt_count: 12
+        selected_attempt_count: 11
+        indexed_execution_count: 12
+        executed_attempt_count: 12
+        completed_manifest_count: 12
+        touched_manifest_count: 12
+        source_score_telemetry_observed_count: 12
+        execution_telemetry_observed_count: 12
+        execution_telemetry_missing_count: 0
+        tester_report_observed_count: 12
+        tester_report_missing_count: 0
+        tester_log_observed_count: 12
+        terminal_execution_count: 12
+        telemetry_observation_count: 12
+        tester_report_observation_count: 12
+        portable_contract_count: 12
+        runtime_probe_complete_count: 12
+        runtime_probe_incomplete_count: 0
+        open_action_count: 47964
+        close_action_count: 48185
+        open_failed_count: 287
+        period_role_counts:
+          research_oos: 6
+          validation: 6
+        direction_policy_counts:
+          score_band_side: 12
+        status_counts:
+          runtime_probe_completed: 12
+        result_judgment_counts:
+          runtime_probe: 12
+        candidate_count: 0
+        l5_candidate_count: 0
 evidence_paths:
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/onnx_materialization_index.csv
@@ -374,16 +457,184 @@ evidence_paths:
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_campaign_closeout_v0_closeout.yaml
 missing_evidence:
-- decision_replay_terminal_execution_not_run
-- tester_reports_missing_until_execution
-- economics_metrics_missing_until_tester_report
-- candidate_specific_L5_manifest_not_opened
+- candidate_specific_L5_manifest_not_opened_due_to_open_failed_caveat
+- positive_l5_candidate_absent
+- selected_baseline_forbidden
+- runtime_authority_forbidden
+- economics_pass_forbidden
+- live_readiness_forbidden
+- goal_achieve_forbidden
 unresolved_blockers:
-- Wave02_cost_risk_holding_decision_replay_adapter_preparation_pending
+- Wave02_next_surface_rotation_decision_pending
 reopen_conditions:
-- rerun routing decision if CRH L4 pair judgment summary or index changes
-- open candidate-specific L5 manifest only after decision replay pair judgment supports
-  it
+- rerun campaign closeout if CRH decision replay routing summary or index changes
+- reopen CRH only after explicit open_failed semantics repair or materially new cost/risk/holding
+  policy
+- open candidate-specific L5 only with clean candidate manifest evidence and final
+  claim guard
 candidate_count: 0
 l5_candidate_count: 0
+runtime_follow_through:
+  decision_replay_runtime_execution:
+    summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+    index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+    status: wave02_cost_risk_holding_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+    counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 11
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      source_score_telemetry_observed_count: 12
+      execution_telemetry_observed_count: 12
+      execution_telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      tester_log_observed_count: 12
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      open_action_count: 47964
+      close_action_count: 48185
+      open_failed_count: 287
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      direction_policy_counts:
+        score_band_side: 12
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
+      candidate_count: 0
+      l5_candidate_count: 0
+    claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  decision_replay_pair_judgment:
+    summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+    index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+    status: wave02_cost_risk_holding_decision_replay_pair_judgment_completed_l5_routing_decision_pending
+    counts:
+      cell_pair_count: 6
+      runtime_probe_pair_complete_count: 6
+      both_period_roles_observed_count: 6
+      nonempty_execution_pair_count: 6
+      tester_report_pair_observed_count: 6
+      decision_action_pair_count: 6
+      l5_routing_review_required_count: 6
+      l5_routing_review_repair_first_count: 0
+      candidate_count: 0
+      l5_candidate_count: 0
+      source_proxy_judgment_counts:
+        preserved_clue: 6
+      result_judgment_counts:
+        runtime_probe: 6
+      l5_status_counts:
+        l5_routing_review_required_with_open_failed_note_no_candidate_claim: 6
+      decision_replay_comparison_class_counts:
+        decision_replay_actions_observed: 6
+      runtime_execution_counts:
+        prepared_attempt_count: 12
+        selected_attempt_count: 11
+        indexed_execution_count: 12
+        executed_attempt_count: 12
+        completed_manifest_count: 12
+        touched_manifest_count: 12
+        source_score_telemetry_observed_count: 12
+        execution_telemetry_observed_count: 12
+        execution_telemetry_missing_count: 0
+        tester_report_observed_count: 12
+        tester_report_missing_count: 0
+        tester_log_observed_count: 12
+        terminal_execution_count: 12
+        telemetry_observation_count: 12
+        tester_report_observation_count: 12
+        portable_contract_count: 12
+        runtime_probe_complete_count: 12
+        runtime_probe_incomplete_count: 0
+        open_action_count: 47964
+        close_action_count: 48185
+        open_failed_count: 287
+        period_role_counts:
+          research_oos: 6
+          validation: 6
+        direction_policy_counts:
+          score_band_side: 12
+        status_counts:
+          runtime_probe_completed: 12
+        result_judgment_counts:
+          runtime_probe: 12
+        candidate_count: 0
+        l5_candidate_count: 0
+    claim_boundary: wave02_cost_risk_holding_decision_replay_pair_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  l5_routing_decision:
+    summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+    index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+    status: wave02_cost_risk_holding_l5_routing_decision_completed_no_candidate_campaign_closeout_pending
+    counts:
+      evaluated_pair_count: 6
+      candidate_manifest_opened_count: 0
+      candidate_count: 0
+      l5_candidate_count: 0
+      held_for_open_failed_caveat_count: 6
+      repair_first_count: 0
+      routing_decision_counts:
+        hold_for_open_failed_caveat_review: 6
+      source_l5_status_counts:
+        l5_routing_review_required_with_open_failed_note_no_candidate_claim: 6
+    claim_boundary: wave02_cost_risk_holding_decision_replay_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+candidate_ids: []
+campaign_closeout: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+negative_memory_ids:
+- neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0
+campaign_closeout_status: wave02_cost_risk_holding_campaign_closed_held_open_failed_caveat_no_candidate
+campaign_closeout_counts:
+  first_batch_materialized_run_count: 6
+  proxy_preserved_clue_count: 6
+  onnx_exportable_bundle_count: 6
+  l4_score_prepared_attempt_count: 12
+  l4_score_runtime_probe_complete_count: 12
+  l4_score_pair_count: 6
+  l4_score_decision_execution_pending_pair_count: 6
+  decision_replay_adapter_prepared_cell_count: 6
+  decision_replay_prepared_attempt_count: 12
+  decision_replay_runtime_probe_complete_count: 12
+  decision_replay_pair_count: 6
+  decision_replay_action_pair_count: 6
+  decision_replay_open_action_count: 47964
+  decision_replay_close_action_count: 48185
+  decision_replay_open_failed_count: 287
+  evaluated_pair_count: 6
+  held_for_open_failed_caveat_count: 6
+  repair_first_count: 0
+  candidate_manifest_opened_count: 0
+  candidate_count: 0
+  l5_candidate_count: 0
+  routing_decision_counts:
+    hold_for_open_failed_caveat_review: 6
+  observed_cell_count: 6
+  observed_cells:
+  - wave02_crh_cell_001
+  - wave02_crh_cell_002
+  - wave02_crh_cell_003
+  - wave02_crh_cell_004
+  - wave02_crh_cell_005
+  - wave02_crh_cell_006
+campaign_closeout_claim_boundary: wave02_cost_risk_holding_campaign_closed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_l5_candidate_no_live_readiness_no_goal_achieve

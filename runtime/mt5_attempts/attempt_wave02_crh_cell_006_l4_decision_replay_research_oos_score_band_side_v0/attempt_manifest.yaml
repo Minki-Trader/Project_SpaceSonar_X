@@ -9,10 +9,10 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
 sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
 created_at_utc: '2026-06-27T23:48:13Z'
-status: prepared_pending_terminal_execution
-claim_boundary: wave02_cost_risk_holding_decision_replay_adapter_preparation_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+status: runtime_probe_completed
+claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
 source_of_truth: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/attempt_manifest.yaml
-work_item_id: work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0
+work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
 parent_work_item_id: work_wave02_cost_risk_holding_l5_routing_decision_v0
 runtime_learning_probe_decision:
   required: true
@@ -51,6 +51,7 @@ runtime_surface_contract:
   hold_bars_source: target_and_label.label_variant
   decision_output: score_ge_high_long_score_le_low_short_else_flat
   forbidden_interpretation: not_runtime_authority_not_economics_pass_not_candidate_until_terminal_judgment_exists
+  portable_decision_ea_stage_status: staged
 proxy_runtime_parity:
   status: adapter_prepared_terminal_execution_pending
   shared_contract:
@@ -74,10 +75,11 @@ proxy_runtime_parity:
   - hold_bars_exit_semantics
   - tester_fill_cost_spread_lot_rounding
   minimum_reconciliation_attempt:
-    status: prepared
-    attempt: score telemetry bar_close_time will be replayed into sparse MT5 orders
-      using score band side thresholds
+    status: decision_replay_execution_telemetry_observed
+    attempt: MT5 Strategy Tester replayed prior score telemetry through sparse decision
+      EA
     forced_equality_required: false
+    evidence_path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
   unit_semantics:
     score: single_float_score_from_prior_MT5_score_probe
     high_threshold: 0.8118602672847772
@@ -85,17 +87,18 @@ proxy_runtime_parity:
     side_mapping: score_ge_high_long_score_le_low_short_else_flat
     lot: fixed_lot_0.02
     hold: 10_M5_closed_bars
-  comparison_class: pending_terminal_execution
-  divergence_judgment: pending_terminal_execution
+  comparison_class: score_replay_sparse_decision_follow_through_observation
+  divergence_judgment: runtime_decision_execution_observed_pending_tester_report_or_economics_parse
   prevention_memory:
   - Do not infer CRH candidate status from score telemetry alone.
   - Score band replay is a bounded adapter attempt, not selected baseline or runtime
     authority.
   - If replay loses or is unstable, record negative memory instead of repairing into
     a candidate track.
-  follow_up_action: execute prepared Wave02 cost/risk/holding sparse decision replay
-    MT5 attempts with portable terminal only, then judge paired validation/research_oos
-    results
+  - Wave02 decision replay runner normalizes reused Wave0 helper outputs to prevent
+    legacy identity or promotion inheritance.
+  follow_up_action: judge sparse decision surface with completed L4 runtime contract
+    before any L5 or economics claim
   claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
 artifact_identity:
   ea_entrypoint:
@@ -121,26 +124,77 @@ artifact_identity:
     sha256: 9a8552314cb3924007f38fbccede9e791bd84e1852643d783f0814e463abfc7b
     size_bytes: 1544
     availability: present_hash_recorded
+  portable_runtime_root:
+    decision_ea_binary:
+      status: staged
+      copy_status: already_current
+      source_copy_status: already_current
+      tester_expert_value: Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+      portable_terminal_root_redacted: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract
+      portable_ex5_redacted: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+      source:
+        path: foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.ex5
+        sha256: bf0a50a112d423a18972a8549758b5b996a02b065c53e94909282a80c547cc8a
+        size_bytes: 48830
+        availability: local_binary_hash_recorded_ignored_by_git
+      portable_sha256: bf0a50a112d423a18972a8549758b5b996a02b065c53e94909282a80c547cc8a
+      portable_size_bytes: 48830
+      durable_identity: tester_config_expert_value_plus_source_binary_sha256
+      claim_boundary: portable_decision_ea_stage_preflight_only_no_runtime_authority
+  terminal_run_summary:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
+    sha256: 093ca6fe9b0f413649fb700e645aa05fe550b5e3fc48173bda6991a4cc182ac1
+    size_bytes: 11970
+    availability: present_hash_recorded
+  execution_telemetry_summary:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
+    sha256: fd368af8e3fb54027cfed4f3a6cdb6206bcd07a9a166fed9ff06ebb19ec52b6e
+    size_bytes: 2733
+    availability: present_hash_recorded
+  tester_report_receipt:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/tester_report_receipt.yaml
+    sha256: be78322138bf47ace70e351a75ad4a8546eacf12d4c6571b3c41f20a1216fe59
+    size_bytes: 1152
+    availability: present_hash_recorded
+  tester_log_summary:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/tester_log_summary.yaml
+    sha256: 4cd37b78fdcab98a32cfa974e54ea9044a76be637097ec680fce0ada37011206
+    size_bytes: 5107
+    availability: present_hash_recorded
+  tester_reports:
+  - observed: true
+    status: tester_report_archived_local_hash_recorded
+    origin: portable_terminal_root
+    source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\tester_report.htm
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/reports/tester_report.htm
+    sha256: 490ce30c0dd07e18f6555c3f9b47d5546fb5fadff2a261bdd2e225613e62fd9c
+    size_bytes: 8010940
+    availability: local_report_hash_recorded_ignored_by_git
+    claim_boundary: tester_report_local_evidence_only_no_economics_pass
+  telemetry:
+    repo_execution_copy:
+      path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/telemetry/execution_telemetry.csv
+      sha256: 084d4e9c5858d91eb6abaf9c922e3cb71597661569c3313d85729a42d6a68b13
+      size_bytes: 5528086
+      availability: local_telemetry_hash_recorded_ignored_by_git
 required_gate_coverage:
   passed:
   - source_score_telemetry_observed
   - wave02_crh_decision_adapter_prepared
   - tester_config_prepared
   - locked_final_excluded
-  missing:
   - Strategy_Tester_terminal_execution
+  - execution_telemetry_csv
+  - result_judgment_from_score_replay_decision_probe
+  - L4_period_role_completed_report
   - tester_report_hash
+  missing:
   - economics_metrics
   not_applicable:
   - locked_final_oos_b_access
-missing_evidence:
-- decision_replay_terminal_execution_not_run
-- tester_report_missing_until_terminal_execution
-- economics_metrics_missing_until_tester_report
-- candidate_specific_L5_manifest_not_opened
-next_action: execute prepared Wave02 cost/risk/holding sparse decision replay MT5
-  attempts with portable terminal only, then judge paired validation/research_oos
-  results
+missing_evidence: []
+next_action: judge sparse decision surface with completed L4 runtime contract before
+  any L5 or economics claim
 forbidden_claims:
 - selected_baseline
 - operating_reference
@@ -152,3 +206,416 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
+result_judgment: runtime_probe
+execution_state:
+  terminal_launched: true
+  telemetry_file_observed: true
+  telemetry_rows_observed: true
+  tester_report_observed: true
+  tester_report_completed: true
+  terminal_mode: portable_contract_attempt
+  portable_contract_satisfied: true
+  report_contract_satisfied: true
+  period_contract_satisfied: true
+  surface_contract_satisfied: true
+  runtime_probe_complete: true
+  missing_requirements: []
+  completion_claim_boundary: standard_l4_runtime_probe_complete_no_runtime_authority_no_economics_pass
+runtime_probe_routing:
+  primary_family: runtime_probe
+  primary_skill: spacesonar-runtime-evidence
+  support_skills:
+  - spacesonar-evidence-provenance
+  - spacesonar-result-judgment
+  - spacesonar-claim-discipline
+  routing_scope: wave02_cost_risk_holding_l4_score_replay_decision_execution
+  runtime_period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: research_oos
+  claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+terminal_run_summary:
+  command_argv_redacted:
+  - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-28T00:08:43.994922Z'
+  ended_at_utc: '2026-06-28T00:09:14.582638Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  telemetry_exists_after_attempt: true
+  terminal_attempts:
+  - command_argv_redacted:
+    - ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\terminal64.exe
+    - /portable
+    - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\tester_config.ini
+    cwd: .
+    started_at_utc: '2026-06-28T00:08:43.994922Z'
+    ended_at_utc: '2026-06-28T00:09:14.582638Z'
+    exit_code: 0
+    timed_out: false
+    stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    stdout_tail: ''
+    stderr_tail: ''
+    mode: portable_contract_attempt
+    attempt_claim_boundary: standard_contract_attempt_only
+    telemetry_exists_after_attempt: true
+  terminal_cleanup_actions: []
+  terminal_cleanup_policy:
+    default_terminate_existing: false
+    explicit_termination_requested: false
+    allowed_scope: explicit_user_requested_only
+    formal_runtime_claim_effect: no_global_cleanup_used
+  terminal_mode_policy:
+    standard_contract_terminal_mode: portable_required
+    portable_attempted: true
+    main_mode_fallback_allowed: false
+    main_mode_fallback_used: false
+    fallback_reason: null
+    claim_effect: decision_replay_standard_portable_attempt_observation
+  selected_attempt_index: 0
+  telemetry_observed: true
+  version: wave02_cost_risk_holding_decision_replay_terminal_run_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
+  attempt_id: attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+  source_attempt_id: attempt_wave02_crh_cell_006_l4_research_oos_v0
+  run_id: onnxlab_wave02_crh_cell_006_cost_risk_holding_v0
+  bundle_id: bundle_wave02_crh_cell_006_l4_onnx_export_v0
+  tester_config:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/tester_config.ini
+    sha256: 9a8552314cb3924007f38fbccede9e791bd84e1852643d783f0814e463abfc7b
+    size_bytes: 1544
+    availability: present_hash_recorded
+  tester_report_config:
+    status: tester_report_config_normalized
+    changed: false
+    report_value: reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\tester_report
+    report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
+  tester_report_resolution_prelaunch:
+    status: tester_report_directories_partially_prepared
+    report_value: reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\tester_report
+    prepared:
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: repository_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: portable_terminal_root
+      redacted_parent: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    - origin: main_terminal_data_root
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+    skipped:
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+      reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+        \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\\
+        AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0'"
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+      reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+        \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\\
+        AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0'"
+    - origin: attempt_archive_path
+      redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+      reason: "FileNotFoundError: [WinError 3] \uC9C0\uC815\uB41C \uACBD\uB85C\uB97C\
+        \ \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4: 'C:\\\\Users\\\\awdse\\\\\
+        AppData\\\\Roaming\\\\MetaQuotes\\\\Terminal\\\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+        \\MQL5\\\\Experts\\\\Project_SpaceSonar_X\\\\runtime\\\\mt5_attempts\\\\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\\\
+        \\reports\\\\spacesonar\\\\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0'"
+    prelaunch_candidates:
+    - origin: repository_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 34dfe9818fc21b0afe863a38562d8160c70efa2585dbe7d4c76d3efa9feafc57
+    - origin: repository_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 0c3e68610a3a9ec711e329dd75c38aecf6eb6628707596f86fdfba037e73d486
+    - origin: repository_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: f8520f876c1c825697fd93ab3489b2db83e1e8fbb7d52de53ca4f8704cd44b87
+    - origin: portable_terminal_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: ed0e939de146b129b07b94c4a376209be88f3d12880cb33d69a8f684c38dd663
+    - origin: portable_terminal_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 9d882779bfc6c9937c2e4b37e5704296443b9d184d23622453daf9a91d04fa0c
+    - origin: portable_terminal_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 74dc38aba490d1d3d774785b7340ef68875d51463ac78eaa7a8c15e7b30474a4
+    - origin: main_terminal_data_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 9f468dc25c65b83f58753865199ec7b38b118c4e327cbe86c8c6fe56cf30fb13
+    - origin: main_terminal_data_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 457d42e99744f2c4201764db1511807a8bda8688b34c9a237b291da4e39e3c7d
+    - origin: main_terminal_data_root
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: 86cdfadf592760a323df5f5ad105ea575e486afcc3cdf8517a05eb6ac809c703
+    - origin: attempt_archive_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: e3e52fa57a60a53df62c1f509841bbdeafbca8f0d2d270485aea1499ed41e292
+    - origin: attempt_archive_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: e168179c14df6f5d1c0b82d5cbdbd159601a0152162d8d338ff95ba0346eabce
+    - origin: attempt_archive_path
+      existed: false
+      sha256: null
+      size_bytes: null
+      mtime_ns: null
+      mtime_utc: null
+      path_key_sha256: d4405ab2b0fa2de06081c24ac59306a50b87021a62b6ae7b17467b4beb3aa69e
+  source_score_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_cost_risk_holding_l4_score_probe\attempt_wave02_crh_cell_006_l4_research_oos_v0\score_telemetry.csv
+  execution_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_cost_risk_holding_l4_decision_replay\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\execution_telemetry.csv
+  claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+  subwork_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+execution_telemetry_summary:
+  version: wave02_cost_risk_holding_decision_replay_execution_telemetry_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/execution_telemetry_summary.yaml
+  attempt_id: attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+  source_attempt_id: attempt_wave02_crh_cell_006_l4_research_oos_v0
+  run_id: onnxlab_wave02_crh_cell_006_cost_risk_holding_v0
+  bundle_id: bundle_wave02_crh_cell_006_l4_onnx_export_v0
+  period_role: research_oos
+  direction_policy: score_band_side
+  telemetry:
+    path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/telemetry/execution_telemetry.csv
+    sha256: 084d4e9c5858d91eb6abaf9c922e3cb71597661569c3313d85729a42d6a68b13
+    size_bytes: 5528086
+    availability: local_telemetry_hash_recorded_ignored_by_git
+  common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_cost_risk_holding_l4_decision_replay\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\execution_telemetry.csv
+  stats:
+    status: execution_telemetry_observed
+    row_count: 45281
+    first_bar_close_time: 2025.04.03 00:00:00
+    last_bar_close_time: 2025.11.20 23:55:00
+    symbol_counts:
+      US100: 45281
+    period_counts:
+      PERIOD_M5: 45281
+    decision_family_counts:
+      volatility_stop_timeout: 45281
+    direction_policy_counts:
+      score_band_side: 45281
+    source_decision_counts:
+      unknown: 45281
+    execution_signal_counts:
+      flat: 29545
+      long: 11657
+      short: 4079
+    action_counts:
+      close_flat: 3317
+      close_hold_elapsed: 766
+      hold_same_direction: 10979
+      no_trade_flat: 26134
+      open_failed: 15
+      open_long: 2655
+      open_short: 1415
+    trade_action_counts:
+      open_action_count: 4070
+      close_action_count: 4083
+      open_failed_count: 15
+      skip_spread_count: 0
+      no_trade_flat_count: 26134
+      hold_same_direction_count: 10979
+    score_stats:
+      finite_count: 45281
+      min: 0.251489222
+      max: 0.8875089884
+      mean: 0.753330538432369
+    spread_points_stats:
+      finite_count: 45281
+      min: 120.0
+      max: 1275.0
+      mean: 135.15823413793865
+  claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+  subwork_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+tester_log_summary:
+  version: wave02_cost_risk_holding_decision_replay_tester_log_summary_v1
+  summary_path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/tester_log_summary.yaml
+  attempt_id: attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0
+  status: tester_log_observed
+  tester_log:
+    redacted_path: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\Tester\logs\20260628.log
+    sha256: e08273b4fa243efeb40b5c38225d0cf2fba6b5741d2230481d8f4e5a430da360
+    size_bytes: 10097942
+    availability: local_tester_log_hash_recorded_not_committed
+  final_balance: 500.0
+  final_balance_currency: USD
+  orders_attempted: null
+  rows_loaded: null
+  rows_observed: null
+  test_passed_duration: 0:00:09.043 (including ticks preprocessing 0:00:03.422).
+  terminal_finished_result: null
+  terminal_finished_duration: null
+  agent_log_redacted_path: ${APPDATA}\MetaQuotes\Tester\D0E8209F77C8CF37AD8BF550E51FF075\Agent-127.0.0.1-3000\logs\20260628.log
+  context_tail:
+  - "IH\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulAddFusion\
+    \ modified: 0 with status: OK"
+  - "RG\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer SkipLayerNormFusion\
+    \ modified: 0 with status: OK"
+  - "KJ\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer FastGeluFusion\
+    \ modified: 0 with status: OK"
+  - "JG\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer QuickGeluFusion\
+    \ modified: 0 with status: OK"
+  - "EP\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer BiasSoftmaxFusion\
+    \ modified: 0 with status: OK"
+  - "FP\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer BiasDropoutFusion\
+    \ modified: 0 with status: OK"
+  - "PQ\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulScaleFusion\
+    \ modified: 0 with status: OK"
+  - "PQ\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulActivationFusion\
+    \ modified: 0 with status: OK"
+  - "HL\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MatMulNBitsFusion\
+    \ modified: 0 with status: OK"
+  - "OS\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer QDQFinalCleanupTransformer\
+    \ modified: 0 with status: OK"
+  - "JR\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer NchwcTransformer\
+    \ modified: 0 with status: OK"
+  - "QM\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer NhwcTransformer\
+    \ modified: 0 with status: OK"
+  - "IK\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer ConvAddActivationFusion\
+    \ modified: 0 with status: OK"
+  - "KE\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer RemoveDuplicateCastTransformer\
+    \ modified: 0 with status: OK"
+  - "GG\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer CastFloat16Transformer\
+    \ modified: 0 with status: OK"
+  - "MF\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer FuseFp16InitializerToFp32NodeTransformer\
+    \ modified: 0 with status: OK"
+  - "LK\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: GraphTransformer MemcpyTransformer\
+    \ modified: 0 with status: OK"
+  - "OE\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Use DeviceBasedPartition\
+    \ as default"
+  - "RI\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Saving initialized\
+    \ tensors."
+  - "NL\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Done saving initialized\
+    \ tensors"
+  - "EF\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: Session successfully\
+    \ initialized."
+  - "QD\t0\t05:45:13.067\tCore 01\t2025.04.03 00:00:00   ONNX: CPU selected"
+  - "LP\t0\t05:45:13.067\tCore 01\tUS100 : real ticks begin from 2019.04.01 00:00:00"
+  - "EK\t0\t05:45:15.785\tCore 01\tfinal balance 500.00 USD"
+  - "HS\t0\t05:45:15.785\tCore 01\t2025.11.20 23:59:58   SpaceSonar L4 ONNX release\
+    \ released=true last_error=0 rows=45281"
+  - "NR\t0\t05:45:15.785\tCore 01\tUS100,M5: 54636569 ticks, 45281 bars generated.\
+    \ Test passed in 0:00:08.839 (including ticks preprocessing 0:00:02.687)."
+  - "PP\t0\t05:45:15.785\tCore 01\t1293 Mb memory used including 7 Mb of history data,\
+    \ 1152 Mb of tick data"
+  - "MS\t0\t05:45:15.785\tCore 01\tlog file \"C:\\Users\\awdse\\AppData\\Roaming\\\
+    MetaQuotes\\Tester\\D0E8209F77C8CF37AD8BF550E51FF075\\Agent-127.0.0.1-3000\\logs\\\
+    20260628.log\" written"
+  - "QN\t0\t05:45:15.839\tTester\tautomatical testing finished"
+  - "JI\t0\t05:45:15.839\tCore 01\tconnection closed"
+  claim_boundary: wave02_cost_risk_holding_decision_replay_tester_log_observation_only_no_economics_pass
+  work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+  subwork_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0
+  active_goal_id: goal_us100_onnx_forward_boundary_v0
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  sweep_id: sweep_us100_wave02_cost_risk_holding_broad_v0
+tester_report:
+  observed: true
+  status: tester_report_archived_local_hash_recorded
+  origin: portable_terminal_root
+  source_redacted_path: ${USERPROFILE}\AppData\Local\Temp\spacesonar_mt5_portable_runtime_contract\reports\spacesonar\attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0\tester_report.htm
+  path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/reports/tester_report.htm
+  sha256: 490ce30c0dd07e18f6555c3f9b47d5546fb5fadff2a261bdd2e225613e62fd9c
+  size_bytes: 8010940
+  availability: local_report_hash_recorded_ignored_by_git
+  claim_boundary: tester_report_local_evidence_only_no_economics_pass
+tester_report_receipt:
+  path: runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/tester_report_receipt.yaml
+  receipt_version: tester_report_receipt_v1
+  tester_report_completed: true
+  missing_requirements: []
+  claim_boundary: tester_report_receipt_only_no_runtime_authority_no_economics_pass
+failure_disposition:
+  required_before_judgments:
+  - blocked
+  - deferred
+  - invalid
+  - discarded
+  status: recorded
+  failure_reproduction: source telemetry was checked and MT5 terminal launch was attempted
+  exact_failing_layer: mt5_strategy_tester_common_file_execution_telemetry
+  root_cause_hypothesis: execution telemetry CSV not observed in MT5 Common Files
+  repo_controlled_support_gap: true
+  repair_or_fallback_attempts:
+  - portable attempt plus configured main-mode fallback when enabled
+  attempt_blocker_if_no_repair: null
+  evidence_paths:
+  - runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/terminal_run_summary.yaml
+  remaining_blocker: execution telemetry CSV not observed in MT5 Common Files
+  reopen_condition: rerun after EA journal inspection or terminal cleanup if process
+    state was stale
+  claim_effect: lower_to_investigation_in_progress_until_repaired_or_rerun
+terminal_execution_subwork_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0

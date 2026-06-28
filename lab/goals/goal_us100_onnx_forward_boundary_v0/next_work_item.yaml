@@ -1,176 +1,47 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
-parent_work_item_id: work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0
-primary_family: runtime_probe
-primary_skill: spacesonar-runtime-evidence
-verification_profile: runtime_preflight_terminal_execution
+work_item_id: work_wave02_next_surface_rotation_decision_v0
+parent_work_item_id: work_wave02_cost_risk_holding_campaign_closeout_v0
+primary_family: experiment_design
+primary_skill: spacesonar-experiment-design
+verification_profile: writer_scope_next_surface_rotation_decision
 targets:
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
 acceptance_criteria:
-- execute prepared Wave02 CRH decision replay validation/research_oos MT5 attempts
-- record execution telemetry, tester report receipts, and runtime completion before
-  any pair judgment
-- keep candidate_count and l5_candidate_count at zero until candidate-specific L5
-  manifest exists
-claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_execution_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
-policy_binding:
-  revision: policy_contract_v2
-  guards:
-  - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
-  - GUARD_002_RUNTIME_COMPLETION_TRUTH
-  - GUARD_003_CLAIM_BOUNDARY
-  - GUARD_004_ARTIFACT_IDENTITY
-  - GUARD_007_OPERATIONAL_STABILITY
-outputs:
-- runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
-- runtime/mt5_attempts/<attempt_id>/telemetry/execution_telemetry.csv
-- runtime/mt5_attempts/<attempt_id>/reports/tester_report.htm
-next_action: execute prepared Wave02 cost/risk/holding sparse decision replay MT5
-  attempts with portable terminal only, then judge paired validation/research_oos
-  results
-path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-summary: Execute prepared Wave02 CRH sparse decision replay attempts.
-provenance:
-  source: work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0
-  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
-  source_of_truth: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- decide whether Wave02 opens a third campaign, closes the wave, or allocates another
+  surface
+- use CRH open_failed-caveat evidence as prevention memory, not as candidate evidence
+- keep writer-scope smoke as default; do not require pytest, full regression, or evidence
+  graph as progress proof
+claim_boundary: wave02_next_surface_rotation_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: decide next Wave02 surface/campaign boundary after CRH open_failed-caveat
+  closeout; do not promote CRH evidence as candidate, runtime authority, economics
+  pass, live readiness, or Goal Achieve
+status: wave02_next_surface_rotation_decision_pending
 current_truth:
-  decision_replay_adapter_preparation_summary: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
-  decision_replay_adapter_preparation_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
-  decision_replay_adapter_eligibility_index: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
-  decision_replay_adapter_preparation_status: wave02_cost_risk_holding_decision_replay_adapter_attempts_prepared_terminal_execution_next
-  decision_replay_adapter_preparation_counts:
-    routing_cell_count: 6
-    direct_trade_adapter_eligible_cell_count: 6
-    not_direct_trade_adapter_eligible_cell_count: 0
-    prepared_attempt_count: 12
-    prepared_cell_count: 6
-    candidate_count: 0
-    l5_candidate_count: 0
-    period_role_counts:
-      research_oos: 6
-      validation: 6
-    decision_family_counts:
-      abstain_timeout_h12: 2
-      abstain_timeout_h6: 2
-      adverse_excursion_stop: 2
-      open_failed_abstain_gate: 2
-      session_abstain_timeout: 2
-      volatility_stop_timeout: 2
-    direction_policy_counts:
-      score_band_side: 12
-    hold_bars_source_counts:
-      target_and_label.label_variant: 12
-    eligibility_reason_counts:
-      eligible_crh_score_band_side_adapter: 6
+  campaign_closeout: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+  negative_memory: lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
+  campaign_status: wave02_cost_risk_holding_campaign_closed_held_open_failed_caveat_no_candidate
   candidate_count: 0
   l5_candidate_count: 0
+  held_for_open_failed_caveat_count: 6
+  decision_replay_runtime_probe_complete_count: 12
 unresolved_blockers:
-- Wave02_cost_risk_holding_decision_replay_terminal_execution_pending
+- Wave02_next_surface_rotation_decision_pending
 reopen_conditions:
-- rerun adapter preparation if Wave02 CRH routing decision, pair judgment, or source
-  score attempt index changes
-- do not open candidate-specific L5 materialization until decision replay pair judgment
-  exists
-status: wave02_cost_risk_holding_decision_replay_terminal_execution_pending
+- rerun campaign closeout if CRH decision replay routing summary or index changes
+- reopen CRH only after explicit open_failed semantics repair or materially new cost/risk/holding
+  policy
+- open candidate-specific L5 only with clean candidate manifest evidence and final
+  claim guard
 missing_material_if_relevant:
-- decision_replay_terminal_execution_not_run
-- tester_reports_missing_until_execution
-- economics_metrics_missing_until_tester_report
-- candidate_specific_L5_manifest_not_opened
-execution_provenance:
-  git_sha: 9ce006b3b6e780c8be593aff5359083eb18c72da
-  branch: main
-  dirty_flag: true
-  changed_files:
-  - M .codex/config.toml
-  - ' M docs/registers/artifact_registry.csv'
-  - ' M docs/registers/goal_registry.csv'
-  - ' M docs/workspace/workspace_state.yaml'
-  - ' M foundation/mt5/experts/SpaceSonar_L4_ScoreReplayDecisionProbe.mq5'
-  - ' M foundation/mt5/score_replay_decision_adapter.py'
-  - ' M lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml'
-  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
-  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
-  - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
-  - ?? foundation/pipelines/decide_wave02_cost_risk_holding_l5_routing.py
-  - ?? foundation/pipelines/prepare_wave02_cost_risk_holding_l4_decision_replay_attempts.py
-  - ?? lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0_closeout.yaml
-  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l5_routing_decision_v0_closeout.yaml
-  - ?? package.json
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_decision_replay_research_oos_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_001_l4_decision_replay_validation_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_decision_replay_research_oos_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_002_l4_decision_replay_validation_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_003_l4_decision_replay_research_oos_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_003_l4_decision_replay_validation_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_decision_replay_research_oos_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_004_l4_decision_replay_validation_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_005_l4_decision_replay_research_oos_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_005_l4_decision_replay_validation_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_research_oos_score_band_side_v0/
-  - ?? runtime/mt5_attempts/attempt_wave02_crh_cell_006_l4_decision_replay_validation_score_band_side_v0/
-  command_argv:
-  - python
-  - foundation/pipelines/prepare_wave02_cost_risk_holding_l4_decision_replay_attempts.py
-  - --write-records
-  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
-  python_version: 3.13.9
-  key_package_versions:
-    python: 3.13.9
-    yaml: 6.0.3
-  started_at_utc: '2026-06-27T23:48:13Z'
-  ended_at_utc: '2026-06-27T23:48:13Z'
-  input_hashes:
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
-    sha256: e4f783da2fb223c173b6715109778087563d0cab629465d7942d4abd69103580
-    size_bytes: 8000
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
-    sha256: 8ba8c7f81ce15bfa6783e7a75bcd6cebc9a02fa9e75e98e5bcb109b1aa58bdf2
-    size_bytes: 5029
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
-    sha256: bf2f8db9e51cc43739ec5c98e92a8f6b87c8a987ee2b0a098d6f76476fb3e548
-    size_bytes: 7339
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
-    sha256: 944e5f0087196f228c1ef03112b4840d8d80deecd85d1b2e71ecd1cca9f41d9a
-    size_bytes: 11164
-    availability: present_hash_recorded
-  - path: configs/mt5/tester_execution_profile_v0.yaml
-    sha256: dac313037c9d4d6620641aaa364ebabbcfdc0063757fb5f9b9ba910e4184fcad
-    size_bytes: 3036
-    availability: present_hash_recorded
-  - path: foundation/config/mt5_runtime_probe_contract.yaml
-    sha256: 31dd303d5fcd46824a63d5dce7aff660c3d34bfefbaf4efb5a07d25a988b52ee
-    size_bytes: 8515
-    availability: present_hash_recorded
-  - path: configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
-    sha256: 309e78cc046ad9f967a55abdda65e11a26465a2234ad8e165cabe734dcb1c851
-    size_bytes: 2691
-    availability: present_hash_recorded
-  output_hashes:
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
-    sha256: b855e0cceef7922c8dd3033c4bb2ec411265b6955d1f8e44cd3f01fb37d44971
-    size_bytes: 11335
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
-    sha256: 071cbadd02f202b46e018a277c3fb396b4b328de1ff9ad830ef980563995a6e4
-    size_bytes: 17297
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
-    sha256: 0145c76e878299ccd49fef3761a6b18e767c2d3f5ac80f4b6b0c9a57c940a27e
-    size_bytes: 3470
-    availability: present_hash_recorded
-  - path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_compile_summary.yaml
-    sha256: 427b3338f3861518af0f6e33f0821571110cb593bb97855f317b7fb878f0d0a8
-    size_bytes: 835
-    availability: present_hash_recorded
-  - path: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0_closeout.yaml
-    sha256: f69d87b03b13e39e8e4e917408c26ac5fec3ed3117cca3f0569bd410b902a6ea
-    size_bytes: 2478
-    availability: present_hash_recorded
-  unknown_git_claim_effect: dirty_worktree_recorded_claim_lowered_no_candidate_runtime_authority_or_economics_pass
+- next_surface_or_wave_boundary_decision_not_written
+- next_campaign_manifest_not_opened
+- wave_closeout_not_written
+validation_depth: writer_scope_smoke
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full

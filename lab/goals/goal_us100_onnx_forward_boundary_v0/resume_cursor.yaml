@@ -1,16 +1,16 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-27T23:48:13Z'
-cursor_state: wave02_cost_risk_holding_decision_replay_terminal_execution_pending
-active_phase: wave02_cost_risk_holding_decision_replay_terminal_execution_pending
-active_work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+updated_at_utc: '2026-06-28T00:29:52Z'
+cursor_state: wave02_next_surface_rotation_decision_pending
+active_phase: wave02_next_surface_rotation_decision_pending
+active_work_item_id: work_wave02_next_surface_rotation_decision_v0
 campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
-claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_execution_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
-next_action: execute prepared Wave02 cost/risk/holding sparse decision replay MT5
-  attempts with portable terminal only, then judge paired validation/research_oos
-  results
+claim_boundary: wave02_next_surface_rotation_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: decide next Wave02 surface/campaign boundary after CRH open_failed-caveat
+  closeout; do not promote CRH evidence as candidate, runtime authority, economics
+  pass, live readiness, or Goal Achieve
 unresolved_blockers:
-- Wave02_cost_risk_holding_decision_replay_terminal_execution_pending
+- Wave02_next_surface_rotation_decision_pending
 active_ids:
   idea_id: idea_us100_wave02_cost_risk_holding_surface_v0
   hypothesis_id: hyp_us100_wave02_cost_risk_holding_runtime_alignment_v0
@@ -87,46 +87,33 @@ current_truth_sources:
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
 - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_compile_summary.yaml
 - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0_closeout.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_decision_replay_judgment_v0_closeout.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_decision_replay_l5_routing_decision_v0_closeout.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/first_batch_run_specs_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_campaign_closeout_v0_closeout.yaml
 latest_completed_work:
-  work_item_id: work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0
-  result_judgment: runtime_probe
-  claim_boundary: wave02_cost_risk_holding_decision_replay_adapter_preparation_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  work_item_id: work_wave02_cost_risk_holding_campaign_closeout_v0
+  result_judgment: negative_runtime_probe_no_candidate
+  claim_boundary: wave02_cost_risk_holding_campaign_closed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_l5_candidate_no_live_readiness_no_goal_achieve
   evidence_paths:
-  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_campaign_closeout_v0_closeout.yaml
+  - lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
 latest_runtime_progress:
-  work_item_id: work_wave02_cost_risk_holding_l4_strategy_tester_execution_v0
-  parent_work_item_id: work_wave02_cost_risk_holding_l4_runtime_execution_v0
+  work_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0
   result_judgment: runtime_probe
-  status: l4_terminal_execution_attempted_for_all_prepared_attempts
-  claim_boundary: wave02_cost_risk_holding_l4_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  claim_boundary: wave02_cost_risk_holding_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
   evidence_paths:
-  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_l4_strategy_tester_execution_v0_closeout.yaml
-  counts:
-    prepared_attempt_count: 12
-    selected_attempt_count: 11
-    indexed_execution_count: 12
-    executed_attempt_count: 12
-    completed_manifest_count: 12
-    touched_manifest_count: 12
-    telemetry_observed_count: 12
-    telemetry_missing_count: 0
-    tester_report_observed_count: 12
-    tester_report_missing_count: 0
-    terminal_execution_count: 12
-    telemetry_observation_count: 12
-    tester_report_observation_count: 12
-    portable_contract_count: 12
-    runtime_probe_complete_count: 12
-    runtime_probe_incomplete_count: 0
-    period_role_counts:
-      research_oos: 6
-      validation: 6
-    status_counts:
-      runtime_probe_completed: 12
-    result_judgment_counts:
-      runtime_probe: 12
+  - lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0_closeout.yaml
 next_work_item:
-  work_item_id: work_wave02_cost_risk_holding_decision_replay_runtime_execution_v0
+  work_item_id: work_wave02_next_surface_rotation_decision_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

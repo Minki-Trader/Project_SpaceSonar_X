@@ -1,0 +1,108 @@
+version: work_closeout_v1
+work_item_id: work_wave02_cost_risk_holding_decision_replay_judgment_v0
+parent_work_item_id: work_wave02_cost_risk_holding_decision_replay_strategy_tester_execution_v0
+next_work_item_id: work_wave02_cost_risk_holding_decision_replay_l5_routing_decision_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T00:11:15Z'
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+result_judgment: runtime_probe
+status: wave02_cost_risk_holding_decision_replay_pair_judgment_completed_l5_routing_decision_pending
+claim_boundary: wave02_cost_risk_holding_decision_replay_pair_judgment_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+counts:
+  cell_pair_count: 6
+  runtime_probe_pair_complete_count: 6
+  both_period_roles_observed_count: 6
+  nonempty_execution_pair_count: 6
+  tester_report_pair_observed_count: 6
+  decision_action_pair_count: 6
+  l5_routing_review_required_count: 6
+  l5_routing_review_repair_first_count: 0
+  candidate_count: 0
+  l5_candidate_count: 0
+  source_proxy_judgment_counts:
+    preserved_clue: 6
+  result_judgment_counts:
+    runtime_probe: 6
+  l5_status_counts:
+    l5_routing_review_required_with_open_failed_note_no_candidate_claim: 6
+  decision_replay_comparison_class_counts:
+    decision_replay_actions_observed: 6
+  runtime_execution_counts:
+    prepared_attempt_count: 12
+    selected_attempt_count: 11
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    source_score_telemetry_observed_count: 12
+    execution_telemetry_observed_count: 12
+    execution_telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    tester_log_observed_count: 12
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    open_action_count: 47964
+    close_action_count: 48185
+    open_failed_count: 287
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    direction_policy_counts:
+      score_band_side: 12
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
+    candidate_count: 0
+    l5_candidate_count: 0
+missing_evidence:
+- candidate_specific_L5_manifest_not_opened
+- economics_metrics_not_parsed_or_claimable
+- row_level_proxy_vs_decision_replay_alignment_not_performed
+next_action: decide whether a bounded candidate-specific L5 routing review is justified;
+  do not claim candidate, economics pass, runtime authority, live readiness, or Goal
+  Achieve
+unresolved_blockers:
+- Wave02_decision_replay_L5_routing_decision_pending
+reopen_conditions:
+- rerun pair aggregation if a decision replay runtime attempt manifest, telemetry
+  summary, or tester report receipt changes
+- open L5 only with candidate-specific manifest and bounded evidence plan
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+required_gate_coverage:
+  passed:
+  - decision_replay_runtime_pair_index
+  - artifact_hash_registry_update
+  - final_claim_guard
+  - writer_scope_self_check
+  missing:
+  - candidate_specific_L5_manifest_not_opened
+  - economics_metrics_not_parsed_or_claimable
+  - row_level_proxy_vs_decision_replay_alignment_not_performed
+  not_applicable:
+  - runtime_authority
+  - economics_pass
+  - selected_baseline
+  - goal_achieve
+  - live_readiness
