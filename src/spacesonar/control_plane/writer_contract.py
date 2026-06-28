@@ -84,8 +84,13 @@ REPEATED_FAILURE_EFFECT = "move_invariant_into_writer_parser_adapter_manifest_or
 
 STRICT_WRITER_FILENAMES = {
     "next_work_item.yaml",
+    "workspace_state.yaml",
+    "wave_allocation.yaml",
+    "campaign_manifest.yaml",
     "campaign_closeout.yaml",
     "wave_closeout.yaml",
+    "first_batch_run_specs_manifest.yaml",
+    "proxy_execution_summary.yaml",
     "candidate_summary.yaml",
     "attempt_manifest.yaml",
 }

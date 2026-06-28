@@ -53,6 +53,19 @@ COMMAND_GATE_REQUIRED_FIELDS = {
     "smaller_checks_already_attempted_or_not_applicable_reason",
 }
 
+STRICT_WRITER_FILENAMES = {
+    "next_work_item.yaml",
+    "workspace_state.yaml",
+    "wave_allocation.yaml",
+    "campaign_manifest.yaml",
+    "campaign_closeout.yaml",
+    "wave_closeout.yaml",
+    "first_batch_run_specs_manifest.yaml",
+    "proxy_execution_summary.yaml",
+    "candidate_summary.yaml",
+    "attempt_manifest.yaml",
+}
+
 PREFLIGHT_REQUIRED_NAMED_FIELDS = {
     "source_of_truth_paths",
     "writer_owned_outputs",
@@ -300,6 +313,8 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
     for automatic_boundary in ["campaign_closeout", "wave_closeout"]:
         if automatic_boundary in allowed_reasons:
             errors.append(f"{rel_path}: broad validation must not be automatically allowed by {automatic_boundary}")
+    if "campaign_or_wave_boundary_with_recorded_archive_escalation_reason" not in allowed_reasons:
+        errors.append(f"{rel_path}: broad_validation_command_intent_gate missing recorded archive escalation boundary reason")
     required_record = as_set(gate.get("required_record_before_running"))
     for field in sorted(COMMAND_GATE_REQUIRED_FIELDS - required_record):
         errors.append(f"{rel_path}: broad_validation_command_intent_gate missing {field}")
@@ -339,7 +354,7 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
         errors.append(f"{rel_path}: write_time_guarded_surfaces.guard_module mismatch")
     if guarded.get("transaction_hook") != "ControlPlaneTransaction.stage_yaml":
         errors.append(f"{rel_path}: write_time_guarded_surfaces.transaction_hook mismatch")
-    for filename in ["next_work_item.yaml", "campaign_closeout.yaml", "wave_closeout.yaml", "candidate_summary.yaml", "attempt_manifest.yaml"]:
+    for filename in sorted(STRICT_WRITER_FILENAMES):
         if filename not in as_set(guarded.get("strict_writer_filenames")):
             errors.append(f"{rel_path}: write_time_guarded_surfaces.strict_writer_filenames missing {filename}")
 
@@ -418,6 +433,17 @@ def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
     for command_id in sorted(FORBIDDEN_DEFAULT_COMMANDS - forbidden):
         errors.append(f"{rel_path}: forbidden_default_commands missing {command_id}")
 
+    gate = contract.get("broad_validation_command_intent_gate") or {}
+    allowed_reasons = as_set(gate.get("allowed_only_when_one_of"))
+    for automatic_boundary in ["campaign_closeout", "wave_closeout"]:
+        if automatic_boundary in allowed_reasons:
+            errors.append(f"{rel_path}: broad validation must not be automatically allowed by {automatic_boundary}")
+    if "campaign_or_wave_boundary_with_recorded_archive_escalation_reason" not in allowed_reasons:
+        errors.append(f"{rel_path}: broad_validation_command_intent_gate missing recorded archive escalation boundary reason")
+    required_record = as_set(gate.get("required_record_before_running"))
+    for field in sorted(COMMAND_GATE_REQUIRED_FIELDS - required_record):
+        errors.append(f"{rel_path}: broad_validation_command_intent_gate missing {field}")
+
     enforcement = contract.get("machine_enforcement") or {}
     for field in [
         "new_writer_records",
@@ -464,7 +490,7 @@ def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
     guarded = contract.get("write_time_guarded_surfaces") or {}
     if guarded.get("transaction_stage_yaml_enforced_by") != "src/spacesonar/control_plane/transaction.py":
         errors.append(f"{rel_path}: write_time_guarded_surfaces.transaction_stage_yaml_enforced_by mismatch")
-    for filename in ["next_work_item.yaml", "campaign_closeout.yaml", "wave_closeout.yaml", "candidate_summary.yaml", "attempt_manifest.yaml"]:
+    for filename in sorted(STRICT_WRITER_FILENAMES):
         if filename not in as_set(guarded.get("strict_writer_filenames")):
             errors.append(f"{rel_path}: write_time_guarded_surfaces.strict_writer_filenames missing {filename}")
 
@@ -582,11 +608,7 @@ def evaluate_write_time_guard(errors: list[str], repo_root: Path) -> None:
         "validation_only",
         "review_only",
         "inspection_only",
-        "next_work_item.yaml",
-        "campaign_closeout.yaml",
-        "wave_closeout.yaml",
-        "candidate_summary.yaml",
-        "attempt_manifest.yaml",
+        *sorted(STRICT_WRITER_FILENAMES),
         "observed_writer_scope_attempts exceeds 2",
     ]:
         if phrase not in guard_text:

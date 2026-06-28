@@ -187,8 +187,13 @@ write_time_guarded_surfaces:
   transaction_hook: ControlPlaneTransaction.stage_yaml
   strict_writer_filenames:
     - next_work_item.yaml
+    - workspace_state.yaml
+    - wave_allocation.yaml
+    - campaign_manifest.yaml
     - campaign_closeout.yaml
     - wave_closeout.yaml
+    - first_batch_run_specs_manifest.yaml
+    - proxy_execution_summary.yaml
     - candidate_summary.yaml
     - attempt_manifest.yaml
   strict_writer_patterns:

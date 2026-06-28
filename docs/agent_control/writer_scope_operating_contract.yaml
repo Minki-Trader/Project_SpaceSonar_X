@@ -188,8 +188,13 @@ write_time_guarded_surfaces:
   transaction_stage_yaml_enforced_by: src/spacesonar/control_plane/transaction.py
   strict_writer_filenames:
     - next_work_item.yaml
+    - workspace_state.yaml
+    - wave_allocation.yaml
+    - campaign_manifest.yaml
     - campaign_closeout.yaml
     - wave_closeout.yaml
+    - first_batch_run_specs_manifest.yaml
+    - proxy_execution_summary.yaml
     - candidate_summary.yaml
     - attempt_manifest.yaml
   strict_writer_patterns:
@@ -251,8 +256,7 @@ forbidden_default_commands:
 
 broad_validation_command_intent_gate:
   allowed_only_when_one_of:
-    - campaign_closeout
-    - wave_closeout
+    - campaign_or_wave_boundary_with_recorded_archive_escalation_reason
     - source_of_truth_drift_detected_by_writer_scope_check
     - shared_contract_or_validator_semantics_changed
     - dependency_lock_or_workflow_changed
