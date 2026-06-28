@@ -46,6 +46,26 @@ COMMAND_GATE_REQUIRED_FIELDS = {
     "smaller_checks_already_attempted_or_not_applicable_reason",
 }
 
+PROTECTED_CLAIM_KEYS = {
+    "runtime_authority",
+    "economics_pass",
+    "live_readiness",
+    "selected_baseline",
+    "production_deployment",
+    "goal_achieve",
+    "materialization_ready",
+    "handoff_complete",
+    "reviewed_verified_pass",
+}
+
+COMMON_SKILL_PHRASES = [
+    "Operational Stability Floor",
+    "writer_scope_smoke",
+    "writer_scope_operating_contract.yaml",
+    "broad validation commands are not progress-loop defaults",
+    "pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration",
+]
+
 SKILL_PHRASES = {
     ".agents/skills/spacesonar-session-bootstrap/SKILL.md": [
         "operational_stability_kernel.yaml",
@@ -72,6 +92,13 @@ SKILL_PHRASES = {
         "writer_contract_version",
     ],
 }
+
+MOJIBAKE_MARKERS = [
+    "\ufffd",
+    "?쇱",
+    "?뱀",
+    "?꾨",
+]
 
 
 def load_yaml(path: Path) -> Any:
@@ -100,6 +127,64 @@ def require_text(errors: list[str], repo_root: Path, rel_path: str, phrases: lis
     for phrase in phrases:
         if phrase not in text:
             errors.append(f"{rel_path}: missing phrase {phrase!r}")
+
+
+def evaluate_project_skills(errors: list[str], repo_root: Path) -> None:
+    skills_root = repo_root / ".agents" / "skills"
+    if not skills_root.exists():
+        errors.append("missing project skills root: .agents/skills")
+        return
+    skill_files = sorted(skills_root.glob("*/SKILL.md"))
+    if len(skill_files) < 20:
+        errors.append(f".agents/skills: expected at least 20 project skills, found {len(skill_files)}")
+    for path in skill_files:
+        rel_path = path.relative_to(repo_root).as_posix()
+        text = read_text(path)
+        for phrase in COMMON_SKILL_PHRASES:
+            if phrase not in text:
+                errors.append(f"{rel_path}: missing operational stability floor phrase {phrase!r}")
+
+
+def evaluate_claim_vocabulary(errors: list[str], repo_root: Path) -> None:
+    rel_path = "docs/agent_control/claim_vocabulary.yaml"
+    path = repo_root / rel_path
+    if not path.exists():
+        errors.append(f"missing claim vocabulary: {rel_path}")
+        return
+
+    text = read_text(path)
+    if any(ord(char) > 127 for char in text):
+        errors.append(f"{rel_path}: must stay ascii machine tokens only")
+    for marker in MOJIBAKE_MARKERS:
+        if marker in text:
+            errors.append(f"{rel_path}: mojibake marker found {marker!r}")
+
+    vocab = load_yaml(path)
+    if not isinstance(vocab, dict):
+        errors.append(f"{rel_path}: expected mapping")
+        return
+    if vocab.get("encoding_policy") != "ascii_machine_tokens_only_no_locale_text":
+        errors.append(f"{rel_path}: encoding_policy mismatch")
+
+    aliases = vocab.get("protected_claim_aliases") or {}
+    if not isinstance(aliases, dict):
+        errors.append(f"{rel_path}: protected_claim_aliases expected mapping")
+        return
+    for key in sorted(PROTECTED_CLAIM_KEYS):
+        values = aliases.get(key)
+        if not isinstance(values, list):
+            errors.append(f"{rel_path}: protected_claim_aliases.{key} expected list")
+            continue
+        if key not in {str(value) for value in values}:
+            errors.append(f"{rel_path}: protected_claim_aliases.{key} must include canonical token")
+
+    substitutions = set(vocab.get("forbidden_substitutions") or [])
+    for item in [
+        "pytest_cannot_replace_writer_manifest_receipt_hash_contract",
+        "full_regression_cannot_replace_current_work_item_next_executable_step",
+    ]:
+        if item not in substitutions:
+            errors.append(f"{rel_path}: forbidden_substitutions missing {item}")
 
 
 def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
@@ -147,6 +232,9 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
     ]:
         if field not in enforcement:
             errors.append(f"{rel_path}: writer_contract_enforcement missing {field}")
+    allowed_smokes = as_set(kernel.get("allowed_non_pytest_smokes"))
+    if "claim_vocabulary_ascii_structure_lint" not in allowed_smokes:
+        errors.append(f"{rel_path}: allowed_non_pytest_smokes missing claim_vocabulary_ascii_structure_lint")
 
 
 def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
@@ -201,6 +289,7 @@ def evaluate_registry(errors: list[str], repo_root: Path) -> None:
         "writer_scope_operating_contract_policy",
         "broad_validation_command_gate_policy",
         "active_writer_contract_policy",
+        "claim_vocabulary_policy",
     ]:
         if key not in rules:
             errors.append(f"{rel_path}: global_rules missing {key}")
@@ -260,11 +349,14 @@ def evaluate(repo_root: Path) -> list[str]:
             "operational_stability_lint.py",
             "Default operation must not call `pytest`",
             "Broad validation commands require the operational command-intent gate",
+            "claim_vocabulary.yaml",
         ],
     )
     for rel_path, phrases in SKILL_PHRASES.items():
         require_text(errors, repo_root, rel_path, phrases)
 
+    evaluate_project_skills(errors, repo_root)
+    evaluate_claim_vocabulary(errors, repo_root)
     evaluate_kernel(errors, repo_root)
     evaluate_writer_contract(errors, repo_root)
     evaluate_registry(errors, repo_root)

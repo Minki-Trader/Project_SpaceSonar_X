@@ -57,6 +57,8 @@ def evaluate(repo_root: Path) -> list[str]:
         allowed_smokes = set(kernel.get("allowed_non_pytest_smokes") or [])
         if "scan_touched_yaml_for_alias_tokens" not in allowed_smokes:
             errors.append("operational_stability_kernel allowed_non_pytest_smokes missing scan_touched_yaml_for_alias_tokens")
+        if "claim_vocabulary_ascii_structure_lint" not in allowed_smokes:
+            errors.append("operational_stability_kernel allowed_non_pytest_smokes missing claim_vocabulary_ascii_structure_lint")
         writer_commands = kernel.get("writer_scope_commands") or {}
         if "machine_yaml_identity_lint" not in writer_commands:
             errors.append("operational_stability_kernel writer_scope_commands missing machine_yaml_identity_lint")
@@ -124,6 +126,8 @@ def evaluate(repo_root: Path) -> list[str]:
         "foundation/validation/operational_stability_lint.py"
     ):
         errors.append("work_family_registry.yaml global_rules.operational_stability_lint mismatch")
+    if "claim_vocabulary_policy" not in (registry.get("global_rules") or {}):
+        errors.append("work_family_registry.yaml global_rules missing claim_vocabulary_policy")
 
     cases = prompts.get("cases", [])
     declared_count = (prompts.get("prompt_count_policy") or {}).get("current")

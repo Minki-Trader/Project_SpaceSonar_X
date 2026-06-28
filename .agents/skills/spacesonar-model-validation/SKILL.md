@@ -38,3 +38,9 @@ Use this skill when work touches model training, model selection, threshold sele
 - Challenge any result driven by a top-N selection, a narrow threshold band, one regime, one outlier trade cluster, or proxy-only evidence.
 - If risk, concentration, or runtime-parity checks are missing, lower the judgment to exploratory or inconclusive.
 - Do not promote a research candidate into selected baseline, economics pass, runtime authority, or live readiness without the required project evidence.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

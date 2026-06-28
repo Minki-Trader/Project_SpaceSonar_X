@@ -33,3 +33,9 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 - Do not turn "not found", "unsupported", or "missing adapter/glue" into a final disposition from memory alone.
 - If the missing path, parser, adapter, runner, or runtime glue is repo-controlled, first locate or create the smallest repair/fallback needed to test the hypothesis.
 - Only record blocked, deferred, invalid, or discarded after the failing layer, repair/fallback attempt or narrow blocker, evidence path, remaining blocker, and reopen condition are captured.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

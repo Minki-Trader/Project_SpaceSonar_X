@@ -25,3 +25,9 @@ Use this skill whenever work touches datasets, features, labels, splits, bars, t
 - Do not hide timezone assumptions in variable names.
 - Do not mix feature and label logic without an explicit boundary and test intent.
 - Do not call a result invalid when it is only incomplete; name the missing integrity check.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

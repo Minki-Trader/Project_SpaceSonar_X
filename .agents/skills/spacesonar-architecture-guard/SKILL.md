@@ -68,3 +68,9 @@ Read only touched policy/skill/control files plus:
 ## Validator
 
 After editing skills, agents, or control-plane YAML, run a scoped syntax/metadata validation. If the historical validator is stale, record that and run direct YAML/TOML/frontmatter checks for the touched files.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

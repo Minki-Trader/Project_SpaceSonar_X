@@ -29,6 +29,7 @@ routine_inspection_scope:
     - docs/agent_control/work_family_registry.yaml
     - docs/agent_control/operational_stability_kernel.yaml
     - docs/agent_control/writer_scope_operating_contract.yaml
+    - docs/agent_control/claim_vocabulary.yaml
     - current_work_item
     - touched_source_of_truth_manifests
   exclude_volatile_local_surfaces:
@@ -325,6 +326,7 @@ allowed_non_pytest_smokes:
   - run_registry_projection_check_when_registry_projection_changed
   - inspect_manifest_receipt_lineage_hash_fields_for_touched_records
   - scan_touched_yaml_for_alias_tokens
+  - claim_vocabulary_ascii_structure_lint
 
 hard_enforcement_points:
   before_broad_validation_command:
@@ -421,6 +423,7 @@ operator_failure_modes_to_avoid:
   - claiming_stability_from_ci_success_only
   - repairing_hash_newline_drift_with_global_resync_first
   - letting_yaml_aliases_enter_machine_records
+  - letting_locale_mojibake_enter_claim_vocabulary
   - running_forbidden_broad_command_without_command_intent_gate_record
   - writing_new_pipeline_without_writer_scope_operating_contract_fields
 

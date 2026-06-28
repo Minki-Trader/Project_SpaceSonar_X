@@ -11,6 +11,7 @@ Control-plane preflight validators:
 - `machine_yaml_identity_lint.py`: validates touched machine YAML records do not contain PyYAML alias/anchor identity tokens such as `&id001` or `*id001`.
 - `routing_smoke_eval.py`: checks the 12-20 prompt routing smoke fixture against `docs/agent_control/work_family_registry.yaml`.
 - `operational_stability_lint.py`: checks that AGENTS, routing, skills, writer-scope contract, CI, and validation docs all enforce the no-pytest writer-first operating loop.
+- `claim_vocabulary.yaml`: must stay ASCII machine-token-only and structurally complete for protected claim boundaries; mojibake or missing canonical protected tokens are operating-policy drift.
 - `refresh_artifact_registry_hashes.py`: refreshes registry sha256/size identity for existing repo-relative artifacts after checkout or line-ending drift; use `--path` for touched-row scope during ordinary writer work.
 
 Default operation must not call `pytest`, `python -m spacesonar.cli project validate`, full active-record validation, broad hash resync, or full control-plane validation for ordinary run writing or progress checks. Use the writer-scope smoke, touched parse/compile/import checks, touched YAML identity lint, routing/policy lint, or projection checks first; escalate only at campaign/wave boundaries, protected claim changes, shared validator/contract semantics changes, explicit user request, or source-of-truth drift.

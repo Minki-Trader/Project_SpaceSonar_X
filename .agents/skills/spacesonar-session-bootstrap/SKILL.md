@@ -46,3 +46,9 @@ Use when starting or resuming repository work that needs current truth, stale-as
 - Do not recreate deleted legacy archive meanings.
 - Do not start broad validators or materializers unless the task is a boundary closeout, shared-contract change, source-of-truth drift repair, or protected claim surface.
 - For non-trivial work, hand off to `spacesonar-work-item-router`.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

@@ -55,3 +55,9 @@ Use this skill when work creates, changes, compares, packages, or closes a lab e
 - Every run intended for future reuse needs a manifest, metrics identity, and artifact lineage.
 - Keep exploration open without inheriting deleted legacy winners, baselines, promotion history, live readiness, runtime authority, economics pass, or Goal Achieve.
 - Record failed ideas as negative memory with salvage value instead of erasing them.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

@@ -33,3 +33,9 @@ Use this skill when a KPI-bearing result is judged, a campaign/wave closeout is 
 - Do not hide a worse drawdown, trade concentration, or sample shrink behind profit.
 - Do not over-explain noise; mark low-confidence attribution when evidence is thin.
 - Negative, flat, invalid, and inconclusive results must still state whether they create a reusable clue, a boundary, or a stop condition.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

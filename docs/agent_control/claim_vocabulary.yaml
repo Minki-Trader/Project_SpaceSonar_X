@@ -1,5 +1,6 @@
 version: claim_vocabulary_v2
 purpose: machine_readable_claim_boundary_terms_for_spacesonar_onnx_lab
+encoding_policy: ascii_machine_tokens_only_no_locale_text
 
 protected_claim_aliases:
   runtime_authority:
@@ -20,8 +21,6 @@ protected_claim_aliases:
     - live-ready
     - live_ready
     - ready_for_live
-    - 라이브 준비
-    - 실전 준비
   selected_baseline:
     - selected_baseline
     - selected baseline
@@ -67,11 +66,11 @@ protected_claim_assertion_intent_aliases:
   - grant
   - achieve
   - ready
-  - 승인
-  - 완료
   - pass
   - verify
   - review
+  - approve_ko
+  - complete_ko
 
 status_lowering_tokens:
   - pending

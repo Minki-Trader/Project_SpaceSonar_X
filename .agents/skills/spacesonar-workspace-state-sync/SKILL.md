@@ -41,3 +41,9 @@ Do not read or recreate historical routing records, legacy external-review recor
 - Do not let README carry mutable live state; point to `docs/workspace/workspace_state.yaml`.
 - If evidence is missing, lower the claim rather than filling gaps with legacy archive material.
 - Workspace mutations must satisfy the writer-scope operating contract: align workspace, next_work_item, goal_manifest, campaign_manifest when active campaign changes, and goal_registry with active pointer smoke instead of routine pytest/full graph validation.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

@@ -43,3 +43,9 @@ Use when work touches ONNX export, runtime bundles, EA modules, `.mq5/.mqh/.set`
 - Do not let missing local tester reports crash manifest writing. Record missing availability and reopen condition, then keep the runtime claim below L4 completion.
 - Do not convert proxy results, diagnostic samples, or telemetry-only observations into economics pass, live readiness, selected baseline, or runtime authority.
 - Missing runner, parser, report, tester config, ONNX, EA, or runtime glue under repo control requires the smallest credible repair or fixture attempt before blocked or invalid disposition.
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

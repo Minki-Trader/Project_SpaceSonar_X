@@ -92,3 +92,9 @@ Internal receipts are not user reports.
 - route a non-trivial item without a storage contract
 - skip a runtime learning probe decision when runtime behavior, economics, EA/ONNX meaning, or handoff is in scope
 - route or close a repo-controlled support gap as blocked/deferred/invalid/discarded without a failure disposition record: reproduction, failing layer, repair/fallback attempt, evidence, remaining blocker, and reopen condition
+
+## Operational Stability Floor
+
+- Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
+- If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.
