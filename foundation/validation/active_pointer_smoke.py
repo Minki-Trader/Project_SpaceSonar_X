@@ -92,6 +92,7 @@ def validate(repo_root: Path) -> list[str]:
 
     workspace = load_yaml(workspace_path)
     active_goal = workspace.get("active_goal") or {}
+    active_wave = workspace.get("active_wave") or {}
     active_campaign = workspace.get("active_campaign") or {}
     active_work_item = workspace.get("active_work_item") or {}
     authority = workspace.get("active_record_authority") or {}
@@ -126,6 +127,7 @@ def validate(repo_root: Path) -> list[str]:
     if workspace.get("unresolved_blockers") != next_work_blockers:
         errors.append("workspace_state.yaml: unresolved_blockers does not match next_work_item")
     errors.extend(claim_errors("next_work_item", next_work.get("claim_boundary")))
+    errors.extend(validate_next_decision_scaffold(repo_root, workspace, next_work, active_wave))
 
     current_truth = next_work.get("current_truth") or {}
     for rel_text in walk_strings(current_truth):
@@ -206,6 +208,78 @@ def validate(repo_root: Path) -> list[str]:
             if row.get("next_work_item") != next_work.get("work_item_id"):
                 errors.append("goal_registry.csv: next_work_item does not match active next_work_item")
 
+    return errors
+
+
+def validate_next_decision_scaffold(
+    repo_root: Path,
+    workspace: dict[str, Any],
+    next_work: dict[str, Any],
+    active_wave: dict[str, Any],
+) -> list[str]:
+    if next_work.get("work_item_id") != "open_next_wave_or_user_directed_review":
+        return []
+    errors: list[str] = []
+    outputs = [str(item) for item in next_work.get("outputs") or []]
+    scaffold_ref = str((next_work.get("provenance") or {}).get("decision_scaffold") or "")
+    if not scaffold_ref:
+        errors.append("next_work_item: provenance.decision_scaffold missing for next wave/review decision")
+        return errors
+    if scaffold_ref not in outputs:
+        errors.append("next_work_item: decision scaffold must be listed in outputs")
+    if scaffold_ref not in [str(item) for item in next_work.get("writer_owned_outputs") or []]:
+        errors.append("next_work_item: decision scaffold must be listed in writer_owned_outputs")
+    criteria_text = "\n".join(str(item) for item in next_work.get("acceptance_criteria") or [])
+    if scaffold_ref not in criteria_text:
+        errors.append("next_work_item: acceptance_criteria must reference decision scaffold")
+
+    scaffold_path = repo_root / scaffold_ref
+    if not scaffold_path.exists():
+        errors.append(f"next_work_item: decision scaffold missing {scaffold_ref}")
+        return errors
+    scaffold = load_yaml(scaffold_path)
+    if scaffold.get("active_work_item_id") != next_work.get("work_item_id"):
+        errors.append("decision_scaffold: active_work_item_id does not match next_work_item")
+    if scaffold.get("claim_boundary") != workspace.get("current_claim_boundary"):
+        errors.append("decision_scaffold: claim_boundary does not match workspace")
+    if scaffold.get("source_wave_id") != active_wave.get("wave_id"):
+        errors.append("decision_scaffold: source_wave_id does not match active wave")
+    if scaffold.get("source_wave_closeout") != active_wave.get("closeout"):
+        errors.append("decision_scaffold: source_wave_closeout does not match active wave closeout")
+    if scaffold.get("recommended_option_id") != "open_new_wave_multi_axis_surface":
+        errors.append("decision_scaffold: recommended_option_id must be open_new_wave_multi_axis_surface")
+    options = {str(item.get("option_id")) for item in scaffold.get("decision_options") or [] if isinstance(item, dict)}
+    for option_id in ["open_new_wave_multi_axis_surface", "user_directed_boundary_review"]:
+        if option_id not in options:
+            errors.append(f"decision_scaffold: missing decision option {option_id}")
+    gate = scaffold.get("selection_gate") or {}
+    if gate.get("required_actor") != "user":
+        errors.append("decision_scaffold: selection_gate.required_actor must be user")
+    if gate.get("effect_before_selection") != "no_wave_or_campaign_opened":
+        errors.append("decision_scaffold: effect_before_selection must keep wave/campaign unopened")
+    accepted_inputs = {str(item) for item in gate.get("accepted_inputs") or []}
+    for token in [
+        "approve_open_new_wave_multi_axis_surface",
+        "request_user_directed_boundary_review",
+        "provide_alternate_new_surface_direction",
+    ]:
+        if token not in accepted_inputs:
+            errors.append(f"decision_scaffold: selection_gate.accepted_inputs missing {token}")
+    disallowed = {str(item) for item in scaffold.get("disallowed_directions") or []}
+    for token in [
+        "threshold_only_or_model_only_or_feature_only_campaign",
+        "selected_baseline_or_runtime_authority_or_economics_pass_or_live_readiness_claim",
+    ]:
+        if token not in disallowed:
+            errors.append(f"decision_scaffold: disallowed_directions missing {token}")
+    if "wave02" in str(active_wave.get("wave_id") or ""):
+        for token in [
+            "wave02_execution_liquidity_candidate_repair_reopen",
+            "wave02_tradeability_candidate_repair_reopen",
+            "wave02_cost_risk_holding_candidate_repair_reopen",
+        ]:
+            if token not in disallowed:
+                errors.append(f"decision_scaffold: disallowed_directions missing {token}")
     return errors
 
 
