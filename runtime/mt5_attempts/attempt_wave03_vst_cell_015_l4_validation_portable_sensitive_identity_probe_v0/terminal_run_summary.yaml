@@ -1,0 +1,348 @@
+command_argv_redacted:
+- ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\terminal64.exe
+- /portable
+- /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\tester_config.ini
+cwd: .
+started_at_utc: '2026-06-28T15:32:31.786944Z'
+ended_at_utc: '2026-06-28T15:32:51.433882Z'
+exit_code: 0
+timed_out: false
+stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stdout_tail: ''
+stderr_tail: ''
+mode: portable_contract_attempt
+attempt_claim_boundary: standard_contract_attempt_only
+portable_terminal_root_preflight:
+  status: passed
+  started_at_utc: '2026-06-28T15:32:31.785271Z'
+  ended_at_utc: '2026-06-28T15:32:31.786917Z'
+  terminal_exists: true
+  portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  reports_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports
+  mql5_experts_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts
+  reports_dir_writable: true
+  mql5_experts_dir_creatable: true
+  error: null
+  claim_boundary: portable_terminal_root_preflight_only_no_runtime_authority
+  reopen_condition: portable terminal root accepted for Strategy Tester launch
+telemetry_exists_after_attempt: true
+terminal_attempts:
+- command_argv_redacted:
+  - ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-28T15:32:31.786944Z'
+  ended_at_utc: '2026-06-28T15:32:51.433882Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  portable_terminal_root_preflight:
+    status: passed
+    started_at_utc: '2026-06-28T15:32:31.785271Z'
+    ended_at_utc: '2026-06-28T15:32:31.786917Z'
+    terminal_exists: true
+    portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+    reports_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports
+    mql5_experts_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts
+    reports_dir_writable: true
+    mql5_experts_dir_creatable: true
+    error: null
+    claim_boundary: portable_terminal_root_preflight_only_no_runtime_authority
+    reopen_condition: portable terminal root accepted for Strategy Tester launch
+  telemetry_exists_after_attempt: true
+terminal_cleanup_actions: []
+terminal_cleanup_policy:
+  default_terminate_existing: false
+  explicit_termination_requested: false
+  allowed_scope: explicit_user_requested_only
+  formal_runtime_claim_effect: no_global_cleanup_used
+terminal_mode_policy:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  portable_root_preflight_status: passed
+  main_mode_fallback_allowed: false
+  main_mode_fallback_used: false
+  fallback_reason: null
+  claim_effect: standard_portable_attempt_path
+selected_attempt_index: 0
+telemetry_observed: true
+version: wave03_l4_portable_runtime_repair_terminal_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0/terminal_run_summary.yaml
+attempt_id: attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+source_attempt_id: attempt_wave03_vst_cell_015_l4_validation_v0
+run_id: onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0
+bundle_id: bundle_wave03_vst_cell_015_l4_onnx_export_v0
+tester_config:
+  path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0/tester_config.ini
+  sha256: 6b1a1c101dee13777ac0bea5d8d6f57932d91e4e8b55fcc58065b54d957b56d4
+  size_bytes: 2349
+  availability: present_hash_recorded
+tester_report_resolution_prelaunch:
+  status: tester_report_directories_prepared
+  report_value: reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\tester_report
+  prepared:
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\reports\spacesonar\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0
+  skipped: []
+  prelaunch_candidates:
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 7d1ea3cd32e35951cc60db1e788443084cb2b61343132d3338efe7e5e6777578
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 5f4be611bec2cb94f8404a4c6accc47f7bbd63d939e371761a522bcac200b1ed
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: b0c84c43024b1d20c861951b14541f0ec62fe3b6939af4fa5cad7f79eb368022
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: f468f26eac4a3a8e707cb22ad7aa5cfaa81269bb4ea9bda18e0064736a90b454
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: e5720ae5ab5b6578aad45945eb0601f30c21ce817f4668939d7e75e146fa07b3
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 70a86170dc5f6a140ce787a160ca20fc64d85efdcf734d5bb7d2c2679e10d391
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 8f5d4f7a428cb31a29ceb53319252c85df463eaefafbf349278a943e8b95cc99
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 29882ee77f542eba0b8e48554710825ba19fb090c8cc52d8eff9f6c20769c904
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 04807bf15447fcc01ace2e0bb04c2a481f7051807c5c0e04b5647ed28f8bfbf6
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_volatility_state_l4_portable_repair_probe\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\score_telemetry.csv
+common_diagnostic_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_volatility_state_l4_portable_repair_probe\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\score_diagnostics.csv
+claim_boundary: wave03_l4_portable_runtime_repair_probe_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+telemetry_file_observed_after_attempt: true
+telemetry_rows_observed_after_attempt: true
+telemetry_row_count: 53554
+score_diagnostic_file_observed_after_attempt: true
+tester_report_observed: true
+tester_report_completed: true
+runtime_completion:
+  status: runtime_probe_completed
+  runtime_probe_complete: true
+  portable_contract_satisfied: true
+  report_contract_satisfied: true
+  period_contract_satisfied: true
+  surface_contract_satisfied: true
+  missing_requirements: []
+  claim_boundary: standard_l4_runtime_probe_complete_no_runtime_authority_no_economics_pass
+portable_terminal_journal:
+  status: observed
+  path_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\logs\20260629.log
+  sha256: 396240fc8dcbdeaccabf12edb961ca4b94a3f8ad24b32e9919aa58169aee4419
+  size_bytes: 17884
+  tail_line_count: 80
+  tail_lines:
+  - ''
+  - "EH\t0\t00:25:09.660\tTerminal\tMetaTrader 5 x64 build 5833 started for MetaQuotes\
+    \ Ltd."
+  - ''
+  - "JD\t0\t00:25:09.662\tTerminal\tWindows 11 build 26200, 20 x 13th Gen Intel Core\
+    \ i5-13500HX, AVX2, 16 / 29 Gb memory, 116 / 475 Gb disk, UAC, GMT+9"
+  - ''
+  - "GH\t0\t00:25:09.662\tTerminal\tC:\\Users\\awdse\\AppData\\Local\\SpaceSonar\\\
+    mt5_portable_roots\\wave03_l4_portable_root_v0"
+  - ''
+  - "JK\t0\t00:25:09.662\tTerminal\tlaunched with C:\\Users\\awdse\\AppData\\Roaming\\\
+    MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Experts\\Project_SpaceSonar_X\\\
+    runtime\\mt5_attempts\\attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0\\\
+    tester_config.ini"
+  - ''
+  - "QH\t2\t00:25:11.672\tTester\ttester not started because the account is not specified"
+  - ''
+  - "OO\t2\t00:25:11.672\tTerminal\ttester didn't start"
+  - ''
+  - "LF\t0\t00:25:12.016\tTerminal\texit with code -1000012353"
+  - ''
+  - "RR\t0\t00:25:12.081\tTerminal\tstopped with 0"
+  - ''
+  - "OG\t0\t00:25:12.194\tTerminal\tshutdown with -1000012353 (tester not started\
+    \ because the account is not specified)"
+  - ''
+  - "CK\t0\t00:25:58.234\tStartup\tsuccessfully initialized from start config \"C:\\\
+    Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+    MQL5\\Experts\\Project_SpaceSonar_X\\runtime\\mt5_attempts\\attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_identity_probe_v0\\\
+    tester_config.ini\""
+  - ''
+  - "QI\t0\t00:25:58.280\tTerminal\tMetaTrader 5 x64 build 5833 started for MetaQuotes\
+    \ Ltd."
+  - ''
+  - "LG\t0\t00:25:58.280\tTerminal\tWindows 11 build 26200, 20 x 13th Gen Intel Core\
+    \ i5-13500HX, AVX2, 16 / 29 Gb memory, 116 / 475 Gb disk, UAC, GMT+9"
+  - ''
+  - "MG\t0\t00:25:58.280\tTerminal\tC:\\Users\\awdse\\AppData\\Local\\SpaceSonar\\\
+    mt5_portable_roots\\wave03_l4_portable_root_v0"
+  - ''
+  - "DF\t0\t00:25:58.280\tTerminal\tlaunched with C:\\Users\\awdse\\AppData\\Roaming\\\
+    MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Experts\\Project_SpaceSonar_X\\\
+    runtime\\mt5_attempts\\attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_identity_probe_v0\\\
+    tester_config.ini"
+  - ''
+  - "PJ\t0\t00:26:00.167\tNetwork\t'***redacted': authorized on FPMarketsSC-Live through\
+    \ Seoul 2 (ping: 240.39 ms, build 5830)"
+  - ''
+  - "IF\t0\t00:26:00.167\tNetwork\t'***redacted': previous successful authorization\
+    \ performed from ***redacted-ip on 2026.06.28 18:05:32"
+  - ''
+  - "EG\t0\t00:26:00.571\tNetwork\t'***redacted': terminal synchronized with First\
+    \ Prudential Markets Limited: 0 positions, 0 orders, 818 symbols, 0 spreads"
+  - ''
+  - "CK\t0\t00:26:00.571\tNetwork\t'***redacted': trading has been enabled - hedging\
+    \ mode"
+  - ''
+  - "GS\t0\t00:26:00.618\tTester\tautomatical testing started"
+  - ''
+  - "NE\t0\t00:26:25.681\tTester\tlast test passed with result \"successfully finished\"\
+    \ in 0:00:19.789"
+  - ''
+  - "GK\t0\t00:26:25.836\tTerminal\texit with code 0"
+  - ''
+  - "GG\t0\t00:26:25.850\tNetwork\t'***redacted': disconnected from FPMarketsSC-Live"
+  - ''
+  - "MF\t0\t00:26:25.885\tTerminal\tstopped with 0"
+  - ''
+  - "LE\t0\t00:26:25.889\tTerminal\tshutdown with 0"
+  - ''
+  - "QS\t0\t00:32:33.238\tStartup\tsuccessfully initialized from start config \"C:\\\
+    Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+    MQL5\\Experts\\Project_SpaceSonar_X\\runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\\\
+    tester_config.ini\""
+  - ''
+  - "EF\t0\t00:32:33.281\tTerminal\tMetaTrader 5 x64 build 5833 started for MetaQuotes\
+    \ Ltd."
+  - ''
+  - "IR\t0\t00:32:33.282\tTerminal\tWindows 11 build 26200, 20 x 13th Gen Intel Core\
+    \ i5-13500HX, AVX2, 16 / 29 Gb memory, 116 / 475 Gb disk, UAC, GMT+9"
+  - ''
+  - "HR\t0\t00:32:33.282\tTerminal\tC:\\Users\\awdse\\AppData\\Local\\SpaceSonar\\\
+    mt5_portable_roots\\wave03_l4_portable_root_v0"
+  - ''
+  - "PP\t0\t00:32:33.282\tTerminal\tlaunched with C:\\Users\\awdse\\AppData\\Roaming\\\
+    MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Experts\\Project_SpaceSonar_X\\\
+    runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\\\
+    tester_config.ini"
+  - ''
+  - "EQ\t0\t00:32:35.688\tNetwork\t'***redacted': authorized on FPMarketsSC-Live through\
+    \ Seoul 2 (ping: 240.39 ms, build 5830)"
+  - ''
+  - "KP\t0\t00:32:35.688\tNetwork\t'***redacted': previous successful authorization\
+    \ performed from ***redacted-ip on 2026.06.28 18:26:01"
+  - ''
+  - "QP\t0\t00:32:36.115\tNetwork\t'***redacted': terminal synchronized with First\
+    \ Prudential Markets Limited: 0 positions, 0 orders, 818 symbols, 0 spreads"
+  - ''
+  - "OQ\t0\t00:32:36.115\tNetwork\t'***redacted': trading has been enabled - hedging\
+    \ mode"
+  - ''
+  - "KL\t0\t00:32:36.173\tTester\tautomatical testing started"
+  - ''
+  - "QH\t0\t00:32:51.181\tTester\tlast test passed with result \"successfully finished\"\
+    \ in 0:00:13.017"
+  - ''
+  - "LN\t0\t00:32:51.365\tTerminal\texit with code 0"
+  - ''
+  - "JI\t0\t00:32:51.367\tNetwork\t'***redacted': disconnected from FPMarketsSC-Live"
+  - ''
+  - "DL\t0\t00:32:51.398\tTerminal\tstopped with 0"
+  - ''
+  - "PH\t0\t00:32:51.401\tTerminal\tshutdown with 0"
+  - ''
+  - ''
+  latest_attempt_line_count: 23
+  latest_attempt_lines:
+  - "PP\t0\t00:32:33.282\tTerminal\tlaunched with C:\\Users\\awdse\\AppData\\Roaming\\\
+    MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Experts\\Project_SpaceSonar_X\\\
+    runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\\\
+    tester_config.ini"
+  - ''
+  - "EQ\t0\t00:32:35.688\tNetwork\t'***redacted': authorized on FPMarketsSC-Live through\
+    \ Seoul 2 (ping: 240.39 ms, build 5830)"
+  - ''
+  - "KP\t0\t00:32:35.688\tNetwork\t'***redacted': previous successful authorization\
+    \ performed from ***redacted-ip on 2026.06.28 18:26:01"
+  - ''
+  - "QP\t0\t00:32:36.115\tNetwork\t'***redacted': terminal synchronized with First\
+    \ Prudential Markets Limited: 0 positions, 0 orders, 818 symbols, 0 spreads"
+  - ''
+  - "OQ\t0\t00:32:36.115\tNetwork\t'***redacted': trading has been enabled - hedging\
+    \ mode"
+  - ''
+  - "KL\t0\t00:32:36.173\tTester\tautomatical testing started"
+  - ''
+  - "QH\t0\t00:32:51.181\tTester\tlast test passed with result \"successfully finished\"\
+    \ in 0:00:13.017"
+  - ''
+  - "LN\t0\t00:32:51.365\tTerminal\texit with code 0"
+  - ''
+  - "JI\t0\t00:32:51.367\tNetwork\t'***redacted': disconnected from FPMarketsSC-Live"
+  - ''
+  - "DL\t0\t00:32:51.398\tTerminal\tstopped with 0"
+  - ''
+  - "PH\t0\t00:32:51.401\tTerminal\tshutdown with 0"
+  - ''
+  - ''
+  diagnostic_flags: []
+  claim_boundary: portable_terminal_journal_diagnostic_only_no_runtime_authority

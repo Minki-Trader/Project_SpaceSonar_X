@@ -1,0 +1,538 @@
+version: wave03_l4_portable_runtime_repair_summary_v1
+summary_id: wave03_l4_portable_runtime_repair_summary_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+work_item_id: work_wave03_volatility_state_l4_portable_runtime_repair_v0
+parent_work_item_id: work_wave03_volatility_state_l4_pair_judgment_v0
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+started_at_utc: '2026-06-28T15:32:53Z'
+ended_at_utc: '2026-06-28T15:33:10Z'
+status: wave03_l4_portable_runtime_repair_probe_recorded_next
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: wave03_l4_portable_runtime_repair_probe_materialized
+claim_boundary: wave03_l4_portable_runtime_repair_probe_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+repair_scope:
+  source_attempt_id: attempt_wave03_vst_cell_015_l4_research_oos_v0
+  probe_attempt_id: attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0
+  portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  main_mode_fallback_allowed: false
+  session_config_staging_status: session_config_imported
+  tester_login_fixture:
+    status: emulated_tester_login_configured
+    login_value_kind: sensitive_env_tester_login_redacted
+    login_value: null
+    claim_boundary: tester_login_fixture_only_no_runtime_authority
+  common_account_fixture:
+    status: emulated_common_account_configured
+    login_value_kind: sensitive_env_common_login_redacted
+    login_value: null
+    password_value_kind: null
+    password_configured: false
+    server_value_kind: tester_execution_profile_broker_server
+    server_value: FPMarketsSC-Live
+    claim_boundary: common_account_fixture_only_no_runtime_authority
+  existing_l4_attempt_records_preserved: true
+  probe_root: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0
+portable_root_copy:
+  status: reused_existing_local_portable_root
+  started_at_utc: '2026-06-28T15:32:53Z'
+  ended_at_utc: '2026-06-28T15:32:53Z'
+  source_root_redacted: ${PROGRAMFILES}\MetaTrader 5
+  target_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  terminal_exists_before: true
+  terminal_exists_after: true
+  robocopy_exit_code: null
+  bounded_repair_or_fallback_attempt: reused previously materialized local portable
+    MT5 root
+session_config_staging:
+  status: session_config_imported
+  started_at_utc: '2026-06-28T15:32:53Z'
+  ended_at_utc: '2026-06-28T15:32:53Z'
+  allow_import_requested: true
+  approval_token_status: valid_approval_token
+  effective_import_allowed: true
+  source_root_redacted: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075
+  target_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  source_file_count: 2
+  copied_file_count: 2
+  missing_required_files: []
+  files:
+  - relative_path: config/accounts.dat
+    role: account_session_config
+    source_exists: true
+    target_exists_before: true
+    target_exists_after: true
+    copied: true
+    copy_error: null
+    source_redacted: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\config\accounts.dat
+    target_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\config\accounts.dat
+    source_size_bytes: 20456
+    target_size_bytes: 20456
+    hash_availability: not_recorded_local_session_secret_boundary
+    claim_boundary: portable_session_config_staging_only_no_runtime_authority
+  - relative_path: config/servers.dat
+    role: server_catalog_config
+    source_exists: true
+    target_exists_before: true
+    target_exists_after: true
+    copied: true
+    copy_error: null
+    source_redacted: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\config\servers.dat
+    target_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\config\servers.dat
+    source_size_bytes: 39848
+    target_size_bytes: 39848
+    hash_availability: not_recorded_local_session_secret_boundary
+    claim_boundary: portable_session_config_staging_only_no_runtime_authority
+  secret_policy: local_session_files_are_copied_only_with_explicit_allow_flag_and_matching_approval_token_and_are_not_hashed_or_content_logged
+  claim_boundary: portable_session_config_staging_only_no_runtime_authority
+portable_root_inventory:
+  exists: true
+  root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  terminal_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\terminal64.exe
+  terminal_exists: true
+  file_count: 1349
+  size_bytes: 2380184655
+  claim_boundary: local_portable_root_inventory_only_no_runtime_authority
+  terminal_sha256: a36f4bac0fdc2c53cd75bdf0e32e627660dd8d9c1eb1e9f3834acfbce93df165
+  terminal_size_bytes: 109817504
+portable_root_preflight:
+  status: passed
+  started_at_utc: '2026-06-28T15:32:53.301208Z'
+  ended_at_utc: '2026-06-28T15:32:53.305312Z'
+  terminal_exists: true
+  portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  reports_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports
+  mql5_experts_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts
+  reports_dir_writable: true
+  mql5_experts_dir_creatable: true
+  error: null
+  claim_boundary: portable_terminal_root_preflight_only_no_runtime_authority
+  reopen_condition: portable terminal root accepted for Strategy Tester launch
+probe_manifest:
+  path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/portable_repair_attempt_manifest.yaml
+  status: probe_manifest_prepared
+  tester_config: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/tester_config.ini
+terminal_probe:
+  attempted: true
+  terminal_launched: true
+  telemetry_rows_observed: true
+  tester_report_completed: true
+  portable_contract_satisfied: true
+  runtime_probe_complete: true
+  runtime_completion:
+    status: runtime_probe_completed
+    runtime_probe_complete: true
+    portable_contract_satisfied: true
+    report_contract_satisfied: true
+    period_contract_satisfied: true
+    surface_contract_satisfied: true
+    missing_requirements: []
+    claim_boundary: standard_l4_runtime_probe_complete_no_runtime_authority_no_economics_pass
+  portable_terminal_journal:
+    status: observed
+    path_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\logs\20260629.log
+    sha256: d002b1eb93392e9ad557d1217c84c5f9f768c1a0a0022ebb135184a61d1f5594
+    size_bytes: 21390
+    tail_line_count: 80
+    tail_lines:
+    - ''
+    - "IF\t0\t00:26:00.167\tNetwork\t'***redacted': previous successful authorization\
+      \ performed from ***redacted-ip on 2026.06.28 18:05:32"
+    - ''
+    - "EG\t0\t00:26:00.571\tNetwork\t'***redacted': terminal synchronized with First\
+      \ Prudential Markets Limited: 0 positions, 0 orders, 818 symbols, 0 spreads"
+    - ''
+    - "CK\t0\t00:26:00.571\tNetwork\t'***redacted': trading has been enabled - hedging\
+      \ mode"
+    - ''
+    - "GS\t0\t00:26:00.618\tTester\tautomatical testing started"
+    - ''
+    - "NE\t0\t00:26:25.681\tTester\tlast test passed with result \"successfully finished\"\
+      \ in 0:00:19.789"
+    - ''
+    - "GK\t0\t00:26:25.836\tTerminal\texit with code 0"
+    - ''
+    - "GG\t0\t00:26:25.850\tNetwork\t'***redacted': disconnected from FPMarketsSC-Live"
+    - ''
+    - "MF\t0\t00:26:25.885\tTerminal\tstopped with 0"
+    - ''
+    - "LE\t0\t00:26:25.889\tTerminal\tshutdown with 0"
+    - ''
+    - "QS\t0\t00:32:33.238\tStartup\tsuccessfully initialized from start config \"\
+      C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+      MQL5\\Experts\\Project_SpaceSonar_X\\runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\\\
+      tester_config.ini\""
+    - ''
+    - "EF\t0\t00:32:33.281\tTerminal\tMetaTrader 5 x64 build 5833 started for MetaQuotes\
+      \ Ltd."
+    - ''
+    - "IR\t0\t00:32:33.282\tTerminal\tWindows 11 build 26200, 20 x 13th Gen Intel\
+      \ Core i5-13500HX, AVX2, 16 / 29 Gb memory, 116 / 475 Gb disk, UAC, GMT+9"
+    - ''
+    - "HR\t0\t00:32:33.282\tTerminal\tC:\\Users\\awdse\\AppData\\Local\\SpaceSonar\\\
+      mt5_portable_roots\\wave03_l4_portable_root_v0"
+    - ''
+    - "PP\t0\t00:32:33.282\tTerminal\tlaunched with C:\\Users\\awdse\\AppData\\Roaming\\\
+      MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Experts\\Project_SpaceSonar_X\\\
+      runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0\\\
+      tester_config.ini"
+    - ''
+    - "EQ\t0\t00:32:35.688\tNetwork\t'***redacted': authorized on FPMarketsSC-Live\
+      \ through Seoul 2 (ping: 240.39 ms, build 5830)"
+    - ''
+    - "KP\t0\t00:32:35.688\tNetwork\t'***redacted': previous successful authorization\
+      \ performed from ***redacted-ip on 2026.06.28 18:26:01"
+    - ''
+    - "QP\t0\t00:32:36.115\tNetwork\t'***redacted': terminal synchronized with First\
+      \ Prudential Markets Limited: 0 positions, 0 orders, 818 symbols, 0 spreads"
+    - ''
+    - "OQ\t0\t00:32:36.115\tNetwork\t'***redacted': trading has been enabled - hedging\
+      \ mode"
+    - ''
+    - "KL\t0\t00:32:36.173\tTester\tautomatical testing started"
+    - ''
+    - "QH\t0\t00:32:51.181\tTester\tlast test passed with result \"successfully finished\"\
+      \ in 0:00:13.017"
+    - ''
+    - "LN\t0\t00:32:51.365\tTerminal\texit with code 0"
+    - ''
+    - "JI\t0\t00:32:51.367\tNetwork\t'***redacted': disconnected from FPMarketsSC-Live"
+    - ''
+    - "DL\t0\t00:32:51.398\tTerminal\tstopped with 0"
+    - ''
+    - "PH\t0\t00:32:51.401\tTerminal\tshutdown with 0"
+    - ''
+    - "LF\t0\t00:32:55.295\tStartup\tsuccessfully initialized from start config \"\
+      C:\\Users\\awdse\\AppData\\Roaming\\MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\\
+      MQL5\\Experts\\Project_SpaceSonar_X\\runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0\\\
+      tester_config.ini\""
+    - ''
+    - "QS\t0\t00:32:55.353\tTerminal\tMetaTrader 5 x64 build 5833 started for MetaQuotes\
+      \ Ltd."
+    - ''
+    - "LI\t0\t00:32:55.353\tTerminal\tWindows 11 build 26200, 20 x 13th Gen Intel\
+      \ Core i5-13500HX, AVX2, 16 / 29 Gb memory, 116 / 475 Gb disk, UAC, GMT+9"
+    - ''
+    - "MM\t0\t00:32:55.353\tTerminal\tC:\\Users\\awdse\\AppData\\Local\\SpaceSonar\\\
+      mt5_portable_roots\\wave03_l4_portable_root_v0"
+    - ''
+    - "OH\t0\t00:32:55.353\tTerminal\tlaunched with C:\\Users\\awdse\\AppData\\Roaming\\\
+      MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Experts\\Project_SpaceSonar_X\\\
+      runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0\\\
+      tester_config.ini"
+    - ''
+    - "FL\t0\t00:32:57.234\tNetwork\t'***redacted': authorized on FPMarketsSC-Live\
+      \ through Seoul 2 (ping: 240.39 ms, build 5830)"
+    - ''
+    - "KM\t0\t00:32:57.234\tNetwork\t'***redacted': previous successful authorization\
+      \ performed from ***redacted-ip on 2026.06.28 18:32:36"
+    - ''
+    - "DM\t0\t00:32:57.663\tNetwork\t'***redacted': terminal synchronized with First\
+      \ Prudential Markets Limited: 0 positions, 0 orders, 818 symbols, 0 spreads"
+    - ''
+    - "NL\t0\t00:32:57.663\tNetwork\t'***redacted': trading has been enabled - hedging\
+      \ mode"
+    - ''
+    - "MI\t0\t00:32:57.714\tTester\tautomatical testing started"
+    - ''
+    - "PS\t0\t00:33:10.347\tTester\tlast test passed with result \"successfully finished\"\
+      \ in 0:00:10.668"
+    - ''
+    - "DE\t0\t00:33:10.482\tTerminal\texit with code 0"
+    - ''
+    - "JL\t0\t00:33:10.505\tNetwork\t'***redacted': disconnected from FPMarketsSC-Live"
+    - ''
+    - "IH\t0\t00:33:10.539\tTerminal\tstopped with 0"
+    - ''
+    - "OS\t0\t00:33:10.543\tTerminal\tshutdown with 0"
+    - ''
+    - ''
+    latest_attempt_line_count: 23
+    latest_attempt_lines:
+    - "OH\t0\t00:32:55.353\tTerminal\tlaunched with C:\\Users\\awdse\\AppData\\Roaming\\\
+      MetaQuotes\\Terminal\\D0E8209F77C8CF37AD8BF550E51FF075\\MQL5\\Experts\\Project_SpaceSonar_X\\\
+      runtime\\mt5_attempts\\attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0\\\
+      tester_config.ini"
+    - ''
+    - "FL\t0\t00:32:57.234\tNetwork\t'***redacted': authorized on FPMarketsSC-Live\
+      \ through Seoul 2 (ping: 240.39 ms, build 5830)"
+    - ''
+    - "KM\t0\t00:32:57.234\tNetwork\t'***redacted': previous successful authorization\
+      \ performed from ***redacted-ip on 2026.06.28 18:32:36"
+    - ''
+    - "DM\t0\t00:32:57.663\tNetwork\t'***redacted': terminal synchronized with First\
+      \ Prudential Markets Limited: 0 positions, 0 orders, 818 symbols, 0 spreads"
+    - ''
+    - "NL\t0\t00:32:57.663\tNetwork\t'***redacted': trading has been enabled - hedging\
+      \ mode"
+    - ''
+    - "MI\t0\t00:32:57.714\tTester\tautomatical testing started"
+    - ''
+    - "PS\t0\t00:33:10.347\tTester\tlast test passed with result \"successfully finished\"\
+      \ in 0:00:10.668"
+    - ''
+    - "DE\t0\t00:33:10.482\tTerminal\texit with code 0"
+    - ''
+    - "JL\t0\t00:33:10.505\tNetwork\t'***redacted': disconnected from FPMarketsSC-Live"
+    - ''
+    - "IH\t0\t00:33:10.539\tTerminal\tstopped with 0"
+    - ''
+    - "OS\t0\t00:33:10.543\tTerminal\tshutdown with 0"
+    - ''
+    - ''
+    diagnostic_flags: []
+    claim_boundary: portable_terminal_journal_diagnostic_only_no_runtime_authority
+failure_disposition:
+  reproduction: local portable terminal root was prepared, passed write preflight,
+    and launched one no-fallback Strategy Tester probe
+  exact_failing_layer: none_runtime_probe_completed_counterpart_period_pending
+  bounded_repair_or_fallback_attempt: created writable local portable MT5 root, staged
+    EA/config/common-file inputs, and launched without main-mode fallback
+  evidence_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/terminal_run_summary.yaml
+  remaining_blocker: Wave03 pair aggregation is pending after completed validation/research_oos
+    portable repair probes
+  reopen_condition: rerun Wave03 pair aggregation with the completed no-fallback portable
+    validation/research_oos repair probes before any L5 routing
+  claim_boundary: wave03_l4_portable_runtime_repair_probe_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+counts:
+  portable_root_materialized_count: 1
+  portable_root_preflight_pass_count: 1
+  portable_session_source_config_available_count: 1
+  portable_session_config_imported_count: 1
+  portable_repair_probe_attempt_count: 1
+  portable_repair_probe_terminal_launch_count: 1
+  portable_repair_probe_telemetry_observed_count: 1
+  portable_repair_probe_completed_report_count: 1
+  portable_repair_probe_runtime_complete_count: 1
+  candidate_count: 0
+  l5_candidate_count: 0
+operational_validation_required: false
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+unresolved_blockers:
+- wave03_pair_aggregation_pending_after_portable_research_oos_repair
+unresolved_blockers_or_none:
+- wave03_pair_aggregation_pending_after_portable_research_oos_repair
+reopen_conditions:
+- rerun the repair writer after portable account/history/config is available if the
+  no-fallback probe produced no telemetry
+- rerun Wave03 pair aggregation with the completed no-fallback portable validation/research_oos
+  repair probes before any L5 routing
+- rerun Wave03 pair aggregation after additional portable repair probes change runtime
+  evidence
+- do not route to L5 until standard portable L4 contract evidence is present for eligible
+  period roles
+next_action: rerun Wave03 pair aggregation with the completed no-fallback portable
+  validation/research_oos repair probes before any L5 routing
+next_executable_action: rerun Wave03 pair aggregation with the completed no-fallback
+  portable validation/research_oos repair probes before any L5 routing
+provenance:
+  producer: python foundation/pipelines/repair_wave03_volatility_state_l4_portable_runtime.py
+    --write-control-records
+  user_direction: experiment_first
+  git:
+    git_sha: 29b41ff0258b426e80371cc95dfce71099854855
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - M docs/registers/artifact_registry.csv
+    - ' M docs/registers/campaign_registry.csv'
+    - ' M docs/registers/experiment_surface_registry.csv'
+    - ' M docs/registers/goal_registry.csv'
+    - ' M docs/registers/hypothesis_registry.csv'
+    - ' M docs/registers/idea_registry.csv'
+    - ' M docs/registers/sweep_registry.csv'
+    - ' M docs/registers/wave_registry.csv'
+    - ' M docs/workspace/workspace_state.yaml'
+    - ' M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5'
+    - ' M foundation/pipelines/run_wave0_l4_mt5_attempts.py'
+    - ' M foundation/validation/machine_yaml_identity_lint.py'
+    - ' M foundation/validation/writer_scope_contract_lint.py'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+    - ' M src/spacesonar/control_plane/lifecycle.py'
+    - ?? foundation/features/wave03_volatility_state_features.py
+    - ?? foundation/labels/wave03_volatility_state_labels.py
+    - ?? foundation/pipelines/aggregate_wave03_volatility_state_l4_pair_judgments.py
+    - ?? foundation/pipelines/materialize_wave03_volatility_state_l4_preflight.py
+    - ?? foundation/pipelines/repair_wave03_volatility_state_l4_portable_runtime.py
+    - ?? foundation/pipelines/run_wave03_volatility_state_l4_mt5_attempts.py
+    - ?? foundation/pipelines/run_wave03_volatility_state_proxy_batch.py
+    - ?? lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_volatility_state_transition_campaign_spec.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_materialization_preflight_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_pair_judgment_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_portable_runtime_repair_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_strategy_tester_execution_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_proxy_execution_v0_closeout.yaml
+    - ?? lab/hypotheses/hyp_us100_wave03_compression_expansion_reversal_continuation_v0.yaml
+    - ?? lab/hypotheses/idea_us100_wave03_intraday_volatility_state_transition_v0.yaml
+    - ?? lab/runs/onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_002_compression_reversal_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_003_compression_continuation_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_004_compression_continuation_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_005_expansion_exhaustion_reversal_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_006_expansion_exhaustion_reversal_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_007_expansion_followthrough_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_008_expansion_followthrough_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_010_vol_state_tradeability_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_012_range_expansion_adverse_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_013_session_open_reversal_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_014_session_open_continuation_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_016_low_vol_false_break_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_017_high_vol_mean_revert_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_018_high_vol_momentum_h12_v0/
+    - ?? lab/surfaces/surface_us100_wave03_compression_expansion_decision_v0/
+    - ?? lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_account_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_password_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_imported_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_login_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_repair_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_validation_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_001_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_002_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_003_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_004_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_005_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_006_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_007_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_008_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_009_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_010_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_011_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_012_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_014_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_015_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_016_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_017_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+experiment_or_boundary_effect: bounded_portable_strategy_tester_repair_probe_recorded_without_protected_claim
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_v0/attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_v0/tester_config.ini
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_portable_runtime_repair_summary.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_portable_runtime_repair_v0_closeout.yaml
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/portable_repair_attempt_manifest.yaml
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/tester_config.ini
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/terminal_run_summary.yaml
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/score_telemetry_summary.yaml
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/score_diagnostic_summary.yaml
+- runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/tester_report_receipt.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- portable_repair_writer_smoke
+- writer_scope_contract_lint
+- machine_yaml_identity_lint
+- active_pointer_smoke
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_portable_runtime_repair_probe_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T15:33:11Z'
+  failures: []
+  claim_boundary: wave03_l4_portable_runtime_repair_probe_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+next_action_or_reopen_condition: rerun Wave03 pair aggregation with the completed
+  no-fallback portable validation/research_oos repair probes before any L5 routing

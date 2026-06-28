@@ -1,0 +1,95 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/run_specs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0.yaml",
+      "sha256": "af212f4539e24a68da1697e9479d7d4550c4e0cea196ba3f38c18c754854f09e",
+      "size_bytes": 1793,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave03_volatility_state_proxy_batch.py",
+    "command": "foundation/pipelines/run_wave03_volatility_state_proxy_batch.py"
+  },
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/run_manifest.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/feature_schema.json",
+      "sha256": "3a0ee8a3bc16dc56f7370c6a74cd3535dc827965a68bc91d24c208e4d439e0ae",
+      "size_bytes": 2412,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/label_schema.json",
+      "sha256": "a7afc34bce1238cd93900875538dd129dab0bd4fe13a1a86bfc3cb062a3b13b6",
+      "size_bytes": 760,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/model_summary.json",
+      "sha256": "72d8a230c57fccec017774003ff61076f5f558b7f75fc3ca753ed6ae73a114e7",
+      "size_bytes": 832,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/split_profile.json",
+      "sha256": "e0b2e09d794c86b82d5f2ade0ea15cd73204c763fe308c120b46978444be5641",
+      "size_bytes": 247,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "451a24f94aa4d12cfbe9cd9dc4706cb7a848432bf08b74ae8fb64e9d39f05d0b",
+      "size_bytes": 22126,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "f48312c767f4d591cdad7b677489d28f7759d8c387239de7780b971892890cc3",
+      "size_bytes": 22969,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/reports/proxy_volatility_state_report.json",
+      "sha256": "8b35bea8b88bac151653afdf2f0cb9559567ee8ca61e292529006036246a78b8",
+      "size_bytes": 5740,
+      "availability": "local_generated_hash_recorded_not_committed"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/feature_schema.json": "3a0ee8a3bc16dc56f7370c6a74cd3535dc827965a68bc91d24c208e4d439e0ae"
+    },
+    {
+      "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/label_schema.json": "a7afc34bce1238cd93900875538dd129dab0bd4fe13a1a86bfc3cb062a3b13b6"
+    },
+    {
+      "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/model_summary.json": "72d8a230c57fccec017774003ff61076f5f558b7f75fc3ca753ed6ae73a114e7"
+    },
+    {
+      "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/split_profile.json": "e0b2e09d794c86b82d5f2ade0ea15cd73204c763fe308c120b46978444be5641"
+    },
+    {
+      "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/prediction_sample_validation.csv": "451a24f94aa4d12cfbe9cd9dc4706cb7a848432bf08b74ae8fb64e9d39f05d0b"
+    },
+    {
+      "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/artifacts/prediction_sample_research_oos_a.csv": "f48312c767f4d591cdad7b677489d28f7759d8c387239de7780b971892890cc3"
+    },
+    {
+      "lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/reports/proxy_volatility_state_report.json": "8b35bea8b88bac151653afdf2f0cb9559567ee8ca61e292529006036246a78b8"
+    }
+  ],
+  "availability": "present_hash_recorded",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing"
+}

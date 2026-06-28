@@ -60,8 +60,12 @@ Git integration cadence:
 
 - Work on `main` by default; routine `codex/` work branches are disabled unless
   the user explicitly requests one.
-- Durable `origin/main` push boundaries are `campaign_close`, `wave_close`, and
-  explicit user-approved stabilization points.
+- Durable `origin/main` push boundaries are `campaign_close`,
+  `bounded_synthesis_close`, `wave_close`, and explicit user-approved
+  stabilization points.
+- `campaign_close` and `bounded_synthesis_close` must be reflected on `main`
+  after the coherent closeout state is written. Do not treat mid-campaign
+  commits or dirty local run fragments as main-integrated evidence.
 - Do not push every run to `origin/main` by default.
 - A boundary commit should include the matching source-of-truth manifest updates, registry/index updates, claim-boundary updates, and hash records for ignored heavy artifacts.
 - Intermediate run work may stay as unpushed local `main` commits or dirty
@@ -139,6 +143,18 @@ KPI ledgers and closeouts must include both overall KPI and segment breakdowns. 
 Optional segment axes include volatility regime, drawdown cluster, holding period bucket, feature family, target family, model family, and spread or cost bucket.
 
 If a required segment cannot be materialized from the current evidence, the KPI summary must still name the segment and record it as missing or not collected with a reason and the next materialization step. Do not create placeholder segment analysis: observed or partial segments must name the metric/count basis they came from. Segment results explain instability, concentration, and the next probe; they must not be used by themselves to claim selected baseline, economics pass, runtime authority, live readiness, reviewed/pass, or Goal Achieve.
+
+Every campaign closeout and bounded-synthesis closeout must maintain the KPI
+ledger triad:
+
+- `proxy_kpi_records.csv`
+- `mt5_runtime_kpi_records.csv`
+- `proxy_mt5_comparison_records.csv`
+
+The triad keeps proxy, MT5 runtime, and proxy-vs-MT5 comparison evidence
+separate. For bounded synthesis, KPI rows use `stage_kind: special_mixing`.
+Missing MT5 or comparison evidence is recorded through the fixed schema and
+summary, not by silently omitting a ledger.
 
 Outcome-only closeout is incomplete. If the changed variable, baseline, sample scope, or runtime evidence is missing, lower the interpretation to low-confidence or inconclusive. Do not claim a causal effect unless controls, matched scope, sufficient samples, and matching proxy/runtime evidence support it.
 
@@ -232,6 +248,9 @@ Rules:
 - Every valid proxy/model-bearing synthesis run still follows the normal `L4_split_runtime_probe` requirement.
 - If L4 remains promising, continue to `L5_candidate_runtime_evidence`.
 - KPI ledgers use the same fixed schema as ordinary campaign and wave records. Synthesis KPI rows must use `stage_kind: special_mixing` and keep proxy, MT5 runtime, and proxy-vs-MT5 comparison ledgers separated.
+- Bounded-synthesis closeout is a `main` integration boundary and must be
+  reflected on `main` after coherent closeout records, KPI ledgers, parity
+  records, ingredient lifecycle records, and claim boundaries are written.
 - Closeout remains claim-boundary explicit: no selected baseline, runtime authority, economics pass, live readiness, reviewed/pass, or Goal Achieve without matching evidence.
 
 ## Campaign Parity Rule
@@ -241,6 +260,7 @@ Each campaign that creates proxy/model-bearing evidence must maintain a `proxy_r
 Required contents:
 
 - shared contract: dataset, row key, split, feature order, label, decision surface, threshold policy, holding/exit logic, cost assumptions, and tester profile
+- intent behavior parity: Python proxy intended entry, exit, hold, flat, long, short, and no-trade decisions compared row-by-row against MT5 EA behavior telemetry when telemetry exists
 - known differences: proxy-only assumptions versus MT5 behavior
 - interpretation drift risks: bar close timing, spread, commission, swap, slippage, fill rules, execution timing, no-trade behavior, rounding, lot sizing, symbol contract, and session handling
 - minimum reconciliation attempt: at least one explicit repair, conversion, or interpretation check before closing the discrepancy
@@ -251,6 +271,13 @@ Required contents:
 - follow-up action: preserve clue, repair surface, invalidate setup, continue L5, or open a divergence campaign
 
 Proxy failure does not remove the L4 obligation for a valid proxy/model-bearing run. If MT5 also fails, that is negative evidence. If MT5 unexpectedly works, that discrepancy becomes a preserved clue or new hypothesis surface. If proxy works but MT5 fails, treat it as an interpretation or execution drift until explained.
+
+Campaign closeout must not claim that the strategy moved as intended unless the
+row-level proxy intent and MT5 behavior comparison supports it. If full Python
+decision rows are missing, the closeout records the gap and reopens the smallest
+proxy decision stream materialization or parser repair. If the comparison
+diverges, make at least one repo-controlled reconciliation attempt before
+accepting the divergence as expected behavior or prevention memory.
 
 Example: if proxy ATR SL/TP uses `120/180` as point-like distances but MT5 interprets the same values through symbol `point`, `digits`, `tick_size`, or price-distance conversion differently, record the mismatch as unit semantics drift. The follow-up is not to claim parity failed and move on; the follow-up is to define the conversion rule for future ATR stop logic.
 

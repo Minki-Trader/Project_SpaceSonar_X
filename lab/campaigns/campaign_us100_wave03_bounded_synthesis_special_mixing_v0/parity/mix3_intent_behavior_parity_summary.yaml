@@ -1,0 +1,150 @@
+version: wave03_bounded_synthesis_mix3_intent_behavior_parity_summary_v1
+summary_id: wave03_bounded_synthesis_mix3_intent_behavior_parity_v0
+work_item_id: work_wave03_bounded_synthesis_special_mixing_mix3_l4_pair_kpi_parity_v0
+parent_work_item_id: work_wave03_bounded_synthesis_special_mixing_mix3_l4_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+campaign_type: bounded_synthesis
+stage_kind: special_mixing
+mix_item_id: mix_wave03_special_mixing_mix3_add_vol_state_tradeability_proxy_clue_v0
+surface_id: surface_us100_wave03_bounded_synthesis_special_mixing_v0
+sweep_id: sweep_us100_wave03_bounded_synthesis_mix3_v0
+created_at_utc: '2026-06-28T20:01:55Z'
+status: wave03_bounded_synthesis_mix3_l4_pair_kpi_parity_completed_closeout_decision_ready
+claim_boundary: wave03_bounded_synthesis_mix3_l4_pair_kpi_parity_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+comparison: python_proxy_decision_stream_vs_MT5_EA_score_probe_decision_by_common_bar_close_key
+counts:
+  attempt_count: 12
+  pair_count: 6
+  common_key_count: 399921
+  decision_mismatch_count: 0
+  proxy_only_row_count: 2003
+  mt5_only_row_count: 193089
+  row_level_parity_passed_attempt_count: 12
+  row_level_parity_passed_pair_count: 6
+judgment:
+  row_level_common_key_parity: passed
+  unmatched_row_boundary: expected_feature_or_label_eligibility_boundary_for_proxy_only_and_MT5_warmup_rows
+  claim_effect: intent_behavior_reconciliation_only_no_runtime_authority_no_economics_pass
+  next_action: write bounded synthesis closeout decision using earlier synthesis evidence
+    and mix-3 L4 pair evidence, KPI triad, and row-level proxy-MT5 parity; integrate
+    to main only after bounded synthesis closeout
+kpi_ledger_status:
+  triad_files_present: true
+  record_counts:
+    proxy_kpi_records: 12
+    mt5_runtime_kpi_records: 0
+    proxy_mt5_comparison_records: 0
+  score_probe_mt5_kpi_policy: non_trading_score_probe_excluded_from_campaign_kpi_ledger_by_contract
+  kpi_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_summary.yaml
+  kpi_manifest: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_ledger_manifest.yaml
+source_inputs:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_runtime_execution_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_ledger_manifest.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_pair_judgment_index.csv
+artifact_outputs:
+  parity_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_summary.yaml
+  parity_index: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_index.csv
+  parity_mismatches: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_mismatches.csv
+  parity_unmatched_samples: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_unmatched_samples.csv
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+operational_validation_required: false
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: mix3_row_level_intent_behavior_parity_materialized
+next_executable_action: write bounded synthesis closeout decision using earlier synthesis
+  evidence and mix-3 L4 pair evidence, KPI triad, and row-level proxy-MT5 parity;
+  integrate to main only after bounded synthesis closeout
+experiment_or_boundary_effect: proxy_mt5_common_key_decision_parity_recorded_without_runtime_or_economics_claim
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_runtime_execution_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_ledger_manifest.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_pair_judgment_index.csv
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_mismatches.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_unmatched_samples.csv
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- mix3_pair_kpi_parity_writer_smoke
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- writer_scope_contract_lint
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_mix3_pair_kpi_parity_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T20:02:05Z'
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  claim_boundary: wave03_bounded_synthesis_mix3_l4_pair_kpi_parity_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  candidate_count: 0
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: write bounded synthesis closeout decision using
+    earlier synthesis evidence and mix-3 L4 pair evidence, KPI triad, and row-level
+    proxy-MT5 parity; integrate to main only after bounded synthesis closeout
+unresolved_blockers_or_none: []
+next_action_or_reopen_condition: write bounded synthesis closeout decision using earlier
+  synthesis evidence and mix-3 L4 pair evidence, KPI triad, and row-level proxy-MT5
+  parity; integrate to main only after bounded synthesis closeout

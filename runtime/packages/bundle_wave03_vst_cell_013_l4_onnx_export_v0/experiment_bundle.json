@@ -1,0 +1,342 @@
+{
+  "version": "experiment_bundle_v3",
+  "bundle_id": "bundle_wave03_vst_cell_013_l4_onnx_export_v0",
+  "run_id": "onnxlab_wave03_vst_cell_013_session_open_reversal_h6_v0",
+  "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
+  "campaign_id": "campaign_us100_wave03_volatility_state_transition_surface_v0",
+  "surface_id": "surface_us100_wave03_compression_expansion_decision_v0",
+  "sweep_id": "sweep_us100_wave03_compression_expansion_seed_v0",
+  "source_of_truth": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/experiment_bundle.json",
+  "created_at_utc": "2026-06-28T12:25:18Z",
+  "status": "onnx_exported_python_onnxruntime_parity_recorded",
+  "claim_boundary": "wave03_l4_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve",
+  "id_chain": {
+    "goal_id": "goal_us100_onnx_forward_boundary_v0",
+    "wave_id": "wave_us100_wave03_volatility_state_transition_surface_v0",
+    "campaign_id": "campaign_us100_wave03_volatility_state_transition_surface_v0",
+    "idea_id": "idea_us100_wave03_intraday_volatility_state_transition_v0",
+    "hypothesis_id": "hyp_us100_wave03_compression_expansion_reversal_continuation_v0",
+    "surface_id": "surface_us100_wave03_compression_expansion_decision_v0",
+    "sweep_id": "sweep_us100_wave03_compression_expansion_seed_v0",
+    "artifact_ids": [],
+    "bundle_id": "bundle_wave03_vst_cell_013_l4_onnx_export_v0",
+    "candidate_id": null,
+    "cell_id": "wave03_vst_cell_013"
+  },
+  "feature_recipe_id": "feature_wave03_session_open_expansion_state_v0",
+  "feature_schema_hash": "60e5056950a085099f38b139c996f6348489de5727bc44e0285c4f607cb55df1",
+  "feature_order_hash": "1f7322a3987028968ab5ad962db5ef12ea9e3b42b3e5b9afc7a6c3c8ce47a748",
+  "feature_schema_contract": {
+    "input_family": "feature_wave03_session_open_expansion_state_v0",
+    "feature_count": 44,
+    "feature_columns": [
+      "ret_1",
+      "ret_3",
+      "ret_6",
+      "ret_8",
+      "ret_12",
+      "ret_24",
+      "ret_48",
+      "ret_96",
+      "range_pct",
+      "range_body_pct",
+      "range_upper_wick_pct",
+      "range_lower_wick_pct",
+      "range_mean_12",
+      "range_std_12",
+      "range_rank_12",
+      "range_mean_48",
+      "range_std_48",
+      "range_rank_48",
+      "range_mean_144",
+      "range_std_144",
+      "range_rank_144",
+      "range_mean_288",
+      "range_std_288",
+      "range_rank_288",
+      "atr_12_pct",
+      "atr_48_pct",
+      "atr_144_pct",
+      "atr_12_vs_48",
+      "atr_48_vs_144",
+      "atr_rank_288",
+      "expansion_range_z_96",
+      "expansion_abs_ret_3_z_96",
+      "expansion_release_12",
+      "volume_z_48",
+      "session_minute_sin",
+      "session_minute_cos",
+      "session_dow_sin",
+      "session_dow_cos",
+      "session_minutes_from_cash_open",
+      "session_minutes_to_cash_close",
+      "session_is_cash",
+      "session_is_open_60m",
+      "session_is_open_90m",
+      "session_is_close_60m"
+    ],
+    "feature_order_hash": "1f7322a3987028968ab5ad962db5ef12ea9e3b42b3e5b9afc7a6c3c8ce47a748",
+    "boundary": "right_aligned_US100_M5_closed_bar_wave03_volatility_state_features",
+    "feature_count_policy": "variable_declared_per_run_no_fixed_count"
+  },
+  "label_recipe_id": "label_wave03_session_open_reversal_h6_v0",
+  "label_schema_hash": "eb79371546d71f409fdac56831cb068aa046c15d8e2c29bcafdaf0986db01587",
+  "target_and_label": {
+    "label_surface": "label_wave03_session_open_reversal_h6_v0",
+    "target_name": "target_binary_raw",
+    "target_threshold": null,
+    "target_threshold_fit_scope": "not_applicable",
+    "label_boundary": "same_split_role_horizon_ok_rows_only"
+  },
+  "task_surface_id": "surface_us100_wave03_compression_expansion_decision_v0",
+  "decision_recipe_id": "decision_wave03_reversal_abstain_timeout_h6_v0",
+  "decision_surface": {
+    "proxy_decision_recipe_id": "decision_wave03_reversal_abstain_timeout_h6_v0",
+    "decision_family": "volatility_state_reversal_continuation_score_probe",
+    "holding_policy": "not_executed_score_telemetry_only",
+    "risk_policy": "fixed_lot_recorded_but_EA_non_trading",
+    "threshold_policy": "train_quantile_proxy_threshold",
+    "score_low_threshold": 0.41049922016685697,
+    "score_high_threshold": 0.45787786171765255,
+    "runtime_translation_status": "score_probe_preflight_direction_and_trade_execution_pending"
+  },
+  "model_family": "tree_or_boosted_onnx_feasible_scout",
+  "model_task": "wave03_volatility_state_classification",
+  "model_framework": "sklearn_pipeline_skl2onnx",
+  "model_training": {
+    "fit_scope": "train_only",
+    "preprocessing_fit_scope": "train_only",
+    "calibration": "none",
+    "selection_metric": "none_selected_materialization_follows_existing_proxy_run",
+    "overfit_risk": "broad_surface_multiple_testing_risk_no_selection_allowed"
+  },
+  "input_schema": {
+    "input_name": "features",
+    "dtype": "float32",
+    "shape": [
+      null,
+      44
+    ],
+    "feature_order_hash": "1f7322a3987028968ab5ad962db5ef12ea9e3b42b3e5b9afc7a6c3c8ce47a748",
+    "feature_columns": [
+      "ret_1",
+      "ret_3",
+      "ret_6",
+      "ret_8",
+      "ret_12",
+      "ret_24",
+      "ret_48",
+      "ret_96",
+      "range_pct",
+      "range_body_pct",
+      "range_upper_wick_pct",
+      "range_lower_wick_pct",
+      "range_mean_12",
+      "range_std_12",
+      "range_rank_12",
+      "range_mean_48",
+      "range_std_48",
+      "range_rank_48",
+      "range_mean_144",
+      "range_std_144",
+      "range_rank_144",
+      "range_mean_288",
+      "range_std_288",
+      "range_rank_288",
+      "atr_12_pct",
+      "atr_48_pct",
+      "atr_144_pct",
+      "atr_12_vs_48",
+      "atr_48_vs_144",
+      "atr_rank_288",
+      "expansion_range_z_96",
+      "expansion_abs_ret_3_z_96",
+      "expansion_release_12",
+      "volume_z_48",
+      "session_minute_sin",
+      "session_minute_cos",
+      "session_dow_sin",
+      "session_dow_cos",
+      "session_minutes_from_cash_open",
+      "session_minutes_to_cash_close",
+      "session_is_cash",
+      "session_is_open_60m",
+      "session_is_open_90m",
+      "session_is_close_60m"
+    ]
+  },
+  "output_schema": {
+    "task_kind": "classification",
+    "score_semantics": "class_1_probability",
+    "onnx_outputs": [
+      "score"
+    ],
+    "score_extraction": "score.reshape(-1)",
+    "probability_calibration_claim": false,
+    "mt5_output_contract": "single_float_score_vector_shape_1_for_single_row_inference"
+  },
+  "onnx_path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/model.onnx",
+  "onnx_sha256": "1bcd48c8912e46c2a29de86d1b46ab98b411d25ec70ce32bd1ee72c2dad57b44",
+  "onnx_size_bytes": 75349,
+  "onnx_adapter_ids": [
+    "skl2onnx_hgb_numpy_scalar_cast_v0",
+    "onnx_single_score_output_v0"
+  ],
+  "common_files_transport": {
+    "model": {
+      "common_relative_path": "SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_013_l4_onnx_export_v0\\model.onnx",
+      "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_013_l4_onnx_export_v0\\model.onnx",
+      "sha256": "1bcd48c8912e46c2a29de86d1b46ab98b411d25ec70ce32bd1ee72c2dad57b44",
+      "size_bytes": 75349,
+      "availability": "copied_to_mt5_common_files"
+    },
+    "feature_columns": {
+      "common_relative_path": "SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_013_l4_onnx_export_v0\\feature_columns.txt",
+      "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_013_l4_onnx_export_v0\\feature_columns.txt",
+      "sha256": "fb65f37ce02874667ae7f60cd605d25404d3f46301692c5a1a61e23d5bb9d5d1",
+      "size_bytes": 649,
+      "availability": "copied_to_mt5_common_files"
+    }
+  },
+  "runtime_contract_version": "mt5_runtime_probe_contract_v2",
+  "runtime_period_profile_id": "period_profile_split_set_v0",
+  "runtime_period_set_id": "split_base_anchor_v0_research_l4",
+  "tester_execution_profile_id": "us100_m5_fpmarkets_tester_execution_v0",
+  "python_onnxruntime_parity": {
+    "status": "passed",
+    "sample_scope": "first_validation_rows_after_train_only_fit",
+    "sample_rows": 512,
+    "max_abs_error": 7.422443371041254e-08,
+    "mean_abs_error": 2.0484973970152226e-08,
+    "tolerance": 1e-05,
+    "fixture_input": {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
+      "sha256": "3cc5b2af58b8e060ed301dd8c90af0ec13ff4dc5bb2c3066c4f899a0b1010ce7",
+      "size_bytes": 259125,
+      "availability": "local_artifact_hash_recorded"
+    },
+    "expected_score": {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
+      "sha256": "70a66f169383d36ecea7daeab52786224473f7bc0c7cbb749e0e089aeea43299",
+      "size_bytes": 9926,
+      "availability": "local_artifact_hash_recorded"
+    },
+    "observed_score": {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
+      "sha256": "1fc6bfd0c0e9a085e49e8d18fd5fc9b3a21a0f04f337ba803189c24929f57593",
+      "size_bytes": 5448,
+      "availability": "local_artifact_hash_recorded"
+    }
+  },
+  "runtime_learning_probe_decision": {
+    "required": true,
+    "decision": "run_required_next",
+    "required_runtime_level": "L4_split_runtime_probe",
+    "reason": "Valid Wave03 proxy/model-bearing run has ONNX bundle preflight; MT5 L4 terminal execution remains required.",
+    "period_profile_id": "period_profile_split_set_v0",
+    "runtime_period_set_id": "split_base_anchor_v0_research_l4",
+    "required_period_roles": [
+      "validation",
+      "research_oos"
+    ],
+    "l5_rule": "If L4_split_runtime_probe remains promising under the declared surface, continue to L5_candidate_runtime_evidence with candidate-specific manifests.",
+    "lowered_claim_if_not_run": "bundle_preflight_only_no_runtime_authority_no_economics_pass_no_candidate"
+  },
+  "proxy_runtime_parity": {
+    "status": "pending_L4_strategy_tester",
+    "shared_contract": [
+      "US100_M5_closed_bar_base_frame",
+      "feature_order_hash",
+      "single_score_output",
+      "period_profile_split_set_v0",
+      "us100_m5_fpmarkets_tester_execution_v0"
+    ],
+    "known_differences": [
+      "Python proxy row membership uses exported MT5 history; EA reconstructs features from Strategy Tester closed bars.",
+      "Wave03 proxy decision recipes include reversal/continuation semantics; this L4 score probe records non-trading score telemetry only.",
+      "Strategy Tester spread/tick availability can differ from exported proxy data.",
+      "Economics and live-like execution remain forbidden until a trading decision EA and terminal evidence exist."
+    ],
+    "interpretation_drift_risks": [
+      "bar_close_timing",
+      "feature_reconstruction_in_EA",
+      "spread_field_semantics",
+      "score_threshold_translation",
+      "side_label_not_available_to_score_only_EA",
+      "non_trading_score_observation_vs_trade_execution"
+    ],
+    "minimum_reconciliation_attempt": {
+      "required": true,
+      "status": "pending_terminal_execution",
+      "forced_equality_required": false,
+      "next_action": "work_wave03_volatility_state_l4_runtime_execution_v0"
+    },
+    "unit_semantics": {
+      "features": "float32 closed-bar values in bundle feature order",
+      "score": "single model score from sklearn-to-ONNX adapter",
+      "price_units": "MT5 price values from MqlRates",
+      "spread": "MqlRates.spread raw points scaled only where feature contract says spread_scaled",
+      "lot": "fixed_lot_profile_recorded_but_EA_non_trading"
+    },
+    "comparison_class": "pending_L4_terminal_execution",
+    "divergence_judgment": "not_evaluated_until_MT5_score_telemetry_exists",
+    "prevention_memory": [
+      "Do not infer reversal/continuation trade economics from non-trading score telemetry.",
+      "Use Common Files feature_columns.txt transport for long Wave03 feature lists.",
+      "Do not treat prepared tester configs as completed L4 evidence."
+    ],
+    "follow_up_action": "work_wave03_volatility_state_l4_runtime_execution_v0",
+    "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority"
+  },
+  "artifacts": [
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/model.onnx",
+      "sha256": "1bcd48c8912e46c2a29de86d1b46ab98b411d25ec70ce32bd1ee72c2dad57b44",
+      "size_bytes": 75349,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/feature_columns.txt",
+      "sha256": "fb65f37ce02874667ae7f60cd605d25404d3f46301692c5a1a61e23d5bb9d5d1",
+      "size_bytes": 649,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/feature_schema.json",
+      "sha256": "3a0ee8a3bc16dc56f7370c6a74cd3535dc827965a68bc91d24c208e4d439e0ae",
+      "size_bytes": 2412,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/label_schema.json",
+      "sha256": "176d2477d03ab4bc9b5f5007fde8bdec0f4f34b91c764a8c1fb3c07b44190464",
+      "size_bytes": 745,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/model_summary.json",
+      "sha256": "b0198d610320f080f2ee7f83a952c00c7a06c69304d68dbf8d8817723597f2fb",
+      "size_bytes": 912,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/artifacts/split_profile.json",
+      "sha256": "30aec1ce834dd63dbbfd10e092d0c7ec76ef218f97f3c1c6c52214132d83449a",
+      "size_bytes": 258,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "forbidden_claims": [
+    "selected_baseline",
+    "operating_reference",
+    "operating_promotion",
+    "runtime_authority",
+    "economics_pass",
+    "materialization_ready",
+    "handoff_complete",
+    "live_readiness",
+    "reviewed_verified_pass",
+    "goal_achieve"
+  ],
+  "next_action": "work_wave03_volatility_state_l4_runtime_execution_v0"
+}

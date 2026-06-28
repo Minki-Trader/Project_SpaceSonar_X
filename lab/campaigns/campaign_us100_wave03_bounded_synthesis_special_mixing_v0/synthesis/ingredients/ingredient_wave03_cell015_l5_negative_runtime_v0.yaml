@@ -1,0 +1,60 @@
+version: ingredient_card_v1
+ingredient_card_id: ingredient_wave03_cell015_l5_negative_runtime_v0
+status: ingredient_ready_negative_runtime_boundary
+created_at_utc: '2026-06-28T17:26:54Z'
+source_campaign_ids:
+- campaign_us100_wave03_volatility_state_transition_surface_v0
+source_run_ids:
+- onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0
+source_clue_ids: []
+source_negative_memory_ids:
+- neg_wave03_volatility_state_l5_candidate_negative_v0
+source_divergence_ids: []
+material_type: negative_l5_runtime_boundary
+axis_tags:
+- volatility_state_transition
+- low_vol_breakout_h6
+- decision_execution
+- portable_l5_runtime_evidence
+- negative_research_oos_drawdown
+observed_pattern: cell015 reached L5 decision-execution evidence; validation was weakly
+  positive but research_oos failed with PF below one and drawdown above the north-star
+  reference.
+salvage_value: Use runtime plumbing and failure boundary as an anti-repeat ingredient;
+  do not carry forward cell015 thresholds as a candidate.
+negative_memory: research_oos PF 0.79 and 26.6 percent drawdown stopped the candidate
+do_not_repeat: do_not_repair_cell015_thresholds_or_treat_validation_positive_as_economics_pass
+evidence_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/kpi/kpi_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/parity/intent_behavior_parity_summary.yaml
+evidence_hashes:
+  lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml: c9965acf4696c787ff92b43268581f18157e205aedbf0642590122f57786ccde
+  lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml: 9ca3b676ea4e9ce1a22eddf301f29772c428b3c410eaac80f62d881c7305e434
+  ? lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+  : fb32d6f6c7b1958ce5c7f545c56ec6451dbe7b9fa2af99ae2bb6689bdd86b32c
+  lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv: 50e8df35987dafaf9b0a9a244e578759a6ce6069ea8d15188122adf09d66ed28
+  lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/kpi/kpi_summary.yaml: 91eb16ee11005d9939d67a319990db65ec9d5634dba19f6575dad80241ed85f8
+  lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/parity/intent_behavior_parity_summary.yaml: 4f8ab86f829c4854312189ffc21be91a4f9dac60bcbb0d76d36e2b94f421116c
+selection_eligibility: eligible_for_mix_not_candidate
+ingredient_lifecycle:
+  synthesis_use_status: available_for_first_synthesis
+  consumed_by_synthesis_campaign_id: ''
+  consumed_by_mix_item_id: ''
+  carry_forward_from_synthesis_campaign_id: ''
+  reopened_ingredient_exception_reason: ''
+  raw_reuse_policy: forbidden_after_consumed_by_completed_synthesis_unless_carry_forward_or_reopened_exception
+forbidden_uses:
+- selected_baseline
+- next_wave_direction
+- repair_relabeling
+- economics_or_runtime_authority_claim
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/synthesis/ingredients/ingredient_wave03_cell015_l5_negative_runtime_v0.yaml
+  registry_rows:
+  - docs/registers/ingredient_card_registry.csv
+claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority
+next_action: mix_with_tradeability_or_no_trade_control_before_any_new_standard_surface

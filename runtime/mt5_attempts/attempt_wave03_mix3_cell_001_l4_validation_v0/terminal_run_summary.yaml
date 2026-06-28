@@ -1,0 +1,236 @@
+command_argv_redacted:
+- ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\terminal64.exe
+- /portable
+- /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_mix3_cell_001_l4_validation_v0\tester_config.ini
+cwd: .
+started_at_utc: '2026-06-28T19:40:53.721987Z'
+ended_at_utc: '2026-06-28T19:41:14.622000Z'
+exit_code: 0
+timed_out: false
+stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+stdout_tail: ''
+stderr_tail: ''
+mode: portable_contract_attempt
+attempt_claim_boundary: standard_contract_attempt_only
+portable_terminal_root_preflight:
+  status: passed
+  started_at_utc: '2026-06-28T19:40:53.719926Z'
+  ended_at_utc: '2026-06-28T19:40:53.721946Z'
+  terminal_exists: true
+  portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  reports_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports
+  mql5_experts_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts
+  reports_dir_writable: true
+  mql5_experts_dir_creatable: true
+  error: null
+  claim_boundary: portable_terminal_root_preflight_only_no_runtime_authority
+  reopen_condition: portable terminal root accepted for Strategy Tester launch
+telemetry_exists_after_attempt: true
+terminal_attempts:
+- command_argv_redacted:
+  - ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\terminal64.exe
+  - /portable
+  - /config:${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_mix3_cell_001_l4_validation_v0\tester_config.ini
+  cwd: .
+  started_at_utc: '2026-06-28T19:40:53.721987Z'
+  ended_at_utc: '2026-06-28T19:41:14.622000Z'
+  exit_code: 0
+  timed_out: false
+  stdout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stderr_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  stdout_tail: ''
+  stderr_tail: ''
+  mode: portable_contract_attempt
+  attempt_claim_boundary: standard_contract_attempt_only
+  portable_terminal_root_preflight:
+    status: passed
+    started_at_utc: '2026-06-28T19:40:53.719926Z'
+    ended_at_utc: '2026-06-28T19:40:53.721946Z'
+    terminal_exists: true
+    portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+    reports_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports
+    mql5_experts_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts
+    reports_dir_writable: true
+    mql5_experts_dir_creatable: true
+    error: null
+    claim_boundary: portable_terminal_root_preflight_only_no_runtime_authority
+    reopen_condition: portable terminal root accepted for Strategy Tester launch
+  telemetry_exists_after_attempt: true
+terminal_cleanup_actions: []
+terminal_cleanup_policy:
+  default_terminate_existing: false
+  explicit_termination_requested: false
+  allowed_scope: explicit_user_requested_only
+  formal_runtime_claim_effect: no_global_cleanup_used
+terminal_mode_policy:
+  standard_contract_terminal_mode: portable_required
+  portable_attempted: true
+  portable_root_preflight_status: passed
+  main_mode_fallback_allowed: false
+  main_mode_fallback_used: false
+  fallback_reason: null
+  claim_effect: l4_standard_portable_attempt_observation
+selected_attempt_index: 0
+telemetry_observed: true
+version: wave03_bounded_synthesis_mix3_l4_terminal_run_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave03_mix3_cell_001_l4_validation_v0/terminal_run_summary.yaml
+attempt_id: attempt_wave03_mix3_cell_001_l4_validation_v0
+run_id: onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0
+bundle_id: bundle_wave03_mix3_cell_001_l4_onnx_export_v0
+tester_config:
+  path: runtime/mt5_attempts/attempt_wave03_mix3_cell_001_l4_validation_v0/tester_config.ini
+  sha256: af6a779b027a7d2648fe7120fc3ff15f44300d2f61659ff823942c094444f8bc
+  size_bytes: 2339
+  availability: present_hash_recorded
+tester_report_config:
+  status: tester_report_config_normalized
+  changed: false
+  report_value: reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0\tester_report
+  report_value_policy: terminal_relative_stem_resolved_against_portable_root_main_data_root_and_attempt_archive
+tester_report_resolution_prelaunch:
+  status: tester_report_directories_prepared
+  report_value: reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0\tester_report
+  prepared:
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: repository_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: portable_terminal_root
+    redacted_parent: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: main_terminal_data_root
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_mix3_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_mix3_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  - origin: attempt_archive_path
+    redacted_parent: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\runtime\mt5_attempts\attempt_wave03_mix3_cell_001_l4_validation_v0\reports\spacesonar\attempt_wave03_mix3_cell_001_l4_validation_v0
+  skipped: []
+  prelaunch_candidates:
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 32c78b19c21c7020170d07de8025d9f10be236a8760b1ffc5ed23201a0629a74
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 0e274949d237013c1f3083bba91ca5d66ecba1575c649d4a77374825a72ffffc
+  - origin: repository_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 59b77cce61e5b085a7dc79b84404f7e36d5a878ceb78a254dc1ccd52dcb0cdf1
+  - origin: portable_terminal_root
+    existed: true
+    sha256: dec450d016cdda873e12dd61090cf178684c3f33cbb840c4a2524d74baaaad0f
+    size_bytes: 29282
+    mtime_ns: 1782675548020419100
+    mtime_utc: '2026-06-28T19:39:08.020419Z'
+    path_key_sha256: 23dfc49d72a3aa0869a0aad13f13708a31f78247224420a2adaf9474268fa907
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 6e77cf8083e6970034e80e72d09812445a36008fea807f83451a53291f1de25f
+  - origin: portable_terminal_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: a78b0f295753a56bd4de45205e84f3a1e3be0023ec63f927d7e6067992d3850c
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 59787e5652bc77efc7521eb921a91b45c35ebb81d3befb86e85ed083944bbfa7
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 90fb85ae41732ecfce79bb26786e5902116f367ac74b7962badb7c72ed302c71
+  - origin: main_terminal_data_root
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: e6e5538131011732e5a5cd4fce34f4ad5cc5633775f0e8a3b571ed45ef1ee1e3
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: 80027c78a00ad2238cfc4a955836d5822e8ef5db42e9e916477ac3be1bcd25ea
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: da5304ce0443ba352ab7c88a088c025ad24a968c555862626a1ffc8c7cb5e2b4
+  - origin: attempt_archive_path
+    existed: false
+    sha256: null
+    size_bytes: null
+    mtime_ns: null
+    mtime_utc: null
+    path_key_sha256: e1838f23932503fe307df67dff3403b1c5f38c9507cc9d582d62aca2dad1d3bf
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_bounded_synthesis_mix3_l4_score_probe\attempt_wave03_mix3_cell_001_l4_validation_v0\score_telemetry.csv
+common_diagnostic_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_bounded_synthesis_mix3_l4_score_probe\attempt_wave03_mix3_cell_001_l4_validation_v0\score_diagnostics.csv
+portable_ea_stage:
+  status: staged
+  copy_status: already_current
+  tester_expert_value: Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+  portable_terminal_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  portable_ex5_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+  source:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+    sha256: c95566d7dc4d77d673ada48a8d414cf08cbd53659980c0b21284d7a1f7733c8b
+    size_bytes: 69282
+    availability: local_binary_hash_recorded_ignored_by_git
+  portable_sha256: c95566d7dc4d77d673ada48a8d414cf08cbd53659980c0b21284d7a1f7733c8b
+  portable_size_bytes: 69282
+  durable_identity: tester_config_expert_value_plus_source_binary_sha256
+  claim_boundary: portable_ea_stage_preflight_only_no_runtime_authority
+claim_boundary: terminal_execution_evidence_only_no_runtime_authority_no_economics_pass
+telemetry_file_observed_after_attempt: true
+telemetry_rows_observed_after_attempt: true
+telemetry_row_count: 53554
+score_diagnostic_file_observed_after_attempt: true
+score_diagnostic_event_count: 6480
+work_item_id: work_wave03_bounded_synthesis_special_mixing_mix3_l4_runtime_execution_v0
+subwork_item_id: work_wave03_bounded_synthesis_special_mixing_mix3_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+sweep_id: sweep_us100_wave03_bounded_synthesis_mix3_v0
+campaign_type: bounded_synthesis
+stage_kind: special_mixing
+mix_item_id: mix_wave03_special_mixing_mix3_add_vol_state_tradeability_proxy_clue_v0
+surface_id: surface_us100_wave03_bounded_synthesis_special_mixing_v0

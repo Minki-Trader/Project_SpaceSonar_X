@@ -341,6 +341,10 @@ def _apply_writer_contract_defaults(
     payload.setdefault("writer_contract_version", WRITER_CONTRACT_VERSION)
     payload.setdefault("primary_family", primary_family)
     payload.setdefault("primary_skill", primary_skill)
+    payload.setdefault("progress_class", "next_executable_experiment_writer_or_probe")
+    payload.setdefault("progress_effect", "writer_record_materialized_with_next_executable_action")
+    payload.setdefault("next_executable_action", next_action_or_reopen_condition)
+    payload.setdefault("experiment_or_boundary_effect", "writer_materialization_keeps_experiment_loop_executable")
     payload.setdefault("source_of_truth_paths", list(source_of_truth_paths))
     payload.setdefault("writer_owned_outputs", list(writer_owned_outputs))
     payload.setdefault("validation_depth", "writer_scope_smoke")
@@ -469,6 +473,7 @@ def _full_resume_cursor(existing: dict[str, Any], spec: CampaignLifecycleSpec, n
         "surface_id": spec.surface_id,
         "sweep_id": spec.sweep_id,
     }
+    payload["next_work_item"] = _next_work_pointer(next_work)
     payload.setdefault(
         "current_truth_sources",
         [
@@ -571,7 +576,21 @@ def _campaign_manifest(
             "notes": spec.payload.get("notes", existing.get("notes", "Campaign opened transactionally by shared lifecycle engine.")),
         }
     )
-    return payload
+    return _apply_writer_contract_defaults(
+        payload,
+        primary_family=str(spec.routing.get("primary_family") or "experiment_design"),
+        primary_skill=str(spec.routing.get("primary_skill") or "spacesonar-experiment-design"),
+        source_of_truth_paths=[
+            spec.rel_path.as_posix(),
+            "docs/workspace/lab_profile.yaml",
+            "docs/agent_control/work_family_registry.yaml",
+            "docs/agent_control/writer_scope_operating_contract.yaml",
+        ],
+        writer_owned_outputs=[rel_path.as_posix()],
+        claim_boundary=_claim_boundary(spec, context),
+        next_action_or_reopen_condition=str(payload["next_action"]),
+        forbidden_claims=spec.payload.get("forbidden_claims") or DEFAULT_FORBIDDEN_CLAIMS,
+    )
 
 
 def _surface_manifest(spec: CampaignLifecycleSpec, context: ExecutionContext) -> dict[str, Any]:
@@ -828,7 +847,22 @@ def _wave_manifest(repo_root: Path, spec: CampaignLifecycleSpec, context: Execut
             "next_action": spec.payload.get("next_action", existing.get("next_action", "materialize_run_specs")),
         }
     )
-    return payload
+    return _apply_writer_contract_defaults(
+        payload,
+        primary_family=str(spec.routing.get("primary_family") or "experiment_design"),
+        primary_skill=str(spec.routing.get("primary_skill") or "spacesonar-experiment-design"),
+        source_of_truth_paths=[
+            spec.rel_path.as_posix(),
+            f"lab/campaigns/{spec.campaign_id}/campaign_manifest.yaml",
+            "docs/workspace/lab_profile.yaml",
+            "docs/agent_control/work_family_registry.yaml",
+            "docs/agent_control/writer_scope_operating_contract.yaml",
+        ],
+        writer_owned_outputs=[rel_path.as_posix()],
+        claim_boundary=_claim_boundary(spec, context),
+        next_action_or_reopen_condition=str(payload["next_action"]),
+        forbidden_claims=spec.payload.get("forbidden_claims") or DEFAULT_FORBIDDEN_CLAIMS,
+    )
 
 
 def _campaign_refs_csv(repo_root: Path, rel_path: Path, wave: dict[str, Any], spec: CampaignLifecycleSpec) -> str:
@@ -1911,6 +1945,7 @@ def _stage_goal_transition(
         cursor["campaign_id"] = campaign.get("campaign_id")
         cursor["next_action"] = next_action
         cursor["updated_at_utc"] = goal["updated_at_utc"]
+        cursor["next_work_item"] = _next_work_pointer(next_work)
         yaml_updates[resume_cursor_path] = cursor
 
 

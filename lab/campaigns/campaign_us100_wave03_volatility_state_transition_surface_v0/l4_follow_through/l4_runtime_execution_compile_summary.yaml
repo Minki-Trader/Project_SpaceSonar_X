@@ -1,0 +1,99 @@
+version: wave03_l4_runtime_execution_compile_summary_v1
+summary_path: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
+created_at_utc: '2026-06-28T13:12:46Z'
+ea_source:
+  path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  sha256: ea1e6232876fd121f570b22e8c05f09b490ddd358e682cf1cb3e55fbdd832cc8
+  size_bytes: 50781
+  availability: present_hash_recorded
+ea_binary:
+  path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+  sha256: 8ccaae60ba7d1172d53824ebcfebbbe01388414bc9f42ebdba17feda819c759d
+  size_bytes: 46896
+  availability: local_binary_hash_recorded_ignored_by_git
+compile_attempted: false
+compile_process: null
+compile_log: null
+status: ea_binary_available
+claim_boundary: ea_compile_or_binary_preflight_only_not_strategy_tester_output
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+work_item_id: work_wave03_volatility_state_l4_runtime_execution_v0
+subwork_item_id: work_wave03_volatility_state_l4_strategy_tester_execution_v0
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+sweep_id: sweep_us100_wave03_compression_expansion_seed_v0
+surface_id: surface_us100_wave03_compression_expansion_decision_v0
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: ea_binary_preflight_recorded_for_l4_runtime_probe
+next_executable_action: continue running remaining prepared Wave03 L4 Strategy Tester
+  attempts
+experiment_or_boundary_effect: ea_compile_or_binary_preflight_recorded_without_runtime_or_economics_claim
+source_of_truth_paths:
+- foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- MetaEditor_compile_or_binary_preflight
+- writer_scope_contract_lint
+- machine_yaml_identity_lint
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_runtime_execution_progress_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T13:12:46Z'
+  missing_declared_outputs: []
+  claim_boundary: ea_compile_or_binary_preflight_only_not_strategy_tester_output
+  forbidden_claims_respected: true
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+unresolved_blockers_or_none: []
+next_action_or_reopen_condition: continue running remaining prepared Wave03 L4 Strategy
+  Tester attempts

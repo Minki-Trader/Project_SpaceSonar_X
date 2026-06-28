@@ -1,0 +1,50 @@
+version: ingredient_card_v1
+ingredient_card_id: ingredient_wave0_cell011_tradeability_l4_control_v0
+status: ingredient_ready_tradeability_runtime_score_control
+created_at_utc: '2026-06-28T17:26:54Z'
+source_campaign_ids:
+- campaign_us100_task_surface_scout_v0
+source_run_ids:
+- onnxlab_wave0_cell_011_surface_scout_v0
+source_clue_ids:
+- clue_wave0_tradeability_mid_horizon_v0
+source_negative_memory_ids: []
+source_divergence_ids: []
+material_type: preserved_l4_score_observed_tradeability_control
+axis_tags:
+- tradeability_or_no_trade_regime
+- horizon_6
+- causal_rolling_regime_context
+- abstain_capable_direction_agnostic_tradeability
+- l4_score_observed
+observed_pattern: Wave0 cell011 preserved a tradeability/no-trade clue with L4 score
+  telemetry but without decision-execution authority.
+salvage_value: Use as a no-trade/tradeability control ingredient when mixing against
+  Wave03 runtime failure.
+negative_memory: score telemetry alone is not a trading report, economics pass, L5
+  candidate, or baseline
+do_not_repeat: do_not_open_L5_or_economics_claim_from_non_trading_score_telemetry
+evidence_paths:
+- lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_011_l4_runtime_score_observed_v0.yaml
+evidence_hashes:
+  ? lab/campaigns/campaign_us100_task_surface_scout_v0/synthesis/ingredients/ingredient_wave0_cell_011_l4_runtime_score_observed_v0.yaml
+  : 6d677be35a7465963056adfd707e13fe7d1e1f871f88b77ecc6350d7b666ce9b
+selection_eligibility: eligible_for_mix_not_candidate
+ingredient_lifecycle:
+  synthesis_use_status: available_for_first_synthesis
+  consumed_by_synthesis_campaign_id: ''
+  consumed_by_mix_item_id: ''
+  carry_forward_from_synthesis_campaign_id: ''
+  reopened_ingredient_exception_reason: ''
+  raw_reuse_policy: forbidden_after_consumed_by_completed_synthesis_unless_carry_forward_or_reopened_exception
+forbidden_uses:
+- selected_baseline
+- next_wave_direction
+- repair_relabeling
+- economics_or_runtime_authority_claim
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/synthesis/ingredients/ingredient_wave0_cell011_tradeability_l4_control_v0.yaml
+  registry_rows:
+  - docs/registers/ingredient_card_registry.csv
+claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority
+next_action: combine_as_mix2_control_not_as_candidate

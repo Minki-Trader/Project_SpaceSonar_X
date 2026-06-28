@@ -1,0 +1,384 @@
+version: experiment_receipt_v2
+run_id: onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+  campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+  idea_id: idea_us100_wave03_intraday_volatility_state_transition_v0
+  hypothesis_id: hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+  surface_id: surface_us100_wave03_bounded_synthesis_special_mixing_v0
+  sweep_id: sweep_us100_wave03_bounded_synthesis_mix2_v0
+  run_id: onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0
+  artifact_ids: []
+  bundle_id: null
+  candidate_id: null
+skill_routing:
+  primary_family: model_training
+  primary_skill: spacesonar-model-validation
+  support_skills:
+  - spacesonar-data-integrity
+  - spacesonar-evidence-provenance
+  - spacesonar-runtime-evidence
+  skills_selected:
+  - spacesonar-model-validation
+  - spacesonar-data-integrity
+  - spacesonar-evidence-provenance
+  - spacesonar-runtime-evidence
+  required_gates:
+  - branch_worktree_fit
+  - time_axis_check
+  - feature_label_boundary_check
+  - split_boundary_check
+  - selection_bias_check
+  - run_manifest
+  - experiment_receipt
+  - storage_contract_check
+  - runtime_learning_probe_decision
+  - proxy_runtime_parity_decision
+  - final_claim_guard
+  - L4_split_runtime_probe_for_valid_proxy_run
+branch_worktree:
+  current_branch: main
+  requested_branch: main
+  branch_worktree_fit: fit
+  branch_action: keep_current_branch_main_user_override
+  policy_reference: docs/policies/branch_policy.md
+  mismatch_claim_effect: not_applicable
+provenance:
+  git_sha: 29b41ff0258b426e80371cc95dfce71099854855
+  branch: main
+  dirty_flag: dirty
+  changed_files:
+  - M AGENTS.md
+  - M docs/agent_control/operational_stability_kernel.yaml
+  - M docs/agent_control/work_family_registry.yaml
+  - M docs/agent_control/writer_scope_operating_contract.yaml
+  - M docs/policies/branch_policy.md
+  - M docs/policies/onnx_lab_operating_policy.md
+  - M docs/registers/artifact_registry.csv
+  - M docs/registers/campaign_registry.csv
+  - M docs/registers/candidate_registry.csv
+  - M docs/registers/experiment_surface_registry.csv
+  - M docs/registers/goal_registry.csv
+  - M docs/registers/hypothesis_registry.csv
+  - M docs/registers/idea_registry.csv
+  - M docs/registers/ingredient_card_registry.csv
+  - M docs/registers/negative_memory_registry.csv
+  - M docs/registers/run_registry.csv
+  - M docs/registers/sweep_registry.csv
+  - M docs/registers/synthesis_campaign_registry.csv
+  - M docs/registers/wave_registry.csv
+  - M docs/workspace/lab_profile.yaml
+  - M docs/workspace/workspace_state.yaml
+  - M foundation/evaluation/kpi_ledger_builder.py
+  - M foundation/evaluation/kpi_record_model.py
+  - M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  - M foundation/pipelines/run_wave0_l4_mt5_attempts.py
+  - M foundation/validation/machine_yaml_identity_lint.py
+  - M foundation/validation/writer_scope_contract_lint.py
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  - M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml
+  - M src/spacesonar/control_plane/lifecycle.py
+  - ?? foundation/features/wave03_volatility_state_features.py
+  - ?? foundation/labels/wave03_volatility_state_labels.py
+  - ?? foundation/pipelines/aggregate_wave03_volatility_state_l4_pair_judgments.py
+  - ?? foundation/pipelines/decide_wave03_volatility_state_l5_candidate_boundary.py
+  - ?? foundation/pipelines/decide_wave03_volatility_state_l5_routing.py
+  - ?? foundation/pipelines/materialize_wave03_bounded_synthesis_and_intent_parity_gate.py
+  - ?? foundation/pipelines/materialize_wave03_bounded_synthesis_mix2_specs.py
+  - ?? foundation/pipelines/materialize_wave03_volatility_state_l4_preflight.py
+  - ?? foundation/pipelines/prepare_wave03_volatility_state_l5_candidate_runtime_evidence.py
+  - ?? foundation/pipelines/repair_wave03_volatility_state_l4_portable_runtime.py
+  - ?? foundation/pipelines/run_wave03_bounded_synthesis_mix2_proxy_batch.py
+  - ?? foundation/pipelines/run_wave03_volatility_state_l4_mt5_attempts.py
+  - ?? foundation/pipelines/run_wave03_volatility_state_proxy_batch.py
+  - ?? lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/
+  - ?? lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/
+  - ?? lab/candidates/candidate_wave03_vst_cell_015_score_probe_l5_target_v0/
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/goal_operating_override_2026_06_29_v1.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_volatility_state_transition_campaign_spec.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_bounded_synthesis_and_intent_parity_gate_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_bounded_synthesis_special_mixing_mix2_spec_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_materialization_preflight_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_pair_judgment_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_portable_runtime_repair_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_strategy_tester_execution_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_boundary_decision_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_routing_decision_v0_closeout.yaml
+  - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_proxy_execution_v0_closeout.yaml
+  - ?? lab/hypotheses/hyp_us100_wave03_compression_expansion_reversal_continuation_v0.yaml
+  - ?? lab/hypotheses/idea_us100_wave03_intraday_volatility_state_transition_v0.yaml
+  - ?? lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+  - ?? lab/runs/onnxlab_wave03_mix2_cell_001_tradeability_gate_control_v0/
+  - ?? lab/runs/onnxlab_wave03_mix2_cell_002_tradeability_gate_longer_horizon_v0/
+  - ?? lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/
+  - ?? lab/runs/onnxlab_wave03_mix2_cell_004_drawdown_rebound_abstain_control_v0/
+  - ?? lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/
+  - ?? lab/runs/onnxlab_wave03_mix2_cell_006_session_gate_control_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_002_compression_reversal_h8_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_003_compression_continuation_h6_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_004_compression_continuation_h12_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_005_expansion_exhaustion_reversal_h8_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_006_expansion_exhaustion_reversal_h12_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_007_expansion_followthrough_h6_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_008_expansion_followthrough_h12_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_010_vol_state_tradeability_h12_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_012_range_expansion_adverse_h8_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_013_session_open_reversal_h6_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_014_session_open_continuation_h8_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_016_low_vol_false_break_h8_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_017_high_vol_mean_revert_h12_v0/
+  - ?? lab/runs/onnxlab_wave03_vst_cell_018_high_vol_momentum_h12_v0/
+  - ?? lab/surfaces/surface_us100_wave03_compression_expansion_decision_v0/
+  - ?? lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_identity_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_account_fixture_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_password_fixture_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_imported_session_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_login_fixture_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_repair_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_identity_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_session_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_validation_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_research_oos_v0/
+  - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_validation_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_001_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_002_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_003_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_004_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_005_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_006_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_007_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_008_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_009_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_010_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_011_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_012_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_014_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_015_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_016_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_017_l4_onnx_export_v0/
+  - ?? runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/
+  command_argv:
+  - foundation/pipelines/run_wave03_bounded_synthesis_mix2_proxy_batch.py
+  python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+  python_version: 3.13.9
+  key_package_versions:
+    python: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    numpy: 2.3.4
+    pandas: 2.3.3
+    sklearn: 1.8.0
+    yaml: 6.0.3
+  started_at_utc: '2026-06-28T17:49:30.859835Z'
+  ended_at_utc: '2026-06-28T17:49:35.858332Z'
+  input_hashes:
+  - path: lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml
+    sha256: 915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c
+    size_bytes: 4857
+    availability: present_hash_recorded
+  - path: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/run_specs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0.yaml
+    sha256: 2785eefeb276e27f547e2bea62cbdbdeecc5716f88eebbec7f7122371cb8ad95
+    size_bytes: 3230
+    availability: present_hash_recorded
+  output_hashes:
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/feature_schema.json
+    sha256: 9ef5eac3b0c13a37174da916aa174224e15240e232e704e95a4892147edf1905
+    size_bytes: 2550
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/label_schema.json
+    sha256: a7afc34bce1238cd93900875538dd129dab0bd4fe13a1a86bfc3cb062a3b13b6
+    size_bytes: 760
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/model_summary.json
+    sha256: fedb74561b4a206dffdd1b9d1c79b665c16d5f2b1d98068e0445e7e1d491c913
+    size_bytes: 826
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/split_profile.json
+    sha256: e0b2e09d794c86b82d5f2ade0ea15cd73204c763fe308c120b46978444be5641
+    size_bytes: 247
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/prediction_sample_validation.csv
+    sha256: 7df6e2950a68c2d944875416f12f045bcff73552f0ac1af1053e0c236771e2e1
+    size_bytes: 22042
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/prediction_sample_research_oos_a.csv
+    sha256: c9968368b6ee21cd8e8f03be4839b720bf34fb2bb63614c41bc6966fab68f830
+    size_bytes: 22886
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/proxy_decision_stream_validation.csv
+    sha256: d81579a82a94ce1a167435e0a73c477cc40bf4faab525dbcd4ef7c8accb87058
+    size_bytes: 6434334
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifacts/proxy_decision_stream_research_oos_a.csv
+    sha256: 24a9a69295d779f2efe91a0d6b52f563c781834622177f54e9d2f8e8e4a47cf4
+    size_bytes: 5528788
+    availability: local_generated_hash_recorded_not_committed
+  - path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/reports/proxy_volatility_state_report.json
+    sha256: 3ba986591081dd072af23d525ec2d3a073dbfff5393da2143ecb5b307514bedf
+    size_bytes: 6176
+    availability: local_generated_hash_recorded_not_committed
+  dirty_worktree_claim_effect: proxy_observation_only_no_candidate_bundle_runtime_authority_economics_or_goal_achieve_claim
+storage_contract:
+  source_of_truth: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/run_manifest.json
+  receipt: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/experiment_receipt.yaml
+  lineage: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifact_lineage.json
+  metrics: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/metrics.json
+  durable_identity_policy: repo_relative_paths_plus_hashes
+runtime_learning_probe_decision:
+  required: true
+  decision: run_required_next
+  target_level: L4_split_runtime_probe
+  runtime_period_profile_id: period_profile_split_set_v0
+  required_period_roles:
+  - validation
+  - research_oos
+  lowered_claim_if_not_run: proxy_observation_only_no_runtime_authority_no_economics_pass_no_candidate
+  follow_up_work_item_id: work_wave03_bounded_synthesis_special_mixing_mix2_l4_materialization_preflight_v0
+  run_id: onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0
+proxy_runtime_parity:
+  shared_contract: US100_M5_closed_bar_wave03_volatility_state_score_and_reversal_continuation_semantics
+  decision_recipe_id: decision_wave03_mix2_adverse_move_abstain_h6_v0
+  known_differences:
+  - proxy uses gross future return labels without spread, fill, slippage, swap, or
+    execution timing
+  - MT5 follow-through must implement side, abstain, timeout, and volatility/session
+    state gates before runtime authority can be discussed
+  minimum_reconciliation_attempt:
+    required: true
+    status: pending_L4_materialization
+  comparison_class: pending_L4
+  claim_boundary: proxy_runtime_parity_tracking_only_no_runtime_authority
+  follow_up_action: work_wave03_bounded_synthesis_special_mixing_mix2_l4_materialization_preflight_v0
+required_gate_coverage:
+  passed:
+  - branch_worktree_fit
+  - time_axis_check
+  - feature_label_boundary_check
+  - split_boundary_check
+  - selection_bias_check
+  - run_manifest
+  - experiment_receipt
+  - storage_contract_check
+  - runtime_learning_probe_decision
+  - proxy_runtime_parity_decision
+  - final_claim_guard
+  missing:
+  - L4_split_runtime_probe_for_valid_proxy_run
+  not_applicable:
+  - locked_final_oos_access
+result_judgment: preserved_clue
+model_validation:
+  model_family:
+    model_recipe_id: model_wave03_logistic_transition_v0
+    proxy_model_family: logistic_or_linear_rank_scout
+    training_script: foundation/pipelines/run_wave03_bounded_synthesis_mix2_proxy_batch.py
+  target_and_label:
+    label_recipe_id: label_wave03_range_expansion_adverse_move_h6_v0
+    target_name: target_binary_raw
+    target_threshold: null
+  split_method: split_set_v0_train_validation_research_oos_a_locked_final_oos_b_withheld
+  selection_metric: none_selected_broad_proxy_observation
+  secondary_metrics:
+  - roc_auc
+  - average_precision
+  - balanced_accuracy
+  - gross_proxy_profit_factor
+  - trade_count
+  threshold_policy: train_quantile_score_thresholds_for_proxy_decision_only
+  overfit_risk: broad_surface_multiple_testing_risk_no_selection_allowed
+  calibration_risk: scores_are_rank_or_classifier_outputs_not_calibrated_probabilities
+  top_n_selection_bias_check: no_top_n_selection_or_baseline_promotion
+  threshold_knife_edge_check: thresholds_recorded_for_L4_follow_through_not_used_for_selection
+  segment_or_regime_stability_check: validation_and_research_oos_a_recorded_separately
+  trade_concentration_check: trade_count_and_density_recorded_no_economics_claim
+  wfo_or_window_dispersion: split_set_v0_primary_windows_only_WFO_missing_claim_lowered
+  proxy_runtime_laundering_check: proxy_only_L4_required_no_runtime_authority
+  risk_stop_check: runtime_stop_hold_execution_missing_until_L4
+  comparison_baseline:
+  - no_trade_baseline_reference_only
+  - Wave02_negative_memory_reference_only_no_inheritance
+  anti_authority_laundering_judgment: exploratory_proxy_observation_only
+  decision_recipe_id: decision_wave03_mix2_adverse_move_abstain_h6_v0
+  validation_judgment: preserved_clue
+missing_evidence:
+- ONNX_export_not_materialized_for_L4_yet
+- MT5_L4_split_runtime_probe_not_run_yet
+- candidate_selection_forbidden_before_L4
+claim_boundary: wave03_bounded_synthesis_mix2_proxy_observation_l4_required_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave03_bounded_synthesis_special_mixing_mix2_l4_materialization_preflight_v0
+evidence_path: lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/reports/proxy_volatility_state_report.json
+notes: Wave03 proxy observation only; L4 follow-through required before runtime claims.
+hypothesis: Wave03 volatility compression and expansion states may expose runtime-testable
+  reversal or continuation windows.
+decision_use: decision_wave03_mix2_adverse_move_abstain_h6_v0
+sample_scope:
+  raw_rows: 308002
+  train_label_eligible_rows: 75938
+  validation_label_eligible_rows: 27658
+  research_oos_a_label_eligible_rows: 23359
+  locked_final_oos_b_withheld_rows: 19489
+  locked_final_oos_b_use: withheld_not_used
+evidence_plan:
+- lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/run_manifest.json
+- lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/experiment_receipt.yaml
+- lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/artifact_lineage.json
+- lab/runs/onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0/metrics.json
+- repo_relative_paths_plus_hashes

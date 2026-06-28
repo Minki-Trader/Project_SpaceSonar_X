@@ -823,11 +823,14 @@ def runtime_contract_value(
     routing = manifest.get("runtime_probe_routing") or {}
     period_identity = manifest.get("period_identity") or {}
     execution_identity = manifest.get("execution_identity") or {}
+    tester_identity = manifest.get("tester_identity") or {}
     for value in [
         period_identity.get(key),
         *(period_identity.get(item) for item in contract_keys),
         execution_identity.get(key),
         *(execution_identity.get(item) for item in contract_keys),
+        tester_identity.get(key),
+        *(tester_identity.get(item) for item in contract_keys),
         row.get(key),
         manifest.get(key),
         runtime_contract.get(key),

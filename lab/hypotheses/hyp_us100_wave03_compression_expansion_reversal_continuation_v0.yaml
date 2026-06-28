@@ -1,0 +1,19 @@
+version: hypothesis_record_v1
+hypothesis_id: hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+idea_id: idea_us100_wave03_intraday_volatility_state_transition_v0
+status: campaign_opened
+hypothesis: 'Intraday volatility compression, expansion, and exhaustion states can
+  expose US100 M5 reversal or continuation windows that are more stable than prior
+  tradeability repair cells because the label, feature, decision, and holding surfaces
+  all describe the same transition event.
+
+  '
+decision_use: reversal_continuation_abstain_gate
+comparison_baseline:
+- no_trade_baseline_named_only_not_selected
+- within_campaign_axis_controls_only
+- Wave02 negative and clue records used as prevention memory only
+claim_boundary: wave03_campaign_open_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+evidence_path: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_manifest.yaml
+next_action: materialize_wave03_volatility_state_transition_proxy_specs
+notes: Hypothesis opened by lifecycle engine.

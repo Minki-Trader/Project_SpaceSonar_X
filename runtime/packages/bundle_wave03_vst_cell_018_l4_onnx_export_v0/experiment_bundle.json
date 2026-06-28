@@ -1,0 +1,352 @@
+{
+  "version": "experiment_bundle_v3",
+  "bundle_id": "bundle_wave03_vst_cell_018_l4_onnx_export_v0",
+  "run_id": "onnxlab_wave03_vst_cell_018_high_vol_momentum_h12_v0",
+  "active_goal_id": "goal_us100_onnx_forward_boundary_v0",
+  "campaign_id": "campaign_us100_wave03_volatility_state_transition_surface_v0",
+  "surface_id": "surface_us100_wave03_compression_expansion_decision_v0",
+  "sweep_id": "sweep_us100_wave03_compression_expansion_seed_v0",
+  "source_of_truth": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/experiment_bundle.json",
+  "created_at_utc": "2026-06-28T12:25:18Z",
+  "status": "onnx_exported_python_onnxruntime_parity_recorded",
+  "claim_boundary": "wave03_l4_onnx_bundle_preflight_python_parity_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve",
+  "id_chain": {
+    "goal_id": "goal_us100_onnx_forward_boundary_v0",
+    "wave_id": "wave_us100_wave03_volatility_state_transition_surface_v0",
+    "campaign_id": "campaign_us100_wave03_volatility_state_transition_surface_v0",
+    "idea_id": "idea_us100_wave03_intraday_volatility_state_transition_v0",
+    "hypothesis_id": "hyp_us100_wave03_compression_expansion_reversal_continuation_v0",
+    "surface_id": "surface_us100_wave03_compression_expansion_decision_v0",
+    "sweep_id": "sweep_us100_wave03_compression_expansion_seed_v0",
+    "artifact_ids": [],
+    "bundle_id": "bundle_wave03_vst_cell_018_l4_onnx_export_v0",
+    "candidate_id": null,
+    "cell_id": "wave03_vst_cell_018"
+  },
+  "feature_recipe_id": "feature_wave03_multiscale_compression_release_v0",
+  "feature_schema_hash": "d31f44d918cf2a2a00571b94e49dd7d7e7382ab16b02cc4a881b749d86c2265d",
+  "feature_order_hash": "db4a9ac4468e0f24f3a350029d7f2b84dce481dee6ca038f751a724d15a14298",
+  "feature_schema_contract": {
+    "input_family": "feature_wave03_multiscale_compression_release_v0",
+    "feature_count": 49,
+    "feature_columns": [
+      "ret_1",
+      "ret_3",
+      "path_efficiency_3",
+      "path_abs_ret_mean_3",
+      "ret_6",
+      "path_efficiency_6",
+      "path_abs_ret_mean_6",
+      "ret_8",
+      "path_efficiency_8",
+      "path_abs_ret_mean_8",
+      "ret_12",
+      "path_efficiency_12",
+      "path_abs_ret_mean_12",
+      "ret_24",
+      "path_efficiency_24",
+      "path_abs_ret_mean_24",
+      "ret_48",
+      "path_efficiency_48",
+      "path_abs_ret_mean_48",
+      "ret_96",
+      "path_efficiency_96",
+      "path_abs_ret_mean_96",
+      "range_pct",
+      "range_body_pct",
+      "range_upper_wick_pct",
+      "range_lower_wick_pct",
+      "range_mean_12",
+      "range_std_12",
+      "range_rank_12",
+      "range_mean_48",
+      "range_std_48",
+      "range_rank_48",
+      "range_mean_144",
+      "range_std_144",
+      "range_rank_144",
+      "range_mean_288",
+      "range_std_288",
+      "range_rank_288",
+      "compression_range_6_vs_48",
+      "compression_range_12_vs_48",
+      "compression_range_48_vs_144",
+      "compression_atr_12_vs_48",
+      "compression_atr_48_vs_144",
+      "position_close_in_48_range",
+      "position_close_in_144_range",
+      "breakout_up_48",
+      "breakout_down_48",
+      "breakout_up_144",
+      "breakout_down_144"
+    ],
+    "feature_order_hash": "db4a9ac4468e0f24f3a350029d7f2b84dce481dee6ca038f751a724d15a14298",
+    "boundary": "right_aligned_US100_M5_closed_bar_wave03_volatility_state_features",
+    "feature_count_policy": "variable_declared_per_run_no_fixed_count"
+  },
+  "label_recipe_id": "label_wave03_high_vol_momentum_h12_v0",
+  "label_schema_hash": "114f8a857951db07b650571ff9880399bc393e59c02232208fe4679f97f4747b",
+  "target_and_label": {
+    "label_surface": "label_wave03_high_vol_momentum_h12_v0",
+    "target_name": "target_binary_raw",
+    "target_threshold": null,
+    "target_threshold_fit_scope": "not_applicable",
+    "label_boundary": "same_split_role_horizon_ok_rows_only"
+  },
+  "task_surface_id": "surface_us100_wave03_compression_expansion_decision_v0",
+  "decision_recipe_id": "decision_wave03_continuation_abstain_timeout_h12_v0",
+  "decision_surface": {
+    "proxy_decision_recipe_id": "decision_wave03_continuation_abstain_timeout_h12_v0",
+    "decision_family": "volatility_state_reversal_continuation_score_probe",
+    "holding_policy": "not_executed_score_telemetry_only",
+    "risk_policy": "fixed_lot_recorded_but_EA_non_trading",
+    "threshold_policy": "train_quantile_proxy_threshold",
+    "score_low_threshold": 0.381198345501634,
+    "score_high_threshold": 0.4703621183228893,
+    "runtime_translation_status": "score_probe_preflight_direction_and_trade_execution_pending"
+  },
+  "model_family": "tree_or_boosted_onnx_feasible_scout",
+  "model_task": "wave03_volatility_state_classification",
+  "model_framework": "sklearn_pipeline_skl2onnx",
+  "model_training": {
+    "fit_scope": "train_only",
+    "preprocessing_fit_scope": "train_only",
+    "calibration": "none",
+    "selection_metric": "none_selected_materialization_follows_existing_proxy_run",
+    "overfit_risk": "broad_surface_multiple_testing_risk_no_selection_allowed"
+  },
+  "input_schema": {
+    "input_name": "features",
+    "dtype": "float32",
+    "shape": [
+      null,
+      49
+    ],
+    "feature_order_hash": "db4a9ac4468e0f24f3a350029d7f2b84dce481dee6ca038f751a724d15a14298",
+    "feature_columns": [
+      "ret_1",
+      "ret_3",
+      "path_efficiency_3",
+      "path_abs_ret_mean_3",
+      "ret_6",
+      "path_efficiency_6",
+      "path_abs_ret_mean_6",
+      "ret_8",
+      "path_efficiency_8",
+      "path_abs_ret_mean_8",
+      "ret_12",
+      "path_efficiency_12",
+      "path_abs_ret_mean_12",
+      "ret_24",
+      "path_efficiency_24",
+      "path_abs_ret_mean_24",
+      "ret_48",
+      "path_efficiency_48",
+      "path_abs_ret_mean_48",
+      "ret_96",
+      "path_efficiency_96",
+      "path_abs_ret_mean_96",
+      "range_pct",
+      "range_body_pct",
+      "range_upper_wick_pct",
+      "range_lower_wick_pct",
+      "range_mean_12",
+      "range_std_12",
+      "range_rank_12",
+      "range_mean_48",
+      "range_std_48",
+      "range_rank_48",
+      "range_mean_144",
+      "range_std_144",
+      "range_rank_144",
+      "range_mean_288",
+      "range_std_288",
+      "range_rank_288",
+      "compression_range_6_vs_48",
+      "compression_range_12_vs_48",
+      "compression_range_48_vs_144",
+      "compression_atr_12_vs_48",
+      "compression_atr_48_vs_144",
+      "position_close_in_48_range",
+      "position_close_in_144_range",
+      "breakout_up_48",
+      "breakout_down_48",
+      "breakout_up_144",
+      "breakout_down_144"
+    ]
+  },
+  "output_schema": {
+    "task_kind": "classification",
+    "score_semantics": "class_1_probability",
+    "onnx_outputs": [
+      "score"
+    ],
+    "score_extraction": "score.reshape(-1)",
+    "probability_calibration_claim": false,
+    "mt5_output_contract": "single_float_score_vector_shape_1_for_single_row_inference"
+  },
+  "onnx_path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/model.onnx",
+  "onnx_sha256": "9e59e10c7e3dc771a96b956e3eee6624ce8f6952d77b9fd1e12f2c09f1cbb048",
+  "onnx_size_bytes": 75374,
+  "onnx_adapter_ids": [
+    "skl2onnx_hgb_numpy_scalar_cast_v0",
+    "onnx_single_score_output_v0"
+  ],
+  "common_files_transport": {
+    "model": {
+      "common_relative_path": "SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_018_l4_onnx_export_v0\\model.onnx",
+      "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_018_l4_onnx_export_v0\\model.onnx",
+      "sha256": "9e59e10c7e3dc771a96b956e3eee6624ce8f6952d77b9fd1e12f2c09f1cbb048",
+      "size_bytes": 75374,
+      "availability": "copied_to_mt5_common_files"
+    },
+    "feature_columns": {
+      "common_relative_path": "SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_018_l4_onnx_export_v0\\feature_columns.txt",
+      "redacted_absolute_path": "${MT5_COMMONDATA}\\Files\\SpaceSonar\\wave03_volatility_state_l4_score_probe\\bundle_wave03_vst_cell_018_l4_onnx_export_v0\\feature_columns.txt",
+      "sha256": "275cfed6613f720abc975af439527d4c72eed126be76b3a1db53d8049c99e25a",
+      "size_bytes": 815,
+      "availability": "copied_to_mt5_common_files"
+    }
+  },
+  "runtime_contract_version": "mt5_runtime_probe_contract_v2",
+  "runtime_period_profile_id": "period_profile_split_set_v0",
+  "runtime_period_set_id": "split_base_anchor_v0_research_l4",
+  "tester_execution_profile_id": "us100_m5_fpmarkets_tester_execution_v0",
+  "python_onnxruntime_parity": {
+    "status": "passed",
+    "sample_scope": "first_validation_rows_after_train_only_fit",
+    "sample_rows": 512,
+    "max_abs_error": 8.257545275336398e-08,
+    "mean_abs_error": 2.0151846937899523e-08,
+    "tolerance": 1e-05,
+    "fixture_input": {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/parity_fixture_input.csv",
+      "sha256": "8864caacc1a61c21d4117e75f2036e01e157a967f0391028bb4ae25aef4a567d",
+      "size_bytes": 303725,
+      "availability": "local_artifact_hash_recorded"
+    },
+    "expected_score": {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/parity_expected_score.csv",
+      "sha256": "bfbd713146985b6953fd158944c790363eeefb5cebbafeeea3a646a43a06f0e1",
+      "size_bytes": 9932,
+      "availability": "local_artifact_hash_recorded"
+    },
+    "observed_score": {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/parity_onnxruntime_score.csv",
+      "sha256": "0aa12f40acd2c89e3f03992555861ad1cbbc7cc8bbe097aa886b3a803279c66c",
+      "size_bytes": 5464,
+      "availability": "local_artifact_hash_recorded"
+    }
+  },
+  "runtime_learning_probe_decision": {
+    "required": true,
+    "decision": "run_required_next",
+    "required_runtime_level": "L4_split_runtime_probe",
+    "reason": "Valid Wave03 proxy/model-bearing run has ONNX bundle preflight; MT5 L4 terminal execution remains required.",
+    "period_profile_id": "period_profile_split_set_v0",
+    "runtime_period_set_id": "split_base_anchor_v0_research_l4",
+    "required_period_roles": [
+      "validation",
+      "research_oos"
+    ],
+    "l5_rule": "If L4_split_runtime_probe remains promising under the declared surface, continue to L5_candidate_runtime_evidence with candidate-specific manifests.",
+    "lowered_claim_if_not_run": "bundle_preflight_only_no_runtime_authority_no_economics_pass_no_candidate"
+  },
+  "proxy_runtime_parity": {
+    "status": "pending_L4_strategy_tester",
+    "shared_contract": [
+      "US100_M5_closed_bar_base_frame",
+      "feature_order_hash",
+      "single_score_output",
+      "period_profile_split_set_v0",
+      "us100_m5_fpmarkets_tester_execution_v0"
+    ],
+    "known_differences": [
+      "Python proxy row membership uses exported MT5 history; EA reconstructs features from Strategy Tester closed bars.",
+      "Wave03 proxy decision recipes include reversal/continuation semantics; this L4 score probe records non-trading score telemetry only.",
+      "Strategy Tester spread/tick availability can differ from exported proxy data.",
+      "Economics and live-like execution remain forbidden until a trading decision EA and terminal evidence exist."
+    ],
+    "interpretation_drift_risks": [
+      "bar_close_timing",
+      "feature_reconstruction_in_EA",
+      "spread_field_semantics",
+      "score_threshold_translation",
+      "side_label_not_available_to_score_only_EA",
+      "non_trading_score_observation_vs_trade_execution"
+    ],
+    "minimum_reconciliation_attempt": {
+      "required": true,
+      "status": "pending_terminal_execution",
+      "forced_equality_required": false,
+      "next_action": "work_wave03_volatility_state_l4_runtime_execution_v0"
+    },
+    "unit_semantics": {
+      "features": "float32 closed-bar values in bundle feature order",
+      "score": "single model score from sklearn-to-ONNX adapter",
+      "price_units": "MT5 price values from MqlRates",
+      "spread": "MqlRates.spread raw points scaled only where feature contract says spread_scaled",
+      "lot": "fixed_lot_profile_recorded_but_EA_non_trading"
+    },
+    "comparison_class": "pending_L4_terminal_execution",
+    "divergence_judgment": "not_evaluated_until_MT5_score_telemetry_exists",
+    "prevention_memory": [
+      "Do not infer reversal/continuation trade economics from non-trading score telemetry.",
+      "Use Common Files feature_columns.txt transport for long Wave03 feature lists.",
+      "Do not treat prepared tester configs as completed L4 evidence."
+    ],
+    "follow_up_action": "work_wave03_volatility_state_l4_runtime_execution_v0",
+    "claim_boundary": "proxy_runtime_parity_tracking_only_no_runtime_authority"
+  },
+  "artifacts": [
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/model.onnx",
+      "sha256": "9e59e10c7e3dc771a96b956e3eee6624ce8f6952d77b9fd1e12f2c09f1cbb048",
+      "size_bytes": 75374,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/feature_columns.txt",
+      "sha256": "275cfed6613f720abc975af439527d4c72eed126be76b3a1db53d8049c99e25a",
+      "size_bytes": 815,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/feature_schema.json",
+      "sha256": "b46b056db61547ca69ef2b2ebf3fa0edca58fa31ef503a48475772cc4585a551",
+      "size_bytes": 2818,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/label_schema.json",
+      "sha256": "1d978e9ab4dc472c463cce1a44b795adfc12401919cc92d20156ef5feb158b02",
+      "size_bytes": 739,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/model_summary.json",
+      "sha256": "31e8373b7874eeb75f4e8804d820c0157a551854715cc4e90ce4342321f62807",
+      "size_bytes": 890,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/artifacts/split_profile.json",
+      "sha256": "cbcdf73103982fe4c3f35fe88c80df0c89f41f40bfe201a6d25b4a94c22709f8",
+      "size_bytes": 261,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "forbidden_claims": [
+    "selected_baseline",
+    "operating_reference",
+    "operating_promotion",
+    "runtime_authority",
+    "economics_pass",
+    "materialization_ready",
+    "handoff_complete",
+    "live_readiness",
+    "reviewed_verified_pass",
+    "goal_achieve"
+  ],
+  "next_action": "work_wave03_volatility_state_l4_runtime_execution_v0"
+}

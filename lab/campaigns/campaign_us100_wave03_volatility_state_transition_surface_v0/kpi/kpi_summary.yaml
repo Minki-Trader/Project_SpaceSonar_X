@@ -1,0 +1,406 @@
+version: kpi_summary_v1
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+stage_kind: campaign
+synthesis_stage_id: ''
+created_at_utc: '2026-06-28T16:39:59Z'
+record_counts:
+  proxy_kpi_records: 18
+  mt5_runtime_kpi_records: 58
+  proxy_mt5_comparison_records: 5
+proxy_run_count: 18
+mt5_attempt_count: 2
+mt5_surface_kind_counts:
+  decision_execution: 2
+trade_execution_attempt_count: 2
+comparison_pair_count: 1
+sample_record_ids:
+  proxy:
+  - proxy_onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_002_compression_reversal_h8_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_003_compression_continuation_h6_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_004_compression_continuation_h12_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_005_expansion_exhaustion_reversal_h8_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_006_expansion_exhaustion_reversal_h12_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_007_expansion_followthrough_h6_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_008_expansion_followthrough_h12_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_010_vol_state_tradeability_h12_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_012_range_expansion_adverse_h8_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_013_session_open_reversal_h6_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_014_session_open_continuation_h8_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_016_low_vol_false_break_h8_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_017_high_vol_mean_revert_h12_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_vst_cell_018_high_vol_momentum_h12_v0_proxy_validation_roc_auc_v1
+  mt5_runtime_trade_execution:
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_runtime_surface_kind_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_row_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_open_action_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_close_action_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_open_failed_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_long_signal_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_short_signal_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_flat_signal_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_no_trade_flat_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_hold_same_direction_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_execution_skip_spread_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_bars_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_ticks_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_total_net_profit_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_gross_profit_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_gross_loss_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_profit_factor_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_expected_payoff_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_recovery_factor_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_sharpe_ratio_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_total_trades_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_balance_drawdown_maximal_amount_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_balance_drawdown_maximal_pct_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_equity_drawdown_maximal_amount_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_equity_drawdown_maximal_pct_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_correlation_profits_mfe_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_correlation_profits_mae_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_tester_report_correlation_mfe_mae_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0_mt5_trade_shape_closed_trade_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_runtime_surface_kind_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_row_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_open_action_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_close_action_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_open_failed_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_long_signal_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_short_signal_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_flat_signal_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_no_trade_flat_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_hold_same_direction_count_v1
+  - mt5_attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0_mt5_execution_skip_spread_count_v1
+  proxy_mt5_comparison:
+  - comparison_onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0_comparison_proxy_mt5_gap_class_v1
+  - comparison_onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0_comparison_proxy_mt5_total_trades_sum_v1
+  - comparison_onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0_comparison_proxy_mt5_open_action_count_sum_v1
+  - comparison_onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0_comparison_proxy_mt5_profit_factor_min_v1
+  - comparison_onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0_comparison_proxy_mt5_profit_factor_max_v1
+authority_counts:
+  absence_recorded_by_attempt_manifest: 22
+  campaign_kpi_projection: 5
+  mt5_attempt_manifest: 2
+  mt5_tester_report_receipt: 34
+  proxy_metrics_json: 18
+missing_value_reason_counts:
+  runtime_probe_incomplete: 20
+  trade_shape_telemetry_not_instrumented: 2
+segment_materialization_sources:
+  attempt_count: 2
+  raw_telemetry_available_attempt_count: 0
+  raw_telemetry_missing_attempt_ids:
+  - attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0
+  - attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0
+  attempt_sources: []
+  time_window_counts: {}
+  session_counts: {}
+  score_or_threshold_bucket_counts: {}
+  direction_counts: {}
+  action_counts: {}
+  session_bucket_policy: mt5_server_hour_quadrants_not_exchange_session_claim
+  score_bucket_policy: attempt_thresholds_when_available_else_fixed_terciles
+  claim_boundary: segment_materialization_counts_only_no_runtime_authority_no_economics_pass
+segment_coverage:
+  required_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  optional_axes:
+  - volatility_regime
+  - drawdown_cluster
+  - holding_period_bucket
+  - feature_family
+  - target_family
+  - model_family
+  - spread_or_cost_bucket
+  covered_axes:
+  - direction
+  - overall
+  - period_role
+  - runtime_surface
+  - score_or_threshold_bucket
+  - session
+  - time_window
+  - trade_shape_bucket
+  missing_axes: []
+  materialized_axes:
+  - overall
+  - period_role
+  - runtime_surface
+  partial_materialized_axes:
+  - trade_shape_bucket
+  not_collected_axes:
+  - direction
+  - score_or_threshold_bucket
+  - session
+  - time_window
+  pending_materialization_axes:
+  - direction
+  - score_or_threshold_bucket
+  - session
+  - time_window
+  claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
+segment_breakdowns:
+  overall:
+    status: observed
+    analysis_status: materialized
+    record_count: 81
+    proxy_record_count: 18
+    mt5_runtime_record_count: 58
+    comparison_record_count: 5
+    metric_basis:
+    - comparison.proxy_mt5.gap_class
+    - comparison.proxy_mt5.open_action_count_sum
+    - comparison.proxy_mt5.profit_factor_max
+    - comparison.proxy_mt5.profit_factor_min
+    - comparison.proxy_mt5.total_trades_sum
+    - mt5.execution.close_action_count
+    - mt5.execution.flat_signal_count
+    - mt5.execution.hold_same_direction_count
+    - mt5.execution.long_signal_count
+    - mt5.execution.no_trade_flat_count
+    - mt5.execution.open_action_count
+    - mt5.execution.open_failed_count
+    - mt5.execution.row_count
+    - mt5.execution.short_signal_count
+    - mt5.execution.skip_spread_count
+    - mt5.runtime.surface_kind
+    - mt5.tester_report.balance_drawdown_maximal_amount
+    - mt5.tester_report.balance_drawdown_maximal_pct
+    - mt5.tester_report.bars
+    - mt5.tester_report.correlation_mfe_mae
+    - mt5.tester_report.correlation_profits_mae
+    - mt5.tester_report.correlation_profits_mfe
+    - mt5.tester_report.equity_drawdown_maximal_amount
+    - mt5.tester_report.equity_drawdown_maximal_pct
+    - mt5.tester_report.expected_payoff
+    - mt5.tester_report.gross_loss
+    - mt5.tester_report.gross_profit
+    - mt5.tester_report.profit_factor
+    - mt5.tester_report.recovery_factor
+    - mt5.tester_report.sharpe_ratio
+    - mt5.tester_report.ticks
+    - mt5.tester_report.total_net_profit
+    - mt5.tester_report.total_trades
+    - mt5.trade_shape.closed_trade_count
+    - proxy.validation.roc_auc
+    claim_effect: segment_breakdown_learning_only_no_selection_or_pass_claim
+  period_role:
+    status: observed
+    analysis_status: materialized
+    claim_effect: segment_breakdown_learning_only_no_selection_or_pass_claim
+    counts:
+      research_oos: 29
+      validation: 47
+      validation_research_oos_pair: 5
+    metric_basis_by_period_role:
+      research_oos:
+      - mt5.execution.close_action_count
+      - mt5.execution.flat_signal_count
+      - mt5.execution.hold_same_direction_count
+      - mt5.execution.long_signal_count
+      - mt5.execution.no_trade_flat_count
+      - mt5.execution.open_action_count
+      - mt5.execution.open_failed_count
+      - mt5.execution.row_count
+      - mt5.execution.short_signal_count
+      - mt5.execution.skip_spread_count
+      - mt5.runtime.surface_kind
+      - mt5.tester_report.balance_drawdown_maximal_amount
+      - mt5.tester_report.balance_drawdown_maximal_pct
+      - mt5.tester_report.bars
+      - mt5.tester_report.correlation_mfe_mae
+      - mt5.tester_report.correlation_profits_mae
+      - mt5.tester_report.correlation_profits_mfe
+      - mt5.tester_report.equity_drawdown_maximal_amount
+      - mt5.tester_report.equity_drawdown_maximal_pct
+      - mt5.tester_report.expected_payoff
+      - mt5.tester_report.gross_loss
+      - mt5.tester_report.gross_profit
+      - mt5.tester_report.profit_factor
+      - mt5.tester_report.recovery_factor
+      - mt5.tester_report.sharpe_ratio
+      - mt5.tester_report.ticks
+      - mt5.tester_report.total_net_profit
+      - mt5.tester_report.total_trades
+      - mt5.trade_shape.closed_trade_count
+      validation:
+      - mt5.execution.close_action_count
+      - mt5.execution.flat_signal_count
+      - mt5.execution.hold_same_direction_count
+      - mt5.execution.long_signal_count
+      - mt5.execution.no_trade_flat_count
+      - mt5.execution.open_action_count
+      - mt5.execution.open_failed_count
+      - mt5.execution.row_count
+      - mt5.execution.short_signal_count
+      - mt5.execution.skip_spread_count
+      - mt5.runtime.surface_kind
+      - mt5.tester_report.balance_drawdown_maximal_amount
+      - mt5.tester_report.balance_drawdown_maximal_pct
+      - mt5.tester_report.bars
+      - mt5.tester_report.correlation_mfe_mae
+      - mt5.tester_report.correlation_profits_mae
+      - mt5.tester_report.correlation_profits_mfe
+      - mt5.tester_report.equity_drawdown_maximal_amount
+      - mt5.tester_report.equity_drawdown_maximal_pct
+      - mt5.tester_report.expected_payoff
+      - mt5.tester_report.gross_loss
+      - mt5.tester_report.gross_profit
+      - mt5.tester_report.profit_factor
+      - mt5.tester_report.recovery_factor
+      - mt5.tester_report.sharpe_ratio
+      - mt5.tester_report.ticks
+      - mt5.tester_report.total_net_profit
+      - mt5.tester_report.total_trades
+      - mt5.trade_shape.closed_trade_count
+      - proxy.validation.roc_auc
+      validation_research_oos_pair:
+      - comparison.proxy_mt5.gap_class
+      - comparison.proxy_mt5.open_action_count_sum
+      - comparison.proxy_mt5.profit_factor_max
+      - comparison.proxy_mt5.profit_factor_min
+      - comparison.proxy_mt5.total_trades_sum
+  time_window:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: time_window_bucket_not_materialized_in_kpi_records_yet
+    next_materialization_step: project attempt period identity and telemetry timestamps
+      into stable time_window buckets
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    counts: {}
+    raw_telemetry_available_attempt_count: 0
+    expected_sources:
+    - period_profile
+    - attempt_period_identity
+    - runtime_telemetry_time_bucket
+  session:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: session_bucket_not_materialized_in_kpi_records_yet
+    next_materialization_step: map US100 bar close timestamps to declared session
+      buckets
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    counts: {}
+    session_bucket_policy: mt5_server_hour_quadrants_not_exchange_session_claim
+    expected_sources:
+    - MT5 server bar close time
+  direction:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: direction_signal_counts_not_available
+    next_materialization_step: emit long/short/flat signal counts in execution telemetry
+      summary
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    signal_counts:
+      long: 0
+      short: 0
+      flat: 0
+    trade_shape_pnl_by_direction: {}
+    metric_basis:
+    - mt5.execution.close_action_count
+    - mt5.execution.flat_signal_count
+    - mt5.execution.hold_same_direction_count
+    - mt5.execution.long_signal_count
+    - mt5.execution.no_trade_flat_count
+    - mt5.execution.open_action_count
+    - mt5.execution.open_failed_count
+    - mt5.execution.row_count
+    - mt5.execution.short_signal_count
+    - mt5.execution.skip_spread_count
+  score_or_threshold_bucket:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: score_threshold_bucket_not_materialized_in_kpi_records_yet
+    next_materialization_step: write score band or threshold bucket per decision replay
+      attempt
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    counts: {}
+    score_bucket_policy: attempt_thresholds_when_available_else_fixed_terciles
+    expected_sources:
+    - score telemetry
+    - threshold policy
+    - decision band
+  trade_shape_bucket:
+    status: partial
+    analysis_status: partial_materialized
+    missing_reason: trade_shape_metrics_observed_without_full_bucketed_trade_shape_breakdown
+    next_materialization_step: materialize mt5.trade_shape.bucket.* count/PnL/MFE/MAE
+      records before closeout
+    claim_effect: segment_breakdown_learning_only_no_selection_or_pass_claim
+    record_count: 36
+    bucket_breakdown: {}
+    metric_basis:
+    - mt5.tester_report.balance_drawdown_maximal_amount
+    - mt5.tester_report.balance_drawdown_maximal_pct
+    - mt5.tester_report.bars
+    - mt5.tester_report.correlation_mfe_mae
+    - mt5.tester_report.correlation_profits_mae
+    - mt5.tester_report.correlation_profits_mfe
+    - mt5.tester_report.equity_drawdown_maximal_amount
+    - mt5.tester_report.equity_drawdown_maximal_pct
+    - mt5.tester_report.expected_payoff
+    - mt5.tester_report.gross_loss
+    - mt5.tester_report.gross_profit
+    - mt5.tester_report.profit_factor
+    - mt5.tester_report.recovery_factor
+    - mt5.tester_report.sharpe_ratio
+    - mt5.tester_report.ticks
+    - mt5.tester_report.total_net_profit
+    - mt5.tester_report.total_trades
+    - mt5.trade_shape.closed_trade_count
+  runtime_surface:
+    status: observed
+    analysis_status: materialized
+    claim_effect: segment_breakdown_learning_only_no_selection_or_pass_claim
+    counts:
+      decision_execution: 2
+    metric_basis:
+    - mt5.runtime.surface_kind
+kpi_policy:
+  fixed_schema: true
+  mt5_missing_is_repair_trigger_before_na: true
+  proxy_only_runs_excluded_from_comparison_ledger: true
+  non_trading_score_probe_excluded_from_kpi_ledger: true
+  score_probe_retained_only_in_runtime_evidence_not_kpi: true
+  overall_and_segment_breakdowns_required: true
+  fake_segment_placeholder_forbidden: true
+  observed_segment_requires_metric_or_count_basis: true
+  missing_segment_requires_next_materialization_step: true
+  required_segment_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  optional_segment_axes:
+  - volatility_regime
+  - drawdown_cluster
+  - holding_period_bucket
+  - feature_family
+  - target_family
+  - model_family
+  - spread_or_cost_bucket
+  segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
+claim_boundary: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- live_readiness
+- handoff_complete
+- reviewed_verified_pass
+- goal_achieve

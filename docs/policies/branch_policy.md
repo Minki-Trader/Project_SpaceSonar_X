@@ -5,7 +5,10 @@ Do not create routine `codex/` work branches unless the user explicitly asks for
 a separate branch.
 
 Do not push to `origin/main` after each run. Push `origin/main` only at campaign
-closeout, wave closeout, or an explicit user-approved stabilization boundary.
+closeout, bounded-synthesis closeout, wave closeout, or an explicit
+user-approved stabilization boundary. Campaign and bounded-synthesis closeouts
+must be reflected on `main` at the closeout boundary after the coherent
+source-of-truth, KPI, parity, registry, and claim-boundary updates are present.
 
 ## Machine-Readable Boundary Policy
 
@@ -17,11 +20,12 @@ codex_branch_policy:
 main_integration_policy:
   allowed_boundary_events:
     - campaign_close
+    - bounded_synthesis_close
     - wave_close
     - control_plane_stabilization
   working_branch: main
   merge_mode: not_applicable_main_first
-  direct_push: allowed_only_at_user_approved_boundary
+  direct_push: required_at_campaign_or_bounded_synthesis_closeout_after_coherent_boundary
 ```
 
 This policy keeps experiment throughput on `main` while preventing run-by-run
@@ -87,11 +91,15 @@ The normal durable integration boundaries are:
 
 - `campaign_open`
 - `campaign_close`
+- `bounded_synthesis_close`
 - `wave_open`
 - `wave_close`
 
 At each boundary, prepare a coherent `main` commit after the relevant manifests,
 receipts, registries, claim boundaries, and ignored-artifact hashes are updated.
+At `campaign_close` and `bounded_synthesis_close`, the coherent boundary state is
+required to be reflected on `main`; intermediate run fragments remain local and
+must not be treated as main-integrated evidence.
 
 Main push cadence follows the same boundary events. A main update must represent
 the whole boundary state, not a partial run fragment. Intermediate run work can

@@ -1,0 +1,60 @@
+version: wave03_volatility_state_l4_score_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_research_oos_v0/score_telemetry_summary.yaml
+attempt_id: attempt_wave03_vst_cell_009_l4_research_oos_v0
+run_id: onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0
+bundle_id: bundle_wave03_vst_cell_009_l4_onnx_export_v0
+period_role: research_oos
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_research_oos_v0/telemetry/score_telemetry.csv
+  sha256: 2e33a205878258a92f1ef6f27d895acb19e24e6f888c1e53a099f581fb6f1539
+  size_bytes: 7499911
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_volatility_state_l4_score_probe\attempt_wave03_vst_cell_009_l4_research_oos_v0\score_telemetry.csv
+stats:
+  status: telemetry_observed
+  row_count: 45281
+  first_bar_close_time: 2025.04.03 00:00:00
+  last_bar_close_time: 2025.11.20 23:55:00
+  symbol_counts:
+    US100: 45281
+  period_counts:
+    PERIOD_M5: 45281
+  feature_count_values:
+    '45': 45281
+  decision_counts:
+    flat: 28169
+    long: 7640
+    short: 9472
+  score_stats:
+    finite_count: 45281
+    min: 0.0429943502
+    max: 0.9643915892
+    mean: 0.5045388952907025
+  spread_points_stats:
+    finite_count: 45281
+    min: 0.0
+    max: 150.0
+    mean: 134.04525076743005
+  tick_volume_nonzero_count: 45281
+claim_boundary: wave03_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+diagnostic_evidence:
+  summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_research_oos_v0/score_diagnostic_summary.yaml
+  status: diagnostic_observed
+  event_counts:
+    closed_bar_candidate: 65
+    deinit_complete: 1
+    deinit_start: 1
+    feature_columns_loaded: 1
+    init_start: 1
+    init_succeeded: 1
+    onnx_created: 1
+    onnx_released: 1
+    onnx_shapes_set: 1
+    row_written: 65
+    tick_seen: 5468
+  claim_boundary: ea_score_probe_diagnostic_observation_only_no_runtime_authority
+work_item_id: work_wave03_volatility_state_l4_runtime_execution_v0
+subwork_item_id: work_wave03_volatility_state_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+sweep_id: sweep_us100_wave03_compression_expansion_seed_v0

@@ -1,0 +1,113 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/run_specs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0.yaml",
+      "sha256": "a7b67a67d2e23fe5b7de1c63157a13ed67d205ff645195c86d527f419660e577",
+      "size_bytes": 3923,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave03_bounded_synthesis_mix3_proxy_batch.py",
+    "command": "foundation\\pipelines\\run_wave03_bounded_synthesis_mix3_proxy_batch.py"
+  },
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/run_manifest.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/feature_schema.json",
+      "sha256": "14a6644f68440f3d93f2a98cab8e56a70c35952b0eeb5051df93eb355a876c64",
+      "size_bytes": 2576,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/label_schema.json",
+      "sha256": "29e24c8166ffd8e04861623eff28b0767465bcd6c8d5957aa24534564fd433ce",
+      "size_bytes": 757,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/model_summary.json",
+      "sha256": "1b97ed33d07eaf124043e24a8d7acf4b3ac9be636b61706e2137a042f9fd37d4",
+      "size_bytes": 834,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/split_profile.json",
+      "sha256": "5af72fc064d37a6f8d1939b87cb13110212060da088d0aa98c8bd3d81a5c637b",
+      "size_bytes": 248,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "da66f659e1da35ecbcc18e4896b8f5a2cfa82a38c50eeb55fed9e4758793b297",
+      "size_bytes": 21977,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "cc3f9afe70ef7acfba1ced8e98b6204b34c593e1e8aa6707b423ef9da35c5161",
+      "size_bytes": 22867,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/proxy_decision_stream_validation.csv",
+      "sha256": "27c474e232164fb87fd07a3aaa5f7cbbf4423be1422c6b981369d7dc1337494e",
+      "size_bytes": 12940712,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/proxy_decision_stream_research_oos_a.csv",
+      "sha256": "db9136c3dbed2c8e3096fdad1ed80b4a4f80c44d7d468f94fe10ef633842f9ec",
+      "size_bytes": 11138924,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/reports/proxy_volatility_state_report.json",
+      "sha256": "ef4363ceaa2ce52edf61bca93c99a017e498493a4766657cd6a2f1c06685b78b",
+      "size_bytes": 6213,
+      "availability": "local_generated_hash_recorded_not_committed"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/feature_schema.json": "14a6644f68440f3d93f2a98cab8e56a70c35952b0eeb5051df93eb355a876c64"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/label_schema.json": "29e24c8166ffd8e04861623eff28b0767465bcd6c8d5957aa24534564fd433ce"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/model_summary.json": "1b97ed33d07eaf124043e24a8d7acf4b3ac9be636b61706e2137a042f9fd37d4"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/split_profile.json": "5af72fc064d37a6f8d1939b87cb13110212060da088d0aa98c8bd3d81a5c637b"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/prediction_sample_validation.csv": "da66f659e1da35ecbcc18e4896b8f5a2cfa82a38c50eeb55fed9e4758793b297"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/prediction_sample_research_oos_a.csv": "cc3f9afe70ef7acfba1ced8e98b6204b34c593e1e8aa6707b423ef9da35c5161"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/proxy_decision_stream_validation.csv": "27c474e232164fb87fd07a3aaa5f7cbbf4423be1422c6b981369d7dc1337494e"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/artifacts/proxy_decision_stream_research_oos_a.csv": "db9136c3dbed2c8e3096fdad1ed80b4a4f80c44d7d468f94fe10ef633842f9ec"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0/reports/proxy_volatility_state_report.json": "ef4363ceaa2ce52edf61bca93c99a017e498493a4766657cd6a2f1c06685b78b"
+    }
+  ],
+  "availability": "present_hash_recorded",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing"
+}

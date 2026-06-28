@@ -1,0 +1,52 @@
+version: ingredient_card_v1
+ingredient_card_id: ingredient_wave03_cell009_vol_state_tradeability_proxy_clue_v0
+status: ingredient_ready_proxy_preserved_clue_requires_runtime_translation
+created_at_utc: '2026-06-28T17:26:54Z'
+source_campaign_ids:
+- campaign_us100_wave03_volatility_state_transition_surface_v0
+source_run_ids:
+- onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0
+source_clue_ids:
+- wave03_proxy_preserved_clue_cell009_vol_state_tradeability_h8
+source_negative_memory_ids: []
+source_divergence_ids: []
+material_type: wave03_proxy_preserved_clue
+axis_tags:
+- volatility_state_tradeability
+- horizon_8
+- feature_wave03_atr_compression_session_state
+- proxy_preserved_clue
+- requires_l4_before_runtime_claim
+observed_pattern: Wave03 cell009 showed validation/research proxy AUC preservation
+  but was not promoted to a candidate or operating reference.
+salvage_value: Use only as a third ingredient after mix-2 if a tradeability gate is
+  needed.
+negative_memory: proxy clue without runtime economics cannot select or promote a surface
+do_not_repeat: do_not_convert_proxy_auc_preservation_into_candidate_without_L4_L5_follow_through
+evidence_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_summary.yaml
+- lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/metrics.json
+- lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/reports/proxy_volatility_state_report.json
+evidence_hashes:
+  lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_summary.yaml: 29a45aa7e383e530aa3437c1e86690f1994ced5b5199b6c084314ef755f40ce1
+  lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/metrics.json: a18f0aac8769cc80713ac642cd1bcecb910945bd39a0ad57f3966f587edec619
+  lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/reports/proxy_volatility_state_report.json: 7d5459d6f490e4e4844f6b45d604a8e06bc8601dff53bfeb41d7c066924e19c9
+selection_eligibility: eligible_for_mix_not_candidate
+ingredient_lifecycle:
+  synthesis_use_status: available_for_first_synthesis
+  consumed_by_synthesis_campaign_id: ''
+  consumed_by_mix_item_id: ''
+  carry_forward_from_synthesis_campaign_id: ''
+  reopened_ingredient_exception_reason: ''
+  raw_reuse_policy: forbidden_after_consumed_by_completed_synthesis_unless_carry_forward_or_reopened_exception
+forbidden_uses:
+- selected_baseline
+- next_wave_direction
+- repair_relabeling
+- economics_or_runtime_authority_claim
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/synthesis/ingredients/ingredient_wave03_cell009_vol_state_tradeability_proxy_clue_v0.yaml
+  registry_rows:
+  - docs/registers/ingredient_card_registry.csv
+claim_boundary: ingredient_reference_only_no_candidate_no_selected_baseline_no_runtime_authority
+next_action: hold_for_mix3_after_mix2_scope_is_materialized

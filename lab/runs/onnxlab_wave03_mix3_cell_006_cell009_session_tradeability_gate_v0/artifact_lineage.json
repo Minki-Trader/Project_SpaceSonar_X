@@ -1,0 +1,113 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/run_specs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0.yaml",
+      "sha256": "74a9559a67b28166affa434f93d87a032739d868f6964356ce6a35e20a646077",
+      "size_bytes": 3883,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave03_bounded_synthesis_mix3_proxy_batch.py",
+    "command": "foundation\\pipelines\\run_wave03_bounded_synthesis_mix3_proxy_batch.py"
+  },
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/run_manifest.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/feature_schema.json",
+      "sha256": "3a0ee8a3bc16dc56f7370c6a74cd3535dc827965a68bc91d24c208e4d439e0ae",
+      "size_bytes": 2412,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/label_schema.json",
+      "sha256": "176d2477d03ab4bc9b5f5007fde8bdec0f4f34b91c764a8c1fb3c07b44190464",
+      "size_bytes": 745,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/model_summary.json",
+      "sha256": "bba20108f79cdaea3c8a6bb6151eb71d9826ace2822af9e28bf1bf6deb894f8d",
+      "size_bytes": 839,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/split_profile.json",
+      "sha256": "91ff748a635a8b9f5fb9a96547854cbf0de66241eb840d62d7dee67314cadf07",
+      "size_bytes": 244,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "bdbc1b01f0ec3b160a81e9da522ee5b26420500610cff71dc66ebfad4f64eebb",
+      "size_bytes": 22093,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "429e78855ad7e2331ec4d54a0bf0c0cc7d943015bd5656d0ddf13fa44ad75822",
+      "size_bytes": 22827,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/proxy_decision_stream_validation.csv",
+      "sha256": "390548e7df20dc5170fc5396386728366df98f8211ea8d87f531eb5ad37a5394",
+      "size_bytes": 1709937,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/proxy_decision_stream_research_oos_a.csv",
+      "sha256": "b3f786c3ec1d8e22f48f2803bad7a6303b77646641af3e9bacd7bbf5ce7d8011",
+      "size_bytes": 1466475,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/reports/proxy_volatility_state_report.json",
+      "sha256": "443cecdd9815be4f74bb1e41e7592b4dfdba631514d2fcbb2f329cbd1b361cad",
+      "size_bytes": 6190,
+      "availability": "local_generated_hash_recorded_not_committed"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/feature_schema.json": "3a0ee8a3bc16dc56f7370c6a74cd3535dc827965a68bc91d24c208e4d439e0ae"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/label_schema.json": "176d2477d03ab4bc9b5f5007fde8bdec0f4f34b91c764a8c1fb3c07b44190464"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/model_summary.json": "bba20108f79cdaea3c8a6bb6151eb71d9826ace2822af9e28bf1bf6deb894f8d"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/split_profile.json": "91ff748a635a8b9f5fb9a96547854cbf0de66241eb840d62d7dee67314cadf07"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/prediction_sample_validation.csv": "bdbc1b01f0ec3b160a81e9da522ee5b26420500610cff71dc66ebfad4f64eebb"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/prediction_sample_research_oos_a.csv": "429e78855ad7e2331ec4d54a0bf0c0cc7d943015bd5656d0ddf13fa44ad75822"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/proxy_decision_stream_validation.csv": "390548e7df20dc5170fc5396386728366df98f8211ea8d87f531eb5ad37a5394"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/artifacts/proxy_decision_stream_research_oos_a.csv": "b3f786c3ec1d8e22f48f2803bad7a6303b77646641af3e9bacd7bbf5ce7d8011"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0/reports/proxy_volatility_state_report.json": "443cecdd9815be4f74bb1e41e7592b4dfdba631514d2fcbb2f329cbd1b361cad"
+    }
+  ],
+  "availability": "present_hash_recorded",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing"
+}

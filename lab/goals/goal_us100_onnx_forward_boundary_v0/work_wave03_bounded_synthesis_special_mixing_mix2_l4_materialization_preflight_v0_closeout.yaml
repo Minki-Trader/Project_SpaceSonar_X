@@ -1,0 +1,101 @@
+version: work_closeout_v1
+work_item_id: work_wave03_bounded_synthesis_special_mixing_mix2_l4_materialization_preflight_v0
+next_work_item_id: work_wave03_bounded_synthesis_special_mixing_mix2_l4_runtime_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T17:59:47Z'
+status: wave03_bounded_synthesis_mix2_l4_attempts_prepared_terminal_execution_pending
+claim_boundary: wave03_bounded_synthesis_mix2_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+counts:
+  bundle_count: 6
+  attempt_count: 12
+  l4_pair_count: 6
+evidence_paths:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/onnx_materialization_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/onnx_materialization_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/l4_attempt_preparation_index.csv
+operational_validation_required: false
+next_action: work_wave03_bounded_synthesis_special_mixing_mix2_l4_runtime_execution_v0
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: mix2_l4_materialization_preflight_closed_with_terminal_execution_next
+next_executable_action: execute bounded synthesis mix-2 L4 runtime attempts
+experiment_or_boundary_effect: bounded_synthesis_mix2_keeps_experiment_loop_executable
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/proxy_execution_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/onnx_materialization_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/onnx_materialization_index.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/l4_attempt_preparation_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+- foundation/config/mt5_runtime_probe_contract.yaml
+- configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+- configs/mt5/tester_execution_profile_v0.yaml
+writer_owned_outputs:
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_bounded_synthesis_special_mixing_mix2_l4_materialization_preflight_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile_wave03_l4_preflight
+- onnxruntime_parity_fixture_per_bundle
+- strict_writer_contract_preflight
+- active_pointer_smoke
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_l4_materialization_no_protected_claim_no_broad_validation
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - onnxruntime_parity_fixture_per_bundle
+  - strict_writer_contract_preflight
+  failures: []
+unresolved_blockers_or_none: []
+next_action_or_reopen_condition: execute bounded synthesis mix-2 L4 runtime attempts

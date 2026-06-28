@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -15,11 +16,12 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from spacesonar.control_plane.writer_contract import writer_contract_errors  # noqa: E402
+from spacesonar.control_plane.store import filesystem_path  # noqa: E402
 
 
 def load_record(path: Path) -> Any:
     suffix = path.suffix.lower()
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         if suffix == ".json":
             return json.load(handle)
         if suffix in {".yaml", ".yml"}:
@@ -47,7 +49,7 @@ def main() -> int:
     errors: list[str] = []
     for rel_path in args.path:
         path = (repo_root / rel_path).resolve()
-        if not path.exists():
+        if not os.path.exists(filesystem_path(path)):
             errors.append(f"{rel_path}: missing path")
             continue
         errors.extend(validate_record(path, repo_root))

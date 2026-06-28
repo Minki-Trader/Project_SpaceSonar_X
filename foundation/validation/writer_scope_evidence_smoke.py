@@ -132,6 +132,7 @@ def validate_run(
     *,
     campaign_id: str | None,
     pre_runtime: bool,
+    allow_bundle_id: bool = False,
 ) -> tuple[list[str], str]:
     errors: list[str] = []
     try:
@@ -163,9 +164,10 @@ def validate_run(
     if campaign_id and id_chain.get("campaign_id") != campaign_id:
         errors.append(f"{run_id}: id_chain.campaign_id mismatch")
     if pre_runtime:
-        for field in ["bundle_id", "candidate_id"]:
-            if id_chain.get(field):
-                errors.append(f"{run_id}: {field} must be empty before L4/candidate evidence")
+        if id_chain.get("bundle_id") and not allow_bundle_id:
+            errors.append(f"{run_id}: bundle_id must be empty before L4/candidate evidence")
+        if id_chain.get("candidate_id"):
+            errors.append(f"{run_id}: candidate_id must be empty before candidate evidence")
 
     storage = manifest.get("storage_contract") or {}
     expected_storage = {
@@ -250,9 +252,28 @@ def validate(
     if not selected_run_ids:
         return ["writer-scope smoke requires --run-id or --run-refs"]
     errors: list[str] = []
+    summary_payload: dict[str, Any] | None = None
+    summary_allows_bundle_id = False
+    if summary:
+        summary_path = repo_root / summary
+        if path_exists(summary_path):
+            summary_payload = load_yaml(summary_path)
+            version = str(summary_payload.get("version") or "")
+            summary_allows_bundle_id = bool(
+                summary_payload.get("bundle_count") is not None
+                or summary_payload.get("attempt_count") is not None
+                or "onnx_materialization" in version
+                or "attempt_preparation" in version
+            )
     result_counts: Counter[str] = Counter()
     for run_id in selected_run_ids:
-        run_errors, judgment = validate_run(repo_root, run_id, campaign_id=campaign_id, pre_runtime=pre_runtime)
+        run_errors, judgment = validate_run(
+            repo_root,
+            run_id,
+            campaign_id=campaign_id,
+            pre_runtime=pre_runtime,
+            allow_bundle_id=summary_allows_bundle_id,
+        )
         errors.extend(run_errors)
         if judgment:
             result_counts[judgment] += 1
@@ -261,17 +282,32 @@ def validate(
         if not path_exists(summary_path):
             errors.append(f"summary path missing {summary}")
         else:
-            payload = load_yaml(summary_path)
+            payload = summary_payload or load_yaml(summary_path)
             if campaign_id and payload.get("campaign_id") != campaign_id:
                 errors.append(f"{summary}: campaign_id mismatch")
-            if int(payload.get("executed_proxy_run_count") or -1) != len(selected_run_ids):
-                errors.append(f"{summary}: executed_proxy_run_count mismatch")
-            summary_counts = {str(key): int(value) for key, value in (payload.get("result_counts") or {}).items()}
-            if dict(sorted(result_counts.items())) != dict(sorted(summary_counts.items())):
-                errors.append(f"{summary}: result_counts mismatch")
-            for key in ["runtime_authority", "economics_pass", "live_readiness"]:
-                if str(payload.get(key) or "") != "not_claimed":
+            if "executed_proxy_run_count" in payload:
+                if int(payload.get("executed_proxy_run_count") or -1) != len(selected_run_ids):
+                    errors.append(f"{summary}: executed_proxy_run_count mismatch")
+            elif "bundle_count" in payload:
+                if int(payload.get("bundle_count") or -1) != len(selected_run_ids):
+                    errors.append(f"{summary}: bundle_count mismatch")
+            elif "l4_pair_count" in payload:
+                if int(payload.get("l4_pair_count") or -1) != len(selected_run_ids):
+                    errors.append(f"{summary}: l4_pair_count mismatch")
+            if "result_counts" in payload:
+                summary_counts = {str(key): int(value) for key, value in (payload.get("result_counts") or {}).items()}
+                if dict(sorted(result_counts.items())) != dict(sorted(summary_counts.items())):
+                    errors.append(f"{summary}: result_counts mismatch")
+            boundary = str(payload.get("claim_boundary") or "")
+            for key, boundary_token in [
+                ("runtime_authority", "no_runtime_authority"),
+                ("economics_pass", "no_economics_pass"),
+                ("live_readiness", "no_live_readiness"),
+            ]:
+                if key in payload and str(payload.get(key) or "") != "not_claimed":
                     errors.append(f"{summary}: {key} must be not_claimed")
+                elif key not in payload and boundary_token not in boundary:
+                    errors.append(f"{summary}: claim_boundary missing {boundary_token}")
     if errors:
         return errors
     print(

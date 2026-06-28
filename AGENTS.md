@@ -11,6 +11,16 @@ Purpose: minimal cold-start rules for an ID-based ONNX development lab. Internal
 - Campaigns must explore meaningful surfaces, not become single-axis repair rooms.
 - Default progress unit: `next_executable_experiment_writer_or_probe`.
 - Validation, inspection, and registry projection are not progress; registries are indexes, not proof.
+- Campaign and bounded-synthesis closeouts must keep the KPI ledger triad:
+  `proxy_kpi_records.csv`, `mt5_runtime_kpi_records.csv`, and
+  `proxy_mt5_comparison_records.csv`.
+- Proxy/model-bearing campaign closeout must include intent behavior parity:
+  Python proxy intended signal versus MT5 EA behavior row-by-row for
+  entry/exit/hold/flat decisions, plus at least one reconciliation or repair
+  attempt when divergence is found.
+- After each five closed standard campaigns since the last synthesis campaign,
+  open `bounded_synthesis` / `special_mixing` before another standard campaign
+  unless a recorded exception exists.
 
 ## Non-Inheritance
 
@@ -112,6 +122,12 @@ or inspection-only success states.
 - Every valid proxy/model-bearing experiment must be designed for ONNX/EA/MT5 follow-through.
 - Proxy-only closure is not allowed for valid proxy/model-bearing runs.
 - Required follow-through reaches `L4_split_runtime_probe`; if promising, continue to `L5_candidate_runtime_evidence`.
+- Strategy intent parity is part of runtime meaning: check whether entry,
+  exit, hold, flat, long, and short decisions moved as intended, and compare
+  Python proxy decision rows to MT5 EA telemetry rows by stable row key.
+- If proxy intent and MT5 behavior diverge, make at least one repo-controlled
+  reconciliation, conversion, parser, or EA/decision-surface repair attempt
+  before campaign or bounded-synthesis closeout.
 - Main-mode MT5 fallback is diagnostic only and cannot satisfy standard runtime completion.
 - Samples/previews/diagnostic rows support learning only; they cannot create runtime authority, economics pass, handoff, or live readiness.
 
@@ -119,7 +135,12 @@ or inspection-only success states.
 
 - Current user operating override: do not create or use routine `codex/` work branches.
 - Work on `main` by default unless the user explicitly asks for a separate branch.
-- Do not push every run. Push `origin/main` at campaign closeout or an explicit user-approved boundary/stabilization point.
+- Do not push every run. Commit the coherent closeout state on local `main`
+  and push `origin/main` at campaign closeout, bounded-synthesis closeout,
+  wave closeout, or an explicit user-approved boundary/stabilization point.
+- Campaign and bounded-synthesis closeouts must be reflected on `main` only at
+  the closeout boundary, not mid-campaign, after the coherent source-of-truth,
+  KPI, parity, registry, and claim-boundary updates are present.
 - Current git root may be this project or a parent `MQL5` tree; avoid unrelated MetaTrader folders in status/commits.
 - Never revert user changes unless explicitly requested.
 

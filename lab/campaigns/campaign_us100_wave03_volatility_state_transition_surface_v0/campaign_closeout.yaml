@@ -1,0 +1,410 @@
+version: campaign_closeout_v1
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+closed_at_utc: '2026-06-28T16:10:27Z'
+status: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate
+result_judgment: negative
+claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+candidate_count: 1
+l5_candidate_count: 0
+candidate_results:
+  candidate_wave03_vst_cell_015_score_probe_l5_target_v0: negative_l5_runtime_evidence_no_l5_candidate
+negative_candidate_ids:
+- candidate_wave03_vst_cell_015_score_probe_l5_target_v0
+counts:
+  proxy_executed_count: 18
+  preserved_clue_proxy_count: 10
+  l4_pair_count: 18
+  portable_l4_pair_count: 2
+  l5_candidate_runtime_evidence_count: 1
+  l5_negative_candidate_count: 1
+  l5_period_judgment_counts:
+    negative_l5_runtime_evidence: 1
+    positive_l5_runtime_observation_not_economics_pass: 1
+judgment:
+  result_subject: Wave03 volatility-state transition campaign L5 candidate boundary
+  evidence_paths:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+  metric_identity: candidate-specific MT5 L5 decision-execution tester reports for
+    validation and research_oos
+  comparison_baseline: Wave03 campaign objective north-star reference and split_set_v0
+    validation/research_oos roles
+  tested_factor: low-vol breakout h6 volatility-state decision-execution surface from
+    cell015
+  kpi_interpretation: Validation was slightly positive but below PF and trade-frequency
+    references; research_oos was negative with PF below 1 and drawdown above 10 percent.
+  directional_effect_hypothesis: The low-vol breakout continuation surface likely
+    overfit validation score behavior and did not control research_oos drawdown; the
+    next probe should rotate to a new liquidity-regime surface rather than threshold-repair
+    this candidate.
+  attribution_confidence: medium_candidate_specific_runtime_negative
+  judgment_label: negative_l5_runtime_evidence_no_l5_candidate
+  claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  missing_evidence:
+  - no_positive_research_oos_l5_candidate_evidence
+  - locked_final_oos_b_not_used
+  - operational_validation_not_started
+  - no_selected_baseline_or_runtime_authority_from_l5_runtime_evidence
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - py_compile
+  - wave03_l5_boundary_writer_smoke
+  - writer_scope_contract_lint
+  - machine_yaml_identity_lint
+  - active_pointer_smoke
+  broad_validation_escalation_reason: none_wave03_l5_boundary_writer_scope_only_no_protected_claim
+  next_action: open Wave03 intraday liquidity-regime campaign from the prepared lifecycle
+    spec; do not reopen the failed volatility-state L5 candidate as a repair
+performance_attribution:
+  kpi_scope: MT5 runtime
+  tested_factor: Wave03 cell015 low-vol breakout h6 decision-execution adapter
+  observed_change:
+    validation:
+      profit_factor: 1.01
+      total_net_profit: 2.18
+      trades_per_day: 2.2867383512544803
+      balance_drawdown_maximal_pct: 6.94
+    research_oos:
+      profit_factor: 0.79
+      total_net_profit: -102.79
+      trades_per_day: 2.2703862660944205
+      balance_drawdown_maximal_pct: 26.6
+  comparison_baseline: north-star reference 5+ trades/day, PF about 1.5-3.0, <=10%
+    DD across major windows
+  directional_effect_hypothesis: The surface generated enough trades for interpretation
+    but not enough frequency or OOS robustness; drawdown expanded when moved from
+    validation to research_oos.
+  likely_drivers:
+  - low_vol_breakout_label_or_threshold_did_not_hold_across_oos
+  - h6_timeout_trade_shape_exposed_research_oos_drawdown
+  - score_threshold_trade_execution_frequency_below_north_star
+  segment_checks:
+    performed:
+    - period_role_validation_vs_research_oos
+    - trade_count
+    - drawdown
+    - profit_factor
+    missing:
+    - session_bucket
+    - spread_bucket
+    - direction_bucket
+    - drawdown_cluster
+  trade_shape:
+    validation_total_trades: 638
+    research_oos_total_trades: 529
+    validation_trades_per_day: 2.2867383512544803
+    research_oos_trades_per_day: 2.2703862660944205
+    research_oos_drawdown_pct: 26.6
+  candidate_effect_size_vs_noise: negative_effect_large_enough_to_stop_candidate_salvage
+  alternative_explanations:
+  - liquidity_or_spread_regime_shift_between_validation_and_research_oos
+  - decision threshold proxy did not map to profitable execution after costs
+  - holding horizon exposed adverse continuation clusters
+  evidence_limits:
+  - only one L5 candidate target reached decision-execution evidence
+  - locked final OOS intentionally not used
+  - no session/spread/direction attribution yet
+  failure_or_negative_salvage_value: 'Runtime plumbing is now usable, and the negative
+    result gives a prevention boundary: do not repair cell015 thresholds; rotate to
+    a liquidity-regime surface that directly targets trade shape.'
+  attribution_confidence: medium
+  next_probe: open_wave03_intraday_liquidity_regime_campaign_broad_18_specs
+boundary_decision:
+  decision: close_campaign_and_rotate_surface
+  next_campaign_id: campaign_us100_wave03_intraday_liquidity_regime_surface_v0
+  next_campaign_spec: lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+  candidate_salvage: forbidden_without_new_surface_question
+  l5_candidate_count: 0
+  runtime_authority: false
+  economics_pass: false
+  live_readiness: false
+  goal_achieve: false
+negative_memory:
+  memory_id: neg_wave03_volatility_state_l5_candidate_negative_v0
+  path: lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_index.csv
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_index.csv
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+  - lab/candidates/candidate_wave03_vst_cell_015_score_probe_l5_target_v0/l5_runtime_evidence_summary.yaml
+  producer: python.exe foundation/pipelines/decide_wave03_volatility_state_l5_candidate_boundary.py
+    --write-control-records
+  consumer: work_wave03_open_intraday_liquidity_regime_campaign_v0
+  artifact_paths:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+  - lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_boundary_decision_v0_closeout.yaml
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+  - lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    git_sha: 29b41ff0258b426e80371cc95dfce71099854855
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - M docs/registers/artifact_registry.csv
+    - ' M docs/registers/campaign_registry.csv'
+    - ' M docs/registers/candidate_registry.csv'
+    - ' M docs/registers/experiment_surface_registry.csv'
+    - ' M docs/registers/goal_registry.csv'
+    - ' M docs/registers/hypothesis_registry.csv'
+    - ' M docs/registers/idea_registry.csv'
+    - ' M docs/registers/sweep_registry.csv'
+    - ' M docs/registers/wave_registry.csv'
+    - ' M docs/workspace/workspace_state.yaml'
+    - ' M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5'
+    - ' M foundation/pipelines/run_wave0_l4_mt5_attempts.py'
+    - ' M foundation/validation/machine_yaml_identity_lint.py'
+    - ' M foundation/validation/writer_scope_contract_lint.py'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+    - ' M src/spacesonar/control_plane/lifecycle.py'
+    - ?? foundation/features/wave03_volatility_state_features.py
+    - ?? foundation/labels/wave03_volatility_state_labels.py
+    - ?? foundation/pipelines/aggregate_wave03_volatility_state_l4_pair_judgments.py
+    - ?? foundation/pipelines/decide_wave03_volatility_state_l5_candidate_boundary.py
+    - ?? foundation/pipelines/decide_wave03_volatility_state_l5_routing.py
+    - ?? foundation/pipelines/materialize_wave03_volatility_state_l4_preflight.py
+    - ?? foundation/pipelines/prepare_wave03_volatility_state_l5_candidate_runtime_evidence.py
+    - ?? foundation/pipelines/repair_wave03_volatility_state_l4_portable_runtime.py
+    - ?? foundation/pipelines/run_wave03_volatility_state_l4_mt5_attempts.py
+    - ?? foundation/pipelines/run_wave03_volatility_state_proxy_batch.py
+    - ?? lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/
+    - ?? lab/candidates/candidate_wave03_vst_cell_015_score_probe_l5_target_v0/
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_volatility_state_transition_campaign_spec.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_materialization_preflight_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_pair_judgment_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_portable_runtime_repair_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_strategy_tester_execution_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_boundary_decision_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_routing_decision_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_proxy_execution_v0_closeout.yaml
+    - ?? lab/hypotheses/hyp_us100_wave03_compression_expansion_reversal_continuation_v0.yaml
+    - ?? lab/hypotheses/idea_us100_wave03_intraday_volatility_state_transition_v0.yaml
+    - ?? lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+    - ?? lab/runs/onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_002_compression_reversal_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_003_compression_continuation_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_004_compression_continuation_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_005_expansion_exhaustion_reversal_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_006_expansion_exhaustion_reversal_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_007_expansion_followthrough_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_008_expansion_followthrough_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_010_vol_state_tradeability_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_012_range_expansion_adverse_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_013_session_open_reversal_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_014_session_open_continuation_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_016_low_vol_false_break_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_017_high_vol_mean_revert_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_018_high_vol_momentum_h12_v0/
+    - ?? lab/surfaces/surface_us100_wave03_compression_expansion_decision_v0/
+    - ?? lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_account_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_password_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_imported_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_login_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_repair_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_validation_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_001_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_002_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_003_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_004_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_005_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_006_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_007_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_008_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_009_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_010_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_011_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_012_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_014_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_015_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_016_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_017_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/
+  regeneration_commands:
+  - python.exe foundation/pipelines/decide_wave03_volatility_state_l5_candidate_boundary.py
+    --write-control-records
+  registry_links:
+  - docs/registers/artifact_registry.csv
+  - docs/registers/campaign_registry.csv
+  - docs/registers/negative_memory_registry.csv
+  availability: present_hash_recorded_after_write
+  lineage_judgment: wave03_volatility_state_campaign_boundary_decision_from_l5_candidate_runtime_evidence
+  claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+artifact_outputs:
+  campaign_closeout: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+  negative_memory: lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+  next_campaign_spec: lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+  work_closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_boundary_decision_v0_closeout.yaml
+prevention_memory:
+- Validation-only small positive net profit is not enough for L5 candidate, economics
+  pass, or runtime authority.
+- Research_oos drawdown above 10 percent blocks cell015 candidate salvage.
+- Next campaign must be a new multi-axis liquidity-regime surface, not low-vol breakout
+  threshold repair.
+unresolved_blockers:
+- wave03_intraday_liquidity_regime_campaign_not_opened_yet
+reopen_conditions:
+- reopen volatility-state only with a materially new transition-state question
+- rerun L5 evidence only if EA adapter, tester report parser, or source attempt identity
+  changes
+- do not claim runtime authority, economics pass, live readiness, or Goal Achieve
+  from this closeout
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: wave03_l5_candidate_boundary_decision_recorded
+next_executable_action: open Wave03 intraday liquidity-regime campaign from the prepared
+  lifecycle spec; do not reopen the failed volatility-state L5 candidate as a repair
+experiment_or_boundary_effect: negative_l5_candidate_boundary_closes_campaign_and_routes_new_multi_axis_surface
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+- lab/candidates/candidate_wave03_vst_cell_015_score_probe_l5_target_v0/l5_runtime_evidence_summary.yaml
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_boundary_decision_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- wave03_l5_boundary_writer_smoke
+- writer_scope_contract_lint
+- machine_yaml_identity_lint
+- active_pointer_smoke
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_wave03_l5_boundary_writer_scope_only_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T16:10:28Z'
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign
+    from the prepared lifecycle spec; do not reopen the failed volatility-state L5
+    candidate as a repair
+unresolved_blockers_or_none:
+- wave03_intraday_liquidity_regime_campaign_not_opened_yet
+next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign from
+  the prepared lifecycle spec; do not reopen the failed volatility-state L5 candidate
+  as a repair

@@ -1,0 +1,521 @@
+version: campaign_lifecycle_spec_v1
+campaign_id: campaign_us100_wave03_intraday_liquidity_regime_surface_v0
+goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+idea_id: idea_us100_wave03_intraday_liquidity_regime_transition_v0
+hypothesis_id: hyp_us100_wave03_intraday_liquidity_regime_reversal_continuation_v0
+surface_id: surface_us100_wave03_liquidity_regime_decision_v0
+sweep_id: sweep_us100_wave03_liquidity_regime_seed_v0
+status: campaign_open_pending
+goal_status: wave03_intraday_liquidity_regime_campaign_open_pending
+active_phase: wave03_campaign_002_open_pending
+wave_status: wave_open
+created_at_utc: '2026-06-28T16:10:27Z'
+objective: Open the second Wave03 campaign as a fresh multi-axis intraday liquidity-regime
+  surface for FPMarkets US100 M5. The surface tests whether spread, volume, session-clock,
+  gap, and liquidity-shock states can define reversal, continuation, and tradeability
+  decisions after the volatility-state L5 candidate failed in research_oos.
+axis_tags:
+- target_or_label_surface
+- feature_or_input_surface
+- model_or_training_surface
+- decision_surface
+- horizon_or_holding_policy
+- evaluation_or_runtime_surface
+- liquidity_regime_surface
+claim_boundary: wave03_intraday_liquidity_regime_campaign_open_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills: []
+  required_gates:
+  - design_contract_check
+  - exploration_coverage_check
+  - campaign_proxy_runtime_parity_policy
+  - final_claim_guard
+exploration_coverage:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  primary_unknown_axis: intraday_liquidity_regime_surface
+  required_research_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  companion_axes:
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  forbidden_research_shapes:
+  - feature_only_wave_or_campaign
+  - label_only_wave_or_campaign
+  - model_only_wave_or_campaign
+  - threshold_only_wave_or_campaign
+  - repair_only_wave_or_campaign
+  novelty_claim: Wave03 campaign 002 rotates from failed volatility-state L5 evidence
+    into a new liquidity-regime question. The failed cell015 result is prevention
+    memory only, not a baseline, candidate, or repair target.
+policy_binding:
+  revision: policy_contract_v2
+  guards:
+  - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+  - GUARD_002_RUNTIME_COMPLETION_TRUTH
+  - GUARD_003_CLAIM_BOUNDARY
+  - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_005_LOCKED_OOS
+  - GUARD_006_BRANCH_WORKTREE
+  - GUARD_007_OPERATIONAL_STABILITY
+storage_contract:
+  durable_identity_policy: repo_relative_paths_only
+  source_of_truth: lab/campaigns/campaign_us100_wave03_intraday_liquidity_regime_surface_v0/campaign_manifest.yaml
+  wave_campaign_refs:
+  - lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/campaign_refs.csv
+  registry_rows:
+  - docs/registers/campaign_registry.csv
+objective_identity:
+  source_type: repo_goal_objective_revision
+  content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
+  source_path: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
+  summary: Build and stabilize long-running Codex operation for the ONNX lab, using
+    Wave01 closeout as the first bounded proof window.
+objective_revision:
+  revision_id: goal_objective_codex_operating_wave01_v1
+  source_of_truth: lab/goals/goal_us100_onnx_forward_boundary_v0/goal_objective_codex_operating_wave01_v1.yaml
+  primary_objective: durable_codex_operation
+  proof_window: Wave01_closeout
+  proof_window_role: first_bounded_proof_window_not_final_purpose
+  internal_active_wave_id: wave_us100_closedbar_surface_cartography_v0
+  internal_existing_wave_label: wave0
+  wave_label_policy: user_facing_Wave01_maps_to_existing_active_first_wave_without_midstream_rename
+  recurring_failure_policy: weigh_recurrence_risk_impact_and_operating_importance_then_apply_smallest_sufficient_guard_unless_structure_is_needed
+  bureaucracy_guard: durable_structure_only_when_it_prevents_likely_recurrence_or_protects_evidence_drift_MT5_follow_through_or_long_session_reliability
+budget:
+  budget_profile: standard_wave
+  allocation_mode: fixed_wave_budget_variable_campaign_budget
+  wave_budget_fixed_before_open: true
+  max_runs: 18
+  standard_total_run_budget: 72
+  standard_campaign_slots: 3
+  reserve_fraction: 0.15
+  campaign_run_budget_bounds:
+    min_runs: 8
+    default_runs: 18
+    max_runs: 30
+  l4_pair_budget: 36
+  l4_budget_unit: validation_research_oos_pair
+  l4_required_period_roles:
+  - validation
+  - research_oos
+max_runs: 18
+initial_batch_size: 18
+allocation_role: wave03_second_campaign_intraday_liquidity_regime_surface
+allocation_goal: Rotate from the negative volatility-state L5 candidate into a new
+  liquidity-regime discovery surface across target, feature, model, decision, holding,
+  and runtime axes.
+allocation_reason: 'hypothesis_surface_width: second Wave03 broad liquidity-regime
+  surface; changed_axes: target/label, feature/input, model/training, decision, horizon/holding,
+  evaluation/runtime; held_fixed_axes: FPMarkets US100 M5 closed bars, split_set_v0
+  validation plus research_oos roles, locked final OOS excluded, no inherited volatility-state
+  threshold or candidate; why_this_campaign_needs_more_or_less_than_default: uses
+  the default 18 proxy specs to avoid single-axis repair.'
+recipe_refs:
+  data_surface_id: data_surface_us100_m5_wave03_closedbar_v0
+  label_recipe_id: label_wave03_liquidity_regime_transition_v0
+  feature_recipe_id: feature_wave03_intraday_liquidity_regime_v0
+  model_recipe_id: model_wave03_liquidity_regime_onnx_scout_v0
+  decision_recipe_id: decision_wave03_liquidity_regime_abstain_v0
+  split_recipe_id: split_set_v0
+  eval_recipe_id: eval_wave03_proxy_runtime_kpi_v0
+experiment_design:
+  hypothesis: Intraday liquidity-regime states can separate US100 M5 reversal, continuation,
+    and tradeability windows better than the failed low-vol breakout candidate because
+    spread/volume/session conditions directly affect trade execution shape and drawdown
+    clustering.
+  decision_use: liquidity_regime_reversal_continuation_tradeability_abstain
+  comparison_baseline:
+  - no_trade_baseline_named_only_not_selected
+  - within_campaign_axis_controls_only
+  - Wave03 volatility-state L5 negative record used as prevention memory only
+  control_variables:
+  - FPMarkets US100 M5 closed-bar base frame
+  - split_set_v0 validation and research_oos roles
+  - locked final OOS excluded
+  - no inherited Wave03 volatility-state thresholds, candidates, or runtime authority
+  - valid proxy/model-bearing runs must keep ONNX/EA/MT5 L4 follow-through path
+  changed_variables:
+  - liquidity void, sweep, spread compression, volume dry-up, and session liquidity
+    labels
+  - spread, tick volume, session-clock, gap, and liquidity-shock feature surfaces
+  - interpretable logistic, tree, and boosted ONNX-feasible model families
+  - reversal, continuation, tradeability-then-side, and liquidity-shock decisions
+  - h6, h8, and h12 holding horizons
+  - proxy metrics designed for later L4 validation and research_oos runtime probes
+  kpi_interpretation_plan:
+    required_for_kpi_bearing_result: true
+    required_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - spread_or_volume_bucket
+    - trade_shape_bucket
+    - runtime_surface
+    claim_effect: exploratory_hypothesis_only_no_selection_or_pass
+  attribution_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  expected_effect_probe: Useful cells should increase trade frequency and reduce drawdown
+    concentration without turning into spread-only or threshold-only repair.
+  surface_rotation_rationale: Wave03 volatility-state cell015 failed L5 research_oos
+    with PF below 1 and DD above 10%; rotate to liquidity-regime discovery instead
+    of repairing that candidate.
+  search_shape: broad
+  sample_scope:
+    instrument: FPMarkets US100
+    timeframe: M5
+    split_recipe_id: split_set_v0
+    validation_role: validation
+    research_oos_role: research_oos
+    locked_final_oos: excluded
+  success_criteria:
+  - proxy metrics identify at least one interpretable liquidity-regime surface worth
+    L4 follow-through
+  - valid proxy/model-bearing runs declare ONNX/EA/MT5 follow-through requirements
+  - no selected baseline, runtime authority, economics pass, live readiness, or Goal
+    Achieve claim is made
+  failure_criteria:
+  - broad cells collapse into spread-only or threshold-only repair without reusable
+    liquidity-regime clue
+  - proxy semantics cannot be mapped to sparse EA decisions after one bounded repair
+    attempt
+  - liquidity-regime features fail to improve trade shape in validation and research_oos
+    observation
+  invalid_conditions:
+  - locked final OOS is used without an explicit unlock contract
+  - failed Wave03 cell015 candidate or threshold is reopened as this campaign target
+  - campaign becomes feature-only, label-only, model-only, threshold-only, or repair-only
+  stop_conditions:
+  - no reusable surface clue after the initial 18-spec broad batch and one bounded
+    repair at most
+  - evidence cannot support any stronger claim than exploratory observation
+  reopen_or_stop_condition: rotate_surface_or_record_negative_memory_after_broad_batch_if_no_reusable_clue
+  evidence_plan:
+  - campaign_manifest
+  - run_specs_index
+  - run_spec_manifests
+  - proxy_execution_summary
+  - run_manifest
+  - experiment_receipt
+  - artifact_lineage
+  - metrics
+  - ONNX bundle and parity record for valid model-bearing runs
+  - MT5 L4 attempt manifests for promising or valid model-bearing runs
+  claim_boundary: wave03_intraday_liquidity_regime_campaign_open_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  legacy_relation: blank_slate_no_inheritance_failed_wave03_cell015_is_prevention_only
+  broad_sweep:
+    proxy_spec_count: 18
+    surface_width: multi_axis
+    default_count_policy: campaign_open_default_proxy_spec_policy
+problem_shape:
+  input_surface: intraday_liquidity_regime_state
+  target_or_label_surface: liquidity_reversal_continuation_tradeability
+  decision_use: liquidity_regime_reversal_continuation_tradeability_abstain
+  holding_logic: declared_per_run_h6_h8_h12_timeout_or_liquidity_shock_exit
+  evaluation_method: proxy_then_L4_split_runtime_probe
+materialization:
+  run_specs:
+  - run_id: onnxlab_wave03_ilr_cell_001_liquidity_void_reversal_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_liquidity_void_reversal_h6_v0
+      feature_recipe_id: feature_wave03_intraday_liquidity_proxy_v0
+      model_recipe_id: model_wave03_logistic_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_reversal_abstain_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime liquidity void reversal h6 proxy observation
+      with L4 follow-through plan
+    - declare h6 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_002_liquidity_void_reversal_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_liquidity_void_reversal_h8_v0
+      feature_recipe_id: feature_wave03_spread_volume_session_state_v0
+      model_recipe_id: model_wave03_tree_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_reversal_abstain_timeout_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime liquidity void reversal h8 proxy observation
+      with L4 follow-through plan
+    - declare h8 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_003_liquidity_sweep_continuation_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_liquidity_sweep_continuation_h6_v0
+      feature_recipe_id: feature_wave03_liquidity_impulse_path_quality_v0
+      model_recipe_id: model_wave03_boosted_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_continuation_abstain_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime liquidity sweep continuation h6 proxy observation
+      with L4 follow-through plan
+    - declare h6 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_004_liquidity_sweep_continuation_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_liquidity_sweep_continuation_h12_v0
+      feature_recipe_id: feature_wave03_multiscale_liquidity_state_v0
+      model_recipe_id: model_wave03_logistic_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_continuation_abstain_timeout_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime liquidity sweep continuation h12 proxy observation
+      with L4 follow-through plan
+    - declare h12 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_005_cash_open_spread_compression_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_cash_open_spread_compression_h6_v0
+      feature_recipe_id: feature_wave03_cash_open_spread_state_v0
+      model_recipe_id: model_wave03_tree_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_spread_compression_reversal_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime cash open spread compression h6 proxy observation
+      with L4 follow-through plan
+    - declare h6 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_006_cash_open_spread_expansion_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_cash_open_spread_expansion_h8_v0
+      feature_recipe_id: feature_wave03_cash_open_spread_state_v0
+      model_recipe_id: model_wave03_boosted_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_spread_expansion_continuation_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime cash open spread expansion h8 proxy observation
+      with L4 follow-through plan
+    - declare h8 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_007_volume_dryup_breakout_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_volume_dryup_breakout_h6_v0
+      feature_recipe_id: feature_wave03_volume_dryup_liquidity_state_v0
+      model_recipe_id: model_wave03_logistic_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_breakout_continuation_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime volume dryup breakout h6 proxy observation
+      with L4 follow-through plan
+    - declare h6 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_008_volume_dryup_false_break_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_volume_dryup_false_break_h8_v0
+      feature_recipe_id: feature_wave03_volume_dryup_liquidity_state_v0
+      model_recipe_id: model_wave03_tree_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_false_break_reversal_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime volume dryup false break h8 proxy observation
+      with L4 follow-through plan
+    - declare h8 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_009_high_spread_mean_revert_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_high_spread_mean_revert_h6_v0
+      feature_recipe_id: feature_wave03_spread_stress_path_quality_v0
+      model_recipe_id: model_wave03_boosted_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_spread_stress_reversal_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime high spread mean revert h6 proxy observation
+      with L4 follow-through plan
+    - declare h6 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_010_high_spread_momentum_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_high_spread_momentum_h12_v0
+      feature_recipe_id: feature_wave03_spread_stress_path_quality_v0
+      model_recipe_id: model_wave03_tree_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_spread_stress_momentum_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime high spread momentum h12 proxy observation
+      with L4 follow-through plan
+    - declare h12 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_011_low_liquidity_chop_filter_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_low_liquidity_chop_filter_h8_v0
+      feature_recipe_id: feature_wave03_liquidity_chop_filter_state_v0
+      model_recipe_id: model_wave03_logistic_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_tradeability_then_side_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime low liquidity chop filter h8 proxy observation
+      with L4 follow-through plan
+    - declare h8 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_012_range_recovery_liquidity_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_range_recovery_liquidity_h12_v0
+      feature_recipe_id: feature_wave03_range_recovery_liquidity_state_v0
+      model_recipe_id: model_wave03_boosted_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_recovery_timeout_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime range recovery liquidity h12 proxy observation
+      with L4 follow-through plan
+    - declare h12 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_013_midday_liquidity_reversal_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_midday_liquidity_reversal_h8_v0
+      feature_recipe_id: feature_wave03_session_liquidity_clock_state_v0
+      model_recipe_id: model_wave03_tree_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_midday_liquidity_reversal_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime midday liquidity reversal h8 proxy observation
+      with L4 follow-through plan
+    - declare h8 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_014_close_liquidity_impulse_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_close_liquidity_impulse_h6_v0
+      feature_recipe_id: feature_wave03_session_liquidity_clock_state_v0
+      model_recipe_id: model_wave03_boosted_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_close_liquidity_impulse_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime close liquidity impulse h6 proxy observation
+      with L4 follow-through plan
+    - declare h6 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_015_pre_open_gap_absorption_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_pre_open_gap_absorption_h8_v0
+      feature_recipe_id: feature_wave03_gap_liquidity_absorption_state_v0
+      model_recipe_id: model_wave03_logistic_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_gap_absorption_reversal_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime pre open gap absorption h8 proxy observation
+      with L4 follow-through plan
+    - declare h8 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_016_post_news_liquidity_shock_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_post_news_liquidity_shock_h6_v0
+      feature_recipe_id: feature_wave03_liquidity_shock_decay_state_v0
+      model_recipe_id: model_wave03_tree_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_shock_decay_reversal_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime post news liquidity shock h6 proxy observation
+      with L4 follow-through plan
+    - declare h6 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_017_liquidity_regime_tradeability_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_liquidity_regime_tradeability_h12_v0
+      feature_recipe_id: feature_wave03_multiscale_liquidity_state_v0
+      model_recipe_id: model_wave03_boosted_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_tradeability_then_side_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime liquidity regime tradeability h12 proxy observation
+      with L4 follow-through plan
+    - declare h12 holding or timeout semantics before ONNX/EA/MT5 escalation
+  - run_id: onnxlab_wave03_ilr_cell_018_liquidity_regime_side_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_liquidity_regime_side_h8_v0
+      feature_recipe_id: feature_wave03_intraday_liquidity_proxy_v0
+      model_recipe_id: model_wave03_tree_liquidity_regime_v0
+      decision_recipe_id: decision_wave03_liquidity_regime_side_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record intraday liquidity-regime liquidity regime side h8 proxy observation
+      with L4 follow-through plan
+    - declare h8 holding or timeout semantics before ONNX/EA/MT5 escalation
+judgment_contract:
+  evidence_inputs:
+  - lab/campaigns/campaign_us100_wave03_intraday_liquidity_regime_surface_v0/evidence/judgment.yaml
+  result_judgment: inconclusive
+  candidate_effect: no_candidate_claimed
+  clue_effect: no_clue_until_evidence_materialized
+  negative_memory_effect: no_negative_memory_until_evidence_materialized
+  missing_evidence:
+  - proxy_runs_not_yet_executed
+  - ONNX_export_not_materialized_for_L4_yet
+  - MT5_L4_split_runtime_probe_not_run_yet
+  - runtime_authority_not_claimed
+  reopen_conditions:
+  - execute declared broad proxy run specs before judgment
+next_work_item:
+  version: work_item_lite_v1
+  work_item_id: work_wave03_materialize_intraday_liquidity_regime_specs_v0
+  request_digest: wave03_intraday_liquidity_regime_surface_open_v0
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  verification_profile: lab_experiment
+  targets:
+  - lab/campaigns/campaign_us100_wave03_intraday_liquidity_regime_surface_v0/campaign_manifest.yaml
+  - lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/wave_allocation.yaml
+  acceptance_criteria:
+  - Wave03 campaign 002 open manifests and refs are materialized
+  - next action materializes the declared 18 broad proxy run specs
+  claim_boundary: wave03_intraday_liquidity_regime_campaign_open_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  policy_binding:
+    revision: policy_contract_v2
+    guards:
+    - GUARD_003_CLAIM_BOUNDARY
+    - GUARD_004_ARTIFACT_IDENTITY
+    - GUARD_006_BRANCH_WORKTREE
+    - GUARD_007_OPERATIONAL_STABILITY
+  outputs:
+  - lab/campaigns/campaign_us100_wave03_intraday_liquidity_regime_surface_v0/run_specs/
+  - lab/campaigns/campaign_us100_wave03_intraday_liquidity_regime_surface_v0/sweeps/sweep_us100_wave03_liquidity_regime_seed_v0/run_refs.csv
+  next_action: materialize_wave03_intraday_liquidity_regime_proxy_specs
+  summary: Materialize Wave03 intraday liquidity-regime broad proxy run specs.
+  path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+  provenance:
+    source: lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+next_action: materialize_wave03_intraday_liquidity_regime_proxy_specs
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+notes: Wave03 campaign 002 lifecycle spec only. Declared proxy specs are not executed,
+  selected, runtime-authoritative, or economics-passing until run manifests, receipts,
+  lineage, metrics, ONNX/parity, and MT5 L4 evidence exist.

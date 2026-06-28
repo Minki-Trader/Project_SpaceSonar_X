@@ -1,0 +1,72 @@
+version: campaign_run_spec_v1
+run_id: onnxlab_wave03_mix3_cell_002_cell009_tradeability_anchor_tree_v0
+goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+idea_id: idea_us100_wave03_intraday_volatility_state_transition_v0
+hypothesis_id: hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+surface_id: surface_us100_wave03_bounded_synthesis_special_mixing_v0
+sweep_id: sweep_us100_wave03_bounded_synthesis_mix3_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+  campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+  idea_id: idea_us100_wave03_intraday_volatility_state_transition_v0
+  hypothesis_id: hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+  surface_id: surface_us100_wave03_bounded_synthesis_special_mixing_v0
+  sweep_id: sweep_us100_wave03_bounded_synthesis_mix3_v0
+  run_id: onnxlab_wave03_mix3_cell_002_cell009_tradeability_anchor_tree_v0
+  artifact_ids: []
+  bundle_id: null
+  candidate_id: null
+status: prepared_mix3_spec_not_executed
+created_at_utc: '2026-06-28T18:55:16Z'
+mix_context:
+  stage_kind: special_mixing
+  mix_depth: mix-3
+  mix_item_id: mix_wave03_special_mixing_mix3_add_vol_state_tradeability_proxy_clue_v0
+  ingredient_card_ids:
+  - ingredient_wave03_cell015_l5_negative_runtime_v0
+  - ingredient_wave0_cell011_tradeability_l4_control_v0
+  - ingredient_wave03_cell009_vol_state_tradeability_proxy_clue_v0
+  source_campaign_ids:
+  - campaign_us100_wave03_volatility_state_transition_surface_v0
+  - campaign_us100_task_surface_scout_v0
+  source_evidence:
+    mix2_pair_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+    mix2_parity_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/intent_behavior_parity_summary.yaml
+    kpi_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_summary.yaml
+  forbidden_use:
+  - cell015_threshold_repair
+  - cell009_proxy_auc_promotion
+  - source_ingredient_candidate_promotion
+  - next_wave_direction_claim
+recipe_refs:
+  label_recipe_id: label_wave03_vol_state_tradeability_h8_v0
+  feature_recipe_id: feature_wave03_atr_compression_session_state_v0
+  model_recipe_id: model_wave03_tree_transition_v0
+  decision_recipe_id: decision_wave03_mix3_cell009_tradeability_tree_h8_v0
+axis_values:
+  cell_id: wave03_mix3_cell_002
+  mix_role: cell009_tradeability_anchor_tree
+  changed_axis: model_family_rotation_on_cell009_tradeability_feature_context
+  anti_repeat_focus: avoid_logistic_only_preserved_proxy_clue_selection
+control_variables:
+- FPMarkets US100 M5 closed-bar base frame
+- split_set_v0 train/validation/research_oos roles
+- locked final OOS excluded
+- source ingredients reference-only and not candidates
+- valid proxy/model-bearing outputs require L4 split runtime probe
+- mix2 common-key intent parity recorded zero decision mismatches
+split_profile: split_set_v0
+evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+verification_profile: lab_experiment
+acceptance_criteria:
+- test whether tree model captures cell009 volatility-state tradeability context without
+  increasing selection authority
+- persist full proxy decision stream for validation and research_oos
+- route valid model-bearing output to L4 follow-through instead of proxy-only closure
+- preserve KPI triad and proxy-vs-MT5 parity requirements for bounded synthesis closeout
+claim_boundary: wave03_bounded_synthesis_mix3_specs_materialized_no_proxy_result_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+sequence: 2
+next_action: work_wave03_bounded_synthesis_special_mixing_mix3_proxy_execution_v0

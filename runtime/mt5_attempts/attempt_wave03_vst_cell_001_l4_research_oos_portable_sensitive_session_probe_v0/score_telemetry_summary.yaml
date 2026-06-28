@@ -1,0 +1,26 @@
+version: wave03_l4_portable_runtime_repair_score_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0/score_telemetry_summary.yaml
+attempt_id: attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0
+source_attempt_id: attempt_wave03_vst_cell_001_l4_research_oos_v0
+run_id: onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0
+bundle_id: bundle_wave03_vst_cell_001_l4_onnx_export_v0
+period_role: research_oos
+telemetry:
+  path: null
+  availability: missing_after_portable_terminal_probe
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_volatility_state_l4_portable_repair_probe\attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0\score_telemetry.csv
+stats:
+  status: telemetry_missing
+  row_count: 0
+failure_disposition:
+  reproduction: local portable terminal root was prepared and launched without main-mode
+    fallback
+  exact_failing_layer: portable_strategy_tester_score_probe_common_file_telemetry
+  bounded_repair_or_fallback_attempt: workspace writer created writable portable root
+    and launched one no-fallback repair probe
+  evidence_path: runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0/terminal_run_summary.yaml
+  remaining_blocker: score telemetry CSV not observed from no-fallback portable terminal
+    probe
+  reopen_condition: inspect portable root account/history/config and rerun the repair
+    probe
+claim_boundary: portable_repair_probe_no_score_telemetry_no_l4_completion

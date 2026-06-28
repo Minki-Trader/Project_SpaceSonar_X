@@ -1,0 +1,249 @@
+version: wave_allocation_v1
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: wave03_intraday_liquidity_regime_campaign_open_pending
+created_at_utc: '2026-06-28T11:40:23Z'
+claim_boundary: wave03_intraday_liquidity_regime_campaign_open_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+allocation_goal: 'Use the first Wave03 campaign for broad volatility-state transition
+  discovery across target, feature, model, decision, holding, and runtime axes. Rotate
+  rather than reopen Wave02 candidate repair unless a new surface clue or prevention-memory
+  question is recorded.
+
+  '
+storage_contract:
+  source_of_truth: lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/wave_allocation.yaml
+  campaign_refs: lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/campaign_refs.csv
+  wave_closeout: lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/wave_closeout.yaml
+  registry_rows:
+  - docs/registers/wave_registry.csv
+  durable_identity_policy: repo_relative_paths_only
+budget:
+  budget_profile: standard_wave
+  allocation_mode: fixed_wave_budget_variable_campaign_budget
+  wave_budget_fixed_before_open: true
+  max_runs: 18
+  standard_total_run_budget: 72
+  standard_campaign_slots: 3
+  reserve_fraction: 0.15
+  campaign_run_budget_bounds:
+    min_runs: 8
+    default_runs: 18
+    max_runs: 30
+  per_campaign_allocation_reason_required: true
+  hypothesis_allocation_reason_required: true
+  allocation_reason_must_name:
+  - hypothesis_surface_width
+  - changed_axes
+  - held_fixed_axes
+  - why_this_campaign_needs_more_or_less_than_default
+  mid_wave_budget_increase_policy: forbidden_without_new_wave_or_explicit_budget_amendment
+  budget_exception:
+    status: none
+    allowed_timing: before_wave_open
+    exception_profile: null
+    reason: ''
+    approved_by_user: false
+    claim_boundary: planning_scaffold
+  l4_pair_budget: 36
+  l4_budget_unit: validation_research_oos_pair
+  l4_required_period_roles:
+  - validation
+  - research_oos
+campaign_allocations:
+- campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+  allocation_role: wave03_first_campaign_volatility_state_transition_surface
+  max_runs: 18
+  initial_batch_size: 18
+  allocation_reason: 'hypothesis_surface_width: first Wave03 broad volatility-state
+    transition surface; changed_axes: target/label, feature/input, model/training,
+    decision, horizon/holding, evaluation/runtime; held_fixed_axes: FPMarkets US100
+    M5 closed bars, split_set_v0 validation plus research_oos roles, locked final
+    OOS excluded, no inherited thresholds or candidates; why_this_campaign_needs_more_or_less_than_default:
+    uses the default 18 proxy specs to cover the initial multi-axis surface without
+    becoming a single-axis repair track.
+
+    '
+  budget:
+    run_budget: 18
+    allocation_reason: 'hypothesis_surface_width: first Wave03 broad volatility-state
+      transition surface; changed_axes: target/label, feature/input, model/training,
+      decision, horizon/holding, evaluation/runtime; held_fixed_axes: FPMarkets US100
+      M5 closed bars, split_set_v0 validation plus research_oos roles, locked final
+      OOS excluded, no inherited thresholds or candidates; why_this_campaign_needs_more_or_less_than_default:
+      uses the default 18 proxy specs to cover the initial multi-axis surface without
+      becoming a single-axis repair track.
+
+      '
+    hypothesis_surface_width: 'Wave02 ended without an L5 candidate. Wave03 opens
+      a new volatility-state transition surface instead of extending candidate-local
+      repairs or threshold-only search.
+
+      '
+    changed_axes:
+    - target_or_label_surface
+    - feature_or_input_surface
+    - model_or_training_surface
+    - decision_surface
+    - horizon_or_holding_policy
+    - evaluation_or_runtime_surface
+    held_fixed_axes:
+    - FPMarkets US100 M5 closed-bar base frame
+    - split_set_v0 validation and research_oos roles
+    - locked final OOS excluded
+    - no inherited Wave01 or Wave02 thresholds, candidates, or runtime authority
+    - valid proxy/model-bearing runs must keep ONNX/EA/MT5 L4 follow-through path
+    why_this_campaign_needs_more_or_less_than_default: initial broad Wave02 surface
+      uses non-default budget before rotation
+  status: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate
+  campaign_manifest: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_wave03_compression_expansion_decision_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/sweeps/sweep_us100_wave03_compression_expansion_seed_v0/sweep_manifest.yaml
+  campaign_closeout: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+  claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: materialize Wave03 intent behavior parity probe and open bounded synthesis/special_mixing
+    before any next standard Wave03 campaign
+  notes: Wave03 proxy batch executed; L4 materialization required next.
+  executed_proxy_run_count: 18
+  result_counts:
+    inconclusive: 8
+    preserved_clue: 10
+  onnx_bundle_count: 18
+  l4_attempt_count: 36
+  l5_candidate_count: 0
+  closed_at_utc: '2026-06-28T16:10:27Z'
+- campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+  allocation_role: wave03_bounded_synthesis_special_mixing_before_standard_campaign_002
+  max_runs: 6
+  initial_batch_size: 0
+  allocation_reason: bounded synthesis cadence triggered after seven standard campaign
+    closeouts; source_scope is previous material only; mix-2 is queued before any
+    next standard Wave03 campaign.
+  budget:
+    run_budget: 6
+    allocation_reason: special_mixing_not_standard_campaign_slot; bounded proxy specs
+      must still preserve L4 path
+  status: wave03_bounded_synthesis_closed_inconclusive_runtime_probe_no_candidate
+  campaign_manifest: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/campaign_manifest.yaml
+  claim_boundary: wave03_bounded_synthesis_closed_inconclusive_runtime_probe_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave03_open_intraday_liquidity_regime_campaign_v0
+  notes: Bounded synthesis closed after mix-3 L4 pair/KPI/parity; main integration
+    boundary required.
+  materialized_mix2_run_count: 6
+  mix2_run_specs_manifest: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/mix2_run_specs_manifest.yaml
+  executed_proxy_run_count: 6
+  result_counts:
+    preserved_clue: 4
+    inconclusive: 2
+  onnx_bundle_count: 6
+  l4_attempt_count: 12
+  materialized_mix3_run_count: 6
+  mix3_run_specs_manifest: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/mix3_run_specs_manifest.yaml
+  campaign_closeout: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/synthesis/synthesis_closeout.yaml
+  synthesis_closeout: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/synthesis/synthesis_closeout.yaml
+  closed_at_utc: '2026-06-28T20:13:32Z'
+next_action: work_wave03_open_intraday_liquidity_regime_campaign_v0
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: experiment_design
+primary_skill: spacesonar-experiment-design
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: wave_allocation_records_bounded_synthesis_closeout
+next_executable_action: open Wave03 intraday liquidity-regime campaign from the prepared
+  lifecycle spec; do not treat bounded synthesis as candidate, baseline, runtime authority,
+  economics pass, or Goal Achieve
+experiment_or_boundary_effect: wave_allocation_unblocks_next_standard_campaign_after_synthesis_boundary
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/synthesis/synthesis_closeout.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/campaign_manifest.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+writer_owned_outputs:
+- lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/wave_allocation.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- bounded_synthesis_closeout_writer_smoke
+- kpi_ledger_validator
+- active_pointer_smoke
+- workspace_projection_check
+- writer_scope_contract_lint
+- machine_yaml_identity_lint
+- git_diff_check
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_bounded_synthesis_closeout_writer_scope_only_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T20:13:33Z'
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  claim_boundary: wave03_intraday_liquidity_regime_campaign_open_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  candidate_count: 0
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign
+    from the prepared lifecycle spec; do not treat bounded synthesis as candidate,
+    baseline, runtime authority, economics pass, or Goal Achieve
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+unresolved_blockers_or_none:
+- wave03_intraday_liquidity_regime_campaign_not_opened_yet
+next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign from
+  the prepared lifecycle spec; do not treat bounded synthesis as candidate, baseline,
+  runtime authority, economics pass, or Goal Achieve
+updated_at_utc: '2026-06-28T20:13:32Z'
+planned_next_campaign:
+  campaign_id: campaign_us100_wave03_intraday_liquidity_regime_surface_v0
+  campaign_spec: lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+  allocation_role: wave03_second_campaign_intraday_liquidity_regime_surface
+  status: wave03_intraday_liquidity_regime_campaign_open_pending
+  claim_boundary: wave03_intraday_liquidity_regime_campaign_open_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+active_gate_before_next_standard_campaign:
+  gate_id: wave03_bounded_synthesis_and_intent_parity_gate_v0
+  status: satisfied_bounded_synthesis_closed
+  evidence_paths:
+  - lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/synthesis/synthesis_closeout.yaml
+  - lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_summary.yaml
+  claim_boundary: wave03_bounded_synthesis_closed_inconclusive_runtime_probe_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve

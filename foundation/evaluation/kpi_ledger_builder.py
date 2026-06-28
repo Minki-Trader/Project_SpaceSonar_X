@@ -36,7 +36,7 @@ from foundation.mt5.trade_shape_reconstruction import (  # noqa: E402
 )
 
 
-TRADING_RUNTIME_SURFACE_KINDS = {"decision_replay"}
+TRADING_RUNTIME_SURFACE_KINDS = {"decision_execution", "decision_replay"}
 NON_TRADING_RUNTIME_SURFACE_KINDS = {"score_probe"}
 
 
@@ -1856,13 +1856,31 @@ def derive_l4_pair_id(value: str) -> str:
 
 def campaign_run_registry_rows(repo_root: Path, campaign_id: str) -> list[dict[str, str]]:
     registry_path = repo_root / "docs" / "registers" / "run_registry.csv"
+    rows: list[dict[str, str]] = []
+    seen: set[str] = set()
     if not registry_path.exists():
-        return []
-    return [
-        row
-        for row in read_csv(registry_path)
-        if row.get("campaign_id") == campaign_id
-    ]
+        registry_rows: list[dict[str, str]] = []
+    else:
+        registry_rows = [
+            row
+            for row in read_csv(registry_path)
+            if row.get("campaign_id") == campaign_id
+        ]
+    for row in registry_rows:
+        run_id = str(row.get("run_id") or "")
+        if run_id and run_id not in seen:
+            rows.append(row)
+            seen.add(run_id)
+
+    proxy_summary_path = repo_root / "lab" / "campaigns" / campaign_id / "proxy_execution_summary.yaml"
+    if proxy_summary_path.exists():
+        summary = load_yaml(proxy_summary_path)
+        for item in summary.get("result_rows") or []:
+            run_id = str(item.get("run_id") or "")
+            if run_id and run_id not in seen:
+                rows.append({"run_id": run_id, "campaign_id": campaign_id})
+                seen.add(run_id)
+    return rows
 
 
 def campaign_attempt_manifests(repo_root: Path, campaign_id: str, run_ids: set[str]) -> list[Path]:

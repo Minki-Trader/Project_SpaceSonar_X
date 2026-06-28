@@ -177,6 +177,17 @@ machine_enforcement:
       - writer_scope_self_check
       - claim_boundary
       - next_action_or_reopen_condition
+    recurring_closeout_gates:
+      campaign_closeout:
+        - kpi_ledger_triad_or_missing_source_record
+        - intent_behavior_parity_or_reopen_probe
+        - minimum_reconciliation_attempt_for_proxy_mt5_divergence
+        - coherent_main_boundary_integration_required
+      bounded_synthesis_closeout:
+        - kpi_ledger_triad_with_stage_kind_special_mixing
+        - intent_behavior_parity_or_reopen_probe
+        - ingredient_lifecycle_and_mix_depth_policy_check
+        - coherent_main_boundary_integration_required
   failure_policy:
     if_writer_cannot_write_proof_record: write_failure_summary_with_missing_evidence_reopen_condition_or_fail_before_registry_projection
     if_broad_validation_finds_missing_writer_output: move_check_into_writer_before_repeating_broad_validation
@@ -298,6 +309,19 @@ stable_loop_order:
   - write_manifest_receipt_summary_hash_claim_boundary
   - run_non_pytest_smokes_for_touched_surfaces
   - escalate_broad_validation_only_with_command_intent_gate_record
+
+boundary_main_integration_policy:
+  required_at:
+    - campaign_closeout
+    - bounded_synthesis_closeout
+  not_required_mid_campaign: true
+  required_before_main_reflection:
+    - coherent_source_of_truth_records
+    - kpi_ledger_triad_or_missing_source_record
+    - intent_behavior_parity_or_reopen_probe
+    - minimum_reconciliation_attempt_for_proxy_mt5_divergence
+    - claim_boundary_no_protected_claims
+  claim_effect: main_integration_boundary_only_no_runtime_authority_no_economics_pass_no_goal_achieve
 
 machine_output_fields:
   - progress_class

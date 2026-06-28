@@ -1,0 +1,113 @@
+{
+  "version": "artifact_lineage_v2",
+  "run_id": "onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0",
+  "source_inputs": [
+    {
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
+    },
+    {
+      "path": "lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/run_specs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0.yaml",
+      "sha256": "85f5048482b474fbd3803d5f0157c4d62cd20a0e9ea8bc05b226d633e62bf7bf",
+      "size_bytes": 3243,
+      "availability": "present_hash_recorded"
+    }
+  ],
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave03_bounded_synthesis_mix2_proxy_batch.py",
+    "command": "foundation/pipelines/run_wave03_bounded_synthesis_mix2_proxy_batch.py"
+  },
+  "source_of_truth_paths": [
+    "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/run_manifest.json"
+  ],
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/feature_schema.json",
+      "sha256": "b46b056db61547ca69ef2b2ebf3fa0edca58fa31ef503a48475772cc4585a551",
+      "size_bytes": 2818,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/label_schema.json",
+      "sha256": "c95baf1c6ac96e4eb77040b1d3c1c36e4e3bdfed2ae4f69db6f72ff612f521d1",
+      "size_bytes": 766,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/model_summary.json",
+      "sha256": "f9589289b91ce9e820fb2b6e244d55d20da9201e31c1c2c4caf60e9032472bbb",
+      "size_bytes": 823,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/split_profile.json",
+      "sha256": "050b8681369e74b6b3d3f1af20a4033b78d3b904a540cfe74c7630beebe981e9",
+      "size_bytes": 247,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "c8a30662ac26d93867661697fb95f1ade15b0163ae68258db12b29fe2542841f",
+      "size_bytes": 22048,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "5ade0da462daf100ed1b229af5c4cbfc060882e55a3c413bd79f22aa9b54b972",
+      "size_bytes": 22881,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/proxy_decision_stream_validation.csv",
+      "sha256": "878ecdd05207a0eee2950faa8bfd543d663964b9516851166d23adf85bb51648",
+      "size_bytes": 5090730,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/proxy_decision_stream_research_oos_a.csv",
+      "sha256": "86a763389571e48b2402dc22d0e172a770ec6b365d56551681c9d6c7bce149a8",
+      "size_bytes": 4370304,
+      "availability": "local_generated_hash_recorded_not_committed"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/reports/proxy_volatility_state_report.json",
+      "sha256": "d45baddf85fe7a5e1f9e19208609b562e8eec77d74e834dae9df7d079eaaf2dd",
+      "size_bytes": 6208,
+      "availability": "local_generated_hash_recorded_not_committed"
+    }
+  ],
+  "artifact_hashes": [
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/feature_schema.json": "b46b056db61547ca69ef2b2ebf3fa0edca58fa31ef503a48475772cc4585a551"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/label_schema.json": "c95baf1c6ac96e4eb77040b1d3c1c36e4e3bdfed2ae4f69db6f72ff612f521d1"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/model_summary.json": "f9589289b91ce9e820fb2b6e244d55d20da9201e31c1c2c4caf60e9032472bbb"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/split_profile.json": "050b8681369e74b6b3d3f1af20a4033b78d3b904a540cfe74c7630beebe981e9"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/prediction_sample_validation.csv": "c8a30662ac26d93867661697fb95f1ade15b0163ae68258db12b29fe2542841f"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/prediction_sample_research_oos_a.csv": "5ade0da462daf100ed1b229af5c4cbfc060882e55a3c413bd79f22aa9b54b972"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/proxy_decision_stream_validation.csv": "878ecdd05207a0eee2950faa8bfd543d663964b9516851166d23adf85bb51648"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/artifacts/proxy_decision_stream_research_oos_a.csv": "86a763389571e48b2402dc22d0e172a770ec6b365d56551681c9d6c7bce149a8"
+    },
+    {
+      "lab/runs/onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0/reports/proxy_volatility_state_report.json": "d45baddf85fe7a5e1f9e19208609b562e8eec77d74e834dae9df7d079eaaf2dd"
+    }
+  ],
+  "availability": "present_hash_recorded",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing"
+}

@@ -6,6 +6,8 @@
 #property version   "1.02"
 #property description "Non-trading full-period ONNX score probe for SpaceSonar X L4."
 
+#include <Trade/Trade.mqh>
+
 input string InpOnnxPath       = "SpaceSonar\\l4_score_probe\\bundle\\model.onnx";
 input string InpOutputPath     = "SpaceSonar\\l4_score_probe\\attempt\\score_telemetry.csv";
 input string InpDiagnosticPath = "";
@@ -21,6 +23,10 @@ input int    InpHistoryBars    = 600;
 input int    InpMaxRows        = 0;
 input bool   InpUseCommonFiles = true;
 input double InpFixedLot       = 0.02;
+input bool   InpExecuteTrades  = false;
+input int    InpHoldBars       = 72;
+input ulong  InpMagicNumber    = 503015;
+input int    InpDeviationPoints = 20;
 input int    InpBarTimeToUtcOffsetHours = 0;
 
 #define SPACESONAR_PI 3.14159265358979323846
@@ -36,6 +42,8 @@ int      ExtFeatureFailureCount = 0;
 int      ExtOnnxFailureCount = 0;
 bool     ExtMaxRowsReachedLogged = false;
 string   ExtColumns[];
+CTrade   ExtTrade;
+int      ExtBarsSinceEntry = 0;
 
 string DiagnosticTime(const datetime value)
 {
@@ -299,6 +307,63 @@ bool TickVolumeRankPct(const MqlRates &rates[], const int index, const int windo
    return true;
 }
 
+bool RangeRankPct(const MqlRates &rates[], const int index, const int window, const int min_count, double &value)
+{
+   const int start = MathMax(0, index - window + 1);
+   const int count = index - start + 1;
+   if(count < min_count)
+      return false;
+   const double current = RangePctAt(rates, index);
+   int less = 0;
+   int equal = 0;
+   for(int i = start; i <= index; i++)
+   {
+      const double candidate = RangePctAt(rates, i);
+      if(candidate < current)
+         less++;
+      if(candidate == current)
+         equal++;
+   }
+   value = ((double)less + ((double)equal + 1.0) / 2.0) / (double)count;
+   return true;
+}
+
+bool AtrPctAt(const MqlRates &rates[], const int index, const int window, const int min_count, double &value)
+{
+   double mean = 0.0;
+   if(!MeanTrueRange(rates, index, window, min_count, mean))
+      return false;
+   value = SafeDiv(mean, rates[index].close);
+   return true;
+}
+
+bool AtrPctRank(const MqlRates &rates[], const int index, const int rank_window, const int rank_min_count, double &value)
+{
+   double current = 0.0;
+   if(!AtrPctAt(rates, index, 48, 12, current))
+      return false;
+
+   const int start = MathMax(0, index - rank_window + 1);
+   int count = 0;
+   int less = 0;
+   int equal = 0;
+   for(int i = start; i <= index; i++)
+   {
+      double candidate = 0.0;
+      if(!AtrPctAt(rates, i, 48, 12, candidate))
+         continue;
+      count++;
+      if(candidate < current)
+         less++;
+      if(candidate == current)
+         equal++;
+   }
+   if(count < rank_min_count)
+      return false;
+   value = ((double)less + ((double)equal + 1.0) / 2.0) / (double)count;
+   return true;
+}
+
 bool MeanTickVolumeZ(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean)
 {
    double sum = 0.0;
@@ -361,6 +426,18 @@ bool MeanAbsRet(const MqlRates &rates[], const int index, const int window, cons
       return false;
    mean = sum / (double)count;
    return true;
+}
+
+bool SumAbsRet(const MqlRates &rates[], const int index, const int window, const int min_count, double &sum)
+{
+   sum = 0.0;
+   int count = 0;
+   for(int i = MathMax(1, index - window + 1); i <= index; i++)
+   {
+      sum += MathAbs(RetAt(rates, i, 1));
+      count++;
+   }
+   return count >= min_count;
 }
 
 bool MeanStdAbsRet(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean, double &std_value)
@@ -446,6 +523,30 @@ bool MinLow(const MqlRates &rates[], const int index, const int window, const in
    for(int i = MathMax(0, index - window + 1); i <= index; i++)
    {
       value = MathMin(value, rates[i].low);
+      count++;
+   }
+   return count >= min_count;
+}
+
+bool MaxClose(const MqlRates &rates[], const int index, const int window, const int min_count, double &value)
+{
+   int count = 0;
+   value = -DBL_MAX;
+   for(int i = MathMax(0, index - window + 1); i <= index; i++)
+   {
+      value = MathMax(value, rates[i].close);
+      count++;
+   }
+   return count >= min_count;
+}
+
+bool MinClose(const MqlRates &rates[], const int index, const int window, const int min_count, double &value)
+{
+   int count = 0;
+   value = DBL_MAX;
+   for(int i = MathMax(0, index - window + 1); i <= index; i++)
+   {
+      value = MathMin(value, rates[i].close);
       count++;
    }
    return count >= min_count;
@@ -557,8 +658,9 @@ bool SessionTransitionFeature(const string column, const datetime close_time, do
    if(column == "is_cash_session" || column == "session_is_cash") { value = (minute >= cash_open && minute <= cash_close ? 1.0 : 0.0); return true; }
    if(column == "is_after_cash" || column == "session_is_after_cash") { value = (minute > cash_close && minute <= 20.0 * 60.0 ? 1.0 : 0.0); return true; }
    if(column == "session_is_edge") { value = (MathAbs(minute - cash_open) <= 45.0 || MathAbs(minute - cash_close) <= 45.0 ? 1.0 : 0.0); return true; }
-   if(column == "is_cash_open_transition" || column == "transition_cash_open_60m") { value = (MathAbs(minute - cash_open) <= 60.0 ? 1.0 : 0.0); return true; }
-   if(column == "is_cash_close_transition" || column == "transition_cash_close_60m") { value = (MathAbs(minute - cash_close) <= 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_open_transition" || column == "transition_cash_open_60m" || column == "session_is_open_60m") { value = (MathAbs(minute - cash_open) <= 60.0 ? 1.0 : 0.0); return true; }
+   if(column == "session_is_open_90m") { value = (MathAbs(minute - cash_open) <= 90.0 ? 1.0 : 0.0); return true; }
+   if(column == "is_cash_close_transition" || column == "transition_cash_close_60m" || column == "session_is_close_60m") { value = (MathAbs(minute - cash_close) <= 60.0 ? 1.0 : 0.0); return true; }
    if(column == "is_midday_block" || column == "transition_midday_90m") { value = (MathAbs(minute - midday) <= 90.0 ? 1.0 : 0.0); return true; }
    if(column == "is_monday") { value = (python_dow == 0 ? 1.0 : 0.0); return true; }
    if(column == "is_friday") { value = (python_dow == 4 ? 1.0 : 0.0); return true; }
@@ -656,6 +758,32 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       if(!MeanTrueRange(rates, index, 48, 12, mean)) return false;
       value = SafeDiv(mean, rates[index].close);
       return true;
+   }
+   if(column == "atr_144_pct")
+   {
+      if(!MeanTrueRange(rates, index, 144, 36, mean)) return false;
+      value = SafeDiv(mean, rates[index].close);
+      return true;
+   }
+   if(column == "atr_12_vs_48")
+   {
+      double atr12 = 0.0, atr48 = 0.0;
+      if(!MeanTrueRange(rates, index, 12, 6, atr12)) return false;
+      if(!MeanTrueRange(rates, index, 48, 12, atr48)) return false;
+      value = SafeDiv(atr12, atr48);
+      return true;
+   }
+   if(column == "atr_48_vs_144")
+   {
+      double atr48 = 0.0, atr144 = 0.0;
+      if(!MeanTrueRange(rates, index, 48, 12, atr48)) return false;
+      if(!MeanTrueRange(rates, index, 144, 36, atr144)) return false;
+      value = SafeDiv(atr48, atr144);
+      return true;
+   }
+   if(column == "atr_rank_288" || column == "volatility_atr_rank_288")
+   {
+      return AtrPctRank(rates, index, 288, 72, value);
    }
    if(column == "volatility_atr_48_pct")
    {
@@ -756,6 +884,12 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = std_value;
       return true;
    }
+   if(ParseWindowSuffix(column, "realized_vol_", window))
+   {
+      if(!MeanStdRet(rates, index, window, MathMax(4, window / 4), mean, std_value)) return false;
+      value = std_value;
+      return true;
+   }
    if(ParseWindowSuffix(column, "range_mean_", window))
    {
       if(!MeanRange(rates, index, window, MinPeriodsForWindow(window, false), mean)) return false;
@@ -768,6 +902,10 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = std_value;
       return true;
    }
+   if(ParseWindowSuffix(column, "range_rank_", window))
+   {
+      return RangeRankPct(rates, index, window, MathMax(4, window / 4), value);
+   }
    if(ParseWindowSuffix(column, "path_abs_ret_mean_", window))
    {
       int min_periods = MathMax(1, window / 4);
@@ -775,6 +913,16 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
          min_periods = window;
       if(!MeanAbsRet(rates, index, window, min_periods, mean)) return false;
       value = mean;
+      return true;
+   }
+   if(ParseWindowSuffix(column, "path_efficiency_", window))
+   {
+      double abs_path = 0.0;
+      int min_periods = MathMax(2, window / 4);
+      if(min_periods > window)
+         min_periods = window;
+      if(!SumAbsRet(rates, index, window, min_periods, abs_path)) return false;
+      value = SafeDiv(MathAbs(RetAt(rates, index, window)), abs_path);
       return true;
    }
    if(ParseWindowSuffix(column, "close_to_sma_", window))
@@ -843,6 +991,14 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = SafeDiv(range12, range48);
       return true;
    }
+   if(column == "compression_range_6_vs_48")
+   {
+      double range6 = 0.0, range48 = 0.0;
+      if(!MeanRange(rates, index, 6, 3, range6)) return false;
+      if(!MeanRange(rates, index, 48, MinPeriodsForWindow(48, false), range48)) return false;
+      value = SafeDiv(range6, range48);
+      return true;
+   }
    if(column == "compression_range_48_vs_144")
    {
       double range48 = 0.0, range144 = 0.0;
@@ -851,12 +1007,44 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = SafeDiv(range48, range144);
       return true;
    }
+   if(column == "compression_atr_12_vs_48")
+   {
+      double atr12 = 0.0, atr48 = 0.0;
+      if(!MeanTrueRange(rates, index, 12, 6, atr12)) return false;
+      if(!MeanTrueRange(rates, index, 48, 12, atr48)) return false;
+      value = SafeDiv(atr12, atr48);
+      return true;
+   }
+   if(column == "compression_atr_48_vs_144")
+   {
+      double atr48 = 0.0, atr144 = 0.0;
+      if(!MeanTrueRange(rates, index, 48, 12, atr48)) return false;
+      if(!MeanTrueRange(rates, index, 144, 36, atr144)) return false;
+      value = SafeDiv(atr48, atr144);
+      return true;
+   }
    if(column == "volatility_range_12_vs_48")
    {
       double range12 = 0.0, range48 = 0.0;
       if(!MeanRange(rates, index, 12, 3, range12)) return false;
       if(!MeanRange(rates, index, 48, 12, range48)) return false;
       value = SafeDiv(range12, range48);
+      return true;
+   }
+   if(column == "volatility_realized_12_vs_48")
+   {
+      double mean12 = 0.0, std12 = 0.0, mean48 = 0.0, std48 = 0.0;
+      if(!MeanStdRet(rates, index, 12, 4, mean12, std12)) return false;
+      if(!MeanStdRet(rates, index, 48, 12, mean48, std48)) return false;
+      value = SafeDiv(std12, std48);
+      return true;
+   }
+   if(column == "volatility_realized_48_vs_144")
+   {
+      double mean48 = 0.0, std48 = 0.0, mean144 = 0.0, std144 = 0.0;
+      if(!MeanStdRet(rates, index, 48, 12, mean48, std48)) return false;
+      if(!MeanStdRet(rates, index, 144, 36, mean144, std144)) return false;
+      value = SafeDiv(std48, std144);
       return true;
    }
    if(column == "volume_z_48" || column == "liquidity_volume_z_48")
@@ -891,6 +1079,14 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = SafeDiv(rates[index].close - low48, high48 - low48);
       return true;
    }
+   if(column == "position_close_in_144_range")
+   {
+      double high144 = 0.0, low144 = 0.0;
+      if(!MaxHigh(rates, index, 144, 36, high144)) return false;
+      if(!MinLow(rates, index, 144, 36, low144)) return false;
+      value = SafeDiv(rates[index].close - low144, high144 - low144);
+      return true;
+   }
    if(column == "reversal_pressure_12")
    {
       double high48 = 0.0, low48 = 0.0;
@@ -922,16 +1118,66 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = SafeDiv(low48_prev - rates[index].close, atr48);
       return true;
    }
-   if(column == "event_abs_ret_3_z_96")
+   if(column == "breakout_up_144")
+   {
+      double high144_prev = 0.0, atr144 = 0.0;
+      if(index <= 0) return false;
+      if(!MaxHigh(rates, index - 1, 144, 36, high144_prev)) return false;
+      if(!MeanTrueRange(rates, index, 144, 36, atr144)) return false;
+      value = SafeDiv(rates[index].close - high144_prev, atr144);
+      return true;
+   }
+   if(column == "breakout_down_144")
+   {
+      double low144_prev = 0.0, atr144 = 0.0;
+      if(index <= 0) return false;
+      if(!MinLow(rates, index - 1, 144, 36, low144_prev)) return false;
+      if(!MeanTrueRange(rates, index, 144, 36, atr144)) return false;
+      value = SafeDiv(low144_prev - rates[index].close, atr144);
+      return true;
+   }
+   if(column == "drawdown_from_48_high")
+   {
+      double close48_max = 0.0;
+      if(!MaxClose(rates, index, 48, 12, close48_max)) return false;
+      value = SafeDiv(rates[index].close - close48_max, rates[index].close);
+      return true;
+   }
+   if(column == "rebound_from_48_low")
+   {
+      double close48_min = 0.0;
+      if(!MinClose(rates, index, 48, 12, close48_min)) return false;
+      value = SafeDiv(rates[index].close - close48_min, rates[index].close);
+      return true;
+   }
+   if(column == "drawdown_rebound_balance_48")
+   {
+      double close48_max = 0.0, close48_min = 0.0;
+      if(!MaxClose(rates, index, 48, 12, close48_max)) return false;
+      if(!MinClose(rates, index, 48, 12, close48_min)) return false;
+      value = SafeDiv(rates[index].close - close48_min, rates[index].close)
+            + SafeDiv(rates[index].close - close48_max, rates[index].close);
+      return true;
+   }
+   if(column == "event_abs_ret_3_z_96" || column == "expansion_abs_ret_3_z_96")
    {
       if(!MeanStdAbsRet(rates, index, 96, 24, mean, std_value)) return false;
       value = SafeDiv(MathAbs(RetAt(rates, index, 3)) - mean, std_value);
       return true;
    }
-   if(column == "event_range_z_96")
+   if(column == "event_range_z_96" || column == "expansion_range_z_96")
    {
       if(!MeanStdRange(rates, index, 96, 24, mean, std_value)) return false;
       value = SafeDiv(RangePctAt(rates, index) - mean, std_value);
+      return true;
+   }
+   if(column == "expansion_release_12")
+   {
+      double range12 = 0.0, range48 = 0.0, range48_mean = 0.0, range48_std = 0.0;
+      if(!MeanRange(rates, index, 12, 4, range12)) return false;
+      if(!MeanRange(rates, index, 48, 12, range48)) return false;
+      if(!MeanStdRange(rates, index, 48, 12, range48_mean, range48_std)) return false;
+      value = SafeDiv(range12 - range48, range48_std);
       return true;
    }
    if(column == "trend_ratio_48_288")
@@ -962,9 +1208,116 @@ string DecisionFromScore(const double score)
       if(score <= InpScoreLow) return "short";
       return "flat";
    }
+   if(InpDecisionFamily == "volatility_state_reversal_continuation_score_probe")
+   {
+      if(score >= InpScoreHigh) return "long";
+      if(score <= InpScoreLow) return "short";
+      return "flat";
+   }
    if(InpDecisionFamily == "abstain_capable_direction_agnostic_tradeability")
       return (score >= InpScoreHigh ? "tradeable" : "flat");
    return "unknown";
+}
+
+bool IsManagedPosition(const ulong ticket)
+{
+   if(!PositionSelectByTicket(ticket))
+      return false;
+   if(PositionGetString(POSITION_SYMBOL) != _Symbol)
+      return false;
+   return ((ulong)PositionGetInteger(POSITION_MAGIC) == InpMagicNumber);
+}
+
+int ManagedPositionDirection()
+{
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      const ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || !IsManagedPosition(ticket))
+         continue;
+      const long type = PositionGetInteger(POSITION_TYPE);
+      if(type == POSITION_TYPE_BUY)
+         return 1;
+      if(type == POSITION_TYPE_SELL)
+         return -1;
+   }
+   return 0;
+}
+
+bool CloseManagedPositions(const string reason, const datetime bar_time)
+{
+   bool ok = true;
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+   {
+      const ulong ticket = PositionGetTicket(i);
+      if(ticket == 0 || !IsManagedPosition(ticket))
+         continue;
+      ResetLastError();
+      if(!ExtTrade.PositionClose(ticket))
+      {
+         ok = false;
+         WriteDiagnosticEvent("trade_close_failed", bar_time, StringFormat("ticket=%I64u reason=%s retcode=%u err=%d", ticket, reason, ExtTrade.ResultRetcode(), GetLastError()));
+      }
+      else
+      {
+         WriteDiagnosticEvent("trade_closed", bar_time, StringFormat("ticket=%I64u reason=%s", ticket, reason));
+      }
+   }
+   if(ok)
+      ExtBarsSinceEntry = 0;
+   return ok;
+}
+
+bool OpenDecisionPosition(const string decision, const datetime bar_time)
+{
+   if(decision != "long" && decision != "short")
+      return false;
+   ResetLastError();
+   bool ok = false;
+   if(decision == "long")
+      ok = ExtTrade.Buy(InpFixedLot, _Symbol);
+   else
+      ok = ExtTrade.Sell(InpFixedLot, _Symbol);
+   if(!ok)
+   {
+      WriteDiagnosticEvent("trade_open_failed", bar_time, StringFormat("decision=%s lot=%.2f retcode=%u err=%d", decision, InpFixedLot, ExtTrade.ResultRetcode(), GetLastError()));
+      return false;
+   }
+   ExtBarsSinceEntry = 0;
+   WriteDiagnosticEvent("trade_opened", bar_time, StringFormat("decision=%s lot=%.2f", decision, InpFixedLot));
+   return true;
+}
+
+void ExecuteDecision(const string decision, const datetime bar_time)
+{
+   if(!InpExecuteTrades)
+      return;
+
+   const int direction = ManagedPositionDirection();
+   if(direction != 0)
+      ExtBarsSinceEntry++;
+
+   if(direction != 0 && InpHoldBars > 0 && ExtBarsSinceEntry >= InpHoldBars)
+   {
+      CloseManagedPositions("hold_bars_elapsed", bar_time);
+      if(decision != "long" && decision != "short")
+         return;
+   }
+   else if(direction == 1 && decision == "short")
+   {
+      CloseManagedPositions("opposite_short_signal", bar_time);
+   }
+   else if(direction == -1 && decision == "long")
+   {
+      CloseManagedPositions("opposite_long_signal", bar_time);
+   }
+   else if(direction != 0)
+   {
+      return;
+   }
+
+   if(ManagedPositionDirection() == 0)
+      OpenDecisionPosition(decision, bar_time);
 }
 
 void WriteHeader()
@@ -1054,7 +1407,9 @@ bool RunOneClosedBar()
 
    const double score = (double)score_vector[0];
    const string decision = DecisionFromScore(score);
-   WriteTelemetryRow(current_bar.time + PeriodSeconds(PERIOD_M5), score, decision, current_bar);
+   const datetime close_time = current_bar.time + PeriodSeconds(PERIOD_M5);
+   WriteTelemetryRow(close_time, score, decision, current_bar);
+   ExecuteDecision(decision, close_time);
    FileFlush(ExtOutputHandle);
    ExtRowsWritten++;
    if(ShouldLogSample(ExtRowsWritten))
@@ -1095,6 +1450,8 @@ int OnInit()
 {
    OpenDiagnosticLog();
    WriteDiagnosticEvent("init_start", 0, "score_probe_init");
+   ExtTrade.SetExpertMagicNumber((long)InpMagicNumber);
+   ExtTrade.SetDeviationInPoints(InpDeviationPoints);
 
    if(InpFeatureCount <= 0)
    {

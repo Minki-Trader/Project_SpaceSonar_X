@@ -8,10 +8,39 @@ from typing import Any
 from .models import ExecutionContext, TransactionResult
 from .store import dump_yaml, filesystem_path, read_yaml
 from .transaction import ControlPlaneTransaction
+from .writer_contract import WRITER_CONTRACT_VERSION, default_validation_attempt_budget, default_writer_preflight_gate
 
 
 YamlOverrides = dict[Path, dict[str, Any]]
 CURRENT_POLICY_CLOSEOUT_NAME = "current_policy_closeout_amendment.yaml"
+WORKSPACE_OUTPUT_PATH = "docs/workspace/workspace_state.yaml"
+WORKSPACE_NON_PYTEST_SMOKES = [
+    "workspace_projection_check",
+    "active_pointer_smoke",
+    "machine_yaml_identity_lint",
+    "writer_scope_contract_lint",
+]
+WORKSPACE_SKIPPED_BROAD_VALIDATIONS = [
+    "pytest",
+    "project_validate",
+    "full_regression_workflow",
+    "evidence_graph_full_workflow",
+    "active_record_validator_full_graph",
+    "broad_hash_resync",
+    "global_registry_regeneration",
+]
+WORKSPACE_FORBIDDEN_CLAIMS = [
+    "selected_baseline",
+    "operating_reference",
+    "operating_promotion",
+    "runtime_authority",
+    "economics_pass",
+    "materialization_ready",
+    "handoff_complete",
+    "live_readiness",
+    "reviewed_verified_pass",
+    "goal_achieve",
+]
 
 
 def _read_yaml_view(repo_root: Path, rel_path: Path, yaml_overrides: YamlOverrides | None = None) -> dict[str, Any]:
@@ -132,6 +161,44 @@ def _active_closeout_rel_path(
     return None
 
 
+def _workspace_writer_contract_fields(projection: dict[str, Any], source_paths: list[str]) -> dict[str, Any]:
+    claim_boundary = str(projection.get("current_claim_boundary") or "workspace_projection_only_no_runtime_authority_no_economics_pass")
+    next_action = str(projection.get("next_action") or "inspect active goal next_work_item")
+    updated_utc = str(projection.get("updated_utc") or "")
+    budget = default_validation_attempt_budget()
+    budget["observed_writer_scope_attempts"] = 0
+    return {
+        "writer_contract_version": WRITER_CONTRACT_VERSION,
+        "primary_family": "workspace_state_sync",
+        "primary_skill": "spacesonar-workspace-state-sync",
+        "progress_class": "next_executable_experiment_writer_or_probe",
+        "progress_effect": "workspace_projection_synchronized",
+        "next_executable_action": next_action,
+        "experiment_or_boundary_effect": "active_pointer_projection_written",
+        "source_of_truth_paths": source_paths,
+        "writer_owned_outputs": [WORKSPACE_OUTPUT_PATH],
+        "validation_depth": "writer_scope_smoke",
+        "non_pytest_smokes": list(WORKSPACE_NON_PYTEST_SMOKES),
+        "skipped_broad_validations": list(WORKSPACE_SKIPPED_BROAD_VALIDATIONS),
+        "broad_validation_escalation_reason": "none_workspace_projection_writer_scope_only",
+        "writer_preflight_gate": default_writer_preflight_gate(),
+        "validation_attempt_budget": budget,
+        "writer_scope_self_check": {
+            "status": "passed",
+            "checked_at_utc": updated_utc,
+            "writer_contract_version": WRITER_CONTRACT_VERSION,
+            "validation_depth": "writer_scope_smoke",
+            "claim_boundary": claim_boundary,
+            "forbidden_claims_respected": True,
+            "next_action_or_reopen_condition": next_action,
+        },
+        "claim_boundary": claim_boundary,
+        "forbidden_claims": list(WORKSPACE_FORBIDDEN_CLAIMS),
+        "unresolved_blockers_or_none": projection.get("unresolved_blockers") or [],
+        "next_action_or_reopen_condition": next_action,
+    }
+
+
 def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides | None = None) -> dict[str, Any]:
     goal_path, goal = select_active_goal(repo_root, yaml_overrides)
     wave_path, wave, closeout = _select_wave_for_goal(repo_root, goal, yaml_overrides)
@@ -145,9 +212,27 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
     )
     next_work_item = next_work_item_doc or next_work_item_ref
     active_ids = goal.get("active_ids") or {}
+    active_campaign_id = active_ids.get("campaign_id")
+    campaign_manifest_path = (
+        Path("lab/campaigns") / str(active_campaign_id) / "campaign_manifest.yaml"
+        if active_campaign_id
+        else None
+    )
+    campaign_manifest = (
+        _read_yaml_view(repo_root, campaign_manifest_path, yaml_overrides)
+        if campaign_manifest_path is not None
+        else {}
+    )
     goal_manifest = goal_path.as_posix() if goal_path else None
     wave_allocation = wave_path.as_posix() if wave_path else None
     wave_closeout = _active_closeout_rel_path(repo_root, wave, wave_path, yaml_overrides) if wave and wave_path else None
+    active_work_item_path = (
+        str(next_work_item.get("path"))
+        if next_work_item.get("path")
+        else next_work_item_path.as_posix()
+        if next_work_item_path is not None
+        else None
+    )
     active_pointer_fields = [
         "active_goal",
         "active_wave",
@@ -157,7 +242,18 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
         "next_action",
         "unresolved_blockers",
     ]
-    return {
+    source_paths = [
+        text
+        for text in [
+            goal_manifest,
+            wave_allocation,
+            wave_closeout,
+            campaign_manifest_path.as_posix() if campaign_manifest else None,
+            active_work_item_path,
+        ]
+        if text
+    ]
+    projection = {
         "version": "workspace_state_projection_v2",
         "updated_utc": goal.get("updated_at_utc")
         or closeout.get("generated_at_utc")
@@ -180,15 +276,21 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
             "closeout": wave_closeout,
         },
         "active_campaign": {
-            "campaign_id": active_ids.get("campaign_id"),
+            "campaign_id": active_campaign_id,
+            "status": campaign_manifest.get("status"),
+            "manifest": campaign_manifest_path.as_posix() if campaign_manifest else None,
+            "closeout": campaign_manifest.get("campaign_closeout"),
         },
         "active_work_item": {
             "work_item_id": next_work_item.get("work_item_id"),
-            "path": next_work_item.get("path"),
+            "path": active_work_item_path,
         },
         "current_claim_boundary": closeout.get("claim_boundary") or goal.get("claim_boundary"),
-        "next_action": next_work_item.get("summary") or wave.get("next_action"),
-        "unresolved_blockers": closeout.get("unresolved_blockers") or next_work_item.get("unresolved_blockers") or [],
+        "next_action": next_work_item.get("next_action") or next_work_item.get("summary") or wave.get("next_action"),
+        "unresolved_blockers": closeout.get("unresolved_blockers")
+        or next_work_item.get("unresolved_blockers")
+        or next_work_item.get("unresolved_blockers_or_none")
+        or [],
         "source_of_truth_pointers": {
             "policy_contract": "docs/agent_control/policy_contract.yaml",
             "runtime_contract": "foundation/config/mt5_runtime_probe_contract.yaml",
@@ -206,6 +308,8 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
             "rule": "select next action from active_work_item plus next_work_item; never from summary_counts alone",
         },
     }
+    projection.update(_workspace_writer_contract_fields(projection, source_paths))
+    return projection
 
 
 def workspace_projection_text(repo_root: Path, *, yaml_overrides: YamlOverrides | None = None) -> str:

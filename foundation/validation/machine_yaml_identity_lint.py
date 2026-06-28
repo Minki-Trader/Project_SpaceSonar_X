@@ -1,8 +1,17 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
+import sys
 from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SRC_ROOT = REPO_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+from spacesonar.control_plane.store import filesystem_path
 
 
 PYAML_ALIAS_RE = re.compile(r"(^|[\s\[{,])(?P<token>[&*]id\d{3,})\b")
@@ -17,13 +26,15 @@ def repo_relative_path(repo_root: Path, raw_path: str) -> Path:
 
 def lint_path(repo_root: Path, rel_path: Path) -> list[str]:
     path = repo_root / rel_path
-    if not path.exists():
+    if not os.path.exists(filesystem_path(path)):
         return [f"{rel_path.as_posix()}: missing"]
     if path.suffix.lower() not in {".yaml", ".yml"}:
         return [f"{rel_path.as_posix()}: not a YAML file"]
 
     errors: list[str] = []
-    for lineno, line in enumerate(path.read_text(encoding="utf-8-sig", errors="replace").splitlines(), start=1):
+    with open(filesystem_path(path), "r", encoding="utf-8-sig", errors="replace") as handle:
+        lines = handle.read().splitlines()
+    for lineno, line in enumerate(lines, start=1):
         stripped = line.strip()
         if not stripped or stripped.startswith("#"):
             continue

@@ -1,0 +1,311 @@
+version: kpi_summary_v1
+campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+stage_kind: special_mixing
+synthesis_stage_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+created_at_utc: '2026-06-28T19:15:47.050075Z'
+record_counts:
+  proxy_kpi_records: 12
+  mt5_runtime_kpi_records: 0
+  proxy_mt5_comparison_records: 0
+proxy_run_count: 12
+mt5_attempt_count: 0
+mt5_surface_kind_counts: {}
+trade_execution_attempt_count: 0
+comparison_pair_count: 0
+sample_record_ids:
+  proxy:
+  - proxy_onnxlab_wave03_mix2_cell_001_tradeability_gate_control_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix2_cell_002_tradeability_gate_longer_horizon_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix2_cell_003_adverse_move_abstain_control_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix2_cell_004_drawdown_rebound_abstain_control_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix2_cell_005_low_vol_false_break_filter_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix2_cell_006_session_gate_control_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix3_cell_001_cell009_tradeability_anchor_logistic_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix3_cell_002_cell009_tradeability_anchor_tree_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix3_cell_003_cell009_adverse_move_abstain_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix3_cell_004_cell009_drawdown_rebound_tradeability_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix3_cell_005_cell009_false_break_guard_v0_proxy_validation_roc_auc_v1
+  - proxy_onnxlab_wave03_mix3_cell_006_cell009_session_tradeability_gate_v0_proxy_validation_roc_auc_v1
+  mt5_runtime_trade_execution: []
+  proxy_mt5_comparison: []
+authority_counts:
+  proxy_metrics_json: 12
+missing_value_reason_counts: {}
+segment_materialization_sources:
+  attempt_count: 0
+  raw_telemetry_available_attempt_count: 0
+  raw_telemetry_missing_attempt_ids: []
+  attempt_sources: []
+  time_window_counts: {}
+  session_counts: {}
+  score_or_threshold_bucket_counts: {}
+  direction_counts: {}
+  action_counts: {}
+  session_bucket_policy: mt5_server_hour_quadrants_not_exchange_session_claim
+  score_bucket_policy: attempt_thresholds_when_available_else_fixed_terciles
+  claim_boundary: segment_materialization_counts_only_no_runtime_authority_no_economics_pass
+segment_coverage:
+  required_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  optional_axes:
+  - volatility_regime
+  - drawdown_cluster
+  - holding_period_bucket
+  - feature_family
+  - target_family
+  - model_family
+  - spread_or_cost_bucket
+  covered_axes:
+  - direction
+  - overall
+  - period_role
+  - runtime_surface
+  - score_or_threshold_bucket
+  - session
+  - time_window
+  - trade_shape_bucket
+  missing_axes: []
+  materialized_axes:
+  - overall
+  - period_role
+  partial_materialized_axes: []
+  not_collected_axes:
+  - direction
+  - runtime_surface
+  - score_or_threshold_bucket
+  - session
+  - time_window
+  - trade_shape_bucket
+  pending_materialization_axes:
+  - direction
+  - runtime_surface
+  - score_or_threshold_bucket
+  - session
+  - time_window
+  - trade_shape_bucket
+  claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
+segment_breakdowns:
+  overall:
+    status: observed
+    analysis_status: materialized
+    record_count: 12
+    proxy_record_count: 12
+    mt5_runtime_record_count: 0
+    comparison_record_count: 0
+    metric_basis:
+    - proxy.validation.roc_auc
+    claim_effect: segment_breakdown_learning_only_no_selection_or_pass_claim
+  period_role:
+    status: observed
+    analysis_status: materialized
+    claim_effect: segment_breakdown_learning_only_no_selection_or_pass_claim
+    counts:
+      validation: 12
+    metric_basis_by_period_role:
+      validation:
+      - proxy.validation.roc_auc
+  time_window:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: time_window_bucket_not_materialized_in_kpi_records_yet
+    next_materialization_step: project attempt period identity and telemetry timestamps
+      into stable time_window buckets
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    counts: {}
+    raw_telemetry_available_attempt_count: 0
+    expected_sources:
+    - period_profile
+    - attempt_period_identity
+    - runtime_telemetry_time_bucket
+  session:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: session_bucket_not_materialized_in_kpi_records_yet
+    next_materialization_step: map US100 bar close timestamps to declared session
+      buckets
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    counts: {}
+    session_bucket_policy: mt5_server_hour_quadrants_not_exchange_session_claim
+    expected_sources:
+    - MT5 server bar close time
+  direction:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: direction_signal_counts_not_available
+    next_materialization_step: emit long/short/flat signal counts in execution telemetry
+      summary
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    signal_counts:
+      long: 0
+      short: 0
+      flat: 0
+    trade_shape_pnl_by_direction: {}
+    metric_basis: []
+  score_or_threshold_bucket:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: score_threshold_bucket_not_materialized_in_kpi_records_yet
+    next_materialization_step: write score band or threshold bucket per decision replay
+      attempt
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    counts: {}
+    score_bucket_policy: attempt_thresholds_when_available_else_fixed_terciles
+    expected_sources:
+    - score telemetry
+    - threshold policy
+    - decision band
+  trade_shape_bucket:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: trade_shape_kpi_not_materialized
+    next_materialization_step: parse tester report and trade-shape summary before
+      closeout interpretation
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    record_count: 0
+    bucket_breakdown: {}
+    metric_basis: []
+  runtime_surface:
+    status: not_collected
+    analysis_status: not_materialized
+    missing_reason: runtime_surface_kind_missing
+    next_materialization_step: record runtime_surface_contract.runtime_surface_kind
+      for every MT5 attempt
+    claim_effect: segment_missing_lowers_attribution_confidence_no_selection_or_pass_claim
+    counts: {}
+    metric_basis: []
+kpi_policy:
+  fixed_schema: true
+  mt5_missing_is_repair_trigger_before_na: true
+  proxy_only_runs_excluded_from_comparison_ledger: true
+  non_trading_score_probe_excluded_from_kpi_ledger: true
+  score_probe_retained_only_in_runtime_evidence_not_kpi: true
+  overall_and_segment_breakdowns_required: true
+  fake_segment_placeholder_forbidden: true
+  observed_segment_requires_metric_or_count_basis: true
+  missing_segment_requires_next_materialization_step: true
+  required_segment_axes:
+  - overall
+  - period_role
+  - time_window
+  - session
+  - direction
+  - score_or_threshold_bucket
+  - trade_shape_bucket
+  - runtime_surface
+  optional_segment_axes:
+  - volatility_regime
+  - drawdown_cluster
+  - holding_period_bucket
+  - feature_family
+  - target_family
+  - model_family
+  - spread_or_cost_bucket
+  segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
+claim_boundary: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+updated_at_utc: '2026-06-28T20:01:55Z'
+status: mix3_kpi_triad_refreshed_policy_bound
+score_probe_mt5_kpi_policy: non_trading_score_probe_excluded_from_campaign_kpi_ledger_by_contract
+proxy_execution_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/mix3_proxy_execution_summary.yaml
+proxy_execution_index: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/mix_specs/mix3_proxy_execution_index.csv
+next_action: write bounded synthesis closeout decision using earlier synthesis evidence
+  and mix-3 L4 pair evidence, KPI triad, and row-level proxy-MT5 parity; integrate
+  to main only after bounded synthesis closeout
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: mix3_kpi_triad_summary_contract_fields_recorded
+next_executable_action: write bounded synthesis closeout decision using earlier synthesis
+  evidence and mix-3 L4 pair evidence, KPI triad, and row-level proxy-MT5 parity;
+  integrate to main only after bounded synthesis closeout
+experiment_or_boundary_effect: kpi_triad_refreshed_with_mix3_score_probe_exclusion_boundary
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/proxy_kpi_records.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/mt5_runtime_kpi_records.csv
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/proxy_mt5_comparison_records.csv
+- docs/contracts/kpi_ledger_contract.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_summary.yaml
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/kpi/kpi_summary.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- mix3_pair_kpi_parity_writer_smoke
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- writer_scope_contract_lint
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_mix3_pair_kpi_parity_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T20:02:06Z'
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  claim_boundary: kpi_observation_projection_only_no_runtime_authority_no_economics_pass_no_selected_baseline_no_live_readiness
+  forbidden_claims_respected: true
+  candidate_count: 0
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: write bounded synthesis closeout decision using
+    earlier synthesis evidence and mix-3 L4 pair evidence, KPI triad, and row-level
+    proxy-MT5 parity; integrate to main only after bounded synthesis closeout
+unresolved_blockers_or_none: []
+next_action_or_reopen_condition: write bounded synthesis closeout decision using earlier
+  synthesis evidence and mix-3 L4 pair evidence, KPI triad, and row-level proxy-MT5
+  parity; integrate to main only after bounded synthesis closeout
+latest_mix3_pair_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/l4_follow_through/mix3_l4_pair_judgment_summary.yaml
+latest_mix3_intent_behavior_parity_summary: lab/campaigns/campaign_us100_wave03_bounded_synthesis_special_mixing_v0/parity/mix3_intent_behavior_parity_summary.yaml

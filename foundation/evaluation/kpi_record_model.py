@@ -147,7 +147,11 @@ AUTHORITIES_BY_NAMESPACE = {
         "absence_recorded_by_attempt_manifest",
         "absence_recorded_by_runtime_contract",
     },
-    "mt5_trade_shape": {"mt5_trade_shape_summary"},
+    "mt5_trade_shape": {
+        "mt5_trade_shape_summary",
+        "absence_recorded_by_attempt_manifest",
+        "absence_recorded_by_runtime_contract",
+    },
     "comparison": {"campaign_kpi_projection"},
     "closeout_projection": {"campaign_kpi_projection", "wave_closeout_projection"},
 }

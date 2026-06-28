@@ -44,6 +44,11 @@ global_rules:
   volatile_surface_policy: "Do not treat .pytest_tmp, .spacesonar transactions, runtime telemetry/report trees, package artifact trees, or lab run artifact/report trees as current-truth scan targets; use their manifests, receipts, summaries, and hashes."
   disposition_record_policy: "Any blocked, deferred, invalid, or discarded result caused by a failing tool, adapter, runtime, parser, converter, data path, or support gap must include a failure_disposition record. Without that record, lower the claim to investigation_in_progress."
   bounded_synthesis_policy: "Bounded synthesis is previous-material-only campaign work. It cannot set next wave/campaign direction; use mix-2 then mix-3 by default, allow mix-4 only with a recorded reason, and forbid mix-5+ without policy change."
+  bounded_synthesis_cadence_policy: "After five closed standard campaigns since the last bounded synthesis campaign, route to bounded_synthesis/special_mixing before opening another standard campaign unless a recorded exception exists."
+  kpi_ledger_triad_policy: "Campaign and bounded-synthesis closeouts must maintain proxy_kpi_records.csv, mt5_runtime_kpi_records.csv, and proxy_mt5_comparison_records.csv with manifest and summary; registries remain indexes, not KPI proof."
+  intent_behavior_parity_policy: "Proxy/model-bearing campaign and bounded-synthesis closeouts must compare Python proxy intended entry/exit/hold/flat/long/short/no-trade behavior to MT5 EA behavior row-by-row when telemetry exists, and make at least one repo-controlled reconciliation or repair attempt before accepting divergence."
+  main_boundary_integration_policy: "Campaign closeout and bounded-synthesis closeout are required main integration boundaries: reflect the coherent boundary state on main after source-of-truth, KPI, parity, registry, and claim-boundary records are written; do not treat mid-campaign work as main-integrated evidence."
+  goal_success_policy: "The active /goal is only complete when candidate/runtime evidence is strong enough for operational review; do not mark Goal Achieve for proxy KPI, Python/ONNX parity, MT5 telemetry-only observation, or campaign closure alone."
   agent_role_modes: []
   internal_record_style: "english_friendly_id_oriented_machine_readable"
   final_answer_filter:

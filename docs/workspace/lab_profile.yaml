@@ -296,6 +296,66 @@ kpi_interpretation_policy:
     observed_segment_requires_metric_or_count_basis: true
     missing_segment_requires_next_materialization_step: true
     segment_claim_policy: segment_breakdowns_explain_instability_and_next_probe_only_not_selection_or_pass
+closeout_kpi_ledger_policy:
+  required_at:
+    - campaign_closeout
+    - bounded_synthesis_closeout
+  fixed_record_files:
+    - proxy_kpi_records.csv
+    - mt5_runtime_kpi_records.csv
+    - proxy_mt5_comparison_records.csv
+  manifest_required: true
+  summary_required: true
+  synthesis_stage_kind: special_mixing
+  missing_segment_record_required: true
+  claim_effect: kpi_observation_only_no_runtime_authority_no_economics_pass_no_goal_achieve
+intent_behavior_parity_policy:
+  required_for:
+    - proxy_model_bearing_campaign_closeout
+    - proxy_model_bearing_bounded_synthesis_closeout
+  comparison_scope: python_proxy_intent_vs_mt5_ea_behavior
+  row_key_fields:
+    - bar_close_time
+    - symbol
+    - period
+    - period_role
+    - decision_surface
+  required_behavior_fields:
+    - entry
+    - exit
+    - hold
+    - flat
+    - long
+    - short
+    - no_trade
+  minimum_reconciliation_attempt_required: true
+  allowed_reconciliation_attempts:
+    - regenerate_full_python_decision_stream
+    - repair_decision_surface_mapping
+    - repair_unit_or_threshold_conversion
+    - repair_ea_decision_logging_or_parser
+    - record_expected_runtime_difference_with_prevention_memory
+  closeout_without_parity_effect: lower_claim_and_reopen_intent_parity_probe
+  claim_effect: parity_observation_only_no_runtime_authority_no_economics_pass
+goal_operating_cadence_policy:
+  user_revision: goal_operating_overrides_2026_06_29_v1
+  codex_goal_tool_note: active_goal_objective_is_not_editable_in_place; repo_policy_is_durable_operating_target
+  success_condition: operational_review_required_candidate_runtime_evidence_not_goal_achieve_before_matching_evidence
+  bounded_synthesis_gate:
+    trigger: after_5_standard_campaign_closeouts
+    action: open_bounded_synthesis_before_next_standard_campaign
+    stage_kind: special_mixing
+    default_mix_depth:
+      - mix-2
+      - mix-3
+    mix4_policy: exception_only_with_recorded_reason
+    mix5_plus_policy: forbidden
+  closeout_required_gates:
+    - kpi_ledger_triad
+    - intent_behavior_parity_or_reopen_probe
+    - minimum_one_reconciliation_attempt_for_divergence
+    - claim_boundary_no_protected_claims
+    - main_boundary_integration
 bounded_synthesis_policy:
   campaign_type: bounded_synthesis
   source_scope: previous_material_only
@@ -358,9 +418,11 @@ storage_contract:
     durable_boundary_events:
       - campaign_open
       - campaign_close
+      - bounded_synthesis_close
       - wave_open
       - wave_close
-    main_push_policy: boundary_only_after_coherent_commit
+    main_push_policy: campaign_and_bounded_synthesis_closeout_required_after_coherent_commit
+    mid_campaign_push_policy: forbidden_unless_explicit_user_boundary_request
     per_run_main_push_default: false
   source_of_truth_paths:
     wave_allocation: lab/waves/<wave_id>/wave_allocation.yaml

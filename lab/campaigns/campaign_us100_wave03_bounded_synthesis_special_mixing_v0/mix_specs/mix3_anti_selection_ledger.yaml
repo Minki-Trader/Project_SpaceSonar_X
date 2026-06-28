@@ -1,0 +1,20 @@
+version: anti_selection_ledger_v1
+ledger_id: wave03_bounded_synthesis_mix3_anti_selection_v0
+created_at_utc: '2026-06-28T18:55:16Z'
+campaign_id: campaign_us100_wave03_bounded_synthesis_special_mixing_v0
+mix_item_id: mix_wave03_special_mixing_mix3_add_vol_state_tradeability_proxy_clue_v0
+status: pre_execution_locked_mix3_spec
+claim_boundary: wave03_bounded_synthesis_mix3_specs_materialized_no_proxy_result_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+locked_before_execution: true
+selection_controls:
+- six mix-3 cells fixed before proxy result observation
+- mix-3 uses only the declared three ingredients and mix-2 evidence
+- source ingredients are reference-only and not candidates
+- cell015 thresholds and cell009 proxy AUC are not carried forward as authority
+- locked final OOS excluded
+forbidden_adaptations_before_execution:
+- drop cells after previewing proxy metrics
+- change labels after viewing validation result
+- open L5 candidate from spec-only evidence
+- promote source ingredient as next wave direction
+- open mix-4 without recorded exception

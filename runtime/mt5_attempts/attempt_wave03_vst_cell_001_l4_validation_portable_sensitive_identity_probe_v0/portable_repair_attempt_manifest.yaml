@@ -1,0 +1,182 @@
+version: wave03_l4_portable_runtime_repair_probe_manifest_v1
+attempt_id: attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_identity_probe_v0
+source_attempt_id: attempt_wave03_vst_cell_001_l4_validation_v0
+run_id: onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0
+bundle_id: bundle_wave03_vst_cell_001_l4_onnx_export_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+work_item_id: work_wave03_volatility_state_l4_portable_runtime_repair_v0
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+created_at_utc: '2026-06-28T15:09:15Z'
+status: probe_manifest_prepared
+tester_config:
+  path: runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_identity_probe_v0/tester_config.ini
+  sha256: 6560347e0b9a6643bff6ccc17044a1afe6af566a9f19f9153e8a81cdb0c7c65b
+  size_bytes: 2350
+  availability: present_hash_recorded
+period_identity:
+  period_profile_id: period_profile_split_set_v0
+  runtime_period_set_id: split_base_anchor_v0_research_l4
+  period_role: validation
+  split_role: validation
+  from_date: 2024.06.05
+  to_date: 2025.03.10
+  locked_final_oos_b: excluded_forbidden_by_default
+execution_identity:
+  execution_profile_id: us100_m5_fpmarkets_tester_execution_v0
+  source_identity_block: source_attempt_execution_or_tester_identity
+runtime_surface_contract:
+  completion_surface_scope: full_period_deterministic
+  runtime_surface_kind: score_probe
+  base_frame: US100_M5_closed_bar
+  input_name: features
+  input_dtype: float32
+  input_shape:
+  - 1
+  - 46
+  feature_count: 46
+  feature_order_hash: 252243419e7810fc942e0a285b3990f40bed3626be26ef5b2538dae9c9877aa3
+  feature_columns_transport: common_file_with_inline_fallback
+  output_name: score
+  decision_family: volatility_state_reversal_continuation_score_probe
+  score_low_threshold: 0.4679712789387686
+  score_high_threshold: 0.5298128643375315
+  has_low_high_threshold: true
+  decision_output: telemetry_only_no_trades
+  feature_columns_common_relative_path: SpaceSonar\wave03_volatility_state_l4_score_probe\bundle_wave03_vst_cell_001_l4_onnx_export_v0\feature_columns.txt
+  score_diagnostic_transport: common_file_observation_only
+  score_diagnostics_common_relative_path: SpaceSonar\wave03_volatility_state_l4_score_probe\attempt_wave03_vst_cell_001_l4_validation_v0\score_diagnostics.csv
+  portable_ea_stage_status: stage_failed
+tester_login_fixture:
+  status: configured
+  login_value_kind: sensitive_env_tester_login_redacted
+  login_value: null
+  claim_boundary: tester_login_fixture_only_no_runtime_authority
+common_account_fixture:
+  login_value_kind: sensitive_env_common_login_redacted
+  login_value: null
+  password_value_kind: null
+  password_configured: false
+  server: FPMarketsSC-Live
+  claim_boundary: common_account_fixture_only_no_runtime_authority
+portable_root:
+  exists: true
+  root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  terminal_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\terminal64.exe
+  terminal_exists: true
+  file_count: 1326
+  size_bytes: 2160532805
+  claim_boundary: local_portable_root_inventory_only_no_runtime_authority
+  terminal_sha256: a36f4bac0fdc2c53cd75bdf0e32e627660dd8d9c1eb1e9f3834acfbce93df165
+  terminal_size_bytes: 109817504
+portable_root_copy:
+  status: reused_existing_local_portable_root
+  started_at_utc: '2026-06-28T15:09:15Z'
+  ended_at_utc: '2026-06-28T15:09:15Z'
+  source_root_redacted: ${PROGRAMFILES}\MetaTrader 5
+  target_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  terminal_exists_before: true
+  terminal_exists_after: true
+  robocopy_exit_code: null
+  bounded_repair_or_fallback_attempt: reused previously materialized local portable
+    MT5 root
+session_config_staging:
+  status: session_config_imported
+  started_at_utc: '2026-06-28T15:09:15Z'
+  ended_at_utc: '2026-06-28T15:09:15Z'
+  allow_import_requested: true
+  approval_token_status: valid_approval_token
+  effective_import_allowed: true
+  source_root_redacted: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075
+  target_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  source_file_count: 2
+  copied_file_count: 2
+  missing_required_files: []
+  files:
+  - relative_path: config/accounts.dat
+    role: account_session_config
+    source_exists: true
+    target_exists_before: true
+    target_exists_after: true
+    copied: true
+    copy_error: null
+    source_redacted: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\config\accounts.dat
+    target_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\config\accounts.dat
+    source_size_bytes: 20456
+    target_size_bytes: 20456
+    hash_availability: not_recorded_local_session_secret_boundary
+    claim_boundary: portable_session_config_staging_only_no_runtime_authority
+  - relative_path: config/servers.dat
+    role: server_catalog_config
+    source_exists: true
+    target_exists_before: true
+    target_exists_after: true
+    copied: true
+    copy_error: null
+    source_redacted: ${APPDATA}\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\config\servers.dat
+    target_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\config\servers.dat
+    source_size_bytes: 39848
+    target_size_bytes: 39848
+    hash_availability: not_recorded_local_session_secret_boundary
+    claim_boundary: portable_session_config_staging_only_no_runtime_authority
+  secret_policy: local_session_files_are_copied_only_with_explicit_allow_flag_and_matching_approval_token_and_are_not_hashed_or_content_logged
+  claim_boundary: portable_session_config_staging_only_no_runtime_authority
+portable_root_preflight:
+  status: passed
+  started_at_utc: '2026-06-28T15:09:15.124738Z'
+  ended_at_utc: '2026-06-28T15:09:15.126918Z'
+  terminal_exists: true
+  portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  reports_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports
+  mql5_experts_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts
+  reports_dir_writable: true
+  mql5_experts_dir_creatable: true
+  error: null
+  claim_boundary: portable_terminal_root_preflight_only_no_runtime_authority
+  reopen_condition: portable terminal root accepted for Strategy Tester launch
+common_file_inputs:
+  bundle_id: bundle_wave03_vst_cell_001_l4_onnx_export_v0
+  bundle_path: runtime/packages/bundle_wave03_vst_cell_001_l4_onnx_export_v0/experiment_bundle.json
+  checks:
+  - key: InpOnnxPath
+    common_relative_path: SpaceSonar\wave03_volatility_state_l4_score_probe\bundle_wave03_vst_cell_001_l4_onnx_export_v0\model.onnx
+    exists_after_prepare: true
+    copied_from_repo_artifact: false
+    source_path: null
+    common_path_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_volatility_state_l4_score_probe\bundle_wave03_vst_cell_001_l4_onnx_export_v0\model.onnx
+    sha256: 1f0a81514df32bffa8e766a0bfef0dedbd11553fdf457617877ee6b83a4740e2
+    claim_boundary: common_file_transport_preflight_only_no_runtime_authority
+  - key: InpFeatureColumnsPath
+    common_relative_path: SpaceSonar\wave03_volatility_state_l4_score_probe\bundle_wave03_vst_cell_001_l4_onnx_export_v0\feature_columns.txt
+    exists_after_prepare: true
+    copied_from_repo_artifact: false
+    source_path: null
+    common_path_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave03_volatility_state_l4_score_probe\bundle_wave03_vst_cell_001_l4_onnx_export_v0\feature_columns.txt
+    sha256: 1a693451593b94c0db5f86dce0207a3b7e5c8d18672b2154b6fa3e0ad4ed6c56
+    claim_boundary: common_file_transport_preflight_only_no_runtime_authority
+portable_ea_stage:
+  status: staged
+  copy_status: already_current
+  tester_expert_value: Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+  portable_terminal_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+  portable_ex5_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts\Project_SpaceSonar_X\foundation\mt5\experts\SpaceSonar_ONNX_L4_ScoreProbe.ex5
+  source:
+    path: foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+    sha256: 8ccaae60ba7d1172d53824ebcfebbbe01388414bc9f42ebdba17feda819c759d
+    size_bytes: 46896
+    availability: local_binary_hash_recorded_ignored_by_git
+  portable_sha256: 8ccaae60ba7d1172d53824ebcfebbbe01388414bc9f42ebdba17feda819c759d
+  portable_size_bytes: 46896
+  durable_identity: tester_config_expert_value_plus_source_binary_sha256
+  claim_boundary: portable_ea_stage_preflight_only_no_runtime_authority
+claim_boundary: wave03_l4_portable_runtime_repair_probe_only_no_runtime_authority_no_economics_pass_no_candidate_no_selected_baseline_no_live_readiness_no_goal_achieve
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve

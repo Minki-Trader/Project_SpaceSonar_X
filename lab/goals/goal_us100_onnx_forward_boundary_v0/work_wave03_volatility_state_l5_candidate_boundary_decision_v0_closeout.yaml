@@ -1,0 +1,124 @@
+version: work_closeout_v1
+work_item_id: work_wave03_volatility_state_l5_candidate_boundary_decision_v0
+parent_work_item_id: work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0
+next_work_item_id: work_wave03_open_intraday_liquidity_regime_campaign_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T16:10:27Z'
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+support_skills:
+- spacesonar-performance-attribution
+- spacesonar-evidence-provenance
+status: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate
+result_judgment: negative
+claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+counts:
+  proxy_executed_count: 18
+  preserved_clue_proxy_count: 10
+  l4_pair_count: 18
+  portable_l4_pair_count: 2
+  l5_candidate_runtime_evidence_count: 1
+  l5_negative_candidate_count: 1
+  l5_period_judgment_counts:
+    negative_l5_runtime_evidence: 1
+    positive_l5_runtime_observation_not_economics_pass: 1
+missing_evidence:
+- no_positive_research_oos_l5_candidate_evidence
+- locked_final_oos_b_not_used
+- operational_validation_not_started
+- no_selected_baseline_or_runtime_authority_from_l5_runtime_evidence
+next_action: open Wave03 intraday liquidity-regime campaign from the prepared lifecycle
+  spec; do not reopen the failed volatility-state L5 candidate as a repair
+unresolved_blockers:
+- wave03_intraday_liquidity_regime_campaign_not_opened_yet
+reopen_conditions:
+- reopen volatility-state only with a materially new transition-state question
+- rerun L5 evidence only if EA adapter, tester report parser, or source attempt identity
+  changes
+- do not claim runtime authority, economics pass, live readiness, or Goal Achieve
+  from this closeout
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+writer_contract_version: writer_scope_operating_contract_v3
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: wave03_l5_candidate_boundary_work_closed
+next_executable_action: open Wave03 intraday liquidity-regime campaign from the prepared
+  lifecycle spec; do not reopen the failed volatility-state L5 candidate as a repair
+experiment_or_boundary_effect: boundary_work_closed_to_next_campaign_open_without_protected_claim
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+writer_owned_outputs:
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_boundary_decision_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- wave03_l5_boundary_writer_smoke
+- writer_scope_contract_lint
+- machine_yaml_identity_lint
+- active_pointer_smoke
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_wave03_l5_boundary_writer_scope_only_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T16:10:28Z'
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign
+    from the prepared lifecycle spec; do not reopen the failed volatility-state L5
+    candidate as a repair
+unresolved_blockers_or_none:
+- wave03_intraday_liquidity_regime_campaign_not_opened_yet
+next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign from
+  the prepared lifecycle spec; do not reopen the failed volatility-state L5 candidate
+  as a repair

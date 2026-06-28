@@ -1,0 +1,443 @@
+version: wave03_l5_candidate_runtime_evidence_summary_v1
+summary_id: wave03_l5_candidate_runtime_evidence_summary_v0
+work_item_id: work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0
+parent_work_item_id: work_wave03_volatility_state_l5_routing_decision_v0
+next_work_item_id: work_wave03_volatility_state_l5_candidate_boundary_decision_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave03_volatility_state_transition_surface_v0
+  campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+  idea_id: idea_us100_wave03_intraday_volatility_state_transition_v0
+  hypothesis_id: hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+  surface_id: surface_us100_wave03_compression_expansion_decision_v0
+  sweep_id: sweep_us100_wave03_compression_expansion_seed_v0
+  run_id: null
+  artifact_id: artifact_wave03_l5_candidate_runtime_evidence_summary_v0
+  bundle_id: null
+  candidate_id: null
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+sweep_id: sweep_us100_wave03_compression_expansion_seed_v0
+created_at_utc: '2026-06-28T16:00:46Z'
+ended_at_utc: '2026-06-28T16:00:47Z'
+status: wave03_l5_candidate_runtime_evidence_observed_boundary_decision_pending
+claim_boundary: wave03_l5_candidate_runtime_evidence_observed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+support_skills:
+- spacesonar-runtime-evidence
+- spacesonar-evidence-provenance
+- spacesonar-performance-attribution
+- spacesonar-claim-discipline
+counts:
+  candidate_count: 1
+  candidate_runtime_evidence_count: 1
+  l5_candidate_count: 0
+  period_evidence_row_count: 2
+  runtime_probe_complete_period_count: 2
+  telemetry_observed_period_count: 2
+  tester_report_completed_period_count: 2
+  negative_candidate_count: 1
+  incomplete_candidate_count: 0
+  operational_review_reference_observed_count: 0
+  period_judgment_counts:
+    negative_l5_runtime_evidence: 1
+    positive_l5_runtime_observation_not_economics_pass: 1
+  candidate_result_counts:
+    negative_l5_runtime_evidence_no_l5_candidate: 1
+candidate_results:
+  candidate_wave03_vst_cell_015_score_probe_l5_target_v0: negative_l5_runtime_evidence_no_l5_candidate
+negative_candidate_ids:
+- candidate_wave03_vst_cell_015_score_probe_l5_target_v0
+incomplete_candidate_ids: []
+operational_review_reference_observed_ids: []
+l5_candidate_ids: []
+period_rows:
+- candidate_id: candidate_wave03_vst_cell_015_score_probe_l5_target_v0
+  run_id: onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0
+  bundle_id: bundle_wave03_vst_cell_015_l4_onnx_export_v0
+  cell_id: wave03_vst_cell_015
+  period_role: validation
+  attempt_id: attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0
+  from_date: 2024.06.05
+  to_date: 2025.03.10
+  terminal_mode: portable_contract_attempt
+  runtime_probe_complete: true
+  telemetry_observed: true
+  tester_report_observed: true
+  tester_report_completed: true
+  report_parse_status: parsed
+  missing_metric_count: 0
+  total_net_profit: 2.18
+  gross_profit: 430.84
+  gross_loss: -428.66
+  profit_factor: 1.01
+  total_trades: 638
+  trades_per_day: 2.2867383512544803
+  balance_drawdown_maximal_pct: 6.94
+  equity_drawdown_maximal_pct: 7.36
+  period_judgment: positive_l5_runtime_observation_not_economics_pass
+  judgment_reasons: stronger_claim_requires_final_claim_guard
+  operational_review_reference_observed: false
+  operational_review_reference_flags:
+    profit_factor_between_1_5_and_3_0: false
+    trades_per_day_at_least_5: false
+    drawdown_at_or_below_10pct: true
+    positive_net_profit: true
+  tester_report_kpi_summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0/tester_report_kpi_summary.yaml
+  terminal_run_summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0/terminal_run_summary.yaml
+  tester_report_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0/reports/tester_report.htm
+  claim_boundary: wave03_l5_candidate_runtime_evidence_observed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+- candidate_id: candidate_wave03_vst_cell_015_score_probe_l5_target_v0
+  run_id: onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0
+  bundle_id: bundle_wave03_vst_cell_015_l4_onnx_export_v0
+  cell_id: wave03_vst_cell_015
+  period_role: research_oos
+  attempt_id: attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0
+  from_date: 2025.04.03
+  to_date: 2025.11.21
+  terminal_mode: portable_contract_attempt
+  runtime_probe_complete: true
+  telemetry_observed: true
+  tester_report_observed: true
+  tester_report_completed: true
+  report_parse_status: parsed
+  missing_metric_count: 0
+  total_net_profit: -102.79
+  gross_profit: 395.58
+  gross_loss: -498.37
+  profit_factor: 0.79
+  total_trades: 529
+  trades_per_day: 2.2703862660944205
+  balance_drawdown_maximal_pct: 26.6
+  equity_drawdown_maximal_pct: 28.28
+  period_judgment: negative_l5_runtime_evidence
+  judgment_reasons: non_positive_total_net_profit|profit_factor_below_1|drawdown_above_10pct_reference
+  operational_review_reference_observed: false
+  operational_review_reference_flags:
+    profit_factor_between_1_5_and_3_0: false
+    trades_per_day_at_least_5: false
+    drawdown_at_or_below_10pct: false
+    positive_net_profit: false
+  tester_report_kpi_summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0/tester_report_kpi_summary.yaml
+  terminal_run_summary_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0/terminal_run_summary.yaml
+  tester_report_path: runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0/reports/tester_report.htm
+  claim_boundary: wave03_l5_candidate_runtime_evidence_observed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+runtime_probe_environment:
+  portable_root_copy:
+    status: reused_existing_local_portable_root
+    started_at_utc: '2026-06-28T16:00:46Z'
+    ended_at_utc: '2026-06-28T16:00:46Z'
+    source_root_redacted: ${PROGRAMFILES}\MetaTrader 5
+    target_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+    terminal_exists_before: true
+    terminal_exists_after: true
+    robocopy_exit_code: null
+    bounded_repair_or_fallback_attempt: reused previously materialized local portable
+      MT5 root
+  portable_root_preflight:
+    status: passed
+    started_at_utc: '2026-06-28T16:00:46.660276Z'
+    ended_at_utc: '2026-06-28T16:00:46.663550Z'
+    terminal_exists: true
+    portable_root_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0
+    reports_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\reports
+    mql5_experts_dir_redacted: ${USERPROFILE}\AppData\Local\SpaceSonar\mt5_portable_roots\wave03_l4_portable_root_v0\MQL5\Experts
+    reports_dir_writable: true
+    mql5_experts_dir_creatable: true
+    error: null
+    claim_boundary: portable_terminal_root_preflight_only_no_runtime_authority
+    reopen_condition: portable terminal root accepted for Strategy Tester launch
+  terminal_mode: portable_required_no_main_mode_fallback
+  skip_terminal_probe: false
+  claim_boundary: runtime_environment_observation_only_no_runtime_authority
+judgment:
+  judgment_label: wave03_l5_candidate_runtime_evidence_observed_boundary_decision_pending
+  candidate_count: 1
+  l5_candidate_count: 0
+  economics_metrics_observed: true
+  operational_review_reference_observed: false
+  economics_pass: false
+  runtime_authority: false
+  selected_baseline: false
+  live_readiness: false
+  goal_achieve: false
+  claim_boundary: wave03_l5_candidate_runtime_evidence_observed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  missing_evidence:
+  - final_claim_guard_not_run
+  - locked_final_oos_b_not_used
+  - operational_validation_not_started
+  - no_selected_baseline_or_runtime_authority_from_l5_runtime_evidence
+  next_action: decide Wave03 L5 candidate boundary from candidate-specific decision-execution
+    runtime evidence; do not claim runtime authority, economics pass, live readiness,
+    or Goal Achieve
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_index.csv
+  - docs/registers/candidate_registry.csv
+  - foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5
+  - foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.ex5
+  producer: python.exe foundation/pipelines/prepare_wave03_volatility_state_l5_candidate_runtime_evidence.py
+    --write-control-records --reuse-existing-terminal-probe
+  consumer: work_wave03_volatility_state_l5_candidate_boundary_decision_v0
+  artifact_paths:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  - lab/candidates/candidate_wave03_vst_cell_015_score_probe_l5_target_v0/l5_runtime_evidence_summary.yaml
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    git_sha: 29b41ff0258b426e80371cc95dfce71099854855
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - M docs/registers/artifact_registry.csv
+    - ' M docs/registers/campaign_registry.csv'
+    - ' M docs/registers/candidate_registry.csv'
+    - ' M docs/registers/experiment_surface_registry.csv'
+    - ' M docs/registers/goal_registry.csv'
+    - ' M docs/registers/hypothesis_registry.csv'
+    - ' M docs/registers/idea_registry.csv'
+    - ' M docs/registers/sweep_registry.csv'
+    - ' M docs/registers/wave_registry.csv'
+    - ' M docs/workspace/workspace_state.yaml'
+    - ' M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5'
+    - ' M foundation/pipelines/run_wave0_l4_mt5_attempts.py'
+    - ' M foundation/validation/machine_yaml_identity_lint.py'
+    - ' M foundation/validation/writer_scope_contract_lint.py'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+    - ' M src/spacesonar/control_plane/lifecycle.py'
+    - ?? foundation/features/wave03_volatility_state_features.py
+    - ?? foundation/labels/wave03_volatility_state_labels.py
+    - ?? foundation/pipelines/aggregate_wave03_volatility_state_l4_pair_judgments.py
+    - ?? foundation/pipelines/decide_wave03_volatility_state_l5_routing.py
+    - ?? foundation/pipelines/materialize_wave03_volatility_state_l4_preflight.py
+    - ?? foundation/pipelines/prepare_wave03_volatility_state_l5_candidate_runtime_evidence.py
+    - ?? foundation/pipelines/repair_wave03_volatility_state_l4_portable_runtime.py
+    - ?? foundation/pipelines/run_wave03_volatility_state_l4_mt5_attempts.py
+    - ?? foundation/pipelines/run_wave03_volatility_state_proxy_batch.py
+    - ?? lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/
+    - ?? lab/candidates/candidate_wave03_vst_cell_015_score_probe_l5_target_v0/
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_volatility_state_transition_campaign_spec.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_materialization_preflight_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_pair_judgment_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_portable_runtime_repair_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l4_strategy_tester_execution_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_routing_decision_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_proxy_execution_v0_closeout.yaml
+    - ?? lab/hypotheses/hyp_us100_wave03_compression_expansion_reversal_continuation_v0.yaml
+    - ?? lab/hypotheses/idea_us100_wave03_intraday_volatility_state_transition_v0.yaml
+    - ?? lab/runs/onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_002_compression_reversal_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_003_compression_continuation_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_004_compression_continuation_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_005_expansion_exhaustion_reversal_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_006_expansion_exhaustion_reversal_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_007_expansion_followthrough_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_008_expansion_followthrough_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_010_vol_state_tradeability_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_012_range_expansion_adverse_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_013_session_open_reversal_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_014_session_open_continuation_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_016_low_vol_false_break_h8_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_017_high_vol_mean_revert_h12_v0/
+    - ?? lab/runs/onnxlab_wave03_vst_cell_018_high_vol_momentum_h12_v0/
+    - ?? lab/surfaces/surface_us100_wave03_compression_expansion_decision_v0/
+    - ?? lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_portable_sensitive_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_account_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_common_password_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_imported_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_login_fixture_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_repair_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_portable_sensitive_session_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_001_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_002_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_003_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_004_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_005_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_006_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_007_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_008_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_009_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_010_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_011_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_012_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_013_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_014_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_portable_sensitive_identity_probe_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_research_oos_decision_execution_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_015_l5_validation_decision_execution_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_016_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_017_l4_validation_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_research_oos_v0/
+    - ?? runtime/mt5_attempts/attempt_wave03_vst_cell_018_l4_validation_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_001_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_002_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_003_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_004_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_005_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_006_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_007_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_008_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_009_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_010_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_011_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_012_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_013_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_014_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_015_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_016_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_017_l4_onnx_export_v0/
+    - ?? runtime/packages/bundle_wave03_vst_cell_018_l4_onnx_export_v0/
+  regeneration_commands:
+  - python.exe foundation/pipelines/prepare_wave03_volatility_state_l5_candidate_runtime_evidence.py
+    --write-control-records --reuse-existing-terminal-probe
+  registry_links:
+  - docs/registers/artifact_registry.csv
+  - docs/registers/candidate_registry.csv
+  availability: present_hash_recorded_after_write
+  lineage_judgment: candidate_l5_runtime_evidence_written_from_opened_candidate_manifest_and_no_fallback_portable_mt5_attempts
+  claim_boundary: wave03_l5_candidate_runtime_evidence_observed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+artifact_outputs:
+  evidence_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+  evidence_index: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+  evidence_closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  candidate_evidence_summaries:
+  - lab/candidates/candidate_wave03_vst_cell_015_score_probe_l5_target_v0/l5_runtime_evidence_summary.yaml
+prevention_memory:
+- Candidate-specific L5 tester report metrics do not create runtime authority or economics
+  pass by themselves.
+- L5 candidate count remains zero until a final claim guard explicitly accepts the
+  candidate boundary.
+- Locked final OOS remains excluded by default.
+unresolved_blockers:
+- wave03_l5_candidate_boundary_decision_pending
+reopen_conditions:
+- rerun L5 runtime evidence if candidate manifest, EA adapter, tester report parser,
+  or L4 source attempt ids change
+- repair or rerun L5 attempts when either validation or research_oos runtime/report
+  evidence is incomplete
+- do not claim runtime authority, economics pass, live readiness, or Goal Achieve
+  without final claim guard evidence
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: wave03_l5_candidate_runtime_evidence_recorded
+next_executable_action: decide Wave03 L5 candidate boundary from candidate-specific
+  decision-execution runtime evidence; do not claim runtime authority, economics pass,
+  live readiness, or Goal Achieve
+experiment_or_boundary_effect: candidate_specific_l5_decision_execution_runtime_evidence_recorded_without_protected_claim
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_index.csv
+- docs/registers/candidate_registry.csv
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave03_volatility_state_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- l5_candidate_runtime_evidence_writer_smoke
+- tester_report_kpi_parse_for_l5_decision_execution_attempts
+- writer_scope_contract_lint
+- machine_yaml_identity_lint
+- active_pointer_smoke
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_l5_candidate_runtime_evidence_writer_scope_only_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T16:00:48Z'
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  claim_boundary: wave03_l5_candidate_runtime_evidence_observed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  next_action_or_reopen_condition: decide Wave03 L5 candidate boundary from candidate-specific
+    decision-execution runtime evidence; do not claim runtime authority, economics
+    pass, live readiness, or Goal Achieve
+unresolved_blockers_or_none:
+- wave03_l5_candidate_boundary_decision_pending
+next_action_or_reopen_condition: decide Wave03 L5 candidate boundary from candidate-specific
+  decision-execution runtime evidence; do not claim runtime authority, economics pass,
+  live readiness, or Goal Achieve

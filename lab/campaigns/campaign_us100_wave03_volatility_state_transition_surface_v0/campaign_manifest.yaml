@@ -1,0 +1,710 @@
+version: campaign_manifest_v2
+campaign_id: campaign_us100_wave03_volatility_state_transition_surface_v0
+campaign_type: standard_experiment
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate
+created_at_utc: '2026-06-28T11:40:23Z'
+updated_at_utc: '2026-06-28T16:10:27Z'
+wave_ids:
+- wave_us100_wave03_volatility_state_transition_surface_v0
+idea_ids:
+- idea_us100_wave03_intraday_volatility_state_transition_v0
+hypothesis_ids:
+- hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+objective: 'Open Wave03 as a fresh multi-axis volatility state transition surface
+  for FPMarkets US100 M5. The first campaign tests whether compression, expansion,
+  exhaustion, and release states can define reversal/continuation decisions that remain
+  proxy-testable and later ONNX/EA/MT5 L4-testable without inheriting any prior candidate,
+  selected baseline, threshold, or runtime authority.
+
+  '
+axis_tags:
+- target_or_label_surface
+- feature_or_input_surface
+- model_or_training_surface
+- decision_surface
+- horizon_or_holding_policy
+- evaluation_or_runtime_surface
+exploration_coverage:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  primary_unknown_axis: volatility_state_transition_surface
+  required_research_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  companion_axes:
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  forbidden_research_shapes:
+  - feature_only_wave_or_campaign
+  - label_only_wave_or_campaign
+  - model_only_wave_or_campaign
+  - threshold_only_wave_or_campaign
+  - repair_only_wave_or_campaign
+  single_axis_exception_policy: control_fixture_plumbing_runtime_micro_probe_or_bug_repair_only_with_lowered_claim_boundary
+  novelty_claim: 'Wave03 rotates away from Wave02 tradeability, execution liquidity,
+    and cost/risk/holding repair lanes into a new volatility-state transition question.
+    Prior evidence is prevention memory only, not a baseline or selected candidate.
+
+    '
+policy_binding:
+  revision: policy_contract_v2
+  guards:
+  - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+  - GUARD_002_RUNTIME_COMPLETION_TRUTH
+  - GUARD_003_CLAIM_BOUNDARY
+  - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_005_LOCKED_OOS
+  - GUARD_006_BRANCH_WORKTREE
+  - GUARD_007_OPERATIONAL_STABILITY
+routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills: []
+  required_gates:
+  - design_contract_check
+  - exploration_coverage_check
+  - campaign_proxy_runtime_parity_policy
+  - final_claim_guard
+skill_routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills: []
+  required_gates:
+  - design_contract_check
+  - exploration_coverage_check
+  - campaign_proxy_runtime_parity_policy
+  - final_claim_guard
+required_gates:
+- campaign_lifecycle_spec_valid
+- exploration_coverage_check
+- proxy_runtime_parity_policy
+- final_claim_guard
+claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+experiment_design:
+  hypothesis: 'Intraday volatility compression, expansion, and exhaustion states can
+    expose US100 M5 reversal or continuation windows that are more stable than prior
+    tradeability repair cells because the label, feature, decision, and holding surfaces
+    all describe the same transition event.
+
+    '
+  decision_use: reversal_continuation_abstain_gate
+  comparison_baseline:
+  - no_trade_baseline_named_only_not_selected
+  - within_campaign_axis_controls_only
+  - Wave02 negative and clue records used as prevention memory only
+  control_variables:
+  - FPMarkets US100 M5 closed-bar base frame
+  - split_set_v0 validation and research_oos roles
+  - locked final OOS excluded
+  - no inherited Wave01 or Wave02 thresholds, candidates, or runtime authority
+  - valid proxy/model-bearing runs must keep ONNX/EA/MT5 L4 follow-through path
+  changed_variables:
+  - compression_break versus expansion_exhaustion labels
+  - volatility percentile, realized volatility, and session transition feature surfaces
+  - interpretable logistic, tree, and boosted ONNX-feasible model families
+  - reversal, continuation, tradeability-then-side, and volatility-stop decisions
+  - h6, h8, and h12 holding horizons
+  - proxy metrics designed for later L4 validation and research_oos runtime probes
+  kpi_interpretation_plan:
+    required_for_kpi_bearing_result: true
+    required_axes:
+    - overall
+    - period_role
+    - time_window
+    - session
+    - direction
+    - score_or_threshold_bucket
+    - trade_shape_bucket
+    - runtime_surface
+    claim_effect: exploratory_hypothesis_only_no_selection_or_pass
+  attribution_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  expected_effect_probe: 'Useful cells should separate transition states into sparse
+    reversal or continuation decisions with interpretable proxy behavior before any
+    L4 runtime escalation.
+
+    '
+  surface_rotation_rationale: 'Wave02 ended without an L5 candidate. Wave03 opens
+    a new volatility-state transition surface instead of extending candidate-local
+    repairs or threshold-only search.
+
+    '
+  search_shape: broad
+  next_surface_options:
+  - rotate_to_intraday_liquidity_regime_if_volatility_transition_is_negative
+  - narrow_to_repeated_compression_release_clue_only_after_broad_evidence
+  - materialize_onnx_and_l4_follow_through_for_valid_model_bearing_proxy_runs
+  axis_balance_check: multi_axis_surface_not_single_axis_repair
+  sample_scope:
+    instrument: FPMarkets US100
+    timeframe: M5
+    split_recipe_id: split_set_v0
+    validation_role: validation
+    research_oos_role: research_oos
+    locked_final_oos: excluded
+  success_criteria:
+  - proxy metrics identify at least one interpretable volatility-state transition
+    surface worth L4 follow-through
+  - valid proxy/model-bearing runs declare ONNX/EA/MT5 follow-through requirements
+  - no selected baseline, runtime authority, economics pass, live readiness, or Goal
+    Achieve claim is made
+  failure_criteria:
+  - broad cells collapse into threshold-only repair without a reusable transition-state
+    clue
+  - proxy semantics cannot be mapped to sparse EA decisions after one bounded repair
+    attempt
+  - volatility state features fail to distinguish transition behavior in validation
+    and research_oos observation
+  invalid_conditions:
+  - locked final OOS is used without an explicit unlock contract
+  - prior Wave02 candidate or threshold is reopened as the target of this campaign
+  - campaign becomes feature-only, label-only, model-only, threshold-only, or repair-only
+  stop_conditions:
+  - no reusable surface clue after the initial 18-spec broad batch and one bounded
+    repair at most
+  - evidence cannot support any stronger claim than exploratory observation
+  reopen_or_stop_condition: rotate_surface_or_record_negative_memory_after_broad_batch_if_no_reusable_clue
+  evidence_plan:
+  - campaign_manifest
+  - run_specs_index
+  - run_spec_manifests
+  - proxy_execution_summary
+  - run_manifest
+  - experiment_receipt
+  - artifact_lineage
+  - metrics
+  - ONNX bundle and parity record for valid model-bearing runs
+  - MT5 L4 attempt manifests for promising or valid proxy/model-bearing runs
+  claim_boundary: wave03_campaign_open_no_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  legacy_relation: blank_slate_no_inheritance_prior_wave_memory_is_prevention_only
+  axis_tags:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  - decision_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  broad_sweep:
+    proxy_spec_count: 18
+    surface_width: multi_axis
+    default_count_policy: campaign_open_default_proxy_spec_policy
+  extreme_sweep:
+    status: not_started
+    gate: only_after_broad_repeated_clue_or_surface_gap
+  micro_search_gate:
+    status: disabled_until_repeated_clue
+    reason: broad surface discovery comes before threshold or micro-search
+  failure_memory:
+    negative_memory_required_if_closed_negative: true
+    negative_closeout_reopens_candidate_repair: false
+  idea_id: idea_us100_wave03_intraday_volatility_state_transition_v0
+  hypothesis_id: hyp_us100_wave03_compression_expansion_reversal_continuation_v0
+  surface_id: surface_us100_wave03_compression_expansion_decision_v0
+  sweep_id: sweep_us100_wave03_compression_expansion_seed_v0
+materialization:
+  run_specs:
+  - run_id: onnxlab_wave03_vst_cell_001_compression_reversal_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_compression_break_reversal_h6_v0
+      feature_recipe_id: feature_wave03_atr_compression_session_state_v0
+      model_recipe_id: model_wave03_logistic_transition_v0
+      decision_recipe_id: decision_wave03_reversal_abstain_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record compression-break reversal h6 proxy observation with L4 follow-through
+      plan
+  - run_id: onnxlab_wave03_vst_cell_002_compression_reversal_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_compression_break_reversal_h8_v0
+      feature_recipe_id: feature_wave03_range_percentile_path_quality_v0
+      model_recipe_id: model_wave03_tree_transition_v0
+      decision_recipe_id: decision_wave03_reversal_abstain_timeout_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record range-percentile reversal h8 proxy observation with L4 follow-through
+      plan
+  - run_id: onnxlab_wave03_vst_cell_003_compression_continuation_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_compression_release_continuation_h6_v0
+      feature_recipe_id: feature_wave03_realized_vol_regime_transition_v0
+      model_recipe_id: model_wave03_boosted_transition_onnx_feasible_v0
+      decision_recipe_id: decision_wave03_continuation_abstain_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record realized-vol continuation h6 proxy observation with L4 follow-through
+      plan
+  - run_id: onnxlab_wave03_vst_cell_004_compression_continuation_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_compression_release_continuation_h12_v0
+      feature_recipe_id: feature_wave03_multiscale_compression_release_v0
+      model_recipe_id: model_wave03_logistic_transition_v0
+      decision_recipe_id: decision_wave03_continuation_abstain_timeout_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record multiscale compression continuation h12 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_005_expansion_exhaustion_reversal_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_expansion_exhaustion_reversal_h8_v0
+      feature_recipe_id: feature_wave03_session_open_expansion_state_v0
+      model_recipe_id: model_wave03_tree_transition_v0
+      decision_recipe_id: decision_wave03_reversal_abstain_timeout_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record session expansion exhaustion reversal proxy observation
+  - run_id: onnxlab_wave03_vst_cell_006_expansion_exhaustion_reversal_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_expansion_exhaustion_reversal_h12_v0
+      feature_recipe_id: feature_wave03_drawdown_rebound_vol_state_v0
+      model_recipe_id: model_wave03_boosted_transition_onnx_feasible_v0
+      decision_recipe_id: decision_wave03_vol_stop_timeout_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record expansion exhaustion reversal with volatility-stop h12 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_007_expansion_followthrough_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_expansion_followthrough_h6_v0
+      feature_recipe_id: feature_wave03_atr_compression_session_state_v0
+      model_recipe_id: model_wave03_logistic_transition_v0
+      decision_recipe_id: decision_wave03_continuation_abstain_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record expansion follow-through h6 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_008_expansion_followthrough_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_expansion_followthrough_h12_v0
+      feature_recipe_id: feature_wave03_realized_vol_regime_transition_v0
+      model_recipe_id: model_wave03_tree_transition_v0
+      decision_recipe_id: decision_wave03_continuation_abstain_timeout_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record expansion follow-through h12 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_009_vol_state_tradeability_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_vol_state_tradeability_h8_v0
+      feature_recipe_id: feature_wave03_range_percentile_path_quality_v0
+      model_recipe_id: model_wave03_logistic_transition_v0
+      decision_recipe_id: decision_wave03_tradeability_then_side_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record volatility-state tradeability then side proxy observation
+  - run_id: onnxlab_wave03_vst_cell_010_vol_state_tradeability_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_vol_state_tradeability_h12_v0
+      feature_recipe_id: feature_wave03_multiscale_compression_release_v0
+      model_recipe_id: model_wave03_boosted_transition_onnx_feasible_v0
+      decision_recipe_id: decision_wave03_tradeability_then_side_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record multiscale volatility tradeability h12 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_011_range_expansion_adverse_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_range_expansion_adverse_move_h6_v0
+      feature_recipe_id: feature_wave03_session_open_expansion_state_v0
+      model_recipe_id: model_wave03_tree_transition_v0
+      decision_recipe_id: decision_wave03_vol_stop_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record range expansion adverse-move h6 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_012_range_expansion_adverse_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_range_expansion_adverse_move_h8_v0
+      feature_recipe_id: feature_wave03_drawdown_rebound_vol_state_v0
+      model_recipe_id: model_wave03_logistic_transition_v0
+      decision_recipe_id: decision_wave03_vol_stop_timeout_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record drawdown-rebound adverse-move h8 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_013_session_open_reversal_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_session_open_reversal_h6_v0
+      feature_recipe_id: feature_wave03_session_open_expansion_state_v0
+      model_recipe_id: model_wave03_boosted_transition_onnx_feasible_v0
+      decision_recipe_id: decision_wave03_reversal_abstain_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record session-open reversal h6 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_014_session_open_continuation_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_session_open_continuation_h8_v0
+      feature_recipe_id: feature_wave03_session_open_expansion_state_v0
+      model_recipe_id: model_wave03_tree_transition_v0
+      decision_recipe_id: decision_wave03_continuation_abstain_timeout_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record session-open continuation h8 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_015_low_vol_breakout_h6_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_low_vol_breakout_h6_v0
+      feature_recipe_id: feature_wave03_atr_compression_session_state_v0
+      model_recipe_id: model_wave03_tree_transition_v0
+      decision_recipe_id: decision_wave03_continuation_abstain_timeout_h6_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record low-vol breakout continuation h6 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_016_low_vol_false_break_h8_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_low_vol_false_break_reversal_h8_v0
+      feature_recipe_id: feature_wave03_range_percentile_path_quality_v0
+      model_recipe_id: model_wave03_logistic_transition_v0
+      decision_recipe_id: decision_wave03_reversal_abstain_timeout_h8_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record low-vol false-break reversal h8 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_017_high_vol_mean_revert_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_high_vol_mean_revert_h12_v0
+      feature_recipe_id: feature_wave03_realized_vol_regime_transition_v0
+      model_recipe_id: model_wave03_boosted_transition_onnx_feasible_v0
+      decision_recipe_id: decision_wave03_reversal_abstain_timeout_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record high-vol mean-reversion h12 proxy observation
+  - run_id: onnxlab_wave03_vst_cell_018_high_vol_momentum_h12_v0
+    recipe_refs:
+      label_recipe_id: label_wave03_high_vol_momentum_h12_v0
+      feature_recipe_id: feature_wave03_multiscale_compression_release_v0
+      model_recipe_id: model_wave03_tree_transition_v0
+      decision_recipe_id: decision_wave03_continuation_abstain_timeout_h12_v0
+    split_profile: split_set_v0
+    evaluation_profile: eval_wave03_proxy_runtime_kpi_v0
+    verification_profile: lab_experiment
+    acceptance_criteria:
+    - record high-vol momentum h12 proxy observation
+judgment_contract:
+  evidence_inputs:
+  - lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/evidence/judgment.yaml
+  result_judgment: inconclusive
+  candidate_effect: no_candidate_claimed
+  clue_effect: no_clue_until_evidence_materialized
+  negative_memory_effect: no_negative_memory_until_evidence_materialized
+  missing_evidence:
+  - proxy_runs_not_yet_executed
+  - ONNX_export_not_materialized_for_L4_yet
+  - MT5_L4_split_runtime_probe_not_run_yet
+  - runtime_authority_not_claimed
+  reopen_conditions:
+  - execute declared broad proxy run specs before judgment
+storage_contract:
+  durable_identity_policy: repo_relative_paths_only
+  source_of_truth: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_manifest.yaml
+  wave_campaign_refs:
+  - lab/waves/wave_us100_wave03_volatility_state_transition_surface_v0/campaign_refs.csv
+  registry_rows:
+  - docs/registers/campaign_registry.csv
+  campaign_closeout: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+provenance:
+  opened_by_work_item_id: work_wave03_open_volatility_state_transition_surface_v0
+  source_spec: lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_volatility_state_transition_campaign_spec.yaml
+  command_argv:
+  - C:\Users\awdse\AppData\Roaming\MetaQuotes\Terminal\D0E8209F77C8CF37AD8BF550E51FF075\MQL5\Experts\Project_SpaceSonar_X\src\spacesonar\cli.py
+  - --repo-root
+  - .
+  - --work-item-id
+  - work_wave03_open_volatility_state_transition_surface_v0
+  - campaign
+  - open
+  - --spec
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_volatility_state_transition_campaign_spec.yaml
+next_action: open Wave03 intraday liquidity-regime campaign from the prepared lifecycle
+  spec; do not reopen the failed volatility-state L5 candidate as a repair
+notes: 'Wave03 campaign-open scaffold only. Declared proxy specs are not executed,
+  selected, runtime-authoritative, or economics-passing until run manifests, receipts,
+  lineage, metrics, ONNX/parity, and MT5 L4 evidence exist.
+
+  '
+writer_contract_version: writer_scope_operating_contract_v3
+primary_family: candidate_evaluation
+primary_skill: spacesonar-result-judgment
+progress_class: next_executable_experiment_writer_or_probe
+progress_effect: wave03_campaign_manifest_closed_negative_l5_boundary
+next_executable_action: open Wave03 intraday liquidity-regime campaign from the prepared
+  lifecycle spec; do not reopen the failed volatility-state L5 candidate as a repair
+experiment_or_boundary_effect: campaign_manifest_closed_to_next_campaign_open_without_protected_claim
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_manifest.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- wave03_l5_boundary_writer_smoke
+- writer_scope_contract_lint
+- machine_yaml_identity_lint
+- active_pointer_smoke
+skipped_broad_validations:
+- pytest
+- project_validate
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_wave03_l5_boundary_writer_scope_only_no_protected_claim
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - progress_class
+  - progress_effect
+  - next_executable_action
+  - experiment_or_boundary_effect
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T16:10:28Z'
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v3
+  validation_depth: writer_scope_smoke
+  claim_boundary: wave03_volatility_state_campaign_closed_negative_l5_evidence_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign
+    from the prepared lifecycle spec; do not reopen the failed volatility-state L5
+    candidate as a repair
+unresolved_blockers_or_none:
+- wave03_intraday_liquidity_regime_campaign_not_opened_yet
+next_action_or_reopen_condition: open Wave03 intraday liquidity-regime campaign from
+  the prepared lifecycle spec; do not reopen the failed volatility-state L5 candidate
+  as a repair
+run_specs_index: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/sweeps/sweep_us100_wave03_compression_expansion_seed_v0/run_refs.csv
+proxy_execution_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_summary.yaml
+proxy_execution_index: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/proxy_execution_index.csv
+executed_proxy_run_count: 18
+result_counts:
+  inconclusive: 8
+  preserved_clue: 10
+onnx_materialization_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
+l4_attempt_preparation_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
+l4_follow_through:
+  runtime_execution_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  runtime_execution_index: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+  runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
+  runtime_execution_counts:
+    prepared_attempt_count: 36
+    selected_attempt_count: 6
+    indexed_execution_count: 36
+    executed_attempt_count: 36
+    completed_manifest_count: 0
+    touched_manifest_count: 36
+    telemetry_observed_count: 36
+    telemetry_missing_count: 0
+    tester_report_observed_count: 36
+    tester_report_missing_count: 0
+    terminal_execution_count: 36
+    telemetry_observation_count: 36
+    tester_report_observation_count: 36
+    portable_contract_count: 0
+    runtime_probe_complete_count: 0
+    runtime_probe_incomplete_count: 36
+    period_role_counts:
+      research_oos: 18
+      validation: 18
+    status_counts:
+      telemetry_adapter_observed_runtime_contract_incomplete: 36
+    result_judgment_counts:
+      runtime_probe: 36
+  runtime_probe_complete: false
+  pair_judgment_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  pair_judgment_index: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  pair_judgment_status: wave03_l4_pair_judgment_completed_portable_runtime_repair_required
+  pair_judgment_counts:
+    cell_pair_count: 18
+    runtime_probe_pair_complete_count: 2
+    both_period_roles_observed_count: 18
+    nonempty_telemetry_pair_count: 18
+    tester_report_pair_observed_count: 18
+    tester_report_pair_completed_count: 18
+    portable_contract_pair_count: 2
+    main_mode_fallback_pair_count: 16
+    standard_l4_completion_blocked_count: 16
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      inconclusive: 8
+      preserved_clue: 10
+    result_judgment_counts:
+      runtime_probe: 18
+    l5_status_counts:
+      portable_l4_complete_proxy_inconclusive_no_l5_candidate: 1
+      no_l5_until_portable_l4_contract: 16
+      l5_routing_decision_possible_no_candidate_claim: 1
+    comparison_class_counts:
+      proxy_inconclusive_portable_l4_runtime_score_observed: 1
+      proxy_inconclusive_runtime_score_observed_but_portable_contract_missing: 7
+      proxy_preserved_clue_runtime_score_observed_but_portable_contract_missing: 9
+      proxy_preserved_clue_portable_l4_runtime_score_observed: 1
+    runtime_execution_counts:
+      prepared_attempt_count: 36
+      selected_attempt_count: 6
+      indexed_execution_count: 36
+      executed_attempt_count: 36
+      completed_manifest_count: 0
+      touched_manifest_count: 36
+      telemetry_observed_count: 36
+      telemetry_missing_count: 0
+      tester_report_observed_count: 36
+      tester_report_missing_count: 0
+      terminal_execution_count: 36
+      telemetry_observation_count: 36
+      tester_report_observation_count: 36
+      portable_contract_count: 0
+      runtime_probe_complete_count: 0
+      runtime_probe_incomplete_count: 36
+      period_role_counts:
+        research_oos: 18
+        validation: 18
+      status_counts:
+        telemetry_adapter_observed_runtime_contract_incomplete: 36
+      result_judgment_counts:
+        runtime_probe: 36
+  portable_runtime_repair_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_portable_runtime_repair_summary.yaml
+  portable_runtime_repair_status: wave03_l4_portable_runtime_repair_probe_recorded_next
+  portable_runtime_repair_counts:
+    portable_root_materialized_count: 1
+    portable_root_preflight_pass_count: 1
+    portable_session_source_config_available_count: 1
+    portable_session_config_imported_count: 1
+    portable_repair_probe_attempt_count: 1
+    portable_repair_probe_terminal_launch_count: 1
+    portable_repair_probe_telemetry_observed_count: 1
+    portable_repair_probe_completed_report_count: 1
+    portable_repair_probe_runtime_complete_count: 1
+    candidate_count: 0
+    l5_candidate_count: 0
+  l5_routing_decision_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_summary.yaml
+  l5_routing_decision_index: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_index.csv
+  l5_routing_decision_status: wave03_volatility_state_l5_candidate_manifest_opened_runtime_evidence_preparation_pending
+  l5_routing_decision_counts:
+    evaluated_pair_count: 18
+    candidate_manifest_opened_count: 1
+    candidate_count: 1
+    l5_candidate_count: 0
+    routing_decision_counts:
+      hold_no_l5_candidate_manifest: 17
+      open_l5_candidate_manifest: 1
+    source_l5_status_counts:
+      l5_routing_decision_possible_no_candidate_claim: 1
+      no_l5_until_portable_l4_contract: 16
+      portable_l4_complete_proxy_inconclusive_no_l5_candidate: 1
+  candidate_ids:
+  - candidate_wave03_vst_cell_015_score_probe_l5_target_v0
+  candidate_count: 1
+  l5_candidate_count: 0
+  l5_runtime_evidence_summary: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+  l5_runtime_evidence_index: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+  l5_runtime_evidence_status: wave03_l5_candidate_runtime_evidence_observed_boundary_decision_pending
+  l5_runtime_evidence_counts:
+    candidate_count: 1
+    candidate_runtime_evidence_count: 1
+    l5_candidate_count: 0
+    period_evidence_row_count: 2
+    runtime_probe_complete_period_count: 2
+    telemetry_observed_period_count: 2
+    tester_report_completed_period_count: 2
+    negative_candidate_count: 1
+    incomplete_candidate_count: 0
+    operational_review_reference_observed_count: 0
+    period_judgment_counts:
+      negative_l5_runtime_evidence: 1
+      positive_l5_runtime_observation_not_economics_pass: 1
+    candidate_result_counts:
+      negative_l5_runtime_evidence_no_l5_candidate: 1
+missing_evidence:
+- no_positive_research_oos_l5_candidate_evidence
+- locked_final_oos_b_not_used
+- operational_validation_not_started
+- no_selected_baseline_or_runtime_authority_from_l5_runtime_evidence
+unresolved_blockers:
+- wave03_intraday_liquidity_regime_campaign_not_opened_yet
+reopen_conditions:
+- reopen volatility-state only with a materially new transition-state question
+- rerun L5 evidence only if EA adapter, tester report parser, or source attempt identity
+  changes
+- do not claim runtime authority, economics pass, live readiness, or Goal Achieve
+  from this closeout
+candidate_count: 1
+l5_candidate_count: 0
+evidence_paths:
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l4_portable_runtime_repair_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_routing_decision_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/l4_follow_through/l5_runtime_evidence_index.csv
+- lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
+- lab/memory/negative/neg_wave03_volatility_state_l5_candidate_negative_v0.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/wave03_intraday_liquidity_regime_campaign_spec.yaml
+candidate_ids:
+- candidate_wave03_vst_cell_015_score_probe_l5_target_v0
+campaign_closeout: lab/campaigns/campaign_us100_wave03_volatility_state_transition_surface_v0/campaign_closeout.yaml
