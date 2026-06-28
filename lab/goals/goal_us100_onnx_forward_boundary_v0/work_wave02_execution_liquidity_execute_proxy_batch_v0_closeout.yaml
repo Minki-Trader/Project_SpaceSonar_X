@@ -1,0 +1,61 @@
+version: work_closeout_v1
+work_item_id: work_wave02_execution_liquidity_execute_proxy_batch_v0
+parent_work_item_id: work_wave02_execution_liquidity_first_batch_spec_v0
+next_work_item_id: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T01:15:13Z'
+primary_family: model_training
+primary_skill: spacesonar-model-validation
+support_skills:
+- spacesonar-evidence-provenance
+status: wave02_execution_liquidity_proxy_batch_executed_l4_required
+claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+counts:
+  executed_proxy_run_count: 6
+  candidate_count: 0
+  l5_candidate_count: 0
+  result_judgment_counts:
+    preserved_clue: 6
+  l4_required_count: 6
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_index.csv
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_execute_proxy_batch_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- writer_scope_evidence_smoke
+- active_pointer_smoke
+- machine_yaml_identity_lint
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+broad_validation_escalation_reason: none_proxy_execution_no_protected_claim
+writer_scope_self_check: passed_after_write_required
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_index.csv
+next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+missing_evidence:
+- ONNX_exports_absent
+- L4_split_runtime_probe_absent
+- candidate_evidence_absent
+- operational_validation_not_started
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+unresolved_blockers_or_none: none_for_proxy_execution_next_work_has_l4_materialization_pending
+next_action_or_reopen_condition: work_wave02_execution_liquidity_l4_materialization_preflight_v0

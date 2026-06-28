@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-28T01:00:11Z'
+updated_utc: '2026-06-28T01:15:13Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -15,16 +15,16 @@ active_wave:
   closeout: null
 active_campaign:
   campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
-  status: wave02_execution_liquidity_first_batch_specs_materialized_not_executed
+  status: wave02_execution_liquidity_proxy_batch_executed_l4_required
   manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
   closeout: null
 active_work_item:
-  work_item_id: work_wave02_execution_liquidity_execute_proxy_batch_v0
+  work_item_id: work_wave02_execution_liquidity_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_execution_liquidity_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: execute Wave02 execution/liquidity first proxy batch
+current_claim_boundary: wave02_execution_liquidity_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: prepare Wave02 execution/liquidity L4 materialization and runtime attempts
 unresolved_blockers:
-- Wave02_execution_liquidity_proxy_batch_not_executed
+- Wave02_execution_liquidity_L4_materialization_not_prepared
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml
   runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
@@ -492,6 +492,13 @@ summary_counts:
     materialized_run_count: 6
     candidate_count: 0
     l5_candidate_count: 0
+  wave02_execution_liquidity_proxy_execution:
+    executed_proxy_run_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    result_judgment_counts:
+      preserved_clue: 6
+    l4_required_count: 6
 wave02_cost_risk_holding_l4_materialization:
   campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
   status: wave02_cost_risk_holding_campaign_closed_held_open_failed_caveat_no_candidate

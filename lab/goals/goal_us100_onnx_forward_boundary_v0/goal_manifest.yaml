@@ -3,8 +3,8 @@ active_goal_id: goal_us100_onnx_forward_boundary_v0
 workspace_active: true
 status: active_wave02_pre_operational_research
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-28T01:00:11Z'
-claim_boundary: wave02_execution_liquidity_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+updated_at_utc: '2026-06-28T01:15:13Z'
+claim_boundary: wave02_execution_liquidity_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -60,7 +60,7 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave02_execution_liquidity_proxy_batch_execution_pending
+active_phase: wave02_execution_liquidity_l4_materialization_preflight_pending
 active_ids:
   idea_id: idea_us100_wave02_execution_liquidity_surface_v0
   hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
@@ -401,10 +401,9 @@ forbidden_claims:
 - reviewed_verified_pass
 - business_or_project_goal_achieve
 next_work_item:
-  work_item_id: work_wave02_execution_liquidity_execute_proxy_batch_v0
+  work_item_id: work_wave02_execution_liquidity_l4_materialization_preflight_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  summary: Wave02 execution/liquidity first batch specs materialized; proxy execution
-    pending.
+  summary: Wave02 execution/liquidity proxy batch executed; L4 materialization pending.
 wave01_operating_closeout:
   status: wave01_operating_proof_window_closed
   closeout_path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml
@@ -1275,8 +1274,16 @@ wave02_cost_risk_holding_campaign:
 wave02_execution_liquidity_campaign:
   campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
   campaign_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
-  status: wave02_execution_liquidity_first_batch_specs_materialized_not_executed
-  claim_boundary: wave02_execution_liquidity_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-  next_work_item: work_wave02_execution_liquidity_execute_proxy_batch_v0
+  status: wave02_execution_liquidity_proxy_batch_executed_l4_required
+  claim_boundary: wave02_execution_liquidity_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_work_item: work_wave02_execution_liquidity_l4_materialization_preflight_v0
   first_batch_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
   materialized_run_count: 6
+  proxy_execution_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_summary.yaml
+  proxy_execution_counts:
+    executed_proxy_run_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    result_judgment_counts:
+      preserved_clue: 6
+    l4_required_count: 6

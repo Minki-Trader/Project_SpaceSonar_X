@@ -1,41 +1,70 @@
 {
-  "version": "artifact_lineage_v1",
+  "version": "artifact_lineage_v2",
   "run_id": "onnxlab_wave02_elq_cell_005_execution_liquidity_v0",
-  "status": "spec_materialized_not_executed",
-  "claim_boundary": "wave02_execution_liquidity_first_batch_specs_only_no_proxy_result_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve",
   "source_inputs": [
     {
-      "path": "lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml",
-      "sha256": "a1fa4462a94115d8aac4b21ed5c59404041a439623d6572d93cd3d98566a9ef3",
-      "size_bytes": 9807
+      "path": "lab/campaigns/campaign_us100_task_surface_scout_v0/row_membership/row_membership_manifest.yaml",
+      "sha256": "915a5d183cd02a86c0eb3f83a906318d601949ff4e13e3c9081581adee61a37c",
+      "size_bytes": 4857,
+      "availability": "present_hash_recorded"
     },
-    {
-      "path": "lab/surfaces/surface_us100_wave02_execution_liquidity_v0/surface_manifest.yaml",
-      "sha256": "b459e47547f4f3c280a3af04ea8004c785cc9f4d54a64a17549382988c29fbf9",
-      "size_bytes": 1761
-    },
-    {
-      "path": "lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/sweep_manifest.yaml",
-      "sha256": "7abdf0e07a17c0e8059b3e66e2f096d90ca059fda3ca3aa7e4331fd8f6c1e2bc",
-      "size_bytes": 1152
-    }
-  ],
-  "artifact_paths": [
     {
       "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/run_manifest.json",
-      "sha256": "eb0156832871c77e0d3b8611e241b2603defa2065c37a769e784315cfd18a1bd",
-      "size_bytes": 4686
-    },
-    {
-      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/experiment_receipt.yaml",
-      "sha256": "13a9df3d9d13d1a10ed52022d060500dc5ec76e8fc427238917b9173ee6efa8f",
-      "size_bytes": 6131
-    },
-    {
-      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/metrics.json",
-      "sha256": "045b33b3154423497b8a3f2713ec9ada8f68492e0e14a56cf602b41f39897c4e",
-      "size_bytes": 611
+      "sha256": "b5ab8c15896a06ce31c0b1e5e68b8be93544fcf64aec94383a52c05e3cb5686f",
+      "size_bytes": 7343,
+      "availability": "present_hash_recorded"
     }
   ],
-  "lineage_judgment": "spec_only_no_proxy_or_runtime_evidence"
+  "producer": {
+    "type": "script",
+    "identity": "foundation/pipelines/run_wave02_execution_liquidity_proxy_batch.py",
+    "command": "python foundation/pipelines/run_wave02_execution_liquidity_proxy_batch.py --write-control-records"
+  },
+  "artifact_paths": [
+    {
+      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifacts/feature_schema.json",
+      "sha256": "e1033158b961d392b66327e5ea65a509539916cf68b278910cc607e1b961e335",
+      "size_bytes": 1717,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifacts/label_schema.json",
+      "sha256": "220f0770de8fa46507dc6b1a8f8a4ea1b783e84ba4189aab8ce6088bdda73f69",
+      "size_bytes": 883,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifacts/model_summary.json",
+      "sha256": "fd98a5058cff328a5f67aafe2c7acf123aab8704c9cb7c138e6671d8d180efd0",
+      "size_bytes": 794,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifacts/split_profile.json",
+      "sha256": "f9841fe37792d333ea963fd0b46ca07487914a5623db6c35b377c9749324493d",
+      "size_bytes": 247,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifacts/prediction_sample_validation.csv",
+      "sha256": "50c362916d5e7538347fd4c4ef5ab0b36ba89cd28e5704e4597636e9b43b0ac4",
+      "size_bytes": 26389,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifacts/prediction_sample_research_oos_a.csv",
+      "sha256": "06dfc175dd258db7374d40cf7a2396ca07a99e7f495823a7608a28a00124e1ec",
+      "size_bytes": 27252,
+      "availability": "local_generated_hash_recorded"
+    },
+    {
+      "path": "lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json",
+      "sha256": "2d10ae30d7b1ca6c5ffb605f7a38cc399b4349223b6b861a765924922090cdca",
+      "size_bytes": 5130,
+      "availability": "local_generated_hash_recorded"
+    }
+  ],
+  "availability": "present_hash_recorded",
+  "lineage_judgment": "usable_proxy_observation_lineage_L4_missing",
+  "claim_boundary": "wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve"
 }

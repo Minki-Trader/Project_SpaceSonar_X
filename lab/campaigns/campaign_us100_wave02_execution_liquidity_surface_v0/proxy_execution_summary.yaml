@@ -1,0 +1,157 @@
+version: wave02_execution_liquidity_proxy_execution_summary_v1
+summary_id: wave02_execution_liquidity_proxy_execution_summary_v0
+work_item_id: work_wave02_execution_liquidity_execute_proxy_batch_v0
+parent_work_item_id: work_wave02_execution_liquidity_first_batch_spec_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+created_at_utc: '2026-06-28T01:15:13Z'
+status: wave02_execution_liquidity_proxy_batch_executed_l4_required
+claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+primary_family: model_training
+primary_skill: spacesonar-model-validation
+support_skills:
+- spacesonar-evidence-provenance
+executed_proxy_run_count: 6
+result_counts:
+  preserved_clue: 6
+runtime_authority: not_claimed
+economics_pass: not_claimed
+live_readiness: not_claimed
+counts:
+  executed_proxy_run_count: 6
+  candidate_count: 0
+  l5_candidate_count: 0
+  result_judgment_counts:
+    preserved_clue: 6
+  l4_required_count: 6
+result_rows:
+- run_id: onnxlab_wave02_elq_cell_001_execution_liquidity_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/metrics.json
+  report_path: lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json
+  claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.6284_0.6108
+- run_id: onnxlab_wave02_elq_cell_002_execution_liquidity_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/metrics.json
+  report_path: lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json
+  claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.7720_0.8330
+- run_id: onnxlab_wave02_elq_cell_003_execution_liquidity_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/metrics.json
+  report_path: lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json
+  claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.6079_0.6047
+- run_id: onnxlab_wave02_elq_cell_004_execution_liquidity_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/metrics.json
+  report_path: lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json
+  claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.8930_0.8747;research_oos_gross_proxy_pf_preserved_clue_1.2582
+- run_id: onnxlab_wave02_elq_cell_005_execution_liquidity_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/metrics.json
+  report_path: lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json
+  claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.5840_0.5751
+- run_id: onnxlab_wave02_elq_cell_006_execution_liquidity_v0
+  status: executed_proxy_observation_l4_required
+  result_judgment: preserved_clue
+  run_manifest_path: lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/run_manifest.json
+  receipt_path: lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/experiment_receipt.yaml
+  lineage_path: lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/artifact_lineage.json
+  metrics_path: lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/metrics.json
+  report_path: lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json
+  claim_boundary: wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+  notes: validation_research_auc_preserved_clue_0.8685_0.8678
+next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+missing_evidence:
+- ONNX_exports_absent
+- L4_split_runtime_probe_absent
+- candidate_evidence_absent
+- operational_validation_not_started
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/run_refs.csv
+  producer: python foundation/pipelines/run_wave02_execution_liquidity_proxy_batch.py
+    --write-control-records
+  consumer: work_wave02_execution_liquidity_l4_materialization_preflight_v0
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    git_sha: 77f16884ff60e33a54c0379b553a44e93c21fbc0
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - ' M .codex/config.toml'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/artifact_lineage.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/experiment_receipt.yaml'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/metrics.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/run_manifest.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/artifact_lineage.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/experiment_receipt.yaml'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/metrics.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/run_manifest.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/artifact_lineage.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/experiment_receipt.yaml'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/metrics.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/run_manifest.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/artifact_lineage.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/experiment_receipt.yaml'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/metrics.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/run_manifest.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/artifact_lineage.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/experiment_receipt.yaml'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/metrics.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/run_manifest.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/artifact_lineage.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/experiment_receipt.yaml'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/metrics.json'
+    - ' M lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/run_manifest.json'
+    - ?? foundation/features/wave02_execution_liquidity_features.py
+    - ?? foundation/labels/wave02_execution_liquidity_labels.py
+    - ?? foundation/pipelines/run_wave02_execution_liquidity_proxy_batch.py
+    - ?? package.json

@@ -22,11 +22,11 @@
     "candidate_id": null
   },
   "created_at_utc": "2026-06-28T01:00:11Z",
-  "status": "spec_materialized_not_executed",
-  "result_judgment": "spec_materialized_not_executed",
-  "claim_boundary": "wave02_execution_liquidity_first_batch_specs_only_no_proxy_result_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve",
-  "primary_family": "experiment_design",
-  "primary_skill": "spacesonar-experiment-design",
+  "status": "executed_proxy_observation_l4_required",
+  "result_judgment": "preserved_clue",
+  "claim_boundary": "wave02_execution_liquidity_proxy_observation_l4_required_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve",
+  "primary_family": "model_training",
+  "primary_skill": "spacesonar-model-validation",
   "support_skills": [
     "spacesonar-evidence-provenance"
   ],
@@ -65,14 +65,18 @@
   "sample_scope": "split_set_v0_validation_and_research_oos_only_locked_final_oos_excluded",
   "required_gate_coverage": {
     "passed": [
-      "spec_manifest_materialized",
-      "claim_boundary_recorded",
-      "storage_contract_declared"
+      "run_manifest",
+      "experiment_receipt",
+      "storage_contract_check",
+      "runtime_learning_probe_decision",
+      "proxy_runtime_parity_decision",
+      "final_claim_guard"
     ],
     "missing": [
-      "proxy_execution",
-      "L4_split_runtime_probe_for_valid_proxy_run",
-      "candidate_runtime_evidence"
+      "L4_split_runtime_probe_for_valid_proxy_run"
+    ],
+    "not_applicable": [
+      "locked_final_oos_b_access"
     ]
   },
   "runtime_follow_through_plan": {
@@ -100,5 +104,53 @@
     "reviewed_verified_pass",
     "goal_achieve"
   ],
-  "next_action": "work_wave02_execution_liquidity_execute_proxy_batch_v0"
+  "next_action": "work_wave02_execution_liquidity_l4_materialization_preflight_v0",
+  "executed_at_utc": "2026-06-28T01:15:04Z",
+  "metrics_path": "lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/metrics.json",
+  "lineage_path": "lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/artifact_lineage.json",
+  "report_path": "lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/reports/proxy_execution_liquidity_report.json",
+  "model_validation": {
+    "model_family": {
+      "model_variant": "tree_scout",
+      "proxy_model_family": "tree_or_boosted_onnx_feasible_scout"
+    },
+    "target_and_label": {
+      "label_recipe_id": "label_wave02_execution_liquidity_tradeability_v0",
+      "label_variant": "session_transition_close_h10",
+      "target_name": "target_binary_raw",
+      "target_threshold": null
+    },
+    "split_method": "split_set_v0_train_validation_research_oos_a_locked_final_oos_b_withheld",
+    "selection_metric": "none_selected_broad_proxy_observation",
+    "secondary_metrics": [
+      "roc_auc",
+      "average_precision",
+      "balanced_accuracy",
+      "gross_proxy_profit_factor",
+      "trade_count"
+    ],
+    "threshold_policy": "train_quantile_score_thresholds_for_proxy_decision_only",
+    "overfit_risk": "broad_surface_multiple_testing_risk_no_selection_allowed",
+    "calibration_risk": "scores_are_rank_or_classifier_outputs_not_calibrated_probabilities",
+    "top_n_selection_bias_check": "no_top_n_selection_or_baseline_promotion",
+    "threshold_knife_edge_check": "thresholds recorded_for_L4_follow_through_not_used_for_selection",
+    "segment_or_regime_stability_check": "validation_and_research_oos_a_recorded_separately",
+    "trade_concentration_check": "trade_count_and_density_recorded_no_economics_claim",
+    "wfo_or_window_dispersion": "split_set_v0_primary_windows_only_WFO_missing_claim_lowered",
+    "proxy_runtime_laundering_check": "proxy_only_L4_required_no_runtime_authority",
+    "risk_stop_check": "runtime_stop_hold_execution_missing_until_L4",
+    "comparison_baseline": [
+      "no_trade_baseline_reference_only",
+      "closed_wave02_cost_risk_negative_memory_reference_only"
+    ],
+    "anti_authority_laundering_judgment": "exploratory_proxy_observation_only",
+    "validation_judgment": "preserved_clue"
+  },
+  "runtime_learning_probe_decision": {
+    "required": true,
+    "decision": "run_required_next",
+    "target_level": "L4_split_runtime_probe",
+    "lowered_claim_if_not_run": "proxy_observation_only_no_runtime_authority_no_economics_pass_no_candidate",
+    "follow_up_work_item_id": "work_wave02_execution_liquidity_l4_materialization_preflight_v0"
+  }
 }
