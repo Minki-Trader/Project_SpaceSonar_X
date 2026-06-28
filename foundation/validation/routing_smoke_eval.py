@@ -78,6 +78,52 @@ def evaluate(repo_root: Path) -> list[str]:
         ci_policy = kernel.get("ci_scope_gate_policy") or {}
         if ci_policy.get("default_behavior") != "non_blocking_boundary_classifier":
             errors.append("operational_stability_kernel ci_scope_gate_policy.default_behavior mismatch")
+        repair_matrix = kernel.get("direct_inspection_repair_matrix") or []
+        if not isinstance(repair_matrix, list) or len(repair_matrix) < 15:
+            errors.append("operational_stability_kernel direct_inspection_repair_matrix must name at least 15 surfaces")
+        contract_enforcement = kernel.get("writer_contract_enforcement") or {}
+        for field in [
+            "new_or_changed_writer_without_contract",
+            "legacy_writer_reuse_without_contract",
+            "broad_validation_finds_writer_gap",
+        ]:
+            if field not in contract_enforcement:
+                errors.append(f"operational_stability_kernel writer_contract_enforcement missing {field}")
+
+    contract_rel = "docs/agent_control/writer_scope_operating_contract.yaml"
+    contract_path = repo_root / contract_rel
+    if not contract_path.exists():
+        errors.append(f"missing writer scope operating contract: {contract_rel}")
+    elif (registry.get("global_rules") or {}).get("writer_scope_operating_contract") != contract_rel:
+        errors.append("work_family_registry.yaml global_rules.writer_scope_operating_contract mismatch")
+    else:
+        contract = load_yaml(contract_path)
+        if contract.get("default_validation_depth") != "writer_scope_smoke":
+            errors.append("writer_scope_operating_contract default_validation_depth must be writer_scope_smoke")
+        required_writer_fields = set(contract.get("required_writer_record_fields") or [])
+        for field in [
+            "writer_contract_version",
+            "source_of_truth_paths",
+            "writer_owned_outputs",
+            "validation_depth",
+            "non_pytest_smokes",
+            "skipped_broad_validations",
+            "broad_validation_escalation_reason",
+            "writer_scope_self_check",
+            "claim_boundary",
+            "next_action_or_reopen_condition",
+        ]:
+            if field not in required_writer_fields:
+                errors.append(f"writer_scope_operating_contract required_writer_record_fields missing {field}")
+        machine_enforcement = contract.get("machine_enforcement") or {}
+        for field in ["new_writer_records", "legacy_writer_reuse", "summary_or_closeout_records", "failure_policy"]:
+            if field not in machine_enforcement:
+                errors.append(f"writer_scope_operating_contract machine_enforcement missing {field}")
+
+    if (registry.get("global_rules") or {}).get("operational_stability_lint") != (
+        "foundation/validation/operational_stability_lint.py"
+    ):
+        errors.append("work_family_registry.yaml global_rules.operational_stability_lint mismatch")
 
     cases = prompts.get("cases", [])
     declared_count = (prompts.get("prompt_count_policy") or {}).get("current")

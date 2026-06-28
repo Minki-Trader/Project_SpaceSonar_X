@@ -63,6 +63,7 @@ lifecycle:
 
   - phase: validation_decision
     required_outputs:
+      - writer_contract_version
       - validation_depth
       - non_pytest_smokes
       - skipped_broad_validations

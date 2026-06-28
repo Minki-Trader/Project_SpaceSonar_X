@@ -59,6 +59,7 @@ Read only touched policy/skill/control files plus:
 - Missing repo-controlled support is a repair trigger, not a final architecture blocker.
 - Stable operation is enforced at writer/source-of-truth boundaries first; broad validators are boundary evidence, not the normal design mechanism.
 - Any architecture change that adds or changes a writer must make that writer name source-of-truth paths, owned outputs, validation depth, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, and next action/reopen condition.
+- Use the operational stability direct inspection repair matrix when the user asks for all-folder/all-file inspection: each observed gap must repair an owner writer, manifest, policy, skill, or scoped lint, not become a folder-scan report.
 - Broad validation commands are architecture-level escalation, not routine proof; require the operational command-intent gate before running them.
 - Before blocked, deferred, invalid, or discarded architecture disposition, reproduce the failing layer, try the smallest repo-controlled implementation, adapter, fixture, parser, or fallback, and record evidence plus reopen condition.
 - If a converter, conversion adapter, export adapter, EA adapter, parser, runner, or runtime glue does not exist, create the smallest explicit translation layer needed to test the hypothesis unless a narrow exception applies.

@@ -114,6 +114,7 @@ execution_weight_policy:
         - broad_hash_resync
         - global_registry_regeneration
       required_writer_contract_fields:
+        - writer_contract_version
         - validation_depth
         - non_pytest_smokes
         - skipped_broad_validations

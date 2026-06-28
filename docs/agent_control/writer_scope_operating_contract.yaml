@@ -1,4 +1,4 @@
-version: writer_scope_operating_contract_v1
+version: writer_scope_operating_contract_v2
 purpose: machine_contract_for_stable_operation_without_routine_pytest_or_full_graph_validation
 claim_boundary: control_plane_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 
@@ -16,6 +16,7 @@ applies_to:
 default_validation_depth: writer_scope_smoke
 
 required_writer_record_fields:
+  - writer_contract_version
   - primary_family
   - primary_skill
   - source_of_truth_paths
@@ -69,6 +70,35 @@ writer_before_write_gate:
     - expected_writer_owned_outputs
   rule: if_the_writer_cannot_name_what_it_owns_it_must_not_use_pytest_or_project_validate_to_discover_it
 
+machine_enforcement:
+  new_writer_records:
+    required_contract_version: writer_scope_operating_contract_v2
+    missing_required_field_effect: fail_writer_local_before_mutation
+    broad_validation_substitution_allowed: false
+  legacy_writer_reuse:
+    applies_to: legacy_pipeline_or_runner_reused_for_wave02_plus_or_active_work
+    allowed_only_after:
+      - patch_writer_to_emit_required_writer_record_fields
+      - wrap_writer_with_source_of_truth_summary_receipt_hash_claim_boundary_check
+      - record_lowered_claim_boundary_for_read_only_legacy_reference
+    missing_contract_effect: do_not_escalate_to_pytest_patch_or_wrap_first
+  summary_or_closeout_records:
+    required:
+      - writer_contract_version
+      - source_of_truth_paths
+      - writer_owned_outputs
+      - validation_depth
+      - non_pytest_smokes
+      - skipped_broad_validations
+      - broad_validation_escalation_reason
+      - writer_scope_self_check
+      - claim_boundary
+      - next_action_or_reopen_condition
+  failure_policy:
+    if_writer_cannot_write_proof_record: write_failure_summary_with_missing_evidence_reopen_condition_or_fail_before_registry_projection
+    if_broad_validation_finds_missing_writer_output: move_check_into_writer_before_repeating_broad_validation
+    if_hash_or_line_ending_drift_repeats: hash_after_final_bytes_and_use_targeted_registry_update_only
+
 writer_after_write_gate:
   fail_writer_local_when_missing:
     - declared_source_of_truth_paths_exist
@@ -112,9 +142,11 @@ forbidden_default_commands:
   - evidence_graph_full_workflow
   - active_record_validator_full_graph
   - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
   - broad_hash_resync
   - global_registry_regeneration
-  - volatile_whole_tree_scan_as_proof
+  - whole_tree_scan_as_proof
+  - volatile_local_tree_scan_as_proof
 
 broad_validation_command_intent_gate:
   allowed_only_when_one_of:

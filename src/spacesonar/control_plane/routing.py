@@ -67,6 +67,38 @@ def _contains_intent_alias(haystack: str, alias: str) -> bool:
     return needle in haystack
 
 
+def _claim_alias_is_negated(haystack: str, match_start: int) -> bool:
+    prefix = haystack[max(0, match_start - 48) : match_start]
+    return any(
+        marker in prefix
+        for marker in (
+            "no ",
+            "not ",
+            "never ",
+            "without ",
+            "without claiming ",
+            "do not claim ",
+            "dont claim ",
+            "don't claim ",
+            "avoid claiming ",
+            "forbid ",
+            "forbidden ",
+        )
+    )
+
+
+def _claim_alias_present_assertively(haystack: str, alias: str) -> bool:
+    needle = _normalize_text(alias)
+    if not needle:
+        return False
+    start = haystack.find(needle)
+    while start >= 0:
+        if not _claim_alias_is_negated(haystack, start):
+            return True
+        start = haystack.find(needle, start + len(needle))
+    return False
+
+
 def _claim_alias_hits(text: str, requested_claims: tuple[str, ...], claim_vocabulary: dict[str, Any]) -> set[str]:
     text_haystack = _normalize_text(text)
     hits: set[str] = set()
@@ -80,7 +112,7 @@ def _claim_alias_hits(text: str, requested_claims: tuple[str, ...], claim_vocabu
             needle = _normalize_text(str(alias))
             if needle:
                 exact_claim_lookup[needle] = str(claim_id)
-            if needle and needle in text_haystack:
+            if needle and _claim_alias_present_assertively(text_haystack, str(alias)):
                 hits.add(str(claim_id))
     if requested_claims:
         for item in requested_claims:

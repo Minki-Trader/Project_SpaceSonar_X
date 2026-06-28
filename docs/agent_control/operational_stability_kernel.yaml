@@ -1,4 +1,4 @@
-version: operational_stability_kernel_v2
+version: operational_stability_kernel_v3
 purpose: codex_operates_stably_without_routine_pytest_or_full_graph_validation
 claim_boundary: operational_control_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 
@@ -59,6 +59,101 @@ routine_inspection_scope:
       - raw_runtime_artifact_tree_inventory
     reason: volatile generated trees can be stale, missing, huge, or intentionally ignored; they are not proof of operating state
 
+direct_inspection_repair_matrix:
+  - surface: boot_kernel
+    inspect:
+      - AGENTS.md
+    gap_repair_target: boot_read_rule_or_claim_guard
+  - surface: workspace_active_record
+    inspect:
+      - docs/workspace/workspace_state.yaml
+      - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+    gap_repair_target: active_pointer_writer_or_next_work_record
+  - surface: work_family_routing
+    inspect:
+      - docs/agent_control/work_family_registry.yaml
+      - docs/agent_control/routing_smoke_prompts.yaml
+    gap_repair_target: route_rule_or_routing_smoke_fixture
+  - surface: canonical_policy
+    inspect:
+      - docs/agent_control/policy_contract.yaml
+      - docs/agent_control/claim_vocabulary.yaml
+    gap_repair_target: guard_binding_or_claim_vocabulary
+  - surface: operational_kernel
+    inspect:
+      - docs/agent_control/operational_stability_kernel.yaml
+    gap_repair_target: kernel_rule_or_command_gate
+  - surface: writer_contract
+    inspect:
+      - docs/agent_control/writer_scope_operating_contract.yaml
+    gap_repair_target: writer_prewrite_or_afterwrite_contract
+  - surface: codex_output_format
+    inspect:
+      - docs/agent_control/codex_operating_format.yaml
+      - docs/agent_control/work_item_lite.schema.yaml
+    gap_repair_target: required_machine_field_or_closeout_rule
+  - surface: repo_skills
+    inspect:
+      - .agents/skills
+    gap_repair_target: selected_skill_guardrail_or_required_output
+  - surface: validation_tools
+    inspect:
+      - foundation/validation
+    gap_repair_target: scoped_non_pytest_smoke_or_lint
+  - surface: pipeline_writers
+    inspect:
+      - foundation/pipelines
+    gap_repair_target: active_writer_contract_patch_or_legacy_wrapper
+  - surface: reusable_research_code
+    inspect:
+      - foundation/features
+      - foundation/labels
+      - foundation/training
+      - foundation/onnx
+      - foundation/mt5
+    gap_repair_target: reusable_helper_contract_or_adapter
+  - surface: runtime_and_split_contracts
+    inspect:
+      - foundation/config/mt5_runtime_probe_contract.yaml
+      - configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml
+      - configs/onnx_lab/split_recipes/split_set_v0.yaml
+    gap_repair_target: runtime_or_split_contract_field
+  - surface: lab_source_of_truth
+    inspect:
+      - lab/waves
+      - lab/campaigns
+      - lab/runs
+      - lab/candidates
+    gap_repair_target: manifest_receipt_summary_or_reopen_condition
+  - surface: registries
+    inspect:
+      - docs/registers
+    gap_repair_target: registry_projection_or_backing_manifest_link
+  - surface: runtime_attempts_and_bundles
+    inspect:
+      - runtime/mt5_attempts
+      - runtime/packages
+    gap_repair_target: attempt_manifest_bundle_manifest_or_availability_record
+  - surface: ci_workflows
+    inspect:
+      - .github/workflows
+    gap_repair_target: non_pytest_smoke_or_manual_archive_gate
+
+direct_inspection_repair_rule: direct inspection ends by patching an owner writer, source-of-truth manifest, policy, skill, or scoped lint; it must not end as a repeated folder-scan report
+
+writer_contract_enforcement:
+  new_or_changed_writer_without_contract: fail_writer_local_before_broad_validation
+  legacy_writer_reuse_without_contract: patch_or_wrap_before_reuse_for_wave02_plus_or_lower_claim_to_legacy_read_only
+  broad_validation_finds_writer_gap: move_invariant_into_writer_parser_adapter_manifest_or_lint_before_repeating_broad_validation
+  active_wave02_requirement: any Wave02 writer that mutates manifests, receipts, registries, workspace_state, bundles, attempts, or closeouts must emit writer-scope fields and after-write self-check
+  required_writer_version_field: writer_contract_version
+  default_gap_effect: investigation_in_progress_until_owner_rule_is_patched
+  forbidden_gap_response:
+    - run_pytest_to_discover_owner_surface
+    - run_project_validate_to_discover_missing_writer_outputs
+    - run_broad_hash_resync_before_writer_final_byte_check
+    - repeat_full_folder_scan_without_policy_or_writer_change
+
 active_record_authority:
   authoritative_pointer_fields:
     - active_goal
@@ -85,6 +180,7 @@ writer_scope_operating_contract:
     - runtime_attempt_writers
     - workspace_state_mutations
   required_record_fields:
+    - writer_contract_version
     - primary_family
     - primary_skill
     - source_of_truth_paths
@@ -237,6 +333,7 @@ hard_enforcement_points:
     - writer_scope_smoke_insufficiency_named
     - expected_claim_effect_named
   writer_before_write:
+    - writer_contract_version_declared
     - source_of_truth_path_declared
     - primary_family_and_skill_declared
     - id_chain_present_or_not_applicable_reason
@@ -328,6 +425,7 @@ operator_failure_modes_to_avoid:
   - writing_new_pipeline_without_writer_scope_operating_contract_fields
 
 machine_output_fields:
+  - writer_contract_version
   - primary_family
   - primary_skill
   - touched_source_of_truth_paths

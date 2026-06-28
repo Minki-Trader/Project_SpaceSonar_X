@@ -10,6 +10,7 @@ Control-plane preflight validators:
 - `writer_scope_evidence_smoke.py`: validates only the touched run/campaign evidence surface: run manifest, experiment receipt, artifact lineage, metrics, optional run refs, optional campaign proxy summary, claim boundary, and hash refs. This is the default no-pytest run-evidence smoke.
 - `machine_yaml_identity_lint.py`: validates touched machine YAML records do not contain PyYAML alias/anchor identity tokens such as `&id001` or `*id001`.
 - `routing_smoke_eval.py`: checks the 12-20 prompt routing smoke fixture against `docs/agent_control/work_family_registry.yaml`.
+- `operational_stability_lint.py`: checks that AGENTS, routing, skills, writer-scope contract, CI, and validation docs all enforce the no-pytest writer-first operating loop.
 - `refresh_artifact_registry_hashes.py`: refreshes registry sha256/size identity for existing repo-relative artifacts after checkout or line-ending drift; use `--path` for touched-row scope during ordinary writer work.
 
 Default operation must not call `pytest`, `python -m spacesonar.cli project validate`, full active-record validation, broad hash resync, or full control-plane validation for ordinary run writing or progress checks. Use the writer-scope smoke, touched parse/compile/import checks, touched YAML identity lint, routing/policy lint, or projection checks first; escalate only at campaign/wave boundaries, protected claim changes, shared validator/contract semantics changes, explicit user request, or source-of-truth drift.

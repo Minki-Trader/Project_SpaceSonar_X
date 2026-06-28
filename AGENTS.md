@@ -79,7 +79,7 @@ Policy meaning lives in `docs/agent_control/policy_contract.yaml`; manifests bin
 - `GUARD_007_OPERATIONAL_STABILITY`: default to writer-scope smoke and source-of-truth checks; routine pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans are forbidden unless a boundary, drift, shared-contract change, protected claim, or explicit user request requires them.
 
 No-pytest operation is writer-contract first: every new or changed writer must name
-its owned source-of-truth paths, output records, validation depth, non-pytest
+its `writer_contract_version`, owned source-of-truth paths, output records, validation depth, non-pytest
 smokes, skipped broad validations, escalation reason, self-check, claim boundary,
 and next action before broad validation can be considered.
 

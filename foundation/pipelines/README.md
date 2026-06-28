@@ -13,7 +13,8 @@ No-pytest operating rule:
 
 - Pipeline writers own their manifest, receipt, summary, hash, and claim-boundary output contracts.
 - New or changed writers follow `docs/agent_control/writer_scope_operating_contract.yaml`.
-- Each writer-owned summary/manifest/closeout must record `validation_depth`, `non_pytest_smokes`, `skipped_broad_validations`, `broad_validation_escalation_reason`, `writer_scope_self_check`, `source_of_truth_paths`, `claim_boundary`, and `next_action` or `reopen_condition`.
+- Each writer-owned summary/manifest/closeout must record `writer_contract_version`, `validation_depth`, `non_pytest_smokes`, `skipped_broad_validations`, `broad_validation_escalation_reason`, `writer_scope_self_check`, `source_of_truth_paths`, `writer_owned_outputs`, `claim_boundary`, and `next_action` or `reopen_condition`.
+- Legacy writers reused for Wave02+ mutation must be patched or wrapped to emit the same writer-contract fields before broad validation is considered.
 - A writer must not rely on pytest, full-regression, full active-record validation, evidence-graph validation, or broad registry regeneration to discover ordinary missing output files.
 - Before projecting `artifact_identity` or registry rows, the writer must ensure proof-bearing summaries and receipts exist on the same filesystem path being hashed.
 - Missing optional raw local artifacts, such as ignored telemetry CSVs or tester reports, are recorded as explicit availability/missing-evidence fields instead of crashing the writer.

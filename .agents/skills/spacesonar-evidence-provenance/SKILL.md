@@ -34,6 +34,7 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 - Use repo-relative paths plus IDs and hashes for durable identity.
 - For no-pytest operation, prefer writer-time manifest/receipt/hash checks over broad retrospective validation.
 - Evidence writers must emit the writer-scope operating contract fields for the touched evidence surface; missing proof-bearing summaries, receipts, or hashes are writer-local failures, not pytest triggers.
+- Evidence writers must record `writer_contract_version`; if a legacy writer lacks it and will mutate Wave02+ evidence, patch or wrap that writer before using pytest, project validate, full evidence graph, or broad hash resync.
 - Compute hashes from the final written bytes after newline and encoding decisions are complete; do not use broad hash resync to mask a writer contract bug.
 - A writer that records `artifact_identity` must first ensure the referenced summary/receipt exists on the same filesystem path it will hash. Optional raw local artifacts may be marked missing or local-only; proof-bearing summaries and receipts must not be missing after writer close.
 - Machine YAML proof/control records must be dumped without aliases or anchors. Use the repo `NoAliasDumper` / `dump_yaml` helper, deep-copy reused nested objects before assigning them into multiple branches, and run touched YAML identity lint when manual or control-record rewrites are involved.

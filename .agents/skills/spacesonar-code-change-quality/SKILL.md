@@ -45,6 +45,7 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 - Do not default to pytest for ordinary code or policy edits. Prefer direct parse, compile, import, schema, lint, or command-level smoke for the touched surface; escalate to pytest only for boundary, shared-contract, protected-claim, or explicit user-requested validation.
 - When skipping pytest, record the narrower smoke and why it covers the touched contract.
 - For new or changed writers, implement the writer-scope operating contract fields at the write site instead of relying on tests to detect missing manifests, receipts, summaries, registry rows, hashes, or claim boundaries.
+- For new or changed writers, write `writer_contract_version` and fail locally if source-of-truth paths, writer-owned outputs, validation fields, self-check, claim boundary, blocker/reopen condition, or next action cannot be named before mutation.
 - Do not replace pytest with full project validation by habit. `python -m spacesonar.cli project validate` is also broad validation and follows the same boundary/drift/shared-contract/user-request escalation rule.
 - Before running pytest, project validate, full active-record validation, full evidence graph, broad hash resync, or global registry regeneration, record the broad validation escalation reason and why the writer-scope smoke is insufficient.
 - If a bug repeats because validation finds it late, move the check into the writer, parser, adapter, or manifest contract so the next run fails before broad validation.
