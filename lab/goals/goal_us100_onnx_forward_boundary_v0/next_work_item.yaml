@@ -43,9 +43,31 @@ skipped_broad_validations:
 - broad_hash_resync
 - global_registry_regeneration
 broad_validation_escalation_reason: none_campaign_closeout_writer_scope_only
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 2
 writer_scope_self_check:
   status: passed
-  checked_at_utc: '2026-06-28T03:49:21Z'
+  checked_at_utc: '2026-06-28T04:33:12Z'
   failures: []
   writer_contract_version: writer_scope_operating_contract_v2
   validation_depth: writer_scope_smoke
@@ -55,6 +77,7 @@ writer_scope_self_check:
   - active_pointer_smoke
   - machine_yaml_identity_lint
   - targeted_artifact_hash_check
+  - writer_scope_contract_lint
   skipped_broad_validations:
   - pytest
   - full_regression_workflow
@@ -65,6 +88,8 @@ writer_scope_self_check:
   - broad_hash_resync
   - global_registry_regeneration
   broad_validation_escalation_reason: none_campaign_closeout_writer_scope_only
+  writer_preflight_gate: passed_before_mutation
+  validation_attempt_budget: max_2_attempts_observed_2
   source_of_truth_paths:
   - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
   - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_summary.yaml

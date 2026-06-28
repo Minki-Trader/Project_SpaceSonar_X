@@ -162,8 +162,21 @@ def validate(repo_root: Path) -> list[str]:
                 errors.append("workspace_state.yaml: active_campaign.campaign_id does not match campaign manifest")
             if active_campaign.get("status") != campaign.get("status"):
                 errors.append("workspace_state.yaml: active_campaign.status does not match campaign manifest")
-            if campaign.get("claim_boundary") != workspace.get("current_claim_boundary"):
+            campaign_claim_boundary = campaign.get("claim_boundary")
+            workspace_claim_boundary = workspace.get("current_claim_boundary")
+            closeout_ref = (
+                active_campaign.get("closeout")
+                or campaign.get("campaign_closeout")
+                or (next_work.get("current_truth") or {}).get("campaign_closeout")
+            )
+            closed_campaign_with_current_next_work = (
+                "closed" in str(campaign.get("status") or "")
+                and closeout_ref
+                and closeout_ref == (next_work.get("current_truth") or {}).get("campaign_closeout")
+            )
+            if campaign_claim_boundary != workspace_claim_boundary and not closed_campaign_with_current_next_work:
                 errors.append("campaign_manifest.yaml: claim_boundary does not match workspace")
+            errors.extend(claim_errors("campaign_manifest", campaign_claim_boundary))
 
     registry_path = repo_root / GOAL_REGISTRY
     if registry_path.exists() and active_goal.get("goal_id"):

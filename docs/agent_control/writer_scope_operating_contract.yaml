@@ -1,6 +1,8 @@
 version: writer_scope_operating_contract_v2
+strong_trigger_revision: validation_attempt_budget_v1
 purpose: machine_contract_for_stable_operation_without_routine_pytest_or_full_graph_validation
 claim_boundary: control_plane_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+global_write_time_guard: src/spacesonar/control_plane/writer_contract.py
 
 applies_to:
   - new_or_changed_pipeline_writers
@@ -25,6 +27,8 @@ required_writer_record_fields:
   - non_pytest_smokes
   - skipped_broad_validations
   - broad_validation_escalation_reason
+  - writer_preflight_gate
+  - validation_attempt_budget
   - writer_scope_self_check
   - claim_boundary
   - forbidden_claims
@@ -62,18 +66,58 @@ writer_owned_output_classes:
 
 writer_before_write_gate:
   fail_before_mutation_when_missing:
+    - writer_contract_version
     - source_of_truth_paths
     - primary_family
     - primary_skill
+    - validation_depth
+    - non_pytest_smokes
+    - skipped_broad_validations
+    - broad_validation_escalation_reason
+    - validation_attempt_budget
     - claim_boundary
     - forbidden_claims_for_candidate_runtime_or_closeout_surfaces
     - expected_writer_owned_outputs
-  rule: if_the_writer_cannot_name_what_it_owns_it_must_not_use_pytest_or_project_validate_to_discover_it
+  required_preflight_record:
+    field: writer_preflight_gate
+    status: passed_before_mutation
+    checked_before_mutation: true
+    fail_closed_when_missing: true
+    required_fields_named:
+      - source_of_truth_paths
+      - writer_owned_outputs
+      - primary_family
+      - primary_skill
+      - validation_attempt_budget
+      - claim_boundary
+      - forbidden_claims
+      - next_action_or_reopen_condition
+  rule: if_the_writer_cannot_name_what_it_owns_it_must_fail_before_mutation_and_must_not_use_pytest_or_project_validate_to_discover_it
+
+validation_attempt_budget:
+  default:
+    max_writer_scope_attempts: 2
+    allowed_attempts:
+      - initial_writer_scope_smoke_after_write
+      - one_repair_then_same_scope_resmoke
+    third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+    broad_validation_resets_budget: false
+    repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  required_record_fields:
+    - max_writer_scope_attempts
+    - allowed_attempts
+    - third_attempt_effect
+    - broad_validation_resets_budget
+    - repeated_same_failure_effect
+  rule: writer_scope_validation_must_not_become_a_loop_initial_check_plus_one_repair_check_then_fail_closed_or_escalate_with_recorded_reason
 
 machine_enforcement:
   new_writer_records:
     required_contract_version: writer_scope_operating_contract_v2
+    required_write_time_guard: src/spacesonar/control_plane/writer_contract.py
     missing_required_field_effect: fail_writer_local_before_mutation
+    missing_preflight_gate_effect: fail_writer_local_before_mutation
+    missing_validation_attempt_budget_effect: fail_writer_local_before_mutation
     broad_validation_substitution_allowed: false
   legacy_writer_reuse:
     applies_to: legacy_pipeline_or_runner_reused_for_wave02_plus_or_active_work
@@ -91,6 +135,8 @@ machine_enforcement:
       - non_pytest_smokes
       - skipped_broad_validations
       - broad_validation_escalation_reason
+      - writer_preflight_gate
+      - validation_attempt_budget
       - writer_scope_self_check
       - claim_boundary
       - next_action_or_reopen_condition
@@ -98,6 +144,21 @@ machine_enforcement:
     if_writer_cannot_write_proof_record: write_failure_summary_with_missing_evidence_reopen_condition_or_fail_before_registry_projection
     if_broad_validation_finds_missing_writer_output: move_check_into_writer_before_repeating_broad_validation
     if_hash_or_line_ending_drift_repeats: hash_after_final_bytes_and_use_targeted_registry_update_only
+    if_writer_scope_smoke_fails_twice: stop_repeating_and_record_blocker_or_command_intent_gate
+    if_same_gap_reappears: add_preflight_or_scoped_lint_before_next_run
+
+write_time_guarded_surfaces:
+  transaction_stage_yaml_enforced_by: src/spacesonar/control_plane/transaction.py
+  strict_writer_filenames:
+    - next_work_item.yaml
+    - campaign_closeout.yaml
+    - wave_closeout.yaml
+    - candidate_summary.yaml
+    - attempt_manifest.yaml
+  strict_writer_patterns:
+    - lab/campaigns/**/*_summary.yaml
+    - lab/campaigns/**/summary.yaml
+  rule: strict_writer_surfaces_fail_before_mutation_if_writer_contract_fields_are_missing_or_pending
 
 writer_after_write_gate:
   fail_writer_local_when_missing:
@@ -107,6 +168,7 @@ writer_after_write_gate:
     - repo_relative_paths_only
     - machine_yaml_has_no_aliases_or_anchors
     - claim_boundary_does_not_exceed_evidence
+    - validation_attempt_budget_observed_and_not_exceeded
   workspace_mutation_extra:
     - workspace_state_active_pointer_aligned
     - next_work_item_aligned
@@ -121,6 +183,7 @@ non_pytest_smoke_map:
   control_yaml_changed:
     - parse_touched_yaml
     - machine_yaml_identity_lint
+    - writer_scope_contract_lint_for_touched_writer_records
   workspace_or_next_work_changed:
     - active_pointer_smoke
     - targeted_artifact_hash_check_for_registered_touched_records
@@ -132,6 +195,7 @@ non_pytest_smoke_map:
   routing_or_skill_changed:
     - parse_touched_yaml_or_frontmatter
     - routing_contract_lint_or_policy_lint_when_route_semantics_changed
+    - writer_scope_contract_lint_when_writer_contract_semantics_change
   runtime_attempt_changed:
     - parse_attempt_manifest
     - check_terminal_summary_telemetry_summary_tester_report_receipt_availability
@@ -188,6 +252,7 @@ stable_loop_order:
   - read_current_truth
   - choose_one_primary_family_and_skill
   - name_writer_owned_source_of_truth_paths
+  - build_writer_preflight_gate_and_validation_attempt_budget
   - execute_or_edit_the_thinnest_owned_step
   - write_manifest_receipt_summary_hash_claim_boundary
   - run_non_pytest_smokes_for_touched_surfaces
@@ -198,6 +263,8 @@ machine_output_fields:
   - non_pytest_smokes
   - skipped_broad_validations
   - broad_validation_escalation_reason
+  - writer_preflight_gate
+  - validation_attempt_budget
   - writer_scope_self_check
   - source_of_truth_paths
   - claim_boundary

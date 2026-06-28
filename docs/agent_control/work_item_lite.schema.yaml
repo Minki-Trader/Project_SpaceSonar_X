@@ -26,8 +26,11 @@ operational_validation_required_fields:
     - non_pytest_smokes
     - skipped_broad_validations
     - broad_validation_escalation_reason
+    - writer_preflight_gate
+    - validation_attempt_budget
     - writer_scope_self_check
     - source_of_truth_paths
     - unresolved_blockers_or_none
     - next_action_or_reopen_condition
   rule: missing_operational_validation_fields_are_writer_contract_drift_not_a_pytest_trigger
+  validation_attempt_budget_rule: initial_writer_scope_smoke_plus_one_owner_repair_resmoke_then_blocker_or_escalation_record

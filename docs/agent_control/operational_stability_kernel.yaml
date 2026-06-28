@@ -4,6 +4,9 @@ claim_boundary: operational_control_policy_only_no_runtime_authority_no_economic
 
 default_validation_depth: writer_scope_smoke
 writer_scope_operating_contract_path: docs/agent_control/writer_scope_operating_contract.yaml
+strong_trigger_revision: validation_attempt_budget_v1
+global_write_time_guard_path: src/spacesonar/control_plane/writer_contract.py
+transaction_write_time_guard_path: src/spacesonar/control_plane/transaction.py
 
 default_command_selection:
   project_validate_default: false
@@ -148,12 +151,42 @@ writer_contract_enforcement:
   broad_validation_finds_writer_gap: move_invariant_into_writer_parser_adapter_manifest_or_lint_before_repeating_broad_validation
   active_wave02_requirement: any Wave02 writer that mutates manifests, receipts, registries, workspace_state, bundles, attempts, or closeouts must emit writer-scope fields and after-write self-check
   required_writer_version_field: writer_contract_version
+  required_writer_preflight_field: writer_preflight_gate
+  required_validation_attempt_budget_field: validation_attempt_budget
+  global_write_time_guard_required: true
+  transaction_stage_yaml_enforces_strict_writer_surfaces: true
   default_gap_effect: investigation_in_progress_until_owner_rule_is_patched
   forbidden_gap_response:
     - run_pytest_to_discover_owner_surface
     - run_project_validate_to_discover_missing_writer_outputs
     - run_broad_hash_resync_before_writer_final_byte_check
     - repeat_full_folder_scan_without_policy_or_writer_change
+    - repeat_writer_scope_smoke_after_two_attempts_without_blocker_or_escalation_record
+
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+    - initial_writer_scope_smoke_after_write
+    - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  rule: a writer may run the touched-surface smoke once, make one owner repair, and run the same smoke once more; a third pass is not progress without a blocker or command-intent gate
+
+write_time_guarded_surfaces:
+  guard_module: src/spacesonar/control_plane/writer_contract.py
+  transaction_hook: ControlPlaneTransaction.stage_yaml
+  strict_writer_filenames:
+    - next_work_item.yaml
+    - campaign_closeout.yaml
+    - wave_closeout.yaml
+    - candidate_summary.yaml
+    - attempt_manifest.yaml
+  strict_writer_patterns:
+    - lab/campaigns/**/*_summary.yaml
+    - lab/campaigns/**/summary.yaml
+  fail_effect: fail_before_mutation
+  proof_effect: construction_guard_not_runtime_or_economics_claim
 
 active_record_authority:
   authoritative_pointer_fields:
@@ -262,6 +295,7 @@ start_order:
   - classify_primary_family_and_primary_skill
   - identify_owned_source_of_truth_paths
   - identify_writer_or_manifest_responsible_for_the_change
+  - construct_writer_preflight_gate_and_validation_attempt_budget
   - mutate_smallest_owned_surface
   - record_claim_boundary_and_provenance_effect
   - run_non_pytest_smoke_for_touched_surfaces
@@ -322,6 +356,7 @@ allowed_non_pytest_smokes:
   - active_pointer_smoke
   - run_writer_scope_evidence_smoke_for_touched_runs
   - run_policy_or_routing_lint_when_policy_or_routing_changed
+  - run_writer_scope_contract_lint_for_touched_writer_records
   - run_repository_setting_check_when_git_policy_changed
   - run_registry_projection_check_when_registry_projection_changed
   - inspect_manifest_receipt_lineage_hash_fields_for_touched_records
@@ -336,8 +371,10 @@ hard_enforcement_points:
     - expected_claim_effect_named
   writer_before_write:
     - writer_contract_version_declared
+    - writer_preflight_gate_passed_before_mutation
     - source_of_truth_path_declared
     - primary_family_and_skill_declared
+    - validation_attempt_budget_declared
     - id_chain_present_or_not_applicable_reason
     - claim_boundary_declared
     - forbidden_claims_declared_for_runtime_candidate_or_closeout_surfaces
@@ -351,6 +388,7 @@ hard_enforcement_points:
     - hashes_match_written_outputs_or_hash_only_availability_declared
     - registry_rows_link_to_manifest_not_to_claim_authority
     - machine_yaml_has_no_aliases_or_anchors
+    - validation_attempt_budget_observed_and_not_exceeded
     - dirty_worktree_effect_recorded_if_reproducibility_matters
   boundary_before_main_push:
     - no_unresolved_writer_errors
@@ -378,6 +416,7 @@ writer_scope_commands:
   run_evidence: "python -m spacesonar.cli project writer-smoke --run-refs <repo-relative-run_refs.csv> --campaign-id <campaign_id> --summary <repo-relative-summary.yaml> --pre-runtime"
   direct_validator: "python foundation/validation/writer_scope_evidence_smoke.py --run-id <run_id> --pre-runtime"
   machine_yaml_identity_lint: "python foundation/validation/machine_yaml_identity_lint.py --path <repo-relative-yaml>"
+  writer_scope_contract_lint: "python foundation/validation/writer_scope_contract_lint.py --path <repo-relative-yaml-or-json>"
   targeted_artifact_hash_refresh: "python foundation/validation/refresh_artifact_registry_hashes.py --path <repo-relative-artifact> --write"
 
 transaction_validation_policy:
@@ -436,6 +475,8 @@ machine_output_fields:
   - non_pytest_smokes
   - skipped_broad_validations
   - broad_validation_escalation_reason
+  - writer_preflight_gate
+  - validation_attempt_budget
   - writer_scope_self_check
   - claim_boundary
   - unresolved_blockers

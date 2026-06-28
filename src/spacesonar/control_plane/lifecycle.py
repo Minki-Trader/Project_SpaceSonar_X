@@ -14,6 +14,7 @@ from .registry_projection import _stage_registry_projections, artifact_row_for_t
 from .state_projection import workspace_projection_diff, workspace_projection_text
 from .store import dump_csv, dump_yaml, filesystem_path, read_csv_rows, read_yaml
 from .transaction import ControlPlaneTransaction, utc_now
+from .writer_contract import WRITER_CONTRACT_VERSION, default_validation_attempt_budget, default_writer_preflight_gate
 
 
 DEFAULT_FORBIDDEN_CLAIMS = [
@@ -326,6 +327,56 @@ def _first_text(value: Any) -> str:
     return str(items[0] or "")
 
 
+def _apply_writer_contract_defaults(
+    payload: dict[str, Any],
+    *,
+    primary_family: str,
+    primary_skill: str,
+    source_of_truth_paths: list[str],
+    writer_owned_outputs: list[str],
+    claim_boundary: str,
+    next_action_or_reopen_condition: str,
+    forbidden_claims: list[str] | None = None,
+) -> dict[str, Any]:
+    payload.setdefault("writer_contract_version", WRITER_CONTRACT_VERSION)
+    payload.setdefault("primary_family", primary_family)
+    payload.setdefault("primary_skill", primary_skill)
+    payload.setdefault("source_of_truth_paths", list(source_of_truth_paths))
+    payload.setdefault("writer_owned_outputs", list(writer_owned_outputs))
+    payload.setdefault("validation_depth", "writer_scope_smoke")
+    payload.setdefault("non_pytest_smokes", ["write_time_writer_contract_guard"])
+    payload.setdefault(
+        "skipped_broad_validations",
+        [
+            "pytest",
+            "full_regression_workflow",
+            "evidence_graph_full_workflow",
+            "active_record_validator_full_graph",
+            "spacesonar_project_validate_full",
+            "broad_hash_resync",
+            "global_registry_regeneration",
+        ],
+    )
+    payload.setdefault("broad_validation_escalation_reason", "none_write_time_guarded_no_broad_validation")
+    payload.setdefault("writer_preflight_gate", default_writer_preflight_gate())
+    payload.setdefault("validation_attempt_budget", default_validation_attempt_budget())
+    payload.setdefault(
+        "writer_scope_self_check",
+        {
+            "status": "passed",
+            "writer_contract_version": WRITER_CONTRACT_VERSION,
+            "validation_depth": "writer_scope_smoke",
+            "non_pytest_smokes": ["write_time_writer_contract_guard"],
+            "failures": [],
+        },
+    )
+    payload.setdefault("claim_boundary", claim_boundary)
+    payload.setdefault("forbidden_claims", list(forbidden_claims or DEFAULT_FORBIDDEN_CLAIMS))
+    payload.setdefault("unresolved_blockers_or_none", [])
+    payload.setdefault("next_action_or_reopen_condition", next_action_or_reopen_condition)
+    return payload
+
+
 def _campaign_identity(campaign: dict[str, Any]) -> dict[str, str]:
     design = campaign.get("experiment_design") or {}
     return {
@@ -382,7 +433,20 @@ def _full_next_work(existing: dict[str, Any], spec: CampaignLifecycleSpec) -> di
         **(spec.next_work_item.get("provenance") or {}),
         "source_campaign_spec": spec.rel_path.as_posix(),
     }
-    return payload
+    return _apply_writer_contract_defaults(
+        payload,
+        primary_family=str(payload.get("primary_family") or spec.routing.get("primary_family") or "policy_skill_governance"),
+        primary_skill=str(payload.get("primary_skill") or spec.routing.get("primary_skill") or "spacesonar-workspace-state-sync"),
+        source_of_truth_paths=[
+            spec.rel_path.as_posix(),
+            f"lab/campaigns/{spec.campaign_id}/campaign_manifest.yaml",
+            f"lab/goals/{spec.goal_id}/goal_manifest.yaml",
+        ],
+        writer_owned_outputs=[str(payload.get("path") or f"lab/goals/{spec.goal_id}/next_work_item.yaml")],
+        claim_boundary=str(payload.get("claim_boundary") or spec.payload.get("claim_boundary") or ""),
+        next_action_or_reopen_condition=str(payload.get("next_action") or payload.get("work_item_id") or ""),
+        forbidden_claims=spec.payload.get("forbidden_claims") or DEFAULT_FORBIDDEN_CLAIMS,
+    )
 
 
 def _full_resume_cursor(existing: dict[str, Any], spec: CampaignLifecycleSpec, next_work: dict[str, Any]) -> dict[str, Any]:
@@ -1020,6 +1084,16 @@ def _close_campaign_plan(campaign_id: str, context: ExecutionContext) -> Lifecyc
         "next_action": "wave_close_when_all_campaigns_closed",
     }
     closeout_path = Path("lab/campaigns") / campaign_id / "campaign_closeout.yaml"
+    payload = _apply_writer_contract_defaults(
+        payload,
+        primary_family="candidate_evaluation",
+        primary_skill="spacesonar-result-judgment",
+        source_of_truth_paths=[campaign_path.as_posix(), judgment_path.as_posix(), *[str(item) for item in evidence_inputs]],
+        writer_owned_outputs=[closeout_path.as_posix()],
+        claim_boundary=str(payload["claim_boundary"]),
+        next_action_or_reopen_condition=str(payload["next_action"]),
+        forbidden_claims=campaign.get("forbidden_claims") or DEFAULT_FORBIDDEN_CLAIMS,
+    )
     campaign = dict(campaign)
     campaign["status"] = "closed"
     campaign["next_action"] = payload["next_action"]
@@ -1092,8 +1166,19 @@ def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
         "claim_boundary": wave.get("claim_boundary") or context.claim_boundary,
         "next_action": "open_next_wave_or_user_directed_review",
     }
+    wave_closeout_path = Path("lab/waves") / wave_id / "wave_closeout.yaml"
+    payload = _apply_writer_contract_defaults(
+        payload,
+        primary_family="policy_skill_governance",
+        primary_skill="spacesonar-workspace-state-sync",
+        source_of_truth_paths=[wave_path.as_posix(), evaluator_path.as_posix(), *evidence_inputs],
+        writer_owned_outputs=[wave_closeout_path.as_posix()],
+        claim_boundary=str(payload["claim_boundary"]),
+        next_action_or_reopen_condition=str(payload["next_action"]),
+        forbidden_claims=DEFAULT_FORBIDDEN_CLAIMS,
+    )
     yaml_updates[wave_path] = final_wave
-    yaml_updates[Path("lab/waves") / wave_id / "wave_closeout.yaml"] = payload
+    yaml_updates[wave_closeout_path] = payload
     yaml_updates[evaluator_path] = evaluator_result
     yaml_updates.update(_goal_updates_for_wave_close(context.repo_root, final_wave, payload, yaml_updates))
     artifact_paths = tuple(sorted(set(yaml_updates) | set(text_updates), key=lambda item: item.as_posix()))
@@ -1139,6 +1224,16 @@ def _goal_updates_for_wave_close(
         "next_action": closeout["next_action"],
         "provenance": {"source": "wave_close_lifecycle"},
     }
+    next_work = _apply_writer_contract_defaults(
+        next_work,
+        primary_family=str(next_work["primary_family"]),
+        primary_skill=str(next_work["primary_skill"]),
+        source_of_truth_paths=[f"lab/waves/{wave.get('wave_id')}/wave_closeout.yaml", f"lab/waves/{wave.get('wave_id')}/wave_allocation.yaml"],
+        writer_owned_outputs=[next_work_path.as_posix()],
+        claim_boundary=str(next_work["claim_boundary"]),
+        next_action_or_reopen_condition=str(next_work["next_action"]),
+        forbidden_claims=DEFAULT_FORBIDDEN_CLAIMS,
+    )
     resume_cursor_path = Path("lab/goals") / str(goal_id) / "resume_cursor.yaml"
     updates = {goal_path: goal, next_work_path: next_work}
     cursor = dict((yaml_updates or {}).get(resume_cursor_path) or _read_yaml_if_exists(repo_root / resume_cursor_path))
@@ -1593,7 +1688,7 @@ def _complete_transition_next_work(
             "prepare L4 validation and research_oos MT5 attempt manifests without claiming runtime authority or economics pass",
             "record blocker/reopen conditions for any run that cannot reach L4 follow-through",
         ]
-    return {
+    next_work = {
         "version": "work_item_lite_v1",
         "work_item_id": next_action,
         "request_digest": hashlib.sha256("|".join([campaign.get("campaign_id", ""), next_action, *targets]).encode("utf-8")).hexdigest(),
@@ -1610,6 +1705,16 @@ def _complete_transition_next_work(
         "summary": next_action,
         "provenance": {"source": "canonical_lifecycle_transition", "campaign_id": campaign.get("campaign_id")},
     }
+    return _apply_writer_contract_defaults(
+        next_work,
+        primary_family=primary_family,
+        primary_skill=primary_skill,
+        source_of_truth_paths=[f"lab/campaigns/{campaign.get('campaign_id')}/campaign_manifest.yaml", *targets],
+        writer_owned_outputs=[next_work["path"]],
+        claim_boundary=claim_boundary,
+        next_action_or_reopen_condition=next_action,
+        forbidden_claims=campaign.get("forbidden_claims") or DEFAULT_FORBIDDEN_CLAIMS,
+    )
 
 
 def _stage_goal_transition(

@@ -100,6 +100,10 @@ execution_weight_policy:
   validation_cadence:
     run_loop_default:
       profile: fast_remote_smoke_plus_writer_receipts
+      write_time_guard:
+        guard_module: src/spacesonar/control_plane/writer_contract.py
+        transaction_hook: ControlPlaneTransaction.stage_yaml
+        strict_writer_surfaces_fail_before_mutation: true
       required_guards:
         - transaction_receipt
         - run_manifest_or_attempt_manifest
@@ -119,7 +123,17 @@ execution_weight_policy:
         - non_pytest_smokes
         - skipped_broad_validations
         - broad_validation_escalation_reason
+        - writer_preflight_gate
+        - validation_attempt_budget
         - writer_scope_self_check
+      validation_attempt_budget:
+        max_writer_scope_attempts: 2
+        allowed_attempts:
+          - initial_writer_scope_smoke_after_write
+          - one_repair_then_same_scope_resmoke
+        third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+        broad_validation_resets_budget: false
+        repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
     boundary_default:
       profile: source_of_truth_boundary_review_manual
       trigger_events:

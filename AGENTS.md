@@ -82,6 +82,13 @@ No-pytest operation is writer-contract first: every new or changed writer must n
 its `writer_contract_version`, owned source-of-truth paths, output records, validation depth, non-pytest
 smokes, skipped broad validations, escalation reason, self-check, claim boundary,
 and next action before broad validation can be considered.
+Strong trigger rule: every new or changed writer must pass `writer_preflight_gate`
+before mutation and carry `validation_attempt_budget`. Writer-scope validation is
+limited to the initial smoke plus one owner repair/resmoke; a third pass requires
+a blocker/reopen condition or command-intent escalation record.
+Strict writer-owned YAML surfaces use the shared write-time guard
+`src/spacesonar/control_plane/writer_contract.py`; transaction-backed writers get
+the same fail-before-mutation check through `ControlPlaneTransaction.stage_yaml`.
 
 ## Runtime And Parity
 

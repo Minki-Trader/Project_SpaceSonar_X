@@ -15,6 +15,8 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 - `legacy_boundary`
 - `drift_risk`
 - `writer_scope_contract_checked`
+- `writer_preflight_gate_checked`
+- `validation_attempt_budget_checked`
 - `broad_validation_escalation_reason`
 - `claim_effect`
 
@@ -22,6 +24,8 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 
 - Verify repo-relative paths before acting on remembered names.
 - Verify the responsible source-of-truth path and writer contract before invoking broad validators.
+- Verify `writer_preflight_gate` and `validation_attempt_budget` before allowing a changed writer or boundary record to count as operating proof.
+- For strict writer-owned YAML surfaces, verify the write path uses `src/spacesonar/control_plane/writer_contract.py` or `ControlPlaneTransaction.stage_yaml`; post-hoc validation cannot make an unguarded record authoritative.
 - If the path or artifact gap is inside a repo-owned writer, fix or strengthen the writer-local contract before using pytest, full project validate, full evidence graph, broad hash resync, or global registry regeneration.
 - Do not use adjacent guessing when artifact names vary.
 - Do not treat repeated folder scans, whole-tree inventory, or CI success as proof that the operating rule is correct.
@@ -38,4 +42,6 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 
 - Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
 - If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- New or changed writer records must also record `writer_preflight_gate` and `validation_attempt_budget`; do not repeat writer-scope validation more than two passes without blocker or command-intent escalation.
+- If a strict writer-owned record is produced without the shared write-time guard, treat it as construction drift and patch the writer before any broad validation.
 - A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

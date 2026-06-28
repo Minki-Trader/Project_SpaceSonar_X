@@ -21,6 +21,8 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 - `test_or_syntax_check`
 - `no_pytest_reason`
 - `writer_scope_operating_contract`
+- `writer_preflight_gate`
+- `validation_attempt_budget`
 - `non_pytest_smokes`
 - `skipped_broad_validations`
 - `broad_validation_escalation_reason`
@@ -46,6 +48,8 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 - When skipping pytest, record the narrower smoke and why it covers the touched contract.
 - For new or changed writers, implement the writer-scope operating contract fields at the write site instead of relying on tests to detect missing manifests, receipts, summaries, registry rows, hashes, or claim boundaries.
 - For new or changed writers, write `writer_contract_version` and fail locally if source-of-truth paths, writer-owned outputs, validation fields, self-check, claim boundary, blocker/reopen condition, or next action cannot be named before mutation.
+- For new or changed writers, require `writer_preflight_gate` before mutation and `validation_attempt_budget` on the produced record. The default budget is initial writer-scope smoke plus one owner repair/resmoke; a third pass must stop into blocker/reopen condition or command-intent escalation.
+- For new or changed writer-owned YAML surfaces, use `src/spacesonar/control_plane/writer_contract.py` or `ControlPlaneTransaction.stage_yaml` so missing or pending contract fields fail before mutation.
 - Do not replace pytest with full project validation by habit. `python -m spacesonar.cli project validate` is also broad validation and follows the same boundary/drift/shared-contract/user-request escalation rule.
 - Before running pytest, project validate, full active-record validation, full evidence graph, broad hash resync, or global registry regeneration, record the broad validation escalation reason and why the writer-scope smoke is insufficient.
 - If a bug repeats because validation finds it late, move the check into the writer, parser, adapter, or manifest contract so the next run fails before broad validation.
@@ -59,4 +63,6 @@ Use before editing Python, MQL5, tests, pipelines, model builders, ONNX exporter
 
 - Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
 - If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- New or changed writers must also record `writer_preflight_gate` and `validation_attempt_budget`; repeated validation beyond two writer-scope passes is not progress without a blocker or escalation record.
+- Prefer construction-time guard failure over post-hoc validation: strict writer-owned records must be built through the shared writer contract guard when practical.
 - A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

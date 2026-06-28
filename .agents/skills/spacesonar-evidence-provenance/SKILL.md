@@ -22,6 +22,8 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 - `availability`
 - `lineage_judgment`
 - `writer_scope_self_check`
+- `writer_preflight_gate`
+- `validation_attempt_budget`
 - `validation_depth`
 - `non_pytest_smokes`
 - `skipped_broad_validations`
@@ -34,6 +36,8 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 - Use repo-relative paths plus IDs and hashes for durable identity.
 - For no-pytest operation, prefer writer-time manifest/receipt/hash checks over broad retrospective validation.
 - Evidence writers must emit the writer-scope operating contract fields for the touched evidence surface; missing proof-bearing summaries, receipts, or hashes are writer-local failures, not pytest triggers.
+- Evidence writers must pass `writer_preflight_gate` before mutation and emit `validation_attempt_budget`. The default budget is two writer-scope passes: initial smoke after write plus one owner repair/resmoke.
+- Evidence writers for strict YAML surfaces should use `src/spacesonar/control_plane/writer_contract.py` or `ControlPlaneTransaction.stage_yaml` so missing proof contract fields fail before mutation.
 - Evidence writers must record `writer_contract_version`; if a legacy writer lacks it and will mutate Wave02+ evidence, patch or wrap that writer before using pytest, project validate, full evidence graph, or broad hash resync.
 - Compute hashes from the final written bytes after newline and encoding decisions are complete; do not use broad hash resync to mask a writer contract bug.
 - A writer that records `artifact_identity` must first ensure the referenced summary/receipt exists on the same filesystem path it will hash. Optional raw local artifacts may be marked missing or local-only; proof-bearing summaries and receipts must not be missing after writer close.
@@ -50,4 +54,6 @@ Use when work creates, consumes, moves, summarizes, registers, or closes evidenc
 
 - Default `validation_depth` is `writer_scope_smoke`; broad validation commands are not progress-loop defaults.
 - If this skill mutates, closes, judges, or routes a record, follow `docs/agent_control/writer_scope_operating_contract.yaml` and record `writer_contract_version`, source-of-truth paths, writer-owned outputs, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, forbidden claims, blocker or reopen condition, and next action.
+- New or changed evidence writers must also record `writer_preflight_gate` and `validation_attempt_budget`; a third validation pass requires blocker/reopen condition or command-intent escalation.
+- Prefer write-time guard failure over post-hoc evidence validation for strict writer-owned records.
 - A discovered gap becomes an owner writer, manifest, policy, or scoped lint repair before pytest, project validate, full regression, evidence graph, broad hash resync, or global registry regeneration.

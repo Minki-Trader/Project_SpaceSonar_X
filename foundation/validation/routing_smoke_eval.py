@@ -36,6 +36,10 @@ def evaluate(repo_root: Path) -> list[str]:
         kernel = load_yaml(kernel_path)
         if kernel.get("default_validation_depth") != "writer_scope_smoke":
             errors.append("operational_stability_kernel default_validation_depth must be writer_scope_smoke")
+        if kernel.get("global_write_time_guard_path") != "src/spacesonar/control_plane/writer_contract.py":
+            errors.append("operational_stability_kernel global_write_time_guard_path mismatch")
+        if kernel.get("transaction_write_time_guard_path") != "src/spacesonar/control_plane/transaction.py":
+            errors.append("operational_stability_kernel transaction_write_time_guard_path mismatch")
         forbidden = set(kernel.get("forbidden_default_commands") or [])
         for command_id in [
             "pytest",
@@ -64,6 +68,8 @@ def evaluate(repo_root: Path) -> list[str]:
             errors.append("operational_stability_kernel writer_scope_commands missing machine_yaml_identity_lint")
         if "targeted_artifact_hash_refresh" not in writer_commands:
             errors.append("operational_stability_kernel writer_scope_commands missing targeted_artifact_hash_refresh")
+        if "writer_scope_contract_lint" not in writer_commands:
+            errors.append("operational_stability_kernel writer_scope_commands missing writer_scope_contract_lint")
         command_selection = kernel.get("default_command_selection") or {}
         if command_selection.get("project_validate_default") is not False:
             errors.append("operational_stability_kernel default_command_selection.project_validate_default must be false")
@@ -88,9 +94,18 @@ def evaluate(repo_root: Path) -> list[str]:
             "new_or_changed_writer_without_contract",
             "legacy_writer_reuse_without_contract",
             "broad_validation_finds_writer_gap",
+            "required_writer_preflight_field",
+            "required_validation_attempt_budget_field",
+            "global_write_time_guard_required",
+            "transaction_stage_yaml_enforces_strict_writer_surfaces",
         ]:
             if field not in contract_enforcement:
                 errors.append(f"operational_stability_kernel writer_contract_enforcement missing {field}")
+        attempt_budget = kernel.get("validation_attempt_budget") or {}
+        if attempt_budget.get("max_writer_scope_attempts") != 2:
+            errors.append("operational_stability_kernel validation_attempt_budget.max_writer_scope_attempts must be 2")
+        if attempt_budget.get("broad_validation_resets_budget") is not False:
+            errors.append("operational_stability_kernel validation_attempt_budget.broad_validation_resets_budget must be false")
 
     contract_rel = "docs/agent_control/writer_scope_operating_contract.yaml"
     contract_path = repo_root / contract_rel
@@ -111,6 +126,8 @@ def evaluate(repo_root: Path) -> list[str]:
             "non_pytest_smokes",
             "skipped_broad_validations",
             "broad_validation_escalation_reason",
+            "writer_preflight_gate",
+            "validation_attempt_budget",
             "writer_scope_self_check",
             "claim_boundary",
             "next_action_or_reopen_condition",

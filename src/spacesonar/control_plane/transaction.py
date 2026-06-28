@@ -13,6 +13,7 @@ from typing import Callable
 
 from .models import ExecutionContext, TransactionResult
 from .store import dump_yaml, filesystem_path, sha256_file
+from .writer_contract import enforce_writer_contract
 
 
 def utc_now() -> str:
@@ -185,6 +186,8 @@ class ControlPlaneTransaction:
         self.stage_bytes(rel_path, text.encode("utf-8"))
 
     def stage_yaml(self, rel_path: str | Path, data: dict) -> None:
+        rel = self._normalize_rel_path(rel_path)
+        enforce_writer_contract(rel, data)
         self.stage_text(rel_path, dump_yaml(data))
 
     def stage_delete(self, rel_path: str | Path) -> None:

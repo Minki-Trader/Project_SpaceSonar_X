@@ -30,6 +30,8 @@ WRITER_REQUIRED_FIELDS = {
     "non_pytest_smokes",
     "skipped_broad_validations",
     "broad_validation_escalation_reason",
+    "writer_preflight_gate",
+    "validation_attempt_budget",
     "writer_scope_self_check",
     "claim_boundary",
     "forbidden_claims",
@@ -45,6 +47,17 @@ COMMAND_GATE_REQUIRED_FIELDS = {
     "why_writer_scope_smoke_is_insufficient",
     "expected_claim_effect",
     "smaller_checks_already_attempted_or_not_applicable_reason",
+}
+
+PREFLIGHT_REQUIRED_NAMED_FIELDS = {
+    "source_of_truth_paths",
+    "writer_owned_outputs",
+    "primary_family",
+    "primary_skill",
+    "validation_attempt_budget",
+    "claim_boundary",
+    "forbidden_claims",
+    "next_action_or_reopen_condition",
 }
 
 PROTECTED_CLAIM_KEYS = {
@@ -83,14 +96,23 @@ SKILL_PHRASES = {
         "no_pytest_reason",
         "For new or changed writers",
         "writer_contract_version",
+        "writer_preflight_gate",
+        "validation_attempt_budget",
+        "src/spacesonar/control_plane/writer_contract.py",
     ],
     ".agents/skills/spacesonar-workflow-drift-guard/SKILL.md": [
         "writer_scope_contract_checked",
+        "writer_preflight_gate_checked",
+        "validation_attempt_budget_checked",
+        "src/spacesonar/control_plane/writer_contract.py",
         "Direct inspection findings must be converted",
     ],
     ".agents/skills/spacesonar-evidence-provenance/SKILL.md": [
         "writer-time manifest/receipt/hash checks",
         "writer_contract_version",
+        "writer_preflight_gate",
+        "validation_attempt_budget",
+        "src/spacesonar/control_plane/writer_contract.py",
     ],
 }
 
@@ -124,6 +146,30 @@ def as_set(value: object) -> set[str]:
     if isinstance(value, list):
         return {str(item) for item in value}
     return {str(value)}
+
+
+def evaluate_validation_attempt_budget(errors: list[str], rel_path: str, budget: object) -> None:
+    if not isinstance(budget, dict):
+        errors.append(f"{rel_path}: validation_attempt_budget expected mapping")
+        return
+    if budget.get("max_writer_scope_attempts") != 2:
+        errors.append(f"{rel_path}: validation_attempt_budget.max_writer_scope_attempts must be 2")
+    attempts = as_set(budget.get("allowed_attempts"))
+    for attempt in [
+        "initial_writer_scope_smoke_after_write",
+        "one_repair_then_same_scope_resmoke",
+    ]:
+        if attempt not in attempts:
+            errors.append(f"{rel_path}: validation_attempt_budget.allowed_attempts missing {attempt}")
+    if budget.get("third_attempt_effect") != "stop_and_record_blocker_or_escalation_gate":
+        errors.append(f"{rel_path}: validation_attempt_budget.third_attempt_effect mismatch")
+    if budget.get("broad_validation_resets_budget") is not False:
+        errors.append(f"{rel_path}: validation_attempt_budget.broad_validation_resets_budget must be false")
+    if (
+        budget.get("repeated_same_failure_effect")
+        != "move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat"
+    ):
+        errors.append(f"{rel_path}: validation_attempt_budget.repeated_same_failure_effect mismatch")
 
 
 def require_text(errors: list[str], repo_root: Path, rel_path: str, phrases: list[str]) -> None:
@@ -228,6 +274,12 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
         errors.append(f"{rel_path}: default_validation_depth must be writer_scope_smoke")
     if kernel.get("writer_scope_operating_contract_path") != "docs/agent_control/writer_scope_operating_contract.yaml":
         errors.append(f"{rel_path}: writer_scope_operating_contract_path mismatch")
+    if kernel.get("strong_trigger_revision") != "validation_attempt_budget_v1":
+        errors.append(f"{rel_path}: strong_trigger_revision mismatch")
+    if kernel.get("global_write_time_guard_path") != "src/spacesonar/control_plane/writer_contract.py":
+        errors.append(f"{rel_path}: global_write_time_guard_path mismatch")
+    if kernel.get("transaction_write_time_guard_path") != "src/spacesonar/control_plane/transaction.py":
+        errors.append(f"{rel_path}: transaction_write_time_guard_path mismatch")
 
     forbidden = as_set(kernel.get("forbidden_default_commands"))
     for command_id in sorted(FORBIDDEN_DEFAULT_COMMANDS - forbidden):
@@ -255,12 +307,51 @@ def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
         "new_or_changed_writer_without_contract",
         "legacy_writer_reuse_without_contract",
         "broad_validation_finds_writer_gap",
+        "required_writer_preflight_field",
+        "required_validation_attempt_budget_field",
+        "global_write_time_guard_required",
+        "transaction_stage_yaml_enforces_strict_writer_surfaces",
     ]:
         if field not in enforcement:
             errors.append(f"{rel_path}: writer_contract_enforcement missing {field}")
+    forbidden_gap_response = as_set(enforcement.get("forbidden_gap_response"))
+    if "repeat_writer_scope_smoke_after_two_attempts_without_blocker_or_escalation_record" not in forbidden_gap_response:
+        errors.append(f"{rel_path}: writer_contract_enforcement.forbidden_gap_response missing two-pass repeat guard")
+
+    evaluate_validation_attempt_budget(errors, rel_path, kernel.get("validation_attempt_budget"))
+
+    guarded = kernel.get("write_time_guarded_surfaces") or {}
+    if guarded.get("guard_module") != "src/spacesonar/control_plane/writer_contract.py":
+        errors.append(f"{rel_path}: write_time_guarded_surfaces.guard_module mismatch")
+    if guarded.get("transaction_hook") != "ControlPlaneTransaction.stage_yaml":
+        errors.append(f"{rel_path}: write_time_guarded_surfaces.transaction_hook mismatch")
+    for filename in ["next_work_item.yaml", "campaign_closeout.yaml", "wave_closeout.yaml", "candidate_summary.yaml", "attempt_manifest.yaml"]:
+        if filename not in as_set(guarded.get("strict_writer_filenames")):
+            errors.append(f"{rel_path}: write_time_guarded_surfaces.strict_writer_filenames missing {filename}")
+
     allowed_smokes = as_set(kernel.get("allowed_non_pytest_smokes"))
     if "claim_vocabulary_ascii_structure_lint" not in allowed_smokes:
         errors.append(f"{rel_path}: allowed_non_pytest_smokes missing claim_vocabulary_ascii_structure_lint")
+    if "run_writer_scope_contract_lint_for_touched_writer_records" not in allowed_smokes:
+        errors.append(f"{rel_path}: allowed_non_pytest_smokes missing run_writer_scope_contract_lint_for_touched_writer_records")
+
+    hard = kernel.get("hard_enforcement_points") or {}
+    before_write = as_set(hard.get("writer_before_write"))
+    for field in [
+        "writer_preflight_gate_passed_before_mutation",
+        "validation_attempt_budget_declared",
+    ]:
+        if field not in before_write:
+            errors.append(f"{rel_path}: hard_enforcement_points.writer_before_write missing {field}")
+    after_write = as_set(hard.get("writer_after_write"))
+    if "validation_attempt_budget_observed_and_not_exceeded" not in after_write:
+        errors.append(
+            f"{rel_path}: hard_enforcement_points.writer_after_write missing validation_attempt_budget_observed_and_not_exceeded"
+        )
+
+    writer_commands = kernel.get("writer_scope_commands") or {}
+    if "writer_scope_contract_lint" not in writer_commands:
+        errors.append(f"{rel_path}: writer_scope_commands missing writer_scope_contract_lint")
 
 
 def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
@@ -276,6 +367,10 @@ def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
 
     if contract.get("default_validation_depth") != "writer_scope_smoke":
         errors.append(f"{rel_path}: default_validation_depth must be writer_scope_smoke")
+    if contract.get("strong_trigger_revision") != "validation_attempt_budget_v1":
+        errors.append(f"{rel_path}: strong_trigger_revision mismatch")
+    if contract.get("global_write_time_guard") != "src/spacesonar/control_plane/writer_contract.py":
+        errors.append(f"{rel_path}: global_write_time_guard mismatch")
     required_fields = as_set(contract.get("required_writer_record_fields"))
     for field in sorted(WRITER_REQUIRED_FIELDS - required_fields):
         errors.append(f"{rel_path}: required_writer_record_fields missing {field}")
@@ -294,6 +389,43 @@ def evaluate_writer_contract(errors: list[str], repo_root: Path) -> None:
         if field not in enforcement:
             errors.append(f"{rel_path}: machine_enforcement missing {field}")
 
+    new_records = enforcement.get("new_writer_records") or {}
+    if new_records.get("required_write_time_guard") != "src/spacesonar/control_plane/writer_contract.py":
+        errors.append(f"{rel_path}: machine_enforcement.new_writer_records.required_write_time_guard mismatch")
+    for field in ["missing_preflight_gate_effect", "missing_validation_attempt_budget_effect"]:
+        if field not in new_records:
+            errors.append(f"{rel_path}: machine_enforcement.new_writer_records missing {field}")
+
+    before_gate = contract.get("writer_before_write_gate") or {}
+    missing_before = as_set(before_gate.get("fail_before_mutation_when_missing"))
+    for field in ["writer_contract_version", "validation_attempt_budget", "claim_boundary"]:
+        if field not in missing_before:
+            errors.append(f"{rel_path}: writer_before_write_gate.fail_before_mutation_when_missing missing {field}")
+    preflight = before_gate.get("required_preflight_record") or {}
+    if preflight.get("status") != "passed_before_mutation":
+        errors.append(f"{rel_path}: writer_before_write_gate.required_preflight_record.status mismatch")
+    if preflight.get("checked_before_mutation") is not True:
+        errors.append(f"{rel_path}: writer_before_write_gate.required_preflight_record.checked_before_mutation must be true")
+    if preflight.get("fail_closed_when_missing") is not True:
+        errors.append(f"{rel_path}: writer_before_write_gate.required_preflight_record.fail_closed_when_missing must be true")
+    named_fields = as_set(preflight.get("required_fields_named"))
+    for field in sorted(PREFLIGHT_REQUIRED_NAMED_FIELDS - named_fields):
+        errors.append(f"{rel_path}: writer_before_write_gate.required_preflight_record missing named field {field}")
+
+    evaluate_validation_attempt_budget(errors, rel_path, (contract.get("validation_attempt_budget") or {}).get("default"))
+
+    guarded = contract.get("write_time_guarded_surfaces") or {}
+    if guarded.get("transaction_stage_yaml_enforced_by") != "src/spacesonar/control_plane/transaction.py":
+        errors.append(f"{rel_path}: write_time_guarded_surfaces.transaction_stage_yaml_enforced_by mismatch")
+    for filename in ["next_work_item.yaml", "campaign_closeout.yaml", "wave_closeout.yaml", "candidate_summary.yaml", "attempt_manifest.yaml"]:
+        if filename not in as_set(guarded.get("strict_writer_filenames")):
+            errors.append(f"{rel_path}: write_time_guarded_surfaces.strict_writer_filenames missing {filename}")
+
+    after_gate = contract.get("writer_after_write_gate") or {}
+    missing_after = as_set(after_gate.get("fail_writer_local_when_missing"))
+    if "validation_attempt_budget_observed_and_not_exceeded" not in missing_after:
+        errors.append(f"{rel_path}: writer_after_write_gate missing validation_attempt_budget_observed_and_not_exceeded")
+
 
 def evaluate_registry(errors: list[str], repo_root: Path) -> None:
     rel_path = "docs/agent_control/work_family_registry.yaml"
@@ -306,6 +438,7 @@ def evaluate_registry(errors: list[str], repo_root: Path) -> None:
         "operational_stability_kernel": "docs/agent_control/operational_stability_kernel.yaml",
         "writer_scope_operating_contract": "docs/agent_control/writer_scope_operating_contract.yaml",
         "operational_stability_lint": "foundation/validation/operational_stability_lint.py",
+        "global_write_time_guard": "src/spacesonar/control_plane/writer_contract.py",
     }
     for key, expected_value in expected_refs.items():
         if rules.get(key) != expected_value:
@@ -313,12 +446,76 @@ def evaluate_registry(errors: list[str], repo_root: Path) -> None:
     for key in [
         "direct_inspection_policy",
         "writer_scope_operating_contract_policy",
+        "writer_preflight_gate_policy",
+        "validation_attempt_budget_policy",
+        "write_time_guard_policy",
         "broad_validation_command_gate_policy",
         "active_writer_contract_policy",
         "claim_vocabulary_policy",
     ]:
         if key not in rules:
             errors.append(f"{rel_path}: global_rules missing {key}")
+
+
+def evaluate_lab_profile(errors: list[str], repo_root: Path) -> None:
+    rel_path = "docs/workspace/lab_profile.yaml"
+    path = repo_root / rel_path
+    if not path.exists():
+        errors.append(f"missing lab profile: {rel_path}")
+        return
+    profile = load_yaml(path)
+    if not isinstance(profile, dict):
+        errors.append(f"{rel_path}: expected mapping")
+        return
+    run_loop = (
+        profile.get("execution_weight_policy", {})
+        .get("validation_cadence", {})
+        .get("run_loop_default", {})
+    )
+    guard = run_loop.get("write_time_guard") or {}
+    if guard.get("guard_module") != "src/spacesonar/control_plane/writer_contract.py":
+        errors.append(f"{rel_path}: run_loop_default.write_time_guard.guard_module mismatch")
+    if guard.get("transaction_hook") != "ControlPlaneTransaction.stage_yaml":
+        errors.append(f"{rel_path}: run_loop_default.write_time_guard.transaction_hook mismatch")
+    if guard.get("strict_writer_surfaces_fail_before_mutation") is not True:
+        errors.append(f"{rel_path}: run_loop_default.write_time_guard.strict_writer_surfaces_fail_before_mutation must be true")
+    required_fields = as_set(run_loop.get("required_writer_contract_fields"))
+    for field in ["writer_preflight_gate", "validation_attempt_budget"]:
+        if field not in required_fields:
+            errors.append(f"{rel_path}: run_loop_default.required_writer_contract_fields missing {field}")
+    evaluate_validation_attempt_budget(errors, rel_path, run_loop.get("validation_attempt_budget"))
+
+
+def evaluate_write_time_guard(errors: list[str], repo_root: Path) -> None:
+    guard_path = repo_root / "src/spacesonar/control_plane/writer_contract.py"
+    transaction_path = repo_root / "src/spacesonar/control_plane/transaction.py"
+    if not guard_path.exists():
+        errors.append("missing write-time guard: src/spacesonar/control_plane/writer_contract.py")
+        return
+    guard_text = read_text(guard_path)
+    for phrase in [
+        "def enforce_writer_contract",
+        "def writer_contract_required_for_path",
+        "STRICT_WRITER_FILENAMES",
+        "next_work_item.yaml",
+        "campaign_closeout.yaml",
+        "wave_closeout.yaml",
+        "candidate_summary.yaml",
+        "attempt_manifest.yaml",
+        "observed_writer_scope_attempts exceeds 2",
+    ]:
+        if phrase not in guard_text:
+            errors.append(f"src/spacesonar/control_plane/writer_contract.py: missing {phrase}")
+    if not transaction_path.exists():
+        errors.append("missing transaction writer: src/spacesonar/control_plane/transaction.py")
+        return
+    transaction_text = read_text(transaction_path)
+    for phrase in [
+        "from .writer_contract import enforce_writer_contract",
+        "enforce_writer_contract(rel, data)",
+    ]:
+        if phrase not in transaction_text:
+            errors.append(f"src/spacesonar/control_plane/transaction.py: missing {phrase}")
 
 
 def evaluate_ci(errors: list[str], repo_root: Path) -> None:
@@ -377,6 +574,10 @@ def evaluate(repo_root: Path) -> list[str]:
             "operational_stability_kernel.yaml",
             "writer_scope_operating_contract.yaml",
             "Direct inspection means source-of-truth",
+            "Strong trigger rule",
+            "validation_attempt_budget",
+            "src/spacesonar/control_plane/writer_contract.py",
+            "ControlPlaneTransaction.stage_yaml",
         ],
     )
     require_text(
@@ -386,6 +587,10 @@ def evaluate(repo_root: Path) -> list[str]:
         [
             "New or changed writers follow",
             "writer_contract_version",
+            "writer_preflight_gate",
+            "validation_attempt_budget",
+            "src/spacesonar/control_plane/writer_contract.py",
+            "ControlPlaneTransaction.stage_yaml",
             "Broad validation requires a recorded command-intent gate",
         ],
     )
@@ -398,6 +603,9 @@ def evaluate(repo_root: Path) -> list[str]:
             "Default operation must not call `pytest`",
             "Broad validation commands require the operational command-intent gate",
             "claim_vocabulary.yaml",
+            "writer_scope_contract_lint.py",
+            "src/spacesonar/control_plane/writer_contract.py",
+            "two passes",
         ],
     )
     for rel_path, phrases in SKILL_PHRASES.items():
@@ -409,6 +617,8 @@ def evaluate(repo_root: Path) -> list[str]:
     evaluate_kernel(errors, repo_root)
     evaluate_writer_contract(errors, repo_root)
     evaluate_registry(errors, repo_root)
+    evaluate_lab_profile(errors, repo_root)
+    evaluate_write_time_guard(errors, repo_root)
     evaluate_ci(errors, repo_root)
     return errors
 
