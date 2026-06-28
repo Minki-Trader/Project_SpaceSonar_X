@@ -1,0 +1,25 @@
+version: eval_recipe_v1
+recipe_id: eval_wave02_execution_liquidity_runtime_v0
+status: skeleton_open_no_candidate
+created_at_utc: '2026-06-28T00:53:24Z'
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+claim_boundary: recipe_skeleton_only_no_candidate_no_runtime_authority_no_economics_pass
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave02_execution_liquidity_first_batch_spec_v0
+split_recipe_id: split_set_v0
+required_period_roles:
+- validation
+- research_oos
+locked_final_oos_policy: excluded_without_unlock_contract
+runtime_follow_through: proxy_model_bearing_runs_require_l4_split_runtime_probe_then_l5_if_promising

@@ -1,0 +1,22 @@
+version: hypothesis_manifest_v1
+hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+idea_id: idea_us100_wave02_execution_liquidity_surface_v0
+status: wave02_execution_liquidity_campaign_open_first_batch_specs_pending
+created_at_utc: '2026-06-28T00:53:24Z'
+hypothesis: A session/liquidity/execution-aware surface may create more MT5-testable
+  action streams by separating when to abstain from when to hold, close, or skip under
+  spread, session, open_failed, and reversal-pressure context.
+decision_use: session_liquidity_execution_abstain_gate
+comparison_baseline:
+- no_trade_baseline
+- CRH_open_failed_caveat_negative_memory_reference_only
+changed_variables:
+- session/liquidity feature context
+- execution-feasibility and open_failed prevention label context
+- abstain gate that can suppress low-liquidity action streams
+- holding/close policy conditioned on session and reversal pressure
+- ONNX/EA/MT5 follow-through plan from campaign open
+claim_boundary: wave02_execution_liquidity_first_batch_spec_pending_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+evidence_path: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
+next_action: work_wave02_execution_liquidity_first_batch_spec_v0
+notes: Hypothesis open for broad surface scout only; no model run or candidate claim.

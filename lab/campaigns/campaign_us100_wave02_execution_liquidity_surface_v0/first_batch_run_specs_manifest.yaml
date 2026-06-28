@@ -1,0 +1,138 @@
+version: first_batch_run_specs_manifest_v1
+manifest_id: wave02_execution_liquidity_first_batch_specs_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+created_at_utc: '2026-06-28T01:00:11Z'
+status: wave02_execution_liquidity_first_batch_specs_materialized_not_executed
+claim_boundary: wave02_execution_liquidity_first_batch_specs_only_no_proxy_result_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+run_count: 6
+run_ids:
+- onnxlab_wave02_elq_cell_001_execution_liquidity_v0
+- onnxlab_wave02_elq_cell_002_execution_liquidity_v0
+- onnxlab_wave02_elq_cell_003_execution_liquidity_v0
+- onnxlab_wave02_elq_cell_004_execution_liquidity_v0
+- onnxlab_wave02_elq_cell_005_execution_liquidity_v0
+- onnxlab_wave02_elq_cell_006_execution_liquidity_v0
+matrix_path: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_matrix.csv
+run_specs_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/run_specs_index.csv
+run_refs: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/run_refs.csv
+anti_selection_ledger: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/anti_selection_ledger.yaml
+axis_plan:
+  label_variants:
+  - high_spread_abstain_h8
+  - low_liquidity_timeout_h6
+  - open_failed_prevention_h6
+  - session_liquidity_tradeable_h6
+  - session_transition_close_h10
+  - volatility_liquidity_gate_h12
+  feature_variants:
+  - execution_failure_context
+  - liquidity_decay_context
+  - session_spread_basic
+  - session_transition_reversal
+  - spread_range_context
+  - vol_liquidity_context
+  model_variants:
+  - linear_rank_scout
+  - tree_scout
+  decision_variants:
+  - high_spread_abstain_h8
+  - low_liquidity_timeout_gate
+  - open_failed_prevention_gate
+  - session_liquidity_abstain_h6
+  - session_transition_close_gate
+  - vol_liquidity_abstain_h12
+  execution_variants:
+  - liquidity_decay_entry_filter
+  - open_failed_risk_abstain
+  - session_boundary_action_filter
+  - spread_cost_cap_gate
+  - spread_proxy_entry_gate
+  - volatility_spread_cost_gate
+  holding_variants:
+  - session_decay_or_timeout_10
+  - timeout_12_or_signal_decay
+  - timeout_6
+  - timeout_6_or_no_trade
+  - timeout_6_or_session_decay
+  - timeout_8
+runtime_follow_through_policy: valid_proxy_model_bearing_runs_require_L4_split_runtime_probe
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- writer_scope_self_check
+- writer_scope_evidence_smoke
+- active_pointer_smoke
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- spacesonar_project_validate_full
+broad_validation_escalation_reason: none_spec_materialization_no_protected_claim
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
+  - lab/surfaces/surface_us100_wave02_execution_liquidity_v0/surface_manifest.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/sweep_manifest.yaml
+  producer: python foundation/pipelines/materialize_wave02_execution_liquidity_first_batch_specs.py
+    --write-control-records
+  consumer: work_wave02_execution_liquidity_execute_proxy_batch_v0
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    git_sha: 4465d911b6c9ca02de764e2b370e9e6e7b3771c9
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - ' M .codex/config.toml'
+    - ' M docs/registers/artifact_registry.csv'
+    - ' M docs/registers/campaign_registry.csv'
+    - ' M docs/registers/experiment_surface_registry.csv'
+    - ' M docs/registers/goal_registry.csv'
+    - ' M docs/registers/hypothesis_registry.csv'
+    - ' M docs/registers/idea_registry.csv'
+    - ' M docs/registers/recipe_index.csv'
+    - ' M docs/registers/run_registry.csv'
+    - ' M docs/registers/sweep_registry.csv'
+    - ' M docs/registers/wave_registry.csv'
+    - ' M docs/workspace/workspace_state.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+    - ' M lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/campaign_refs.csv'
+    - ' M lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml'
+    - ?? configs/onnx_lab/decision_recipes/decision_wave02_execution_liquidity_abstain_v0.yaml
+    - ?? configs/onnx_lab/eval_recipes/eval_wave02_execution_liquidity_runtime_v0.yaml
+    - ?? configs/onnx_lab/feature_recipes/feature_wave02_us100_execution_liquidity_v0.yaml
+    - ?? configs/onnx_lab/label_recipes/label_wave02_execution_liquidity_tradeability_v0.yaml
+    - ?? configs/onnx_lab/model_recipes/model_wave02_execution_liquidity_onnx_scout_v0.yaml
+    - ?? configs/onnx_lab/surface_contracts/surface_us100_wave02_execution_liquidity_v0.yaml
+    - ?? foundation/pipelines/materialize_wave02_execution_liquidity_first_batch_specs.py
+    - ?? foundation/pipelines/open_wave02_execution_liquidity_campaign.py
+    - ?? lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_first_batch_spec_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_open_execution_liquidity_campaign_v0_closeout.yaml
+    - ?? lab/hypotheses/hyp_us100_wave02_execution_liquidity_runtime_alignment_v0.yaml
+    - ?? lab/hypotheses/idea_us100_wave02_execution_liquidity_surface_v0.yaml
+    - ?? lab/runs/onnxlab_wave02_elq_cell_001_execution_liquidity_v0/
+    - ?? lab/runs/onnxlab_wave02_elq_cell_002_execution_liquidity_v0/
+    - ?? lab/runs/onnxlab_wave02_elq_cell_003_execution_liquidity_v0/
+    - ?? lab/runs/onnxlab_wave02_elq_cell_004_execution_liquidity_v0/
+    - ?? lab/runs/onnxlab_wave02_elq_cell_005_execution_liquidity_v0/
+    - ?? lab/runs/onnxlab_wave02_elq_cell_006_execution_liquidity_v0/
+    - ?? lab/surfaces/surface_us100_wave02_execution_liquidity_v0/
+    - ?? package.json

@@ -1,0 +1,228 @@
+version: campaign_manifest_v2
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+campaign_type: standard_experiment
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+status: wave02_execution_liquidity_first_batch_specs_materialized_not_executed
+created_at_utc: '2026-06-28T00:53:24Z'
+updated_at_utc: '2026-06-28T01:00:11Z'
+wave_ids:
+- wave_us100_wave02_tradeability_decision_surface_v0
+idea_ids:
+- idea_us100_wave02_execution_liquidity_surface_v0
+hypothesis_ids:
+- hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+objective: Open the third Wave02 campaign as a session/liquidity/execution surface.
+  The campaign tests whether explicit session context, liquidity/spread proxies, open_failed
+  prevention, abstain, and holding/close semantics can create runtime-testable action
+  streams.
+axis_tags:
+- target_or_label_surface
+- feature_or_input_surface
+- model_or_training_surface
+- decision_surface
+- session_liquidity_surface
+- execution_surface
+- risk_or_sizing_surface
+- horizon_or_holding_policy
+- evaluation_or_runtime_surface
+- us100_m5_closed_bar_only
+exploration_coverage:
+  mode: unexplored_surface_discovery_not_single_axis_progression
+  primary_unknown_axis: session_liquidity_execution_surface
+  required_research_axes:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  companion_axes:
+  - decision_surface
+  - execution_surface
+  - risk_or_sizing_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  forbidden_research_shapes:
+  - feature_only_campaign
+  - label_only_campaign
+  - threshold_only_campaign
+  - repair_only_campaign
+  novelty_claim: Rotates after CRH open_failed caveat; not a CRH candidate repair
+    track.
+policy_binding:
+  revision: policy_contract_v2
+  guard_set: runtime_research
+  guards:
+  - GUARD_001_ATTEMPT_BEFORE_DISPOSITION
+  - GUARD_002_RUNTIME_COMPLETION_TRUTH
+  - GUARD_003_CLAIM_BOUNDARY
+  - GUARD_004_ARTIFACT_IDENTITY
+  - GUARD_005_LOCKED_OOS
+  - GUARD_006_BRANCH_WORKTREE
+  - GUARD_007_OPERATIONAL_STABILITY
+routing:
+  primary_family: experiment_design
+  primary_skill: spacesonar-experiment-design
+  support_skills:
+  - spacesonar-evidence-provenance
+  - spacesonar-workspace-state-sync
+  required_gates:
+  - design_contract_check
+  - exploration_coverage_check
+  - campaign_proxy_runtime_parity_policy
+  - final_claim_guard
+required_gates:
+- campaign_lifecycle_spec_valid
+- exploration_coverage_check
+- proxy_runtime_parity_policy
+- final_claim_guard
+claim_boundary: wave02_execution_liquidity_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+experiment_design:
+  idea_id: idea_us100_wave02_execution_liquidity_surface_v0
+  hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+  surface_id: surface_us100_wave02_execution_liquidity_v0
+  sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+  hypothesis: A session/liquidity/execution-aware surface may create more MT5-testable
+    action streams by separating when to abstain from when to hold, close, or skip
+    under spread, session, open_failed, and reversal-pressure context.
+  decision_use: session_liquidity_execution_abstain_gate
+  comparison_baseline:
+  - no_trade_baseline
+  - CRH_open_failed_caveat_negative_memory_reference_only
+  control_variables:
+  - FPMarkets US100 M5 closed-bar base frame
+  - split_set_v0 validation and research_oos roles
+  - locked final OOS excluded
+  - no inherited thresholds, candidates, or runtime authority
+  changed_variables:
+  - session/liquidity feature context
+  - execution-feasibility and open_failed prevention label context
+  - abstain gate that can suppress low-liquidity action streams
+  - holding/close policy conditioned on session and reversal pressure
+  - ONNX/EA/MT5 follow-through plan from campaign open
+  kpi_interpretation_plan:
+    required_for_kpi_bearing_result: true
+    fields:
+    - trade_count
+    - action_density
+    - open_action_count
+    - close_action_count
+    - open_failed_count
+    - profit_factor
+    - relative_drawdown_pct
+    axis_mapping:
+      open_failed_count: execution_surface
+      action_density: session_liquidity_surface
+      relative_drawdown_pct: holding_or_close_policy
+      profit_factor: execution_adjusted_tradeability_label
+  attribution_axes:
+  - session_bucket
+  - liquidity_or_spread_proxy_bucket
+  - execution_action_class
+  - holding_policy
+  - model_family
+  - period_role
+  expected_effect_probe: reduce open_failed density and no-action churn without claiming
+    economics pass
+  surface_rotation_rationale: CRH closed with all decision replay pairs held for open_failed
+    caveat and no candidate. The next useful Wave02 move is to rotate to a broader
+    execution/liquidity surface rather than locally repair CRH cells.
+  search_shape: broad
+  next_surface_options:
+  - session_liquidity_abstain_surface
+  - execution_feasibility_gate_surface
+  - holding_close_policy_surface
+  axis_balance_check: multi_axis_surface_declared_not_single_axis_open_failed_repair
+  sample_scope: split_set_v0_validation_and_research_oos_only_locked_final_oos_excluded
+  success_criteria:
+  - first batch declares feature/label/model/decision/eval axes per run
+  - proxy-bearing runs remain designed for L4 split runtime probe
+  - candidate-specific L5 opens only after clean evidence and final claim guard
+  failure_criteria:
+  - open_failed or no-action behavior remains unbounded after decision replay
+  - no repeated surface clue after broad sweep
+  - runtime follow-through path cannot be made explicit after repo-controlled attempt
+  invalid_conditions:
+  - locked_final_oos_used
+  - legacy winner or selected baseline inherited
+  - proxy-only closure for valid model-bearing runs
+  - proof-bearing manifest/receipt/hash missing
+  stop_conditions:
+  - close as negative memory if execution/liquidity semantics do not produce reusable
+    clues
+  - rotate or wave-close after campaign closeout if third slot produces no candidate
+    or useful runtime clue
+  reopen_or_stop_condition: Reopen CRH only with explicit open_failed semantics repair
+    or materially new CRH policy; otherwise keep this campaign on session/liquidity/execution
+    surface evidence.
+  evidence_plan:
+  - campaign_manifest
+  - surface_manifest
+  - sweep_manifest
+  - run_manifest_and_receipt_per_materialized_run
+  - runtime_attempt_manifest_for_l4_follow_through
+  - candidate_summary_only_after_l5_routing
+  claim_boundary: wave02_execution_liquidity_first_batch_spec_pending_no_model_run_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  legacy_relation: blank_slate_no_legacy_winner_or_promotion_inheritance
+  axis_tags:
+  - target_or_label_surface
+  - feature_or_input_surface
+  - model_or_training_surface
+  - decision_surface
+  - session_liquidity_surface
+  - execution_surface
+  - risk_or_sizing_surface
+  - horizon_or_holding_policy
+  - evaluation_or_runtime_surface
+  - us100_m5_closed_bar_only
+  broad_sweep:
+    initial_batch_size: 6
+    max_runs: 18
+    budget_role: wave02_third_campaign_rotation
+  extreme_sweep: allowed_only_after_repeated_surface_clue
+  micro_search_gate: forbidden_until_repeated_runtime_testable_clue
+  failure_memory: record negative memory instead of carrying weak candidate repair
+recipes:
+  feature_recipe_id: feature_wave02_us100_execution_liquidity_v0
+  label_recipe_id: label_wave02_execution_liquidity_tradeability_v0
+  model_recipe_id: model_wave02_execution_liquidity_onnx_scout_v0
+  decision_recipe_id: decision_wave02_execution_liquidity_abstain_v0
+  eval_recipe_id: eval_wave02_execution_liquidity_runtime_v0
+  surface_contract_id: surface_us100_wave02_execution_liquidity_v0
+storage_contract:
+  source_of_truth: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_wave02_execution_liquidity_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/sweep_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/run_refs.csv
+  durable_identity_policy: repo_relative_paths_only
+previous_campaign_boundary:
+  campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
+  closeout: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+  negative_memory: lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
+  carry_forward_rule: use_open_failed_caveat_as_prevention_memory_not_candidate_evidence
+writer_scope_operating_contract:
+  contract: docs/agent_control/writer_scope_operating_contract.yaml
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - compile_touched_python_modules
+  - active_pointer_smoke
+  - machine_yaml_identity_lint
+  - targeted_artifact_hash_check
+  skipped_broad_validations:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  broad_validation_escalation_reason: none_campaign_open_planning_scaffold_no_protected_claim
+next_action: work_wave02_execution_liquidity_execute_proxy_batch_v0
+first_batch_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
+run_refs: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/run_refs.csv

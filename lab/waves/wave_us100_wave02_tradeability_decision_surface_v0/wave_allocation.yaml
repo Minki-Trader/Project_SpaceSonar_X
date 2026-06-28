@@ -1,9 +1,9 @@
 version: wave_allocation_v1
 wave_id: wave_us100_wave02_tradeability_decision_surface_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: wave02_campaign_002_closed_next_surface_rotation_pending
+status: wave02_campaign_003_open
 created_at_utc: '2026-06-27T12:15:00Z'
-claim_boundary: wave02_next_surface_rotation_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_execution_liquidity_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 allocation_goal: 'Spend the first Wave02 campaign on a new decision/tradeability surface,
   then rotate instead of repairing one weak cell unless a reusable divergence or prevention-memory
   question appears.
@@ -138,5 +138,46 @@ campaign_allocations:
   executed_proxy_run_count: 6
   campaign_closeout: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
   negative_memory: lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
-next_action: work_wave02_next_surface_rotation_decision_v0
-updated_at_utc: '2026-06-28T00:29:52Z'
+- campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+  allocation_role: wave02_third_campaign_execution_liquidity_surface_rotation
+  max_runs: 18
+  initial_batch_size: 6
+  allocation_reason: 'hypothesis_surface_width: third Wave02 campaign rotates to session/liquidity/execution
+    semantics after CRH open_failed caveat; changed_axes: target_or_label_surface,
+    feature_or_input_surface, model_or_training_surface, decision_surface, session_liquidity_surface,
+    execution_surface, risk_or_sizing_surface, horizon_or_holding_policy, evaluation_or_runtime_surface;
+    held_fixed_axes: FPMarkets US100 M5 closed-bar frame, split_set_v0 validation/research_oos,
+    locked final OOS excluded, no inherited candidates; why_this_campaign_needs_more_or_less_than_default:
+    default 18 run budget with initial 6-run broad batch.'
+  budget:
+    run_budget: 18
+    hypothesis_surface_width: new execution/liquidity surface after CRH open_failed
+      caveat closeout
+    changed_axes:
+    - target_or_label_surface
+    - feature_or_input_surface
+    - model_or_training_surface
+    - decision_surface
+    - session_liquidity_surface
+    - execution_surface
+    - risk_or_sizing_surface
+    - horizon_or_holding_policy
+    - evaluation_or_runtime_surface
+    - us100_m5_closed_bar_only
+    held_fixed_axes:
+    - FPMarkets US100 M5 closed-bar base frame
+    - split_set_v0 validation and research_oos roles
+    - locked final OOS excluded
+    - no inherited Wave01 or Wave02 thresholds or candidates
+    why_this_campaign_needs_more_or_less_than_default: uses default Wave02 campaign
+      budget with smaller first batch before L4 follow-through spend
+  status: wave02_execution_liquidity_first_batch_specs_materialized_not_executed
+  campaign_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
+  surface_manifest: lab/surfaces/surface_us100_wave02_execution_liquidity_v0/surface_manifest.yaml
+  sweep_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/sweep_manifest.yaml
+  claim_boundary: wave02_execution_liquidity_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_execution_liquidity_execute_proxy_batch_v0
+  notes: First six execution/liquidity run specs materialized; proxy execution pending.
+  materialized_run_count: 6
+next_action: work_wave02_execution_liquidity_execute_proxy_batch_v0
+updated_at_utc: '2026-06-28T01:00:11Z'

@@ -1,0 +1,30 @@
+version: feature_recipe_v1
+recipe_id: feature_wave02_us100_execution_liquidity_v0
+status: skeleton_open_no_candidate
+created_at_utc: '2026-06-28T00:53:24Z'
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+claim_boundary: recipe_skeleton_only_no_candidate_no_runtime_authority_no_economics_pass
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave02_execution_liquidity_first_batch_spec_v0
+feature_count_policy: variable_declared_per_run_no_fixed_count
+input_families:
+- causal_us100_m5_price_return_range_volatility
+- session_bucket_and_session_transition_context
+- spread_or_liquidity_proxy_context
+- execution_open_failed_prevention_context
+- holding_reversal_pressure_context
+forbidden_defaults:
+- fixed_feature_count
+- inherited_feature_list
+- auxiliary_symbol_without_live_chart_evidence

@@ -1,0 +1,30 @@
+version: decision_recipe_v1
+recipe_id: decision_wave02_execution_liquidity_abstain_v0
+status: skeleton_open_no_candidate
+created_at_utc: '2026-06-28T00:53:24Z'
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+claim_boundary: recipe_skeleton_only_no_candidate_no_runtime_authority_no_economics_pass
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave02_execution_liquidity_first_batch_spec_v0
+decision_family: session_liquidity_abstain_and_execution_gate
+holding_policy: timeout_stop_signal_decay_or_session_close_declared_per_run
+mt5_semantics_required_before_l4:
+- entry_action
+- open_failed_handling
+- session_or_liquidity_abstain
+- timeout_or_signal_decay_close
+- lot_rounding
+forbidden_defaults:
+- candidate_repair_from_previous_campaign
+- operating_risk_policy

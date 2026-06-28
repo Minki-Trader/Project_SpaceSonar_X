@@ -1,68 +1,55 @@
 version: work_item_lite_v1
-work_item_id: work_wave02_next_surface_rotation_decision_v0
-parent_work_item_id: work_wave02_cost_risk_holding_campaign_closeout_v0
-primary_family: experiment_design
-primary_skill: spacesonar-experiment-design
-verification_profile: writer_scope_next_surface_rotation_decision
+work_item_id: work_wave02_execution_liquidity_execute_proxy_batch_v0
+parent_work_item_id: work_wave02_execution_liquidity_first_batch_spec_v0
+primary_family: model_training
+primary_skill: spacesonar-model-validation
+verification_profile: lab_experiment
 targets:
-- lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
-- lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/run_refs.csv
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
 acceptance_criteria:
-- decide whether Wave02 opens a third campaign, closes the wave, or allocates another
-  surface
-- use CRH open_failed-caveat evidence as prevention memory, not as candidate evidence
-- keep writer-scope smoke as default; do not require pytest, full regression, or evidence
-  graph as progress proof
-claim_boundary: wave02_next_surface_rotation_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: decide next Wave02 surface/campaign boundary after CRH open_failed-caveat
-  closeout; do not promote CRH evidence as candidate, runtime authority, economics
-  pass, live readiness, or Goal Achieve
-status: wave02_next_surface_rotation_decision_pending
+- execute the six materialized proxy specs without changing the pre-execution matrix
+- write run metrics, receipts, and result judgment under the stated claim boundary
+- route valid proxy/model-bearing outputs to L4 follow-through instead of proxy-only
+  closure
+created_at_utc: '2026-06-28T01:00:11Z'
+status: wave02_execution_liquidity_proxy_batch_execution_pending
+claim_boundary: wave02_execution_liquidity_proxy_batch_execution_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: execute Wave02 execution/liquidity first proxy batch
 current_truth:
-  campaign_closeout: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
-  negative_memory: lab/memory/negative/neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0.yaml
-  campaign_status: wave02_cost_risk_holding_campaign_closed_held_open_failed_caveat_no_candidate
-  candidate_count: 0
-  l5_candidate_count: 0
-  held_for_open_failed_caveat_count: 6
-  decision_replay_runtime_probe_complete_count: 12
-unresolved_blockers:
-- Wave02_next_surface_rotation_decision_pending
-reopen_conditions:
-- rerun campaign closeout if CRH decision replay routing summary or index changes
-- reopen CRH only after explicit open_failed semantics repair or materially new cost/risk/holding
-  policy
-- open candidate-specific L5 only with clean candidate manifest evidence and final
-  claim guard
-missing_material_if_relevant:
-- next_surface_or_wave_boundary_decision_not_written
-- next_campaign_manifest_not_opened
-- wave_closeout_not_written
+  first_batch_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
+  run_refs: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/run_refs.csv
+  anti_selection_ledger: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/anti_selection_ledger.yaml
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/run_refs.csv
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/anti_selection_ledger.yaml
+writer_owned_outputs:
+- proxy_execution_summary
+- proxy_execution_index
+- metrics.json updates
+- experiment_receipt updates
 validation_depth: writer_scope_smoke
-operational_validation_contract:
-  contract: docs/agent_control/writer_scope_operating_contract.yaml
-  validation_depth: writer_scope_smoke
-  non_pytest_smokes:
-  - parse_touched_yaml_json_toml_csv
-  - active_pointer_smoke_if_workspace_or_next_work_changes
-  - machine_yaml_identity_lint_for_touched_yaml
-  - compile_touched_python_modules_when_python_changed
-  broad_validation_escalation_reason: none_current_work_is_next_surface_decision_not_wave_closeout_not_protected_claim
-  writer_scope_self_check_required: true
-  next_writer_must_emit:
-  - source_of_truth_paths
-  - writer_owned_outputs
-  - validation_depth
-  - non_pytest_smokes
-  - skipped_broad_validations
-  - broad_validation_escalation_reason
-  - writer_scope_self_check
-  - claim_boundary
-  - unresolved_blockers_or_none
-  - next_action_or_reopen_condition
+non_pytest_smokes:
+- writer_scope_evidence_smoke
+- active_pointer_smoke
+- machine_yaml_identity_lint
 skipped_broad_validations:
 - pytest
 - full_regression_workflow
 - evidence_graph_full_workflow
 - active_record_validator_full_graph
 - spacesonar_project_validate_full
+broad_validation_escalation_reason: none_proxy_execution_pending_no_protected_claim
+writer_scope_self_check: required_before_close
+unresolved_blockers:
+- Wave02_execution_liquidity_proxy_batch_not_executed
+unresolved_blockers_or_none:
+- Wave02_execution_liquidity_proxy_batch_not_executed
+next_action_or_reopen_condition: execute proxy batch; rerun first batch materializer
+  only if pre-execution matrix drifts
+missing_material_if_relevant:
+- proxy_results_absent
+- onnx_exports_absent
+- l4_runtime_follow_through_absent
+- candidate_evidence_absent

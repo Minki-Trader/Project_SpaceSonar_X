@@ -1,0 +1,28 @@
+version: model_recipe_v1
+recipe_id: model_wave02_execution_liquidity_onnx_scout_v0
+status: skeleton_open_no_candidate
+created_at_utc: '2026-06-28T00:53:24Z'
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+claim_boundary: recipe_skeleton_only_no_candidate_no_runtime_authority_no_economics_pass
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+next_action: work_wave02_execution_liquidity_first_batch_spec_v0
+model_family_policy: onnx_feasible_scout_declared_per_run
+candidate_families:
+- logistic_or_linear_rank_scout
+- tree_or_boosted_onnx_feasible_scout
+output_head_policy: tradeability_score_side_abstain_or_execution_liquidity_head_declared_per_run
+forbidden_defaults:
+- inherited_model_family
+- fixed_threshold
+- runtime_authority
