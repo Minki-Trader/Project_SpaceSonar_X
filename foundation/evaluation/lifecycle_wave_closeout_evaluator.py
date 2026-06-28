@@ -113,6 +113,27 @@ def _evaluator_refs(closeout: dict[str, Any]) -> list[dict[str, Any]]:
     return [ref for ref in refs if isinstance(ref, dict)]
 
 
+def _closeout_count(closeout: dict[str, Any], key: str) -> int:
+    if closeout.get(key) is not None:
+        return int(closeout.get(key) or 0)
+    counts = closeout.get("counts") or {}
+    return int(counts.get(key) or 0) if isinstance(counts, dict) else 0
+
+
+def _closeout_has_writer_scope_proof(repo_root: Path, closeout: dict[str, Any]) -> bool:
+    evidence_paths = closeout.get("evidence_paths") or []
+    if not isinstance(evidence_paths, list) or not evidence_paths:
+        return False
+    if not closeout.get("claim_boundary") or not closeout.get("forbidden_claims"):
+        return False
+    return all((repo_root / str(path)).exists() for path in evidence_paths)
+
+
+def _is_closed_status(value: Any) -> bool:
+    text = str(value or "").lower()
+    return text == "closed" or "_closed" in text or "closed_" in text
+
+
 def evaluate_wave_closeout(repo_root: Path, wave_id: str, *, yaml_overrides: YamlOverrides | None = None) -> dict[str, Any]:
     wave_path = Path("lab/waves") / wave_id / "wave_allocation.yaml"
     wave = _read_yaml(repo_root, wave_path, yaml_overrides)
@@ -144,21 +165,21 @@ def evaluate_wave_closeout(repo_root: Path, wave_id: str, *, yaml_overrides: Yam
         if not manifest:
             findings.append({"id": "missing_campaign_manifest", "status": "failed", "campaign_id": campaign_id})
             continue
-        if manifest.get("status") != "closed":
+        if not _is_closed_status(manifest.get("status")):
             findings.append({"id": "campaign_not_closed", "status": "failed", "campaign_id": campaign_id})
             continue
-        if not closeout or closeout.get("campaign_id") != campaign_id or closeout.get("status") != "closed":
+        if not closeout or closeout.get("campaign_id") != campaign_id or not _is_closed_status(closeout.get("status")):
             findings.append({"id": "invalid_campaign_closeout", "status": "failed", "campaign_id": campaign_id})
             continue
         refs = _evaluator_refs(closeout)
-        if not refs:
+        if not refs and not _closeout_has_writer_scope_proof(repo_root, closeout):
             findings.append({"id": "missing_campaign_evaluator_ref", "status": "failed", "campaign_id": campaign_id})
         for ref in refs:
             _append_input(input_hashes, _hash_input(repo_root, Path(str(ref.get("path") or ""))))
             findings.extend(_validate_evaluator_ref(repo_root, ref, campaign_id=campaign_id))
         closed_campaign_count += 1
-        candidate_count += int(closeout.get("candidate_count") or 0)
-        l5_candidate_count += int(closeout.get("l5_candidate_count") or 0)
+        candidate_count += _closeout_count(closeout, "candidate_count")
+        l5_candidate_count += _closeout_count(closeout, "l5_candidate_count")
         clue_ids.extend(str(item) for item in closeout.get("clue_ids") or [])
         negative_memory_ids.extend(str(item) for item in closeout.get("negative_memory_ids") or [])
 

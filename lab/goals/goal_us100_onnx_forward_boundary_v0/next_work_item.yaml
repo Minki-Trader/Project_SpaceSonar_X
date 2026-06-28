@@ -1,48 +1,41 @@
 version: work_item_lite_v1
-writer_contract_version: writer_scope_operating_contract_v2
-work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
-parent_work_item_id: work_wave02_execution_liquidity_campaign_closeout_v0
-primary_family: experiment_design
-primary_skill: spacesonar-experiment-design
-support_skills:
-- spacesonar-claim-discipline
-- spacesonar-evidence-provenance
-verification_profile: writer_scope_next_boundary_decision
+work_item_id: open_next_wave_or_user_directed_review
+request_digest: wave_closeout_next_action
+primary_family: policy_skill_governance
+primary_skill: spacesonar-workspace-state-sync
+verification_profile: governance
 targets:
-- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
-- lab/memory/negative/neg_wave02_execution_liquidity_decision_replay_l5_negative_v0.yaml
+- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
 acceptance_criteria:
-- decide next Wave02 campaign or wave closeout boundary
-- do not reopen ELQ momentum_ret_1 decision replay as candidate repair
-- keep selected baseline, runtime authority, economics pass, live readiness, and Goal
-  Achieve forbidden
-claim_boundary: wave02_next_campaign_or_wave_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-next_action: decide whether Wave02 opens another campaign or closes the wave; do not
-  repair ELQ replay as a candidate
-status: wave02_next_campaign_or_wave_boundary_decision_pending
+- user selects next wave or review direction
+claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+policy_binding:
+  revision: policy_contract_v2
+  guards:
+  - GUARD_003_CLAIM_BOUNDARY
+outputs: []
+next_action: open_next_wave_or_user_directed_review
+path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+provenance:
+  source: wave_close_lifecycle
+writer_contract_version: writer_scope_operating_contract_v2
 source_of_truth_paths:
-- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
-- lab/memory/negative/neg_wave02_execution_liquidity_decision_replay_l5_negative_v0.yaml
-- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_campaign_closeout_v0_closeout.yaml
+- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
+- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
 writer_owned_outputs:
-- next campaign/wave boundary decision
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
 validation_depth: writer_scope_smoke
 non_pytest_smokes:
-- py_compile
-- campaign_closeout_writer_smoke
-- active_pointer_smoke
-- machine_yaml_identity_lint
-- targeted_artifact_hash_check
+- write_time_writer_contract_guard
 skipped_broad_validations:
 - pytest
 - full_regression_workflow
 - evidence_graph_full_workflow
 - active_record_validator_full_graph
 - spacesonar_project_validate_full
-- spacesonar_cli_project_validate_as_progress_default
 - broad_hash_resync
 - global_registry_regeneration
-broad_validation_escalation_reason: none_campaign_closeout_writer_scope_only
+broad_validation_escalation_reason: none_write_time_guarded_no_broad_validation
 writer_preflight_gate:
   status: passed_before_mutation
   checked_before_mutation: true
@@ -64,56 +57,17 @@ validation_attempt_budget:
   third_attempt_effect: stop_and_record_blocker_or_escalation_gate
   broad_validation_resets_budget: false
   repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
-  observed_writer_scope_attempts: 2
+  observed_writer_scope_attempts: 0
 writer_scope_self_check:
   status: passed
-  checked_at_utc: '2026-06-28T04:33:12Z'
-  failures: []
   writer_contract_version: writer_scope_operating_contract_v2
   validation_depth: writer_scope_smoke
   non_pytest_smokes:
-  - py_compile
-  - campaign_closeout_writer_smoke
-  - active_pointer_smoke
-  - machine_yaml_identity_lint
-  - targeted_artifact_hash_check
-  - writer_scope_contract_lint
-  skipped_broad_validations:
-  - pytest
-  - full_regression_workflow
-  - evidence_graph_full_workflow
-  - active_record_validator_full_graph
-  - spacesonar_project_validate_full
-  - spacesonar_cli_project_validate_as_progress_default
-  - broad_hash_resync
-  - global_registry_regeneration
-  broad_validation_escalation_reason: none_campaign_closeout_writer_scope_only
-  writer_preflight_gate: passed_before_mutation
-  validation_attempt_budget: max_2_attempts_observed_2
-  source_of_truth_paths:
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/first_batch_run_specs_manifest.yaml
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/proxy_execution_summary.yaml
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
-  writer_owned_outputs:
-  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
-  - lab/memory/negative/neg_wave02_execution_liquidity_decision_replay_l5_negative_v0.yaml
-  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_campaign_closeout_v0_closeout.yaml
-  claim_boundary: wave02_execution_liquidity_campaign_closed_negative_l5_evidence_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-  forbidden_claims_respected: true
-  candidate_count: 4
-  l5_candidate_count: 0
-  next_action_or_reopen_condition: decide whether Wave02 opens another campaign or
-    closes the wave; do not repair ELQ replay as a candidate
+  - write_time_writer_contract_guard
+  failures: []
 forbidden_claims:
 - selected_baseline
 - operating_reference
-- operating_promotion
 - runtime_authority
 - economics_pass
 - materialization_ready
@@ -121,27 +75,5 @@ forbidden_claims:
 - live_readiness
 - reviewed_verified_pass
 - goal_achieve
-current_truth:
-  campaign_closeout: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
-  negative_memory: lab/memory/negative/neg_wave02_execution_liquidity_decision_replay_l5_negative_v0.yaml
-  candidate_count: 4
-  l5_candidate_count: 0
-unresolved_blockers:
-- Wave02_next_campaign_or_wave_boundary_decision_pending
-unresolved_blockers_or_none:
-- Wave02_next_campaign_or_wave_boundary_decision_pending
-reopen_conditions:
-- new liquidity/execution decision policy or explicit open_failed execution repair
-  before any renewed L5 target
-missing_material_if_relevant:
-- positive_l5_candidate_absent
-- selected_baseline_forbidden
-- runtime_authority_forbidden
-- economics_pass_forbidden
-- locked_final_oos_b_not_used
-- operational_validation_not_started
-next_action_or_reopen_condition: decide whether Wave02 opens another campaign or closes
-  the wave; do not repair ELQ replay as a candidate
-path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-summary: Wave02 ELQ campaign closed negative; next campaign or wave boundary decision
-  pending.
+unresolved_blockers_or_none: []
+next_action_or_reopen_condition: open_next_wave_or_user_directed_review

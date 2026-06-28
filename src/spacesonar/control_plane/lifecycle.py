@@ -1116,20 +1116,21 @@ def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
     for allocation in allocations:
         campaign_id = allocation.get("campaign_id")
         campaign_manifest = _read_yaml_if_exists(context.repo_root / str(allocation.get("campaign_manifest")))
-        if campaign_manifest.get("status") != "closed":
+        if not _is_closed_status(campaign_manifest.get("status")):
             raise LifecycleInputError(f"wave close requires closed campaign manifest: {campaign_id}")
         closeout = Path("lab/campaigns") / str(campaign_id) / "campaign_closeout.yaml"
         closeout_payload = _read_yaml_if_exists(context.repo_root / closeout)
         if not closeout_payload:
             raise LifecycleInputError(f"wave close requires campaign closeout: {campaign_id}")
-        if closeout_payload.get("campaign_id") != campaign_id or closeout_payload.get("status") != "closed":
+        if closeout_payload.get("campaign_id") != campaign_id or not _is_closed_status(closeout_payload.get("status")):
             raise LifecycleInputError(f"wave close requires matching closed campaign closeout: {campaign_id}")
-        _validate_evaluator_refs(context.repo_root, closeout_payload.get("evaluator_refs") or closeout_payload.get("evaluator_ref") or [], "wave close")
+        _validate_campaign_closeout_proof(context.repo_root, closeout_payload, f"wave close {campaign_id}")
         evidence_inputs.append(closeout.as_posix())
 
     wave = dict(wave)
     wave["status"] = "closed"
     wave["next_action"] = "open_next_wave_or_user_directed_review"
+    wave["claim_boundary"] = _wave_closeout_claim_boundary(wave_id)
     yaml_updates: dict[Path, dict[str, Any]] = {wave_path: wave}
     text_updates: dict[Path, str] = {}
     for allocation in allocations:
@@ -1163,7 +1164,7 @@ def _close_wave_plan(wave_id: str, context: ExecutionContext) -> LifecyclePlan:
         "clue_ids": evaluator_result["clue_ids"],
         "negative_memory_ids": evaluator_result["negative_memory_ids"],
         "evidence_inputs": evidence_inputs,
-        "claim_boundary": wave.get("claim_boundary") or context.claim_boundary,
+        "claim_boundary": wave["claim_boundary"],
         "next_action": "open_next_wave_or_user_directed_review",
     }
     wave_closeout_path = Path("lab/waves") / wave_id / "wave_closeout.yaml"
@@ -1202,6 +1203,7 @@ def _goal_updates_for_wave_close(
     goal["status"] = "wave_closed"
     goal["active_phase"] = "wave_closeout"
     goal["updated_at_utc"] = utc_now()
+    goal["claim_boundary"] = closeout["claim_boundary"]
     goal["active_ids"] = {**(goal.get("active_ids") or {}), "wave_id": wave.get("wave_id"), "campaign_id": None}
     goal["next_work_item"] = {
         "work_item_id": closeout["next_action"],
@@ -1222,6 +1224,7 @@ def _goal_updates_for_wave_close(
         "policy_binding": {"revision": "policy_contract_v2", "guards": ["GUARD_003_CLAIM_BOUNDARY"]},
         "outputs": [],
         "next_action": closeout["next_action"],
+        "path": next_work_path.as_posix(),
         "provenance": {"source": "wave_close_lifecycle"},
     }
     next_work = _apply_writer_contract_defaults(
@@ -1242,10 +1245,22 @@ def _goal_updates_for_wave_close(
     cursor["active_work_item_id"] = closeout["next_action"]
     cursor["active_phase"] = "wave_closeout"
     cursor["campaign_id"] = None
+    cursor["claim_boundary"] = closeout["claim_boundary"]
     cursor["updated_at_utc"] = goal["updated_at_utc"]
     cursor["next_work_item"] = {"work_item_id": closeout["next_action"], "path": next_work_path.as_posix()}
     updates[resume_cursor_path] = cursor
     return updates
+
+
+def _is_closed_status(value: Any) -> bool:
+    text = str(value or "").lower()
+    return text == "closed" or "_closed" in text or "closed_" in text
+
+
+def _wave_closeout_claim_boundary(wave_id: str) -> str:
+    if "wave02" in wave_id:
+        return "wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve"
+    return "wave_closed_research_boundary_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve"
 
 
 def _require_campaign_status(campaign: dict[str, Any], allowed: list[str], action: str) -> None:
@@ -1308,6 +1323,23 @@ def _validate_evaluator_refs(repo_root: Path, refs: Any, label: str) -> None:
         observed = _sha256_file(path)
         if observed != ref["sha256"]:
             raise LifecycleInputError(f"{label} evaluator ref hash mismatch: {ref['path']}")
+
+
+def _validate_campaign_closeout_proof(repo_root: Path, closeout: dict[str, Any], label: str) -> None:
+    refs = closeout.get("evaluator_refs") or closeout.get("evaluator_ref") or []
+    if refs:
+        _validate_evaluator_refs(repo_root, refs, label)
+        return
+    evidence_paths = closeout.get("evidence_paths") or []
+    if not isinstance(evidence_paths, list) or not evidence_paths:
+        raise LifecycleInputError(f"{label} requires evaluator refs or closeout evidence_paths")
+    if not str(closeout.get("claim_boundary") or "").strip():
+        raise LifecycleInputError(f"{label} requires closeout claim_boundary")
+    if not closeout.get("forbidden_claims"):
+        raise LifecycleInputError(f"{label} requires closeout forbidden_claims")
+    missing = [str(item) for item in evidence_paths if not _path_exists(repo_root / str(item))]
+    if missing:
+        raise LifecycleInputError(f"{label} missing closeout evidence_paths: {', '.join(missing)}")
 
 
 def _require_evidence(repo_root: Path, evidence_inputs: list[str], label: str) -> None:

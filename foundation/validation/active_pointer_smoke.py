@@ -120,7 +120,10 @@ def validate(repo_root: Path) -> list[str]:
         errors.append("workspace_state.yaml: current_claim_boundary does not match next_work_item.claim_boundary")
     if workspace.get("next_action") != next_work.get("next_action"):
         errors.append("workspace_state.yaml: next_action does not match next_work_item.next_action")
-    if workspace.get("unresolved_blockers") != next_work.get("unresolved_blockers"):
+    next_work_blockers = next_work.get("unresolved_blockers")
+    if next_work_blockers is None:
+        next_work_blockers = next_work.get("unresolved_blockers_or_none") or []
+    if workspace.get("unresolved_blockers") != next_work_blockers:
         errors.append("workspace_state.yaml: unresolved_blockers does not match next_work_item")
     errors.extend(claim_errors("next_work_item", next_work.get("claim_boundary")))
 

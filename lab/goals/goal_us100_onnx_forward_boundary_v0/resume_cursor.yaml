@@ -1,11 +1,11 @@
 version: active_goal_resume_cursor_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-updated_at_utc: '2026-06-28T03:49:20Z'
+updated_at_utc: '2026-06-28T04:43:38.070751Z'
 cursor_state: wave02_next_campaign_or_wave_boundary_decision_pending
-active_phase: wave02_next_campaign_or_wave_boundary_decision_pending
-active_work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
-campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
-claim_boundary: wave02_next_campaign_or_wave_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+active_phase: wave_closeout
+active_work_item_id: open_next_wave_or_user_directed_review
+campaign_id: null
+claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 next_action: decide whether Wave02 opens another campaign or closes the wave; do not
   repair ELQ replay as a candidate
 unresolved_blockers:
@@ -158,5 +158,5 @@ latest_runtime_progress:
   - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
   - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_decision_replay_strategy_tester_execution_v0_closeout.yaml
 next_work_item:
-  work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
+  work_item_id: open_next_wave_or_user_directed_review
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml

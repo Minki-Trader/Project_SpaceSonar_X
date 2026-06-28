@@ -148,6 +148,15 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
     goal_manifest = goal_path.as_posix() if goal_path else None
     wave_allocation = wave_path.as_posix() if wave_path else None
     wave_closeout = _active_closeout_rel_path(repo_root, wave, wave_path, yaml_overrides) if wave and wave_path else None
+    active_pointer_fields = [
+        "active_goal",
+        "active_wave",
+        "active_campaign",
+        "active_work_item",
+        "current_claim_boundary",
+        "next_action",
+        "unresolved_blockers",
+    ]
     return {
         "version": "workspace_state_projection_v2",
         "updated_utc": goal.get("updated_at_utc")
@@ -189,6 +198,12 @@ def build_workspace_projection(repo_root: Path, *, yaml_overrides: YamlOverrides
             "candidate_count": closeout_result.get("candidate_count", closeout.get("candidate_count", 0)),
             "l5_candidate_count": closeout_result.get("l5_candidate_count", closeout.get("l5_candidate_count", 0)),
             "runtime_contract_integrity": (closeout.get("runtime_contract_integrity") or {}).get("status"),
+        },
+        "active_record_authority": {
+            "authoritative_fields": active_pointer_fields,
+            "current_truth_record": next_work_item.get("path"),
+            "summary_counts_role": "cumulative_reference_not_active_pointer",
+            "rule": "select next action from active_work_item plus next_work_item; never from summary_counts alone",
         },
     }
 

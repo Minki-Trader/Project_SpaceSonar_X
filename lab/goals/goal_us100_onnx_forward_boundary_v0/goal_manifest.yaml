@@ -1,10 +1,10 @@
 version: active_goal_manifest_v1
 active_goal_id: goal_us100_onnx_forward_boundary_v0
 workspace_active: true
-status: active_wave02_pre_operational_research
+status: wave_closed
 created_at_utc: '2026-06-21T15:18:51Z'
-updated_at_utc: '2026-06-28T03:49:20Z'
-claim_boundary: wave02_next_campaign_or_wave_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+updated_at_utc: '2026-06-28T04:43:38.070751Z'
+claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 objective_identity:
   source_type: repo_goal_objective_revision
   content_hash_sha256: 74e5c6b290934b9bffd87858dfac5f6ab9995b71b5b3e3e3cd217440aab2d79a
@@ -60,12 +60,12 @@ storage_contract:
   - docs/registers/goal_registry.csv
   durable_identity_policy: repo_relative_paths_only
   absolute_paths_policy: local_context_only
-active_phase: wave02_next_campaign_or_wave_boundary_decision_pending
+active_phase: wave_closeout
 active_ids:
   idea_id: idea_us100_wave02_execution_liquidity_surface_v0
   hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
   wave_id: wave_us100_wave02_tradeability_decision_surface_v0
-  campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+  campaign_id: null
   surface_id: surface_us100_wave02_execution_liquidity_v0
   sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
 blank_slate_contract:
@@ -401,10 +401,9 @@ forbidden_claims:
 - reviewed_verified_pass
 - business_or_project_goal_achieve
 next_work_item:
-  work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
+  work_item_id: open_next_wave_or_user_directed_review
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-  summary: Wave02 ELQ campaign closed negative; next campaign or wave boundary decision
-    pending.
+  summary: open_next_wave_or_user_directed_review
 wave01_operating_closeout:
   status: wave01_operating_proof_window_closed
   closeout_path: lab/waves/wave_us100_closedbar_surface_cartography_v0/wave_closeout.yaml

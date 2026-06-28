@@ -1,9 +1,9 @@
 version: wave_allocation_v1
 wave_id: wave_us100_wave02_tradeability_decision_surface_v0
 active_goal_id: goal_us100_onnx_forward_boundary_v0
-status: wave02_campaign_003_open
+status: closed
 created_at_utc: '2026-06-27T12:15:00Z'
-claim_boundary: wave02_execution_liquidity_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 allocation_goal: 'Spend the first Wave02 campaign on a new decision/tradeability surface,
   then rotate instead of repairing one weak cell unless a reusable divergence or prevention-memory
   question appears.
@@ -130,7 +130,7 @@ campaign_allocations:
   campaign_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_wave02_cost_risk_holding_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/sweeps/sweep_us100_wave02_cost_risk_holding_broad_v0/sweep_manifest.yaml
-  claim_boundary: wave02_cost_risk_holding_campaign_closed_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_l5_candidate_no_live_readiness_no_goal_achieve
+  claim_boundary: wave02_next_surface_rotation_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
   next_action: work_wave02_next_surface_rotation_decision_v0
   notes: Campaign closed with all CRH decision replay cells held for open_failed caveat;
     no candidate.
@@ -182,5 +182,5 @@ campaign_allocations:
   materialized_run_count: 6
   executed_proxy_run_count: 6
   campaign_closeout: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
-next_action: work_wave02_next_campaign_or_wave_boundary_decision_v0
+next_action: open_next_wave_or_user_directed_review
 updated_at_utc: '2026-06-28T03:49:20Z'

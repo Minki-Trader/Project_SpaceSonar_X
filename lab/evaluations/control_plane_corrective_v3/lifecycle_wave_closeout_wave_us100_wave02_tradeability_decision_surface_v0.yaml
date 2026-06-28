@@ -1,0 +1,39 @@
+version: evaluator_result_v1
+evaluator_id: lifecycle_wave_closeout_evaluator_v1
+executed_at_utc: '2026-06-28T04:43:38Z'
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+input_hashes:
+- path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_closeout.yaml
+  sha256: f19e50d0e18a638607adeda8476a49de08ec558985d992f140c03b8899106589
+- path: lab/campaigns/campaign_us100_wave02_cost_risk_holding_surface_v0/campaign_manifest.yaml
+  sha256: 12820a3ee4f0b9068c577e4f8c246d6c793a70fd353c1c9caa007f7a7aba5e94
+- path: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
+  sha256: cb0b94c717b88e8b731a0760d4f4f86e7badf3931535225cd13ee15ead44ed4e
+- path: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
+  sha256: b1755a4f7ecb569c1bdb52c32fccd226806656737b4a43786f540d235d864418
+- path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_closeout.yaml
+  sha256: 7053a318e591ecad996bbb757f45b08e41e5d2e026b2e88111c0943e0c965873
+- path: lab/campaigns/campaign_us100_wave02_tradeability_decision_surface_v0/campaign_manifest.yaml
+  sha256: 58731a78187220b64b4ac9f4876d55fec5c2482dc3e6a499ba4885119acb5877
+- path: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
+  sha256: 3ec1650a3ffeec3e7a11be46bcfecbf1423160929b158672a9f5c571d678eb2f
+status: passed
+findings: []
+campaign_count: 3
+closed_campaign_count: 3
+candidate_count: 6
+l5_candidate_count: 0
+metrics:
+  campaign_count: 3
+  closed_campaign_count: 3
+  candidate_count: 6
+  l5_candidate_count: 0
+  clue_count: 0
+  negative_memory_count: 3
+clue_ids: []
+negative_memory_ids:
+- neg_wave02_cost_risk_holding_open_failed_caveat_no_candidate_v0
+- neg_wave02_execution_liquidity_decision_replay_l5_negative_v0
+- neg_wave02_tradeability_momentum_ret_1_decision_replay_l5_negative_v0
+claim_effect: wave_lifecycle_closeout_only_no_runtime_authority_no_economics_pass
+output_sha256: ea7995d7dfc554c618098219907025e7985fa742080056cee59ee9286fece1ab
