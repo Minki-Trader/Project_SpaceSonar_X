@@ -74,8 +74,9 @@ guards:
       - manifests
       - receipts
       - commands
-    rule: Use writer-scope smoke and source-of-truth guards by default; do not use pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans as routine proof unless a boundary, drift, shared-contract change, protected claim, or explicit user request requires it.
+    rule: Use writer-scope smoke and source-of-truth guards by default; do not use pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans as routine proof unless a boundary, drift, shared-contract change, protected claim, or explicit user request requires it. New or changed writers must satisfy the writer-scope operating contract before any broad validation command can be considered.
     validator: docs/agent_control/operational_stability_kernel.yaml
+    contract: docs/agent_control/writer_scope_operating_contract.yaml
 
 policy_binding_template:
   revision: policy_contract_v2

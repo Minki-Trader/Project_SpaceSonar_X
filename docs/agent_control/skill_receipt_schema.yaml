@@ -13,6 +13,10 @@ required_common_fields:
   - provenance
   - storage_contract_effect
   - required_gate_coverage
+  - validation_depth
+  - non_pytest_smokes
+  - skipped_broad_validations
+  - broad_validation_escalation_reason
   - critical_skills_not_selected
   - not_selected_claim_effect
   - claim_boundary
@@ -69,6 +73,7 @@ skill_specific:
       - regeneration_commands
       - availability
       - lineage_judgment
+      - writer_scope_self_check
 
   spacesonar-code-change-quality:
     required_fields:
@@ -77,6 +82,8 @@ skill_specific:
       - output_contract
       - artifact_effect
       - test_or_syntax_check
+      - no_pytest_reason
+      - broad_validation_escalation_reason
 
   spacesonar-session-bootstrap:
     required_fields:

@@ -11,6 +11,7 @@ Use when starting or resuming repository work that needs current truth, stale-as
 
 - `AGENTS.md`
 - `docs/agent_control/operational_stability_kernel.yaml` when validation cadence, no-pytest operation, stability, or heavy-check avoidance is in scope
+- `docs/agent_control/writer_scope_operating_contract.yaml` when writer-local proof, no-pytest operation, broad validation avoidance, or stability hardening is in scope
 - `docs/workspace/workspace_state.yaml` when current lab truth matters
 - `docs/agent_control/work_family_registry.yaml` for non-trivial routing
 - touched contracts or manifests only when the task requires them
@@ -24,6 +25,10 @@ Use when starting or resuming repository work that needs current truth, stale-as
 - `required_reads`
 - `stop_conditions`
 - `claim_boundary`
+- `validation_depth`
+- `non_pytest_smokes`
+- `skipped_broad_validations`
+- `broad_validation_escalation_reason`
 - `final_answer_filter`
 
 ## Guardrails
@@ -31,6 +36,7 @@ Use when starting or resuming repository work that needs current truth, stale-as
 - Start with the smallest repo-controlled read or action that answers the current request.
 - If the user asks for progress, experiments, or why work is slow, identify the active work item's next executable writer/probe and move there before any validation-only loop.
 - Default to writer-scope smoke, not pytest/full graph validation. Name `validation_depth` before running commands.
+- If a broad command is considered, first require the operational kernel command-intent gate: allowed reason, owner surface, source-of-truth paths, why writer-scope is insufficient, expected claim effect, and smaller checks already attempted or not-applicable.
 - When run evidence is touched, prefer `python -m spacesonar.cli project writer-smoke ...` as the first proof command.
 - Do not use `python -m spacesonar.cli project validate` as a progress-loop default; reserve it for boundary, drift, shared-contract/validator semantics, or explicit user-request cases.
 - Do not use whole-tree inventory as proof of operational stability; identify the owned source-of-truth surface and the guard that should fail early.

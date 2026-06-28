@@ -52,6 +52,12 @@ receipts must be correct when written. Broad validators may confirm archive
 consistency, but they are not the normal way to discover routine run-local
 mistakes.
 
+Boundary commits use `docs/agent_control/writer_scope_operating_contract.yaml`
+as the default stability contract. Full-regression, evidence-graph, project
+validate, broad hash resync, or global registry regeneration require a recorded
+boundary/drift/shared-contract/protected-claim/user-request reason before they
+are run.
+
 ## Worktree Fit Rule
 
 Before file edits, check that the current branch/worktree matches the requested work item.

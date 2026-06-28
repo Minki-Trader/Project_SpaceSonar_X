@@ -61,6 +61,16 @@ lifecycle:
       - required_gate_coverage
       - missing_evidence
 
+  - phase: validation_decision
+    required_outputs:
+      - validation_depth
+      - non_pytest_smokes
+      - skipped_broad_validations
+      - broad_validation_escalation_reason
+      - writer_scope_self_check
+      - source_of_truth_paths_checked
+    rule: "Routine work uses writer-scope smoke. Pytest, project validate, full active-record graph, full evidence graph, broad hash resync, or global registry regeneration require a recorded boundary, drift, shared-contract, protected-claim, dependency/workflow, or explicit-user-request reason before execution."
+
   - phase: closeout
     required_outputs:
       - result_judgment
@@ -114,6 +124,7 @@ completion_rule:
   nonworking_result_rule: "When an operation does not work, first determine why, reproduce or bound the failing layer, and attempt the smallest repo-controlled fix, adapter, or fallback. Only a recorded failed attempt or narrow attempt blocker can support blocked, deferred, invalid, or discarded."
   attempt_first_posture: "A failing path stays investigation_in_progress until Codex has made the smallest credible repo-controlled attempt or recorded a narrow attempt blocker. Deferred/discarded is a post-attempt judgment, not an initial reaction."
   active_attempt_rule: "If execution or mutation is within the current task and the missing layer is repo-controlled, Codex must try the smallest concrete repair/fallback before using blocked, deferred, invalid, or discarded."
+  no_pytest_stability_rule: "Stable operation is writer-contract-first. A writer must record source-of-truth paths, writer-owned outputs, validation_depth, non_pytest_smokes, skipped_broad_validations, broad_validation_escalation_reason, writer_scope_self_check, claim_boundary, and next action; broad validation cannot substitute for these fields."
   not_yet_attempted_claim_effect: investigation_in_progress
   failure_disposition_requires_all_before_blocked_deferred_invalid_or_discarded:
     - failure_reproduction

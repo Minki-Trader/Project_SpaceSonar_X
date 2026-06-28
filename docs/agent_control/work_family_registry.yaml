@@ -12,6 +12,7 @@ global_rules:
   subagent_advice_policy: "Disabled. Do not spawn Task Force/sub-agents or use agent advice as active review evidence."
   subagent_conflict_policy: "Historical agent advice is archive evidence only and cannot override source-of-truth files, selected skills, workspace state, or user constraints."
   operational_stability_kernel: "docs/agent_control/operational_stability_kernel.yaml"
+  writer_scope_operating_contract: "docs/agent_control/writer_scope_operating_contract.yaml"
   default_validation_depth: writer_scope_smoke
   research_campaign_axis_policy: "Research campaigns are unexplored multi-axis discovery. They must not be feature-only, label-only, model-only, threshold-only, or repair-only programs; declare target/label, feature/input, model/training, decision, and eval/runtime companion axes."
   repair_carryover_policy: "Do not relabel unfinished repair or candidate-local perturbation as a fresh hypothesis in the next campaign/wave without a recorded new surface, divergence, or prevention-memory question."
@@ -23,6 +24,8 @@ global_rules:
   operator_progress_policy: "When the user asks for progress or experiments and the active work item has a repo-controlled executable writer, materializer, runner, probe, or adapter path, route to that next concrete step before any validation-only loop."
   direct_inspection_policy: "Direct inspection means targeted source-of-truth and owner-file reads. Use rg --files with volatile/generated excludes for listings; do not use unbounded recursive workspace walks or generated transaction/runtime artifact tree inventories as operational proof."
   writer_local_contract_policy: "When broad validation catches a repeated issue, move the invariant into the responsible writer, parser, adapter, or manifest contract. Writers must write proof summaries/receipts before artifact_ref/hash/registry projection; missing optional raw artifacts become explicit availability records."
+  writer_scope_operating_contract_policy: "New or changed writers and boundary records must include validation_depth, non_pytest_smokes, skipped_broad_validations, broad_validation_escalation_reason, writer_scope_self_check, source_of_truth_paths, claim_boundary, unresolved_blockers_or_none, and next_action_or_reopen_condition. Missing fields are writer-local contract failures, not reasons to run pytest."
+  broad_validation_command_gate_policy: "pytest, full-regression, evidence-graph-full, full active-record validation, full project validate, broad hash resync, and global registry regeneration require a recorded allowed reason, owner surface, source-of-truth paths, why writer-scope is insufficient, expected claim effect, and smaller checks attempted or not-applicable reason before execution."
   yaml_identity_policy: "Machine YAML records must not contain PyYAML aliases or anchors. Writers use NoAliasDumper/dump_yaml, deep-copy reused nested objects, and run touched YAML identity lint after control/evidence YAML rewrites."
   registry_hash_policy: "Do not use broad hash resync as a progress-loop repair. Prefer targeted manifest/receipt/summary hash checks or targeted registry row updates; use broad refresh only for explicit boundary, drift, shared-contract, or user-request reasons."
   volatile_surface_policy: "Do not treat .pytest_tmp, .spacesonar transactions, runtime telemetry/report trees, package artifact trees, or lab run artifact/report trees as current-truth scan targets; use their manifests, receipts, summaries, and hashes."
@@ -99,6 +102,7 @@ verification_profiles:
       - branch_worktree_fit
       - provenance_capture
       - skill_metadata_lint
+      - writer_scope_operating_contract_check
       - storage_contract_check
       - routing_smoke_eval
       - dry_run_receipt

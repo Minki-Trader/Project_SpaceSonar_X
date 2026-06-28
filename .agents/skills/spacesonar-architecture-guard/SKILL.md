@@ -28,6 +28,7 @@ Read only touched policy/skill/control files plus:
 - `AGENTS.md`
 - `docs/agent_control/work_family_registry.yaml` when routing changes
 - `docs/agent_control/operational_stability_kernel.yaml` when validation cadence or no-pytest operation changes
+- `docs/agent_control/writer_scope_operating_contract.yaml` when writer-local proof, command escalation, or no-pytest stability changes
 - `docs/agent_control/surface_registry.yaml` when path ownership changes
 - `docs/workspace/workspace_state.yaml` when current truth changes
 
@@ -42,6 +43,8 @@ Read only touched policy/skill/control files plus:
 - `line_ending_check`
 - `code_surface_check`
 - `skill_routing_check`
+- `writer_scope_contract_effect`
+- `broad_validation_escalation_reason`
 - `claim_boundary_effect`
 
 ## Guardrails
@@ -55,6 +58,8 @@ Read only touched policy/skill/control files plus:
 - Keep registry rows as indexes; source-of-truth manifests live in the run, bundle, candidate, campaign, or MT5 attempt folder.
 - Missing repo-controlled support is a repair trigger, not a final architecture blocker.
 - Stable operation is enforced at writer/source-of-truth boundaries first; broad validators are boundary evidence, not the normal design mechanism.
+- Any architecture change that adds or changes a writer must make that writer name source-of-truth paths, owned outputs, validation depth, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, and next action/reopen condition.
+- Broad validation commands are architecture-level escalation, not routine proof; require the operational command-intent gate before running them.
 - Before blocked, deferred, invalid, or discarded architecture disposition, reproduce the failing layer, try the smallest repo-controlled implementation, adapter, fixture, parser, or fallback, and record evidence plus reopen condition.
 - If a converter, conversion adapter, export adapter, EA adapter, parser, runner, or runtime glue does not exist, create the smallest explicit translation layer needed to test the hypothesis unless a narrow exception applies.
 - Narrow exceptions are user secrets, unavailable external state, destructive or unsafe action, or project-policy violation; record the exception as the attempt blocker.

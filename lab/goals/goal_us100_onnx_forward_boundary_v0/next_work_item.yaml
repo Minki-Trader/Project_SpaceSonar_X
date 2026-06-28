@@ -39,6 +39,27 @@ missing_material_if_relevant:
 - next_campaign_manifest_not_opened
 - wave_closeout_not_written
 validation_depth: writer_scope_smoke
+operational_validation_contract:
+  contract: docs/agent_control/writer_scope_operating_contract.yaml
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - parse_touched_yaml_json_toml_csv
+  - active_pointer_smoke_if_workspace_or_next_work_changes
+  - machine_yaml_identity_lint_for_touched_yaml
+  - compile_touched_python_modules_when_python_changed
+  broad_validation_escalation_reason: none_current_work_is_next_surface_decision_not_wave_closeout_not_protected_claim
+  writer_scope_self_check_required: true
+  next_writer_must_emit:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - validation_depth
+  - non_pytest_smokes
+  - skipped_broad_validations
+  - broad_validation_escalation_reason
+  - writer_scope_self_check
+  - claim_boundary
+  - unresolved_blockers_or_none
+  - next_action_or_reopen_condition
 skipped_broad_validations:
 - pytest
 - full_regression_workflow

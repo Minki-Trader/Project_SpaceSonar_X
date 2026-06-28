@@ -23,6 +23,7 @@ Read this file first, then stop. Load more only when task-relevant:
 - current lab truth: `docs/workspace/workspace_state.yaml`
 - non-trivial routing: `docs/agent_control/work_family_registry.yaml`
 - operational stability/no-pytest cadence: `docs/agent_control/operational_stability_kernel.yaml`
+- writer-scope operating contract: `docs/agent_control/writer_scope_operating_contract.yaml`
 - canonical policy: `docs/agent_control/policy_contract.yaml`
 - ONNX bundle/schema/export: `docs/contracts/onnx_lab_contract.yaml`
 - split/eval: `configs/onnx_lab/split_recipes/split_set_v0.yaml`
@@ -76,6 +77,11 @@ Policy meaning lives in `docs/agent_control/policy_contract.yaml`; manifests bin
 - `GUARD_005_LOCKED_OOS`: locked final OOS is excluded unless an explicit unlock contract exists.
 - `GUARD_006_BRANCH_WORKTREE`: check branch/worktree fit before mutation; never revert user changes unless explicitly asked.
 - `GUARD_007_OPERATIONAL_STABILITY`: default to writer-scope smoke and source-of-truth checks; routine pytest, full evidence graph, broad hash sync, global registry regeneration, or whole-tree scans are forbidden unless a boundary, drift, shared-contract change, protected claim, or explicit user request requires them.
+
+No-pytest operation is writer-contract first: every new or changed writer must name
+its owned source-of-truth paths, output records, validation depth, non-pytest
+smokes, skipped broad validations, escalation reason, self-check, claim boundary,
+and next action before broad validation can be considered.
 
 ## Runtime And Parity
 

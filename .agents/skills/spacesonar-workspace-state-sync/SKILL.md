@@ -28,6 +28,10 @@ Do not read or recreate historical routing records, legacy external-review recor
 - `claim_boundary_effect`
 - `archive_boundary_effect`
 - `not_applicable_gates`
+- `validation_depth`
+- `non_pytest_smokes`
+- `skipped_broad_validations`
+- `broad_validation_escalation_reason`
 - `next_required_action`
 
 ## Guardrails
@@ -36,3 +40,4 @@ Do not read or recreate historical routing records, legacy external-review recor
 - Do not turn a candidate into selected baseline, operating reference, runtime authority, or economics pass.
 - Do not let README carry mutable live state; point to `docs/workspace/workspace_state.yaml`.
 - If evidence is missing, lower the claim rather than filling gaps with legacy archive material.
+- Workspace mutations must satisfy the writer-scope operating contract: align workspace, next_work_item, goal_manifest, campaign_manifest when active campaign changes, and goal_registry with active pointer smoke instead of routine pytest/full graph validation.

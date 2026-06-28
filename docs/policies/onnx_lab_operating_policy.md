@@ -150,6 +150,7 @@ The lab is attempt-first, not bureaucracy-first.
 - Use a thin first pass: one fixture, one representative run, one export smoke, one parser smoke, or one MT5 micro-path when that is enough to prove or falsify the path.
 - Scale to broader execution only after the thin path is real, the surface remains useful, or the claim boundary requires it.
 - Keep project-wide synchronization proportional. Full pytest, full active-record validation, global registry regeneration, and broad hash sync are not routine run-loop proof. Use them only for explicit archive validation, severe source-of-truth drift, or broad shared-contract/dependency/validator changes that focused checks cannot cover.
+- The default no-pytest stability contract is `docs/agent_control/writer_scope_operating_contract.yaml`. New or changed writers must record source-of-truth paths, writer-owned outputs, validation depth, non-pytest smokes, skipped broad validations, escalation reason, self-check, claim boundary, and next action before broad validation can be considered.
 - Main push defaults to a fast remote smoke layer: policy/routing lints,
   repository setting check, registry projection check, whitespace check, and a
   non-pytest compile/parse smoke set.

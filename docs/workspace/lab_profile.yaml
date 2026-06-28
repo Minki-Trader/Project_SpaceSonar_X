@@ -73,6 +73,7 @@ failure_disposition_policy:
 execution_weight_policy:
   posture: attempt_first_not_heavy_first
   operational_stability_kernel: docs/agent_control/operational_stability_kernel.yaml
+  writer_scope_operating_contract: docs/agent_control/writer_scope_operating_contract.yaml
   default_first_pass: thinnest_execution_that_answers_current_question
   session_start_resume_default: current_truth_then_one_narrow_path_before_broad_reconciliation
   broad_reconciliation_requires:
@@ -112,6 +113,12 @@ execution_weight_policy:
         - full_project_validate
         - broad_hash_resync
         - global_registry_regeneration
+      required_writer_contract_fields:
+        - validation_depth
+        - non_pytest_smokes
+        - skipped_broad_validations
+        - broad_validation_escalation_reason
+        - writer_scope_self_check
     boundary_default:
       profile: source_of_truth_boundary_review_manual
       trigger_events:

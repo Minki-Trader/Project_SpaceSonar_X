@@ -27,6 +27,9 @@ Use when work touches ONNX export, runtime bundles, EA modules, `.mq5/.mqh/.set`
 - `interpretation_drift_risks`
 - `minimum_reconciliation_attempt`
 - `runtime_evidence_identity`
+- `validation_depth`
+- `non_pytest_smokes`
+- `broad_validation_escalation_reason`
 - `runtime_claim_boundary`
 
 ## Guardrails
@@ -36,6 +39,7 @@ Use when work touches ONNX export, runtime bundles, EA modules, `.mq5/.mqh/.set`
 - Main-mode fallback is diagnostic only.
 - When prepared MT5 attempts exist, the next meaningful action is runner/probe execution or runner repair, not another full validation pass.
 - Runtime runners must write terminal summary, telemetry summary, tester-report receipt, missing evidence, next action, and claim boundary even when telemetry or tester report is missing.
+- Runtime runners must fail writer-local when their own summaries, receipts, hashes, availability fields, or claim boundaries are missing; do not use pytest, project validate, or full active-record graph as the first way to discover those gaps.
 - Do not let missing local tester reports crash manifest writing. Record missing availability and reopen condition, then keep the runtime claim below L4 completion.
 - Do not convert proxy results, diagnostic samples, or telemetry-only observations into economics pass, live readiness, selected baseline, or runtime authority.
 - Missing runner, parser, report, tester config, ONNX, EA, or runtime glue under repo control requires the smallest credible repair or fixture attempt before blocked or invalid disposition.

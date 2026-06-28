@@ -1,4 +1,4 @@
-version: work_item_lite_schema_v1
+version: work_item_lite_schema_v2
 required_top_level:
   - version
   - work_item_id
@@ -12,3 +12,21 @@ required_top_level:
   - policy_binding
   - outputs
   - next_action
+
+operational_validation_required_fields:
+  contract: docs/agent_control/writer_scope_operating_contract.yaml
+  required_when:
+    - new_work_item_record
+    - writer_or_boundary_record
+    - workspace_state_mutation
+    - campaign_or_wave_boundary_decision
+  fields:
+    - validation_depth
+    - non_pytest_smokes
+    - skipped_broad_validations
+    - broad_validation_escalation_reason
+    - writer_scope_self_check
+    - source_of_truth_paths
+    - unresolved_blockers_or_none
+    - next_action_or_reopen_condition
+  rule: missing_operational_validation_fields_are_writer_contract_drift_not_a_pytest_trigger

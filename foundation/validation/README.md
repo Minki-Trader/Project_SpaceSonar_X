@@ -13,3 +13,9 @@ Control-plane preflight validators:
 - `refresh_artifact_registry_hashes.py`: refreshes registry sha256/size identity for existing repo-relative artifacts after checkout or line-ending drift; use `--path` for touched-row scope during ordinary writer work.
 
 Default operation must not call `pytest`, `python -m spacesonar.cli project validate`, full active-record validation, broad hash resync, or full control-plane validation for ordinary run writing or progress checks. Use the writer-scope smoke, touched parse/compile/import checks, touched YAML identity lint, routing/policy lint, or projection checks first; escalate only at campaign/wave boundaries, protected claim changes, shared validator/contract semantics changes, explicit user request, or source-of-truth drift.
+
+The default stability contract is `docs/agent_control/writer_scope_operating_contract.yaml`.
+Validation tools confirm writer-owned records; they do not replace the writer's
+manifest, receipt, summary, hash, availability, claim-boundary, and next-action
+fields. Broad validation commands require the operational command-intent gate
+before execution.

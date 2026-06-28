@@ -20,6 +20,9 @@ Use this skill when a run, model, bundle, package, backtest, PR, or user-facing 
 - `judgment_label`
 - `claim_boundary`
 - `missing_evidence`
+- `validation_depth`
+- `non_pytest_smokes`
+- `broad_validation_escalation_reason`
 - `next_action`
 
 ## Judgment Labels
@@ -42,6 +45,7 @@ Use this skill when a run, model, bundle, package, backtest, PR, or user-facing 
 
 - Negative is interpretable evidence.
 - KPI-bearing judgments must include a performance-attribution pass: tested factor, observed KPI movement, likely effect hypothesis, confidence, and next probe.
+- A judgment cannot become stronger just because pytest, project validate, or full graph validation ran; use manifest/receipt/hash/runtime evidence for the touched result and record writer-scope validation depth.
 - Do not close a KPI result with only the headline outcome; name what experimental item was changed and what effect it appears to have under the stated boundary.
 - Effect language is exploratory unless controls, matched scope, sufficient samples, and proxy/runtime evidence support a stronger claim.
 - Invalid means the setup cannot be interpreted after a repair or reinterpretation attempt, or the attempt blocker is recorded.

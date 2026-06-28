@@ -14,12 +14,15 @@ Use when a path, artifact, routing record, register row, or policy meaning is in
 - `path_verified`
 - `legacy_boundary`
 - `drift_risk`
+- `writer_scope_contract_checked`
+- `broad_validation_escalation_reason`
 - `claim_effect`
 
 ## Guardrails
 
 - Verify repo-relative paths before acting on remembered names.
 - Verify the responsible source-of-truth path and writer contract before invoking broad validators.
+- If the path or artifact gap is inside a repo-owned writer, fix or strengthen the writer-local contract before using pytest, full project validate, full evidence graph, broad hash resync, or global registry regeneration.
 - Do not use adjacent guessing when artifact names vary.
 - Do not treat repeated folder scans, whole-tree inventory, or CI success as proof that the operating rule is correct.
 - If direct inspection is needed, inspect source-of-truth records and owner files with volatile excludes. A recursive listing that enters `.pytest_tmp`, `.spacesonar/transactions`, raw runtime reports, telemetry, or package artifacts is drift noise, not evidence.

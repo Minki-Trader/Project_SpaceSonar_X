@@ -1,8 +1,9 @@
-version: operational_stability_kernel_v1
+version: operational_stability_kernel_v2
 purpose: codex_operates_stably_without_routine_pytest_or_full_graph_validation
 claim_boundary: operational_control_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
 
 default_validation_depth: writer_scope_smoke
+writer_scope_operating_contract_path: docs/agent_control/writer_scope_operating_contract.yaml
 
 default_command_selection:
   project_validate_default: false
@@ -27,6 +28,7 @@ routine_inspection_scope:
     - docs/workspace/workspace_state.yaml
     - docs/agent_control/work_family_registry.yaml
     - docs/agent_control/operational_stability_kernel.yaml
+    - docs/agent_control/writer_scope_operating_contract.yaml
     - current_work_item
     - touched_source_of_truth_manifests
   exclude_volatile_local_surfaces:
@@ -72,6 +74,32 @@ active_record_authority:
   writer_rule: every writer that mutates workspace_state.yaml must align workspace active pointers, next_work_item.yaml, goal_manifest.yaml, campaign_manifest.yaml, and goal_registry.csv
   default_smoke: "python foundation/validation/active_pointer_smoke.py"
 
+writer_scope_operating_contract:
+  contract_path: docs/agent_control/writer_scope_operating_contract.yaml
+  required_for:
+    - new_or_changed_pipeline_writers
+    - work_item_records
+    - campaign_open_records
+    - campaign_closeout_records
+    - wave_boundary_records
+    - runtime_attempt_writers
+    - workspace_state_mutations
+  required_record_fields:
+    - primary_family
+    - primary_skill
+    - source_of_truth_paths
+    - writer_owned_outputs
+    - validation_depth
+    - non_pytest_smokes
+    - skipped_broad_validations
+    - broad_validation_escalation_reason
+    - writer_scope_self_check
+    - claim_boundary
+    - forbidden_claims
+    - unresolved_blockers_or_none
+    - next_action_or_reopen_condition
+  rule: writer_local_contract_is_the_default_stability_mechanism_not_pytest
+
 experiment_first_loop:
   applies_when:
     - user_asks_progress
@@ -102,10 +130,38 @@ hash_and_line_ending_policy:
   yaml_writer_rule: use NoAliasDumper or shared dump_yaml helpers; deep-copy reused nested mappings before assigning them into multiple output branches
   proof_rule: do not repair hash drift by broad resync before checking the touched manifest or receipt writer
 
+broad_validation_command_intent_gate:
+  applies_to:
+    - pytest
+    - full_regression_workflow
+    - evidence_graph_full_workflow
+    - active_record_validator_full_graph
+    - spacesonar_project_validate_full
+    - broad_hash_resync
+    - global_registry_regeneration
+  allowed_only_when_one_of:
+    - campaign_closeout
+    - wave_closeout
+    - source_of_truth_drift_detected_by_writer_scope_check
+    - shared_contract_or_validator_semantics_changed
+    - dependency_lock_or_workflow_changed
+    - protected_claim_surface_changed
+    - explicit_user_request_for_that_broad_command
+  required_record_before_running:
+    - command
+    - allowed_reason
+    - owner_surface
+    - source_of_truth_paths
+    - why_writer_scope_smoke_is_insufficient
+    - expected_claim_effect
+    - smaller_checks_already_attempted_or_not_applicable_reason
+  default_if_missing_record: do_not_run_broad_command_choose_writer_scope_step
+
 start_order:
   - read_boot_kernel
   - read_workspace_state_if_current_truth_matters
   - read_work_family_registry_for_non_trivial_work
+  - read_writer_scope_operating_contract_when_stability_or_writer_rules_matter
   - classify_primary_family_and_primary_skill
   - identify_owned_source_of_truth_paths
   - identify_writer_or_manifest_responsible_for_the_change
@@ -175,6 +231,11 @@ allowed_non_pytest_smokes:
   - scan_touched_yaml_for_alias_tokens
 
 hard_enforcement_points:
+  before_broad_validation_command:
+    - broad_validation_command_intent_gate_record_exists
+    - allowed_reason_matches_kernel_escalation_reason
+    - writer_scope_smoke_insufficiency_named
+    - expected_claim_effect_named
   writer_before_write:
     - source_of_truth_path_declared
     - primary_family_and_skill_declared
@@ -263,6 +324,8 @@ operator_failure_modes_to_avoid:
   - claiming_stability_from_ci_success_only
   - repairing_hash_newline_drift_with_global_resync_first
   - letting_yaml_aliases_enter_machine_records
+  - running_forbidden_broad_command_without_command_intent_gate_record
+  - writing_new_pipeline_without_writer_scope_operating_contract_fields
 
 machine_output_fields:
   - primary_family
@@ -271,6 +334,8 @@ machine_output_fields:
   - validation_depth
   - non_pytest_smokes
   - skipped_broad_validations
+  - broad_validation_escalation_reason
+  - writer_scope_self_check
   - claim_boundary
   - unresolved_blockers
   - next_action

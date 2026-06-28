@@ -1,0 +1,173 @@
+version: writer_scope_operating_contract_v1
+purpose: machine_contract_for_stable_operation_without_routine_pytest_or_full_graph_validation
+claim_boundary: control_plane_policy_only_no_runtime_authority_no_economics_pass_no_live_readiness_no_selected_baseline
+
+applies_to:
+  - new_or_changed_pipeline_writers
+  - work_item_records
+  - campaign_open_records
+  - campaign_closeout_records
+  - wave_open_records
+  - wave_closeout_records
+  - runtime_attempt_writers
+  - artifact_registry_touch_points
+  - workspace_state_mutations
+
+default_validation_depth: writer_scope_smoke
+
+required_writer_record_fields:
+  - primary_family
+  - primary_skill
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - validation_depth
+  - non_pytest_smokes
+  - skipped_broad_validations
+  - broad_validation_escalation_reason
+  - writer_scope_self_check
+  - claim_boundary
+  - forbidden_claims
+  - unresolved_blockers_or_none
+  - next_action_or_reopen_condition
+
+writer_owned_output_classes:
+  manifest:
+    required:
+      - id_chain_or_not_applicable_reason
+      - repo_relative_source_of_truth_path
+      - claim_boundary
+      - missing_evidence_when_incomplete
+      - next_action_or_reopen_condition_when_incomplete
+  receipt:
+    required:
+      - producer_command
+      - source_inputs
+      - output_paths
+      - hashes_or_reason_unavailable
+      - environment_or_lock_reference_when_reproducibility_matters
+  summary:
+    required:
+      - result_status_or_judgment
+      - evidence_paths
+      - validation_depth
+      - non_pytest_smokes
+      - skipped_broad_validations
+      - claim_boundary
+  registry_projection:
+    required:
+      - backing_manifest_or_receipt_path
+      - backing_hash_or_availability_reason
+      - index_only_claim
+
+writer_before_write_gate:
+  fail_before_mutation_when_missing:
+    - source_of_truth_paths
+    - primary_family
+    - primary_skill
+    - claim_boundary
+    - forbidden_claims_for_candidate_runtime_or_closeout_surfaces
+    - expected_writer_owned_outputs
+  rule: if_the_writer_cannot_name_what_it_owns_it_must_not_use_pytest_or_project_validate_to_discover_it
+
+writer_after_write_gate:
+  fail_writer_local_when_missing:
+    - declared_source_of_truth_paths_exist
+    - proof_bearing_summaries_or_receipts_exist_before_artifact_ref
+    - hashes_match_final_written_bytes_or_availability_reason_exists
+    - repo_relative_paths_only
+    - machine_yaml_has_no_aliases_or_anchors
+    - claim_boundary_does_not_exceed_evidence
+  workspace_mutation_extra:
+    - workspace_state_active_pointer_aligned
+    - next_work_item_aligned
+    - goal_manifest_aligned
+    - campaign_manifest_aligned_when_active_campaign_changes
+    - goal_registry_row_aligned
+
+non_pytest_smoke_map:
+  python_writer_changed:
+    - compile_touched_python_modules
+    - import_touched_module_when_safe
+  control_yaml_changed:
+    - parse_touched_yaml
+    - machine_yaml_identity_lint
+  workspace_or_next_work_changed:
+    - active_pointer_smoke
+    - targeted_artifact_hash_check_for_registered_touched_records
+  registry_projection_changed:
+    - projection_check_for_touched_registry_only
+    - targeted_artifact_hash_check_for_touched_paths
+  run_evidence_changed:
+    - writer_scope_evidence_smoke_for_touched_run_or_campaign
+  routing_or_skill_changed:
+    - parse_touched_yaml_or_frontmatter
+    - routing_contract_lint_or_policy_lint_when_route_semantics_changed
+  runtime_attempt_changed:
+    - parse_attempt_manifest
+    - check_terminal_summary_telemetry_summary_tester_report_receipt_availability
+
+forbidden_default_commands:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - broad_hash_resync
+  - global_registry_regeneration
+  - volatile_whole_tree_scan_as_proof
+
+broad_validation_command_intent_gate:
+  allowed_only_when_one_of:
+    - campaign_closeout
+    - wave_closeout
+    - source_of_truth_drift_detected_by_writer_scope_check
+    - shared_contract_or_validator_semantics_changed
+    - dependency_lock_or_workflow_changed
+    - protected_claim_surface_changed
+    - explicit_user_request_for_that_broad_command
+  required_record_before_running:
+    - command
+    - allowed_reason
+    - owner_surface
+    - source_of_truth_paths
+    - why_writer_scope_smoke_is_insufficient
+    - expected_claim_effect
+    - smaller_checks_already_attempted_or_not_applicable_reason
+  default_if_missing_record: do_not_run_broad_command_choose_writer_scope_step
+
+inspection_contract:
+  source_tree_inventory_role: orientation_only_not_proof
+  inspect_first:
+    - boot_kernel
+    - workspace_state
+    - active_next_work_item
+    - work_family_registry
+    - operational_stability_kernel
+    - this_contract
+    - touched_owner_files
+  do_not_use_as_operating_truth:
+    - generated_transaction_trees
+    - raw_runtime_report_or_telemetry_trees
+    - package_artifact_trees
+    - repeated_recursive_folder_passes
+  rule: convert_each_observed_gap_into_a_writer_policy_manifest_or_contract_rule_before_running_broad_validation
+
+stable_loop_order:
+  - read_current_truth
+  - choose_one_primary_family_and_skill
+  - name_writer_owned_source_of_truth_paths
+  - execute_or_edit_the_thinnest_owned_step
+  - write_manifest_receipt_summary_hash_claim_boundary
+  - run_non_pytest_smokes_for_touched_surfaces
+  - escalate_broad_validation_only_with_command_intent_gate_record
+
+machine_output_fields:
+  - validation_depth
+  - non_pytest_smokes
+  - skipped_broad_validations
+  - broad_validation_escalation_reason
+  - writer_scope_self_check
+  - source_of_truth_paths
+  - claim_boundary
+  - unresolved_blockers_or_none
+  - next_action_or_reopen_condition
