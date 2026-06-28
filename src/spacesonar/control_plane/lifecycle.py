@@ -1238,7 +1238,21 @@ def _goal_updates_for_wave_close(
         forbidden_claims=DEFAULT_FORBIDDEN_CLAIMS,
     )
     resume_cursor_path = Path("lab/goals") / str(goal_id) / "resume_cursor.yaml"
-    updates = {goal_path: goal, next_work_path: next_work}
+    decision_scaffold_path = Path("lab/goals") / str(goal_id) / "next_wave_or_review_decision_scaffold.yaml"
+    decision_scaffold = _next_wave_or_review_decision_scaffold(
+        goal_id=str(goal_id),
+        wave=wave,
+        closeout=closeout,
+        decision_scaffold_path=decision_scaffold_path,
+    )
+    next_work["acceptance_criteria"] = [
+        "user selects next wave or review direction",
+        f"selection uses {decision_scaffold_path.as_posix()}",
+    ]
+    next_work["outputs"] = [decision_scaffold_path.as_posix()]
+    next_work["provenance"] = {**(next_work.get("provenance") or {}), "decision_scaffold": decision_scaffold_path.as_posix()}
+    next_work["writer_owned_outputs"] = [next_work_path.as_posix(), decision_scaffold_path.as_posix()]
+    updates = {goal_path: goal, next_work_path: next_work, decision_scaffold_path: decision_scaffold}
     existing_cursor = dict((yaml_updates or {}).get(resume_cursor_path) or _read_yaml_if_exists(repo_root / resume_cursor_path))
     cursor = {
         "version": existing_cursor.get("version", "active_goal_resume_cursor_v1"),
@@ -1257,6 +1271,7 @@ def _goal_updates_for_wave_close(
             f"lab/waves/{wave.get('wave_id')}/wave_closeout.yaml",
             f"lab/goals/{goal_id}/goal_manifest.yaml",
             next_work_path.as_posix(),
+            decision_scaffold_path.as_posix(),
             "docs/workspace/workspace_state.yaml",
         ],
         "latest_completed_work": {
@@ -1269,6 +1284,99 @@ def _goal_updates_for_wave_close(
     }
     updates[resume_cursor_path] = cursor
     return updates
+
+
+def _next_wave_or_review_decision_scaffold(
+    goal_id: str,
+    wave: dict[str, Any],
+    closeout: dict[str, Any],
+    decision_scaffold_path: Path,
+) -> dict[str, Any]:
+    wave_id = str(wave.get("wave_id") or "")
+    is_wave02 = "wave02" in wave_id
+    decision_id = "decision_wave02_closed_next_wave_or_review_v0" if is_wave02 else f"decision_{wave_id}_next_wave_or_review_v0"
+    disallowed = [
+        "threshold_only_or_model_only_or_feature_only_campaign",
+        "selected_baseline_or_runtime_authority_or_economics_pass_or_live_readiness_claim",
+    ]
+    if is_wave02:
+        disallowed = [
+            "wave02_execution_liquidity_candidate_repair_reopen",
+            "wave02_tradeability_candidate_repair_reopen",
+            "wave02_cost_risk_holding_candidate_repair_reopen",
+            *disallowed,
+        ]
+    else:
+        disallowed = ["source_wave_candidate_repair_reopen_without_new_surface_or_reopen_contract", *disallowed]
+
+    source_wave_closeout = f"lab/waves/{wave_id}/wave_closeout.yaml"
+    payload = {
+        "version": "next_wave_or_review_decision_scaffold_v1",
+        "goal_id": goal_id,
+        "decision_id": decision_id,
+        "status": "planning_scaffold_user_selection_required",
+        "active_work_item_id": closeout["next_action"],
+        "source_wave_id": wave_id,
+        "source_wave_closeout": source_wave_closeout,
+        "decision_scope": "choose_next_wave_or_user_directed_review_after_wave_boundary",
+        "recommended_option_id": "open_new_wave_multi_axis_surface",
+        "decision_options": [
+            {
+                "option_id": "open_new_wave_multi_axis_surface",
+                "decision_effect": "user_approved_wave_open_spec_required_before_mutation",
+                "primary_family_after_approval": "experiment_design",
+                "primary_skill_after_approval": "spacesonar-experiment-design",
+                "allowed_claim_effect": "planning_scaffold_only_until_campaign_lifecycle_spec_is_written_and_opened",
+                "rationale": "Closed wave has no L5 candidate, so the next research movement should rotate to a fresh multi-axis surface instead of extending a candidate-local repair track.",
+                "required_before_open": [
+                    "declare new wave_id, campaign_id, idea_id, hypothesis_id, surface_id, and sweep_id",
+                    "declare target_or_label, feature_or_input, model_or_training, decision, horizon_or_holding, and evaluation_or_runtime axes",
+                    "bind split_set_v0 with locked final OOS excluded",
+                    "plan ONNX, EA, MT5 L4 follow-through for model-bearing proxy runs",
+                    "carry no selected baseline, runtime authority, economics pass, live readiness, or Goal Achieve claim",
+                ],
+            },
+            {
+                "option_id": "user_directed_boundary_review",
+                "decision_effect": "read_only_or_governance_review_before_any_new_wave",
+                "primary_family_after_approval": "workspace_state_sync",
+                "primary_skill_after_approval": "spacesonar-workspace-state-sync",
+                "allowed_claim_effect": "review_scaffold_only_no_research_or_runtime_claim",
+                "rationale": "User may request a scoped review of wave closeout, active records, or policy/writer guard state before authorizing the next wave.",
+                "required_before_review": [
+                    "name review scope and source-of-truth files",
+                    "keep registry rows as indexes, not proof",
+                    "avoid pytest, full regression, evidence graph, broad hash resync, and global registry regeneration unless a recorded escalation gate allows it",
+                ],
+            },
+        ],
+        "disallowed_directions": disallowed,
+        "selection_gate": {
+            "required_actor": "user",
+            "accepted_inputs": [
+                "approve_open_new_wave_multi_axis_surface",
+                "request_user_directed_boundary_review",
+                "provide_alternate_new_surface_direction",
+            ],
+            "effect_before_selection": "no_wave_or_campaign_opened",
+        },
+        "claim_boundary": closeout["claim_boundary"],
+    }
+    return _apply_writer_contract_defaults(
+        payload,
+        primary_family="workspace_state_sync",
+        primary_skill="spacesonar-workspace-state-sync",
+        source_of_truth_paths=[
+            source_wave_closeout,
+            f"lab/waves/{wave_id}/wave_allocation.yaml",
+            "docs/workspace/lab_profile.yaml",
+            "docs/agent_control/work_family_registry.yaml",
+        ],
+        writer_owned_outputs=[decision_scaffold_path.as_posix()],
+        claim_boundary=str(closeout["claim_boundary"]),
+        next_action_or_reopen_condition="user_selects_next_wave_or_review_direction",
+        forbidden_claims=DEFAULT_FORBIDDEN_CLAIMS,
+    )
 
 
 def _wave_close_active_ids(existing: dict[str, Any], wave_id: str) -> dict[str, Any]:

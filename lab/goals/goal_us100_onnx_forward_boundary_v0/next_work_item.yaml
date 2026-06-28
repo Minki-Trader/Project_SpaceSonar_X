@@ -8,22 +8,26 @@ targets:
 - lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
 acceptance_criteria:
 - user selects next wave or review direction
+- selection uses lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
 claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
 policy_binding:
   revision: policy_contract_v2
   guards:
   - GUARD_003_CLAIM_BOUNDARY
-outputs: []
+outputs:
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
 next_action: open_next_wave_or_user_directed_review
 path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
 provenance:
   source: wave_close_lifecycle
+  decision_scaffold: lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
 writer_contract_version: writer_scope_operating_contract_v2
 source_of_truth_paths:
 - lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
 - lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
 writer_owned_outputs:
 - lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
 validation_depth: writer_scope_smoke
 non_pytest_smokes:
 - write_time_writer_contract_guard

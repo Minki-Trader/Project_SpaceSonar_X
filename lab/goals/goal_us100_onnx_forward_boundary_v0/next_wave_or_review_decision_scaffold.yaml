@@ -1,0 +1,115 @@
+version: next_wave_or_review_decision_scaffold_v1
+goal_id: goal_us100_onnx_forward_boundary_v0
+decision_id: decision_wave02_closed_next_wave_or_review_v0
+status: planning_scaffold_user_selection_required
+active_work_item_id: open_next_wave_or_user_directed_review
+source_wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+source_wave_closeout: lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
+decision_scope: choose_next_wave_or_user_directed_review_after_wave_boundary
+recommended_option_id: open_new_wave_multi_axis_surface
+decision_options:
+- option_id: open_new_wave_multi_axis_surface
+  decision_effect: user_approved_wave_open_spec_required_before_mutation
+  primary_family_after_approval: experiment_design
+  primary_skill_after_approval: spacesonar-experiment-design
+  allowed_claim_effect: planning_scaffold_only_until_campaign_lifecycle_spec_is_written_and_opened
+  rationale: Closed wave has no L5 candidate, so the next research movement should
+    rotate to a fresh multi-axis surface instead of extending a candidate-local repair
+    track.
+  required_before_open:
+  - declare new wave_id, campaign_id, idea_id, hypothesis_id, surface_id, and sweep_id
+  - declare target_or_label, feature_or_input, model_or_training, decision, horizon_or_holding,
+    and evaluation_or_runtime axes
+  - bind split_set_v0 with locked final OOS excluded
+  - plan ONNX, EA, MT5 L4 follow-through for model-bearing proxy runs
+  - carry no selected baseline, runtime authority, economics pass, live readiness,
+    or Goal Achieve claim
+- option_id: user_directed_boundary_review
+  decision_effect: read_only_or_governance_review_before_any_new_wave
+  primary_family_after_approval: workspace_state_sync
+  primary_skill_after_approval: spacesonar-workspace-state-sync
+  allowed_claim_effect: review_scaffold_only_no_research_or_runtime_claim
+  rationale: User may request a scoped review of wave closeout, active records, or
+    policy/writer guard state before authorizing the next wave.
+  required_before_review:
+  - name review scope and source-of-truth files
+  - keep registry rows as indexes, not proof
+  - avoid pytest, full regression, evidence graph, broad hash resync, and global registry
+    regeneration unless a recorded escalation gate allows it
+disallowed_directions:
+- wave02_execution_liquidity_candidate_repair_reopen
+- wave02_tradeability_candidate_repair_reopen
+- wave02_cost_risk_holding_candidate_repair_reopen
+- threshold_only_or_model_only_or_feature_only_campaign
+- selected_baseline_or_runtime_authority_or_economics_pass_or_live_readiness_claim
+selection_gate:
+  required_actor: user
+  accepted_inputs:
+  - approve_open_new_wave_multi_axis_surface
+  - request_user_directed_boundary_review
+  - provide_alternate_new_surface_direction
+  effect_before_selection: no_wave_or_campaign_opened
+claim_boundary: wave02_closed_research_boundary_no_l5_candidate_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+writer_contract_version: writer_scope_operating_contract_v2
+primary_family: workspace_state_sync
+primary_skill: spacesonar-workspace-state-sync
+source_of_truth_paths:
+- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_closeout.yaml
+- lab/waves/wave_us100_wave02_tradeability_decision_surface_v0/wave_allocation.yaml
+- docs/workspace/lab_profile.yaml
+- docs/agent_control/work_family_registry.yaml
+writer_owned_outputs:
+- lab/goals/goal_us100_onnx_forward_boundary_v0/next_wave_or_review_decision_scaffold.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- write_time_writer_contract_guard
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_write_time_guarded_no_broad_validation
+writer_preflight_gate:
+  status: passed_before_mutation
+  checked_before_mutation: true
+  fail_closed_when_missing: true
+  required_fields_named:
+  - source_of_truth_paths
+  - writer_owned_outputs
+  - primary_family
+  - primary_skill
+  - validation_attempt_budget
+  - claim_boundary
+  - forbidden_claims
+  - next_action_or_reopen_condition
+validation_attempt_budget:
+  max_writer_scope_attempts: 2
+  allowed_attempts:
+  - initial_writer_scope_smoke_after_write
+  - one_repair_then_same_scope_resmoke
+  third_attempt_effect: stop_and_record_blocker_or_escalation_gate
+  broad_validation_resets_budget: false
+  repeated_same_failure_effect: move_invariant_into_writer_parser_adapter_manifest_or_scoped_lint_before_any_repeat
+  observed_writer_scope_attempts: 0
+writer_scope_self_check:
+  status: passed
+  writer_contract_version: writer_scope_operating_contract_v2
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - write_time_writer_contract_guard
+  failures: []
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+unresolved_blockers_or_none: []
+next_action_or_reopen_condition: user_selects_next_wave_or_review_direction
