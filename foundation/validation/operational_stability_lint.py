@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 from typing import Any
 
@@ -95,9 +96,16 @@ SKILL_PHRASES = {
 
 MOJIBAKE_MARKERS = [
     "\ufffd",
-    "?쇱",
-    "?뱀",
-    "?꾨",
+]
+
+MOJIBAKE_PATTERN = re.compile(r"\?[^\x00-\x7f]")
+
+MOJIBAKE_SCAN_GLOBS = [
+    "AGENTS.md",
+    "docs/agent_control/*.yaml",
+    ".agents/skills/*/SKILL.md",
+    "src/spacesonar/control_plane/routing.py",
+    "foundation/validation/*.py",
 ]
 
 
@@ -185,6 +193,24 @@ def evaluate_claim_vocabulary(errors: list[str], repo_root: Path) -> None:
     ]:
         if item not in substitutions:
             errors.append(f"{rel_path}: forbidden_substitutions missing {item}")
+
+
+def evaluate_mojibake_control_surfaces(errors: list[str], repo_root: Path) -> None:
+    checked: set[Path] = set()
+    for pattern in MOJIBAKE_SCAN_GLOBS:
+        paths = [repo_root / pattern] if "*" not in pattern else list(repo_root.glob(pattern))
+        for path in sorted(paths):
+            if path in checked or not path.exists() or not path.is_file():
+                continue
+            checked.add(path)
+            rel_path = path.relative_to(repo_root).as_posix()
+            text = read_text(path)
+            for marker in MOJIBAKE_MARKERS:
+                if marker in text:
+                    errors.append(f"{rel_path}: mojibake marker found {marker!r}")
+            match = MOJIBAKE_PATTERN.search(text)
+            if match:
+                errors.append(f"{rel_path}: mojibake-like token found {match.group(0)!r}")
 
 
 def evaluate_kernel(errors: list[str], repo_root: Path) -> None:
@@ -313,9 +339,31 @@ def evaluate_ci(errors: list[str], repo_root: Path) -> None:
     full_regression = repo_root / ".github/workflows/full-regression.yml"
     if full_regression.exists():
         regression_text = read_text(full_regression)
-        for phrase in ["workflow_dispatch", "acknowledge_not_default", "uv run pytest -q"]:
+        for phrase in [
+            "workflow_dispatch",
+            "acknowledge_not_default",
+            "allowed_reason",
+            "owner_surface",
+            "source_of_truth_paths",
+            "why_writer_scope_smoke_is_insufficient",
+            "expected_claim_effect",
+            "smaller_checks_already_attempted_or_not_applicable_reason",
+            "claim_boundary",
+            "uv run pytest -q",
+        ]:
             if phrase not in regression_text:
                 errors.append(f".github/workflows/full-regression.yml: missing {phrase}")
+
+    mt5_manual = repo_root / ".github/workflows/mt5-runtime-manual.yml"
+    if mt5_manual.exists():
+        mt5_text = read_text(mt5_manual)
+        for forbidden in [
+            "active_record_validator.py --repo-root .",
+            "control_plane_validator.py --repo-root .",
+            "pytest -q",
+        ]:
+            if forbidden in mt5_text:
+                errors.append(f".github/workflows/mt5-runtime-manual.yml: forbidden routine broad command {forbidden}")
 
 
 def evaluate(repo_root: Path) -> list[str]:
@@ -356,6 +404,7 @@ def evaluate(repo_root: Path) -> list[str]:
         require_text(errors, repo_root, rel_path, phrases)
 
     evaluate_project_skills(errors, repo_root)
+    evaluate_mojibake_control_surfaces(errors, repo_root)
     evaluate_claim_vocabulary(errors, repo_root)
     evaluate_kernel(errors, repo_root)
     evaluate_writer_contract(errors, repo_root)

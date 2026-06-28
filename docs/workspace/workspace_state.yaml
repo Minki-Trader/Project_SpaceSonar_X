@@ -1,5 +1,5 @@
 version: workspace_state_projection_v2
-updated_utc: '2026-06-28T01:43:33Z'
+updated_utc: '2026-06-28T03:49:20Z'
 project:
   name: Project SpaceSonar X
   instrument: FPMarkets US100
@@ -15,21 +15,23 @@ active_wave:
   closeout: null
 active_campaign:
   campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
-  status: wave02_execution_liquidity_l4_attempts_prepared_terminal_execution_next
+  status: wave02_execution_liquidity_campaign_closed_negative_l5_evidence_no_l5_candidate
   manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
+  closeout: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
 active_work_item:
-  work_item_id: work_wave02_execution_liquidity_l4_runtime_execution_v0
+  work_item_id: work_wave02_next_campaign_or_wave_boundary_decision_v0
   path: lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml
-current_claim_boundary: wave02_execution_liquidity_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
-next_action: execute_prepared_wave02_execution_liquidity_l4_strategy_tester_attempts
+current_claim_boundary: wave02_next_campaign_or_wave_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+next_action: decide whether Wave02 opens another campaign or closes the wave; do not
+  repair ELQ replay as a candidate
 unresolved_blockers:
-- L4_split_runtime_probe_terminal_execution_pending
+- Wave02_next_campaign_or_wave_boundary_decision_pending
 source_of_truth_pointers:
   policy_contract: docs/agent_control/policy_contract.yaml
   runtime_contract: foundation/config/mt5_runtime_probe_contract.yaml
   routing_registry: docs/agent_control/work_family_registry.yaml
 summary_counts:
-  candidate_count: 0
+  candidate_count: 4
   l5_candidate_count: 0
   wave02_l4_pair_judgment:
     cell_pair_count: 8
@@ -503,6 +505,240 @@ summary_counts:
     prepared_attempt_count: 12
     candidate_count: 0
     l5_candidate_count: 0
+  wave02_execution_liquidity_l4_runtime_execution:
+    prepared_attempt_count: 12
+    selected_attempt_count: 9
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    telemetry_observed_count: 12
+    telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
+    candidate_count: 0
+    l5_candidate_count: 0
+  wave02_execution_liquidity_l4_pair_judgment:
+    cell_pair_count: 6
+    runtime_probe_pair_complete_count: 6
+    both_period_roles_observed_count: 6
+    nonempty_telemetry_pair_count: 6
+    tester_report_pair_observed_count: 6
+    decision_execution_pending_pair_count: 6
+    l5_routing_review_required_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      preserved_clue: 6
+    result_judgment_counts:
+      runtime_probe: 6
+    l5_status_counts:
+      l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+    comparison_class_counts:
+      proxy_preserved_clue_runtime_score_observed_decision_execution_pending: 6
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 9
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      telemetry_observed_count: 12
+      telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
+  wave02_execution_liquidity_l5_routing_decision:
+    evaluated_pair_count: 6
+    adapter_preparation_cell_count: 6
+    candidate_manifest_opened_count: 0
+    candidate_count: 0
+    l5_candidate_count: 0
+    routing_decision_counts:
+      prepare_decision_execution_adapter: 6
+    source_l5_status_counts:
+      l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+    decision_family_counts:
+      high_spread_abstain_h8: 1
+      low_liquidity_timeout_gate: 1
+      open_failed_prevention_gate: 1
+      session_liquidity_abstain_h6: 1
+      session_transition_close_gate: 1
+      vol_liquidity_abstain_h12: 1
+  wave02_execution_liquidity_decision_replay_adapter_preparation:
+    routing_cell_count: 6
+    direct_trade_adapter_eligible_cell_count: 6
+    not_direct_trade_adapter_eligible_cell_count: 0
+    prepared_attempt_count: 12
+    prepared_cell_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    adapter_input_total_rows: 593010
+    adapter_input_tradeable_rows: 112459
+    adapter_input_flat_rows: 480551
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    source_decision_family_counts:
+      high_spread_abstain_h8: 2
+      low_liquidity_timeout_gate: 2
+      open_failed_prevention_gate: 2
+      session_liquidity_abstain_h6: 2
+      session_transition_close_gate: 2
+      vol_liquidity_abstain_h12: 2
+    adapter_decision_family_counts:
+      abstain_capable_direction_agnostic_tradeability: 12
+    direction_policy_counts:
+      momentum_ret_1: 12
+    hold_bars_source_counts:
+      label_schema.horizon_bars: 12
+    eligibility_reason_counts:
+      eligible_elq_tradeability_score_threshold_projection_momentum_ret_1_adapter: 6
+  wave02_execution_liquidity_decision_replay_runtime_execution:
+    prepared_attempt_count: 12
+    selected_attempt_count: 10
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    source_score_telemetry_observed_count: 12
+    execution_telemetry_observed_count: 12
+    execution_telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    tester_log_observed_count: 12
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    open_action_count: 64703
+    close_action_count: 17849
+    open_failed_count: 349
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    direction_policy_counts:
+      momentum_ret_1: 12
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
+    candidate_count: 0
+    l5_candidate_count: 0
+  wave02_execution_liquidity_decision_replay_pair_judgment:
+    cell_pair_count: 6
+    runtime_probe_pair_complete_count: 6
+    both_period_roles_observed_count: 6
+    nonempty_execution_pair_count: 6
+    tester_report_pair_observed_count: 6
+    decision_action_pair_count: 6
+    l5_routing_review_required_count: 6
+    l5_routing_review_repair_first_count: 0
+    candidate_count: 0
+    l5_candidate_count: 0
+    source_proxy_judgment_counts:
+      preserved_clue: 6
+    result_judgment_counts:
+      runtime_probe: 6
+    l5_status_counts:
+      l5_routing_review_required_no_candidate_claim: 4
+      l5_routing_review_required_with_open_failed_note_no_candidate_claim: 2
+    decision_replay_comparison_class_counts:
+      decision_replay_actions_observed: 6
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 10
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      source_score_telemetry_observed_count: 12
+      execution_telemetry_observed_count: 12
+      execution_telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      tester_log_observed_count: 12
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      open_action_count: 64703
+      close_action_count: 17849
+      open_failed_count: 349
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      direction_policy_counts:
+        momentum_ret_1: 12
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
+      candidate_count: 0
+      l5_candidate_count: 0
+  wave02_execution_liquidity_decision_replay_l5_routing_decision:
+    evaluated_pair_count: 6
+    candidate_manifest_opened_count: 4
+    candidate_count: 4
+    l5_candidate_count: 0
+    held_for_open_failed_caveat_count: 2
+    repair_first_count: 0
+    routing_decision_counts:
+      hold_for_open_failed_caveat_review: 2
+      open_l5_candidate_manifest: 4
+    source_l5_status_counts:
+      l5_routing_review_required_no_candidate_claim: 4
+      l5_routing_review_required_with_open_failed_note_no_candidate_claim: 2
+  wave02_execution_liquidity_l5_candidate_runtime_evidence:
+    candidate_count: 4
+    candidate_runtime_evidence_count: 4
+    l5_candidate_count: 0
+    period_evidence_row_count: 8
+    negative_candidate_count: 4
+    positive_runtime_observation_count: 0
+    period_judgment_counts:
+      negative_runtime_evidence: 8
+    candidate_result_counts:
+      negative_runtime_evidence_no_l5_candidate: 4
+  wave02_execution_liquidity_campaign_closeout:
+    l4_score_pair_count: 6
+    decision_replay_pair_count: 6
+    candidate_count: 4
+    candidate_runtime_evidence_count: 4
+    negative_candidate_count: 4
+    positive_runtime_observation_count: 0
+    l5_candidate_count: 0
+    held_for_open_failed_caveat_count: 2
+    repair_first_count: 0
 wave02_cost_risk_holding_l4_materialization:
   campaign_id: campaign_us100_wave02_cost_risk_holding_surface_v0
   status: wave02_cost_risk_holding_campaign_closed_held_open_failed_caveat_no_candidate
@@ -644,11 +880,208 @@ active_record_authority:
     alone
 wave02_execution_liquidity_l4_materialization:
   campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
-  status: wave02_execution_liquidity_l4_attempts_prepared_terminal_execution_next
-  claim_boundary: wave02_execution_liquidity_l4_attempts_prepared_terminal_execution_pending_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  status: wave02_execution_liquidity_campaign_boundary_decision_pending
+  claim_boundary: wave02_execution_liquidity_campaign_boundary_decision_pending_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
   onnx_materialization_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/onnx_materialization_summary.yaml
   attempt_preparation_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_attempt_preparation_summary.yaml
   prepared_attempt_count: 12
-  candidate_count: 0
+  candidate_count: 4
   l5_candidate_count: 0
   next_work_item: work_wave02_execution_liquidity_l4_runtime_execution_v0
+  l4_runtime_execution_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+  l4_runtime_execution_status: l4_terminal_execution_attempted_for_all_prepared_attempts
+  l4_runtime_execution_counts:
+    prepared_attempt_count: 12
+    selected_attempt_count: 9
+    indexed_execution_count: 12
+    executed_attempt_count: 12
+    completed_manifest_count: 12
+    touched_manifest_count: 12
+    telemetry_observed_count: 12
+    telemetry_missing_count: 0
+    tester_report_observed_count: 12
+    tester_report_missing_count: 0
+    terminal_execution_count: 12
+    telemetry_observation_count: 12
+    tester_report_observation_count: 12
+    portable_contract_count: 12
+    runtime_probe_complete_count: 12
+    runtime_probe_incomplete_count: 0
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    status_counts:
+      runtime_probe_completed: 12
+    result_judgment_counts:
+      runtime_probe: 12
+  runtime_probe_complete: true
+  l4_pair_judgment_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  l4_pair_judgment_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  l4_pair_judgment_status: wave02_execution_liquidity_l4_pair_judgment_completed_l5_routing_decision_pending
+  l4_pair_judgment_counts:
+    cell_pair_count: 6
+    runtime_probe_pair_complete_count: 6
+    both_period_roles_observed_count: 6
+    nonempty_telemetry_pair_count: 6
+    tester_report_pair_observed_count: 6
+    decision_execution_pending_pair_count: 6
+    l5_routing_review_required_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    proxy_judgment_counts:
+      preserved_clue: 6
+    result_judgment_counts:
+      runtime_probe: 6
+    l5_status_counts:
+      l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+    comparison_class_counts:
+      proxy_preserved_clue_runtime_score_observed_decision_execution_pending: 6
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 9
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      telemetry_observed_count: 12
+      telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
+  l5_routing_decision_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  l5_routing_decision_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  l5_routing_decision_status: wave02_execution_liquidity_l5_candidate_manifest_opened_runtime_evidence_preparation_pending
+  l5_routing_decision_counts:
+    evaluated_pair_count: 6
+    candidate_manifest_opened_count: 4
+    candidate_count: 4
+    l5_candidate_count: 0
+    held_for_open_failed_caveat_count: 2
+    repair_first_count: 0
+    routing_decision_counts:
+      hold_for_open_failed_caveat_review: 2
+      open_l5_candidate_manifest: 4
+    source_l5_status_counts:
+      l5_routing_review_required_no_candidate_claim: 4
+      l5_routing_review_required_with_open_failed_note_no_candidate_claim: 2
+  decision_replay_adapter_preparation_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  decision_replay_adapter_preparation_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  decision_replay_adapter_eligibility_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  decision_replay_adapter_input_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_input_summary.yaml
+  decision_replay_adapter_preparation_status: wave02_execution_liquidity_decision_replay_adapter_attempts_prepared_terminal_execution_next
+  decision_replay_adapter_preparation_counts:
+    routing_cell_count: 6
+    direct_trade_adapter_eligible_cell_count: 6
+    not_direct_trade_adapter_eligible_cell_count: 0
+    prepared_attempt_count: 12
+    prepared_cell_count: 6
+    candidate_count: 0
+    l5_candidate_count: 0
+    adapter_input_total_rows: 593010
+    adapter_input_tradeable_rows: 112459
+    adapter_input_flat_rows: 480551
+    period_role_counts:
+      research_oos: 6
+      validation: 6
+    source_decision_family_counts:
+      high_spread_abstain_h8: 2
+      low_liquidity_timeout_gate: 2
+      open_failed_prevention_gate: 2
+      session_liquidity_abstain_h6: 2
+      session_transition_close_gate: 2
+      vol_liquidity_abstain_h12: 2
+    adapter_decision_family_counts:
+      abstain_capable_direction_agnostic_tradeability: 12
+    direction_policy_counts:
+      momentum_ret_1: 12
+    hold_bars_source_counts:
+      label_schema.horizon_bars: 12
+    eligibility_reason_counts:
+      eligible_elq_tradeability_score_threshold_projection_momentum_ret_1_adapter: 6
+  decision_replay_pair_judgment_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+  decision_replay_pair_judgment_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+  decision_replay_pair_judgment_status: wave02_execution_liquidity_decision_replay_pair_judgment_completed_l5_routing_decision_pending
+  decision_replay_pair_judgment_counts:
+    cell_pair_count: 6
+    runtime_probe_pair_complete_count: 6
+    both_period_roles_observed_count: 6
+    nonempty_execution_pair_count: 6
+    tester_report_pair_observed_count: 6
+    decision_action_pair_count: 6
+    l5_routing_review_required_count: 6
+    l5_routing_review_repair_first_count: 0
+    candidate_count: 0
+    l5_candidate_count: 0
+    source_proxy_judgment_counts:
+      preserved_clue: 6
+    result_judgment_counts:
+      runtime_probe: 6
+    l5_status_counts:
+      l5_routing_review_required_no_candidate_claim: 4
+      l5_routing_review_required_with_open_failed_note_no_candidate_claim: 2
+    decision_replay_comparison_class_counts:
+      decision_replay_actions_observed: 6
+    runtime_execution_counts:
+      prepared_attempt_count: 12
+      selected_attempt_count: 10
+      indexed_execution_count: 12
+      executed_attempt_count: 12
+      completed_manifest_count: 12
+      touched_manifest_count: 12
+      source_score_telemetry_observed_count: 12
+      execution_telemetry_observed_count: 12
+      execution_telemetry_missing_count: 0
+      tester_report_observed_count: 12
+      tester_report_missing_count: 0
+      tester_log_observed_count: 12
+      terminal_execution_count: 12
+      telemetry_observation_count: 12
+      tester_report_observation_count: 12
+      portable_contract_count: 12
+      runtime_probe_complete_count: 12
+      runtime_probe_incomplete_count: 0
+      open_action_count: 64703
+      close_action_count: 17849
+      open_failed_count: 349
+      period_role_counts:
+        research_oos: 6
+        validation: 6
+      direction_policy_counts:
+        momentum_ret_1: 12
+      status_counts:
+        runtime_probe_completed: 12
+      result_judgment_counts:
+        runtime_probe: 12
+      candidate_count: 0
+      l5_candidate_count: 0
+  candidate_ids:
+  - candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+  - candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0
+  - candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0
+  - candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0
+  l5_candidate_runtime_evidence_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  l5_candidate_runtime_evidence_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+  l5_candidate_runtime_evidence_status: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_no_l5_candidates_boundary_decision_pending
+  l5_candidate_runtime_evidence_counts:
+    candidate_count: 4
+    candidate_runtime_evidence_count: 4
+    l5_candidate_count: 0
+    period_evidence_row_count: 8
+    negative_candidate_count: 4
+    positive_runtime_observation_count: 0
+    period_judgment_counts:
+      negative_runtime_evidence: 8
+    candidate_result_counts:
+      negative_runtime_evidence_no_l5_candidate: 4

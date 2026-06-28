@@ -1,0 +1,158 @@
+version: work_closeout_v1
+writer_contract_version: writer_scope_operating_contract_v2
+work_item_id: work_wave02_execution_liquidity_decision_replay_strategy_tester_execution_v0
+parent_work_item_id: work_wave02_execution_liquidity_decision_replay_runtime_execution_v0
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T03:23:07Z'
+result_judgment: runtime_probe
+status: wave02_execution_liquidity_decision_replay_terminal_execution_attempted_for_all_prepared_attempts
+claim_boundary: wave02_execution_liquidity_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
+counts:
+  prepared_attempt_count: 12
+  selected_attempt_count: 10
+  indexed_execution_count: 12
+  executed_attempt_count: 12
+  completed_manifest_count: 12
+  touched_manifest_count: 12
+  source_score_telemetry_observed_count: 12
+  execution_telemetry_observed_count: 12
+  execution_telemetry_missing_count: 0
+  tester_report_observed_count: 12
+  tester_report_missing_count: 0
+  tester_log_observed_count: 12
+  terminal_execution_count: 12
+  telemetry_observation_count: 12
+  tester_report_observation_count: 12
+  portable_contract_count: 12
+  runtime_probe_complete_count: 12
+  runtime_probe_incomplete_count: 0
+  open_action_count: 64703
+  close_action_count: 17849
+  open_failed_count: 349
+  period_role_counts:
+    research_oos: 6
+    validation: 6
+  direction_policy_counts:
+    momentum_ret_1: 12
+  status_counts:
+    runtime_probe_completed: 12
+  result_judgment_counts:
+    runtime_probe: 12
+  candidate_count: 0
+  l5_candidate_count: 0
+required_gate_coverage:
+  passed:
+  - mt5_runtime_probe_contract_audit
+  - runtime_surface_contract
+  - terminal_execution_attempt_record
+  - execution_telemetry_summary
+  - result_judgment
+  - final_claim_guard
+  - writer_scope_self_check
+  missing:
+  - paired_Wave02_decision_replay_period_judgment_pending
+  not_applicable:
+  - runtime_authority
+  - economics_pass
+  - selected_baseline
+  - goal_achieve
+  - live_readiness
+try_first_disposition:
+  policy_applied: missing Wave02 execution/liquidity decision replay runtime entrypoint
+    was repaired before blocked/deferred/invalid disposition
+next_action: judge paired Wave02 execution/liquidity decision replay validation/research_oos
+  results before any L5 candidate claim
+forbidden_claims:
+- selected_baseline
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_decision_replay_strategy_tester_execution_v0_closeout.yaml
+- runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+- runtime/mt5_attempts/<attempt_id>/terminal_run_summary.yaml
+- runtime/mt5_attempts/<attempt_id>/execution_telemetry_summary.yaml
+- runtime/mt5_attempts/<attempt_id>/tester_log_summary.yaml
+- runtime/mt5_attempts/<attempt_id>/tester_report_receipt.yaml
+- runtime/mt5_attempts/<attempt_id>/tester_config.ini
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- runtime_writer_dry_run
+- runtime_writer_self_check
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- targeted_artifact_hash_check
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_runtime_execution_progress_no_protected_claim
+writer_scope_self_check:
+  status: passed
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v2
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - py_compile
+  - runtime_writer_dry_run
+  - runtime_writer_self_check
+  - active_pointer_smoke
+  - machine_yaml_identity_lint
+  - targeted_artifact_hash_check
+  skipped_broad_validations:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
+  - broad_hash_resync
+  - global_registry_regeneration
+  broad_validation_escalation_reason: none_runtime_execution_progress_no_protected_claim
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  writer_owned_outputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_execution_index.csv
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/runtime_compile_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_decision_replay_strategy_tester_execution_v0_closeout.yaml
+  - runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+  - runtime/mt5_attempts/<attempt_id>/terminal_run_summary.yaml
+  - runtime/mt5_attempts/<attempt_id>/execution_telemetry_summary.yaml
+  - runtime/mt5_attempts/<attempt_id>/tester_log_summary.yaml
+  - runtime/mt5_attempts/<attempt_id>/tester_report_receipt.yaml
+  - runtime/mt5_attempts/<attempt_id>/tester_config.ini
+  claim_boundary: wave02_execution_liquidity_decision_replay_runtime_execution_progress_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  candidate_count: 0
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: judge paired Wave02 execution/liquidity decision
+    replay validation/research_oos results before any L5 candidate claim
+unresolved_blockers_or_none:
+- Wave02_execution_liquidity_decision_replay_pair_judgment_pending
+next_action_or_reopen_condition: judge paired Wave02 execution/liquidity decision
+  replay validation/research_oos results before any L5 candidate claim

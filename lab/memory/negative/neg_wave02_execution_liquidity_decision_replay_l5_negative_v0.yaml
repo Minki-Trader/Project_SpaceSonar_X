@@ -1,0 +1,76 @@
+version: negative_memory_v1
+memory_id: neg_wave02_execution_liquidity_decision_replay_l5_negative_v0
+created_at_utc: '2026-06-28T03:49:20Z'
+hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+run_id: onnxlab_wave02_elq_cell_002_execution_liquidity_v0;onnxlab_wave02_elq_cell_003_execution_liquidity_v0;onnxlab_wave02_elq_cell_005_execution_liquidity_v0;onnxlab_wave02_elq_cell_006_execution_liquidity_v0
+observed_cells:
+- wave02_elq_cell_002
+- wave02_elq_cell_003
+- wave02_elq_cell_005
+- wave02_elq_cell_006
+held_open_failed_cells:
+- wave02_elq_cell_001
+- wave02_elq_cell_004
+failed_boundary: wave02_execution_liquidity_decision_replay_candidate_specific_validation_research_oos_reports
+why_failed: Four zero-open-failed ELQ L5 runtime-evidence target candidates had negative
+  net profit, profit factor below 1.0, and drawdown above the 10 percent reference
+  in validation and research_oos; two additional cells were held for open_failed caveat
+  review.
+salvage_value: Confirms the ELQ ONNX-to-MT5 decision replay, tester report receipt,
+  KPI parser, candidate manifest, and writer-scoped evidence path can run end-to-end
+  without broad pytest/full-regression.
+reopen_condition: Reopen ELQ only with a genuinely new liquidity/execution decision
+  policy, an explicit open_failed execution-semantics repair, or a new campaign surface;
+  do not relabel the same momentum_ret_1 replay as a candidate.
+do_not_repeat_note: Do not promote Wave02 ELQ decision replay targets to selected
+  baseline, L5 candidate, runtime authority, economics pass, live readiness, or Goal
+  Achieve without new candidate-specific positive evidence.
+evidence_path: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+- lab/candidates/candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+- lab/candidates/candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+- lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+- lab/candidates/candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+negative_candidate_ids:
+- candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0
+storage_contract:
+  source_of_truth: lab/memory/negative/neg_wave02_execution_liquidity_decision_replay_l5_negative_v0.yaml
+  registry_rows:
+  - docs/registers/negative_memory_registry.csv
+claim_boundary: negative_memory_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness
+registry_projection:
+  status: wave02_execution_liquidity_candidate_specific_reports_negative_no_l5_candidate
+  hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+  surface_id: surface_us100_wave02_execution_liquidity_v0
+  sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+  negative_candidate_ids:
+  - candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+  - candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0
+  - candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0
+  - candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0
+  held_open_failed_cells:
+  - wave02_elq_cell_001
+  - wave02_elq_cell_004
+  evidence_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+  failed_boundary: wave02_execution_liquidity_decision_replay_candidate_specific_validation_research_oos_reports
+  why_failed: Candidate-specific tester reports were negative across validation and
+    research_oos for all four clean zero-open-failed ELQ decision replay targets.
+  salvage_value: Runtime path and parser path are usable; the tested ELQ decision
+    policy is not carried forward.
+  reopen_condition: New liquidity/execution decision policy or explicit execution-semantics
+    repair before any renewed L5 target.
+  do_not_repeat:
+  - Do not carry the same ELQ momentum_ret_1 decision replay forward as candidate
+    repair.
+  - Do not use this campaign as selected baseline, runtime authority, economics pass,
+    live readiness, or Goal Achieve.
+  next_action: work_wave02_next_campaign_or_wave_boundary_decision_v0

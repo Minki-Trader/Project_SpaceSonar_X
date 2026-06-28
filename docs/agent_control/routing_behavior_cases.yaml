@@ -172,11 +172,11 @@ cases:
     expected_guard_set: protected_runtime
     minimum_confidence: 0.95
 
-  - id: korean_protected_claim_alias
-    request_text: "라이브 준비 완료를 승인해줘."
+  - id: requested_live_readiness_protected
+    request_text: "Confirm live readiness as complete."
     touched_paths: []
     execution_layers: []
-    requested_claims: []
+    requested_claims: ["live_readiness"]
     protected_claim_assertion: true
     expected_primary_family: runtime_probe
     expected_primary_skill: spacesonar-runtime-evidence

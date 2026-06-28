@@ -1,0 +1,156 @@
+version: candidate_summary_v1
+writer_contract_version: writer_scope_operating_contract_v2
+candidate_id: candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0
+candidate_type: l5_runtime_evidence_target
+status: negative_runtime_evidence_no_l5_candidate
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+  campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+  idea_id: idea_us100_wave02_execution_liquidity_surface_v0
+  hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+  surface_id: surface_us100_wave02_execution_liquidity_v0
+  sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+  run_id: onnxlab_wave02_elq_cell_005_execution_liquidity_v0
+  artifact_id: artifact_candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0_summary_v0
+  bundle_id: bundle_wave02_elq_cell_005_l4_onnx_export_v0
+  candidate_id: candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0
+wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+idea_id: idea_us100_wave02_execution_liquidity_surface_v0
+hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+surface_id: surface_us100_wave02_execution_liquidity_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+run_id: onnxlab_wave02_elq_cell_005_execution_liquidity_v0
+bundle_id: bundle_wave02_elq_cell_005_l4_onnx_export_v0
+source_cell_id: wave02_elq_cell_005
+direction_policy: momentum_ret_1
+source_of_truth: lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/candidate_summary.yaml
+created_at_utc: '2026-06-28T03:37:21Z'
+claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+source_of_truth_paths:
+- lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/candidate_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+writer_owned_outputs:
+- lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/candidate_summary.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- l5_routing_writer_smoke
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- targeted_artifact_hash_check
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_l5_routing_progress_no_protected_claim
+allocation_reason: zero_open_failed_paired_decision_replay_action_telemetry
+candidate_scope:
+  meaning: runtime evidence target only
+  selected_baseline: false
+  runtime_authority: false
+  economics_pass: false
+  live_readiness: false
+  goal_achieve: false
+source_evidence:
+  pair_judgment_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/pair_judgment_summary.yaml
+  pair_judgment_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/pair_judgment_index.csv
+  routing_decision_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  validation_attempt_id: attempt_wave02_elq_cell_005_l4_decision_replay_validation_momentum_ret_1_v0
+  research_oos_attempt_id: attempt_wave02_elq_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0
+  runtime_probe_pair_complete: 'true'
+  tester_report_pair_observed: 'true'
+  decision_replay_comparison_class: decision_replay_actions_observed
+runtime_observation:
+  validation_open_action_count: 4739
+  research_oos_open_action_count: 4120
+  validation_open_rate: 0.08849012211972962
+  research_oos_open_rate: 0.09098738985446435
+  abs_open_rate_delta: 0.002497267734734729
+  max_open_failed_rate: 0.0
+required_follow_through:
+  next_level: L5_candidate_runtime_evidence
+  required_before_stronger_claim:
+  - candidate_specific_L5_attempt_manifest
+  - candidate_specific_runtime_evidence_summary
+  - tester_report_receipt_hashes
+  - economics_parser_or_explicit_no_economics_disposition
+  - final_claim_guard
+missing_evidence:
+- no_selected_baseline_or_runtime_authority_from_candidate_specific_report_parse
+- locked_final_oos_b_not_used
+- operational_validation_not_started
+next_action: 'decide Wave02 execution/liquidity campaign boundary: close, rotate,
+  or open bounded repair work'
+next_action_or_reopen_condition: prepare candidate-specific L5 runtime evidence for
+  opened Wave02 ELQ decision replay targets
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+forbidden_claims_respected: true
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T03:45:12Z'
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v2
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - py_compile
+  - l5_evidence_writer_smoke
+  - tester_report_kpi_parse_for_candidate_attempts
+  - active_pointer_smoke
+  - machine_yaml_identity_lint
+  - targeted_artifact_hash_check
+  skipped_broad_validations:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
+  - broad_hash_resync
+  - global_registry_regeneration
+  broad_validation_escalation_reason: none_candidate_runtime_evidence_writer_scope_only
+  source_of_truth_paths:
+  - lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/candidate_summary.yaml
+  - lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+  writer_owned_outputs:
+  - lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/candidate_summary.yaml
+  - lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+  candidate_registry: docs/registers/candidate_registry.csv
+  artifact_registry: docs/registers/artifact_registry.csv
+  claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  next_action_or_reopen_condition: 'decide Wave02 execution/liquidity campaign boundary:
+    close, rotate, or open bounded repair work'
+l5_runtime_evidence_summary: lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+runtime_evidence_result:
+  result_judgment: negative
+  l5_candidate: false
+  economics_pass: false
+  runtime_authority: false
+  selected_baseline: false
+  live_readiness: false
+  goal_achieve: false
+  judgment_reasons:
+  - drawdown_above_10pct_reference
+  - non_positive_total_net_profit
+  - profit_factor_below_1

@@ -20,4 +20,5 @@ The default stability contract is `docs/agent_control/writer_scope_operating_con
 Validation tools confirm writer-owned records; they do not replace the writer's
 manifest, receipt, summary, hash, availability, claim-boundary, and next-action
 fields. Broad validation commands require the operational command-intent gate
-before execution.
+before execution. The manual `full-regression` workflow must collect the same
+gate fields before pytest can run.

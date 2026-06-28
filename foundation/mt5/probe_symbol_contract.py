@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -26,6 +27,13 @@ TRADE_MODE = {
     getattr(mt5, "SYMBOL_TRADE_MODE_CLOSEONLY", -1): "close_only",
     getattr(mt5, "SYMBOL_TRADE_MODE_FULL", -1): "full",
 }
+
+
+def fs_path(path: Path) -> str:
+    resolved = str(path.resolve())
+    if os.name == "nt" and not resolved.startswith("\\\\?\\"):
+        return "\\\\?\\" + resolved
+    return resolved
 
 
 def parse_args() -> argparse.Namespace:
@@ -247,7 +255,9 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         suffix = "" if len(names) <= 80 else f" ... ({len(names)} total)"
         lines.append(f"- {term}: {shown}{suffix}")
     lines.append("")
-    path.write_text("\n".join(lines), encoding="utf-8")
+    os.makedirs(fs_path(path.parent), exist_ok=True)
+    with open(fs_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write("\n".join(lines))
 
 
 def main() -> int:
@@ -255,7 +265,7 @@ def main() -> int:
     timeframe = TIMEFRAME_MAP[args.timeframe]
     generated_at = datetime.now(tz=UTC)
     output_dir = Path(args.output_dir or f"lab/runs/symbol_contract_probe_{generated_at.strftime('%Y%m%dT%H%M%SZ')}")
-    output_dir.mkdir(parents=True, exist_ok=True)
+    os.makedirs(fs_path(output_dir), exist_ok=True)
 
     if not mt5.initialize():
         raise RuntimeError(f"Failed to initialize MetaTrader5: {mt5.last_error()}")
@@ -288,7 +298,8 @@ def main() -> int:
         }
         json_path = output_dir / "symbol_contract_probe.json"
         markdown_path = output_dir / "symbol_contract_probe.md"
-        json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+        with open(fs_path(json_path), "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
         write_markdown(markdown_path, payload)
         print(json.dumps({"status": "ok", "json_path": str(json_path), "markdown_path": str(markdown_path)}, indent=2))
         return 0

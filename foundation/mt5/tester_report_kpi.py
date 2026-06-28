@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import csv
 import html
+import os
 import re
 import sys
 from dataclasses import dataclass
@@ -17,6 +18,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from foundation.mt5.tester_report_receipt import decode_report_bytes, file_sha256  # noqa: E402
+from spacesonar.control_plane.store import filesystem_path  # noqa: E402
 
 
 @dataclass(frozen=True)
@@ -151,7 +153,8 @@ def metric_value(raw_value: str, metric: TesterReportMetric) -> str | None:
 
 def read_report_rows(path: Path) -> tuple[list[list[str]], str | None]:
     try:
-        raw = path.read_bytes()
+        with open(filesystem_path(path), "rb") as handle:
+            raw = handle.read()
     except OSError:
         return [], "report_read_failed"
     text = decode_report_bytes(raw)
@@ -174,7 +177,7 @@ def parse_tester_report_kpis(path: Path) -> dict[str, Any]:
             "version": "mt5_tester_report_kpi_parse_v1",
             "parse_status": "parser_failed",
             "source_report_path": str(path),
-            "source_report_sha256": file_sha256(path) if path.exists() else "",
+            "source_report_sha256": file_sha256(path) if os.path.exists(filesystem_path(path)) else "",
             "metrics": {},
             "missing_metrics": [metric.metric_id for metric in TESTER_REPORT_METRICS],
             "parser_diagnostic": (
@@ -220,14 +223,14 @@ def parse_tester_report_kpis(path: Path) -> dict[str, Any]:
 
 
 def write_yaml(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="\n") as handle:
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
         yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=False)
 
 
 def write_csv(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8") as handle:
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(
             handle,
             fieldnames=["metric_id", "metric_value", "value_type", "unit", "raw_value", "matched_label"],

@@ -7,6 +7,42 @@ on:
         description: "Why archive-level pytest evidence is needed"
         required: true
         type: string
+      allowed_reason:
+        description: "Operational gate reason"
+        required: true
+        type: choice
+        options:
+          - campaign_closeout
+          - wave_closeout
+          - source_of_truth_drift_detected_by_writer_scope_check
+          - shared_contract_or_validator_semantics_changed
+          - dependency_lock_or_workflow_changed
+          - protected_claim_surface_changed
+          - explicit_user_request_for_that_broad_command
+      owner_surface:
+        description: "Owner surface for the broad validation"
+        required: true
+        type: string
+      source_of_truth_paths:
+        description: "Comma-separated source-of-truth paths"
+        required: true
+        type: string
+      why_writer_scope_smoke_is_insufficient:
+        description: "Why scoped writer smoke cannot answer this"
+        required: true
+        type: string
+      expected_claim_effect:
+        description: "Expected claim effect, without protected overclaim"
+        required: true
+        type: string
+      smaller_checks_already_attempted_or_not_applicable_reason:
+        description: "Smaller checks attempted, or why not applicable"
+        required: true
+        type: string
+      claim_boundary:
+        description: "Claim boundary for this archive validation"
+        required: true
+        type: string
       acknowledge_not_default:
         description: "Confirm this is not routine run-loop validation"
         required: true
@@ -23,5 +59,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Validate archive command-intent gate
+        env:
+          ARCHIVE_REASON: ${{ inputs.archive_reason }}
+          ALLOWED_REASON: ${{ inputs.allowed_reason }}
+          OWNER_SURFACE: ${{ inputs.owner_surface }}
+          SOURCE_OF_TRUTH_PATHS: ${{ inputs.source_of_truth_paths }}
+          WHY_WRITER_SCOPE_SMOKE_IS_INSUFFICIENT: ${{ inputs.why_writer_scope_smoke_is_insufficient }}
+          EXPECTED_CLAIM_EFFECT: ${{ inputs.expected_claim_effect }}
+          SMALLER_CHECKS: ${{ inputs.smaller_checks_already_attempted_or_not_applicable_reason }}
+          CLAIM_BOUNDARY: ${{ inputs.claim_boundary }}
+        run: |
+          case "$ALLOWED_REASON" in
+            campaign_closeout|wave_closeout|source_of_truth_drift_detected_by_writer_scope_check|shared_contract_or_validator_semantics_changed|dependency_lock_or_workflow_changed|protected_claim_surface_changed|explicit_user_request_for_that_broad_command) ;;
+            *) echo "invalid allowed_reason" >&2; exit 1 ;;
+          esac
+          test -n "$ARCHIVE_REASON"
+          test -n "$OWNER_SURFACE"
+          test -n "$SOURCE_OF_TRUTH_PATHS"
+          test -n "$WHY_WRITER_SCOPE_SMOKE_IS_INSUFFICIENT"
+          test -n "$EXPECTED_CLAIM_EFFECT"
+          test -n "$SMALLER_CHECKS"
+          test -n "$CLAIM_BOUNDARY"
       - run: uv sync --locked --extra dev --extra onnxlab
       - run: uv run pytest -q

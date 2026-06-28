@@ -1,0 +1,337 @@
+version: wave02_execution_liquidity_l5_candidate_runtime_evidence_summary_v1
+summary_id: wave02_execution_liquidity_l5_candidate_runtime_evidence_summary_v0
+work_item_id: work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0
+parent_work_item_id: work_wave02_execution_liquidity_decision_replay_l5_routing_decision_v0
+next_work_item_id: work_wave02_execution_liquidity_campaign_boundary_decision_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+id_chain:
+  goal_id: goal_us100_onnx_forward_boundary_v0
+  wave_id: wave_us100_wave02_tradeability_decision_surface_v0
+  campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+  idea_id: idea_us100_wave02_execution_liquidity_surface_v0
+  hypothesis_id: hyp_us100_wave02_execution_liquidity_runtime_alignment_v0
+  surface_id: surface_us100_wave02_execution_liquidity_v0
+  sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+  run_id: null
+  artifact_id: artifact_wave02_execution_liquidity_l5_candidate_runtime_evidence_summary_v0
+  bundle_id: null
+  candidate_id: null
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+created_at_utc: '2026-06-28T03:44:59Z'
+ended_at_utc: '2026-06-28T03:45:11Z'
+status: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_no_l5_candidates_boundary_decision_pending
+claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+writer_contract_version: writer_scope_operating_contract_v2
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+support_skills:
+- spacesonar-result-judgment
+- spacesonar-evidence-provenance
+- spacesonar-claim-discipline
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- docs/registers/candidate_registry.csv
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- l5_evidence_writer_smoke
+- tester_report_kpi_parse_for_candidate_attempts
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- targeted_artifact_hash_check
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_candidate_runtime_evidence_writer_scope_only
+counts:
+  candidate_count: 4
+  candidate_runtime_evidence_count: 4
+  l5_candidate_count: 0
+  period_evidence_row_count: 8
+  negative_candidate_count: 4
+  positive_runtime_observation_count: 0
+  period_judgment_counts:
+    negative_runtime_evidence: 8
+  candidate_result_counts:
+    negative_runtime_evidence_no_l5_candidate: 4
+candidate_results:
+  candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0: negative_runtime_evidence_no_l5_candidate
+  candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0: negative_runtime_evidence_no_l5_candidate
+  candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0: negative_runtime_evidence_no_l5_candidate
+  candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0: negative_runtime_evidence_no_l5_candidate
+negative_candidate_ids:
+- candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0
+- candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0
+positive_runtime_observation_ids: []
+l5_candidate_ids: []
+judgment:
+  judgment_label: negative_runtime_evidence_no_l5_candidates
+  candidate_count: 4
+  l5_candidate_count: 0
+  economics_metrics_observed: true
+  economics_pass: false
+  runtime_authority: false
+  selected_baseline: false
+  live_readiness: false
+  goal_achieve: false
+  claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  missing_evidence:
+  - no_selected_baseline_or_runtime_authority_from_candidate_specific_report_parse
+  - locked_final_oos_b_not_used
+  - operational_validation_not_started
+  next_action: 'decide Wave02 execution/liquidity campaign boundary: close, rotate,
+    or open bounded repair work'
+provenance:
+  source_inputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  - docs/registers/candidate_registry.csv
+  producer: python foundation/pipelines/prepare_wave02_execution_liquidity_l5_candidate_runtime_evidence.py
+    --write-control-records
+  consumer: work_wave02_execution_liquidity_campaign_boundary_decision_v0
+  artifact_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  environment_summary:
+    python_executable: ${USERPROFILE}\AppData\Local\Programs\Python\Python313\python.exe
+    python_version: 3.13.9
+    platform: Windows-11-10.0.26200-SP0
+    git_sha: 59edfc4eff4b10e6320ace501e240fde3f8de9bd
+    branch: main
+    dirty_flag: true
+    changed_files:
+    - M .codex/config.toml
+    - ' M .github/workflows/full-regression.yml'
+    - ' M .github/workflows/mt5-runtime-manual.yml'
+    - ' M docs/agent_control/routing_behavior_cases.yaml'
+    - ' M docs/policies/branch_policy.md'
+    - ' M docs/registers/artifact_registry.csv'
+    - ' M docs/registers/candidate_registry.csv'
+    - ' M docs/registers/goal_registry.csv'
+    - ' M docs/workspace/workspace_state.yaml'
+    - ' M foundation/mt5/experts/SpaceSonar_ONNX_L4_ScoreProbe.mq5'
+    - ' M foundation/mt5/probe_symbol_contract.py'
+    - ' M foundation/mt5/tester_report_kpi.py'
+    - ' M foundation/mt5/trade_shape_reconstruction.py'
+    - ' M foundation/pipelines/run_mt5_fixed_fixture_probe.py'
+    - ' M foundation/pipelines/run_wave0_l4_decision_replay_attempts.py'
+    - ' M foundation/pipelines/run_wave0_l4_mt5_attempts.py'
+    - ' M foundation/validation/README.md'
+    - ' M foundation/validation/operational_stability_lint.py'
+    - ' M lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/goal_manifest.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/next_work_item.yaml'
+    - ' M lab/goals/goal_us100_onnx_forward_boundary_v0/resume_cursor.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_research_oos_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_research_oos_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_research_oos_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_research_oos_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_validation_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_validation_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_research_oos_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_research_oos_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_validation_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_validation_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_research_oos_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_research_oos_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_validation_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_validation_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_validation_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_validation_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_research_oos_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_research_oos_v0/tester_config.ini'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_validation_v0/attempt_manifest.yaml'
+    - ' M runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_validation_v0/tester_config.ini'
+    - ' M src/spacesonar/control_plane/agent_metrics.py'
+    - ' M src/spacesonar/control_plane/lifecycle.py'
+    - ' M src/spacesonar/control_plane/provenance.py'
+    - ' M src/spacesonar/control_plane/routing.py'
+    - ?? foundation/pipelines/aggregate_wave02_execution_liquidity_decision_replay_pair_judgments.py
+    - ?? foundation/pipelines/aggregate_wave02_execution_liquidity_l4_pair_judgments.py
+    - ?? foundation/pipelines/decide_wave02_execution_liquidity_decision_replay_l5_routing.py
+    - ?? foundation/pipelines/decide_wave02_execution_liquidity_l5_routing.py
+    - ?? foundation/pipelines/prepare_wave02_execution_liquidity_l4_decision_replay_attempts.py
+    - ?? foundation/pipelines/prepare_wave02_execution_liquidity_l5_candidate_runtime_evidence.py
+    - ?? foundation/pipelines/run_wave02_execution_liquidity_l4_decision_replay_attempts.py
+    - ?? foundation/pipelines/run_wave02_execution_liquidity_l4_mt5_attempts.py
+    - ?? lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/
+    - ?? lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+    - ?? lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+    - ?? lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_runtime_execution_compile_summary.yaml
+    - ?? lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_runtime_execution_index.csv
+    - ?? lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_runtime_execution_summary.yaml
+    - ?? lab/candidates/candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0/
+    - ?? lab/candidates/candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0/
+    - ?? lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/
+    - ?? lab/candidates/candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0/
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_decision_replay_judgment_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_decision_replay_l5_routing_decision_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_decision_replay_strategy_tester_execution_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l4_pair_judgment_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l4_strategy_tester_execution_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+    - ?? lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_routing_decision_v0_closeout.yaml
+    - ?? package.json
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_research_oos_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_research_oos_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_research_oos_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_research_oos_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_research_oos_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_research_oos_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_research_oos_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_research_oos_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_validation_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_validation_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_validation_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_validation_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_research_oos_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_research_oos_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_research_oos_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_research_oos_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_validation_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_validation_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_validation_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_validation_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_research_oos_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_research_oos_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_research_oos_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_research_oos_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_validation_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_validation_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_validation_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_validation_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_validation_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_validation_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_validation_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_validation_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_research_oos_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_research_oos_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_research_oos_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_research_oos_v0/tester_report_receipt.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_validation_v0/score_diagnostic_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_validation_v0/score_telemetry_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_validation_v0/terminal_run_summary.yaml
+    - ?? runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_validation_v0/tester_report_receipt.yaml
+  regeneration_commands:
+  - python foundation/pipelines/prepare_wave02_execution_liquidity_l5_candidate_runtime_evidence.py
+    --write-control-records
+  registry_links:
+  - docs/registers/artifact_registry.csv
+  - docs/registers/candidate_registry.csv
+  availability: present_hash_recorded_after_write
+  lineage_judgment: candidate_l5_runtime_evidence_written_from_candidate_manifest_attempt_ids_and_tester_report_kpi_parse
+  claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+artifact_outputs:
+  evidence_summary: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  evidence_index: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+  evidence_closeout: lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  candidate_evidence_summaries:
+  - lab/candidates/candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+  - lab/candidates/candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+  - lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+  - lab/candidates/candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+prevention_memory:
+- Candidate-specific tester report metrics can be observed without creating economics
+  pass.
+- Candidate runtime evidence is not a selected baseline, runtime authority, live readiness,
+  or Goal Achieve.
+- Operational validation remains unopened.
+unresolved_blockers:
+- Wave02_execution_liquidity_campaign_boundary_decision_pending
+reopen_conditions:
+- rerun candidate runtime evidence if candidate registry, tester report KPI parser,
+  or candidate attempt ids change
+- open further work only as campaign boundary decision, repair track, or new surface
+  rotation
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T03:45:12Z'
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v2
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - py_compile
+  - l5_evidence_writer_smoke
+  - tester_report_kpi_parse_for_candidate_attempts
+  - active_pointer_smoke
+  - machine_yaml_identity_lint
+  - targeted_artifact_hash_check
+  skipped_broad_validations:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
+  - broad_hash_resync
+  - global_registry_regeneration
+  broad_validation_escalation_reason: none_candidate_runtime_evidence_writer_scope_only
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  - docs/registers/candidate_registry.csv
+  writer_owned_outputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  candidate_count: 4
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: 'decide Wave02 execution/liquidity campaign boundary:
+    close, rotate, or open bounded repair work'

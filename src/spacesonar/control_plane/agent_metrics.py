@@ -1041,7 +1041,8 @@ def finalize_agent_work(
     tx.stage_yaml(v2_finalization_receipt_path(work_item_id), receipt)
     for ref in evidence:
         rel_path = Path(str(ref["path"]))
-        tx.stage_bytes(rel_path, (repo_root / rel_path).read_bytes())
+        with open(filesystem_path(repo_root / rel_path), "rb") as handle:
+            tx.stage_bytes(rel_path, handle.read())
     result = tx.commit(validate=lambda future_root: validate_agent_observation_windows(future_root))
     if result.status not in {"committed", "noop_already_applied"}:
         raise RuntimeError(f"agent work finalize failed: {result.status}: {list(result.errors)}")

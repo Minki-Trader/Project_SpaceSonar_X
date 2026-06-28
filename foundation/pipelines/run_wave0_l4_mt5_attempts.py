@@ -44,6 +44,7 @@ from foundation.mt5.tester_report_receipt import (
     tester_report_completed,
     write_receipt,
 )
+from spacesonar.control_plane.store import filesystem_path
 
 
 GOAL_ID = "goal_us100_onnx_forward_boundary_v0"
@@ -83,7 +84,7 @@ def utc_now() -> str:
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(filesystem_path(path), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
@@ -124,8 +125,8 @@ def ensure_tester_report_receipt_artifact_ref(
                 }
             )
     if not full.exists():
-        full.parent.mkdir(parents=True, exist_ok=True)
-        with full.open("w", encoding="utf-8") as handle:
+        os.makedirs(filesystem_path(full.parent), exist_ok=True)
+        with open(filesystem_path(full), "w", encoding="utf-8") as handle:
             yaml.dump(receipt, handle, Dumper=NoAliasDumper, sort_keys=False, allow_unicode=False)
     return artifact_ref(full, repo_root)
 
@@ -135,24 +136,24 @@ def is_tester_report_artifact(path: Path) -> bool:
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def write_yaml(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as handle:
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
         yaml.dump(payload, handle, Dumper=NoAliasDumper, sort_keys=False, allow_unicode=False)
 
 
 def read_csv_rows(path: Path) -> list[dict[str, str]]:
-    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
         return list(csv.DictReader(handle))
 
 
 def write_csv(path: Path, rows: list[dict[str, Any]], fieldnames: list[str]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8") as handle:
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
@@ -177,7 +178,7 @@ def common_relative_to_path(common_relative_path: str, *, root: Path | None = No
 
 
 def load_json(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
 
@@ -386,14 +387,18 @@ def ensure_ea_binary(
 
 
 def parse_tester_config_report_stem(path: Path) -> str | None:
-    for line in path.read_text(encoding="utf-8-sig").splitlines():
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        lines = handle.read().splitlines()
+    for line in lines:
         if line.strip().lower().startswith("report="):
             return line.split("=", 1)[1].strip()
     return None
 
 
 def parse_tester_config_expert(path: Path) -> str | None:
-    for line in path.read_text(encoding="utf-8-sig").splitlines():
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
+        lines = handle.read().splitlines()
+    for line in lines:
         if line.strip().lower().startswith("expert="):
             return line.split("=", 1)[1].strip().strip('"')
     return None
@@ -430,13 +435,15 @@ def tester_report_relative_stem(attempt_id: str) -> str:
 
 def normalize_tester_report_config(tester_config: Path, attempt_id: str) -> dict[str, Any]:
     report_stem = tester_report_relative_stem(attempt_id)
-    original = tester_config.read_text(encoding="utf-8-sig")
+    with open(filesystem_path(tester_config), "r", encoding="utf-8-sig") as handle:
+        original = handle.read()
     updated = upsert_ini_line(original, "Report", report_stem, after_key="ReplaceReport")
     updated = upsert_ini_line(updated, "ReplaceReport", "1", after_key="Leverage")
     updated = upsert_ini_line(updated, "ShutdownTerminal", "1", after_key="Report")
     changed = updated != original
     if changed:
-        tester_config.write_text(updated, encoding="utf-8")
+        with open(filesystem_path(tester_config), "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(updated)
     return {
         "status": "tester_report_config_normalized",
         "changed": changed,
@@ -468,7 +475,7 @@ def ensure_portable_ea_stage(
     source_binary = repo_root / EA_BINARY
     source_mq5 = repo_root / EA_SOURCE
     try:
-        destination.parent.mkdir(parents=True, exist_ok=True)
+        os.makedirs(filesystem_path(destination.parent), exist_ok=True)
         copy_status = "already_current"
         if not destination.exists() or sha256(destination) != sha256(source_binary):
             shutil.copy2(source_binary, destination)
@@ -522,9 +529,10 @@ def ensure_score_diagnostic_transport(
 ) -> dict[str, Any]:
     common_relative = score_diagnostics_common_relative(attempt_id)
     common_path = common_relative_to_path(common_relative)
-    common_path.parent.mkdir(parents=True, exist_ok=True)
+    os.makedirs(filesystem_path(common_path.parent), exist_ok=True)
 
-    config_text = tester_config.read_text(encoding="utf-8-sig")
+    with open(filesystem_path(tester_config), "r", encoding="utf-8-sig") as handle:
+        config_text = handle.read()
     updated = upsert_ini_line(
         config_text,
         "InpDiagnosticPath",
@@ -532,7 +540,8 @@ def ensure_score_diagnostic_transport(
         after_key="InpOutputPath",
     )
     if updated != config_text:
-        tester_config.write_text(updated, encoding="utf-8")
+        with open(filesystem_path(tester_config), "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(updated)
 
     diagnostic_ref = {
         "common_relative_path": common_relative,
@@ -562,10 +571,12 @@ def ensure_feature_columns_transport(
     columns_text = ";".join(columns)
     common_relative = feature_columns_common_relative(row["bundle_id"])
     common_path = common_relative_to_path(common_relative)
-    common_path.parent.mkdir(parents=True, exist_ok=True)
-    common_path.write_text(columns_text, encoding="utf-8")
+    os.makedirs(filesystem_path(common_path.parent), exist_ok=True)
+    with open(filesystem_path(common_path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(columns_text)
 
-    config_text = tester_config.read_text(encoding="utf-8-sig")
+    with open(filesystem_path(tester_config), "r", encoding="utf-8-sig") as handle:
+        config_text = handle.read()
     updated = upsert_ini_line(
         config_text,
         "InpFeatureColumnsPath",
@@ -573,7 +584,8 @@ def ensure_feature_columns_transport(
         after_key="InpFeatureColumns",
     )
     if updated != config_text:
-        tester_config.write_text(updated, encoding="utf-8")
+        with open(filesystem_path(tester_config), "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(updated)
 
     feature_ref = {
         "common_relative_path": common_relative,
@@ -671,7 +683,7 @@ def prepare_tester_report_directories(
             prelaunch.append(snapshot)
             seen_prelaunch.add(snapshot["path_key"])
         try:
-            candidate.path.parent.mkdir(parents=True, exist_ok=True)
+            os.makedirs(filesystem_path(candidate.path.parent), exist_ok=True)
             prepared.append({"origin": candidate.origin, "redacted_parent": redact_path(str(candidate.path.parent))})
         except OSError as exc:
             skipped.append(
@@ -742,7 +754,7 @@ def archive_tester_report(
     attempt_resolved = attempt_root.resolve()
     if not report.is_relative_to(attempt_resolved):
         reports_dir = attempt_root / "reports"
-        reports_dir.mkdir(parents=True, exist_ok=True)
+        os.makedirs(filesystem_path(reports_dir), exist_ok=True)
         archived = reports_dir / report.name
         shutil.copy2(report, archived)
         return {
@@ -754,7 +766,7 @@ def archive_tester_report(
             "claim_boundary": "tester_report_local_evidence_only_no_economics_pass",
         }
     reports_dir = attempt_root / "reports"
-    reports_dir.mkdir(parents=True, exist_ok=True)
+    os.makedirs(filesystem_path(reports_dir), exist_ok=True)
     archived = reports_dir / report.name
     if report.resolve() != archived.resolve():
         shutil.move(str(report), str(archived))
@@ -834,7 +846,7 @@ def ensure_completion_surface_scope(manifest: dict[str, Any], completion_surface
 
 
 def parse_score_telemetry(path: Path) -> dict[str, Any]:
-    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
         rows = list(csv.DictReader(handle))
     if not rows:
         return {"row_count": 0, "status": "empty_telemetry"}
@@ -891,7 +903,7 @@ def parse_score_telemetry(path: Path) -> dict[str, Any]:
 
 
 def parse_score_diagnostics(path: Path) -> dict[str, Any]:
-    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
         rows = list(csv.DictReader(handle))
     if not rows:
         return {"status": "empty_diagnostic", "event_count": 0, "event_counts": {}}
@@ -1106,7 +1118,7 @@ def run_one_attempt(
     telemetry_summary: dict[str, Any]
     if telemetry_file_observed:
         repo_telemetry = root / "telemetry" / "score_telemetry.csv"
-        repo_telemetry.parent.mkdir(parents=True, exist_ok=True)
+        os.makedirs(filesystem_path(repo_telemetry.parent), exist_ok=True)
         shutil.copy2(common_telemetry, repo_telemetry)
         telemetry_stats = parse_score_telemetry(repo_telemetry)
         telemetry_observed = int(telemetry_stats.get("row_count") or 0) > 0
@@ -1162,7 +1174,7 @@ def run_one_attempt(
     diagnostic_artifact: dict[str, Any] | None = None
     if diagnostic_file_observed:
         repo_diagnostic = root / "telemetry" / "score_diagnostics.csv"
-        repo_diagnostic.parent.mkdir(parents=True, exist_ok=True)
+        os.makedirs(filesystem_path(repo_diagnostic.parent), exist_ok=True)
         shutil.copy2(common_diagnostic, repo_diagnostic)
         diagnostic_stats = parse_score_diagnostics(repo_diagnostic)
         diagnostic_artifact = artifact_ref(

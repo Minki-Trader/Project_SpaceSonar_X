@@ -93,7 +93,7 @@ def repo_rel(path: Path, repo_root: Path) -> str:
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(fs_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle) or {}
 
 
@@ -112,7 +112,7 @@ def load_bars(raw_bars_path: Path) -> tuple[list[Bar], dict[str, Bar], dict[str,
     bars: list[Bar] = []
     by_open: dict[str, Bar] = {}
     by_close: dict[str, Bar] = {}
-    with raw_bars_path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(fs_path(raw_bars_path), "r", newline="", encoding="utf-8-sig") as handle:
         for index, row in enumerate(csv.DictReader(handle)):
             bar = Bar(
                 index=index,
@@ -130,7 +130,7 @@ def load_bars(raw_bars_path: Path) -> tuple[list[Bar], dict[str, Bar], dict[str,
 
 
 def read_execution_rows(telemetry_path: Path) -> list[dict[str, str]]:
-    with telemetry_path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(fs_path(telemetry_path), "r", newline="", encoding="utf-8-sig") as handle:
         return list(csv.DictReader(handle))
 
 

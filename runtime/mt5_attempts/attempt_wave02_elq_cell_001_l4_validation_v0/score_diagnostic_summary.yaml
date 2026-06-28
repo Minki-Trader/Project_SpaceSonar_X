@@ -1,0 +1,139 @@
+version: wave02_execution_liquidity_l4_score_diagnostic_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/score_diagnostic_summary.yaml
+attempt_id: attempt_wave02_elq_cell_001_l4_validation_v0
+run_id: onnxlab_wave02_elq_cell_001_execution_liquidity_v0
+bundle_id: bundle_wave02_elq_cell_001_l4_onnx_export_v0
+period_role: validation
+diagnostic:
+  path: runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/telemetry/score_diagnostics.csv
+  sha256: e88fe25a25e91327d149bc8132a8f3a0d10f5b626069b9caa3ed8e4c800245c4
+  size_bytes: 493113
+  availability: local_diagnostic_hash_recorded_ignored_by_git
+common_diagnostic_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\l4_score_probe\attempt_wave02_elq_cell_001_l4_validation_v0\score_diagnostics.csv
+stats:
+  status: diagnostic_observed
+  event_count: 6480
+  event_counts:
+    closed_bar_candidate: 73
+    deinit_complete: 1
+    deinit_start: 1
+    feature_columns_loaded: 1
+    init_start: 1
+    init_succeeded: 1
+    onnx_created: 1
+    onnx_released: 1
+    onnx_shapes_set: 1
+    row_written: 73
+    tick_seen: 6326
+  max_rows_written: 53554
+  max_ticks_seen: 63218445
+  max_closed_bar_candidates: 53554
+  max_feature_failures: 0
+  max_onnx_failures: 0
+  last_events:
+  - event_time: 2025.03.07 21:44:28
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '53528'
+    ticks_seen: '63150000'
+    closed_bar_candidates: '53528'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 21:58:07
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '53531'
+    ticks_seen: '63160000'
+    closed_bar_candidates: '53531'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 22:12:01
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '53534'
+    ticks_seen: '63170000'
+    closed_bar_candidates: '53534'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 22:26:06
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '53537'
+    ticks_seen: '63180000'
+    closed_bar_candidates: '53537'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 22:39:47
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '53539'
+    ticks_seen: '63190000'
+    closed_bar_candidates: '53539'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 22:52:35
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '53542'
+    ticks_seen: '63200000'
+    closed_bar_candidates: '53542'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 23:07:27
+    event: tick_seen
+    bar_time: ''
+    detail: ''
+    last_error: '0'
+    rows_written: '53545'
+    ticks_seen: '63210000'
+    closed_bar_candidates: '53545'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 23:54:59
+    event: deinit_start
+    bar_time: ''
+    detail: reason=1
+    last_error: '0'
+    rows_written: '53554'
+    ticks_seen: '63218445'
+    closed_bar_candidates: '53554'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 23:54:59
+    event: onnx_released
+    bar_time: ''
+    detail: released=true
+    last_error: '0'
+    rows_written: '53554'
+    ticks_seen: '63218445'
+    closed_bar_candidates: '53554'
+    feature_failures: '0'
+    onnx_failures: '0'
+  - event_time: 2025.03.07 23:54:59
+    event: deinit_complete
+    bar_time: ''
+    detail: score_probe_deinit
+    last_error: '0'
+    rows_written: '53554'
+    ticks_seen: '63218445'
+    closed_bar_candidates: '53554'
+    feature_failures: '0'
+    onnx_failures: '0'
+claim_boundary: wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority
+work_item_id: work_wave02_execution_liquidity_l4_runtime_execution_v0
+subwork_item_id: work_wave02_execution_liquidity_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0

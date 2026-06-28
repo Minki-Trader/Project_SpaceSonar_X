@@ -1,0 +1,135 @@
+version: work_closeout_v1
+writer_contract_version: writer_scope_operating_contract_v2
+work_item_id: work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0
+parent_work_item_id: work_wave02_execution_liquidity_decision_replay_l5_routing_decision_v0
+next_work_item_id: work_wave02_execution_liquidity_campaign_boundary_decision_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T03:45:11Z'
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- docs/registers/candidate_registry.csv
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- l5_evidence_writer_smoke
+- tester_report_kpi_parse_for_candidate_attempts
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- targeted_artifact_hash_check
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_candidate_runtime_evidence_writer_scope_only
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T03:45:12Z'
+  failures: []
+  writer_contract_version: writer_scope_operating_contract_v2
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - py_compile
+  - l5_evidence_writer_smoke
+  - tester_report_kpi_parse_for_candidate_attempts
+  - active_pointer_smoke
+  - machine_yaml_identity_lint
+  - targeted_artifact_hash_check
+  skipped_broad_validations:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
+  - broad_hash_resync
+  - global_registry_regeneration
+  broad_validation_escalation_reason: none_candidate_runtime_evidence_writer_scope_only
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  - docs/registers/candidate_registry.csv
+  writer_owned_outputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_candidate_runtime_evidence_preparation_v0_closeout.yaml
+  claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  candidate_count: 4
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: 'decide Wave02 execution/liquidity campaign boundary:
+    close, rotate, or open bounded repair work'
+result_judgment: negative_runtime_evidence_no_l5_candidates
+status: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_no_l5_candidates_boundary_decision_pending
+claim_boundary: wave02_execution_liquidity_l5_candidate_runtime_evidence_observed_negative_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_evidence_index.csv
+- lab/candidates/candidate_wave02_elq_cell_002_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+- lab/candidates/candidate_wave02_elq_cell_003_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+- lab/candidates/candidate_wave02_elq_cell_005_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+- lab/candidates/candidate_wave02_elq_cell_006_decision_replay_momentum_ret_1_l5_target_v0/l5_runtime_evidence_summary.yaml
+counts:
+  candidate_count: 4
+  candidate_runtime_evidence_count: 4
+  l5_candidate_count: 0
+  period_evidence_row_count: 8
+  negative_candidate_count: 4
+  positive_runtime_observation_count: 0
+  period_judgment_counts:
+    negative_runtime_evidence: 8
+  candidate_result_counts:
+    negative_runtime_evidence_no_l5_candidate: 4
+missing_evidence:
+- no_selected_baseline_or_runtime_authority_from_candidate_specific_report_parse
+- locked_final_oos_b_not_used
+- operational_validation_not_started
+next_action: 'decide Wave02 execution/liquidity campaign boundary: close, rotate,
+  or open bounded repair work'
+unresolved_blockers:
+- Wave02_execution_liquidity_campaign_boundary_decision_pending
+reopen_conditions:
+- rerun candidate runtime evidence if candidate registry, tester report KPI parser,
+  or candidate attempt ids change
+- open further work only as campaign boundary decision, repair track, or new surface
+  rotation
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+required_gate_coverage:
+  passed:
+  - candidate_specific_manifest_present
+  - tester_report_kpi_parse
+  - artifact_hash_registry_update
+  - candidate_registry_projection
+  - final_claim_guard
+  - writer_scope_self_check
+  missing:
+  - no_selected_baseline_or_runtime_authority_from_candidate_specific_report_parse
+  - locked_final_oos_b_not_used
+  - operational_validation_not_started
+  not_applicable:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - goal_achieve
+  - live_readiness

@@ -8,9 +8,13 @@ from typing import Any
 
 import yaml
 
+from .store import filesystem_path
+
 
 REGISTRY_PATH = Path("docs/agent_control/work_family_registry.yaml")
 CLAIM_VOCABULARY_PATH = Path("docs/agent_control/claim_vocabulary.yaml")
+KOREAN_EXPLANATION_TERMS = ("\uc54c\ub824", "\uc124\uba85", "\uc694\uc57d", "\uc0c1\ud0dc")
+KOREAN_MUTATION_TERMS = ("\uc218\uc815", "\uc2e4\ud589", "\uc801\uc6a9")
 
 
 @dataclass(frozen=True)
@@ -29,7 +33,7 @@ def _repo_root() -> Path:
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         data = yaml.safe_load(handle) or {}
     if not isinstance(data, dict):
         raise ValueError(f"{path.as_posix()} must contain a YAML mapping")
@@ -199,10 +203,22 @@ def route_work_item(
 
     explanation_only = _contains_any(
         request_norm,
-        ("explain", "summarize", "what is", "status", "tell me", "알려", "설명", "요약", "상태"),
+        ("explain", "summarize", "what is", "status", "tell me", *KOREAN_EXPLANATION_TERMS),
     ) and not _contains_any(
         " ".join([request_norm, layer_norm]),
-        ("fix", "edit", "write", "execute", "migrate", "sync", "update", "create", "open", "close", "수정", "실행", "적용"),
+        (
+            "fix",
+            "edit",
+            "write",
+            "execute",
+            "migrate",
+            "sync",
+            "update",
+            "create",
+            "open",
+            "close",
+            *KOREAN_MUTATION_TERMS,
+        ),
     ) and not requested_claims
     runtime_path = _contains_any(path_norm, ("runtime/mt5 attempts", "foundation/config/mt5 runtime probe contract.yaml", "configs/mt5"))
 

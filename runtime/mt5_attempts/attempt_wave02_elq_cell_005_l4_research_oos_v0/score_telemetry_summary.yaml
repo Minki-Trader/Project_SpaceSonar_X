@@ -1,0 +1,58 @@
+version: wave02_execution_liquidity_l4_score_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/score_telemetry_summary.yaml
+attempt_id: attempt_wave02_elq_cell_005_l4_research_oos_v0
+run_id: onnxlab_wave02_elq_cell_005_execution_liquidity_v0
+bundle_id: bundle_wave02_elq_cell_005_l4_onnx_export_v0
+period_role: research_oos
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/telemetry/score_telemetry.csv
+  sha256: 46e14382494ea670ad172393ff8bbc86f697e41e550e1400d4e4f8892d5eec26
+  size_bytes: 6313133
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_execution_liquidity_l4_score_probe\attempt_wave02_elq_cell_005_l4_research_oos_v0\score_telemetry.csv
+stats:
+  status: telemetry_observed
+  row_count: 45281
+  first_bar_close_time: 2025.04.03 00:00:00
+  last_bar_close_time: 2025.11.20 23:55:00
+  symbol_counts:
+    US100: 45281
+  period_counts:
+    PERIOD_M5: 45281
+  feature_count_values:
+    '28': 45281
+  decision_counts:
+    unknown: 45281
+  score_stats:
+    finite_count: 45281
+    min: 0.0160086453
+    max: 0.8136732578
+    mean: 0.4771213470345531
+  spread_points_stats:
+    finite_count: 45281
+    min: 0.0
+    max: 150.0
+    mean: 134.04525076743005
+  tick_volume_nonzero_count: 45281
+claim_boundary: wave02_execution_liquidity_l4_score_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+diagnostic_evidence:
+  summary_path: runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/score_diagnostic_summary.yaml
+  status: diagnostic_observed
+  event_counts:
+    closed_bar_candidate: 65
+    deinit_complete: 1
+    deinit_start: 1
+    feature_columns_loaded: 1
+    init_start: 1
+    init_succeeded: 1
+    onnx_created: 1
+    onnx_released: 1
+    onnx_shapes_set: 1
+    row_written: 65
+    tick_seen: 5468
+  claim_boundary: wave02_ea_score_probe_diagnostic_observation_only_no_runtime_authority
+work_item_id: work_wave02_execution_liquidity_l4_runtime_execution_v0
+subwork_item_id: work_wave02_execution_liquidity_l4_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0

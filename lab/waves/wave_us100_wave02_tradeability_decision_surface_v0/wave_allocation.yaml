@@ -171,14 +171,16 @@ campaign_allocations:
     - no inherited Wave01 or Wave02 thresholds or candidates
     why_this_campaign_needs_more_or_less_than_default: uses default Wave02 campaign
       budget with smaller first batch before L4 follow-through spend
-  status: wave02_execution_liquidity_proxy_batch_executed_l4_required
+  status: wave02_execution_liquidity_campaign_closed_negative_l5_evidence_no_l5_candidate
   campaign_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_manifest.yaml
   surface_manifest: lab/surfaces/surface_us100_wave02_execution_liquidity_v0/surface_manifest.yaml
   sweep_manifest: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/sweeps/sweep_us100_wave02_execution_liquidity_broad_v0/sweep_manifest.yaml
-  claim_boundary: wave02_execution_liquidity_l4_materialization_pending_no_candidate_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
-  next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
-  notes: Proxy batch executed; L4 materialization required next.
+  claim_boundary: wave02_execution_liquidity_campaign_closed_negative_l5_evidence_no_selected_baseline_no_runtime_authority_no_economics_pass_no_live_readiness_no_goal_achieve
+  next_action: work_wave02_next_campaign_or_wave_boundary_decision_v0
+  notes: Campaign closed negative after candidate-specific L5 tester report evidence;
+    no L5 candidate.
   materialized_run_count: 6
   executed_proxy_run_count: 6
-next_action: work_wave02_execution_liquidity_l4_materialization_preflight_v0
-updated_at_utc: '2026-06-28T01:15:13Z'
+  campaign_closeout: lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/campaign_closeout.yaml
+next_action: work_wave02_next_campaign_or_wave_boundary_decision_v0
+updated_at_utc: '2026-06-28T03:49:20Z'

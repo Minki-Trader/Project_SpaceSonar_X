@@ -257,6 +257,67 @@ bool MeanStdSpreadPoints(const MqlRates &rates[], const int index, const int win
    return true;
 }
 
+bool SpreadRankPct(const MqlRates &rates[], const int index, const int window, const int min_count, double &value)
+{
+   const int start = MathMax(0, index - window + 1);
+   const int count = index - start + 1;
+   if(count < min_count)
+      return false;
+   const double current = (double)rates[index].spread;
+   int less = 0;
+   int equal = 0;
+   for(int i = start; i <= index; i++)
+   {
+      const double candidate = (double)rates[i].spread;
+      if(candidate < current)
+         less++;
+      if(candidate == current)
+         equal++;
+   }
+   value = ((double)less + ((double)equal + 1.0) / 2.0) / (double)count;
+   return true;
+}
+
+bool TickVolumeRankPct(const MqlRates &rates[], const int index, const int window, const int min_count, double &value)
+{
+   const int start = MathMax(0, index - window + 1);
+   const int count = index - start + 1;
+   if(count < min_count)
+      return false;
+   const double current = (double)rates[index].tick_volume;
+   int less = 0;
+   int equal = 0;
+   for(int i = start; i <= index; i++)
+   {
+      const double candidate = (double)rates[i].tick_volume;
+      if(candidate < current)
+         less++;
+      if(candidate == current)
+         equal++;
+   }
+   value = ((double)less + ((double)equal + 1.0) / 2.0) / (double)count;
+   return true;
+}
+
+bool MeanTickVolumeZ(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean)
+{
+   double sum = 0.0;
+   int count = 0;
+   for(int i = MathMax(0, index - window + 1); i <= index; i++)
+   {
+      double z = 0.0;
+      if(TickVolumeZ(rates, i, 48, 12, z))
+      {
+         sum += z;
+         count++;
+      }
+   }
+   if(count < min_count)
+      return false;
+   mean = sum / (double)count;
+   return true;
+}
+
 bool MeanStdRet(const MqlRates &rates[], const int index, const int window, const int min_count, double &mean, double &std_value)
 {
    double values[];
@@ -614,15 +675,25 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = SafeDiv(((double)rates[index].spread) / 100.0, mean);
       return true;
    }
-   if(column == "execution_spread_z_48")
+   if(column == "spread_z_48" || column == "execution_spread_z_48")
    {
       if(!MeanStdSpreadPoints(rates, index, 48, 12, mean, std_value)) return false;
       value = SafeDiv((double)rates[index].spread - mean, std_value);
       return true;
    }
+   if(column == "spread_rank_144")
+   {
+      return SpreadRankPct(rates, index, 144, 36, value);
+   }
    if(column == "execution_range_cost_ratio")
    {
       value = SafeDiv(rates[index].high - rates[index].low, ((double)rates[index].spread) / 100.0);
+      return true;
+   }
+   if(column == "execution_gap_ret_1_vs_spread")
+   {
+      const double spread_cost = SafeDiv(((double)rates[index].spread) / 100.0, rates[index].close);
+      value = SafeDiv(MathAbs(RetAt(rates, index, 1)), spread_cost);
       return true;
    }
    if(column == "range_pct") { value = RangePctAt(rates, index); return true; }
@@ -780,9 +851,37 @@ bool FeatureValue(const string column, const MqlRates &rates[], const int index,
       value = SafeDiv(range48, range144);
       return true;
    }
-   if(column == "volume_z_48")
+   if(column == "volatility_range_12_vs_48")
+   {
+      double range12 = 0.0, range48 = 0.0;
+      if(!MeanRange(rates, index, 12, 3, range12)) return false;
+      if(!MeanRange(rates, index, 48, 12, range48)) return false;
+      value = SafeDiv(range12, range48);
+      return true;
+   }
+   if(column == "volume_z_48" || column == "liquidity_volume_z_48")
    {
       return TickVolumeZ(rates, index, 48, 12, value);
+   }
+   if(column == "volume_rank_144")
+   {
+      return TickVolumeRankPct(rates, index, 144, 36, value);
+   }
+   if(column == "liquidity_spread_pressure")
+   {
+      double spread_rank = 0.0, volume_rank = 0.0;
+      if(!SpreadRankPct(rates, index, 144, 36, spread_rank)) return false;
+      if(!TickVolumeRankPct(rates, index, 144, 36, volume_rank)) return false;
+      value = spread_rank - volume_rank;
+      return true;
+   }
+   if(column == "liquidity_decay_12")
+   {
+      double z = 0.0, z_mean = 0.0;
+      if(!TickVolumeZ(rates, index, 48, 12, z)) return false;
+      if(!MeanTickVolumeZ(rates, index, 12, 4, z_mean)) return false;
+      value = z - z_mean;
+      return true;
    }
    if(column == "position_close_in_48_range")
    {

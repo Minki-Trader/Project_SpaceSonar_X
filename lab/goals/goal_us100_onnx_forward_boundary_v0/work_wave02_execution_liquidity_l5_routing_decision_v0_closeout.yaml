@@ -1,0 +1,138 @@
+version: work_closeout_v1
+work_item_id: work_wave02_execution_liquidity_l5_routing_decision_v0
+parent_work_item_id: work_wave02_execution_liquidity_l4_pair_judgment_v0
+next_work_item_id: work_wave02_execution_liquidity_l4_decision_replay_adapter_preparation_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+closed_at_utc: '2026-06-28T02:26:56Z'
+writer_contract_version: writer_scope_operating_contract_v2
+primary_family: runtime_probe
+primary_skill: spacesonar-runtime-evidence
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_routing_decision_v0_closeout.yaml
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_routing_decision_v0_closeout.yaml
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- l5_routing_writer_smoke
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- targeted_artifact_hash_check
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_l5_routing_progress_no_protected_claim
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T02:26:57Z'
+  writer_contract_version: writer_scope_operating_contract_v2
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - py_compile
+  - l5_routing_writer_smoke
+  - active_pointer_smoke
+  - machine_yaml_identity_lint
+  - targeted_artifact_hash_check
+  skipped_broad_validations:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
+  - broad_hash_resync
+  - global_registry_regeneration
+  broad_validation_escalation_reason: none_l5_routing_progress_no_protected_claim
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  writer_owned_outputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l5_routing_decision_v0_closeout.yaml
+  routing_row_count: 6
+  smoke_errors: []
+  claim_boundary: wave02_execution_liquidity_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  candidate_count: 0
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: prepare Wave02 execution/liquidity bounded decision-execution
+    adapter attempts before any candidate-specific L5 manifest
+result_judgment: runtime_probe
+status: wave02_execution_liquidity_l5_routing_decision_completed_adapter_preparation_pending
+claim_boundary: wave02_execution_liquidity_l5_routing_decision_only_no_selected_baseline_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+evidence_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_summary.yaml
+counts:
+  evaluated_pair_count: 6
+  adapter_preparation_cell_count: 6
+  candidate_manifest_opened_count: 0
+  candidate_count: 0
+  l5_candidate_count: 0
+  routing_decision_counts:
+    prepare_decision_execution_adapter: 6
+  source_l5_status_counts:
+    l5_routing_review_requires_decision_execution_adapter_no_candidate_claim: 6
+  decision_family_counts:
+    high_spread_abstain_h8: 1
+    low_liquidity_timeout_gate: 1
+    open_failed_prevention_gate: 1
+    session_liquidity_abstain_h6: 1
+    session_transition_close_gate: 1
+    vol_liquidity_abstain_h12: 1
+missing_evidence:
+- decision_execution_adapter_attempts_not_prepared
+- decision_replay_terminal_execution_not_run
+- candidate_specific_L5_manifest_not_opened
+- economics_metrics_not_available_from_non_trading_score_probe
+next_action: prepare Wave02 execution/liquidity bounded decision-execution adapter
+  attempts before any candidate-specific L5 manifest
+unresolved_blockers:
+- Wave02_execution_liquidity_decision_replay_adapter_preparation_pending
+reopen_conditions:
+- rerun routing decision if ELQ L4 pair judgment summary or index changes
+- open candidate-specific L5 manifest only after decision replay pair judgment supports
+  it
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+required_gate_coverage:
+  passed:
+  - source_pair_judgment_present
+  - candidate_manifest_not_opened_from_score_probe
+  - adapter_preparation_next_work_item_declared
+  - artifact_hash_registry_update
+  - final_claim_guard
+  - writer_scope_self_check
+  missing:
+  - decision_execution_adapter_attempts_not_prepared
+  - decision_replay_terminal_execution_not_run
+  - candidate_specific_L5_manifest_not_opened
+  - economics_metrics_not_available_from_non_trading_score_probe
+  not_applicable:
+  - selected_baseline
+  - runtime_authority
+  - economics_pass
+  - candidate_manifest
+  - goal_achieve
+  - live_readiness

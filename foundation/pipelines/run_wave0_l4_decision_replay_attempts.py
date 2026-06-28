@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import csv
 import math
+import os
 import re
 import shutil
 import statistics
@@ -58,6 +59,7 @@ from foundation.pipelines.prepare_wave0_l4_decision_replay_attempts import (
     EA_SOURCE,
     INDEX_PATH as PREP_INDEX,
 )
+from spacesonar.control_plane.store import filesystem_path
 
 
 GOAL_ID = "goal_us100_onnx_forward_boundary_v0"
@@ -94,13 +96,13 @@ def utc_now() -> str:
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def write_yaml(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as handle:
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", encoding="utf-8") as handle:
         yaml.dump(payload, handle, Dumper=NoAliasDumper, sort_keys=False, allow_unicode=False)
 
 
@@ -204,7 +206,7 @@ def normalize_decision_terminal_summary(summary: dict[str, Any]) -> dict[str, An
 
 
 def parse_execution_telemetry(path: Path) -> dict[str, Any]:
-    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(filesystem_path(path), "r", newline="", encoding="utf-8-sig") as handle:
         rows = list(csv.DictReader(handle))
     if not rows:
         return {"status": "empty_execution_telemetry", "row_count": 0}
@@ -294,7 +296,8 @@ def latest_tester_log_path(repo_root: Path) -> Path | None:
 
 
 def parse_tester_log_summary(*, log_path: Path, tester_config: Path, attempt_id: str) -> dict[str, Any]:
-    text = log_path.read_text(encoding="utf-16", errors="ignore")
+    with open(filesystem_path(log_path), "r", encoding="utf-16", errors="ignore") as handle:
+        text = handle.read()
     lines = text.splitlines()
     start_index = 0
     config_text = str(tester_config)
@@ -456,7 +459,7 @@ def run_one_attempt(
     write_yaml(manifest_path, manifest)
     source_common = common_relative_to_path(row["source_score_telemetry_common_path"])
     execution_common = common_relative_to_path(row["execution_telemetry_common_path"])
-    execution_common.parent.mkdir(parents=True, exist_ok=True)
+    os.makedirs(filesystem_path(execution_common.parent), exist_ok=True)
     if execution_common.exists():
         execution_common.unlink()
     portable_terminal_root = terminal.parent if terminal else DEFAULT_TERMINAL.parent
@@ -513,7 +516,7 @@ def run_one_attempt(
     telemetry_artifact: dict[str, Any] | None = None
     if telemetry_observed:
         repo_telemetry = root / "telemetry" / "execution_telemetry.csv"
-        repo_telemetry.parent.mkdir(parents=True, exist_ok=True)
+        os.makedirs(filesystem_path(repo_telemetry.parent), exist_ok=True)
         shutil.copy2(execution_common, repo_telemetry)
         telemetry_stats = parse_execution_telemetry(repo_telemetry)
         telemetry_artifact = artifact_ref(repo_telemetry, repo_root, availability="local_telemetry_hash_recorded_ignored_by_git")

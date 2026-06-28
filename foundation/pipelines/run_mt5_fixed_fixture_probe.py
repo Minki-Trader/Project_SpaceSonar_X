@@ -36,10 +36,17 @@ def utc_now() -> str:
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
-    with path.open("rb") as handle:
+    with open(fs_path(path), "rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def fs_path(path: Path) -> str:
+    resolved = str(path.resolve())
+    if os.name == "nt" and not resolved.startswith("\\\\?\\"):
+        return "\\\\?\\" + resolved
+    return resolved
 
 
 def artifact_ref(path: Path) -> dict[str, Any]:
@@ -79,22 +86,24 @@ def redacted_argv(argv: list[str]) -> list[str]:
 
 
 def write_yaml(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.dump(payload, Dumper=NoAliasDumper, sort_keys=False, allow_unicode=False), encoding="utf-8")
+    os.makedirs(fs_path(path.parent), exist_ok=True)
+    with open(fs_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(yaml.dump(payload, Dumper=NoAliasDumper, sort_keys=False, allow_unicode=False))
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    os.makedirs(fs_path(path.parent), exist_ok=True)
+    with open(fs_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, indent=2, ensure_ascii=False) + "\n")
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(fs_path(path), "r", encoding="utf-8-sig") as handle:
         return yaml.safe_load(handle)
 
 
 def load_json(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
+    with open(fs_path(path), "r", encoding="utf-8-sig") as handle:
         return json.load(handle)
 
 
@@ -219,6 +228,52 @@ def terminal_argvs(
     return attempts
 
 
+def portable_terminal_root_preflight(terminal: Path) -> dict[str, Any]:
+    started_at = utc_now()
+    root = terminal.parent
+    reports_dir = root / "reports"
+    mql5_experts_dir = root / "MQL5" / "Experts"
+    probe_path = reports_dir / ".spacesonar_portable_write_probe"
+    checks: dict[str, Any] = {
+        "terminal_exists": terminal.exists(),
+        "portable_root_redacted": redact_path(str(root)),
+        "reports_dir_redacted": redact_path(str(reports_dir)),
+        "mql5_experts_dir_redacted": redact_path(str(mql5_experts_dir)),
+        "reports_dir_writable": False,
+        "mql5_experts_dir_creatable": False,
+    }
+    error: dict[str, str] | None = None
+    try:
+        os.makedirs(fs_path(reports_dir), exist_ok=True)
+        with open(fs_path(probe_path), "w", encoding="utf-8", newline="\n") as handle:
+            handle.write("portable_write_probe\n")
+        os.remove(fs_path(probe_path))
+        checks["reports_dir_writable"] = True
+        os.makedirs(fs_path(mql5_experts_dir), exist_ok=True)
+        checks["mql5_experts_dir_creatable"] = True
+    except OSError as exc:
+        error = {"error_class": exc.__class__.__name__, "error_message": str(exc)}
+    ended_at = utc_now()
+    passed = bool(
+        checks["terminal_exists"]
+        and checks["reports_dir_writable"]
+        and checks["mql5_experts_dir_creatable"]
+    )
+    return {
+        "status": "passed" if passed else "failed",
+        "started_at_utc": started_at,
+        "ended_at_utc": ended_at,
+        **checks,
+        "error": error,
+        "claim_boundary": "portable_terminal_root_preflight_only_no_runtime_authority",
+        "reopen_condition": (
+            "rerun with a writable portable terminal64.exe path"
+            if not passed
+            else "portable terminal root accepted for Strategy Tester launch"
+        ),
+    }
+
+
 def run_terminal_sequence(
     *,
     terminal: Path,
@@ -234,16 +289,42 @@ def run_terminal_sequence(
 
     attempts: list[dict[str, Any]] = []
     selected_attempt_index: int | None = None
+    portable_preflight = portable_terminal_root_preflight(terminal)
     for attempt_spec in terminal_argvs(
         terminal=terminal,
         tester_config=tester_config,
         allow_main_mode_fallback=allow_main_mode_fallback,
     ):
+        if attempt_spec["mode"] == "portable_contract_attempt" and portable_preflight["status"] != "passed":
+            skipped_started_at = utc_now()
+            attempt_record = {
+                "command_argv_redacted": redacted_argv(attempt_spec["argv"]),
+                "cwd": repo_relative(REPO_ROOT),
+                "started_at_utc": skipped_started_at,
+                "ended_at_utc": utc_now(),
+                "exit_code": None,
+                "timed_out": False,
+                "stdout_sha256": hashlib.sha256(b"").hexdigest(),
+                "stderr_sha256": hashlib.sha256(b"").hexdigest(),
+                "stdout_tail": "",
+                "stderr_tail": "",
+                "mode": attempt_spec["mode"],
+                "attempt_claim_boundary": "portable_terminal_root_preflight_failed_no_runtime_completion_claim",
+                "terminal_not_launched_reason": "portable_terminal_root_preflight_failed",
+                "portable_terminal_root_preflight": portable_preflight,
+                "telemetry_exists_after_attempt": common_telemetry.exists(),
+            }
+            attempts.append(attempt_record)
+            if not allow_main_mode_fallback:
+                selected_attempt_index = len(attempts) - 1
+                break
+            continue
         attempt_result = run_process(attempt_spec["argv"], cwd=REPO_ROOT, timeout_seconds=timeout_seconds)
         attempt_record = {
             **attempt_result,
             "mode": attempt_spec["mode"],
             "attempt_claim_boundary": attempt_spec["claim_boundary"],
+            "portable_terminal_root_preflight": portable_preflight if attempt_spec["mode"] == "portable_contract_attempt" else None,
             "telemetry_exists_after_attempt": common_telemetry.exists(),
         }
         attempts.append(attempt_record)
@@ -270,16 +351,21 @@ def run_terminal_sequence(
         "terminal_mode_policy": {
             "standard_contract_terminal_mode": "portable_required",
             "portable_attempted": True,
+            "portable_root_preflight_status": portable_preflight["status"],
             "main_mode_fallback_allowed": allow_main_mode_fallback,
             "main_mode_fallback_used": fallback_used,
             "fallback_reason": (
-                "portable_attempt_did_not_produce_mt5_probe_telemetry"
+                "portable_terminal_root_preflight_failed"
+                if portable_preflight["status"] != "passed" and fallback_used
+                else "portable_attempt_did_not_produce_mt5_probe_telemetry"
                 if fallback_used
                 else None
             ),
             "claim_effect": (
                 "fixed_fixture_micro_probe_only_no_runtime_authority"
                 if fallback_used
+                else "no_terminal_launch_no_standard_runtime_completion"
+                if portable_preflight["status"] != "passed"
                 else "standard_portable_attempt_path"
             ),
         },
@@ -298,7 +384,8 @@ def parse_prepare_stdout(stdout_tail: str) -> dict[str, str]:
 def parse_compile_log(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {"path": repo_relative(path), "exists": False, "compile_errors": None, "compile_warnings": None}
-    text = path.read_text(encoding="utf-16", errors="ignore")
+    with open(fs_path(path), "r", encoding="utf-16", errors="ignore") as handle:
+        text = handle.read()
     errors = None
     warnings = None
     for line in text.splitlines():
@@ -321,7 +408,7 @@ def parse_compile_log(path: Path) -> dict[str, Any]:
 
 
 def parse_probe_csv(path: Path) -> dict[str, Any]:
-    with path.open("r", newline="", encoding="utf-8-sig") as handle:
+    with open(fs_path(path), "r", newline="", encoding="utf-8-sig") as handle:
         rows = list(csv.DictReader(handle))
     if not rows:
         raise RuntimeError(f"empty probe telemetry: {path}")
@@ -660,7 +747,7 @@ def main() -> int:
     bundle_id = ids["bundle_id"]
     attempt_id = ids["attempt_id"]
     attempt_root = REPO_ROOT / "runtime" / "mt5_attempts" / attempt_id
-    attempt_root.mkdir(parents=True, exist_ok=True)
+    os.makedirs(fs_path(attempt_root), exist_ok=True)
     prepare_summary["summary_path"] = f"runtime/mt5_attempts/{attempt_id}/prepare_summary.yaml"
     write_yaml(attempt_root / "prepare_summary.yaml", prepare_summary)
 
@@ -733,7 +820,7 @@ def main() -> int:
             )
         )
         return 1
-    repo_telemetry.parent.mkdir(parents=True, exist_ok=True)
+        os.makedirs(fs_path(repo_telemetry.parent), exist_ok=True)
     shutil.copy2(common_telemetry, repo_telemetry)
     probe_result = parse_probe_csv(repo_telemetry)
     probe_summary = {

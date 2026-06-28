@@ -1,0 +1,387 @@
+version: wave02_execution_liquidity_decision_replay_adapter_input_summary_v1
+summary_id: wave02_execution_liquidity_decision_replay_adapter_input_summary_v0
+work_item_id: work_wave02_execution_liquidity_l4_decision_replay_adapter_preparation_v0
+parent_work_item_id: work_wave02_execution_liquidity_l5_routing_decision_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0
+created_at_utc: '2026-06-28T02:42:30Z'
+writer_contract_version: writer_scope_operating_contract_v2
+status: adapter_inputs_projected_pending_terminal_execution
+adapter_id: score_replay_sparse_decision_adapter_v0
+adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+projection_reason: ELQ score-probe source decisions were unknown; replay inputs are
+  projected from score threshold to tradeable/flat.
+counts:
+  attempt_input_count: 12
+  source_total_rows: 593010
+  adapter_total_rows: 593010
+  adapter_tradeable_rows: 112459
+  adapter_flat_rows: 480551
+records:
+- attempt_id: attempt_wave02_elq_cell_001_l4_decision_replay_validation_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_001_l4_validation_v0
+  cell_id: wave02_elq_cell_001
+  period_role: validation
+  source_decision_family: session_liquidity_abstain_h6
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_validation_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 0a9761922ef17546ca3b2e48e6dac18eb7856cc7d94137f8d5198a1f0725eab0
+  source_row_count: 53554
+  source_decision_counts:
+    unknown: 53554
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_001_l4_decision_replay_validation_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: a45e59db9bcf2dde2fca0c8619c54b94e9a92ab2519e362f07014c7ff6d396dc
+  adapter_input_size_bytes: 8499461
+  adapter_row_count: 53554
+  adapter_tradeable_count: 14232
+  adapter_flat_count: 39322
+  adapter_decision_counts:
+    flat: 39322
+    tradeable: 14232
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_001_l4_research_oos_v0
+  cell_id: wave02_elq_cell_001
+  period_role: research_oos
+  source_decision_family: session_liquidity_abstain_h6
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_research_oos_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: e559d1071721287a2119a3c933727e4a31d44196203553bc24ea487555e287c3
+  source_row_count: 45281
+  source_decision_counts:
+    unknown: 45281
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_001_l4_decision_replay_research_oos_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: 59b7defa449648fa81d115c01e14f77246b2d1f2aae5e13a6246664f1f7802e0
+  adapter_input_size_bytes: 7184900
+  adapter_row_count: 45281
+  adapter_tradeable_count: 11342
+  adapter_flat_count: 33939
+  adapter_decision_counts:
+    flat: 33939
+    tradeable: 11342
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_002_l4_decision_replay_validation_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_002_l4_validation_v0
+  cell_id: wave02_elq_cell_002
+  period_role: validation
+  source_decision_family: high_spread_abstain_h8
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_validation_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 6ff5b94699343d8cdfbc01438cc996300b6b228cdc4e182f99d1fa7f60501b66
+  source_row_count: 53554
+  source_decision_counts:
+    unknown: 53554
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_002_l4_decision_replay_validation_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: c30437e6ed07b4aee5412ac9f2f1bcd9ded624d6252862a9e927225c1e915695
+  adapter_input_size_bytes: 8473831
+  adapter_row_count: 53554
+  adapter_tradeable_count: 9106
+  adapter_flat_count: 44448
+  adapter_decision_counts:
+    flat: 44448
+    tradeable: 9106
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_002_l4_research_oos_v0
+  cell_id: wave02_elq_cell_002
+  period_role: research_oos
+  source_decision_family: high_spread_abstain_h8
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_research_oos_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: dfd83a11400311259e263757c92f4ee474e3c39028c1973f0c7de3bfc4ae7dde
+  source_row_count: 45281
+  source_decision_counts:
+    unknown: 45281
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_002_l4_decision_replay_research_oos_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: f8ae25d1680e14f0979b2ebabebf8fe92bd520aa945f57b94f88b2fa08be9f0d
+  adapter_input_size_bytes: 7164095
+  adapter_row_count: 45281
+  adapter_tradeable_count: 7181
+  adapter_flat_count: 38100
+  adapter_decision_counts:
+    flat: 38100
+    tradeable: 7181
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_003_l4_decision_replay_validation_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_003_l4_validation_v0
+  cell_id: wave02_elq_cell_003
+  period_role: validation
+  source_decision_family: open_failed_prevention_gate
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_validation_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 35aa618ac0cc9b14cc49ea710c1157fc1604af8eaf097b2ee88efb27c220f1d4
+  source_row_count: 53554
+  source_decision_counts:
+    unknown: 53554
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_003_l4_decision_replay_validation_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: 342ecb567b73bf03dfa26f9b1f8ca81214505ab3a9c358827d20ce4c1a83a520
+  adapter_input_size_bytes: 8454191
+  adapter_row_count: 53554
+  adapter_tradeable_count: 5178
+  adapter_flat_count: 48376
+  adapter_decision_counts:
+    flat: 48376
+    tradeable: 5178
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_003_l4_research_oos_v0
+  cell_id: wave02_elq_cell_003
+  period_role: research_oos
+  source_decision_family: open_failed_prevention_gate
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_research_oos_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 155af55d4634c29dbfa406cdd63fada689a4f798e97d8a505585bbff6eea2b0c
+  source_row_count: 45281
+  source_decision_counts:
+    unknown: 45281
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_003_l4_decision_replay_research_oos_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: bb09892b9e1d73e73b4363b483662e0891859736200a680e0b2c6cd2ee5db29a
+  adapter_input_size_bytes: 7146145
+  adapter_row_count: 45281
+  adapter_tradeable_count: 3591
+  adapter_flat_count: 41690
+  adapter_decision_counts:
+    flat: 41690
+    tradeable: 3591
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_004_l4_decision_replay_validation_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_004_l4_validation_v0
+  cell_id: wave02_elq_cell_004
+  period_role: validation
+  source_decision_family: session_transition_close_gate
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_validation_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 9bdcd211a3fd380c6c968a5cab8e186db2c645fce856d6c1d6c852e3b03ae30e
+  source_row_count: 53554
+  source_decision_counts:
+    unknown: 53554
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_004_l4_decision_replay_validation_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: fd87e33c0e51a71d2a1974d183fd91823a30a1defef21720610b3800dacc6a5c
+  adapter_input_size_bytes: 8497646
+  adapter_row_count: 53554
+  adapter_tradeable_count: 13869
+  adapter_flat_count: 39685
+  adapter_decision_counts:
+    flat: 39685
+    tradeable: 13869
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_004_l4_research_oos_v0
+  cell_id: wave02_elq_cell_004
+  period_role: research_oos
+  source_decision_family: session_transition_close_gate
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_research_oos_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 1c76b05d695cffc2ac1b693c5240f8c6ad8b0d971c2924e9b242039c63961f72
+  source_row_count: 45281
+  source_decision_counts:
+    unknown: 45281
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_004_l4_decision_replay_research_oos_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: a7688869ce9228ce1ee1bb1cf949333f3011125e1b287a182bd83f45f5a75b46
+  adapter_input_size_bytes: 7190745
+  adapter_row_count: 45281
+  adapter_tradeable_count: 12511
+  adapter_flat_count: 32770
+  adapter_decision_counts:
+    flat: 32770
+    tradeable: 12511
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_005_l4_decision_replay_validation_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_005_l4_validation_v0
+  cell_id: wave02_elq_cell_005
+  period_role: validation
+  source_decision_family: vol_liquidity_abstain_h12
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_validation_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: aeaee9b01a99c7d0e1fdccf0d079baeb3382dc365d0ae69210b9baae620f52d2
+  source_row_count: 53554
+  source_decision_counts:
+    unknown: 53554
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_005_l4_decision_replay_validation_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: 0643120d1ea967b9347acc981f47263a074808834db0103bcd88cadf864afff5
+  adapter_input_size_bytes: 8468151
+  adapter_row_count: 53554
+  adapter_tradeable_count: 7970
+  adapter_flat_count: 45584
+  adapter_decision_counts:
+    flat: 45584
+    tradeable: 7970
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_005_l4_research_oos_v0
+  cell_id: wave02_elq_cell_005
+  period_role: research_oos
+  source_decision_family: vol_liquidity_abstain_h12
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_research_oos_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 46e14382494ea670ad172393ff8bbc86f697e41e550e1400d4e4f8892d5eec26
+  source_row_count: 45281
+  source_decision_counts:
+    unknown: 45281
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_005_l4_decision_replay_research_oos_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: d652d338efde27ceeda5279323bdd7313f13abc5384767c8abaf097ae43e33f4
+  adapter_input_size_bytes: 7162945
+  adapter_row_count: 45281
+  adapter_tradeable_count: 6951
+  adapter_flat_count: 38330
+  adapter_decision_counts:
+    flat: 38330
+    tradeable: 6951
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_006_l4_validation_v0
+  cell_id: wave02_elq_cell_006
+  period_role: validation
+  source_decision_family: low_liquidity_timeout_gate
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_validation_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 263e678de69d501de1c02f6c5c3781a8c7511bccfcbad1092ddb48e0099243d7
+  source_row_count: 53554
+  source_decision_counts:
+    unknown: 53554
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: 1c008c1ffa75b5c2e9ba72a2ff82d6290d7c9a13352842dc158edb7af9d36c5b
+  adapter_input_size_bytes: 8484656
+  adapter_row_count: 53554
+  adapter_tradeable_count: 11271
+  adapter_flat_count: 42283
+  adapter_decision_counts:
+    flat: 42283
+    tradeable: 11271
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+- attempt_id: attempt_wave02_elq_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0
+  source_attempt_id: attempt_wave02_elq_cell_006_l4_research_oos_v0
+  cell_id: wave02_elq_cell_006
+  period_role: research_oos
+  source_decision_family: low_liquidity_timeout_gate
+  adapter_decision_family: abstain_capable_direction_agnostic_tradeability
+  source_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_research_oos_v0/telemetry/score_telemetry.csv
+  source_score_telemetry_sha256: 462a7102f3fcabc844857e4bd511629872eb0704563ebb70fdb6ca8f9989a177
+  source_row_count: 45281
+  source_decision_counts:
+    unknown: 45281
+  adapter_score_telemetry_local_path: runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/telemetry/score_replay_input.csv
+  adapter_score_telemetry_common_path: SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0\score_replay_input.csv
+  adapter_score_telemetry_sha256: 48e1ca86278f3805d8498f47a4854779e56048048dc876cf8ddd6959b2dce501
+  adapter_input_size_bytes: 7174475
+  adapter_row_count: 45281
+  adapter_tradeable_count: 9257
+  adapter_flat_count: 36024
+  adapter_decision_counts:
+    flat: 36024
+    tradeable: 9257
+  projection_rule: score_ge_high_tradeable_then_momentum_ret_1_side_else_flat
+  adapter_common_copy_status: copied_to_mt5_common_files
+source_of_truth_paths:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+writer_owned_outputs:
+- lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_input_summary.yaml
+- runtime/mt5_attempts/<attempt_id>/telemetry/score_replay_input.csv
+validation_depth: writer_scope_smoke
+non_pytest_smokes:
+- py_compile
+- adapter_prep_writer_smoke
+- active_pointer_smoke
+- machine_yaml_identity_lint
+- targeted_artifact_hash_check
+skipped_broad_validations:
+- pytest
+- full_regression_workflow
+- evidence_graph_full_workflow
+- active_record_validator_full_graph
+- spacesonar_project_validate_full
+- spacesonar_cli_project_validate_as_progress_default
+- broad_hash_resync
+- global_registry_regeneration
+broad_validation_escalation_reason: none_adapter_preparation_progress_no_protected_claim
+claim_boundary: wave02_execution_liquidity_decision_replay_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+forbidden_claims:
+- selected_baseline
+- operating_reference
+- operating_promotion
+- runtime_authority
+- economics_pass
+- materialization_ready
+- handoff_complete
+- live_readiness
+- reviewed_verified_pass
+- goal_achieve
+unresolved_blockers_or_none:
+- Wave02_execution_liquidity_decision_replay_terminal_execution_pending
+next_action_or_reopen_condition: execute prepared Wave02 execution/liquidity decision
+  replay MT5 attempts with portable terminal only, then judge paired validation/research_oos
+  results
+writer_scope_self_check:
+  status: passed
+  checked_at_utc: '2026-06-28T02:42:30Z'
+  writer_contract_version: writer_scope_operating_contract_v2
+  validation_depth: writer_scope_smoke
+  non_pytest_smokes:
+  - py_compile
+  - adapter_prep_writer_smoke
+  - active_pointer_smoke
+  - machine_yaml_identity_lint
+  - targeted_artifact_hash_check
+  skipped_broad_validations:
+  - pytest
+  - full_regression_workflow
+  - evidence_graph_full_workflow
+  - active_record_validator_full_graph
+  - spacesonar_project_validate_full
+  - spacesonar_cli_project_validate_as_progress_default
+  - broad_hash_resync
+  - global_registry_regeneration
+  broad_validation_escalation_reason: none_adapter_preparation_progress_no_protected_claim
+  source_of_truth_paths:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/l5_routing_decision_index.csv
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_pair_judgment_index.csv
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/l4_attempt_preparation_index.csv
+  writer_owned_outputs:
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_prep_index.csv
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_eligibility_index.csv
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_input_summary.yaml
+  - lab/campaigns/campaign_us100_wave02_execution_liquidity_surface_v0/l4_follow_through/decision_replay/adapter_compile_summary.yaml
+  - lab/goals/goal_us100_onnx_forward_boundary_v0/work_wave02_execution_liquidity_l4_decision_replay_adapter_preparation_v0_closeout.yaml
+  - runtime/mt5_attempts/<attempt_id>/attempt_manifest.yaml
+  - runtime/mt5_attempts/<attempt_id>/tester_config.ini
+  - runtime/mt5_attempts/<attempt_id>/telemetry/score_replay_input.csv
+  routing_cell_count: 6
+  prepared_attempt_count: 12
+  adapter_input_tradeable_rows: 112459
+  adapter_input_flat_rows: 480551
+  smoke_errors: []
+  claim_boundary: wave02_execution_liquidity_decision_replay_adapter_preparation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+  forbidden_claims_respected: true
+  candidate_count: 0
+  l5_candidate_count: 0
+  next_action_or_reopen_condition: execute prepared Wave02 execution/liquidity decision
+    replay MT5 attempts with portable terminal only, then judge paired validation/research_oos
+    results

@@ -95,7 +95,8 @@ def _is_source_path(path: str) -> bool:
 def _looks_binary(path: Path) -> bool:
     if not path.exists() or not path.is_file():
         return False
-    return b"\0" in path.read_bytes()[:4096]
+    with open(filesystem_path(path), "rb") as handle:
+        return b"\0" in handle.read(4096)
 
 
 def _status_source_entries(repo_root: Path) -> list[dict[str, str]]:
@@ -139,8 +140,9 @@ def _path_mode(path: Path) -> str:
 
 def _path_digest_payload(path: Path) -> bytes:
     if path.is_symlink():
-        return os.readlink(path).encode("utf-8", errors="surrogateescape")
-    return path.read_bytes()
+        return os.readlink(filesystem_path(path)).encode("utf-8", errors="surrogateescape")
+    with open(filesystem_path(path), "rb") as handle:
+        return handle.read()
 
 
 def classify_changed_files(repo_root: Path) -> dict[str, list[str]]:
@@ -187,8 +189,9 @@ def _write_text_if_nonempty(repo_root: Path, rel_path: Path, text: str) -> tuple
     if not text:
         return None, None
     path = repo_root / rel_path
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8", newline="\n")
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
     return rel_path.as_posix(), sha256_file(path)
 
 
@@ -235,8 +238,9 @@ def _zip_untracked_sources(repo_root: Path, archive_rel_path: Path, paths: list[
     if archive_bytes is None:
         return None, None, []
     target = repo_root / archive_rel_path
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_bytes(archive_bytes)
+    os.makedirs(filesystem_path(target.parent), exist_ok=True)
+    with open(filesystem_path(target), "wb") as handle:
+        handle.write(archive_bytes)
     return archive_rel_path.as_posix(), archive_sha, manifest
 
 
@@ -346,8 +350,9 @@ def source_snapshot(repo_root: Path, batch_id: str, *, write: bool = True) -> di
     if write:
         for rel_path, content in payload["files"].items():
             path = repo_root / rel_path
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(content)
+            os.makedirs(filesystem_path(path.parent), exist_ok=True)
+            with open(filesystem_path(path), "wb") as handle:
+                handle.write(content)
     return payload["manifest"]
 
 
@@ -394,10 +399,11 @@ def _parse_utc(value: str) -> datetime:
 
 
 def _write_atomic_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    os.makedirs(filesystem_path(path.parent), exist_ok=True)
     temp = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    temp.write_text(text, encoding="utf-8", newline="\n")
-    os.replace(temp, path)
+    with open(filesystem_path(temp), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
+    os.replace(filesystem_path(temp), filesystem_path(path))
 
 
 def _receipt_rel_path(batch_id: str) -> str:
@@ -700,11 +706,13 @@ def add_provenance_compaction_marker(path: Path, batch_receipt_path: str) -> boo
         data["provenance_compaction"] = provenance_compaction_marker(batch_receipt_path)
         import json
 
-        path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+        with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
         return True
     data = read_yaml(path)
     if data.get("provenance_compaction") == provenance_compaction_marker(batch_receipt_path):
         return False
     data["provenance_compaction"] = provenance_compaction_marker(batch_receipt_path)
-    path.write_text(dump_yaml(data), encoding="utf-8", newline="\n")
+    with open(filesystem_path(path), "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(dump_yaml(data))
     return True

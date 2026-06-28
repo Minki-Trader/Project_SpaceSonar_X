@@ -42,9 +42,11 @@ The CI policy uses three layers:
   writer receipts, manifests, bundle manifests, attempt manifests, and scoped
   parse/compile/smoke commands first.
 - `full-regression` remains a manual archive workflow only. It requires an
-  explicit reason and acknowledgement, and is reserved for user-requested
-  archive validation or broad shared-contract/dependency/validator semantics
-  changes.
+  explicit command-intent gate: allowed reason, owner surface,
+  source-of-truth paths, why writer-scope smoke is insufficient, expected claim
+  effect, smaller checks attempted or not applicable, claim boundary, and
+  acknowledgement. It is reserved for user-requested archive validation or
+  broad shared-contract/dependency/validator semantics changes.
 
 The strong guard is the writer and source-of-truth layer: run manifests,
 receipts, lineage, workspace projection, registry projection, and transaction

@@ -1,0 +1,64 @@
+version: wave02_execution_liquidity_decision_replay_execution_telemetry_summary_v1
+summary_path: runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/execution_telemetry_summary.yaml
+attempt_id: attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0
+source_attempt_id: attempt_wave02_elq_cell_006_l4_validation_v0
+run_id: onnxlab_wave02_elq_cell_006_execution_liquidity_v0
+bundle_id: bundle_wave02_elq_cell_006_l4_onnx_export_v0
+period_role: validation
+direction_policy: momentum_ret_1
+telemetry:
+  path: runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0/telemetry/execution_telemetry.csv
+  sha256: 327b3070b3d5a575b5fa5ccaf41e605299818c45979fe995b7f3b3b4fd7ea75a
+  size_bytes: 7613873
+  availability: local_telemetry_hash_recorded_ignored_by_git
+common_telemetry_redacted: ${APPDATA}\MetaQuotes\Terminal\Common\Files\SpaceSonar\wave02_execution_liquidity_l4_decision_replay\attempt_wave02_elq_cell_006_l4_decision_replay_validation_momentum_ret_1_v0\execution_telemetry.csv
+stats:
+  status: execution_telemetry_observed
+  row_count: 53554
+  first_bar_close_time: 2024.06.05 00:00:00
+  last_bar_close_time: 2025.03.07 23:50:00
+  symbol_counts:
+    US100: 53554
+  period_counts:
+    PERIOD_M5: 53554
+  decision_family_counts:
+    abstain_capable_direction_agnostic_tradeability: 53554
+  direction_policy_counts:
+    momentum_ret_1: 53554
+  source_decision_counts:
+    flat: 42283
+    tradeable: 11271
+  execution_signal_counts:
+    flat: 42283
+    long: 5610
+    short: 5661
+  action_counts:
+    close_flat: 1693
+    close_hold_elapsed: 112
+    hold_same_direction: 4650
+    no_trade_flat: 40582
+    open_long: 3210
+    open_short: 3307
+  trade_action_counts:
+    open_action_count: 6517
+    close_action_count: 1805
+    open_failed_count: 0
+    skip_spread_count: 0
+    no_trade_flat_count: 40582
+    hold_same_direction_count: 4650
+  score_stats:
+    finite_count: 53554
+    min: 0.0142005682
+    max: 0.8727017045
+    mean: 0.4708216044963663
+  spread_points_stats:
+    finite_count: 53554
+    min: 120.0
+    max: 700.0
+    mean: 130.75045748216752
+claim_boundary: wave02_execution_liquidity_decision_replay_runtime_observation_only_no_runtime_authority_no_economics_pass_no_candidate_no_live_readiness_no_goal_achieve
+work_item_id: work_wave02_execution_liquidity_decision_replay_runtime_execution_v0
+subwork_item_id: work_wave02_execution_liquidity_decision_replay_strategy_tester_execution_v0
+active_goal_id: goal_us100_onnx_forward_boundary_v0
+campaign_id: campaign_us100_wave02_execution_liquidity_surface_v0
+sweep_id: sweep_us100_wave02_execution_liquidity_broad_v0

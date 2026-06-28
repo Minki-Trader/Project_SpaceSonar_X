@@ -50,7 +50,8 @@ jobs:
           }
       - name: Validate runtime contract and committed evidence
         run: |
-          uv run python foundation/validation/active_record_validator.py --repo-root .
+          uv run python foundation/validation/operational_stability_lint.py --repo-root .
+          uv run python foundation/validation/machine_yaml_identity_lint.py --repo-root . --path foundation/config/mt5_runtime_probe_contract.yaml --path configs/mt5/period_profiles/split_set_v0_runtime_periods.yaml --path docs/workspace/workspace_state.yaml
           uv run python foundation/evaluation/runtime_contract_evaluator.py --repo-root .
       - name: Write sanitized manual preflight summary
         shell: pwsh

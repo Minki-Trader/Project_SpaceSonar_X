@@ -1,0 +1,109 @@
+version: mt5_tester_report_kpi_parse_v1
+parse_status: parsed
+source_report_path: runtime/mt5_attempts/attempt_wave02_elq_cell_006_l4_decision_replay_research_oos_momentum_ret_1_v0/reports/tester_report.htm
+source_report_sha256: cbfd46dda197ae90dc57c924e7c0cd5a0483f06b0028d8ad47397b305cbbcc02
+metrics:
+  mt5.tester_report.bars:
+    metric_value: '45281'
+    value_type: int
+    unit: bars
+    raw_value: '45281'
+    matched_label: "\uBD09\uC218"
+  mt5.tester_report.ticks:
+    metric_value: '54636569'
+    value_type: int
+    unit: ticks
+    raw_value: '54636569'
+    matched_label: "\uD2F1"
+  mt5.tester_report.total_net_profit:
+    metric_value: '-106.33'
+    value_type: float
+    unit: account_currency
+    raw_value: '-106.33'
+    matched_label: "\uCD1D\uC218\uC785"
+  mt5.tester_report.gross_profit:
+    metric_value: '818.09'
+    value_type: float
+    unit: account_currency
+    raw_value: '818.09'
+    matched_label: "\uB204\uC801 \uC218\uC775"
+  mt5.tester_report.gross_loss:
+    metric_value: '-924.42'
+    value_type: float
+    unit: account_currency
+    raw_value: '-924.42'
+    matched_label: "\uB204\uC801 \uC190\uC2E4"
+  mt5.tester_report.profit_factor:
+    metric_value: '0.88'
+    value_type: float
+    unit: ratio
+    raw_value: '0.88'
+    matched_label: Profit Factor
+  mt5.tester_report.expected_payoff:
+    metric_value: '-0.02'
+    value_type: float
+    unit: account_currency
+    raw_value: '-0.02'
+    matched_label: "\uC608\uC0C1 \uBE44\uC6A9"
+  mt5.tester_report.recovery_factor:
+    metric_value: '-0.69'
+    value_type: float
+    unit: ratio
+    raw_value: '-0.69'
+    matched_label: Recovery Factor
+  mt5.tester_report.sharpe_ratio:
+    metric_value: '-5'
+    value_type: float
+    unit: ratio
+    raw_value: '-5.00'
+    matched_label: Sharpe Ratio
+  mt5.tester_report.total_trades:
+    metric_value: '5393'
+    value_type: int
+    unit: trades
+    raw_value: '5393'
+    matched_label: "\uCD1D \uAC70\uB798\uD69F\uC218"
+  mt5.tester_report.balance_drawdown_maximal_amount:
+    metric_value: '136.6'
+    value_type: float
+    unit: account_currency
+    raw_value: 136.60 (26.79%)
+    matched_label: Balance Drawdown Maximal
+  mt5.tester_report.balance_drawdown_maximal_pct:
+    metric_value: '26.79'
+    value_type: float
+    unit: percent
+    raw_value: 136.60 (26.79%)
+    matched_label: Balance Drawdown Maximal
+  mt5.tester_report.equity_drawdown_maximal_amount:
+    metric_value: '154.13'
+    value_type: float
+    unit: account_currency
+    raw_value: 154.13 (29.24%)
+    matched_label: Equity Drawdown Maximal
+  mt5.tester_report.equity_drawdown_maximal_pct:
+    metric_value: '29.24'
+    value_type: float
+    unit: percent
+    raw_value: 154.13 (29.24%)
+    matched_label: Equity Drawdown Maximal
+  mt5.tester_report.correlation_profits_mfe:
+    metric_value: '0.67'
+    value_type: float
+    unit: ratio
+    raw_value: '0.67'
+    matched_label: Correlation (Profits,MFE)
+  mt5.tester_report.correlation_profits_mae:
+    metric_value: '0.54'
+    value_type: float
+    unit: ratio
+    raw_value: '0.54'
+    matched_label: Correlation (Profits,MAE)
+  mt5.tester_report.correlation_mfe_mae:
+    metric_value: '-0.0324'
+    value_type: float
+    unit: ratio
+    raw_value: '-0.0324'
+    matched_label: Correlation (MFE,MAE)
+missing_metrics: []
+parser_diagnostic: tester_report_kpi_parser_v1:html_table_label_value_pairs
